@@ -49,11 +49,18 @@ export function CoordinatesDisplay() {
   }, [lat, lng])
 
   return (
-    <div className="floating-panel flex items-center gap-2 px-3 py-1.5 bg-background/90 backdrop-blur-md rounded-xl border border-border/50 shadow-lg text-[11px] text-muted-foreground font-mono tabular-nums">
+    <div
+      className="floating-panel flex items-center gap-2 px-3 py-1.5 bg-background/90 backdrop-blur-md rounded-xl border border-border/50 shadow-lg text-[11px] text-muted-foreground font-mono tabular-nums cursor-pointer select-none hover:border-primary/30 hover:bg-background/95 transition-all duration-200"
+      role="status"
+      aria-live="polite"
+      aria-label={`Coordinates: ${lng.toFixed(4)} longitude, ${lat.toFixed(4)} latitude, zoom ${zoom.toFixed(1)}`}
+      onClick={handleCopy}
+      title="Click to copy coordinates"
+    >
       <MousePointer2 className="h-3 w-3 text-primary/60" />
-      <span title="Longitude">{lng.toFixed(4)}</span>
+      <span title="Longitude" className="transition-colors duration-150">{lng.toFixed(4)}</span>
       <span className="w-px h-3 bg-border" />
-      <span title="Latitude">{lat.toFixed(4)}</span>
+      <span title="Latitude" className="transition-colors duration-150">{lat.toFixed(4)}</span>
       <span className="w-px h-3 bg-border" />
       <span title="Zoom" className="text-primary/80 font-semibold">
         {zoom.toFixed(1)}z
@@ -78,20 +85,18 @@ export function CoordinatesDisplay() {
           <span title="Pitch">{pitch.toFixed(0)}°</span>
         </>
       )}
-      <button
-        onClick={handleCopy}
-        className="ml-1 p-0.5 rounded hover:bg-accent transition-colors text-muted-foreground hover:text-foreground"
-        aria-label="Copy coordinates as decimal"
-        title="Copy as decimal"
-      >
+      <span className="ml-1">
         {copied ? (
           <Check className="h-3 w-3 text-emerald-500" />
         ) : (
-          <Copy className="h-3 w-3" />
+          <Copy className="h-3 w-3 text-muted-foreground/60" />
         )}
-      </button>
+      </span>
       <button
-        onClick={handleCopyDms}
+        onClick={(e) => {
+          e.stopPropagation()
+          handleCopyDms()
+        }}
         className="p-0.5 rounded hover:bg-accent transition-colors text-muted-foreground hover:text-foreground"
         aria-label="Copy coordinates as DMS"
         title="Copy as DMS"

@@ -52,6 +52,31 @@ import {
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
 import { LocationDetailDrawer } from '@/components/map/LocationDetailDrawer'
+import { NearbyPanel } from '@/components/map/NearbyPanel'
+
+async function exportGPX(type: 'route' | 'markers' | 'all', data: Record<string, unknown>) {
+  try {
+    const res = await fetch('/api/export/gpx', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type, data }),
+    })
+    if (!res.ok) throw new Error('Export failed')
+    const blob = await res.blob()
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `maplibre-${type}-${Date.now()}.gpx`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+    toast.success(`${type === 'route' ? 'Route' : type === 'markers' ? 'Markers' : 'All data'} exported as GPX`)
+  } catch (err) {
+    console.error('GPX export error:', err)
+    toast.error('Failed to export GPX')
+  }
+}
 
 const categories = [
   { id: 'general', label: 'General', color: '#6b7280', icon: '📌' },
@@ -303,13 +328,18 @@ function SidebarContent({ onCloseMobile }: { onCloseMobile?: () => void }) {
             key={tab.id}
             onClick={() => setSidebarTab(tab.id)}
             className={cn(
-              'flex-1 py-2 px-1 text-xs font-medium transition-all flex flex-col items-center gap-1 relative rounded-lg',
+              'flex-1 py-2 px-1 text-xs font-medium transition-all duration-200 flex flex-col items-center gap-1 relative rounded-lg',
               sidebarTab === tab.id
-                ? 'sidebar-tab-active bg-primary/5 text-primary'
+                ? 'sidebar-tab-active bg-primary/5 text-primary scale-[1.02]'
                 : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
             )}
           >
-            {tab.icon}
+            <span className={cn(
+              'transition-transform duration-200',
+              sidebarTab === tab.id && 'scale-110'
+            )}>
+              {tab.icon}
+            </span>
             {tab.label}
           </button>
         ))}
@@ -528,20 +558,39 @@ function LocationsTab({
         </div>
       </div>
 
+      {/* Export GPX button for locations */}
+      {locations.length > 0 && (
+        <div className="px-3 pt-2 pb-1 shrink-0">
+          <Button
+            variant="outline"
+            size="sm"
+            className="w-full h-7 text-[11px] justify-center rounded-lg"
+            onClick={() => exportGPX('markers', { markers: locations as unknown as Record<string, unknown>[] })}
+          >
+            <Download className="h-3 w-3 mr-1.5" />
+            Export All as GPX
+          </Button>
+        </div>
+      )}
+
       {/* Locations list */}
-      <ScrollArea className="flex-1">
-        <div className="p-2 space-y-1">
-          {locations.length === 0 ? (
-            <div className="text-center py-12 text-muted-foreground">
-              <div className="w-16 h-16 mx-auto mb-3 rounded-2xl bg-muted/50 flex items-center justify-center">
-                <MapPinned className="h-8 w-8 opacity-40" />
+      <div className="relative flex-1 min-h-0">
+        <ScrollArea className="h-full">
+          <div className="p-2 space-y-1">
+            {locations.length === 0 ? (
+              <div className="text-center py-12 text-muted-foreground">
+                <div className="w-16 h-16 mx-auto mb-3 rounded-2xl bg-muted/50 flex items-center justify-center">
+                  <MapPinned className="h-8 w-8 opacity-40" />
+                </div>
+                <p className="text-sm font-medium">No saved locations yet</p>
+                <p className="text-xs mt-1 max-w-[200px] mx-auto">
+                  Click the &quot;+&quot; button on the map or use the Drop Pin
+                  tool to save places
+                </p>
+                <div className="mt-4 flex flex-col items-center gap-1.5">
+                  <span className="text-[10px] text-muted-foreground/60">or explore nearby places below</span>
+                </div>
               </div>
-              <p className="text-sm font-medium">No saved locations</p>
-              <p className="text-xs mt-1 max-w-[200px] mx-auto">
-                Click the &quot;+&quot; button on the map or use the Drop Pin
-                tool to save places
-              </p>
-            </div>
           ) : (
             locations.map((loc) => {
               const cat = categories.find((c) => c.id === loc.category)
@@ -616,8 +665,16 @@ function LocationsTab({
               )
             })
           )}
-        </div>
-      </ScrollArea>
+          </div>
+        </ScrollArea>
+        {/* Bottom fade gradient */}
+        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-background to-transparent" />
+      </div>
+
+      {/* Nearby POI Search */}
+      <div className="mt-3 pt-3 border-t px-3 pb-3">
+        <NearbyPanel />
+      </div>
     </div>
   )
 }
@@ -1252,6 +1309,21 @@ function ToolsTab({
               <Share2 className="h-3.5 w-3.5 mr-2" />
               Export as Image
             </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-full h-9 text-xs justify-start rounded-xl"
+              onClick={() => {
+                const state = useMapStore.getState()
+                exportGPX('all', {
+                  markers: state.savedLocations as unknown as Record<string, unknown>[],
+                  routes: state.routes as unknown as Record<string, unknown>[],
+                })
+              }}
+            >
+              <Download className="h-3.5 w-3.5 mr-2" />
+              Export All as GPX
+            </Button>
           </div>
         </div>
 
@@ -1659,6 +1731,13 @@ function RoutesTab() {
                       </p>
                     )}
                   </div>
+                  <button
+                    className="p-1 hover:text-primary transition-colors text-muted-foreground"
+                    onClick={() => exportGPX('route', route as unknown as Record<string, unknown>)}
+                    aria-label={`Export route ${route.name} as GPX`}
+                  >
+                    <Download className="h-3.5 w-3.5" />
+                  </button>
                   <button
                     className="p-1 hover:text-red-500 transition-colors text-muted-foreground"
                     onClick={() => handleDeleteRoute(route.id, route.name)}

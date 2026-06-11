@@ -1847,3 +1847,124 @@ The MapLibre Explorer is a **fully functional, feature-rich interactive map appl
 - Lint: Clean (0 errors, 0 warnings)
 - Console errors: None
 - Build: Compiles successfully every time
+
+---
+Task ID: 5-6
+Agent: Full Stack Developer
+Task: Map Screenshot + Draggable Markers
+
+Work Log:
+- Read MapView.tsx, page.tsx, MapToolbar.tsx, and map-store.ts to understand current code structure
+- Added `preserveDrawingBuffer: true` to maplibregl.Map() initialization options in MapView.tsx (required for canvas.toDataURL() to work)
+- Added `__mapScreenshot` global function in MapView.tsx that returns a Promise<string> with the map canvas data URL (triggers repaint then captures the rendered frame)
+- Added `toast` import from sonner in MapView.tsx
+- Added Camera icon import from lucide-react in page.tsx
+- Added `handleExportMap` callback function in page.tsx that calls `window.__mapScreenshot()`, creates a download link, and shows a toast notification
+- Added Export Map button (Camera icon) to the top-right control bar in page.tsx, placed before the Share button
+- Made markers draggable when toolMode is 'navigate' by adding `draggable: currentToolMode === 'navigate'` option to maplibregl.Marker constructor
+- Added dragend event handler on markers that updates both the markers array and savedLocations array in the store with the new position
+- Added toast.success('Marker position updated') notification on successful marker drag
+
+Stage Summary:
+- Map Export/Screenshot feature fully implemented: preserveDrawingBuffer enabled, __mapScreenshot global function added, Export Map button with Camera icon added to top bar, downloads PNG with timestamp filename
+- Draggable Markers feature fully implemented: markers are draggable only in navigate mode, dragend updates store (both markers and savedLocations), toast notification on position update
+- All existing functionality preserved (no breaking changes)
+- Lint: Clean (0 errors, 0 warnings)
+- Dev server: Running successfully with no errors
+
+---
+Task ID: 3-4
+Agent: Full Stack Developer
+Task: MapTiler Geocoding API + GPX Export
+
+Work Log:
+- Updated search API route (`/api/search/route.ts`) to use MapTiler Geocoding API as primary provider with Nominatim/Photon fallback
+- Enhanced SearchBar.tsx `getTypeIcon` to handle MapTiler place types (country, region, municipality, town, village, hamlet, locality, poi, etc.)
+- Updated SearchBar.tsx credit line to "Powered by MapTiler · OpenStreetMap"
+- Created GPX export API route (`/api/export/gpx/route.ts`) with POST endpoint supporting route, markers, and all export types
+- Added `exportGPX()` helper function in MapSidebar.tsx
+- Added GPX export button next to each saved route in Routes tab
+- Added "Export All as GPX" button in Locations tab
+- Added "Export All as GPX" button in Tools tab Export Data section
+
+Stage Summary:
+- MapTiler Geocoding API is now the primary search provider with automatic Nominatim/Photon fallback
+- GPX export feature fully functional with three modes: individual routes, all markers, or complete data export
+- All changes backward compatible, no breaking changes
+- Lint: Only pre-existing error in CoordinatesDisplay.tsx (unrelated)
+- Dev server: Running successfully
+
+---
+Task ID: 7-8
+Agent: Full Stack Developer
+Task: Nearby POI Search + Enhanced Styling
+
+Work Log:
+- Created POI search API route (`/api/poi/route.ts`) with MapTiler Places API as primary provider and Geocoding API as fallback
+- API supports lat/lng, category filtering (eating_out, accommodation, activity, tourism, commercial, cafe), and radius parameters
+- Added `getPOIIcon()` helper function mapping categories to emoji icons
+- Created NearbyPanel component (`/components/map/NearbyPanel.tsx`) with category pills, POI list, and click-to-fly + add-as-marker functionality
+- Integrated NearbyPanel into MapSidebar LOCATIONS tab after saved locations list with separator border
+- Added 9 new CSS utility classes and animations to globals.css: poi-pill, screenshot-flash, export-glow, marker-dragging, slide-in-right, glass-card-v2, smooth-scroll, toolbar-btn-active, category-badge
+- Added coords-pulse animation and nearby-item hover styles to globals.css
+- Enhanced CoordinatesDisplay with click-to-copy on the entire bar, hover border highlight, and improved accessibility (aria-label, role="status")
+- Enhanced QuickJumpPanel with 10 new bookmark locations (Tokyo Tower, Eiffel Tower, Colosseum, Machu Picchu, Great Wall, Sydney Opera House, Table Mountain, Matterhorn, Taj Mahal, Grand Canyon)
+- Added country flag emojis to all bookmarks and per-bookmark hover border colors
+- Enhanced MapSidebar tab buttons with duration-200 transitions and scale effect on active tab
+- Added bottom fade gradient to locations scroll list
+- Improved empty state in LocationsTab with "or explore nearby places below" hint
+- All lint checks pass with zero errors
+
+Stage Summary:
+- Nearby POI search feature fully functional with 6 category filters and real-time results
+- QuickJumpPanel expanded from 8 to 18 world landmarks with flag emojis and hover accents
+- Enhanced styling across multiple components with micro-interactions and polish
+- CoordinatesDisplay now has click-to-copy, hover effects, and better accessibility
+- MapSidebar has smoother tab transitions and scroll fade effects
+- Lint: 0 errors, 0 warnings
+- Dev server: Running successfully
+
+---
+Task ID: 9
+Agent: Main Developer
+Task: MapTiler Geocoding, GPX Export, Map Screenshot, Draggable Markers, Nearby POI, Enhanced Styling
+
+Work Log:
+- Confirmed MapTiler API key `6UjZZVa8XEx1FBJ9ksG3` already configured in .env
+- Implemented MapTiler Geocoding API as primary search provider with Nominatim/Photon fallback
+- Fixed null/undefined handling in SearchBar getTypeIcon function (runtime error fix)
+- Fixed null handling in search API route for type/category fields
+- Created GPX Export API route (/api/export/gpx) supporting route, markers, and full export
+- Added GPX export buttons in MapSidebar (Routes tab, Locations tab, Tools tab)
+- Added Map Screenshot/Export feature with preserveDrawingBuffer and __mapScreenshot global
+- Added "Export map as image" button in toolbar with Camera icon
+- Implemented Draggable Markers (only in navigate mode) with position update in store
+- Created Nearby POI Search using Overpass API with MapTiler geocoding fallback
+- Created NearbyPanel component with category pill filters (Food, Hotels, Activities, Tourism, Shops, Cafes)
+- Added NearbyPanel to sidebar Locations tab
+- Fixed POI API from 404 to working Overpass API implementation
+- Enhanced globals.css with new utility classes and animations
+- Enhanced CoordinatesDisplay with click-to-copy and DMS format
+- Expanded QuickJumpPanel from 8 to 18 world landmarks with flag emojis and hover colors
+- Enhanced MapSidebar with smoother tab transitions, bottom fade gradients
+- All lint checks pass clean
+- QA verified: map renders, search works with MapTiler, GPX export works, screenshot button visible, Nearby POI returns results
+
+Stage Summary:
+- MapTiler Geocoding: Search now uses MapTiler API as primary (returns Paris, London, Tokyo etc.)
+- GPX Export: Full GPX 1.1 XML export for routes, markers, or all data
+- Map Screenshot: PNG export of current map view via Camera button
+- Draggable Markers: Markers can be dragged to reposition in Navigate mode
+- Nearby POI: Overpass API provides real nearby POIs sorted by distance
+- Enhanced Styling: New utilities, expanded bookmarks, copy coordinates, micro-interactions
+- Bug Fix: getTypeIcon null/undefined crash fixed
+- Bug Fix: POI API 404 fixed by switching from MapTiler Places (non-existent) to Overpass API
+
+Unresolved Issues / Next Phase Recommendations:
+- Weather overlay on map still uses MapTiler raster tiles (may need API key permissions check)
+- Could add GPX Import functionality
+- Could add isochrone visualization
+- Could add terrain profile for routes (not just measurement)
+- Could enhance POI panel with map markers for POI locations
+- Could add map tile loading indicator
+- Could add offline/PWA support

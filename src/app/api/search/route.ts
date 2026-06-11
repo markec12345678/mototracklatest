@@ -79,6 +79,33 @@ export async function GET(request: NextRequest) {
       const cached = getCached(cacheKey)
       if (cached) return NextResponse.json(cached)
 
+      // Try MapTiler reverse geocoding first
+      try {
+        const maptilerKey = process.env.NEXT_PUBLIC_MAPTILER_KEY
+        if (maptilerKey) {
+          const url = `https://api.maptiler.com/geocoding/${longitude},${latitude}.json?key=${maptilerKey}`
+          const response = await fetchWithRetry(url, { next: { revalidate: 3600 } })
+
+          if (response.ok) {
+            const data = await response.json()
+            if (data.features && data.features.length > 0) {
+              const place = data.features[0]
+              const result = {
+                name: place.place_name || place.text,
+                fullName: place.place_name,
+                latitude,
+                longitude,
+              }
+              setCache(cacheKey, result)
+              return NextResponse.json(result)
+            }
+          }
+        }
+      } catch (e) {
+        console.error('MapTiler reverse geocoding error:', e)
+      }
+
+      // Fallback to Nominatim reverse geocoding
       try {
         const response = await fetchWithRetry(
           `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=10&addressdetails=1`,
@@ -108,7 +135,33 @@ export async function GET(request: NextRequest) {
     const cached = getCached(cacheKey)
     if (cached) return NextResponse.json(cached)
 
-    // Try Nominatim first, then fall back to Photon (Komoot)
+    // Try MapTiler geocoding first
+    try {
+      const maptilerKey = process.env.NEXT_PUBLIC_MAPTILER_KEY
+      if (maptilerKey) {
+        const url = `https://api.maptiler.com/geocoding/${encodeURIComponent(query)}.json?key=${maptilerKey}&limit=8&language=en`
+        const response = await fetchWithRetry(url, { next: { revalidate: 300 } })
+
+        if (response.ok) {
+          const data = await response.json()
+          if (data.features && data.features.length > 0) {
+            const results = data.features.map((f: Record<string, unknown>) => ({
+              name: (f.place_name as string) || (f.text as string),
+              latitude: (f.center as number[])[1],
+              longitude: (f.center as number[])[0],
+              type: Array.isArray(f.place_type) ? f.place_type[0] : 'place',
+              category: Array.isArray(f.place_type) ? f.place_type[0] : 'place',
+            }))
+            setCache(cacheKey, results)
+            return NextResponse.json(results)
+          }
+        }
+      }
+    } catch (e) {
+      console.error('MapTiler geocoding error:', e)
+    }
+
+    // Fallback to Nominatim first, then Photon (Komoot)
     let data: unknown[] = []
 
     try {
@@ -178,8 +231,8 @@ export async function GET(request: NextRequest) {
       name: item.display_name,
       latitude: parseFloat(String(item.lat)),
       longitude: parseFloat(String(item.lon)),
-      type: item.type,
-      category: item.category,
+      type: String(item.type || 'place'),
+      category: String(item.category || 'place'),
     }))
 
     setCache(cacheKey, results)

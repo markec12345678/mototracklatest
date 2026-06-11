@@ -39,6 +39,7 @@ import {
   Minimize2,
   Keyboard,
   Share2,
+  Camera,
 } from 'lucide-react'
 
 export default function Home() {
@@ -102,6 +103,20 @@ export default function Home() {
     }, 500)
     return () => clearTimeout(timer)
   }, [center, zoom, currentStyle])
+
+  // Handle map export/screenshot
+  const handleExportMap = useCallback(async () => {
+    const screenshot = await (window as unknown as Record<string, () => Promise<string | null>>).__mapScreenshot?.()
+    if (screenshot) {
+      const a = document.createElement('a')
+      a.href = screenshot
+      a.download = `maplibre-export-${Date.now()}.png`
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      toast.success('Map exported as image')
+    }
+  }, [])
 
   // Handle share URL
   const handleShare = useCallback(() => {
@@ -445,6 +460,16 @@ export default function Home() {
             aria-label="Keyboard shortcuts"
           >
             <Keyboard className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={handleExportMap}
+            title="Export Map as Image"
+            aria-label="Export map as image"
+          >
+            <Camera className="h-4 w-4" />
           </Button>
           <Button
             variant="outline"

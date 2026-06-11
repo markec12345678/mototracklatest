@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { useMapStore, type LayerVisibility, getStyleUrl } from '@/lib/map-store'
+import { toast } from 'sonner'
 
 // Inject pulsing dot CSS animation
 if (typeof document !== 'undefined' && !document.getElementById('geolocation-pulse-style')) {
@@ -108,6 +109,7 @@ export function MapView() {
       center: [14.5058, 46.0569],
       zoom: 5,
       attributionControl: false,
+      preserveDrawingBuffer: true,
     })
 
     newMap.addControl(new maplibregl.NavigationControl(), 'bottom-right')
@@ -423,7 +425,11 @@ export function MapView() {
           el.style.transform = selectedMarker === m.id ? 'scale(1.2)' : 'scale(1)'
           el.style.transition = 'transform 0.2s, filter 0.2s'
 
-          const marker = new maplibregl.Marker({ element: el })
+          const currentToolMode = useMapStore.getState().toolMode
+          const marker = new maplibregl.Marker({
+            element: el,
+            draggable: currentToolMode === 'navigate',
+          })
             .setLngLat([m.longitude, m.latitude])
             .setPopup(
               new maplibregl.Popup({ offset: 25, closeButton: true }).setHTML(
@@ -441,6 +447,30 @@ export function MapView() {
               )
             )
             .addTo(map.current!)
+
+          // Handle marker drag
+          marker.on('dragend', () => {
+            const lngLat = marker.getLngLat()
+            // Update the marker position in the store
+            const currentMarkers = useMapStore.getState().markers
+            const updatedMarkers = currentMarkers.map((mk) =>
+              mk.id === m.id
+                ? { ...mk, longitude: lngLat.lng, latitude: lngLat.lat }
+                : mk
+            )
+            useMapStore.getState().setMarkers(updatedMarkers)
+
+            // Also update saved locations if exists
+            const currentLocations = useMapStore.getState().savedLocations
+            const updatedLocations = currentLocations.map((loc) =>
+              loc.id === m.id
+                ? { ...loc, longitude: lngLat.lng, latitude: lngLat.lat, updatedAt: new Date().toISOString() }
+                : loc
+            )
+            useMapStore.getState().setSavedLocations(updatedLocations)
+
+            toast.success('Marker position updated')
+          })
 
           el.addEventListener('click', (e) => {
             e.stopPropagation()
@@ -1652,10 +1682,24 @@ export function MapView() {
       link.click()
       document.body.removeChild(link)
     }
+
+    // Screenshot function that returns a promise with data URL
+    ;(window as unknown as Record<string, () => Promise<string | null>>).__mapScreenshot = () => {
+      if (!map.current) return Promise.resolve(null)
+      return new Promise<string>((resolve) => {
+        map.current!.once('render', () => {
+          const canvas = map.current!.getCanvas()
+          resolve(canvas.toDataURL('image/png'))
+        })
+        map.current!.triggerRepaint()
+      })
+    }
+
     return () => {
       delete (window as unknown as Record<string, unknown>).__mapFlyTo
       delete (window as unknown as Record<string, unknown>).__mapResetNorth
       delete (window as unknown as Record<string, unknown>).__mapExportImage
+      delete (window as unknown as Record<string, unknown>).__mapScreenshot
     }
   }, [flyToLocation])
 

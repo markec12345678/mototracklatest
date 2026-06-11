@@ -164,12 +164,23 @@ export function SearchBar() {
     }
   }
 
-  const getTypeIcon = (type: string, category: string) => {
-    if (category === 'boundary' || type === 'administrative') return '🏛️'
-    if (category === 'place' || type === 'city') return '🏙️'
-    if (category === 'railway' || type === 'station') return '🚉'
-    if (category === 'amenity') return '📍'
-    if (category === 'tourism') return '🗺️'
+  const getTypeIcon = (type: string | undefined | null, category: string | undefined | null) => {
+    const t = (type || '').toLowerCase()
+    const c = (category || '').toLowerCase()
+    if (c === 'country' || t === 'country') return '🌍'
+    if (c === 'region' || t === 'region' || t === 'state') return '🏛️'
+    if (c === 'admin' || t === 'administrative') return '🏛️'
+    if (c === 'county' || t === 'county') return '🏘️'
+    if (c === 'municipality' || t === 'city' || c === 'place') return '🏙️'
+    if (c === 'town' || t === 'town') return '🏘️'
+    if (c === 'village' || t === 'village') return '🏡'
+    if (c === 'hamlet' || t === 'hamlet') return '🏠'
+    if (c === 'locality' || t === 'locality') return '📍'
+    if (c === 'poi' || t === 'poi') return '📍'
+    if (c === 'railway' || t === 'station') return '🚉'
+    if (c === 'amenity' || c === 'restaurant' || c === 'hotel') return '🍽️'
+    if (c === 'tourism' || t === 'tourism') return '🗺️'
+    if (c === 'boundary' || t === 'administrative') return '🏛️'
     return '📍'
   }
 
@@ -255,7 +266,7 @@ export function SearchBar() {
           ))}
           <div className="px-3 py-1.5 border-t bg-muted/20">
             <p className="text-[9px] text-muted-foreground/50 text-center">
-              Powered by Nominatim/Photon · OpenStreetMap
+              Powered by MapTiler · OpenStreetMap
             </p>
           </div>
         </div>
