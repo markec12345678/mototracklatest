@@ -5,7 +5,6 @@ import {
   Plus,
   MapPin,
   Crosshair,
-  Sparkles,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -242,6 +241,7 @@ export function AddLocationDialog({
                     borderColor: color === c ? '#000' : 'transparent',
                     transform: color === c ? 'scale(1.15)' : undefined,
                   }}
+                  aria-label={`Select color ${c}`}
                 />
               ))}
             </div>

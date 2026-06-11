@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
 
     // Use Nominatim (OpenStreetMap) for geocoding - free and no API key needed
     const response = await fetch(
-      `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5&addressdetails=1`,
+      `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=10&addressdetails=1&dedupe=1`,
       {
         headers: {
           'User-Agent': 'MapLibreExplorer/1.0',
@@ -27,7 +27,19 @@ export async function GET(request: NextRequest) {
     }
 
     const data = await response.json()
-    const results = data.map((item: Record<string, unknown>) => ({
+
+    // Deduplicate by display_name (some Nominatim results have exact duplicates)
+    const seen = new Set<string>()
+    const deduped = data.filter((item: Record<string, unknown>) => {
+      const name = String(item.display_name)
+      // Use first 50 chars as dedup key to catch near-duplicates
+      const key = name.substring(0, 50).toLowerCase()
+      if (seen.has(key)) return false
+      seen.add(key)
+      return true
+    }).slice(0, 5) // Limit to 5 results after dedup
+
+    const results = deduped.map((item: Record<string, unknown>) => ({
       name: item.display_name,
       latitude: parseFloat(String(item.lat)),
       longitude: parseFloat(String(item.lon)),

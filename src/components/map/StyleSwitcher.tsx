@@ -25,7 +25,8 @@ export function StyleSwitcher() {
         <Button
           variant="outline"
           size="icon"
-          className="bg-background/90 backdrop-blur-sm shadow-md h-10 w-10 rounded-xl"
+          className="bg-background/90 backdrop-blur-md shadow-lg hover:shadow-xl h-10 w-10 rounded-xl border-border/50 transition-all hover:scale-105"
+          aria-label="Change map style"
         >
           <Palette className="h-4 w-4" />
         </Button>

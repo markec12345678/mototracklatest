@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MapView } from '@/components/map/MapView'
 import { MapSidebar } from '@/components/map/MapSidebar'
@@ -12,6 +12,7 @@ import { AddLocationDialog } from '@/components/map/AddLocationDialog'
 import { ThemeToggle } from '@/components/map/ThemeToggle'
 import { MapStatsPanel } from '@/components/map/MapStatsPanel'
 import { CompassIndicator } from '@/components/map/CompassIndicator'
+import { KeyboardShortcutsDialog } from '@/components/map/KeyboardShortcutsDialog'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useMapStore, type ToolMode } from '@/lib/map-store'
@@ -27,11 +28,13 @@ import {
   Layers,
   Maximize2,
   Minimize2,
+  Keyboard,
 } from 'lucide-react'
 
 export default function Home() {
-  const { toolMode, sidebarOpen, center, zoom } = useMapStore()
+  const { toolMode, sidebarOpen, center, zoom, setSidebarOpen, setToolMode } = useMapStore()
   const [addDialogOpen, setAddDialogOpen] = useState(false)
+  const [shortcutsOpen, setShortcutsOpen] = useState(false)
   const [showWelcome, setShowWelcome] = useState(true)
   const [isFullscreen, setIsFullscreen] = useState(false)
 
@@ -42,7 +45,7 @@ export default function Home() {
   }, [])
 
   // Handle fullscreen
-  const toggleFullscreen = () => {
+  const toggleFullscreen = useCallback(() => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen()
       setIsFullscreen(true)
@@ -50,9 +53,9 @@ export default function Home() {
       document.exitFullscreen()
       setIsFullscreen(false)
     }
-  }
+  }, [])
 
-  const handleLocateMe = () => {
+  const handleLocateMe = useCallback(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -69,7 +72,64 @@ export default function Home() {
         }
       )
     }
-  }
+  }, [])
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      // Don't trigger shortcuts when typing in inputs
+      const target = e.target as HTMLElement
+      if (
+        target.tagName === 'INPUT' ||
+        target.tagName === 'TEXTAREA' ||
+        target.tagName === 'SELECT' ||
+        target.isContentEditable
+      ) {
+        // Allow Escape from inputs
+        if (e.key === 'Escape') {
+          target.blur()
+        }
+        return
+      }
+
+      switch (e.key) {
+        case '1':
+          setToolMode('navigate')
+          break
+        case '2':
+          setToolMode('mark')
+          break
+        case '3':
+          setToolMode('measure')
+          break
+        case '/':
+          e.preventDefault()
+          document.querySelector<HTMLInputElement>('input[placeholder*="Search"]')?.focus()
+          break
+        case 'b':
+        case 'B':
+          setSidebarOpen(!useMapStore.getState().sidebarOpen)
+          break
+        case 'f':
+        case 'F':
+          toggleFullscreen()
+          break
+        case 'l':
+        case 'L':
+          handleLocateMe()
+          break
+        case 'Escape':
+          useMapStore.getState().setSelectedMarker(null)
+          break
+        case '?':
+          setShortcutsOpen(true)
+          break
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [setToolMode, setSidebarOpen, toggleFullscreen, handleLocateMe])
 
   const toolIndicator: Record<
     ToolMode,
@@ -92,7 +152,7 @@ export default function Home() {
     },
     directions: {
       label: 'Directions',
-      color: 'from-blue-500 to-cyan-500',
+      color: 'from-cyan-500 to-sky-500',
       icon: <Crosshair className="h-3 w-3" />,
     },
   }
@@ -104,7 +164,7 @@ export default function Home() {
       {/* Map */}
       <MapView />
 
-      {/* Sidebar */}
+      {/* Sidebar - responsive */}
       <MapSidebar />
 
       {/* Compass indicator (visible when map is rotated) */}
@@ -112,54 +172,71 @@ export default function Home() {
 
       {/* Top bar - Search and controls */}
       <div
-        className="absolute top-4 right-4 left-4 z-10 flex items-start gap-2 transition-all duration-300"
-        style={{ paddingLeft: sidebarOpen ? '332px' : '16px' }}
+        className="absolute top-3 right-3 left-3 z-10 flex items-start gap-2 transition-all duration-300 md:pl-0"
+        style={{
+          paddingLeft: undefined, // Override with responsive class below
+        }}
       >
-        <div className="flex-1 max-w-lg">
-          <SearchBar />
+        {/* Responsive padding for desktop sidebar */}
+        <div className="flex-1 max-w-lg md:ml-0" style={{ marginLeft: sidebarOpen ? '0px' : undefined }}>
+          <div className={sidebarOpen ? 'md:pl-[332px]' : ''} style={{ transition: 'padding-left 0.3s ease-in-out' }}>
+            <SearchBar />
+          </div>
         </div>
-        <StyleSwitcher />
-        <ThemeToggle />
-        <Button
-          variant="outline"
-          size="icon"
-          className="bg-background/90 backdrop-blur-sm shadow-md h-10 w-10 rounded-xl"
-          onClick={handleLocateMe}
-          title="My Location"
-        >
-          <LocateFixed className="h-4 w-4" />
-        </Button>
-        <Button
-          variant="outline"
-          size="icon"
-          className="bg-background/90 backdrop-blur-sm shadow-md h-10 w-10 rounded-xl"
-          onClick={toggleFullscreen}
-          title="Fullscreen"
-        >
-          {isFullscreen ? (
-            <Minimize2 className="h-4 w-4" />
-          ) : (
-            <Maximize2 className="h-4 w-4" />
-          )}
-        </Button>
-        <Button
-          variant="outline"
-          size="icon"
-          className="bg-background/90 backdrop-blur-sm shadow-md h-10 w-10 rounded-xl"
-          onClick={() =>
-            window.open('https://github.com/maplibre/maplibre-native', '_blank')
-          }
-          title="GitHub"
-        >
-          <Github className="h-4 w-4" />
-        </Button>
+        <div className="flex items-center gap-1.5 shrink-0">
+          <StyleSwitcher />
+          <ThemeToggle />
+          <Button
+            variant="outline"
+            size="icon"
+            className="bg-background/90 backdrop-blur-md shadow-lg hover:shadow-xl h-10 w-10 rounded-xl border-border/50 transition-all hover:scale-105"
+            onClick={handleLocateMe}
+            title="My Location"
+            aria-label="My Location"
+          >
+            <LocateFixed className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="bg-background/90 backdrop-blur-md shadow-lg hover:shadow-xl h-10 w-10 rounded-xl border-border/50 transition-all hover:scale-105"
+            onClick={toggleFullscreen}
+            title="Fullscreen"
+            aria-label="Toggle fullscreen"
+          >
+            {isFullscreen ? (
+              <Minimize2 className="h-4 w-4" />
+            ) : (
+              <Maximize2 className="h-4 w-4" />
+            )}
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="hidden sm:flex bg-background/90 backdrop-blur-md shadow-lg hover:shadow-xl h-10 w-10 rounded-xl border-border/50 transition-all hover:scale-105"
+            onClick={() => setShortcutsOpen(true)}
+            title="Keyboard Shortcuts"
+            aria-label="Keyboard shortcuts"
+          >
+            <Keyboard className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="hidden sm:flex bg-background/90 backdrop-blur-md shadow-lg hover:shadow-xl h-10 w-10 rounded-xl border-border/50 transition-all hover:scale-105"
+            onClick={() =>
+              window.open('https://github.com/maplibre/maplibre-native', '_blank')
+            }
+            title="GitHub"
+            aria-label="View on GitHub"
+          >
+            <Github className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
 
-      {/* Tool toolbar - left side */}
-      <div
-        className="absolute left-4 z-10 transition-all duration-300"
-        style={{ top: '80px' }}
-      >
+      {/* Tool toolbar - left side (desktop only) */}
+      <div className="hidden md:block absolute left-4 z-10 transition-all duration-300" style={{ top: '80px' }}>
         <MapToolbar />
       </div>
 
@@ -171,10 +248,11 @@ export default function Home() {
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: 10 }}
           transition={{ duration: 0.2 }}
-          className="absolute z-10 transition-all"
+          className="absolute z-10 hidden md:block transition-all"
           style={{
             left: sidebarOpen ? '332px' : '60px',
             top: '80px',
+            transition: 'left 0.3s ease-in-out',
           }}
         >
           <Badge
@@ -186,29 +264,40 @@ export default function Home() {
         </motion.div>
       </AnimatePresence>
 
-      {/* Map Stats Panel - right side above footer */}
-      <div className="absolute bottom-10 right-5 z-10">
+      {/* Mobile tool indicator - shows on mobile below search */}
+      <div className="md:hidden absolute top-16 left-3 z-10">
+        <Badge
+          className={`bg-gradient-to-r ${currentTool.color} text-white border-0 px-2.5 py-1 gap-1 shadow-lg text-xs`}
+        >
+          {currentTool.icon}
+          {currentTool.label}
+        </Badge>
+      </div>
+
+      {/* Map Stats Panel - right side above footer (desktop only) */}
+      <div className="hidden md:block absolute bottom-12 right-5 z-10">
         <MapStatsPanel />
       </div>
 
-      {/* Coordinates display - bottom center */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10">
+      {/* Coordinates display - bottom center (desktop only) */}
+      <div className="hidden md:block absolute bottom-12 left-1/2 -translate-x-1/2 z-10">
         <CoordinatesDisplay />
       </div>
 
       {/* Add Location FAB */}
       <motion.div
-        className="absolute bottom-20 right-5 z-10"
+        className="absolute bottom-20 right-4 md:right-5 z-10"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
         <Button
           size="lg"
-          className="rounded-2xl shadow-xl h-14 px-5 gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white border-0 transition-all"
+          className="rounded-2xl shadow-xl hover:shadow-2xl h-12 md:h-14 px-4 md:px-5 gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white border-0 transition-all"
           onClick={() => setAddDialogOpen(true)}
+          aria-label="Add new location"
         >
           <Plus className="h-5 w-5" />
-          <span className="text-sm font-medium">Add Place</span>
+          <span className="text-sm font-medium hidden sm:inline">Add Place</span>
         </Button>
       </motion.div>
 
@@ -220,12 +309,13 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.4, ease: 'easeOut' }}
-            className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 max-w-md w-full px-4"
+            className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 max-w-md w-full px-4 hidden md:block"
           >
-            <div className="bg-background/95 backdrop-blur-xl border rounded-2xl p-5 shadow-2xl">
+            <div className="bg-background/95 backdrop-blur-xl border rounded-2xl p-5 shadow-2xl ring-1 ring-border/50">
               <button
                 onClick={() => setShowWelcome(false)}
                 className="absolute top-3 right-3 text-muted-foreground hover:text-foreground transition-colors p-1 rounded-lg hover:bg-accent"
+                aria-label="Dismiss welcome"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -234,9 +324,9 @@ export default function Home() {
                   <Layers className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-base">
+                  <h1 className="font-bold text-base">
                     Welcome to MapLibre Explorer
-                  </h3>
+                  </h1>
                   <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
                     An interactive map application powered by MapLibre GL JS.
                     Explore the world, drop pins, measure distances, and switch
@@ -250,6 +340,7 @@ export default function Home() {
                       { label: 'Geocoding', emoji: '🔍' },
                       { label: 'Export GeoJSON', emoji: '📦' },
                       { label: 'Dark Mode', emoji: '🌙' },
+                      { label: 'Shortcuts', emoji: '⌨️' },
                     ].map((feature) => (
                       <Badge
                         key={feature.label}
@@ -270,37 +361,40 @@ export default function Home() {
       {/* Add Location Dialog */}
       <AddLocationDialog open={addDialogOpen} onOpenChange={setAddDialogOpen} />
 
+      {/* Keyboard Shortcuts Dialog */}
+      <KeyboardShortcutsDialog open={shortcutsOpen} onOpenChange={setShortcutsOpen} />
+
       {/* Footer */}
-      <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1.5 px-4">
-        <div className="flex items-center justify-between text-[11px] text-muted-foreground">
-          <div className="flex items-center gap-2">
-            <div className="h-4 w-4 rounded-md bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
-              <MapPin className="h-2.5 w-2.5 text-white" />
+      <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1.5 px-3 md:px-4">
+        <div className="flex items-center justify-between text-[10px] md:text-[11px] text-muted-foreground">
+          <div className="flex items-center gap-1.5 md:gap-2">
+            <div className="h-3.5 w-3.5 md:h-4 md:w-4 rounded-md bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
+              <MapPin className="h-2 w-2 md:h-2.5 md:w-2.5 text-white" />
             </div>
-            <span className="font-medium">MapLibre Explorer</span>
-            <span className="text-border">|</span>
-            <span>Powered by MapLibre GL JS</span>
+            <span className="font-medium hidden sm:inline">MapLibre Explorer</span>
+            <span className="text-border hidden sm:inline">|</span>
+            <span className="hidden md:inline">Powered by MapLibre GL JS</span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 md:gap-2">
             <a
               href="https://maplibre.org"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-foreground transition-colors"
+              className="hover:text-foreground transition-colors hidden sm:inline"
             >
               maplibre.org
             </a>
-            <span className="text-border">|</span>
+            <span className="text-border hidden sm:inline">|</span>
             <a
               href="https://github.com/maplibre/maplibre-native"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-foreground transition-colors"
+              className="hover:text-foreground transition-colors hidden md:inline"
             >
               GitHub
             </a>
-            <span className="text-border">|</span>
-            <span>© OpenStreetMap</span>
+            <span className="text-border hidden md:inline">|</span>
+            <span>&copy; OSM</span>
           </div>
         </div>
       </footer>

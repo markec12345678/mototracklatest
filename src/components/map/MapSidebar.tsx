@@ -6,7 +6,6 @@ import {
   Layers,
   Wrench,
   Route,
-  Plus,
   Trash2,
   Navigation,
   Pencil,
@@ -21,9 +20,9 @@ import {
   MapPinned,
   Globe2,
   Mountain,
-  Palette,
-  Clock,
   ArrowRight,
+  PanelLeft,
+  Keyboard,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -31,6 +30,12 @@ import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
 import { Switch } from '@/components/ui/switch'
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet'
 import {
   useMapStore,
   type SavedLocation,
@@ -57,6 +62,7 @@ const toolModes: {
   icon: React.ReactNode
   description: string
   color: string
+  shortcut: string
 }[] = [
   {
     id: 'navigate',
@@ -64,6 +70,7 @@ const toolModes: {
     icon: <Navigation className="h-4 w-4" />,
     description: 'Pan & zoom the map',
     color: 'from-emerald-500 to-teal-500',
+    shortcut: '1',
   },
   {
     id: 'mark',
@@ -71,6 +78,7 @@ const toolModes: {
     icon: <Pencil className="h-4 w-4" />,
     description: 'Click map to add markers',
     color: 'from-red-500 to-rose-500',
+    shortcut: '2',
   },
   {
     id: 'measure',
@@ -78,13 +86,13 @@ const toolModes: {
     icon: <Ruler className="h-4 w-4" />,
     description: 'Click points to measure distance',
     color: 'from-amber-500 to-orange-500',
+    shortcut: '3',
   },
 ]
 
-export function MapSidebar() {
+// Shared sidebar content component
+function SidebarContent({ onCloseMobile }: { onCloseMobile?: () => void }) {
   const {
-    sidebarOpen,
-    setSidebarOpen,
     sidebarTab,
     setSidebarTab,
     savedLocations,
@@ -237,107 +245,79 @@ export function MapSidebar() {
   ]
 
   return (
-    <div
-      className={cn(
-        'absolute left-0 top-0 bottom-0 z-20 flex transition-all duration-300 ease-in-out',
-        sidebarOpen ? 'w-80' : 'w-0'
-      )}
-    >
-      {/* Toggle button */}
-      <button
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-        className={cn(
-          'absolute z-30 bg-background border rounded-full p-1.5 shadow-lg hover:bg-accent transition-all duration-200',
-          sidebarOpen ? '-right-3 top-4' : 'right-0 top-4 translate-x-full'
-        )}
-      >
-        {sidebarOpen ? (
-          <ChevronLeft className="h-3 w-3" />
-        ) : (
-          <ChevronRight className="h-3 w-3" />
-        )}
-      </button>
-
-      {/* Sidebar content */}
-      <div
-        className={cn(
-          'w-80 bg-background/95 backdrop-blur-xl border-r flex flex-col shadow-2xl transition-opacity duration-200',
-          sidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
-        )}
-      >
-        {/* Header with gradient accent */}
-        <div className="relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-transparent" />
-          <div className="relative px-4 py-3 border-b">
-            <h2 className="font-bold text-lg flex items-center gap-2.5">
-              <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-md shadow-emerald-500/20">
-                <MapPin className="h-4 w-4 text-white" />
-              </div>
-              <div>
-                <span className="text-base">MapLibre Explorer</span>
-                <p className="text-[10px] text-muted-foreground font-normal -mt-0.5">
-                  Interactive Map Application
-                </p>
-              </div>
-            </h2>
-          </div>
+    <div className="flex flex-col h-full">
+      {/* Header with gradient accent */}
+      <div className="relative overflow-hidden shrink-0">
+        <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-transparent" />
+        <div className="relative px-4 py-3 border-b">
+          <h1 className="font-bold text-lg flex items-center gap-2.5">
+            <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-md shadow-emerald-500/20">
+              <MapPin className="h-4 w-4 text-white" />
+            </div>
+            <div>
+              <span className="text-base">MapLibre Explorer</span>
+              <p className="text-[10px] text-muted-foreground font-normal -mt-0.5">
+                Interactive Map Application
+              </p>
+            </div>
+          </h1>
         </div>
+      </div>
 
-        {/* Tab navigation */}
-        <div className="flex border-b bg-muted/30">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setSidebarTab(tab.id)}
-              className={cn(
-                'flex-1 py-2.5 px-1 text-xs font-medium transition-all flex flex-col items-center gap-1 relative',
-                sidebarTab === tab.id
-                  ? 'text-primary'
-                  : 'text-muted-foreground hover:text-foreground'
-              )}
-            >
-              {tab.icon}
-              {tab.label}
-              {sidebarTab === tab.id && (
-                <div className="absolute bottom-0 left-2 right-2 h-0.5 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full" />
-              )}
-            </button>
-          ))}
-        </div>
+      {/* Tab navigation */}
+      <div className="flex border-b bg-muted/30 shrink-0">
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setSidebarTab(tab.id)}
+            className={cn(
+              'flex-1 py-2.5 px-1 text-xs font-medium transition-all flex flex-col items-center gap-1 relative',
+              sidebarTab === tab.id
+                ? 'text-primary'
+                : 'text-muted-foreground hover:text-foreground'
+            )}
+          >
+            {tab.icon}
+            {tab.label}
+            {sidebarTab === tab.id && (
+              <div className="absolute bottom-0 left-2 right-2 h-0.5 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full" />
+            )}
+          </button>
+        ))}
+      </div>
 
-        {/* Tab content */}
-        <div className="flex-1 overflow-hidden">
-          {sidebarTab === 'locations' && (
-            <LocationsTab
-              locations={filteredLocations}
-              searchFilter={searchFilter}
-              setSearchFilter={setSearchFilter}
-              filterCategory={filterCategory}
-              setFilterCategory={setFilterCategory}
-              onFlyTo={handleFlyTo}
-              onDelete={handleDeleteLocation}
-              selectedMarker={selectedMarker}
-              onSelectMarker={setSelectedMarker}
-              totalCount={savedLocations.length}
-              onOpenDetail={(loc) => {
-                setDetailLocation(loc)
-                setDetailOpen(true)
-              }}
-            />
-          )}
-          {sidebarTab === 'layers' && <LayersTab />}
-          {sidebarTab === 'tools' && (
-            <ToolsTab
-              toolMode={toolMode}
-              setToolMode={setToolMode}
-              measurePoints={measurePoints}
-              measureDistance={measureDistance}
-              clearMeasurePoints={clearMeasurePoints}
-              onExportGeoJSON={handleExportGeoJSON}
-            />
-          )}
-          {sidebarTab === 'routes' && <RoutesTab />}
-        </div>
+      {/* Tab content */}
+      <div className="flex-1 overflow-hidden">
+        {sidebarTab === 'locations' && (
+          <LocationsTab
+            locations={filteredLocations}
+            searchFilter={searchFilter}
+            setSearchFilter={setSearchFilter}
+            filterCategory={filterCategory}
+            setFilterCategory={setFilterCategory}
+            onFlyTo={handleFlyTo}
+            onDelete={handleDeleteLocation}
+            selectedMarker={selectedMarker}
+            onSelectMarker={setSelectedMarker}
+            totalCount={savedLocations.length}
+            onOpenDetail={(loc) => {
+              setDetailLocation(loc)
+              setDetailOpen(true)
+            }}
+          />
+        )}
+        {sidebarTab === 'layers' && <LayersTab />}
+        {sidebarTab === 'tools' && (
+          <ToolsTab
+            toolMode={toolMode}
+            setToolMode={setToolMode}
+            measurePoints={measurePoints}
+            measureDistance={measureDistance}
+            clearMeasurePoints={clearMeasurePoints}
+            onExportGeoJSON={handleExportGeoJSON}
+          />
+        )}
+        {sidebarTab === 'routes' && <RoutesTab />}
       </div>
 
       {/* Location Detail Drawer */}
@@ -348,6 +328,76 @@ export function MapSidebar() {
         onDelete={handleDeleteLocation}
       />
     </div>
+  )
+}
+
+export function MapSidebar() {
+  const { sidebarOpen, setSidebarOpen } = useMapStore()
+
+  // Close sidebar on mobile by default on initial mount
+  useEffect(() => {
+    if (window.innerWidth < 768) {
+      setSidebarOpen(false)
+    }
+  }, [setSidebarOpen])
+
+  return (
+    <>
+      {/* Desktop sidebar - hidden on mobile */}
+      <div
+        className={cn(
+          'hidden md:flex absolute left-0 top-0 bottom-0 z-20 transition-all duration-300 ease-in-out',
+          sidebarOpen ? 'w-80' : 'w-0'
+        )}
+      >
+        {/* Toggle button */}
+        <button
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          className={cn(
+            'absolute z-30 bg-background/95 backdrop-blur-sm border rounded-full p-1.5 shadow-lg hover:bg-accent transition-all duration-200 hover:scale-110',
+            sidebarOpen ? '-right-3 top-4' : 'right-0 top-4 translate-x-full'
+          )}
+          aria-label={sidebarOpen ? 'Close sidebar' : 'Open sidebar'}
+        >
+          {sidebarOpen ? (
+            <ChevronLeft className="h-3 w-3" />
+          ) : (
+            <ChevronRight className="h-3 w-3" />
+          )}
+        </button>
+
+        {/* Sidebar content */}
+        <div
+          className={cn(
+            'w-80 bg-background/95 backdrop-blur-xl border-r flex flex-col shadow-2xl transition-opacity duration-200',
+            sidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          )}
+        >
+          <SidebarContent />
+        </div>
+      </div>
+
+      {/* Mobile sidebar - Sheet/drawer */}
+      <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
+        <SheetContent side="left" className="w-80 p-0 md:hidden">
+          <SheetHeader className="sr-only">
+            <SheetTitle>MapLibre Explorer Sidebar</SheetTitle>
+          </SheetHeader>
+          <SidebarContent onCloseMobile={() => setSidebarOpen(false)} />
+        </SheetContent>
+      </Sheet>
+
+      {/* Mobile toggle button - visible only on mobile when sidebar is closed */}
+      {!sidebarOpen && (
+        <button
+          onClick={() => setSidebarOpen(true)}
+          className="md:hidden absolute left-3 top-3 z-20 bg-background/95 backdrop-blur-sm border rounded-xl p-2 shadow-lg hover:bg-accent transition-all duration-200 hover:scale-105"
+          aria-label="Open sidebar"
+        >
+          <PanelLeft className="h-4 w-4" />
+        </button>
+      )}
+    </>
   )
 }
 
@@ -379,12 +429,13 @@ function LocationsTab({
   return (
     <div className="flex flex-col h-full">
       {/* Search & filter */}
-      <div className="p-3 space-y-2 border-b bg-muted/20">
+      <div className="p-3 space-y-2 border-b bg-muted/20 shrink-0">
         <Input
-          placeholder="Search locations..."
+          placeholder="Filter locations..."
           value={searchFilter}
           onChange={(e) => setSearchFilter(e.target.value)}
           className="h-8 text-sm"
+          aria-label="Filter locations"
         />
         <div className="flex flex-wrap gap-1">
           <button
@@ -413,6 +464,7 @@ function LocationsTab({
                   ? { backgroundColor: cat.color, borderColor: cat.color }
                   : undefined
               }
+              aria-label={`Filter by ${cat.label}`}
             >
               {cat.icon} {cat.label}
             </button>
@@ -496,6 +548,7 @@ function LocationsTab({
                       onDelete(loc.id)
                     }}
                     className="opacity-0 group-hover:opacity-100 p-1.5 hover:text-destructive hover:bg-destructive/10 rounded-lg transition-all shrink-0"
+                    aria-label={`Delete ${loc.name}`}
                   >
                     <Trash2 className="h-3.5 w-3.5" />
                   </button>
@@ -597,6 +650,7 @@ function LayersTab() {
               <Switch
                 checked={terrain3D}
                 onCheckedChange={setTerrain3D}
+                aria-label="Toggle 3D terrain"
               />
             </div>
             <div className="flex items-center justify-between px-3 py-2 rounded-xl border bg-background">
@@ -612,6 +666,7 @@ function LayersTab() {
               <Switch
                 checked={show3DBuildings}
                 onCheckedChange={setShow3DBuildings}
+                aria-label="Toggle 3D buildings"
               />
             </div>
           </div>
@@ -708,9 +763,14 @@ function ToolsTab({
                     {tool.description}
                   </p>
                 </div>
-                {toolMode === tool.id && (
-                  <ArrowRight className="h-4 w-4 text-primary ml-auto shrink-0" />
-                )}
+                <div className="ml-auto flex items-center gap-2 shrink-0">
+                  <kbd className="text-[10px] px-1.5 py-0.5 rounded border bg-muted/50 font-mono">
+                    {tool.shortcut}
+                  </kbd>
+                  {toolMode === tool.id && (
+                    <ArrowRight className="h-4 w-4 text-primary" />
+                  )}
+                </div>
               </button>
             ))}
           </div>
@@ -831,7 +891,7 @@ function ToolsTab({
               { name: 'London', lat: 51.5074, lng: -0.1278, emoji: '🎡' },
               { name: 'New York', lat: 40.7128, lng: -74.006, emoji: '🗽' },
               { name: 'Tokyo', lat: 35.6762, lng: 139.6503, emoji: '⛩️' },
-              { name: 'Sydney', lat: -33.8688, lng: 151.2093, emoji: ' Opera' },
+              { name: 'Sydney', lat: -33.8688, lng: 151.2093, emoji: '🎭' },
               { name: 'Dubai', lat: 25.2048, lng: 55.2708, emoji: '🏙️' },
             ].map((city) => (
               <button
@@ -845,6 +905,37 @@ function ToolsTab({
                 <span className="text-sm">{city.emoji}</span>
                 <span className="text-xs font-medium">{city.name}</span>
               </button>
+            ))}
+          </div>
+        </div>
+
+        <Separator />
+
+        {/* Keyboard shortcuts reference */}
+        <div>
+          <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
+            <Keyboard className="h-3.5 w-3.5 text-muted-foreground" />
+            Keyboard Shortcuts
+          </h4>
+          <div className="space-y-1">
+            {[
+              { keys: ['1', '2', '3'], desc: 'Switch tools' },
+              { keys: ['/'], desc: 'Focus search' },
+              { keys: ['Esc'], desc: 'Clear selection' },
+              { keys: ['B'], desc: 'Toggle sidebar' },
+              { keys: ['F'], desc: 'Fullscreen' },
+              { keys: ['L'], desc: 'My location' },
+            ].map((shortcut) => (
+              <div key={shortcut.desc} className="flex items-center justify-between px-2 py-1">
+                <span className="text-xs text-muted-foreground">{shortcut.desc}</span>
+                <div className="flex gap-1">
+                  {shortcut.keys.map((key) => (
+                    <kbd key={key} className="text-[10px] px-1.5 py-0.5 rounded border bg-muted/50 font-mono">
+                      {key}
+                    </kbd>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         </div>

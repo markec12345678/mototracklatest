@@ -1,0 +1,86 @@
+'use client'
+
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog'
+import { Keyboard } from 'lucide-react'
+
+const shortcuts = [
+  { category: 'Tools', items: [
+    { keys: ['1'], description: 'Navigate mode' },
+    { keys: ['2'], description: 'Drop Pin mode' },
+    { keys: ['3'], description: 'Measure mode' },
+    { keys: ['Esc'], description: 'Clear selection' },
+  ]},
+  { category: 'Navigation', items: [
+    { keys: ['B'], description: 'Toggle sidebar' },
+    { keys: ['F'], description: 'Toggle fullscreen' },
+    { keys: ['L'], description: 'My location' },
+    { keys: ['/'], description: 'Focus search' },
+  ]},
+  { category: 'Map', items: [
+    { keys: ['Scroll'], description: 'Zoom in/out' },
+    { keys: ['Drag'], description: 'Pan the map' },
+    { keys: ['Right Drag'], description: 'Rotate map' },
+    { keys: ['Shift+Drag'], description: 'Tilt map' },
+  ]},
+]
+
+export function KeyboardShortcutsDialog({
+  open,
+  onOpenChange,
+}: {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+}) {
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-md rounded-2xl">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2.5">
+            <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-md">
+              <Keyboard className="h-4 w-4 text-white" />
+            </div>
+            Keyboard Shortcuts
+          </DialogTitle>
+          <DialogDescription>
+            Use these shortcuts to navigate the map faster.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="space-y-4 py-2">
+          {shortcuts.map((group) => (
+            <div key={group.category}>
+              <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                {group.category}
+              </h3>
+              <div className="space-y-1.5">
+                {group.items.map((item) => (
+                  <div
+                    key={item.description}
+                    className="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-accent/50 transition-colors"
+                  >
+                    <span className="text-sm">{item.description}</span>
+                    <div className="flex gap-1">
+                      {item.keys.map((key) => (
+                        <kbd
+                          key={key}
+                          className="inline-flex items-center justify-center min-w-[28px] h-6 px-2 text-[11px] font-mono font-medium rounded-lg border bg-muted/50 border-border shadow-sm"
+                        >
+                          {key}
+                        </kbd>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </DialogContent>
+    </Dialog>
+  )
+}

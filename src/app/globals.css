@@ -121,74 +121,96 @@
   }
 }
 
-/* MapLibre custom styles */
+/* ===== MapLibre Custom Styles ===== */
+
 .maplibregl-map {
   font-family: var(--font-geist-sans), sans-serif !important;
 }
 
+/* Navigation control group */
 .maplibregl-ctrl-group {
   border-radius: 0.75rem !important;
   overflow: hidden !important;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
-  border: 1px solid oklch(0.922 0 0) !important;
+  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+  border: 1px solid oklch(0.922 0 0 / 60%) !important;
+  backdrop-filter: blur(8px) !important;
 }
 
 .dark .maplibregl-ctrl-group {
   border-color: oklch(1 0 0 / 10%) !important;
-  background: oklch(0.205 0 0) !important;
+  background: oklch(0.18 0 0 / 90%) !important;
+  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2) !important;
 }
 
 .maplibregl-ctrl-group button {
   width: 36px !important;
   height: 36px !important;
+  transition: background-color 0.15s ease !important;
+}
+
+.maplibregl-ctrl-group button:hover {
+  background-color: oklch(0.95 0 0) !important;
+}
+
+.dark .maplibregl-ctrl-group button:hover {
+  background-color: oklch(0.3 0 0) !important;
 }
 
 .dark .maplibregl-ctrl-group button + button {
   border-top-color: oklch(1 0 0 / 10%) !important;
 }
 
+/* Scale bar */
 .maplibregl-ctrl-scale {
   border-radius: 0.375rem !important;
   font-size: 10px !important;
   padding: 2px 6px !important;
+  background: oklch(1 0 0 / 80%) !important;
+  backdrop-filter: blur(4px) !important;
 }
 
 .dark .maplibregl-ctrl-scale {
-  background: oklch(0.205 0 0 / 80%) !important;
-  color: oklch(0.985 0 0) !important;
+  background: oklch(0.18 0 0 / 85%) !important;
+  color: oklch(0.9 0 0) !important;
   border-color: oklch(1 0 0 / 20%) !important;
 }
 
+/* Attribution */
 .maplibregl-ctrl-attrib {
   border-radius: 0.375rem !important;
   font-size: 10px !important;
+  background: oklch(1 0 0 / 70%) !important;
+  backdrop-filter: blur(4px) !important;
 }
 
 .dark .maplibregl-ctrl-attrib {
-  background: oklch(0.205 0 0 / 80%) !important;
-  color: oklch(0.708 0 0) !important;
+  background: oklch(0.18 0 0 / 80%) !important;
+  color: oklch(0.6 0 0) !important;
 }
 
 .dark .maplibregl-ctrl-attrib a {
-  color: oklch(0.708 0 0) !important;
+  color: oklch(0.6 0 0) !important;
 }
 
+/* Popup */
 .maplibregl-popup-content {
   border-radius: 0.75rem !important;
   padding: 0 !important;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.12), 0 4px 10px -4px rgba(0, 0, 0, 0.06) !important;
 }
 
 .dark .maplibregl-popup-content {
-  background: oklch(0.205 0 0) !important;
-  color: oklch(0.985 0 0) !important;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3) !important;
+  background: oklch(0.2 0 0 / 95%) !important;
+  color: oklch(0.95 0 0) !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 4px 10px -4px rgba(0, 0, 0, 0.3) !important;
+  border: 1px solid oklch(1 0 0 / 8%) !important;
 }
 
 .maplibregl-popup-close-button {
   font-size: 18px !important;
   padding: 4px 8px !important;
   color: #999 !important;
+  transition: color 0.15s ease !important;
 }
 
 .maplibregl-popup-close-button:hover {
@@ -209,40 +231,142 @@
 }
 
 .dark .maplibregl-popup-tip {
-  border-top-color: oklch(0.205 0 0) !important;
+  border-top-color: oklch(0.2 0 0 / 95%) !important;
 }
 
 /* Custom marker animation */
 .custom-marker {
-  transition: transform 0.2s ease, filter 0.2s ease;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease !important;
 }
 
 .custom-marker:hover {
-  transform: scale(1.15) !important;
+  transform: scale(1.2) translateY(-2px) !important;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3)) !important;
 }
 
-/* Scrollbar styling for sidebar */
-.overflow-y-auto::-webkit-scrollbar {
+/* ===== Custom Scrollbar Styling ===== */
+
+.overflow-y-auto::-webkit-scrollbar,
+[data-radix-scroll-area-viewport]::-webkit-scrollbar {
   width: 4px;
 }
 
-.overflow-y-auto::-webkit-scrollbar-track {
+.overflow-y-auto::-webkit-scrollbar-track,
+[data-radix-scroll-area-viewport]::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.overflow-y-auto::-webkit-scrollbar-thumb {
-  background: oklch(0.7 0 0 / 30%);
+.overflow-y-auto::-webkit-scrollbar-thumb,
+[data-radix-scroll-area-viewport]::-webkit-scrollbar-thumb {
+  background: oklch(0.7 0 0 / 25%);
   border-radius: 2px;
 }
 
-.overflow-y-auto::-webkit-scrollbar-thumb:hover {
-  background: oklch(0.5 0 0 / 50%);
+.overflow-y-auto::-webkit-scrollbar-thumb:hover,
+[data-radix-scroll-area-viewport]::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.5 0 0 / 45%);
 }
 
-/* Dark mode smooth transitions */
+/* ===== Smooth Transitions for Dark Mode ===== */
+
 .dark .maplibregl-ctrl-group,
 .dark .maplibregl-ctrl-scale,
 .dark .maplibregl-ctrl-attrib,
 .dark .maplibregl-popup-content {
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* ===== Glassmorphism Utility ===== */
+
+.glass {
+  background: oklch(1 0 0 / 70%);
+  backdrop-filter: blur(12px);
+  border: 1px solid oklch(1 0 0 / 30%);
+}
+
+.dark .glass {
+  background: oklch(0.18 0 0 / 80%);
+  border: 1px solid oklch(1 0 0 / 8%);
+}
+
+/* ===== Pulse Animation for Active Tools ===== */
+
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ===== Gradient Border Effect ===== */
+
+.gradient-border {
+  position: relative;
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, oklch(0.6 0.2 160), oklch(0.5 0.15 280));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ===== Shimmer Effect ===== */
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent 0%, oklch(1 0 0 / 15%) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* ===== Floating Action Button Shadow ===== */
+
+.fab-shadow {
+  box-shadow:
+    0 4px 14px 0 rgba(16, 185, 129, 0.35),
+    0 2px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.fab-shadow:hover {
+  box-shadow:
+    0 8px 20px 0 rgba(16, 185, 129, 0.4),
+    0 4px 10px -2px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== Sheet Sidebar Mobile Override ===== */
+
+@media (max-width: 768px) {
+  .maplibregl-ctrl-bottom-right {
+    bottom: 40px !important;
+    right: 8px !important;
+  }
+
+  .maplibregl-ctrl-bottom-left {
+    bottom: 40px !important;
+    left: 8px !important;
+  }
 }

@@ -113,8 +113,9 @@ export function SearchBar() {
           onChange={(e) => handleSearch(e.target.value)}
           onFocus={() => results.length > 0 && setShowResults(true)}
           onKeyDown={handleKeyDown}
-          placeholder="Search places..."
-          className="pl-9 pr-9 h-11 bg-background/90 backdrop-blur-sm border shadow-md rounded-xl transition-all focus:shadow-lg focus:ring-2 focus:ring-primary/20"
+          placeholder="Search the map..."
+          className="pl-9 pr-9 h-11 bg-background/90 backdrop-blur-md border-border/50 shadow-lg hover:shadow-xl rounded-xl transition-all focus:shadow-xl focus:ring-2 focus:ring-primary/20 focus:border-primary/30"
+          aria-label="Search locations on the map"
         />
         {isSearching && (
           <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground animate-spin" />
@@ -128,6 +129,7 @@ export function SearchBar() {
               inputRef.current?.focus()
             }}
             className="absolute right-3 top-1/2 -translate-y-1/2 p-0.5 text-muted-foreground hover:text-foreground rounded-md hover:bg-accent transition-all"
+            aria-label="Clear search"
           >
             <X className="h-3.5 w-3.5" />
           </button>
@@ -135,7 +137,7 @@ export function SearchBar() {
       </div>
 
       {showResults && results.length > 0 && (
-        <div className="absolute top-full mt-1.5 w-full bg-popover/95 backdrop-blur-xl border rounded-xl shadow-2xl overflow-hidden z-50 max-h-80 overflow-y-auto">
+        <div className="absolute top-full mt-1.5 w-full bg-popover/95 backdrop-blur-xl border rounded-xl shadow-2xl overflow-hidden z-50 max-h-80 overflow-y-auto ring-1 ring-border/50">
           <div className="px-3 py-2 border-b bg-muted/30">
             <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">
               Search Results ({results.length})
@@ -143,7 +145,7 @@ export function SearchBar() {
           </div>
           {results.map((result, i) => (
             <button
-              key={i}
+              key={`${result.latitude}-${result.longitude}-${i}`}
               onClick={() => handleSelect(result)}
               className={cn(
                 'w-full px-3 py-2.5 text-left hover:bg-accent transition-colors flex items-start gap-3 border-b last:border-0',

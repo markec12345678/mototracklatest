@@ -7,7 +7,7 @@ export function CoordinatesDisplay() {
   const { center, zoom, bearing, pitch } = useMapStore()
 
   return (
-    <div className="flex items-center gap-2 px-3 py-1.5 bg-background/90 backdrop-blur-sm rounded-xl border shadow-md text-[11px] text-muted-foreground font-mono">
+    <div className="flex items-center gap-2 px-3 py-1.5 bg-background/90 backdrop-blur-md rounded-xl border border-border/50 shadow-lg text-[11px] text-muted-foreground font-mono">
       <MousePointer2 className="h-3 w-3 text-primary/60" />
       <span title="Longitude">{center[0].toFixed(4)}</span>
       <span className="w-px h-3 bg-border" />
