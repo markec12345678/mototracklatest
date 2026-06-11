@@ -1292,3 +1292,106 @@ The MapLibre Explorer application is a mature, feature-rich interactive map appl
 - Map comparison (split view)
 - Custom marker icon editor
 - Print-friendly map layout
+
+---
+Task ID: 10
+Agent: Main Agent (Continuation Round)
+Task: QA testing, fix bugs, add new features, improve styling, update worklog
+
+## Current Project Status Assessment
+The MapLibre Explorer application is a mature, feature-rich interactive map application. Previous rounds built all core features: 8 map styles, 3D terrain, weather, search, measurement, route drawing, freehand drawing, bookmarks, keyboard shortcuts, share URL, mobile responsive design, and more.
+
+## Work Completed This Round
+
+### 1. QA Testing via agent-browser
+- Initial page load verified ✅
+- All 5 tool modes visible in toolbar ✅
+- All sidebar tabs functional (Places, Layers, Tools, Routes) ✅
+- Search with Berlin returns results ✅
+- Style switcher with 8 styles ✅
+- Legend button visible and functional ✅
+- DMS copy button in coordinates display ✅
+- Map loads with CARTO fallback (MapTiler domain restricted in sandbox) ✅
+- Lint passes with zero errors/warnings ✅
+
+### 2. Mobile Weather Bar (NEW FEATURE)
+- Created `/src/components/map/MobileWeatherBar.tsx`
+- Compact horizontal bar: weather emoji + temperature + condition text
+- Expandable via click: slides down to show full details (humidity, wind, precipitation, hourly forecast)
+- Same `/api/weather` endpoint with debounced center-change fetch (>5km, 800ms debounce)
+- Glass-card styling with weather accent borders (warm/cold/neutral)
+- Close button to dismiss the weather panel entirely
+- Positioned at `top-[58px] left-3 right-3 z-10` on mobile only (`md:hidden`)
+- Loading spinner during fetch
+- Added to page.tsx
+
+### 3. Map Legend Component (NEW FEATURE)
+- Created `/src/components/map/MapLegend.tsx`
+- Toggle button with BookOpen icon and chevron indicator
+- Legend panel shows:
+  - Current map style name, emoji, and provider
+  - Active tool mode with icon and description
+  - Active overlays (3D Terrain, Weather, Clustering) - only when enabled
+  - Layer visibility with Eye/EyeOff icons
+  - Marker color legend (saved=blue, measure=amber, routes=cyan, drawings=green) with counts
+- Glass-card styling, framer-motion AnimatePresence for open/close
+- Desktop only (hidden on mobile)
+
+### 4. Map Notifications System (NEW FEATURE)
+- Created `/src/components/map/MapNotifications.tsx`
+- Toast-like notifications for map events (style change, location add/delete, route/drawing save, measurement, weather/terrain toggle)
+- Auto-dismiss after 3s, slide in from right with framer-motion
+- Max 3 visible at once, glass-card styling, color-coded by event type
+- Added MapNotification interface and pushNotification/dismissNotification actions to map-store
+- Positioned at `top-[52px] right-3 z-10`
+
+### 5. Enhanced CoordinatesDisplay
+- Added UTM zone display (shown when zoom >= 10, styled in amber)
+- Added "Copy as DMS" button (degrees, minutes, seconds format)
+- Both copy buttons show green checkmark confirmation
+
+### 6. Search Bar Improvements
+- Fixed nested `<button>` inside `<button>` hydration error (recent searches section)
+  - Changed outer `<button>` to `<div role="button">` with keyboard support
+- Added "Powered by Nominatim/Photon · OpenStreetMap" attribution at bottom of search results
+- Added keyboard shortcut hint ("/ to search") in placeholder when not focused
+- Added `search-result-hover` CSS class for emerald left border glow on hover
+
+### 7. CSS Enhancements (globals.css)
+- `.search-result-hover` - Emerald left border on hover with subtle background tint
+- `@keyframes slide-down` + `.animate-slide-down` - Slide-down animation
+- `.notification-badge` - Pulsing red dot via `::after` with `notification-pulse` animation
+- `.map-legend` - Glass effect with backdrop-blur (dark mode support)
+- `.sidebar-tab-hover` - Smooth underline animation expanding from center
+- `.sidebar-location-item` - Left border + translateX on hover
+- `.bookmark-card` - Scale + shadow on hover
+- `.glass-card-hover` - Shadow + translateY on hover
+- `.map-tool-group` - Glass effect for grouped tool buttons
+- `.tooltip-arrow` - Arrow indicator for tooltips
+- Scale bar font enhancement (font-family, font-weight, letter-spacing)
+- Canvas transition for smooth style changes
+- `.badge-shimmer` - Gradient shimmer animation for badges
+- Notification enter/exit keyframe animations
+
+### 8. Bug Fixes
+- Fixed nested `<button>` in SearchBar recent searches (hydration error)
+- Fixed `@apply glass-card` in `.map-tool-group` CSS (not a Tailwind utility) - replaced with direct CSS properties
+
+## Verification Results
+- All lint checks pass (zero errors/warnings) ✅
+- Dev server running without fatal errors ✅
+- All new components render correctly ✅
+- Search returns results ✅
+- Legend opens/closes properly ✅
+- Map loads with CARTO fallback ✅
+- Minor hydration warning in console from HMR cache (resolved in code)
+
+## Unresolved Issues / Next Phase Recommendations
+- MapTiler API key domain restriction: key works on production domain but not sandbox
+- Traffic/earthquake overlay still showing "Coming Soon" badges
+- Route directions with OSRM turn-by-turn not implemented
+- PWA support with service worker
+- Offline map tile caching
+- Map comparison (split view)
+- Custom marker icon editor
+- Print-friendly map layout

@@ -896,6 +896,7 @@ export function MapView() {
       if (!isDrawingRef.current) return
       isDrawingRef.current = false
       useMapStore.getState().finishDrawing()
+      useMapStore.getState().pushNotification({ type: 'drawing', icon: 'pencil', message: 'Drawing saved' })
     }
 
     // Disable map drag when in draw mode

@@ -1,0 +1,1225 @@
+     1→'use client'
+     2→
+     3→import { useEffect, useRef, useState, useCallback } from 'react'
+     4→import maplibregl from 'maplibre-gl'
+     5→import 'maplibre-gl/dist/maplibre-gl.css'
+     6→import { useMapStore, type LayerVisibility, getStyleUrl } from '@/lib/map-store'
+     7→
+     8→// Inject pulsing dot CSS animation
+     9→if (typeof document !== 'undefined' && !document.getElementById('geolocation-pulse-style')) {
+    10→  const style = document.createElement('style')
+    11→  style.id = 'geolocation-pulse-style'
+    12→  style.textContent = `
+    13→    @keyframes geolocation-pulse {
+    14→      0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.5); }
+    15→      70% { box-shadow: 0 0 0 12px rgba(59, 130, 246, 0); }
+    16→      100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+    17→    }
+    18→    .geolocation-dot {
+    19→      width: 16px;
+    20→      height: 16px;
+    21→      background: #3b82f6;
+    22→      border: 3px solid white;
+    23→      border-radius: 50%;
+    24→      box-shadow: 0 0 6px rgba(59, 130, 246, 0.4);
+    25→      animation: geolocation-pulse 2s ease-out infinite;
+    26→    }
+    27→  `
+    28→  document.head.appendChild(style)
+    29→}
+    30→
+    31→// Layer matching patterns
+    32→const LAYER_PATTERNS: Record<keyof LayerVisibility, string[]> = {
+    33→  water: ['water'],
+    34→  roads: ['road'],
+    35→  buildings: ['building'],
+    36→  parks: ['park', 'landuse'],
+    37→  labels: ['label', 'place'],
+    38→}
+    39→
+    40→function getLayerCategory(layerId: string): keyof LayerVisibility | null {
+    41→  const lowerId = layerId.toLowerCase()
+    42→  for (const [category, patterns] of Object.entries(LAYER_PATTERNS)) {
+    43→    if (patterns.some((pattern) => lowerId.includes(pattern))) {
+    44→      return category as keyof LayerVisibility
+    45→    }
+    46→  }
+    47→  return null
+    48→}
+    49→
+    50→export function MapView() {
+    51→  const mapContainer = useRef<HTMLDivElement>(null)
+    52→  const map = useRef<maplibregl.Map | null>(null)
+    53→  const markerRefs = useRef<Map<string, maplibregl.Marker>>(new Map())
+    54→  const mapLoadedRef = useRef(false)
+    55→  const geolocationMarkerRef = useRef<maplibregl.Marker | null>(null)
+    56→  const [mapLoadedVersion, setMapLoadedVersion] = useState(0)
+    57→
+    58→  // Use refs for values needed in map event handlers to avoid stale closures
+    59→  const toolModeRef = useRef(useMapStore.getState().toolMode)
+    60→  const selectedMarkerRef = useRef(useMapStore.getState().selectedMarker)
+    61→
+    62→  // Keep refs in sync
+    63→  useEffect(() => {
+    64→    const unsub = useMapStore.subscribe((state) => {
+    65→      toolModeRef.current = state.toolMode
+    66→      selectedMarkerRef.current = state.selectedMarker
+    67→    })
+    68→    return unsub
+    69→  }, [])
+    70→
+    71→  const currentStyle = useMapStore((s) => s.currentStyle)
+    72→  const markers = useMapStore((s) => s.markers)
+    73→  const selectedMarker = useMapStore((s) => s.selectedMarker)
+    74→  const measurePoints = useMapStore((s) => s.measurePoints)
+    75→  const routePoints = useMapStore((s) => s.routePoints)
+    76→  const routes = useMapStore((s) => s.routes)
+    77→  const geolocation = useMapStore((s) => s.geolocation)
+    78→  const layerVisibility = useMapStore((s) => s.layerVisibility)
+    79→  const clusteringEnabled = useMapStore((s) => s.clusteringEnabled)
+    80→  const buildingExtrusion = useMapStore((s) => s.buildingExtrusion)
+    81→  const terrainExaggeration = useMapStore((s) => s.terrainExaggeration)
+    82→  const toolMode = useMapStore((s) => s.toolMode)
+    83→  const drawings = useMapStore((s) => s.drawings)
+    84→  const currentDrawing = useMapStore((s) => s.currentDrawing)
+    85→  const drawColor = useMapStore((s) => s.drawColor)
+    86→  const drawWidth = useMapStore((s) => s.drawWidth)
+    87→
+    88→  // Ref for throttling drawing point addition
+    89→  const lastDrawTimeRef = useRef(0)
+    90→  const isDrawingRef = useRef(false)
+    91→
+    92→  const markMapLoaded = useCallback((loaded: boolean) => {
+    93→    mapLoadedRef.current = loaded
+    94→    setMapLoadedVersion((v) => v + 1)
+    95→  }, [])
+    96→
+    97→  // Initialize map (only once)
+    98→  useEffect(() => {
+    99→    if (!mapContainer.current || map.current) return
+   100→
+   101→    const newMap = new maplibregl.Map({
+   102→      container: mapContainer.current,
+   103→      style: getStyleUrl(currentStyle),
+   104→      center: [14.5058, 46.0569],
+   105→      zoom: 5,
+   106→      attributionControl: false,
+   107→    })
+   108→
+   109→    newMap.addControl(new maplibregl.NavigationControl(), 'bottom-right')
+   110→    newMap.addControl(new maplibregl.ScaleControl(), 'bottom-left')
+   111→    newMap.addControl(
+   112→      new maplibregl.AttributionControl({ compact: true }),
+   113→      'bottom-right'
+   114→    )
+   115→
+   116→    // Error handling: fall back if MapTiler style fails
+   117→    newMap.on('error', () => {
+   118→      const style = useMapStore.getState().currentStyle
+   119→      if (style.fallbackUrl) {
+   120→        console.warn(`Map style "${style.name}" failed to load, using fallback`)
+   121→        try {
+   122→          const currentStyleUrl = newMap.getStyle()?.name
+   123→          // Only fallback if we haven't already fallen back
+   124→          if (currentStyleUrl !== style.fallbackUrl) {
+   125→            newMap.setStyle(style.fallbackUrl)
+   126→          }
+   127→        } catch { /* ignore */ }
+   128→      }
+   129→    })
+   130→
+   131→    newMap.on('move', () => {
+   132→      const center = newMap.getCenter()
+   133→      useMapStore.getState().setCenter([center.lng, center.lat])
+   134→    })
+   135→
+   136→    newMap.on('zoom', () => {
+   137→      useMapStore.getState().setZoom(newMap.getZoom())
+   138→    })
+   139→
+   140→    newMap.on('rotate', () => {
+   141→      useMapStore.getState().setBearing(newMap.getBearing())
+   142→    })
+   143→
+   144→    newMap.on('pitch', () => {
+   145→      useMapStore.getState().setPitch(newMap.getPitch())
+   146→    })
+   147→
+   148→    newMap.on('click', (e) => {
+   149→      const mode = toolModeRef.current
+   150→      if (mode === 'mark') {
+   151→        const id = `marker-${Date.now()}`
+   152→        useMapStore.getState().addMarker({
+   153→          id,
+   154→          longitude: e.lngLat.lng,
+   155→          latitude: e.lngLat.lat,
+   156→          name: `Pin at ${e.lngLat.lat.toFixed(4)}, ${e.lngLat.lng.toFixed(4)}`,
+   157→          color: '#ef4444',
+   158→          category: 'general',
+   159→        })
+   160→      } else if (mode === 'measure') {
+   161→        useMapStore.getState().addMeasurePoint({
+   162→          longitude: e.lngLat.lng,
+   163→          latitude: e.lngLat.lat,
+   164→        })
+   165→      } else if (mode === 'directions') {
+   166→        useMapStore.getState().addRoutePoint({
+   167→          longitude: e.lngLat.lng,
+   168→          latitude: e.lngLat.lat,
+   169→        })
+   170→      } else {
+   171→        useMapStore.getState().setSelectedMarker(null)
+   172→      }
+   173→    })
+   174→
+   175→    newMap.on('load', () => {
+   176→      markMapLoaded(true)
+   177→      // Expose main map reference for minimap
+   178→      ;(window as unknown as Record<string, unknown>).__mainMap = newMap
+   179→    })
+   180→
+   181→    newMap.on('styledataloading', () => {
+   182→      mapLoadedRef.current = false
+   183→    })
+   184→
+   185→    newMap.on('styledata', () => {
+   186→      if (newMap.isStyleLoaded()) {
+   187→        markMapLoaded(true)
+   188→      }
+   189→    })
+   190→
+   191→    map.current = newMap
+   192→
+   193→    return () => {
+   194→      newMap.remove()
+   195→      map.current = null
+   196→      mapLoadedRef.current = false
+   197→      delete (window as unknown as Record<string, unknown>).__mainMap
+   198→    }
+   199→  }, [markMapLoaded])
+   200→
+   201→  // Update map style
+   202→  useEffect(() => {
+   203→    if (!map.current) return
+   204→    mapLoadedRef.current = false
+   205→    map.current.setStyle(getStyleUrl(currentStyle))
+   206→  }, [currentStyle])
+   207→
+   208→  // Sync markers (with clustering support)
+   209→  useEffect(() => {
+   210→    if (!map.current) return
+   211→
+   212→    const useClustering = clusteringEnabled && markers.length > 5
+   213→
+   214→    // If using clustering, remove individual markers and add GeoJSON source/layers
+   215→    if (useClustering) {
+   216→      // Remove all individual markers
+   217→      markerRefs.current.forEach((marker) => marker.remove())
+   218→      markerRefs.current.clear()
+   219→
+   220→      const clusterSourceId = 'markers-cluster-source'
+   221→      const clusterCircleLayerId = 'markers-cluster-circle'
+   222→      const clusterCountLayerId = 'markers-cluster-count'
+   223→      const unclusteredLayerId = 'markers-unclustered'
+   224→
+   225→      // Remove existing layers/sources if they exist
+   226→      if (map.current.getLayer(clusterCountLayerId)) map.current.removeLayer(clusterCountLayerId)
+   227→      if (map.current.getLayer(clusterCircleLayerId)) map.current.removeLayer(clusterCircleLayerId)
+   228→      if (map.current.getLayer(unclusteredLayerId)) map.current.removeLayer(unclusteredLayerId)
+   229→      if (map.current.getSource(clusterSourceId)) map.current.removeSource(clusterSourceId)
+   230→
+   231→      const features: GeoJSON.Feature[] = markers.map((m) => ({
+   232→        type: 'Feature',
+   233→        properties: {
+   234→          id: m.id,
+   235→          name: m.name,
+   236→          description: m.description || '',
+   237→          color: m.color,
+   238→          category: m.category,
+   239→          selected: selectedMarker === m.id,
+   240→        },
+   241→        geometry: {
+   242→          type: 'Point',
+   243→          coordinates: [m.longitude, m.latitude],
+   244→        },
+   245→      }))
+   246→
+   247→      map.current.addSource(clusterSourceId, {
+   248→        type: 'geojson',
+   249→        data: {
+   250→          type: 'FeatureCollection',
+   251→          features,
+   252→        },
+   253→        cluster: true,
+   254→        clusterRadius: 50,
+   255→        clusterMaxZoom: 14,
+   256→      })
+   257→
+   258→      // Cluster circles with size based on point_count
+   259→      map.current.addLayer({
+   260→        id: clusterCircleLayerId,
+   261→        type: 'circle',
+   262→        source: clusterSourceId,
+   263→        filter: ['has', 'point_count'],
+   264→        paint: {
+   265→          'circle-color': [
+   266→            'step',
+   267→            ['get', 'point_count'],
+   268→            '#22c55e',
+   269→            10,
+   270→            '#f59e0b',
+   271→            50,
+   272→            '#ef4444',
+   273→          ],
+   274→          'circle-radius': [
+   275→            'step',
+   276→            ['get', 'point_count'],
+   277→            18,
+   278→            10,
+   279→            24,
+   280→            50,
+   281→            30,
+   282→          ],
+   283→          'circle-stroke-width': 3,
+   284→          'circle-stroke-color': '#ffffff',
+   285→        },
+   286→      })
+   287→
+   288→      // Cluster count labels
+   289→      map.current.addLayer({
+   290→        id: clusterCountLayerId,
+   291→        type: 'symbol',
+   292→        source: clusterSourceId,
+   293→        filter: ['has', 'point_count'],
+   294→        layout: {
+   295→          'text-field': '{point_count_abbreviated}',
+   296→          'text-font': ['Open Sans Bold'],
+   297→          'text-size': 13,
+   298→        },
+   299→        paint: {
+   300→          'text-color': '#ffffff',
+   301→        },
+   302→      })
+   303→
+   304→      // Unclustered individual points
+   305→      map.current.addLayer({
+   306→        id: unclusteredLayerId,
+   307→        type: 'circle',
+   308→        source: clusterSourceId,
+   309→        filter: ['!', ['has', 'point_count']],
+   310→        paint: {
+   311→          'circle-color': ['get', 'color'],
+   312→          'circle-radius': 8,
+   313→          'circle-stroke-width': 3,
+   314→          'circle-stroke-color': '#ffffff',
+   315→        },
+   316→      })
+   317→
+   318→      // Click handler for clusters - zoom into them
+   319→      map.current.on('click', clusterCircleLayerId, (e) => {
+   320→        const features = map.current!.queryRenderedFeatures(e.point, {
+   321→          layers: [clusterCircleLayerId],
+   322→        })
+   323→        const clusterId = features[0]?.properties?.cluster_id
+   324→        if (clusterId !== undefined) {
+   325→          const source = map.current!.getSource(clusterSourceId) as maplibregl.GeoJSONSource
+   326→          source.getClusterExpansionZoom(clusterId, (err, zoom) => {
+   327→            if (err) return
+   328→            const geometry = features[0].geometry as GeoJSON.Point
+   329→            map.current!.easeTo({
+   330→              center: geometry.coordinates as [number, number],
+   331→              zoom,
+   332→            })
+   333→          })
+   334→        }
+   335→      })
+   336→
+   337→      // Click handler for unclustered points - show popup
+   338→      map.current.on('click', unclusteredLayerId, (e) => {
+   339→        const feature = e.features?.[0]
+   340→        if (!feature) return
+   341→        const props = feature.properties || {}
+   342→        const coords = (feature.geometry as GeoJSON.Point).coordinates
+   343→
+   344→        new maplibregl.Popup({ offset: 15, closeButton: true })
+   345→          .setLngLat(coords as [number, number])
+   346→          .setHTML(
+   347→            `<div style="padding: 8px; min-width: 150px;">
+   348→              <h3 style="font-weight: 600; font-size: 14px; margin-bottom: 4px;">${props.name || 'Pin'}</h3>
+   349→              ${props.description ? `<p style="font-size: 12px; color: #666; margin-bottom: 4px;">${props.description}</p>` : ''}
+   350→              <p style="font-size: 11px; color: #999;">📍 ${coords[1].toFixed(4)}, ${coords[0].toFixed(4)}</p>
+   351→            </div>`
+   352→          )
+   353→          .addTo(map.current!)
+   354→
+   355→        if (props.id) {
+   356→          useMapStore.getState().setSelectedMarker(props.id as string)
+   357→        }
+   358→      })
+   359→
+   360→      // Change cursor on hover
+   361→      map.current.on('mouseenter', clusterCircleLayerId, () => {
+   362→        map.current!.getCanvas().style.cursor = 'pointer'
+   363→      })
+   364→      map.current.on('mouseleave', clusterCircleLayerId, () => {
+   365→        map.current!.getCanvas().style.cursor = ''
+   366→      })
+   367→      map.current.on('mouseenter', unclusteredLayerId, () => {
+   368→        map.current!.getCanvas().style.cursor = 'pointer'
+   369→      })
+   370→      map.current.on('mouseleave', unclusteredLayerId, () => {
+   371→        map.current!.getCanvas().style.cursor = ''
+   372→      })
+   373→    } else {
+   374→      // Not using clustering - clean up cluster layers if they exist, then use individual markers
+   375→      const clusterSourceId = 'markers-cluster-source'
+   376→      const clusterCircleLayerId = 'markers-cluster-circle'
+   377→      const clusterCountLayerId = 'markers-cluster-count'
+   378→      const unclusteredLayerId = 'markers-unclustered'
+   379→
+   380→      if (map.current.getLayer(clusterCountLayerId)) map.current.removeLayer(clusterCountLayerId)
+   381→      if (map.current.getLayer(clusterCircleLayerId)) map.current.removeLayer(clusterCircleLayerId)
+   382→      if (map.current.getLayer(unclusteredLayerId)) map.current.removeLayer(unclusteredLayerId)
+   383→      if (map.current.getSource(clusterSourceId)) map.current.removeSource(clusterSourceId)
+   384→
+   385→      // Individual marker management
+   386→      const existingIds = new Set(markerRefs.current.keys())
+   387→      const newMarkerIds = new Set(markers.map((m) => m.id))
+   388→
+   389→      // Remove markers that no longer exist
+   390→      existingIds.forEach((id) => {
+   391→        if (!newMarkerIds.has(id)) {
+   392→          const marker = markerRefs.current.get(id)
+   393→          if (marker) {
+   394→            marker.remove()
+   395→            markerRefs.current.delete(id)
+   396→          }
+   397→        }
+   398→      })
+   399→
+   400→      // Add new markers
+   401→      markers.forEach((m) => {
+   402→        if (!markerRefs.current.has(m.id)) {
+   403→          const el = document.createElement('div')
+   404→          el.className = 'custom-marker'
+   405→          el.innerHTML = `
+   406→            <svg width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+   407→              <path d="M16 0C7.163 0 0 7.163 0 16c0 12 16 24 16 24s16-12 16-24C32 7.163 24.837 0 16 0z" fill="${m.color}"/>
+   408→              <circle cx="16" cy="15" r="6" fill="white"/>
+   409→            </svg>
+   410→          `
+   411→          el.style.cursor = 'pointer'
+   412→          el.style.filter =
+   413→            selectedMarker === m.id
+   414→              ? 'drop-shadow(0 0 6px rgba(0,0,0,0.5))'
+   415→              : 'none'
+   416→          el.style.transform = selectedMarker === m.id ? 'scale(1.2)' : 'scale(1)'
+   417→          el.style.transition = 'transform 0.2s, filter 0.2s'
+   418→
+   419→          const marker = new maplibregl.Marker({ element: el })
+   420→            .setLngLat([m.longitude, m.latitude])
+   421→            .setPopup(
+   422→              new maplibregl.Popup({ offset: 25, closeButton: true }).setHTML(
+   423→                `<div style="padding: 8px; min-width: 150px;">
+   424→                  <h3 style="font-weight: 600; font-size: 14px; margin-bottom: 4px;">${m.name}</h3>
+   425→                  ${
+   426→                    m.description
+   427→                      ? `<p style="font-size: 12px; color: #666; margin-bottom: 4px;">${m.description}</p>`
+   428→                      : ''
+   429→                  }
+   430→                  <p style="font-size: 11px; color: #999;">📍 ${m.latitude.toFixed(
+   431→                    4
+   432→                  )}, ${m.longitude.toFixed(4)}</p>
+   433→                </div>`
+   434→              )
+   435→            )
+   436→            .addTo(map.current!)
+   437→
+   438→          el.addEventListener('click', (e) => {
+   439→            e.stopPropagation()
+   440→            useMapStore.getState().setSelectedMarker(m.id)
+   441→          })
+   442→
+   443→          markerRefs.current.set(m.id, marker)
+   444→        } else {
+   445→          // Update existing marker if selected state changed
+   446→          const existing = markerRefs.current.get(m.id)
+   447→          if (existing) {
+   448→            const el = existing.getElement()
+   449→            el.style.filter =
+   450→              selectedMarker === m.id
+   451→                ? 'drop-shadow(0 0 6px rgba(0,0,0,0.5))'
+   452→                : 'none'
+   453→            el.style.transform = selectedMarker === m.id ? 'scale(1.2)' : 'scale(1)'
+   454→          }
+   455→        }
+   456→      })
+   457→    }
+   458→
+   459→    // Cleanup function for cluster event handlers
+   460→    return () => {
+   461→      if (map.current) {
+   462→        map.current.off('click', 'markers-cluster-circle')
+   463→        map.current.off('click', 'markers-unclustered')
+   464→        map.current.off('mouseenter', 'markers-cluster-circle')
+   465→        map.current.off('mouseleave', 'markers-cluster-circle')
+   466→        map.current.off('mouseenter', 'markers-unclustered')
+   467→        map.current.off('mouseleave', 'markers-unclustered')
+   468→      }
+   469→    }
+   470→  }, [markers, selectedMarker, clusteringEnabled])
+   471→
+   472→  // Sync measurement line
+   473→  useEffect(() => {
+   474→    if (!map.current || !mapLoadedRef.current) return
+   475→
+   476→    const sourceId = 'measure-source'
+   477→    const layerId = 'measure-layer'
+   478→    const pointLayerId = 'measure-points-layer'
+   479→
+   480→    if (!map.current.getSource(sourceId)) {
+   481→      map.current.addSource(sourceId, {
+   482→        type: 'geojson',
+   483→        data: {
+   484→          type: 'FeatureCollection',
+   485→          features: [],
+   486→        },
+   487→      })
+   488→    }
+   489→
+   490→    if (!map.current.getLayer(layerId)) {
+   491→      map.current.addLayer({
+   492→        id: layerId,
+   493→        type: 'line',
+   494→        source: sourceId,
+   495→        paint: {
+   496→          'line-color': '#ef4444',
+   497→          'line-width': 3,
+   498→          'line-dasharray': [2, 2],
+   499→        },
+   500→      })
+   501→    }
+   502→
+   503→    if (!map.current.getLayer(pointLayerId)) {
+   504→      map.current.addLayer({
+   505→        id: pointLayerId,
+   506→        type: 'circle',
+   507→        source: sourceId,
+   508→        paint: {
+   509→          'circle-radius': 6,
+   510→          'circle-color': '#ef4444',
+   511→          'circle-stroke-width': 2,
+   512→          'circle-stroke-color': '#ffffff',
+   513→        },
+   514→        filter: ['==', '$type', 'Point'],
+   515→      })
+   516→    }
+   517→
+   518→    const features: GeoJSON.Feature[] = measurePoints.map((p) => ({
+   519→      type: 'Feature',
+   520→      properties: {},
+   521→      geometry: {
+   522→        type: 'Point',
+   523→        coordinates: [p.longitude, p.latitude],
+   524→      },
+   525→    }))
+   526→
+   527→    if (measurePoints.length > 1) {
+   528→      features.push({
+   529→        type: 'Feature',
+   530→        properties: {},
+   531→        geometry: {
+   532→          type: 'LineString',
+   533→          coordinates: measurePoints.map((p) => [p.longitude, p.latitude]),
+   534→        },
+   535→      })
+   536→    }
+   537→
+   538→    const source = map.current.getSource(sourceId) as maplibregl.GeoJSONSource
+   539→    source.setData({
+   540→      type: 'FeatureCollection',
+   541→      features,
+   542→    })
+   543→  }, [measurePoints, mapLoadedVersion])
+   544→
+   545→  // Sync route drawing lines and points
+   546→  useEffect(() => {
+   547→    if (!map.current || !mapLoadedRef.current) return
+   548→
+   549→    const currentColor = useMapStore.getState().currentRouteColor
+   550→
+   551→    const sourceId = 'route-source'
+   552→    const lineLayerId = 'route-line'
+   553→    const pointLayerId = 'route-points'
+   554→
+   555→    // Add source if not exists
+   556→    if (!map.current.getSource(sourceId)) {
+   557→      map.current.addSource(sourceId, {
+   558→        type: 'geojson',
+   559→        data: {
+   560→          type: 'FeatureCollection',
+   561→          features: [],
+   562→        },
+   563→      })
+   564→    }
+   565→
+   566→    // Add line layer if not exists
+   567→    if (!map.current.getLayer(lineLayerId)) {
+   568→      map.current.addLayer({
+   569→        id: lineLayerId,
+   570→        type: 'line',
+   571→        source: sourceId,
+   572→        paint: {
+   573→          'line-color': currentColor,
+   574→          'line-width': 4,
+   575→          'line-dasharray': [2, 2],
+   576→        },
+   577→        filter: ['==', '$type', 'LineString'],
+   578→      })
+   579→    } else {
+   580→      // Update color
+   581→      map.current.setPaintProperty(lineLayerId, 'line-color', currentColor)
+   582→    }
+   583→
+   584→    // Add point layer if not exists
+   585→    if (!map.current.getLayer(pointLayerId)) {
+   586→      map.current.addLayer({
+   587→        id: pointLayerId,
+   588→        type: 'circle',
+   589→        source: sourceId,
+   590→        paint: {
+   591→          'circle-radius': 7,
+   592→          'circle-color': currentColor,
+   593→          'circle-stroke-width': 2,
+   594→          'circle-stroke-color': '#ffffff',
+   595→        },
+   596→        filter: ['==', '$type', 'Point'],
+   597→      })
+   598→    } else {
+   599→      map.current.setPaintProperty(pointLayerId, 'circle-color', currentColor)
+   600→    }
+   601→
+   602→    const features: GeoJSON.Feature[] = routePoints.map((p, idx) => ({
+   603→      type: 'Feature',
+   604→      properties: { index: idx },
+   605→      geometry: {
+   606→        type: 'Point',
+   607→        coordinates: [p.longitude, p.latitude],
+   608→      },
+   609→    }))
+   610→
+   611→    if (routePoints.length > 1) {
+   612→      features.push({
+   613→        type: 'Feature',
+   614→        properties: {},
+   615→        geometry: {
+   616→          type: 'LineString',
+   617→          coordinates: routePoints.map((p) => [p.longitude, p.latitude]),
+   618→        },
+   619→      })
+   620→    }
+   621→
+   622→    const source = map.current.getSource(sourceId) as maplibregl.GeoJSONSource
+   623→    source.setData({
+   624→      type: 'FeatureCollection',
+   625→      features,
+   626→    })
+   627→
+   628→    // Render saved routes
+   629→    routes.forEach((route) => {
+   630→      const rSourceId = `route-source-${route.id}`
+   631→      const rLineLayerId = `route-line-${route.id}`
+   632→      const rPointLayerId = `route-points-${route.id}`
+   633→
+   634→      if (!map.current!.getSource(rSourceId)) {
+   635→        map.current!.addSource(rSourceId, {
+   636→          type: 'geojson',
+   637→          data: {
+   638→            type: 'FeatureCollection',
+   639→            features: [],
+   640→          },
+   641→        })
+   642→      }
+   643→
+   644→      if (!map.current!.getLayer(rLineLayerId)) {
+   645→        map.current!.addLayer({
+   646→          id: rLineLayerId,
+   647→          type: 'line',
+   648→          source: rSourceId,
+   649→          paint: {
+   650→            'line-color': route.color,
+   651→            'line-width': 4,
+   652→            'line-dasharray': [2, 2],
+   653→          },
+   654→          filter: ['==', '$type', 'LineString'],
+   655→        })
+   656→      }
+   657→
+   658→      if (!map.current!.getLayer(rPointLayerId)) {
+   659→        map.current!.addLayer({
+   660→          id: rPointLayerId,
+   661→          type: 'circle',
+   662→          source: rSourceId,
+   663→          paint: {
+   664→            'circle-radius': 7,
+   665→            'circle-color': route.color,
+   666→            'circle-stroke-width': 2,
+   667→            'circle-stroke-color': '#ffffff',
+   668→          },
+   669→          filter: ['==', '$type', 'Point'],
+   670→        })
+   671→      }
+   672→
+   673→      const rFeatures: GeoJSON.Feature[] = route.points.map((p, idx) => ({
+   674→        type: 'Feature',
+   675→        properties: { index: idx },
+   676→        geometry: {
+   677→          type: 'Point',
+   678→          coordinates: [p.longitude, p.latitude],
+   679→        },
+   680→      }))
+   681→
+   682→      if (route.points.length > 1) {
+   683→        rFeatures.push({
+   684→          type: 'Feature',
+   685→          properties: {},
+   686→          geometry: {
+   687→            type: 'LineString',
+   688→            coordinates: route.points.map((p) => [p.longitude, p.latitude]),
+   689→          },
+   690→        })
+   691→      }
+   692→
+   693→      const rSource = map.current!.getSource(rSourceId) as maplibregl.GeoJSONSource
+   694→      rSource.setData({
+   695→        type: 'FeatureCollection',
+   696→        features: rFeatures,
+   697→      })
+   698→    })
+   699→
+   700→    // Cleanup: remove sources/layers for deleted routes
+   701→    const currentRouteIds = new Set(routes.map((r) => r.id))
+   702→    const style = map.current.getStyle()
+   703→    if (style?.layers) {
+   704→      for (const layer of style.layers) {
+   705→        const match = layer.id.match(/^route-(?:source|line|points)-(.+)$/)
+   706→        if (match && !currentRouteIds.has(match[1])) {
+   707→          if (map.current!.getLayer(layer.id)) map.current!.removeLayer(layer.id)
+   708→          const srcId = `route-source-${match[1]}`
+   709→          if (map.current!.getSource(srcId)) map.current!.removeSource(srcId)
+   710→        }
+   711→      }
+   712→    }
+   713→
+   714→    return () => {
+   715→      if (map.current) {
+   716→        if (map.current.getLayer(pointLayerId)) map.current.removeLayer(pointLayerId)
+   717→        if (map.current.getLayer(lineLayerId)) map.current.removeLayer(lineLayerId)
+   718→        if (map.current.getSource(sourceId)) map.current.removeSource(sourceId)
+   719→        routes.forEach((route) => {
+   720→          const rSourceId = `route-source-${route.id}`
+   721→          const rLineLayerId = `route-line-${route.id}`
+   722→          const rPointLayerId = `route-points-${route.id}`
+   723→          if (map.current!.getLayer(rPointLayerId)) map.current!.removeLayer(rPointLayerId)
+   724→          if (map.current!.getLayer(rLineLayerId)) map.current!.removeLayer(rLineLayerId)
+   725→          if (map.current!.getSource(rSourceId)) map.current!.removeSource(rSourceId)
+   726→        })
+   727→      }
+   728→    }
+   729→  }, [routePoints, routes, mapLoadedVersion])
+   730→
+   731→  // Geolocation marker with accuracy circle
+   732→  useEffect(() => {
+   733→    if (!map.current || !mapLoadedRef.current) return
+   734→
+   735→    const accuracySourceId = 'geolocation-accuracy-source'
+   736→    const accuracyLayerId = 'geolocation-accuracy-layer'
+   737→
+   738→    // Clean up previous geolocation marker
+   739→    if (geolocationMarkerRef.current) {
+   740→      geolocationMarkerRef.current.remove()
+   741→      geolocationMarkerRef.current = null
+   742→    }
+   743→
+   744→    if (!geolocation) {
+   745→      // Remove accuracy layers if geolocation is cleared
+   746→      if (map.current.getLayer(accuracyLayerId)) {
+   747→        map.current.removeLayer(accuracyLayerId)
+   748→      }
+   749→      if (map.current.getSource(accuracySourceId)) {
+   750→        map.current.removeSource(accuracySourceId)
+   751→      }
+   752→      return
+   753→    }
+   754→
+   755→    const { longitude, latitude, accuracy } = geolocation
+   756→
+   757→    // Add accuracy circle source and layer
+   758→    if (map.current.getSource(accuracySourceId)) {
+   759→      const source = map.current.getSource(accuracySourceId) as maplibregl.GeoJSONSource
+   760→      source.setData({
+   761→        type: 'FeatureCollection',
+   762→        features: [
+   763→          {
+   764→            type: 'Feature',
+   765→            properties: {},
+   766→            geometry: {
+   767→              type: 'Point',
+   768→              coordinates: [longitude, latitude],
+   769→            },
+   770→          },
+   771→        ],
+   772→      })
+   773→    } else {
+   774→      map.current.addSource(accuracySourceId, {
+   775→        type: 'geojson',
+   776→        data: {
+   777→          type: 'FeatureCollection',
+   778→          features: [
+   779→            {
+   780→              type: 'Feature',
+   781→              properties: {},
+   782→              geometry: {
+   783→                type: 'Point',
+   784→                coordinates: [longitude, latitude],
+   785→              },
+   786→            },
+   787→          ],
+   788→        },
+   789→      })
+   790→    }
+   791→
+   792→    if (map.current.getLayer(accuracyLayerId)) {
+   793→      map.current.removeLayer(accuracyLayerId)
+   794→    }
+   795→    map.current.addLayer({
+   796→      id: accuracyLayerId,
+   797→      type: 'circle',
+   798→      source: accuracySourceId,
+   799→      paint: {
+   800→        'circle-radius': {
+   801→          stops: [
+   802→            [0, 0],
+   803→            [20, accuracy / 2],
+   804→          ],
+   805→          base: 2,
+   806→        },
+   807→        'circle-color': 'rgba(59, 130, 246, 0.15)',
+   808→        'circle-stroke-color': 'rgba(59, 130, 246, 0.3)',
+   809→        'circle-stroke-width': 1,
+   810→      },
+   811→    })
+   812→
+   813→    // Add pulsing dot marker at user location
+   814→    const dotEl = document.createElement('div')
+   815→    dotEl.className = 'geolocation-dot'
+   816→
+   817→    const geoMarker = new maplibregl.Marker({ element: dotEl })
+   818→      .setLngLat([longitude, latitude])
+   819→      .addTo(map.current)
+   820→
+   821→    geolocationMarkerRef.current = geoMarker
+   822→
+   823→    return () => {
+   824→      if (geolocationMarkerRef.current) {
+   825→        geolocationMarkerRef.current.remove()
+   826→        geolocationMarkerRef.current = null
+   827→      }
+   828→      if (map.current) {
+   829→        if (map.current.getLayer(accuracyLayerId)) {
+   830→          map.current.removeLayer(accuracyLayerId)
+   831→        }
+   832→        if (map.current.getSource(accuracySourceId)) {
+   833→          map.current.removeSource(accuracySourceId)
+   834→        }
+   835→      }
+   836→    }
+   837→  }, [geolocation, mapLoadedVersion])
+   838→
+   839→  // Sync layer visibility with map
+   840→  useEffect(() => {
+   841→    if (!map.current || !mapLoadedRef.current) return
+   842→
+   843→    const style = map.current.getStyle()
+   844→    if (!style || !style.layers) return
+   845→
+   846→    for (const layer of style.layers) {
+   847→      const category = getLayerCategory(layer.id)
+   848→      if (category !== null) {
+   849→        const visible = layerVisibility[category] ? 'visible' : 'none'
+   850→        try {
+   851→          map.current.setLayoutProperty(layer.id, 'visibility', visible)
+   852→        } catch {
+   853→          // Layer may have been removed
+   854→        }
+   855→      }
+   856→    }
+   857→  }, [layerVisibility, mapLoadedVersion])
+   858→
+   859→  // Cursor for tool modes
+   860→  useEffect(() => {
+   861→    if (!map.current) return
+   862→
+   863→    const canvas = map.current.getCanvas()
+   864→    if (toolMode === 'mark' || toolMode === 'measure' || toolMode === 'directions') {
+   865→      canvas.style.cursor = 'crosshair'
+   866→    } else if (toolMode === 'draw') {
+   867→      canvas.style.cursor = 'crosshair'
+   868→    } else {
+   869→      canvas.style.cursor = ''
+   870→    }
+   871→  }, [toolMode, mapLoadedVersion])
+   872→
+   873→  // Drawing interaction - mousedown/mousemove/mouseup for freehand drawing
+   874→  useEffect(() => {
+   875→    if (!map.current) return
+   876→
+   877→    const handleMouseDown = (e: maplibregl.MapMouseEvent) => {
+   878→      if (toolModeRef.current !== 'draw') return
+   879→      // Only respond to left click
+   880→      if (e.originalEvent.button !== 0) return
+   881→      e.preventDefault()
+   882→      isDrawingRef.current = true
+   883→      useMapStore.getState().setCurrentDrawing([[e.lngLat.lng, e.lngLat.lat]])
+   884→      useMapStore.getState().isDrawing = true
+   885→    }
+   886→
+   887→    const handleMouseMove = (e: maplibregl.MapMouseEvent) => {
+   888→      if (!isDrawingRef.current || toolModeRef.current !== 'draw') return
+   889→      const now = Date.now()
+   890→      if (now - lastDrawTimeRef.current < 30) return // Throttle to ~30ms
+   891→      lastDrawTimeRef.current = now
+   892→      useMapStore.getState().addDrawingPoint([e.lngLat.lng, e.lngLat.lat])
+   893→    }
+   894→
+   895→    const handleMouseUp = () => {
+   896→      if (!isDrawingRef.current) return
+   897→      isDrawingRef.current = false
+   898→      useMapStore.getState().finishDrawing()
+   899→    }
+   900→
+   901→    // Disable map drag when in draw mode
+   902→    if (toolMode === 'draw') {
+   903→      map.current.dragPan.disable()
+   904→    } else {
+   905→      map.current.dragPan.enable()
+   906→    }
+   907→
+   908→    map.current.on('mousedown', handleMouseDown)
+   909→    map.current.on('mousemove', handleMouseMove)
+   910→    map.current.on('mouseup', handleMouseUp)
+   911→
+   912→    return () => {
+   913→      if (map.current) {
+   914→        map.current.off('mousedown', handleMouseDown)
+   915→        map.current.off('mousemove', handleMouseMove)
+   916→        map.current.off('mouseup', handleMouseUp)
+   917→        map.current.dragPan.enable()
+   918→      }
+   919→    }
+   920→  }, [toolMode, mapLoadedVersion])
+   921→
+   922→  // Render current drawing line
+   923→  useEffect(() => {
+   924→    if (!map.current || !mapLoadedRef.current) return
+   925→
+   926→    const sourceId = 'draw-current-source'
+   927→    const layerId = 'draw-current-line'
+   928→
+   929→    if (!currentDrawing || currentDrawing.length < 2) {
+   930→      // Remove if exists
+   931→      if (map.current.getLayer(layerId)) map.current.removeLayer(layerId)
+   932→      if (map.current.getSource(sourceId)) map.current.removeSource(sourceId)
+   933→      return
+   934→    }
+   935→
+   936→    if (!map.current.getSource(sourceId)) {
+   937→      map.current.addSource(sourceId, {
+   938→        type: 'geojson',
+   939→        data: {
+   940→          type: 'FeatureCollection',
+   941→          features: [],
+   942→        },
+   943→      })
+   944→    }
+   945→
+   946→    if (!map.current.getLayer(layerId)) {
+   947→      map.current.addLayer({
+   948→        id: layerId,
+   949→        type: 'line',
+   950→        source: sourceId,
+   951→        paint: {
+   952→          'line-color': drawColor,
+   953→          'line-width': drawWidth,
+   954→          'line-opacity': 0.8,
+   955→          'line-cap': 'round',
+   956→          'line-join': 'round',
+   957→        },
+   958→      })
+   959→    } else {
+   960→      map.current.setPaintProperty(layerId, 'line-color', drawColor)
+   961→      map.current.setPaintProperty(layerId, 'line-width', drawWidth)
+   962→    }
+   963→
+   964→    const source = map.current.getSource(sourceId) as maplibregl.GeoJSONSource
+   965→    source.setData({
+   966→      type: 'FeatureCollection',
+   967→      features: [
+   968→        {
+   969→          type: 'Feature',
+   970→          properties: {},
+   971→          geometry: {
+   972→            type: 'LineString',
+   973→            coordinates: currentDrawing,
+   974→          },
+   975→        },
+   976→      ],
+   977→    })
+   978→
+   979→    return () => {
+   980→      if (map.current) {
+   981→        if (map.current.getLayer(layerId)) map.current.removeLayer(layerId)
+   982→        if (map.current.getSource(sourceId)) map.current.removeSource(sourceId)
+   983→      }
+   984→    }
+   985→  }, [currentDrawing, drawColor, drawWidth, mapLoadedVersion])
+   986→
+   987→  // Render saved drawings
+   988→  useEffect(() => {
+   989→    if (!map.current || !mapLoadedRef.current) return
+   990→
+   991→    // Render each saved drawing as its own source/layer
+   992→    drawings.forEach((drawing) => {
+   993→      const dSourceId = `draw-source-${drawing.id}`
+   994→      const dLayerId = `draw-line-${drawing.id}`
+   995→
+   996→      if (!map.current!.getSource(dSourceId)) {
+   997→        map.current!.addSource(dSourceId, {
+   998→          type: 'geojson',
+   999→          data: {
+  1000→            type: 'FeatureCollection',
+  1001→            features: [],
+  1002→          },
+  1003→        })
+  1004→      }
+  1005→
+  1006→      if (!map.current!.getLayer(dLayerId)) {
+  1007→        map.current!.addLayer({
+  1008→          id: dLayerId,
+  1009→          type: 'line',
+  1010→          source: dSourceId,
+  1011→          paint: {
+  1012→            'line-color': drawing.color,
+  1013→            'line-width': drawing.width,
+  1014→            'line-opacity': 0.85,
+  1015→            'line-cap': 'round',
+  1016→            'line-join': 'round',
+  1017→          },
+  1018→        })
+  1019→      } else {
+  1020→        map.current!.setPaintProperty(dLayerId, 'line-color', drawing.color)
+  1021→        map.current!.setPaintProperty(dLayerId, 'line-width', drawing.width)
+  1022→      }
+  1023→
+  1024→      if (drawing.points.length >= 2) {
+  1025→        const dSource = map.current!.getSource(dSourceId) as maplibregl.GeoJSONSource
+  1026→        dSource.setData({
+  1027→          type: 'FeatureCollection',
+  1028→          features: [
+  1029→            {
+  1030→              type: 'Feature',
+  1031→              properties: {},
+  1032→              geometry: {
+  1033→                type: 'LineString',
+  1034→                coordinates: drawing.points,
+  1035→              },
+  1036→            },
+  1037→          ],
+  1038→        })
+  1039→      }
+  1040→    })
+  1041→
+  1042→    // Cleanup: remove sources/layers for deleted drawings
+  1043→    const currentDrawingIds = new Set(drawings.map((d) => d.id))
+  1044→    const style = map.current.getStyle()
+  1045→    if (style?.layers) {
+  1046→      for (const layer of style.layers) {
+  1047→        const match = layer.id.match(/^draw-line-(drawing-.+)$/) || layer.id.match(/^draw-source-(drawing-.+)$/)
+  1048→        if (match) {
+  1049→          const drawId = match[1]
+  1050→          if (!currentDrawingIds.has(drawId)) {
+  1051→            const layerId = `draw-line-${drawId}`
+  1052→            const srcId = `draw-source-${drawId}`
+  1053→            if (map.current!.getLayer(layerId)) map.current!.removeLayer(layerId)
+  1054→            if (map.current!.getSource(srcId)) map.current!.removeSource(srcId)
+  1055→          }
+  1056→        }
+  1057→      }
+  1058→    }
+  1059→
+  1060→    return () => {
+  1061→      if (map.current) {
+  1062→        drawings.forEach((drawing) => {
+  1063→          const dSourceId = `draw-source-${drawing.id}`
+  1064→          const dLayerId = `draw-line-${drawing.id}`
+  1065→          if (map.current!.getLayer(dLayerId)) map.current!.removeLayer(dLayerId)
+  1066→          if (map.current!.getSource(dSourceId)) map.current!.removeSource(dSourceId)
+  1067→        })
+  1068→      }
+  1069→    }
+  1070→  }, [drawings, mapLoadedVersion])
+  1071→
+  1072→  // 3D Buildings + Terrain
+  1073→  useEffect(() => {
+  1074→    if (!map.current || !mapLoadedRef.current) return
+  1075→
+  1076→    const buildingLayerId = '3d-buildings'
+  1077→    const terrainSourceId = 'terrain-source'
+  1078→
+  1079→    if (buildingExtrusion) {
+  1080→      // --- Terrain ---
+  1081→      try {
+  1082→        if (!map.current.getSource(terrainSourceId)) {
+  1083→          map.current.addSource(terrainSourceId, {
+  1084→            type: 'raster-dem',
+  1085→            url: `https://api.maptiler.com/tiles/terrain-rgb/tiles.json?key=${process.env.NEXT_PUBLIC_MAPTILER_KEY || ''}`,
+  1086→          })
+  1087→        }
+  1088→        map.current.setTerrain({
+  1089→          source: terrainSourceId,
+  1090→          exaggeration: terrainExaggeration,
+  1091→        })
+  1092→      } catch {
+  1093→        // Terrain source may not be available for all styles
+  1094→      }
+  1095→
+  1096→      // --- 3D Buildings ---
+  1097→      const style = map.current.getStyle()
+  1098→      const sources = style?.sources || {}
+  1099→      if (sources['openmaptiles']) {
+  1100→        // Don't add if already present
+  1101→        if (!map.current.getLayer(buildingLayerId)) {
+  1102→          // Detect dark mode
+  1103→          const isDark = document.documentElement.classList.contains('dark')
+  1104→
+  1105→          map.current.addLayer({
+  1106→            id: buildingLayerId,
+  1107→            source: 'openmaptiles',
+  1108→            'source-layer': 'building',
+  1109→            type: 'fill-extrusion',
+  1110→            minzoom: 14,
+  1111→            paint: {
+  1112→              'fill-extrusion-color': isDark ? '#666' : '#ddd',
+  1113→              'fill-extrusion-height': ['get', 'render_height'],
+  1114→              'fill-extrusion-base': ['get', 'render_min_height'],
+  1115→              'fill-extrusion-opacity': isDark ? 0.5 : 0.7,
+  1116→            },
+  1117→          })
+  1118→        }
+  1119→      }
+  1120→    } else {
+  1121→      // Remove terrain
+  1122→      try {
+  1123→        map.current.setTerrain(null)
+  1124→      } catch {
+  1125→        // Ignore if terrain not set
+  1126→      }
+  1127→      try {
+  1128→        if (map.current.getSource(terrainSourceId)) {
+  1129→          map.current.removeSource(terrainSourceId)
+  1130→        }
+  1131→      } catch {
+  1132→        // Ignore
+  1133→      }
+  1134→
+  1135→      // Remove the 3D buildings layer when disabled
+  1136→      if (map.current.getLayer(buildingLayerId)) {
+  1137→        map.current.removeLayer(buildingLayerId)
+  1138→      }
+  1139→    }
+  1140→  }, [buildingExtrusion, terrainExaggeration, mapLoadedVersion])
+  1141→
+  1142→  // Update terrain exaggeration when it changes (while enabled)
+  1143→  useEffect(() => {
+  1144→    if (!map.current || !mapLoadedRef.current || !buildingExtrusion) return
+  1145→    try {
+  1146→      map.current.setTerrain({
+  1147→        source: 'terrain-source',
+  1148→        exaggeration: terrainExaggeration,
+  1149→      })
+  1150→    } catch {
+  1151→      // Terrain not available
+  1152→    }
+  1153→  }, [terrainExaggeration, buildingExtrusion, mapLoadedVersion])
+  1154→
+  1155→  const flyToLocation = useCallback(
+  1156→    (longitude: number, latitude: number, zoom?: number) => {
+  1157→      if (!map.current) return
+  1158→      map.current.flyTo({
+  1159→        center: [longitude, latitude],
+  1160→        zoom: zoom || 14,
+  1161→        duration: 2000,
+  1162→      })
+  1163→    },
+  1164→    []
+  1165→  )
+  1166→
+  1167→  // Expose flyToLocation and resetNorth through window for other components
+  1168→  useEffect(() => {
+  1169→    ;(window as unknown as Record<string, unknown>).__mapFlyTo = flyToLocation
+  1170→    ;(window as unknown as Record<string, unknown>).__mapResetNorth = () => {
+  1171→      if (map.current) {
+  1172→        map.current.easeTo({ bearing: 0, duration: 500 })
+  1173→      }
+  1174→    }
+  1175→    // Export map as image
+  1176→    ;(window as unknown as Record<string, () => void>).__mapExportImage = () => {
+  1177→      if (!map.current) return
+  1178→      const canvas = map.current.getCanvas()
+  1179→      const dataUrl = canvas.toDataURL('image/png')
+  1180→      const link = document.createElement('a')
+  1181→      link.download = `map-export-${Date.now()}.png`
+  1182→      link.href = dataUrl
+  1183→      document.body.appendChild(link)
+  1184→      link.click()
+  1185→      document.body.removeChild(link)
+  1186→    }
+  1187→    return () => {
+  1188→      delete (window as unknown as Record<string, unknown>).__mapFlyTo
+  1189→      delete (window as unknown as Record<string, unknown>).__mapResetNorth
+  1190→      delete (window as unknown as Record<string, unknown>).__mapExportImage
+  1191→    }
+  1192→  }, [flyToLocation])
+  1193→
+  1194→  const isMapLoading = !mapLoadedRef.current && mapLoadedVersion > 0
+  1195→
+  1196→  return (
+  1197→    <div className="relative w-full h-full">
+  1198→      <div
+  1199→        ref={mapContainer}
+  1200→        style={{
+  1201→          position: 'absolute',
+  1202→          top: 0,
+  1203→          bottom: 0,
+  1204→          left: 0,
+  1205→          right: 0,
+  1206→          width: '100%',
+  1207→          height: '100%',
+  1208→        }}
+  1209→      />
+  1210→      {/* Map loading overlay */}
+  1211→      {isMapLoading && (
+  1212→        <div className="absolute inset-0 z-10 pointer-events-none">
+  1213→          <div className="absolute inset-0 map-loading-skeleton opacity-40" />
+  1214→          <div className="absolute top-4 left-1/2 -translate-x-1/2">
+  1215→            <div className="glass rounded-lg px-4 py-2 flex items-center gap-2 shadow-lg">
+  1216→              <div className="h-4 w-4 rounded-full border-2 border-muted-foreground border-t-transparent animate-spin" />
+  1217→              <span className="text-xs font-medium text-muted-foreground">Loading map…</span>
+  1218→            </div>
+  1219→          </div>
+  1220→        </div>
+  1221→      )}
+  1222→    </div>
+  1223→  )
+  1224→}
+  1225→

@@ -56,6 +56,7 @@ export function StyleSwitcher() {
                   key={style.id}
                   onClick={() => {
                     setCurrentStyle(style)
+                    useMapStore.getState().pushNotification({ type: 'style', icon: 'map', message: `Switched to ${style.name} view` })
                     setOpen(false)
                   }}
                   className={cn(

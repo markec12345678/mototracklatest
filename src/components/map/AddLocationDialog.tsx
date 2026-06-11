@@ -98,6 +98,7 @@ export function AddLocationDialog({
           color: location.color,
           category: location.category,
         })
+        useMapStore.getState().pushNotification({ type: 'location', icon: 'pin', message: `${name} added to saved locations` })
         toast.success(`Added "${name}"`)
         onOpenChange(false)
         resetForm()

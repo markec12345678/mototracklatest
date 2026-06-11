@@ -188,7 +188,7 @@ export function SearchBar() {
           }}
           onBlur={() => setIsFocused(false)}
           onKeyDown={handleKeyDown}
-          placeholder="Search the map..."
+          placeholder={isFocused ? "Search the map..." : "Search the map... (/ to search)"}
           className="pl-9 pr-9 h-11 bg-background/90 backdrop-blur-md border-border/50 shadow-lg hover:shadow-xl rounded-xl transition-all duration-200 focus:shadow-xl focus:shadow-[0_0_20px_rgba(16,185,129,0.15)] focus:ring-2 focus:ring-primary/20 focus:border-primary/30"
           aria-label="Search locations on the map"
         />
@@ -233,7 +233,7 @@ export function SearchBar() {
               key={`${result.latitude}-${result.longitude}-${i}`}
               onClick={() => handleSelect(result)}
               className={cn(
-                'w-full px-3 py-2.5 text-left hover:bg-accent/80 transition-all duration-150 flex items-start gap-3 border-b last:border-0 rounded-lg mx-1',
+                'search-result-hover w-full px-3 py-2.5 text-left hover:bg-accent/80 transition-all duration-150 flex items-start gap-3 border-b last:border-0 rounded-lg mx-1',
                 selectedIndex === i && 'bg-accent'
               )}
             >
@@ -253,6 +253,11 @@ export function SearchBar() {
               <Navigation2 className="h-3.5 w-3.5 text-muted-foreground shrink-0 mt-1" />
             </button>
           ))}
+          <div className="px-3 py-1.5 border-t bg-muted/20">
+            <p className="text-[9px] text-muted-foreground/50 text-center">
+              Powered by Nominatim/Photon · OpenStreetMap
+            </p>
+          </div>
         </div>
       )}
 
@@ -264,10 +269,13 @@ export function SearchBar() {
             </p>
           </div>
           {recentSearches.map((searchTerm) => (
-            <button
+            <div
               key={searchTerm}
               onClick={() => handleRecentSearchClick(searchTerm)}
-              className="w-full px-3 py-2.5 text-left hover:bg-accent transition-colors flex items-center gap-3 border-b last:border-0"
+              className="w-full px-3 py-2.5 text-left hover:bg-accent transition-colors flex items-center gap-3 border-b last:border-0 cursor-pointer"
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => { if (e.key === 'Enter') handleRecentSearchClick(searchTerm) }}
             >
               <div className="w-8 h-8 rounded-lg bg-muted/50 flex items-center justify-center shrink-0">
                 <Clock className="h-4 w-4 text-muted-foreground" />
@@ -280,7 +288,7 @@ export function SearchBar() {
               >
                 <X className="h-3.5 w-3.5" />
               </button>
-            </button>
+            </div>
           ))}
           <div className="px-3 py-2">
             <button

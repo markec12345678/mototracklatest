@@ -14,7 +14,10 @@ import { MapStatsPanel } from '@/components/map/MapStatsPanel'
 import { CompassIndicator } from '@/components/map/CompassIndicator'
 import { KeyboardShortcutsDialog } from '@/components/map/KeyboardShortcutsDialog'
 import { MiniMap } from '@/components/map/MiniMap'
+import { MapLegend } from '@/components/map/MapLegend'
+import { MapNotifications } from '@/components/map/MapNotifications'
 import { WeatherPanel } from '@/components/map/WeatherPanel'
+import { MobileWeatherBar } from '@/components/map/MobileWeatherBar'
 import { ElevationProfile } from '@/components/map/ElevationProfile'
 import { QuickJumpPanel } from '@/components/map/QuickJumpPanel'
 import { Button } from '@/components/ui/button'
@@ -40,6 +43,7 @@ import {
 
 export default function Home() {
   const { toolMode, sidebarOpen, center, zoom, currentStyle, weatherEnabled, setSidebarOpen, setToolMode, setCenter, setZoom, setCurrentStyle } = useMapStore()
+  const pushNotification = useMapStore((s) => s.pushNotification)
   const [addDialogOpen, setAddDialogOpen] = useState(false)
   const [shortcutsOpen, setShortcutsOpen] = useState(false)
   const [showWelcome, setShowWelcome] = useState(true)
@@ -308,6 +312,9 @@ export default function Home() {
       {/* Sidebar - responsive */}
       <MapSidebar />
 
+      {/* Map Notifications - top right below top bar */}
+      <MapNotifications />
+
       {/* Compass indicator (visible when map is rotated) */}
       <CompassIndicator />
 
@@ -420,8 +427,13 @@ export default function Home() {
         </motion.div>
       </AnimatePresence>
 
-      {/* Mobile tool indicator - shows on mobile below search */}
-      <div className="md:hidden absolute top-16 left-3 z-10">
+      {/* Mobile weather bar - below search on mobile only */}
+      <div className="md:hidden absolute top-[58px] left-3 right-3 z-10">
+        <MobileWeatherBar />
+      </div>
+
+      {/* Mobile tool indicator - shows on mobile below search/weather */}
+      <div className="md:hidden absolute top-24 left-3 z-10">
         <Badge
           className={`bg-gradient-to-r ${currentTool.color} text-white border-0 px-2.5 py-1 gap-1 shadow-lg text-xs`}
         >
@@ -488,6 +500,9 @@ export default function Home() {
 
       {/* Minimap - bottom right above MapStatsPanel (desktop only) */}
       <MiniMap />
+
+      {/* Map Legend - right side below minimap (desktop only) */}
+      <MapLegend />
 
       {/* Coordinates display - bottom center (desktop only) */}
       <div className="hidden md:block absolute bottom-12 left-1/2 -translate-x-1/2 z-10">

@@ -81,7 +81,7 @@ const toolModes: {
   {
     id: 'mark',
     label: 'Drop Pin',
-    icon: <Pencil className="h-4 w-4" />,
+    icon: <MapPin className="h-4 w-4" />,
     description: 'Click map to add markers',
     color: 'from-red-500 to-rose-500',
     shortcut: '2',
@@ -93,6 +93,14 @@ const toolModes: {
     description: 'Click points to measure distance',
     color: 'from-amber-500 to-orange-500',
     shortcut: '3',
+  },
+  {
+    id: 'directions',
+    label: 'Directions',
+    icon: <Route className="h-4 w-4" />,
+    description: 'Draw routes between points',
+    color: 'from-cyan-500 to-sky-500',
+    shortcut: '4',
   },
   {
     id: 'draw',
@@ -174,15 +182,20 @@ function SidebarContent({ onCloseMobile }: { onCloseMobile?: () => void }) {
       )
     }
     setMeasureDistance(total)
+    if (measurePoints.length === 2) {
+      useMapStore.getState().pushNotification({ type: 'measurement', icon: 'ruler', message: `Measurement completed: ${total < 1 ? `${(total * 1000).toFixed(0)}m` : `${total.toFixed(2)}km`}` })
+    }
   }, [measurePoints, setMeasureDistance])
 
   const handleDeleteLocation = async (id: string) => {
     try {
       const res = await fetch(`/api/locations/${id}`, { method: 'DELETE' })
       if (res.ok) {
+        const locName = savedLocations.find(l => l.id === id)?.name || 'Location'
         removeSavedLocation(id)
         removeMarker(id)
         if (selectedMarker === id) setSelectedMarker(null)
+        useMapStore.getState().pushNotification({ type: 'location', icon: 'trash', message: `${locName} removed from saved locations` })
         toast.success('Location removed')
       }
     } catch (err) {
@@ -691,7 +704,10 @@ function LayersTab() {
                 </div>
                 <Switch
                   checked={buildingExtrusion}
-                  onCheckedChange={setBuildingExtrusion}
+                  onCheckedChange={(checked) => {
+                    setBuildingExtrusion(checked)
+                    useMapStore.getState().pushNotification({ type: 'terrain', icon: 'mountain', message: checked ? '3D terrain enabled' : '3D terrain disabled' })
+                  }}
                   aria-label="Toggle 3D view"
                 />
               </div>
@@ -775,7 +791,10 @@ function LayersTab() {
               </div>
               <Switch
                 checked={weatherEnabled}
-                onCheckedChange={setWeatherEnabled}
+                onCheckedChange={(checked) => {
+                  setWeatherEnabled(checked)
+                  useMapStore.getState().pushNotification({ type: 'weather', icon: 'cloud', message: checked ? 'Weather data loaded' : 'Weather overlay disabled' })
+                }}
                 aria-label="Toggle weather overlay"
               />
             </div>
@@ -1362,6 +1381,7 @@ function RoutesTab() {
     const name = routeName.trim() || `Route ${routes.length + 1}`
     saveRoute(name)
     setRouteName('')
+    useMapStore.getState().pushNotification({ type: 'route', icon: 'route', message: `Route "${name}" saved` })
     toast.success(`Route "${name}" saved`)
   }
 

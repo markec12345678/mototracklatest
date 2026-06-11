@@ -170,6 +170,14 @@ export interface LayerVisibility {
   labels: boolean
 }
 
+export interface MapNotification {
+  id: string
+  type: 'style' | 'location' | 'route' | 'drawing' | 'measurement' | 'weather' | 'terrain' | 'general'
+  icon: string
+  message: string
+  timestamp: number
+}
+
 const DEFAULT_LAYER_VISIBILITY: LayerVisibility = {
   water: true,
   roads: true,
@@ -234,6 +242,9 @@ interface MapState {
   // Weather overlay
   weatherEnabled: boolean
 
+  // Notifications
+  notifications: MapNotification[]
+
   // Actions
   setCenter: (center: [number, number]) => void
   setZoom: (zoom: number) => void
@@ -273,6 +284,8 @@ interface MapState {
   setTerrainEnabled: (enabled: boolean) => void
   setTerrainExaggeration: (exaggeration: number) => void
   setWeatherEnabled: (enabled: boolean) => void
+  pushNotification: (notification: Omit<MapNotification, 'id' | 'timestamp'>) => void
+  dismissNotification: (id: string) => void
 }
 
 export const useMapStore = create<MapState>()(
@@ -314,6 +327,7 @@ export const useMapStore = create<MapState>()(
       terrainEnabled: false,
       terrainExaggeration: 1.5,
       weatherEnabled: false,
+      notifications: [],
 
       setCenter: (center) => set({ center }),
       setZoom: (zoom) => set({ zoom }),
@@ -436,6 +450,18 @@ export const useMapStore = create<MapState>()(
       setTerrainEnabled: (terrainEnabled) => set({ terrainEnabled }),
       setTerrainExaggeration: (terrainExaggeration) => set({ terrainExaggeration }),
       setWeatherEnabled: (weatherEnabled) => set({ weatherEnabled }),
+
+      pushNotification: (notification) =>
+        set((state) => ({
+          notifications: [
+            { ...notification, id: `notif-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`, timestamp: Date.now() },
+            ...state.notifications,
+          ].slice(0, 10),
+        })),
+      dismissNotification: (id) =>
+        set((state) => ({
+          notifications: state.notifications.filter((n) => n.id !== id),
+        })),
     }),
     {
       name: 'maplibre-explorer-prefs',
