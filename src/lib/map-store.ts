@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
 export interface SavedLocation {
   id: string
@@ -32,41 +33,104 @@ export type MapStyleOption = {
   id: string
   name: string
   url: string
+  fallbackUrl?: string
   category: 'standard' | 'dark' | 'satellite' | 'terrain' | 'custom'
+  preview: { gradient: string; emoji: string }
+  provider: 'maptiler' | 'carto' | 'osm'
+}
+
+const MAPTILER_KEY = process.env.NEXT_PUBLIC_MAPTILER_KEY || ''
+
+function maptilerUrl(styleId: string): string {
+  return `https://api.maptiler.com/maps/${styleId}/style.json?key=${MAPTILER_KEY}`
 }
 
 export const MAP_STYLES: MapStyleOption[] = [
   {
     id: 'streets',
     name: 'Streets',
-    url: 'https://demotiles.maplibre.org/style.json',
+    url: maptilerUrl('streets-v2'),
+    fallbackUrl: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json',
     category: 'standard',
+    preview: { gradient: 'from-emerald-400 to-cyan-400', emoji: '🏙️' },
+    provider: 'maptiler',
+  },
+  {
+    id: 'satellite',
+    name: 'Satellite',
+    url: maptilerUrl('satellite'),
+    category: 'satellite',
+    preview: { gradient: 'from-green-800 to-teal-900', emoji: '🛰️' },
+    provider: 'maptiler',
+  },
+  {
+    id: 'hybrid',
+    name: 'Hybrid',
+    url: maptilerUrl('hybrid'),
+    category: 'satellite',
+    preview: { gradient: 'from-teal-600 to-emerald-800', emoji: '🌐' },
+    provider: 'maptiler',
+  },
+  {
+    id: 'terrain',
+    name: 'Terrain',
+    url: maptilerUrl('terrain'),
+    fallbackUrl: 'https://tiles.openfreemap.org/styles/liberty',
+    category: 'terrain',
+    preview: { gradient: 'from-amber-500 to-orange-600', emoji: '⛰️' },
+    provider: 'maptiler',
+  },
+  {
+    id: 'topo',
+    name: 'Topographic',
+    url: maptilerUrl('topo-v2'),
+    fallbackUrl: 'https://tiles.openfreemap.org/styles/liberty',
+    category: 'terrain',
+    preview: { gradient: 'from-yellow-500 to-amber-600', emoji: '🗺️' },
+    provider: 'maptiler',
   },
   {
     id: 'dark',
     name: 'Dark',
-    url: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+    url: maptilerUrl('dark'),
+    fallbackUrl: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
     category: 'dark',
+    preview: { gradient: 'from-gray-700 to-gray-900', emoji: '🌙' },
+    provider: 'maptiler',
   },
   {
-    id: 'voyager',
-    name: 'Voyager',
-    url: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json',
-    category: 'standard',
-  },
-  {
-    id: 'positron',
-    name: 'Positron',
-    url: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
-    category: 'standard',
+    id: 'outdoor',
+    name: 'Outdoor',
+    url: maptilerUrl('outdoor-v2'),
+    fallbackUrl: 'https://tiles.openfreemap.org/styles/liberty',
+    category: 'terrain',
+    preview: { gradient: 'from-lime-500 to-green-600', emoji: '🏕️' },
+    provider: 'maptiler',
   },
   {
     id: 'osm',
     name: 'OpenStreetMap',
     url: 'https://tiles.openfreemap.org/styles/liberty',
     category: 'standard',
+    preview: { gradient: 'from-green-400 to-emerald-400', emoji: '🌍' },
+    provider: 'osm',
   },
 ]
+
+/** Get the effective URL for a style (uses fallback if MapTiler key is not available) */
+export function getStyleUrl(style: MapStyleOption): string {
+  if (!MAPTILER_KEY && style.provider === 'maptiler' && style.fallbackUrl) {
+    return style.fallbackUrl
+  }
+  return style.url
+}
+
+/** Get a lightweight minimap style URL based on current theme */
+export function getMinimapStyleUrl(isDark: boolean): string {
+  return isDark
+    ? 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'
+    : 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json'
+}
 
 export type ToolMode = 'navigate' | 'mark' | 'measure' | 'directions'
 
@@ -124,6 +188,9 @@ interface MapState {
   // Clustering
   clusteringEnabled: boolean
 
+  // 3D Building extrusion
+  buildingExtrusion: boolean
+
   // Actions
   setCenter: (center: [number, number]) => void
   setZoom: (zoom: number) => void
@@ -147,69 +214,84 @@ interface MapState {
   clearMeasurePoints: () => void
   setMeasureDistance: (distance: number | null) => void
   setClusteringEnabled: (enabled: boolean) => void
+  setBuildingExtrusion: (enabled: boolean) => void
 }
 
-export const useMapStore = create<MapState>((set) => ({
-  center: [14.5058, 46.0569], // Ljubljana, Slovenia (user timezone)
-  zoom: 5,
-  currentStyle: MAP_STYLES[0],
-  bearing: 0,
-  pitch: 0,
+export const useMapStore = create<MapState>()(
+  persist(
+    (set) => ({
+      center: [14.5058, 46.0569], // Ljubljana, Slovenia (user timezone)
+      zoom: 5,
+      currentStyle: MAP_STYLES[0],
+      bearing: 0,
+      pitch: 0,
 
-  sidebarOpen: true,
-  sidebarTab: 'locations',
-  searchQuery: '',
+      sidebarOpen: true,
+      sidebarTab: 'locations',
+      searchQuery: '',
 
-  markers: [],
-  savedLocations: [],
-  selectedMarker: null,
+      markers: [],
+      savedLocations: [],
+      selectedMarker: null,
 
-  geolocation: null,
-  layerVisibility: { ...DEFAULT_LAYER_VISIBILITY },
+      geolocation: null,
+      layerVisibility: { ...DEFAULT_LAYER_VISIBILITY },
 
-  toolMode: 'navigate',
-  measurePoints: [],
-  measureDistance: null,
+      toolMode: 'navigate',
+      measurePoints: [],
+      measureDistance: null,
 
-  clusteringEnabled: true,
+      clusteringEnabled: true,
+      buildingExtrusion: false,
 
-  setCenter: (center) => set({ center }),
-  setZoom: (zoom) => set({ zoom }),
-  setCurrentStyle: (currentStyle) => set({ currentStyle }),
-  setBearing: (bearing) => set({ bearing }),
-  setPitch: (pitch) => set({ pitch }),
-  setSidebarOpen: (sidebarOpen) => set({ sidebarOpen }),
-  setSidebarTab: (sidebarTab) => set({ sidebarTab }),
-  setSearchQuery: (searchQuery) => set({ searchQuery }),
+      setCenter: (center) => set({ center }),
+      setZoom: (zoom) => set({ zoom }),
+      setCurrentStyle: (currentStyle) => set({ currentStyle }),
+      setBearing: (bearing) => set({ bearing }),
+      setPitch: (pitch) => set({ pitch }),
+      setSidebarOpen: (sidebarOpen) => set({ sidebarOpen }),
+      setSidebarTab: (sidebarTab) => set({ sidebarTab }),
+      setSearchQuery: (searchQuery) => set({ searchQuery }),
 
-  addMarker: (marker) =>
-    set((state) => ({ markers: [...state.markers, marker] })),
-  removeMarker: (id) =>
-    set((state) => ({ markers: state.markers.filter((m) => m.id !== id) })),
-  setMarkers: (markers) => set({ markers }),
+      addMarker: (marker) =>
+        set((state) => ({ markers: [...state.markers, marker] })),
+      removeMarker: (id) =>
+        set((state) => ({ markers: state.markers.filter((m) => m.id !== id) })),
+      setMarkers: (markers) => set({ markers }),
 
-  setSavedLocations: (savedLocations) => set({ savedLocations }),
-  addSavedLocation: (location) =>
-    set((state) => ({ savedLocations: [location, ...state.savedLocations] })),
-  removeSavedLocation: (id) =>
-    set((state) => ({
-      savedLocations: state.savedLocations.filter((l) => l.id !== id),
-      markers: state.markers.filter((m) => m.id !== id),
-    })),
+      setSavedLocations: (savedLocations) => set({ savedLocations }),
+      addSavedLocation: (location) =>
+        set((state) => ({ savedLocations: [location, ...state.savedLocations] })),
+      removeSavedLocation: (id) =>
+        set((state) => ({
+          savedLocations: state.savedLocations.filter((l) => l.id !== id),
+          markers: state.markers.filter((m) => m.id !== id),
+        })),
 
-  setSelectedMarker: (selectedMarker) => set({ selectedMarker }),
+      setSelectedMarker: (selectedMarker) => set({ selectedMarker }),
 
-  setGeolocation: (geolocation) => set({ geolocation }),
-  setLayerVisibility: (layers) =>
-    set((state) => ({
-      layerVisibility: { ...state.layerVisibility, ...layers },
-    })),
+      setGeolocation: (geolocation) => set({ geolocation }),
+      setLayerVisibility: (layers) =>
+        set((state) => ({
+          layerVisibility: { ...state.layerVisibility, ...layers },
+        })),
 
-  setToolMode: (toolMode) =>
-    set({ toolMode, measurePoints: [], measureDistance: null }),
-  addMeasurePoint: (point) =>
-    set((state) => ({ measurePoints: [...state.measurePoints, point] })),
-  clearMeasurePoints: () => set({ measurePoints: [], measureDistance: null }),
-  setMeasureDistance: (measureDistance) => set({ measureDistance }),
-  setClusteringEnabled: (clusteringEnabled) => set({ clusteringEnabled }),
-}))
+      setToolMode: (toolMode) =>
+        set({ toolMode, measurePoints: [], measureDistance: null }),
+      addMeasurePoint: (point) =>
+        set((state) => ({ measurePoints: [...state.measurePoints, point] })),
+      clearMeasurePoints: () => set({ measurePoints: [], measureDistance: null }),
+      setMeasureDistance: (measureDistance) => set({ measureDistance }),
+      setClusteringEnabled: (clusteringEnabled) => set({ clusteringEnabled }),
+      setBuildingExtrusion: (buildingExtrusion) => set({ buildingExtrusion }),
+    }),
+    {
+      name: 'maplibre-explorer-prefs',
+      partialize: (state) => ({
+        sidebarOpen: state.sidebarOpen,
+        clusteringEnabled: state.clusteringEnabled,
+        layerVisibility: state.layerVisibility,
+      }),
+    }
+  )
+)

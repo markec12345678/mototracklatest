@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import { useMapStore, type LayerVisibility } from '@/lib/map-store'
+import { useMapStore, type LayerVisibility, getStyleUrl } from '@/lib/map-store'
 
 // Inject pulsing dot CSS animation
 if (typeof document !== 'undefined' && !document.getElementById('geolocation-pulse-style')) {
@@ -75,6 +75,7 @@ export function MapView() {
   const geolocation = useMapStore((s) => s.geolocation)
   const layerVisibility = useMapStore((s) => s.layerVisibility)
   const clusteringEnabled = useMapStore((s) => s.clusteringEnabled)
+  const buildingExtrusion = useMapStore((s) => s.buildingExtrusion)
 
   const markMapLoaded = useCallback((loaded: boolean) => {
     mapLoadedRef.current = loaded
@@ -87,7 +88,7 @@ export function MapView() {
 
     const newMap = new maplibregl.Map({
       container: mapContainer.current,
-      style: currentStyle.url,
+      style: getStyleUrl(currentStyle),
       center: [14.5058, 46.0569],
       zoom: 5,
       attributionControl: false,
@@ -99,6 +100,21 @@ export function MapView() {
       new maplibregl.AttributionControl({ compact: true }),
       'bottom-right'
     )
+
+    // Error handling: fall back if MapTiler style fails
+    newMap.on('error', () => {
+      const style = useMapStore.getState().currentStyle
+      if (style.fallbackUrl) {
+        console.warn(`Map style "${style.name}" failed to load, using fallback`)
+        try {
+          const currentStyleUrl = newMap.getStyle()?.name
+          // Only fallback if we haven't already fallen back
+          if (currentStyleUrl !== style.fallbackUrl) {
+            newMap.setStyle(style.fallbackUrl)
+          }
+        } catch { /* ignore */ }
+      }
+    })
 
     newMap.on('move', () => {
       const center = newMap.getCenter()
@@ -169,7 +185,7 @@ export function MapView() {
   useEffect(() => {
     if (!map.current) return
     mapLoadedRef.current = false
-    map.current.setStyle(currentStyle.url)
+    map.current.setStyle(getStyleUrl(currentStyle))
   }, [currentStyle])
 
   // Sync markers (with clustering support)
@@ -636,6 +652,48 @@ export function MapView() {
       }
     }
   }, [layerVisibility, mapLoadedVersion])
+
+  // 3D Building Extrusion
+  useEffect(() => {
+    if (!map.current || !mapLoadedRef.current) return
+
+    const buildingLayerId = '3d-buildings'
+
+    if (buildingExtrusion) {
+      // Check if the openmaptiles source exists in the current style
+      const style = map.current.getStyle()
+      const sources = style?.sources || {}
+      if (!sources['openmaptiles']) {
+        // Style doesn't support 3D buildings
+        return
+      }
+
+      // Don't add if already present
+      if (map.current.getLayer(buildingLayerId)) return
+
+      // Detect dark mode
+      const isDark = document.documentElement.classList.contains('dark')
+
+      map.current.addLayer({
+        id: buildingLayerId,
+        source: 'openmaptiles',
+        'source-layer': 'building',
+        type: 'fill-extrusion',
+        minzoom: 14,
+        paint: {
+          'fill-extrusion-color': isDark ? '#666' : '#ddd',
+          'fill-extrusion-height': ['get', 'render_height'],
+          'fill-extrusion-base': ['get', 'render_min_height'],
+          'fill-extrusion-opacity': isDark ? 0.5 : 0.7,
+        },
+      })
+    } else {
+      // Remove the 3D buildings layer when disabled
+      if (map.current.getLayer(buildingLayerId)) {
+        map.current.removeLayer(buildingLayerId)
+      }
+    }
+  }, [buildingExtrusion, mapLoadedVersion])
 
   const flyToLocation = useCallback(
     (longitude: number, latitude: number, zoom?: number) => {

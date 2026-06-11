@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import { useMapStore, MAP_STYLES } from '@/lib/map-store'
+import { useMapStore, getMinimapStyleUrl } from '@/lib/map-store'
 import { Minimize2, Maximize2 } from 'lucide-react'
 
 export function MiniMap() {
@@ -16,14 +16,10 @@ export function MiniMap() {
   const zoom = useMapStore((s) => s.zoom)
   const currentStyle = useMapStore((s) => s.currentStyle)
 
-  // Pick a matching minimap style (prefer positron for simplicity)
+  // Pick a matching minimap style based on current theme
   const getMinimapStyle = useCallback(() => {
-    const positron = MAP_STYLES.find((s) => s.id === 'positron')
-    if (currentStyle.category === 'dark') {
-      const dark = MAP_STYLES.find((s) => s.id === 'dark')
-      return dark?.url || positron?.url || currentStyle.url
-    }
-    return positron?.url || currentStyle.url
+    const isDark = currentStyle.category === 'dark'
+    return getMinimapStyleUrl(isDark)
   }, [currentStyle])
 
   // Initialize minimap

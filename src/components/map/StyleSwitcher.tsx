@@ -1,19 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import { Layers, Check, Palette } from 'lucide-react'
+import { Check, Palette } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { useMapStore, MAP_STYLES, type MapStyleOption } from '@/lib/map-store'
+import { useMapStore, MAP_STYLES } from '@/lib/map-store'
 import { cn } from '@/lib/utils'
-
-const stylePreviews: Record<string, { gradient: string; emoji: string }> = {
-  streets: { gradient: 'from-emerald-400 to-cyan-400', emoji: '🏙️' },
-  dark: { gradient: 'from-gray-700 to-gray-900', emoji: '🌙' },
-  voyager: { gradient: 'from-orange-400 to-rose-400', emoji: '🗺️' },
-  positron: { gradient: 'from-gray-100 to-gray-200', emoji: '📐' },
-  osm: { gradient: 'from-green-400 to-emerald-400', emoji: '🌍' },
-}
 
 export function StyleSwitcher() {
   const { currentStyle, setCurrentStyle } = useMapStore()
@@ -31,7 +23,7 @@ export function StyleSwitcher() {
           <Palette className="h-4 w-4" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-72 p-2 rounded-xl" side="bottom" align="end">
+      <PopoverContent className="w-80 p-2 rounded-xl" side="bottom" align="end">
         <div className="space-y-1">
           <div className="px-2 py-1.5">
             <h4 className="font-semibold text-sm flex items-center gap-2">
@@ -39,12 +31,12 @@ export function StyleSwitcher() {
               Map Style
             </h4>
             <p className="text-[10px] text-muted-foreground mt-0.5">
-              Choose a base map style
+              Premium maps by MapTiler + OpenStreetMap
             </p>
           </div>
-          <div className="grid gap-1">
+          <div className="grid grid-cols-2 gap-1 max-h-[340px] overflow-y-auto pr-0.5">
             {MAP_STYLES.map((style) => {
-              const preview = stylePreviews[style.id] || stylePreviews.streets
+              const preview = style.preview
               return (
                 <button
                   key={style.id}
@@ -53,7 +45,7 @@ export function StyleSwitcher() {
                     setOpen(false)
                   }}
                   className={cn(
-                    'w-full flex items-center gap-3 px-2.5 py-2 rounded-xl border text-left transition-all group',
+                    'flex flex-col items-center gap-1.5 p-2 rounded-xl border text-center transition-all group',
                     currentStyle.id === style.id
                       ? 'bg-primary/5 border-primary/20 shadow-sm'
                       : 'hover:bg-accent border-transparent'
@@ -61,21 +53,22 @@ export function StyleSwitcher() {
                 >
                   <div
                     className={cn(
-                      'w-10 h-10 rounded-xl bg-gradient-to-br flex items-center justify-center text-sm shadow-sm group-hover:shadow-md transition-shadow',
+                      'w-full h-12 rounded-lg bg-gradient-to-br flex items-center justify-center text-lg shadow-sm group-hover:shadow-md transition-all group-hover:scale-[1.03]',
                       preview.gradient
                     )}
                   >
                     <span>{preview.emoji}</span>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium">{style.name}</p>
-                    <p className="text-[10px] text-muted-foreground capitalize">
-                      {style.category}
+                  <div className="w-full min-w-0">
+                    <p className="text-xs font-medium truncate">{style.name}</p>
+                    <p className="text-[9px] text-muted-foreground capitalize">
+                      {style.provider === 'maptiler' ? 'MapTiler' : style.provider === 'carto' ? 'CARTO' : 'OSM'}
+                      {style.category !== 'standard' && ` · ${style.category}`}
                     </p>
                   </div>
                   {currentStyle.id === style.id && (
-                    <div className="w-5 h-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center">
-                      <Check className="h-3 w-3" />
+                    <div className="absolute top-1 right-1 w-4 h-4 rounded-full bg-primary text-primary-foreground flex items-center justify-center">
+                      <Check className="h-2.5 w-2.5" />
                     </div>
                   )}
                 </button>

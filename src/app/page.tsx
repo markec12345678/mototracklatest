@@ -16,7 +16,8 @@ import { KeyboardShortcutsDialog } from '@/components/map/KeyboardShortcutsDialo
 import { MiniMap } from '@/components/map/MiniMap'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { useMapStore, type ToolMode } from '@/lib/map-store'
+import { useMapStore, type ToolMode, MAP_STYLES } from '@/lib/map-store'
+import { toast } from 'sonner'
 import {
   Navigation,
   MapPin,
@@ -30,14 +31,75 @@ import {
   Maximize2,
   Minimize2,
   Keyboard,
+  Share2,
 } from 'lucide-react'
 
 export default function Home() {
-  const { toolMode, sidebarOpen, center, zoom, setSidebarOpen, setToolMode } = useMapStore()
+  const { toolMode, sidebarOpen, center, zoom, currentStyle, setSidebarOpen, setToolMode, setCenter, setZoom, setCurrentStyle } = useMapStore()
   const [addDialogOpen, setAddDialogOpen] = useState(false)
   const [shortcutsOpen, setShortcutsOpen] = useState(false)
   const [showWelcome, setShowWelcome] = useState(true)
   const [isFullscreen, setIsFullscreen] = useState(false)
+
+  // Restore map state from URL params on page load
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const lat = params.get('lat')
+    const lng = params.get('lng')
+    const zoomParam = params.get('zoom')
+    const styleParam = params.get('style')
+
+    if (lat && lng) {
+      const latNum = parseFloat(lat)
+      const lngNum = parseFloat(lng)
+      if (!isNaN(latNum) && !isNaN(lngNum)) {
+        setCenter([lngNum, latNum])
+        // Fly to the position after map loads
+        setTimeout(() => {
+          const flyTo = (window as unknown as Record<string, (lng: number, lat: number, z?: number) => void>).__mapFlyTo
+          if (flyTo) {
+            flyTo(lngNum, latNum, zoomParam ? parseFloat(zoomParam) : undefined)
+          }
+        }, 500)
+      }
+    }
+    if (zoomParam) {
+      const zoomNum = parseFloat(zoomParam)
+      if (!isNaN(zoomNum)) {
+        setZoom(zoomNum)
+      }
+    }
+    if (styleParam) {
+      const found = MAP_STYLES.find((s) => s.id === styleParam)
+      if (found) {
+        setCurrentStyle(found)
+      }
+    }
+  }, [setCenter, setZoom, setCurrentStyle])
+
+  // Handle share URL
+  const handleShare = useCallback(() => {
+    const [lng, lat] = center
+    const params = new URLSearchParams({
+      lat: lat.toFixed(5),
+      lng: lng.toFixed(5),
+      zoom: zoom.toFixed(2),
+      style: currentStyle.id,
+    })
+    const shareUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      toast.success('Share URL copied to clipboard!')
+    }).catch(() => {
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea')
+      textArea.value = shareUrl
+      document.body.appendChild(textArea)
+      textArea.select()
+      document.execCommand('copy')
+      document.body.removeChild(textArea)
+      toast.success('Share URL copied to clipboard!')
+    })
+  }, [center, zoom, currentStyle])
 
   // Dismiss welcome after 10 seconds
   useEffect(() => {
@@ -226,6 +288,16 @@ export default function Home() {
           <Button
             variant="outline"
             size="icon"
+            className="bg-background/90 backdrop-blur-md shadow-lg hover:shadow-xl h-10 w-10 rounded-xl border-border/50 transition-all hover:scale-105"
+            onClick={handleShare}
+            title="Share Map View"
+            aria-label="Share map view"
+          >
+            <Share2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
             className="hidden sm:flex bg-background/90 backdrop-blur-md shadow-lg hover:shadow-xl h-10 w-10 rounded-xl border-border/50 transition-all hover:scale-105"
             onClick={() =>
               window.open('https://github.com/maplibre/maplibre-native', '_blank')
@@ -340,13 +412,14 @@ export default function Home() {
                   </p>
                   <div className="flex gap-1.5 mt-3 flex-wrap">
                     {[
-                      { label: '5 Map Styles', emoji: '🗺️', bg: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400' },
+                      { label: '8 Map Styles', emoji: '🗺️', bg: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400' },
+                      { label: 'Satellite', emoji: '🛰️', bg: 'bg-teal-500/10 text-teal-700 dark:text-teal-400' },
                       { label: 'Save Locations', emoji: '📍', bg: 'bg-red-500/10 text-red-700 dark:text-red-400' },
                       { label: 'Measure', emoji: '📏', bg: 'bg-amber-500/10 text-amber-700 dark:text-amber-400' },
                       { label: 'Geocoding', emoji: '🔍', bg: 'bg-cyan-500/10 text-cyan-700 dark:text-cyan-400' },
-                      { label: 'Export GeoJSON', emoji: '📦', bg: 'bg-purple-500/10 text-purple-700 dark:text-purple-400' },
+                      { label: 'Layer Control', emoji: '🏗️', bg: 'bg-orange-500/10 text-orange-700 dark:text-orange-400' },
                       { label: 'Dark Mode', emoji: '🌙', bg: 'bg-indigo-500/10 text-indigo-700 dark:text-indigo-400' },
-                      { label: 'Shortcuts', emoji: '⌨️', bg: 'bg-teal-500/10 text-teal-700 dark:text-teal-400' },
+                      { label: 'Shortcuts', emoji: '⌨️', bg: 'bg-violet-500/10 text-violet-700 dark:text-violet-400' },
                     ].map((feature) => (
                       <Badge
                         key={feature.label}
@@ -391,7 +464,7 @@ export default function Home() {
             </div>
             <span className="font-medium hidden sm:inline">MapLibre Explorer</span>
             <span className="text-border hidden sm:inline">|</span>
-            <span className="hidden md:inline">Powered by MapLibre GL JS</span>
+            <span className="hidden md:inline">Powered by MapLibre GL JS & MapTiler</span>
           </div>
           <div className="flex items-center gap-1.5 md:gap-2">
             <a

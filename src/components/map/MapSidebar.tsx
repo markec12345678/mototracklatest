@@ -26,6 +26,7 @@ import {
   Keyboard,
   Circle,
   Minus,
+  Building,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -361,7 +362,7 @@ export function MapSidebar() {
       <div
         className={cn(
           'hidden md:flex absolute left-0 top-0 bottom-0 z-20 transition-all duration-300 ease-in-out',
-          sidebarOpen ? 'w-80' : 'w-0'
+          sidebarOpen ? 'w-80' : 'w-0 overflow-hidden'
         )}
       >
         {/* Toggle button */}
@@ -369,7 +370,7 @@ export function MapSidebar() {
           onClick={() => setSidebarOpen(!sidebarOpen)}
           className={cn(
             'absolute z-30 bg-background/95 backdrop-blur-sm border rounded-full p-1.5 shadow-lg hover:bg-accent transition-all duration-200 hover:scale-110',
-            sidebarOpen ? '-right-3 top-4' : 'right-0 top-4 translate-x-full'
+            sidebarOpen ? '-right-3 top-4' : 'right-3 top-4'
           )}
           aria-label={sidebarOpen ? 'Close sidebar' : 'Open sidebar'}
         >
@@ -401,11 +402,11 @@ export function MapSidebar() {
         </SheetContent>
       </Sheet>
 
-      {/* Mobile toggle button - visible only on mobile when sidebar is closed */}
+      {/* Mobile toggle button - positioned below search bar to avoid overlap */}
       {!sidebarOpen && (
         <button
           onClick={() => setSidebarOpen(true)}
-          className="md:hidden absolute left-3 top-3 z-20 bg-background/95 backdrop-blur-sm border rounded-xl p-2 shadow-lg hover:bg-accent transition-all duration-200 hover:scale-105"
+          className="md:hidden absolute left-3 top-[58px] z-20 bg-background/95 backdrop-blur-sm border rounded-xl p-2 shadow-lg hover:bg-accent transition-all duration-200 hover:scale-105"
           aria-label="Open sidebar"
         >
           <PanelLeft className="h-4 w-4" />
@@ -581,7 +582,7 @@ function LocationsTab({
 }
 
 function LayersTab() {
-  const { layerVisibility, setLayerVisibility, clusteringEnabled, setClusteringEnabled } = useMapStore()
+  const { layerVisibility, setLayerVisibility, clusteringEnabled, setClusteringEnabled, buildingExtrusion, setBuildingExtrusion } = useMapStore()
 
   const layerConfig = [
     { id: 'water' as const, name: 'Water Bodies', icon: '🌊', color: '#06b6d4' },
@@ -592,7 +593,6 @@ function LayersTab() {
   ]
 
   const [terrain3D, setTerrain3D] = useState(false)
-  const [show3DBuildings, setShow3DBuildings] = useState(false)
 
   const visibleCount = Object.values(layerVisibility).filter(Boolean).length
 
@@ -672,7 +672,7 @@ function LayersTab() {
             </div>
             <div className="flex items-center justify-between px-3 py-2 rounded-xl border bg-background">
               <div className="flex items-center gap-2">
-                <Globe2 className="h-4 w-4 text-muted-foreground" />
+                <Building className="h-4 w-4 text-muted-foreground" />
                 <div>
                   <p className="text-sm">3D Buildings</p>
                   <p className="text-[10px] text-muted-foreground">
@@ -681,8 +681,8 @@ function LayersTab() {
                 </div>
               </div>
               <Switch
-                checked={show3DBuildings}
-                onCheckedChange={setShow3DBuildings}
+                checked={buildingExtrusion}
+                onCheckedChange={setBuildingExtrusion}
                 aria-label="Toggle 3D buildings"
               />
             </div>
