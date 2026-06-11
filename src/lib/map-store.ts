@@ -210,6 +210,12 @@ interface MapState {
   // 3D Building extrusion
   buildingExtrusion: boolean
 
+  // 3D Terrain exaggeration
+  terrainExaggeration: number
+
+  // Weather overlay
+  weatherEnabled: boolean
+
   // Actions
   setCenter: (center: [number, number]) => void
   setZoom: (zoom: number) => void
@@ -240,6 +246,8 @@ interface MapState {
   deleteRoute: (id: string) => void
   setClusteringEnabled: (enabled: boolean) => void
   setBuildingExtrusion: (enabled: boolean) => void
+  setTerrainExaggeration: (exaggeration: number) => void
+  setWeatherEnabled: (enabled: boolean) => void
 }
 
 export const useMapStore = create<MapState>()(
@@ -272,6 +280,8 @@ export const useMapStore = create<MapState>()(
 
       clusteringEnabled: true,
       buildingExtrusion: false,
+      terrainExaggeration: 1.5,
+      weatherEnabled: false,
 
       setCenter: (center) => set({ center }),
       setZoom: (zoom) => set({ zoom }),
@@ -360,12 +370,15 @@ export const useMapStore = create<MapState>()(
         })),
       setClusteringEnabled: (clusteringEnabled) => set({ clusteringEnabled }),
       setBuildingExtrusion: (buildingExtrusion) => set({ buildingExtrusion }),
+      setTerrainExaggeration: (terrainExaggeration) => set({ terrainExaggeration }),
+      setWeatherEnabled: (weatherEnabled) => set({ weatherEnabled }),
     }),
     {
       name: 'maplibre-explorer-prefs',
       partialize: (state) => ({
         sidebarOpen: state.sidebarOpen,
         clusteringEnabled: state.clusteringEnabled,
+        weatherEnabled: state.weatherEnabled,
         layerVisibility: state.layerVisibility,
       }),
     }

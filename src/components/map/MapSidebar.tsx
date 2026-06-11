@@ -26,7 +26,6 @@ import {
   Keyboard,
   Circle,
   Minus,
-  Building,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -597,7 +596,7 @@ function LocationsTab({
 }
 
 function LayersTab() {
-  const { layerVisibility, setLayerVisibility, clusteringEnabled, setClusteringEnabled, buildingExtrusion, setBuildingExtrusion } = useMapStore()
+  const { layerVisibility, setLayerVisibility, clusteringEnabled, setClusteringEnabled, buildingExtrusion, setBuildingExtrusion, terrainExaggeration, setTerrainExaggeration, weatherEnabled, setWeatherEnabled } = useMapStore()
 
   const layerConfig = [
     { id: 'water' as const, name: 'Water Bodies', icon: '🌊', color: '#06b6d4' },
@@ -606,8 +605,6 @@ function LayersTab() {
     { id: 'parks' as const, name: 'Parks & Land Use', icon: '🌳', color: '#22c55e' },
     { id: 'labels' as const, name: 'Labels & Places', icon: '🏷️', color: '#f97316' },
   ]
-
-  const [terrain3D, setTerrain3D] = useState(false)
 
   const visibleCount = Object.values(layerVisibility).filter(Boolean).length
 
@@ -666,40 +663,50 @@ function LayersTab() {
         <div>
           <h3 className="text-sm font-semibold flex items-center gap-2 mb-2">
             <Mountain className="h-3.5 w-3.5 text-muted-foreground" />
-            3D Options
+            3D View
           </h3>
           <div className="space-y-3">
-            <div className="flex items-center justify-between px-3 py-2 rounded-xl border bg-background">
-              <div className="flex items-center gap-2">
-                <Mountain className="h-4 w-4 text-muted-foreground" />
-                <div>
-                  <p className="text-sm">3D Terrain</p>
-                  <p className="text-[10px] text-muted-foreground">
-                    Elevation rendering
-                  </p>
+            <div className="px-3 py-2 rounded-xl border bg-background">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Mountain className="h-4 w-4 text-muted-foreground" />
+                  <div>
+                    <p className="text-sm">3D Terrain &amp; Buildings</p>
+                    <p className="text-[10px] text-muted-foreground">
+                      Elevation + extruded buildings
+                    </p>
+                  </div>
                 </div>
+                <Switch
+                  checked={buildingExtrusion}
+                  onCheckedChange={setBuildingExtrusion}
+                  aria-label="Toggle 3D view"
+                />
               </div>
-              <Switch
-                checked={terrain3D}
-                onCheckedChange={setTerrain3D}
-                aria-label="Toggle 3D terrain"
-              />
-            </div>
-            <div className="flex items-center justify-between px-3 py-2 rounded-xl border bg-background">
-              <div className="flex items-center gap-2">
-                <Building className="h-4 w-4 text-muted-foreground" />
-                <div>
-                  <p className="text-sm">3D Buildings</p>
-                  <p className="text-[10px] text-muted-foreground">
-                    Extruded building footprints
-                  </p>
+              {buildingExtrusion && (
+                <div className="mt-3 pt-2 border-t border-border/50">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-xs text-muted-foreground">Terrain exaggeration</span>
+                    <span className="text-xs font-mono tabular-nums text-muted-foreground">
+                      {terrainExaggeration.toFixed(1)}×
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    min={1}
+                    max={3}
+                    step={0.1}
+                    value={terrainExaggeration}
+                    onChange={(e) => setTerrainExaggeration(parseFloat(e.target.value))}
+                    className="w-full h-1.5 rounded-full appearance-none cursor-pointer bg-accent accent-primary"
+                    aria-label="Terrain exaggeration"
+                  />
+                  <div className="flex justify-between mt-0.5">
+                    <span className="text-[9px] text-muted-foreground/60">1×</span>
+                    <span className="text-[9px] text-muted-foreground/60">3×</span>
+                  </div>
                 </div>
-              </div>
-              <Switch
-                checked={buildingExtrusion}
-                onCheckedChange={setBuildingExtrusion}
-                aria-label="Toggle 3D buildings"
-              />
+              )}
             </div>
           </div>
         </div>
@@ -738,30 +745,66 @@ function LayersTab() {
             Overlay Data
           </h3>
           <div className="space-y-1.5">
-            {[
-              { id: 'weather', name: 'Weather', icon: '🌤️', desc: 'Real-time weather' },
-              { id: 'traffic', name: 'Traffic', icon: '🚗', desc: 'Live traffic flow' },
-              { id: 'earthquakes', name: 'Earthquakes', icon: '🌍', desc: 'Seismic activity' },
-            ].map((overlay) => (
-              <div
-                key={overlay.id}
-                className="flex items-center gap-3 px-3 py-2 rounded-xl border border-dashed text-muted-foreground"
-              >
-                <span className="text-base">{overlay.icon}</span>
-                <div className="flex-1">
-                  <p className="text-sm">{overlay.name}</p>
-                  <p className="text-[10px] text-muted-foreground/70">
-                    {overlay.desc}
-                  </p>
-                </div>
-                <Badge
-                  variant="outline"
-                  className="text-[9px] px-1.5 py-0 h-4"
-                >
-                  Soon
-                </Badge>
+            {/* Weather overlay - real toggle */}
+            <div
+              className={cn(
+                'flex items-center gap-3 px-3 py-2 rounded-xl border transition-all duration-200',
+                weatherEnabled
+                  ? 'bg-background border-border/50 shadow-sm'
+                  : 'border-dashed text-muted-foreground hover:border-border'
+              )}
+            >
+              <span className="text-base">🌤️</span>
+              <div className="flex-1">
+                <p className="text-sm">Weather</p>
+                <p className="text-[10px] text-muted-foreground/70">
+                  Real-time weather
+                </p>
               </div>
-            ))}
+              <Switch
+                checked={weatherEnabled}
+                onCheckedChange={setWeatherEnabled}
+                aria-label="Toggle weather overlay"
+              />
+            </div>
+
+            {/* Traffic overlay - coming soon */}
+            <div
+              className="flex items-center gap-3 px-3 py-2 rounded-xl border border-dashed text-muted-foreground"
+            >
+              <span className="text-base">🚗</span>
+              <div className="flex-1">
+                <p className="text-sm">Traffic</p>
+                <p className="text-[10px] text-muted-foreground/70">
+                  Live traffic flow
+                </p>
+              </div>
+              <Badge
+                variant="outline"
+                className="text-[9px] px-1.5 py-0 h-4"
+              >
+                Soon
+              </Badge>
+            </div>
+
+            {/* Earthquakes overlay - coming soon */}
+            <div
+              className="flex items-center gap-3 px-3 py-2 rounded-xl border border-dashed text-muted-foreground"
+            >
+              <span className="text-base">🌍</span>
+              <div className="flex-1">
+                <p className="text-sm">Earthquakes</p>
+                <p className="text-[10px] text-muted-foreground/70">
+                  Seismic activity
+                </p>
+              </div>
+              <Badge
+                variant="outline"
+                className="text-[9px] px-1.5 py-0 h-4"
+              >
+                Soon
+              </Badge>
+            </div>
           </div>
         </div>
       </div>
@@ -784,6 +827,7 @@ function ToolsTab({
   clearMeasurePoints: () => void
   onExportGeoJSON: () => void
 }) {
+  const center = useMapStore((s) => s.center)
   return (
     <ScrollArea className="h-full">
       <div className="p-3 space-y-4">
@@ -958,37 +1002,64 @@ function ToolsTab({
 
         <Separator />
 
-        {/* Quick Bookmarks */}
+        {/* Quick Bookmarks - European Cities */}
         <div>
           <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
             <Star className="h-3.5 w-3.5 text-muted-foreground" />
-            Quick Bookmarks
+            Popular Destinations
           </h4>
-          <div className="grid grid-cols-2 gap-1.5">
+          <div className="space-y-1">
             {[
-              { name: 'Paris', lat: 48.8566, lng: 2.3522, emoji: '🗼', color: '#3b82f6' },
-              { name: 'London', lat: 51.5074, lng: -0.1278, emoji: '🎡', color: '#8b5cf6' },
-              { name: 'New York', lat: 40.7128, lng: -74.006, emoji: '🗽', color: '#22c55e' },
-              { name: 'Tokyo', lat: 35.6762, lng: 139.6503, emoji: '⛩️', color: '#ef4444' },
-              { name: 'Sydney', lat: -33.8688, lng: 151.2093, emoji: '🎭', color: '#f59e0b' },
-              { name: 'Dubai', lat: 25.2048, lng: 55.2708, emoji: '🏙️', color: '#06b6d4' },
-            ].map((city) => (
-              <button
-                key={city.name}
-                onClick={() => {
-                  const flyTo = (window as unknown as Record<string, (lng: number, lat: number, z?: number) => void>).__mapFlyTo
-                  if (flyTo) flyTo(city.lng, city.lat, 12)
-                }}
-                className="flex items-center gap-2 px-2.5 py-2 rounded-xl border transition-all text-left hover:shadow-sm hover:scale-[1.02] active:scale-[0.98]"
-                style={{
-                  borderColor: city.color + '30',
-                  backgroundColor: city.color + '08',
-                }}
-              >
-                <span className="text-sm">{city.emoji}</span>
-                <span className="text-xs font-medium">{city.name}</span>
-              </button>
-            ))}
+              { name: 'Ljubljana', lat: 46.0569, lng: 14.5058, flag: '🇸🇮', color: '#22c55e' },
+              { name: 'Vienna', lat: 48.2082, lng: 16.3738, flag: '🇦🇹', color: '#ef4444' },
+              { name: 'Venice', lat: 45.4408, lng: 12.3155, flag: '🇮🇹', color: '#06b6d4' },
+              { name: 'Munich', lat: 48.1351, lng: 11.5820, flag: '🇩🇪', color: '#f59e0b' },
+              { name: 'Zagreb', lat: 45.8150, lng: 15.9819, flag: '🇭🇷', color: '#3b82f6' },
+              { name: 'Budapest', lat: 47.4979, lng: 19.0402, flag: '🇭🇺', color: '#8b5cf6' },
+              { name: 'Prague', lat: 50.0755, lng: 14.4378, flag: '🇨🇿', color: '#f97316' },
+              { name: 'Paris', lat: 48.8566, lng: 2.3522, flag: '🇫🇷', color: '#ec4899' },
+            ].map((city) => {
+              const distance = haversineDistance(city.lat, city.lng, center[1], center[0])
+              const isNearby = distance < 500
+              return (
+                <div
+                  key={city.name}
+                  className="group flex items-center gap-2.5 px-2.5 py-2 rounded-xl border transition-all duration-200 hover:shadow-sm hover:scale-[1.02] active:scale-[0.98]"
+                  style={{
+                    borderColor: city.color + '30',
+                    backgroundColor: city.color + '08',
+                  }}
+                >
+                  <span className="text-base leading-none">{city.flag}</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-xs font-medium truncate">{city.name}</span>
+                      {isNearby && (
+                        <Badge
+                          variant="secondary"
+                          className="text-[8px] px-1 py-0 h-3.5 bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-0 shrink-0"
+                        >
+                          Nearby
+                        </Badge>
+                      )}
+                    </div>
+                    <span className="text-[10px] text-muted-foreground font-mono">
+                      {city.lat.toFixed(2)}°, {city.lng.toFixed(2)}°
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => {
+                      const flyTo = (window as unknown as Record<string, (lng: number, lat: number, z?: number) => void>).__mapFlyTo
+                      if (flyTo) flyTo(city.lng, city.lat, 12)
+                    }}
+                    className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg hover:bg-background/80 transition-all shrink-0"
+                    aria-label={`Fly to ${city.name}`}
+                  >
+                    <Navigation className="h-3 w-3" style={{ color: city.color }} />
+                  </button>
+                </div>
+              )
+            })}
           </div>
         </div>
 

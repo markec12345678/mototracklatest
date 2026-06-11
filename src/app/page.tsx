@@ -14,6 +14,7 @@ import { MapStatsPanel } from '@/components/map/MapStatsPanel'
 import { CompassIndicator } from '@/components/map/CompassIndicator'
 import { KeyboardShortcutsDialog } from '@/components/map/KeyboardShortcutsDialog'
 import { MiniMap } from '@/components/map/MiniMap'
+import { WeatherPanel } from '@/components/map/WeatherPanel'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useMapStore, type ToolMode, MAP_STYLES } from '@/lib/map-store'
@@ -352,9 +353,47 @@ export default function Home() {
         </Badge>
       </div>
 
+      {/* Mobile bottom toolbar */}
+      <div className="md:hidden absolute bottom-12 left-3 right-3 z-10">
+        <div className="flex items-center justify-center gap-2 bg-background/90 backdrop-blur-md border border-border/50 rounded-2xl shadow-lg p-2">
+          {([
+            { mode: 'navigate' as ToolMode, icon: <Navigation className="h-4 w-4" />, label: 'Navigate', activeClass: 'bg-emerald-500 text-white' },
+            { mode: 'mark' as ToolMode, icon: <MapPin className="h-4 w-4" />, label: 'Pin', activeClass: 'bg-red-500 text-white' },
+            { mode: 'measure' as ToolMode, icon: <Ruler className="h-4 w-4" />, label: 'Measure', activeClass: 'bg-amber-500 text-white' },
+            { mode: 'directions' as ToolMode, icon: <Crosshair className="h-4 w-4" />, label: 'Route', activeClass: 'bg-cyan-500 text-white' },
+          ]).map((tool) => (
+            <button
+              key={tool.mode}
+              onClick={() => setToolMode(tool.mode)}
+              className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl text-xs transition-all ${
+                toolMode === tool.mode ? tool.activeClass + ' shadow-md' : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+              }`}
+              aria-label={`${tool.label} tool`}
+            >
+              {tool.icon}
+              <span className="text-[9px] font-medium">{tool.label}</span>
+            </button>
+          ))}
+          <div className="w-px h-6 bg-border mx-1" />
+          <button
+            onClick={handleLocateMe}
+            className="flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl text-xs text-muted-foreground hover:text-foreground hover:bg-accent transition-all"
+            aria-label="My location"
+          >
+            <LocateFixed className="h-4 w-4" />
+            <span className="text-[9px] font-medium">Locate</span>
+          </button>
+        </div>
+      </div>
+
       {/* Map Stats Panel - right side above footer (desktop only) */}
       <div className="hidden md:block absolute bottom-12 right-5 z-10">
         <MapStatsPanel />
+      </div>
+
+      {/* Weather Panel - left side above footer (desktop only) */}
+      <div className="hidden md:block absolute bottom-12 z-10" style={{ left: sidebarOpen ? '332px' : '20px', transition: 'left 0.3s ease-in-out' }}>
+        <WeatherPanel />
       </div>
 
       {/* Minimap - bottom right above MapStatsPanel (desktop only) */}
@@ -416,12 +455,12 @@ export default function Home() {
                   <div className="flex gap-1.5 mt-3 flex-wrap">
                     {[
                       { label: '8 Map Styles', emoji: '🗺️', bg: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400' },
+                      { label: '3D Terrain', emoji: '⛰️', bg: 'bg-amber-500/10 text-amber-700 dark:text-amber-400' },
                       { label: 'Satellite', emoji: '🛰️', bg: 'bg-teal-500/10 text-teal-700 dark:text-teal-400' },
-                      { label: 'Save Locations', emoji: '📍', bg: 'bg-red-500/10 text-red-700 dark:text-red-400' },
-                      { label: 'Measure', emoji: '📏', bg: 'bg-amber-500/10 text-amber-700 dark:text-amber-400' },
-                      { label: 'Geocoding', emoji: '🔍', bg: 'bg-cyan-500/10 text-cyan-700 dark:text-cyan-400' },
-                      { label: 'Layer Control', emoji: '🏗️', bg: 'bg-orange-500/10 text-orange-700 dark:text-orange-400' },
-                      { label: 'Dark Mode', emoji: '🌙', bg: 'bg-indigo-500/10 text-indigo-700 dark:text-indigo-400' },
+                      { label: 'Weather', emoji: '🌤️', bg: 'bg-sky-500/10 text-sky-700 dark:text-sky-400' },
+                      { label: 'Save Places', emoji: '📍', bg: 'bg-red-500/10 text-red-700 dark:text-red-400' },
+                      { label: 'Measure', emoji: '📏', bg: 'bg-orange-500/10 text-orange-700 dark:text-orange-400' },
+                      { label: 'Share View', emoji: '🔗', bg: 'bg-cyan-500/10 text-cyan-700 dark:text-cyan-400' },
                       { label: 'Shortcuts', emoji: '⌨️', bg: 'bg-violet-500/10 text-violet-700 dark:text-violet-400' },
                     ].map((feature) => (
                       <Badge
@@ -467,7 +506,7 @@ export default function Home() {
             </div>
             <span className="font-medium hidden sm:inline">MapLibre Explorer</span>
             <span className="text-border hidden sm:inline">|</span>
-            <span className="hidden md:inline">Powered by MapLibre GL JS & MapTiler</span>
+            <span className="hidden md:inline">MapLibre GL JS · MapTiler · Open-Meteo</span>
           </div>
           <div className="flex items-center gap-1.5 md:gap-2">
             <a
@@ -488,7 +527,7 @@ export default function Home() {
               GitHub
             </a>
             <span className="text-border hidden md:inline">|</span>
-            <span>&copy; OSM</span>
+            <span>© OpenStreetMap</span>
           </div>
         </div>
       </footer>

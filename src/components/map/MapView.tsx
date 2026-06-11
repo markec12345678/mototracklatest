@@ -78,6 +78,8 @@ export function MapView() {
   const layerVisibility = useMapStore((s) => s.layerVisibility)
   const clusteringEnabled = useMapStore((s) => s.clusteringEnabled)
   const buildingExtrusion = useMapStore((s) => s.buildingExtrusion)
+  const terrainExaggeration = useMapStore((s) => s.terrainExaggeration)
+  const toolMode = useMapStore((s) => s.toolMode)
 
   const markMapLoaded = useCallback((loaded: boolean) => {
     mapLoadedRef.current = loaded
@@ -846,47 +848,100 @@ export function MapView() {
     }
   }, [layerVisibility, mapLoadedVersion])
 
-  // 3D Building Extrusion
+  // Cursor for tool modes
+  useEffect(() => {
+    if (!map.current) return
+
+    const canvas = map.current.getCanvas()
+    if (toolMode === 'mark' || toolMode === 'measure' || toolMode === 'directions') {
+      canvas.style.cursor = 'crosshair'
+    } else {
+      canvas.style.cursor = ''
+    }
+  }, [toolMode, mapLoadedVersion])
+
+  // 3D Buildings + Terrain
   useEffect(() => {
     if (!map.current || !mapLoadedRef.current) return
 
     const buildingLayerId = '3d-buildings'
+    const terrainSourceId = 'terrain-source'
 
     if (buildingExtrusion) {
-      // Check if the openmaptiles source exists in the current style
-      const style = map.current.getStyle()
-      const sources = style?.sources || {}
-      if (!sources['openmaptiles']) {
-        // Style doesn't support 3D buildings
-        return
+      // --- Terrain ---
+      try {
+        if (!map.current.getSource(terrainSourceId)) {
+          map.current.addSource(terrainSourceId, {
+            type: 'raster-dem',
+            url: `https://api.maptiler.com/tiles/terrain-rgb/tiles.json?key=${process.env.NEXT_PUBLIC_MAPTILER_KEY || ''}`,
+          })
+        }
+        map.current.setTerrain({
+          source: terrainSourceId,
+          exaggeration: terrainExaggeration,
+        })
+      } catch {
+        // Terrain source may not be available for all styles
       }
 
-      // Don't add if already present
-      if (map.current.getLayer(buildingLayerId)) return
+      // --- 3D Buildings ---
+      const style = map.current.getStyle()
+      const sources = style?.sources || {}
+      if (sources['openmaptiles']) {
+        // Don't add if already present
+        if (!map.current.getLayer(buildingLayerId)) {
+          // Detect dark mode
+          const isDark = document.documentElement.classList.contains('dark')
 
-      // Detect dark mode
-      const isDark = document.documentElement.classList.contains('dark')
-
-      map.current.addLayer({
-        id: buildingLayerId,
-        source: 'openmaptiles',
-        'source-layer': 'building',
-        type: 'fill-extrusion',
-        minzoom: 14,
-        paint: {
-          'fill-extrusion-color': isDark ? '#666' : '#ddd',
-          'fill-extrusion-height': ['get', 'render_height'],
-          'fill-extrusion-base': ['get', 'render_min_height'],
-          'fill-extrusion-opacity': isDark ? 0.5 : 0.7,
-        },
-      })
+          map.current.addLayer({
+            id: buildingLayerId,
+            source: 'openmaptiles',
+            'source-layer': 'building',
+            type: 'fill-extrusion',
+            minzoom: 14,
+            paint: {
+              'fill-extrusion-color': isDark ? '#666' : '#ddd',
+              'fill-extrusion-height': ['get', 'render_height'],
+              'fill-extrusion-base': ['get', 'render_min_height'],
+              'fill-extrusion-opacity': isDark ? 0.5 : 0.7,
+            },
+          })
+        }
+      }
     } else {
+      // Remove terrain
+      try {
+        map.current.setTerrain(null)
+      } catch {
+        // Ignore if terrain not set
+      }
+      try {
+        if (map.current.getSource(terrainSourceId)) {
+          map.current.removeSource(terrainSourceId)
+        }
+      } catch {
+        // Ignore
+      }
+
       // Remove the 3D buildings layer when disabled
       if (map.current.getLayer(buildingLayerId)) {
         map.current.removeLayer(buildingLayerId)
       }
     }
-  }, [buildingExtrusion, mapLoadedVersion])
+  }, [buildingExtrusion, terrainExaggeration, mapLoadedVersion])
+
+  // Update terrain exaggeration when it changes (while enabled)
+  useEffect(() => {
+    if (!map.current || !mapLoadedRef.current || !buildingExtrusion) return
+    try {
+      map.current.setTerrain({
+        source: 'terrain-source',
+        exaggeration: terrainExaggeration,
+      })
+    } catch {
+      // Terrain not available
+    }
+  }, [terrainExaggeration, buildingExtrusion, mapLoadedVersion])
 
   const flyToLocation = useCallback(
     (longitude: number, latitude: number, zoom?: number) => {
@@ -927,6 +982,8 @@ export function MapView() {
     }
   }, [flyToLocation])
 
+  const isMapLoading = !mapLoadedRef.current && mapLoadedVersion > 0
+
   return (
     <div className="relative w-full h-full">
       <div
@@ -941,6 +998,18 @@ export function MapView() {
           height: '100%',
         }}
       />
+      {/* Map loading overlay */}
+      {isMapLoading && (
+        <div className="absolute inset-0 z-10 pointer-events-none">
+          <div className="absolute inset-0 map-loading-skeleton opacity-40" />
+          <div className="absolute top-4 left-1/2 -translate-x-1/2">
+            <div className="glass rounded-lg px-4 py-2 flex items-center gap-2 shadow-lg">
+              <div className="h-4 w-4 rounded-full border-2 border-muted-foreground border-t-transparent animate-spin" />
+              <span className="text-xs font-medium text-muted-foreground">Loading map…</span>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

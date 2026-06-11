@@ -1,10 +1,18 @@
 'use client'
 
 import { useMapStore } from '@/lib/map-store'
-import { MapPin, Layers, ZoomIn } from 'lucide-react'
+import { MapPin, Layers, ZoomIn, Compass, RotateCw } from 'lucide-react'
+
+function getBearingDirection(bearing: number): string {
+  // Normalize bearing to 0-360
+  const normalized = ((bearing % 360) + 360) % 360
+  const dirs = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
+  const index = Math.round(normalized / 22.5) % 16
+  return dirs[index]
+}
 
 export function MapStatsPanel() {
-  const { savedLocations, zoom, currentStyle } = useMapStore()
+  const { savedLocations, zoom, currentStyle, bearing, pitch } = useMapStore()
 
   const stats = [
     {
@@ -12,20 +20,37 @@ export function MapStatsPanel() {
       label: 'Places',
       value: savedLocations.length,
       color: 'text-emerald-500',
+      visible: true,
     },
     {
       icon: <Layers className="h-3 w-3" />,
       label: 'Style',
       value: currentStyle.name,
       color: 'text-amber-500',
+      visible: true,
     },
     {
       icon: <ZoomIn className="h-3 w-3" />,
       label: 'Zoom',
       value: zoom.toFixed(1),
       color: 'text-cyan-500',
+      visible: true,
     },
-  ]
+    {
+      icon: <Compass className="h-3 w-3" />,
+      label: 'Bearing',
+      value: `${getBearingDirection(bearing)} ${Math.abs(bearing).toFixed(0)}°`,
+      color: 'text-rose-500',
+      visible: bearing !== 0,
+    },
+    {
+      icon: <RotateCw className="h-3 w-3" />,
+      label: 'Pitch',
+      value: `${pitch.toFixed(0)}° tilt`,
+      color: 'text-violet-500',
+      visible: pitch > 0,
+    },
+  ].filter((stat) => stat.visible)
 
   return (
     <div className="floating-panel flex items-center gap-3 px-3 py-1.5 bg-background/90 backdrop-blur-md rounded-xl border border-border/50 shadow-lg">

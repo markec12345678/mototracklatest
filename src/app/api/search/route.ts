@@ -4,6 +4,36 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
     const query = searchParams.get('q')
+    const lat = searchParams.get('lat')
+    const lng = searchParams.get('lng')
+
+    // Reverse geocoding: if lat/lng provided without query, find place name
+    if (!query && lat && lng) {
+      const latitude = parseFloat(lat)
+      const longitude = parseFloat(lng)
+      if (isNaN(latitude) || isNaN(longitude)) {
+        return NextResponse.json({ error: 'Invalid coordinates' }, { status: 400 })
+      }
+
+      try {
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=10&addressdetails=1`,
+          {
+            headers: { 'User-Agent': 'MapLibreExplorer/1.0' },
+          }
+        )
+
+        if (response.ok) {
+          const data = await response.json()
+          const name = data.address?.city || data.address?.town || data.address?.village || data.address?.county || data.display_name?.split(',')[0] || `${latitude.toFixed(2)}°, ${longitude.toFixed(2)}°`
+          return NextResponse.json({ name, fullName: data.display_name })
+        }
+      } catch {
+        // Fall through to coordinate display
+      }
+
+      return NextResponse.json({ name: `${latitude.toFixed(2)}°, ${longitude.toFixed(2)}°` })
+    }
 
     if (!query) {
       return NextResponse.json({ error: 'Query parameter "q" is required' }, { status: 400 })

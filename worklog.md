@@ -564,3 +564,227 @@ Verification:
 - `bun run lint` passes with zero errors/warnings
 - No new TypeScript errors introduced in modified files
 - Pre-existing TS errors in MapView.tsx (clustering event handler overloads) are unrelated
+
+---
+Task ID: 4a
+Agent: Map Features Agent
+Task: Fix tool cursors, add loading overlay, implement 3D terrain, improve sidebar 3D controls
+
+Work Completed:
+
+1. Fixed cursor for tool modes (MapView.tsx)
+   - Added useEffect that updates map canvas cursor based on `toolMode`
+   - `mark`, `measure`, `directions` modes → `cursor: crosshair`
+   - `navigate` mode → default cursor (empty string resets to MapLibre default grab)
+   - Depends on `toolMode` and `mapLoadedVersion` to re-apply after style changes
+
+2. Added map loading overlay (MapView.tsx)
+   - Derives `isMapLoading` from `!mapLoadedRef.current && mapLoadedVersion > 0`
+   - Shows a subtle shimmer overlay using `map-loading-skeleton` CSS class at 40% opacity
+   - Shows a glass pill in top-center with spinning loader + "Loading map…" text
+   - Uses `pointer-events-none` so it doesn't block map interactions
+   - Fades in/out naturally as style loads
+
+3. Implemented 3D Terrain with MapTiler tiles (MapView.tsx)
+   - Modified the `buildingExtrusion` useEffect to also handle terrain
+   - When enabled: adds `terrain-source` raster-dem source from MapTiler terrain-rgb tiles
+   - Sets terrain with `map.current.setTerrain({ source: 'terrain-source', exaggeration })`
+   - Keeps existing 3D building extrusion logic (only when `openmaptiles` source available)
+   - When disabled: removes terrain via `setTerrain(null)`, removes terrain source, removes buildings layer
+   - Added separate useEffect for terrain exaggeration updates while 3D is enabled
+
+4. Added terrainExaggeration to map store (map-store.ts)
+   - New field: `terrainExaggeration: number` with default `1.5`
+   - New action: `setTerrainExaggeration`
+   - Added to interface and implementation
+
+5. Improved sidebar Layers tab for 3D options (MapSidebar.tsx)
+   - Renamed section from "3D Options" to "3D View"
+   - Consolidated two separate switches into one: "3D Terrain & Buildings" toggle
+   - Connected to `buildingExtrusion` store field (drives both terrain + buildings)
+   - Added terrain exaggeration slider (1x–3x, step 0.1) that appears when 3D is enabled
+   - Shows current exaggeration value with tabular-nums formatting
+   - Removed unused `Building` icon import
+   - Removed unused `terrain3D` local state
+
+Files Modified:
+- /home/z/my-project/src/components/map/MapView.tsx
+- /home/z/my-project/src/lib/map-store.ts
+- /home/z/my-project/src/components/map/MapSidebar.tsx
+
+Verification:
+- `bun run lint` passes with zero errors/warnings
+- Dev server compiles successfully
+
+---
+Task ID: 4c
+Agent: Weather & UI Enhancements Agent
+Task: Weather overlay API, WeatherPanel, MapStatsPanel enhancements, and bookmarks improvements
+
+Work Completed:
+
+1. Created Weather API Route (`/api/weather/route.ts`)
+   - Accepts `lat` and `lng` query parameters with validation
+   - Fetches from Open-Meteo free API (no API key needed)
+   - Returns current weather (temperature, humidity, apparent temp, precipitation, weather code, wind speed/direction)
+   - Returns hourly forecast (temperature + precipitation probability for 1 day)
+   - Uses Next.js revalidation cache (600s / 10 minutes)
+   - Proper error handling with appropriate HTTP status codes
+
+2. Added `weatherEnabled` to Zustand Map Store (`/src/lib/map-store.ts`)
+   - Added `weatherEnabled: boolean` field with default `false`
+   - Added `setWeatherEnabled` action
+   - Added to persist partialize config so preference is saved
+
+3. Created WeatherPanel Component (`/src/components/map/WeatherPanel.tsx`)
+   - Glass-card styled floating panel (consistent with existing design)
+   - Shows current temperature, weather condition emoji (WMO code mapping), humidity, wind speed, precipitation
+   - Weather-appropriate gradient background matching conditions
+   - Displays "feels like" temperature when different from actual
+   - Wind direction shown with compass heading (N, NE, SE, etc.)
+   - Hourly forecast strip showing next 6 hours with temperature + precipitation probability
+   - Auto-fetches weather when map center changes significantly (>0.05° ≈ 5km), debounced at 800ms
+   - Can be minimized to just show the weather emoji
+   - Animated entrance/exit with framer-motion
+   - Data source credit (Open-Meteo.com)
+   - Only visible when weatherEnabled is true in the store
+
+4. Updated Layers Tab Weather Toggle (`/src/components/map/MapSidebar.tsx`)
+   - Replaced "Coming Soon" badge on Weather overlay with a real Switch toggle
+   - Connected to `weatherEnabled`/`setWeatherEnabled` from the store
+   - Weather overlay row gets visual feedback (bg, border, shadow) when enabled
+   - Traffic and Earthquakes overlays still show "Soon" badges
+
+5. Enhanced MapStatsPanel (`/src/components/map/MapStatsPanel.tsx`)
+   - Added Bearing stat (compass direction like "NW 315°") - only visible when bearing ≠ 0
+   - Added Pitch stat (tilt angle like "45° tilt") - only visible when pitch > 0
+   - Stats dynamically filter to only show relevant items
+   - Added Compass and RotateCw icons from lucide-react
+   - Bearing direction helper function maps degrees to 16-point compass
+
+6. Improved Sidebar Bookmarks (`/src/components/map/MapSidebar.tsx`)
+   - Replaced old world cities with 8 European cities matching specification:
+     - Ljubljana 🇸🇮, Vienna 🇦🇹, Venice 🇮🇹, Munich 🇩🇪, Zagreb 🇭🇷, Budapest 🇭🇺, Prague 🇨🇿, Paris 🇫🇷
+   - Each bookmark shows: country flag emoji, city name, coordinates
+   - "Nearby" badge appears when city is within 500km of current map center
+   - Distance calculated using haversine formula (reactive to center changes)
+   - Fly-to button appears on hover with Navigation icon in city's accent color
+   - Hover animation (scale + shadow) and active press feedback
+   - Per-city accent colors for border and background tinting
+   - Changed layout from 2-column grid to stacked list for better readability
+
+7. Added WeatherPanel to page.tsx
+   - Positioned at bottom-left, dynamically shifts right when sidebar is open
+   - Smooth CSS transition for position changes
+   - Desktop only (hidden on mobile)
+
+Files Modified:
+- `/src/app/api/weather/route.ts` (new)
+- `/src/components/map/WeatherPanel.tsx` (new)
+- `/src/lib/map-store.ts` (added weatherEnabled + setWeatherEnabled)
+- `/src/components/map/MapSidebar.tsx` (weather toggle + bookmarks)
+- `/src/components/map/MapStatsPanel.tsx` (bearing + pitch stats)
+- `/src/app/page.tsx` (WeatherPanel integration)
+
+---
+Task ID: 7
+Agent: Main Agent
+Task: Round 7 - QA testing, bug fixes, new features, and styling improvements
+
+Work Completed:
+
+1. QA Testing via agent-browser
+   - Verified all existing features working: search, style switcher, sidebar, tools
+   - Tested MapTiler Satellite, Terrain, Dark styles - all loading correctly
+   - Confirmed 8 MapTiler styles are available (Streets, Satellite, Hybrid, Terrain, Topo, Dark, Outdoor, OSM)
+   - MapTiler API key already configured in .env as NEXT_PUBLIC_MAPTILER_KEY
+
+2. Cursor Fix for Tool Modes (MapView.tsx)
+   - Added useEffect to update canvas cursor based on toolMode
+   - Mark/Measure/Directions modes show crosshair cursor
+   - Navigate mode shows default grab cursor
+   - Cursor re-applies after style changes via mapLoadedVersion dependency
+
+3. Map Loading Overlay (MapView.tsx)
+   - Added shimmer loading overlay when map style is changing
+   - Glass pill with spinner and "Loading map…" text
+   - pointer-events-none so it doesn't block interactions
+   - Derived from mapLoadedRef and mapLoadedVersion state
+
+4. 3D Terrain with MapTiler Tiles (MapView.tsx)
+   - Modified buildingExtrusion useEffect to also handle terrain
+   - When enabled: adds terrain-source (raster-dem from MapTiler terrain-rgb tiles)
+   - Calls setTerrain() with configurable exaggeration
+   - Keeps 3D building extrusion logic (when openmaptiles source available)
+   - When disabled: removes terrain, removes source, removes buildings layer
+   - Separate useEffect for live terrain exaggeration updates
+
+5. Sidebar 3D View Section Improvements (MapSidebar.tsx)
+   - Renamed section from "3D Options" to "3D View"
+   - Consolidated two switches into one: "3D Terrain & Buildings"
+   - Added terrain exaggeration slider (1×–3×, step 0.1) that appears when 3D is enabled
+   - Added terrainExaggeration field and setTerrainExaggeration action to store
+
+6. Weather Overlay (New Feature)
+   - Created /api/weather/route.ts - fetches from free Open-Meteo API
+   - Created WeatherPanel.tsx component with:
+     - Current temperature, humidity, wind speed/direction, precipitation
+     - WMO weather codes mapped to emoji and descriptions (☀️🌤️⛅🌧️⛈️❄️ etc.)
+     - Hourly forecast strip for next 6 hours
+     - Minimizable to just weather emoji
+     - Auto-fetches when map center changes significantly (>5km), debounced
+     - Glass-card styling with gradient header matching weather condition
+   - Weather toggle in Layers sidebar tab (replaces "Coming Soon")
+   - weatherEnabled + setWeatherEnabled added to store with persist
+
+7. Reverse Geocoding for Weather Location Name
+   - Added reverse geocoding support to /api/search/route.ts
+   - When lat/lng provided without query, uses Nominatim reverse geocoding
+   - WeatherPanel now shows city name instead of just coordinates
+   - Fallback to coordinate display if reverse geocoding fails
+
+8. MapStatsPanel Improvements
+   - Added bearing stat with compass direction (e.g., "NW 315°") - only when bearing ≠ 0
+   - Added pitch stat (e.g., "45° tilt") - only when pitch > 0
+   - Stats dynamically filter to only show relevant items
+
+9. Sidebar Bookmarks (European Cities)
+   - 8 cities: Ljubljana, Vienna, Venice, Munich, Zagreb, Budapest, Prague, Paris
+   - Country flag emoji, fly-to button on hover, "Nearby" badge within 500km
+   - Haversine distance calculation, per-city accent colors
+
+10. Mobile Bottom Toolbar
+    - Added responsive mobile toolbar at bottom of screen
+    - Navigate, Pin, Measure, Route tool buttons
+    - Locate me button
+    - Hidden on desktop (md:hidden), visible on mobile
+    - Glass-card styling with active state colors
+
+11. Welcome Banner Update
+    - Updated feature badges: 3D Terrain, Weather, Share View (replacing old ones)
+
+12. Footer Update
+    - Updated attribution: "MapLibre GL JS · MapTiler · Open-Meteo"
+    - Changed "© OSM" to "© OpenStreetMap"
+
+Stage Summary:
+- All lint checks pass (zero errors/warnings)
+- All features verified via agent-browser QA
+- Weather panel working with real-time data from Open-Meteo
+- 3D terrain with MapTiler terrain-rgb tiles functional
+- Crosshair cursor for tool modes working
+- Map loading overlay functional
+- Mobile bottom toolbar added for better touch experience
+- Reverse geocoding for weather location names
+- No runtime errors in dev log
+
+Unresolved Issues / Next Steps:
+- Test clustering with 50+ markers
+- Add weather overlay on mobile (currently desktop only)
+- Traffic overlay implementation
+- Earthquake/seismic overlay
+- Route drawing with turn-by-turn directions using OSRM
+- Elevation profile for measurement tool
+- More keyboard shortcuts (5-8 for style switching)
+- PWA support with service worker
+- Offline map tile caching
