@@ -30,12 +30,15 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# env files - keep .env.example, ignore the rest
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
 # vercel
 .vercel
-
 
 # typescript
 *.tsbuildinfo
@@ -46,10 +49,21 @@ local-*
 *.log
 dev.log
 dev.out.log
+server.log
+
+# test & prompts
 test
 prompt
 
-server.log
 # Skills directory
 /skills/
 tool-results/
+
+# Internal development files
+agent-ctx/
+.zscripts/
+worklog.md
+download/
+
+# Database (generated, not source code)
+db/*.db
