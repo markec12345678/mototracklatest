@@ -30,6 +30,9 @@ import { SunInfoPanel } from '@/components/map/SunInfoPanel'
 import { HeatmapLayer } from '@/components/map/HeatmapLayer'
 import { HeatmapControls } from '@/components/map/HeatmapControls'
 import { TrackRecorder, TrackRecordButton } from '@/components/map/TrackRecorder'
+import { PWAInstallBanner } from '@/components/map/PWAInstallBanner'
+import { Buildings3DLayer } from '@/components/map/Buildings3DLayer'
+import { BuildingInfoPanel } from '@/components/map/BuildingInfoPanel'
 import { GeofenceDialog } from '@/components/map/GeofenceDialog'
 import { ShareDialog } from '@/components/map/ShareDialog'
 import { Button } from '@/components/ui/button'
@@ -989,6 +992,15 @@ export default function Home() {
 
       {/* Track Recorder Panel */}
       <TrackRecorder />
+
+      {/* PWA Install Banner */}
+      <PWAInstallBanner />
+
+      {/* 3D Buildings Layer */}
+      <Buildings3DLayer />
+
+      {/* Building Info Panel */}
+      <BuildingInfoPanel />
 
       {/* Footer */}
       <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-2 sm:px-3 md:px-4 safe-area-bottom before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">

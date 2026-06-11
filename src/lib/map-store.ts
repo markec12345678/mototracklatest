@@ -23,6 +23,7 @@ export interface MapMarker {
   description?: string
   color: string
   category: string
+  icon?: string
 }
 
 export interface MeasurePoint {
@@ -235,6 +236,33 @@ export interface MapDrawing {
   name: string
 }
 
+export interface MarkerIconPreset {
+  id: string
+  name: string
+  icon: string
+  color: string
+}
+
+export const MARKER_ICON_PRESETS: MarkerIconPreset[] = [
+  { id: 'map-pin', name: 'Map Pin', icon: 'MapPin', color: '#ef4444' },
+  { id: 'star', name: 'Star', icon: 'Star', color: '#f59e0b' },
+  { id: 'heart', name: 'Heart', icon: 'Heart', color: '#ec4899' },
+  { id: 'flag', name: 'Flag', icon: 'Flag', color: '#3b82f6' },
+  { id: 'home', name: 'Home', icon: 'Home', color: '#22c55e' },
+  { id: 'camera', name: 'Camera', icon: 'Camera', color: '#8b5cf6' },
+  { id: 'coffee', name: 'Coffee', icon: 'Coffee', color: '#f59e0b' },
+  { id: 'music', name: 'Music', icon: 'Music', color: '#6366f1' },
+]
+
+export interface SelectedBuilding {
+  id: string
+  name: string
+  height: number
+  coordinates: [number, number]
+  type: string
+  levels: number
+}
+
 export type ToolMode = 'navigate' | 'mark' | 'measure' | 'directions' | 'draw' | 'area' | 'annotate'
 
 export interface CustomTileSource {
@@ -329,6 +357,14 @@ interface MapState {
 
   // 3D Building extrusion
   buildingExtrusion: boolean
+
+  // 3D Buildings Explorer
+  buildings3DEnabled: boolean
+  selectedBuilding: SelectedBuilding | null
+
+  // Marker icon system
+  markerIconPresets: MarkerIconPreset[]
+  selectedMarkerIcon: string
 
   // 3D Terrain
   terrainEnabled: boolean
@@ -454,6 +490,10 @@ interface MapState {
   deleteDrawing: (id: string) => void
   setClusteringEnabled: (enabled: boolean) => void
   setBuildingExtrusion: (enabled: boolean) => void
+  setBuildings3DEnabled: (enabled: boolean) => void
+  setSelectedBuilding: (building: SelectedBuilding | null) => void
+  setMarkerIconPresets: (presets: MarkerIconPreset[]) => void
+  setSelectedMarkerIcon: (icon: string) => void
   setTerrainEnabled: (enabled: boolean) => void
   setTerrainExaggeration: (exaggeration: number) => void
   setWeatherEnabled: (enabled: boolean) => void
@@ -545,6 +585,10 @@ export const useMapStore = create<MapState>()(
 
       clusteringEnabled: true,
       buildingExtrusion: false,
+      buildings3DEnabled: false,
+      selectedBuilding: null,
+      markerIconPresets: MARKER_ICON_PRESETS,
+      selectedMarkerIcon: 'map-pin',
       terrainEnabled: false,
       terrainExaggeration: 1.5,
       weatherEnabled: false,
@@ -1085,6 +1129,10 @@ export const useMapStore = create<MapState>()(
 
       setClusteringEnabled: (clusteringEnabled) => set({ clusteringEnabled }),
       setBuildingExtrusion: (buildingExtrusion) => set({ buildingExtrusion }),
+      setBuildings3DEnabled: (buildings3DEnabled) => set({ buildings3DEnabled }),
+      setSelectedBuilding: (selectedBuilding) => set({ selectedBuilding }),
+      setMarkerIconPresets: (markerIconPresets) => set({ markerIconPresets }),
+      setSelectedMarkerIcon: (selectedMarkerIcon) => set({ selectedMarkerIcon }),
       setTerrainEnabled: (terrainEnabled) => set({ terrainEnabled }),
       setTerrainExaggeration: (terrainExaggeration) => set({ terrainExaggeration }),
       setWeatherEnabled: (weatherEnabled) => set({ weatherEnabled }),
@@ -1330,6 +1378,8 @@ export const useMapStore = create<MapState>()(
         isochroneMode: state.isochroneMode,
         terrainEnabled: state.terrainEnabled,
         buildingExtrusion: state.buildingExtrusion,
+        buildings3DEnabled: state.buildings3DEnabled,
+        selectedMarkerIcon: state.selectedMarkerIcon,
         terrainExaggeration: state.terrainExaggeration,
         layerVisibility: state.layerVisibility,
         drawColor: state.drawColor,

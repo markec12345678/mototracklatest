@@ -1,0 +1,15 @@
+{
+  "name": "MapLibre Explorer",
+  "short_name": "MapExplorer",
+  "description": "Interactive Map Application with GPS tracking, routes, and geofencing",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#10b981",
+  "orientation": "any",
+  "icons": [
+    { "src": "/logo.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/logo.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "maskable" }
+  ],
+  "categories": ["navigation", "travel", "utilities"]
+}

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { MapPin, Navigation, Ruler, Crosshair, Pencil, Maximize2, Type } from 'lucide-react'
+import { MapPin, Navigation, Ruler, Crosshair, Pencil, Maximize2, Type, Building2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Separator } from '@/components/ui/separator'
@@ -172,6 +172,8 @@ function ToolButton({ tool, isActive, onClick, index }: {
 
 export function MapToolbar() {
   const { toolMode, setToolMode } = useMapStore()
+  const buildings3DEnabled = useMapStore((s) => s.buildings3DEnabled)
+  const setBuildings3DEnabled = useMapStore((s) => s.setBuildings3DEnabled)
 
   // Flatten tools for index counting
   let globalIndex = 0
@@ -200,6 +202,23 @@ export function MapToolbar() {
             </div>
           </div>
         ))}
+        {/* 3D Buildings Toggle */}
+        <Separator className="my-1 opacity-50" />
+        <div className="flex flex-col gap-1">
+          <ToolButton
+            tool={{
+              id: 'navigate' as any,
+              icon: <Building2 className="h-4 w-4" />,
+              label: '3D Buildings',
+              activeClass: 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30',
+              shortcut: 'B',
+              description: 'Toggle 3D building explorer',
+            }}
+            isActive={buildings3DEnabled}
+            onClick={() => setBuildings3DEnabled(!buildings3DEnabled)}
+            index={globalIndex}
+          />
+        </div>
       </div>
     </TooltipProvider>
   )

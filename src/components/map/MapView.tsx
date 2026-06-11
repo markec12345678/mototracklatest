@@ -3,10 +3,22 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import { useMapStore, type LayerVisibility, getStyleUrl } from '@/lib/map-store'
+import { useMapStore, type LayerVisibility, getStyleUrl, MARKER_ICON_PRESETS } from '@/lib/map-store'
 import { toast } from 'sonner'
 import { MapContextMenu, type ContextMenuPosition } from '@/components/map/MapContextMenu'
 import { MapAnnotations } from '@/components/map/MapAnnotations'
+
+// SVG icon paths for Lucide icons (for use in HTML markers)
+const LUCIDE_SVG_PATHS: Record<string, string> = {
+  MapPin: 'M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z',
+  Star: 'm12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2Z',
+  Heart: 'M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z',
+  Flag: 'M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1Z M4 22v-7',
+  Home: 'm3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10',
+  Camera: 'M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z M12 17a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z',
+  Coffee: 'M17 8h1a4 4 0 1 1 0 8h-1 M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z M6 2v2 M10 2v2 M14 2v2',
+  Music: 'M9 18V5l12-2v13 M21 16a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z M9 19a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z',
+}
 
 // Inject pulsing dot CSS animation
 if (typeof document !== 'undefined' && !document.getElementById('geolocation-pulse-style')) {
@@ -26,6 +38,38 @@ if (typeof document !== 'undefined' && !document.getElementById('geolocation-pul
       border-radius: 50%;
       box-shadow: 0 0 6px rgba(59, 130, 246, 0.4);
       animation: geolocation-pulse 2s ease-out infinite;
+    }
+    @keyframes marker-drop-in {
+      0% { transform: translateY(-20px); opacity: 0; }
+      60% { transform: translateY(2px); opacity: 1; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes marker-pulse-ring {
+      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+      100% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+    }
+    .custom-marker-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+      transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+    }
+    .custom-marker-icon:hover {
+      transform: rotate(-45deg) scale(1.1);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+    }
+    .custom-marker-icon.selected {
+      filter: drop-shadow(0 0 6px rgba(0,0,0,0.5));
+      transform: rotate(-45deg) scale(1.2);
+    }
+    .custom-marker-icon.new-marker {
+      animation: marker-drop-in 0.4s ease-out, marker-pulse-ring 1.5s ease-out 1;
+    }
+    .custom-marker-icon svg {
+      transform: rotate(45deg);
     }
   `
   document.head.appendChild(style)
@@ -174,6 +218,7 @@ export function MapView() {
       const mode = toolModeRef.current
       if (mode === 'mark') {
         const id = `marker-${Date.now()}`
+        const selectedIcon = useMapStore.getState().selectedMarkerIcon
         useMapStore.getState().addMarker({
           id,
           longitude: e.lngLat.lng,
@@ -181,6 +226,7 @@ export function MapView() {
           name: `Pin at ${e.lngLat.lat.toFixed(4)}, ${e.lngLat.lng.toFixed(4)}`,
           color: '#ef4444',
           category: 'general',
+          icon: selectedIcon,
         })
         useMapStore.getState().pushNotification({ type: 'location', icon: 'pin', message: `Pin dropped at ${e.lngLat.lat.toFixed(4)}, ${e.lngLat.lng.toFixed(4)}` })
       } else if (mode === 'measure') {
@@ -468,20 +514,25 @@ export function MapView() {
       markers.forEach((m) => {
         if (!markerRefs.current.has(m.id)) {
           const el = document.createElement('div')
-          el.className = 'custom-marker'
-          el.innerHTML = `
-            <svg width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M16 0C7.163 0 0 7.163 0 16c0 12 16 24 16 24s16-12 16-24C32 7.163 24.837 0 16 0z" fill="${m.color}"/>
-              <circle cx="16" cy="15" r="6" fill="white"/>
-            </svg>
+
+          // Get icon from marker data, or fall back to selected marker icon preset
+          const iconPreset = MARKER_ICON_PRESETS.find((p) => p.id === (m.icon || 'map-pin'))
+          const iconName = iconPreset?.icon || 'MapPin'
+          const svgPath = LUCIDE_SVG_PATHS[iconName] || LUCIDE_SVG_PATHS.MapPin
+
+          el.className = `custom-marker-icon new-marker${selectedMarker === m.id ? ' selected' : ''}`
+          el.style.cssText = `
+            width: 36px;
+            height: 36px;
+            background: ${m.color};
+            cursor: pointer;
           `
-          el.style.cursor = 'pointer'
-          el.style.filter =
-            selectedMarker === m.id
-              ? 'drop-shadow(0 0 6px rgba(0,0,0,0.5))'
-              : 'none'
-          el.style.transform = selectedMarker === m.id ? 'scale(1.2)' : 'scale(1)'
-          el.style.transition = 'transform 0.2s, filter 0.2s'
+          el.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="${svgPath}"/></svg>`
+
+          // Remove new-marker animation after it plays
+          setTimeout(() => {
+            el.classList.remove('new-marker')
+          }, 2000)
 
           const currentToolMode = useMapStore.getState().toolMode
           const marker = new maplibregl.Marker({
@@ -541,11 +592,11 @@ export function MapView() {
           const existing = markerRefs.current.get(m.id)
           if (existing) {
             const el = existing.getElement()
-            el.style.filter =
-              selectedMarker === m.id
-                ? 'drop-shadow(0 0 6px rgba(0,0,0,0.5))'
-                : 'none'
-            el.style.transform = selectedMarker === m.id ? 'scale(1.2)' : 'scale(1)'
+            if (selectedMarker === m.id) {
+              el.classList.add('selected')
+            } else {
+              el.classList.remove('selected')
+            }
           }
         }
       })
@@ -2283,36 +2334,41 @@ export function MapView() {
     }
   }, [isochroneEnabled, isochroneMinutes, isochroneMode, center, mapLoadedVersion])
 
-  // POI Markers (temporary markers for nearby search) - with category-specific colors
+  // POI Markers (temporary markers for nearby search) - with category-specific Lucide icons
   useEffect(() => {
     if (!map.current || !mapLoadedRef.current) return
 
     const poiMarkerRefs: maplibregl.Marker[] = []
 
-    // Category-specific color mapping
-    const categoryColors: Record<string, string> = {
-      eating_out: 'rgba(239, 68, 68, 0.9)',      // red
-      cafe: 'rgba(245, 158, 11, 0.9)',            // amber
-      accommodation: 'rgba(139, 92, 246, 0.9)',    // purple
-      activity: 'rgba(34, 197, 94, 0.9)',          // green
-      tourism: 'rgba(249, 115, 22, 0.9)',          // orange
-      commercial: 'rgba(14, 165, 233, 0.9)',       // sky
-      healthcare: 'rgba(244, 63, 94, 0.9)',        // rose
-      fuel: 'rgba(202, 138, 4, 0.9)',              // yellow
-      parking: 'rgba(59, 130, 246, 0.9)',          // blue
-      banking: 'rgba(5, 150, 105, 0.9)',           // emerald
-      education: 'rgba(99, 102, 241, 0.9)',        // indigo
-      entertainment: 'rgba(236, 72, 153, 0.9)',    // pink
-      public_transport: 'rgba(20, 184, 166, 0.9)', // teal
-      sports: 'rgba(132, 204, 22, 0.9)',           // lime
-      drinking_water: 'rgba(6, 182, 212, 0.9)',    // cyan
-      toilets: 'rgba(107, 114, 128, 0.9)',         // gray
+    // Category-specific color and icon mapping
+    const categoryConfig: Record<string, { color: string; icon: string }> = {
+      eating_out: { color: '#f97316', icon: 'M18 8h1a4 4 0 0 1 0 8h-1 M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4Z M6 1v3 M10 1v3 M14 1v3' }, // Utensils
+      cafe: { color: '#f59e0b', icon: 'M17 8h1a4 4 0 1 1 0 8h-1 M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z M6 2v2 M10 2v2 M14 2v2' }, // Coffee
+      accommodation: { color: '#3b82f6', icon: 'M2 4v16 M2 8h18a2 2 0 0 1 2 2v10 M2 17h20 M9 8v9' }, // Bed
+      activity: { color: '#22c55e', icon: '' }, // fallback
+      tourism: { color: '#f97316', icon: '' },
+      commercial: { color: '#0ea5e9', icon: '' },
+      healthcare: { color: '#22c55e', icon: 'M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z' }, // Heart
+      fuel: { color: '#ef4444', icon: 'M3 22V8l6-6h6l6 6v14 M13 22V12H9v10 M15 12h3a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-3' }, // Fuel
+      parking: { color: '#3b82f6', icon: '' },
+      banking: { color: '#059669', icon: 'M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2 M18 12h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-2 M10 6h4 M10 10h4 M10 14h4 M10 18h4' }, // Building
+      education: { color: '#8b5cf6', icon: 'M22 10v6M2 10l10-5 10 5-10 5z M6 12v5c3 3 9 3 12 0v-5' }, // GraduationCap
+      entertainment: { color: '#ec4899', icon: 'M9 18V5l12-2v13 M21 16a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z M9 19a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z' }, // Music
+      public_transport: { color: '#06b6d4', icon: 'M8 6v6 M16 6v6 M2 12h20 M7 18a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z M17 18a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z' }, // Bus
+      sports: { color: '#eab308', icon: 'M6 9H4.5a2.5 2.5 0 0 1 0-5C7 4 6 9 6 9Z M18 9h1.5a2.5 2.5 0 0 0 0-5C17 4 18 9 18 9Z M12 22V12 M6 12h12 M6 12l-3 4 M18 12l3 4' }, // Trophy
+      drinking_water: { color: '#3b82f6', icon: 'M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z M12 22c4.97 0 9-4.03 9-9 0-4.97-4.03-9-9-9-4.97 0-9 4.03-9 9 0 4.97 4.03 9 9 9z' }, // Droplets
+      toilets: { color: '#6b7280', icon: '' },
     }
 
-    for (const poi of poiMarkers) {
-      const bgColor = categoryColors[poi.category] || 'rgba(16, 185, 129, 0.9)'
+    // Default SVG path for any unmapped category (MapPin)
+    const defaultIconPath = 'M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z'
 
-      // Create marker element with tooltip
+    for (const poi of poiMarkers) {
+      const config = categoryConfig[poi.category] || { color: '#10b981', icon: '' }
+      const bgColor = config.color
+      const iconPath = config.icon || LUCIDE_SVG_PATHS[poi.category === 'eating_out' ? 'Coffee' : 'MapPin'] || defaultIconPath
+
+      // Create marker element with Lucide SVG icon
       const container = document.createElement('div')
       container.style.position = 'relative'
 
@@ -2322,29 +2378,29 @@ export function MapView() {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        border-radius: 50% 50% 50% 4px;
+        transform: rotate(-45deg);
         background: ${bgColor};
         border: 2px solid white;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-        font-size: 13px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.3);
         cursor: pointer;
         transition: transform 0.15s ease, box-shadow 0.15s ease;
       `
-      el.textContent = poi.icon
+      el.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(45deg)"><path d="${iconPath}"/></svg>`
 
       // Hover tooltip for POI name
       const tooltip = document.createElement('div')
       tooltip.style.cssText = `
         position: absolute;
-        bottom: calc(100% + 6px);
+        bottom: calc(100% + 8px);
         left: 50%;
         transform: translateX(-50%);
         background: rgba(0,0,0,0.85);
         color: white;
-        padding: 3px 8px;
-        border-radius: 6px;
+        padding: 4px 10px;
+        border-radius: 8px;
         font-size: 11px;
         white-space: nowrap;
         pointer-events: none;
@@ -2352,6 +2408,7 @@ export function MapView() {
         transition: opacity 0.15s ease;
         z-index: 10;
         font-family: system-ui, sans-serif;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
       `
       tooltip.textContent = poi.name
 
@@ -2365,13 +2422,13 @@ export function MapView() {
       container.appendChild(tooltip)
 
       el.addEventListener('mouseenter', () => {
-        el.style.transform = 'scale(1.2)'
-        el.style.boxShadow = '0 4px 12px rgba(0,0,0,0.4)'
+        el.style.transform = 'rotate(-45deg) scale(1.15)'
+        el.style.boxShadow = '0 5px 15px rgba(0,0,0,0.4)'
         tooltip.style.opacity = '1'
       })
       el.addEventListener('mouseleave', () => {
-        el.style.transform = 'scale(1)'
-        el.style.boxShadow = '0 2px 8px rgba(0,0,0,0.3)'
+        el.style.transform = 'rotate(-45deg) scale(1)'
+        el.style.boxShadow = '0 3px 10px rgba(0,0,0,0.3)'
         tooltip.style.opacity = '0'
       })
       el.addEventListener('click', () => {

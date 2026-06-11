@@ -26,6 +26,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useMapStore } from '@/lib/map-store'
+import { MarkerIconPicker } from '@/components/map/MarkerIconPicker'
 import { toast } from 'sonner'
 
 const categories = [
@@ -37,11 +38,6 @@ const categories = [
   { id: 'shop', label: 'Shop', color: '#3b82f6', icon: '🛍️' },
   { id: 'landmark', label: 'Landmark', color: '#f97316', icon: '🏛️' },
   { id: 'transport', label: 'Transport', color: '#06b6d4', icon: '🚌' },
-]
-
-const colorOptions = [
-  '#ef4444', '#f97316', '#f59e0b', '#22c55e', '#14b8a6',
-  '#06b6d4', '#3b82f6', '#8b5cf6', '#ec4899', '#6b7280',
 ]
 
 export function AddLocationDialog({
@@ -59,6 +55,7 @@ export function AddLocationDialog({
   const [lat, setLat] = useState('')
   const [lng, setLng] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [selectedIcon, setSelectedIcon] = useState('map-pin')
 
   // Listen for prefill event from context menu
   useEffect(() => {
@@ -110,6 +107,7 @@ export function AddLocationDialog({
           description: location.description || undefined,
           color: location.color,
           category: location.category,
+          icon: selectedIcon,
         })
         useMapStore.getState().pushNotification({ type: 'location', icon: 'pin', message: `${name} added to saved locations` })
         toast.success(`Added "${name}"`)
@@ -131,11 +129,12 @@ export function AddLocationDialog({
     setColor('#ef4444')
     setLat('')
     setLng('')
+    setSelectedIcon('map-pin')
   }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md rounded-2xl">
+      <DialogContent className="sm:max-w-md rounded-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader className="dialog-gradient-header -mx-6 -mt-6 px-6 pt-6 pb-4 mb-2 rounded-t-2xl">
           <DialogTitle className="flex items-center gap-2.5">
             <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-md shadow-emerald-500/20">
@@ -242,24 +241,13 @@ export function AddLocationDialog({
             </Select>
           </div>
 
-          <div className="space-y-2">
-            <Label className="text-xs font-medium">Marker Color</Label>
-            <div className="flex gap-2 flex-wrap">
-              {colorOptions.map((c) => (
-                <button
-                  key={c}
-                  onClick={() => setColor(c)}
-                  className="w-8 h-8 rounded-xl border-2 transition-all hover:scale-110 shadow-sm"
-                  style={{
-                    backgroundColor: c,
-                    borderColor: color === c ? '#000' : 'transparent',
-                    transform: color === c ? 'scale(1.15)' : undefined,
-                  }}
-                  aria-label={`Select color ${c}`}
-                />
-              ))}
-            </div>
-          </div>
+          {/* Marker Icon & Color Picker */}
+          <MarkerIconPicker
+            selectedIcon={selectedIcon}
+            onIconSelect={setSelectedIcon}
+            customColor={color}
+            onColorChange={setColor}
+          />
         </div>
 
         <DialogFooter className="gap-2">
