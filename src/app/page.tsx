@@ -29,8 +29,12 @@ import { SunPositionOverlay } from '@/components/map/SunPositionOverlay'
 import { SunInfoPanel } from '@/components/map/SunInfoPanel'
 import { HeatmapLayer } from '@/components/map/HeatmapLayer'
 import { HeatmapControls } from '@/components/map/HeatmapControls'
+import { TrackRecorder, TrackRecordButton } from '@/components/map/TrackRecorder'
+import { GeofenceDialog } from '@/components/map/GeofenceDialog'
+import { ShareDialog } from '@/components/map/ShareDialog'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { useMapStore, type ToolMode, MAP_STYLES } from '@/lib/map-store'
 import { useUndoStore } from '@/lib/use-undo-store'
 import { toast } from 'sonner'
@@ -53,6 +57,7 @@ import {
   GitCompare,
   Globe2,
   Type,
+  Activity,
 } from 'lucide-react'
 
 export default function Home() {
@@ -63,6 +68,9 @@ export default function Home() {
   const [coordDialogOpen, setCoordDialogOpen] = useState(false)
   const [exportDialogOpen, setExportDialogOpen] = useState(false)
   const [bookmarkManagerOpen, setBookmarkManagerOpen] = useState(false)
+  const [shareDialogOpen, setShareDialogOpen] = useState(false)
+  const [geofenceDialogOpen, setGeofenceDialogOpen] = useState(false)
+  const [geofenceCoords, setGeofenceCoords] = useState<{ lat: number; lng: number } | null>(null)
   const [showWelcome, setShowWelcome] = useState(true)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [mapInitialized, setMapInitialized] = useState(false)
@@ -125,29 +133,10 @@ export default function Home() {
     setExportDialogOpen(true)
   }, [])
 
-  // Handle share URL
+  // Handle share URL - now opens the ShareDialog
   const handleShare = useCallback(() => {
-    const [lng, lat] = center
-    const params = new URLSearchParams({
-      lat: lat.toFixed(5),
-      lng: lng.toFixed(5),
-      zoom: zoom.toFixed(2),
-      style: currentStyle.id,
-    })
-    const shareUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`
-    navigator.clipboard.writeText(shareUrl).then(() => {
-      toast.success('Share URL copied to clipboard!')
-    }).catch(() => {
-      // Fallback for older browsers
-      const textArea = document.createElement('textarea')
-      textArea.value = shareUrl
-      document.body.appendChild(textArea)
-      textArea.select()
-      document.execCommand('copy')
-      document.body.removeChild(textArea)
-      toast.success('Share URL copied to clipboard!')
-    })
-  }, [center, zoom, currentStyle])
+    setShareDialogOpen(true)
+  }, [])
 
   // Listen for map initialization
   useEffect(() => {
@@ -227,6 +216,68 @@ export default function Home() {
     }
     window.addEventListener('map-add-saved-location', handleAddSavedLocation)
     return () => window.removeEventListener('map-add-saved-location', handleAddSavedLocation)
+  }, [])
+
+  // Listen for context menu "Create Geofence" event
+  useEffect(() => {
+    const handleCreateGeofence = (e: Event) => {
+      const detail = (e as CustomEvent).detail as { lat: number; lng: number }
+      if (detail) {
+        setGeofenceCoords(detail)
+        setGeofenceDialogOpen(true)
+      }
+    }
+    window.addEventListener('map-create-geofence', handleCreateGeofence)
+    return () => window.removeEventListener('map-create-geofence', handleCreateGeofence)
+  }, [])
+
+  // Geofence monitoring logic
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    const checkGeofences = () => {
+      const geolocation = useMapStore.getState().geolocation
+      if (!geolocation) return
+
+      const geofences = useMapStore.getState().geofences
+      for (const geofence of geofences) {
+        if (!geofence.isActive) continue
+        if (!geofence.notifyOnEnter && !geofence.notifyOnExit) continue
+
+        const R = 6371000 // meters
+        const dLat = ((geolocation.latitude - geofence.latitude) * Math.PI) / 180
+        const dLon = ((geolocation.longitude - geofence.longitude) * Math.PI) / 180
+        const a = Math.sin(dLat / 2) ** 2 +
+          Math.cos((geofence.latitude * Math.PI) / 180) * Math.cos((geolocation.latitude * Math.PI) / 180) * Math.sin(dLon / 2) ** 2
+        const dist = R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+
+        const inside = dist <= geofence.radius
+        const key = `geofence-inside-${geofence.id}`
+        const wasInside = sessionStorage.getItem(key) === 'true'
+
+        if (inside && !wasInside && geofence.notifyOnEnter) {
+          toast.info(`Entered geofence: ${geofence.name}`, { duration: 5000 })
+          sessionStorage.setItem(key, 'true')
+        } else if (!inside && wasInside && geofence.notifyOnExit) {
+          toast.info(`Exited geofence: ${geofence.name}`, { duration: 5000 })
+          sessionStorage.setItem(key, 'false')
+        }
+      }
+    }
+
+    // Check periodically
+    const interval = setInterval(checkGeofences, 5000)
+    // Also check when geolocation changes
+    const unsub = useMapStore.subscribe((state, prev) => {
+      if (state.geolocation !== prev.geolocation) {
+        checkGeofences()
+      }
+    })
+
+    return () => {
+      clearInterval(interval)
+      unsub()
+    }
   }, [])
 
   // Keyboard shortcuts
@@ -587,6 +638,52 @@ export default function Home() {
       {/* Tool toolbar - left side (desktop only) */}
       <div className="hidden md:block absolute left-4 z-10 transition-all duration-300" style={{ top: '80px' }}>
         <MapToolbar />
+        {/* Track Record Button */}
+        <div className="mt-2 flex justify-center">
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <TrackRecordButton
+                  onClick={() => {
+                    const { isRecording, startRecording, stopRecording, currentTrack, clearCurrentTrack } = useMapStore.getState()
+                    if (isRecording) {
+                      if (navigator.geolocation && typeof navigator !== 'undefined') {
+                        // handled by TrackRecorder component
+                      }
+                      stopRecording()
+                    } else {
+                      if (typeof navigator !== 'undefined' && navigator.geolocation) {
+                        startRecording()
+                        navigator.geolocation.watchPosition(
+                          (position) => {
+                            useMapStore.getState().addTrackPoint({
+                              latitude: position.coords.latitude,
+                              longitude: position.coords.longitude,
+                              elevation: position.coords.altitude,
+                              timestamp: position.timestamp,
+                              speed: position.coords.speed,
+                              accuracy: position.coords.accuracy,
+                            })
+                          },
+                          (error) => {
+                            toast.error(`GPS Error: ${error.message}`)
+                          },
+                          { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 }
+                        )
+                        toast.success('GPS recording started')
+                      } else {
+                        toast.error('Geolocation is not supported')
+                      }
+                    }
+                  }}
+                />
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs">
+                GPS Track Recording
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
       </div>
 
       {/* Quick Jump Panel - left side below toolbar (desktop only) */}
@@ -878,6 +975,20 @@ export default function Home() {
 
       {/* Keyboard Shortcuts Dialog */}
       <KeyboardShortcutsDialog open={shortcutsOpen} onOpenChange={setShortcutsOpen} />
+
+      {/* Share Dialog */}
+      <ShareDialog open={shareDialogOpen} onOpenChange={setShareDialogOpen} />
+
+      {/* Geofence Dialog */}
+      <GeofenceDialog
+        open={geofenceDialogOpen}
+        onOpenChange={setGeofenceDialogOpen}
+        latitude={geofenceCoords?.lat}
+        longitude={geofenceCoords?.lng}
+      />
+
+      {/* Track Recorder Panel */}
+      <TrackRecorder />
 
       {/* Footer */}
       <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-2 sm:px-3 md:px-4 safe-area-bottom before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">

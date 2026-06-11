@@ -91,6 +91,39 @@ export interface MapAnnotation {
   createdAt: string
 }
 
+export interface TrackPoint {
+  latitude: number
+  longitude: number
+  elevation: number | null
+  timestamp: number
+  speed: number | null
+  accuracy: number | null
+}
+
+export interface TrackRecording {
+  id: string
+  name: string
+  color: string
+  points: TrackPoint[]
+  distance: number
+  duration: number
+  startedAt: string
+  stoppedAt: string | null
+}
+
+export interface Geofence {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  radius: number
+  color: string
+  notifyOnEnter: boolean
+  notifyOnExit: boolean
+  isActive: boolean
+  createdAt: string
+}
+
 export type MapStyleOption = {
   id: string
   name: string
@@ -345,6 +378,23 @@ interface MapState {
   // Elevation route ID - which route to show elevation profile for
   elevationRouteId: string | null
 
+  // Track recording
+  isRecording: boolean
+  currentTrack: TrackPoint[]
+  savedTracks: TrackRecording[]
+  recordingStats: {
+    distance: number
+    duration: number
+    currentSpeed: number | null
+    maxSpeed: number
+    avgSpeed: number
+    elevationGain: number
+    elevationLoss: number
+  }
+
+  // Geofences
+  geofences: Geofence[]
+
   // Offline mode
   offlineModeEnabled: boolean
   setOfflineModeEnabled: (enabled: boolean) => void
@@ -436,6 +486,20 @@ interface MapState {
   addAnnotation: (annotation: MapAnnotation) => void
   updateAnnotation: (id: string, updates: Partial<Omit<MapAnnotation, 'id' | 'createdAt'>>) => void
   deleteAnnotation: (id: string) => void
+
+  // Track recording actions
+  startRecording: () => void
+  stopRecording: () => void
+  addTrackPoint: (point: TrackPoint) => void
+  clearCurrentTrack: () => void
+  saveCurrentTrack: (name: string) => void
+  deleteTrack: (id: string) => void
+
+  // Geofence actions
+  addGeofence: (geofence: Geofence) => void
+  removeGeofence: (id: string) => void
+  updateGeofence: (id: string, updates: Partial<Geofence>) => void
+  toggleGeofence: (id: string) => void
 }
 
 export const useMapStore = create<MapState>()(
@@ -502,6 +566,23 @@ export const useMapStore = create<MapState>()(
       elevationRouteId: null,
       offlineModeEnabled: false,
       customTileSources: [],
+
+      // Track recording defaults
+      isRecording: false,
+      currentTrack: [],
+      savedTracks: [],
+      recordingStats: {
+        distance: 0,
+        duration: 0,
+        currentSpeed: null,
+        maxSpeed: 0,
+        avgSpeed: 0,
+        elevationGain: 0,
+        elevationLoss: 0,
+      },
+
+      // Geofence defaults
+      geofences: [],
 
       setCenter: (center) => set({ center }),
       setZoom: (zoom) => set({ zoom }),
@@ -1100,6 +1181,140 @@ export const useMapStore = create<MapState>()(
       deleteAnnotation: (id) => set((state) => ({
         annotations: state.annotations.filter((a) => a.id !== id),
       })),
+
+      // Track recording actions
+      startRecording: () => set({
+        isRecording: true,
+        currentTrack: [],
+        recordingStats: {
+          distance: 0,
+          duration: 0,
+          currentSpeed: null,
+          maxSpeed: 0,
+          avgSpeed: 0,
+          elevationGain: 0,
+          elevationLoss: 0,
+        },
+      }),
+
+      stopRecording: () => set({ isRecording: false }),
+
+      addTrackPoint: (point) => set((state) => {
+        const newTrack = [...state.currentTrack, point]
+        let distance = state.recordingStats.distance
+        let elevationGain = state.recordingStats.elevationGain
+        let elevationLoss = state.recordingStats.elevationLoss
+        let maxSpeed = state.recordingStats.maxSpeed
+
+        if (newTrack.length >= 2) {
+          const prev = newTrack[newTrack.length - 2]
+          const R = 6371
+          const dLat = ((point.latitude - prev.latitude) * Math.PI) / 180
+          const dLon = ((point.longitude - prev.longitude) * Math.PI) / 180
+          const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos((prev.latitude * Math.PI) / 180) *
+            Math.cos((point.latitude * Math.PI) / 180) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2)
+          const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+          distance += R * c
+
+          if (point.elevation !== null && prev.elevation !== null) {
+            const diff = point.elevation - prev.elevation
+            if (diff > 0) elevationGain += diff
+            else elevationLoss += Math.abs(diff)
+          }
+        }
+
+        if (point.speed !== null && point.speed > maxSpeed) {
+          maxSpeed = point.speed
+        }
+
+        const duration = newTrack.length >= 2
+          ? (newTrack[newTrack.length - 1].timestamp - newTrack[0].timestamp) / 1000
+          : 0
+        const avgSpeed = duration > 0 ? (distance / duration) * 3600 : 0
+
+        return {
+          currentTrack: newTrack,
+          recordingStats: {
+            distance,
+            duration,
+            currentSpeed: point.speed,
+            maxSpeed,
+            avgSpeed,
+            elevationGain,
+            elevationLoss,
+          },
+        }
+      }),
+
+      clearCurrentTrack: () => set({
+        currentTrack: [],
+        recordingStats: {
+          distance: 0,
+          duration: 0,
+          currentSpeed: null,
+          maxSpeed: 0,
+          avgSpeed: 0,
+          elevationGain: 0,
+          elevationLoss: 0,
+        },
+      }),
+
+      saveCurrentTrack: (name) => set((state) => {
+        if (state.currentTrack.length < 2) return state
+        const newTrack: TrackRecording = {
+          id: `track-${Date.now()}`,
+          name,
+          color: '#ef4444',
+          points: [...state.currentTrack],
+          distance: state.recordingStats.distance,
+          duration: state.recordingStats.duration,
+          startedAt: state.currentTrack[0]
+            ? new Date(state.currentTrack[0].timestamp).toISOString()
+            : new Date().toISOString(),
+          stoppedAt: new Date().toISOString(),
+        }
+        return {
+          savedTracks: [...state.savedTracks, newTrack],
+          currentTrack: [],
+          isRecording: false,
+          recordingStats: {
+            distance: 0,
+            duration: 0,
+            currentSpeed: null,
+            maxSpeed: 0,
+            avgSpeed: 0,
+            elevationGain: 0,
+            elevationLoss: 0,
+          },
+        }
+      }),
+
+      deleteTrack: (id) => set((state) => ({
+        savedTracks: state.savedTracks.filter((t) => t.id !== id),
+      })),
+
+      // Geofence actions
+      addGeofence: (geofence) => set((state) => ({
+        geofences: [...state.geofences, geofence],
+      })),
+
+      removeGeofence: (id) => set((state) => ({
+        geofences: state.geofences.filter((g) => g.id !== id),
+      })),
+
+      updateGeofence: (id, updates) => set((state) => ({
+        geofences: state.geofences.map((g) =>
+          g.id === id ? { ...g, ...updates } : g
+        ),
+      })),
+
+      toggleGeofence: (id) => set((state) => ({
+        geofences: state.geofences.map((g) =>
+          g.id === id ? { ...g, isActive: !g.isActive } : g
+        ),
+      })),
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -1129,6 +1344,8 @@ export const useMapStore = create<MapState>()(
         offlineModeEnabled: state.offlineModeEnabled,
         customTileSources: state.customTileSources,
         routeProfile: state.routeProfile,
+        savedTracks: state.savedTracks,
+        geofences: state.geofences,
       }),
     }
   )

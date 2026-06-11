@@ -36,6 +36,7 @@ import {
   FileUp,
   Pentagon,
   Type,
+  Shield,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -66,6 +67,7 @@ import { NearbyPanel } from '@/components/map/NearbyPanel'
 import { CustomTileSourceList } from '@/components/map/CustomTileSourceList'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ElevationProfile } from '@/components/map/ElevationProfile'
+import { GeofenceManager } from '@/components/map/GeofenceManager'
 
 function SidebarSkeleton() {
   return (
@@ -1862,6 +1864,11 @@ function ToolsTab({
 
         <Separator />
 
+        {/* Geofences */}
+        <GeofenceSection />
+
+        <Separator />
+
         {/* Keyboard shortcuts reference */}
         <div>
           <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 flex items-center gap-2">
@@ -1892,6 +1899,26 @@ function ToolsTab({
         </div>
       </div>
     </ScrollArea>
+  )
+}
+
+// Geofence section component for the Tools tab
+function GeofenceSection() {
+  const geofences = useMapStore((s) => s.geofences)
+
+  return (
+    <div>
+      <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 flex items-center gap-2">
+        <Shield className="h-3.5 w-3.5" />
+        Geofences
+      </h4>
+      <GeofenceManager
+        onCreateGeofence={() => {
+          const center = useMapStore.getState().center
+          window.dispatchEvent(new CustomEvent('map-create-geofence', { detail: { lat: center[1], lng: center[0] } }))
+        }}
+      />
+    </div>
   )
 }
 
@@ -2437,9 +2464,105 @@ function RoutesTab({ onGPXImportClick }: { onGPXImportClick: () => void }) {
             </Button>
           </div>
         )}
+
+        {/* Saved Tracks section */}
+        <Separator className="my-4" />
+        <SavedTracksSection />
       </div>
     </ScrollArea>
   )
+}
+
+// Saved Tracks section for the Routes tab
+function SavedTracksSection() {
+  const savedTracks = useMapStore((s) => s.savedTracks)
+
+  return (
+    <div>
+      <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 flex items-center gap-2">
+        <Route className="h-3.5 w-3.5" />
+        Saved Tracks
+      </h4>
+      {savedTracks.length === 0 ? (
+        <div className="text-center py-4 text-muted-foreground">
+          <p className="text-xs">No saved tracks</p>
+          <p className="text-[10px] mt-1">Record a GPS track to see it here</p>
+        </div>
+      ) : (
+        <div className="space-y-2">
+          {savedTracks.map((track) => (
+            <div key={track.id} className="group rounded-xl border border-border/50 p-2.5 hover:bg-accent/30 transition-colors">
+              <div className="flex items-center justify-between">
+                <div className="flex-1 min-w-0">
+                  <button
+                    onClick={() => {
+                      const flyTo = (window as unknown as Record<string, (lng: number, lat: number, z?: number) => void>).__mapFlyTo
+                      if (flyTo && track.points.length > 0) {
+                        const mid = Math.floor(track.points.length / 2)
+                        flyTo(track.points[mid].longitude, track.points[mid].latitude, 14)
+                      }
+                    }}
+                    className="text-xs font-medium text-foreground hover:text-primary transition-colors truncate block text-left"
+                  >
+                    {track.name}
+                  </button>
+                  <div className="text-[10px] text-muted-foreground mt-0.5 flex items-center gap-2">
+                    <span>{track.distance < 1 ? `${Math.round(track.distance * 1000)} m` : `${track.distance.toFixed(2)} km`}</span>
+                    <span>·</span>
+                    <span>{formatTrackDuration(track.duration)}</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1 shrink-0">
+                  <button
+                    className="p-1 hover:text-primary transition-colors text-muted-foreground"
+                    onClick={() => {
+                      // Export GPX
+                      const trkpts = track.points.map((p) => {
+                        const ele = p.elevation !== null ? `<ele>${p.elevation.toFixed(1)}</ele>` : ''
+                        const time = `<time>${new Date(p.timestamp).toISOString()}</time>`
+                        return `      <trkpt lat="${p.latitude}" lon="${p.longitude}">${ele}${time}</trkpt>`
+                      }).join('\n')
+                      const gpx = `<?xml version="1.0" encoding="UTF-8"?>\n<gpx version="1.1" creator="MotoTrack"><trk><name>${track.name}</name><trkseg>\n${trkpts}\n    </trkseg></trk></gpx>`
+                      const blob = new Blob([gpx], { type: 'application/gpx+xml' })
+                      const url = URL.createObjectURL(blob)
+                      const a = document.createElement('a')
+                      a.href = url
+                      a.download = `${track.name.replace(/[^a-zA-Z0-9]/g, '_')}.gpx`
+                      document.body.appendChild(a)
+                      a.click()
+                      document.body.removeChild(a)
+                      URL.revokeObjectURL(url)
+                      toast.success('GPX exported')
+                    }}
+                    aria-label={`Export track ${track.name} as GPX`}
+                  >
+                    <Download className="h-3 w-3" />
+                  </button>
+                  <button
+                    className="p-1 hover:text-red-500 transition-colors text-muted-foreground"
+                    onClick={() => {
+                      useMapStore.getState().deleteTrack(track.id)
+                      toast.success(`Track "${track.name}" deleted`)
+                    }}
+                    aria-label={`Delete track ${track.name}`}
+                  >
+                    <Trash2 className="h-3 w-3" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function formatTrackDuration(seconds: number): string {
+  const hrs = Math.floor(seconds / 3600)
+  const mins = Math.floor((seconds % 3600) / 60)
+  if (hrs > 0) return `${hrs}h ${mins}m`
+  return `${mins}m`
 }
 
 // Inline elevation profile component for route detail

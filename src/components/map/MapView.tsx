@@ -2481,6 +2481,111 @@ export function MapView() {
     }
   }, [heatmapEnabled, markers, savedLocations, mapLoadedVersion])
 
+  // Draw geofences on map
+  const geofences = useMapStore((s) => s.geofences)
+  useEffect(() => {
+    if (!map.current || !mapLoadedRef.current) return
+
+    const GEOFENCE_PREFIX = 'geofence-'
+
+    // Remove existing geofence layers/sources
+    const existingLayers = map.current.getStyle()?.layers || []
+    for (const layer of existingLayers) {
+      if (layer.id.startsWith(GEOFENCE_PREFIX)) {
+        try { map.current.removeLayer(layer.id) } catch { /* ignore */ }
+      }
+    }
+    const existingSources = Object.keys(map.current.getStyle()?.sources || {})
+    for (const sourceId of existingSources) {
+      if (sourceId.startsWith(GEOFENCE_PREFIX)) {
+        try { map.current.removeSource(sourceId) } catch { /* ignore */ }
+      }
+    }
+
+    // Draw each active geofence
+    for (const geofence of geofences) {
+      if (!geofence.isActive) continue
+
+      const sourceId = `${GEOFENCE_PREFIX}src-${geofence.id}`
+      const fillLayerId = `${GEOFENCE_PREFIX}fill-${geofence.id}`
+      const strokeLayerId = `${GEOFENCE_PREFIX}stroke-${geofence.id}`
+      const labelLayerId = `${GEOFENCE_PREFIX}label-${geofence.id}`
+
+      // Create circle polygon
+      const points = 64
+      const coords: [number, number][] = []
+      const distanceX = geofence.radius / (111320 * Math.cos((geofence.latitude * Math.PI) / 180))
+      const distanceY = geofence.radius / 110550
+
+      for (let i = 0; i <= points; i++) {
+        const angle = (i / points) * 2 * Math.PI
+        const x = geofence.longitude + distanceX * Math.cos(angle)
+        const y = geofence.latitude + distanceY * Math.sin(angle)
+        coords.push([x, y])
+      }
+
+      const circleGeojson: GeoJSON.Feature<GeoJSON.Polygon> = {
+        type: 'Feature',
+        properties: { name: geofence.name },
+        geometry: { type: 'Polygon', coordinates: [coords] },
+      }
+
+      const labelGeojson: GeoJSON.Feature<GeoJSON.Point> = {
+        type: 'Feature',
+        properties: { name: geofence.name },
+        geometry: { type: 'Point', coordinates: [geofence.longitude, geofence.latitude] },
+      }
+
+      try {
+        map.current.addSource(sourceId, {
+          type: 'geojson',
+          data: circleGeojson,
+        })
+
+        map.current.addLayer({
+          id: fillLayerId,
+          type: 'fill',
+          source: sourceId,
+          paint: {
+            'fill-color': geofence.color,
+            'fill-opacity': 0.1,
+          },
+        })
+
+        map.current.addLayer({
+          id: strokeLayerId,
+          type: 'line',
+          source: sourceId,
+          paint: {
+            'line-color': geofence.color,
+            'line-width': 2,
+            'line-opacity': 0.6,
+          },
+        })
+
+        // Add label source and layer
+        const labelSourceId = `${GEOFENCE_PREFIX}label-src-${geofence.id}`
+        map.current.addSource(labelSourceId, { type: 'geojson', data: labelGeojson })
+        map.current.addLayer({
+          id: labelLayerId,
+          type: 'symbol',
+          source: labelSourceId,
+          layout: {
+            'text-field': ['get', 'name'],
+            'text-size': 12,
+            'text-anchor': 'center',
+            'text-allow-overlap': true,
+          },
+          paint: {
+            'text-color': geofence.color,
+            'text-halo-color': '#ffffff',
+            'text-halo-width': 1.5,
+          },
+        })
+      } catch { /* ignore errors when layers already exist */ }
+    }
+  }, [geofences, mapLoadedVersion])
+
   const flyToLocation = useCallback(
     (longitude: number, latitude: number, zoom?: number) => {
       if (!map.current) return

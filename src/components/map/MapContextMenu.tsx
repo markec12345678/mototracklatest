@@ -12,6 +12,7 @@ import {
   Crosshair,
   BookmarkPlus,
   Loader2,
+  Shield,
 } from 'lucide-react'
 import { useMapStore } from '@/lib/map-store'
 import { toast } from 'sonner'
@@ -262,6 +263,15 @@ export function MapContextMenu({ position, onClose, onAddToSavedLocations }: Map
       icon: <BookmarkPlus className="h-4 w-4 text-teal-500" />,
       label: 'Add to Saved Locations',
       onClick: handleAddToSaved,
+    },
+    {
+      icon: <Shield className="h-4 w-4 text-orange-500" />,
+      label: 'Create Geofence Here',
+      onClick: () => {
+        if (!position) return
+        window.dispatchEvent(new CustomEvent('map-create-geofence', { detail: { lat: position.lat, lng: position.lng } }))
+        onClose()
+      },
     },
   ]
 
