@@ -204,6 +204,17 @@ export interface MapDrawing {
 
 export type ToolMode = 'navigate' | 'mark' | 'measure' | 'directions' | 'draw' | 'area' | 'annotate'
 
+export interface CustomTileSource {
+  id: string
+  name: string
+  url: string
+  type: 'raster' | 'vector'
+  attribution?: string
+  minZoom?: number
+  maxZoom?: number
+  visible: boolean
+}
+
 export interface Geolocation {
   longitude: number
   latitude: number
@@ -318,6 +329,8 @@ interface MapState {
 
   // Heatmap visualization
   heatmapEnabled: boolean
+  heatmapIntensity: number
+  heatmapRadius: number
 
   // Map comparison / swipe view
   comparisonEnabled: boolean
@@ -329,9 +342,18 @@ interface MapState {
   // Annotations
   annotations: MapAnnotation[]
 
+  // Elevation route ID - which route to show elevation profile for
+  elevationRouteId: string | null
+
   // Offline mode
   offlineModeEnabled: boolean
   setOfflineModeEnabled: (enabled: boolean) => void
+
+  // Custom tile sources
+  customTileSources: CustomTileSource[]
+  addCustomTileSource: (source: CustomTileSource) => void
+  removeCustomTileSource: (id: string) => void
+  toggleCustomTileSource: (id: string) => void
 
   // Notifications
   notifications: MapNotification[]
@@ -396,6 +418,8 @@ interface MapState {
   setPoiMarkers: (poiMarkers: POIMarker[]) => void
   clearPoiMarkers: () => void
   setHeatmapEnabled: (enabled: boolean) => void
+  setHeatmapIntensity: (intensity: number) => void
+  setHeatmapRadius: (radius: number) => void
   setComparisonEnabled: (enabled: boolean) => void
   setComparisonStyle: (style: MapStyleOption) => void
   addBookmarkFolder: (folder: BookmarkFolder) => void
@@ -404,6 +428,9 @@ interface MapState {
   updateBookmarkFolder: (id: string, updates: Partial<Omit<BookmarkFolder, 'id'>>) => void
   addLocationToFolder: (folderId: string, locationId: string) => void
   removeLocationFromFolder: (folderId: string, locationId: string) => void
+
+  // Elevation route actions
+  setElevationRouteId: (id: string | null) => void
 
   // Annotation actions
   addAnnotation: (annotation: MapAnnotation) => void
@@ -465,12 +492,16 @@ export const useMapStore = create<MapState>()(
       isochroneMode: 'walking',
       poiMarkers: [],
       heatmapEnabled: false,
+      heatmapIntensity: 0.5,
+      heatmapRadius: 30,
       notifications: [],
       comparisonEnabled: false,
       comparisonStyle: MAP_STYLES[1], // Default to Satellite for comparison
       bookmarkFolders: [],
       annotations: [],
+      elevationRouteId: null,
       offlineModeEnabled: false,
+      customTileSources: [],
 
       setCenter: (center) => set({ center }),
       setZoom: (zoom) => set({ zoom }),
@@ -997,6 +1028,8 @@ export const useMapStore = create<MapState>()(
       setPoiMarkers: (poiMarkers) => set({ poiMarkers }),
       clearPoiMarkers: () => set({ poiMarkers: [] }),
       setHeatmapEnabled: (heatmapEnabled) => set({ heatmapEnabled }),
+      setHeatmapIntensity: (heatmapIntensity) => set({ heatmapIntensity }),
+      setHeatmapRadius: (heatmapRadius) => set({ heatmapRadius }),
       setComparisonEnabled: (comparisonEnabled) => set({ comparisonEnabled }),
       setComparisonStyle: (comparisonStyle) => set({ comparisonStyle }),
 
@@ -1038,6 +1071,20 @@ export const useMapStore = create<MapState>()(
 
       setOfflineModeEnabled: (offlineModeEnabled) => set({ offlineModeEnabled }),
 
+      addCustomTileSource: (source) => set((state) => ({
+        customTileSources: [...state.customTileSources, source],
+      })),
+
+      removeCustomTileSource: (id) => set((state) => ({
+        customTileSources: state.customTileSources.filter((s) => s.id !== id),
+      })),
+
+      toggleCustomTileSource: (id) => set((state) => ({
+        customTileSources: state.customTileSources.map((s) =>
+          s.id === id ? { ...s, visible: !s.visible } : s
+        ),
+      })),
+
       addAnnotation: (annotation) => set((state) => ({
         annotations: [...state.annotations, annotation],
       })),
@@ -1047,6 +1094,8 @@ export const useMapStore = create<MapState>()(
           a.id === id ? { ...a, ...updates } : a
         ),
       })),
+
+      setElevationRouteId: (elevationRouteId) => set({ elevationRouteId }),
 
       deleteAnnotation: (id) => set((state) => ({
         annotations: state.annotations.filter((a) => a.id !== id),
@@ -1071,11 +1120,14 @@ export const useMapStore = create<MapState>()(
         drawColor: state.drawColor,
         drawWidth: state.drawWidth,
         heatmapEnabled: state.heatmapEnabled,
+        heatmapIntensity: state.heatmapIntensity,
+        heatmapRadius: state.heatmapRadius,
         comparisonEnabled: state.comparisonEnabled,
         comparisonStyle: state.comparisonStyle,
         bookmarkFolders: state.bookmarkFolders,
         annotations: state.annotations,
         offlineModeEnabled: state.offlineModeEnabled,
+        customTileSources: state.customTileSources,
         routeProfile: state.routeProfile,
       }),
     }

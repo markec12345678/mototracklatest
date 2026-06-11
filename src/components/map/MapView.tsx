@@ -100,6 +100,7 @@ export function MapView() {
   const poiMarkers = useMapStore((s) => s.poiMarkers)
   const areaPoints = useMapStore((s) => s.areaPoints)
   const heatmapEnabled = useMapStore((s) => s.heatmapEnabled)
+  const customTileSources = useMapStore((s) => s.customTileSources)
   const savedLocations = useMapStore((s) => s.savedLocations)
   const routeProfile = useMapStore((s) => s.routeProfile)
   const highlightedStepIndex = useMapStore((s) => s.highlightedStepIndex)
@@ -1926,6 +1927,122 @@ export function MapView() {
       }
     }
   }, [trafficEnabled, mapLoadedVersion])
+
+  // Custom tile sources overlay
+  useEffect(() => {
+    if (!map.current || !mapLoadedRef.current) return
+
+    const m = map.current
+    const sourcePrefix = 'custom-tile-source-'
+    const layerPrefix = 'custom-tile-layer-'
+
+    // Track current custom source IDs
+    const currentIds = new Set(customTileSources.map((s) => s.id))
+
+    // Remove sources/layers that no longer exist in the store
+    const style = m.getStyle()
+    if (style) {
+      const existingLayerIds = style.layers?.map((l) => l.id) || []
+      const existingSourceIds = Object.keys(style.sources || {})
+
+      for (const layerId of existingLayerIds) {
+        if (layerId.startsWith(layerPrefix)) {
+          const sourceId = sourcePrefix + layerId.slice(layerPrefix.length)
+          if (!currentIds.has(layerId.slice(layerPrefix.length))) {
+            m.removeLayer(layerId)
+          }
+        }
+      }
+      for (const srcId of existingSourceIds) {
+        if (srcId.startsWith(sourcePrefix)) {
+          const id = srcId.slice(sourcePrefix.length)
+          if (!currentIds.has(id)) {
+            m.removeSource(srcId)
+          }
+        }
+      }
+    }
+
+    // Add or update custom tile sources
+    for (const source of customTileSources) {
+      const sourceId = sourcePrefix + source.id
+      const layerId = layerPrefix + source.id
+
+      if (source.type === 'raster') {
+        // Add raster source if not exists
+        if (!m.getSource(sourceId)) {
+          try {
+            m.addSource(sourceId, {
+              type: 'raster',
+              tiles: [source.url],
+              tileSize: 256,
+              attribution: source.attribution || '',
+              minzoom: source.minZoom,
+              maxzoom: source.maxZoom,
+            } as maplibregl.RasterSourceSpecification)
+          } catch (e) {
+            console.warn(`Failed to add custom raster source "${source.name}":`, e)
+            continue
+          }
+        }
+        // Add raster layer if not exists
+        if (!m.getLayer(layerId)) {
+          try {
+            m.addLayer({
+              id: layerId,
+              type: 'raster',
+              source: sourceId,
+              paint: {
+                'raster-opacity': source.visible ? 1 : 0,
+              },
+            } as maplibregl.LayerSpecification)
+          } catch (e) {
+            console.warn(`Failed to add custom raster layer "${source.name}":`, e)
+          }
+        } else {
+          // Update visibility
+          try {
+            m.setPaintProperty(layerId, 'raster-opacity', source.visible ? 1 : 0)
+          } catch { /* ignore */ }
+        }
+      } else if (source.type === 'vector') {
+        // Add vector source if not exists
+        if (!m.getSource(sourceId)) {
+          try {
+            m.addSource(sourceId, {
+              type: 'vector',
+              url: source.url,
+            } as maplibregl.VectorSourceSpecification)
+          } catch (e) {
+            console.warn(`Failed to add custom vector source "${source.name}":`, e)
+            continue
+          }
+        }
+        // For vector sources, we add a simple fill layer as a basic visualization
+        // Users can customize this further
+        const fillLayerId = layerPrefix + source.id + '-fill'
+        if (!m.getLayer(fillLayerId)) {
+          try {
+            m.addLayer({
+              id: fillLayerId,
+              type: 'fill',
+              source: sourceId,
+              paint: {
+                'fill-color': '#3388ff',
+                'fill-opacity': source.visible ? 0.3 : 0,
+              },
+            } as maplibregl.LayerSpecification)
+          } catch (e) {
+            console.warn(`Failed to add custom vector layer "${source.name}":`, e)
+          }
+        } else {
+          try {
+            m.setPaintProperty(fillLayerId, 'fill-opacity', source.visible ? 0.3 : 0)
+          } catch { /* ignore */ }
+        }
+      }
+    }
+  }, [customTileSources, mapLoadedVersion])
 
   // Earthquakes overlay
   useEffect(() => {

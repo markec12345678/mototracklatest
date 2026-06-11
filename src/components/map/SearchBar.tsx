@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { Search, X, MapPin, Loader2, Navigation2, Clock } from 'lucide-react'
 import { Input } from '@/components/ui/input'
+import { Skeleton } from '@/components/ui/skeleton'
 import { useMapStore } from '@/lib/map-store'
 import { cn } from '@/lib/utils'
 
@@ -12,6 +13,30 @@ interface SearchResult {
   longitude: number
   type: string
   category: string
+}
+
+function SearchSkeleton() {
+  return (
+    <div className="map-tooltip absolute top-full mt-1.5 w-full overflow-hidden z-50">
+      <div className="px-3 py-2 border-b bg-muted/30">
+        <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">
+          Searching...
+        </p>
+      </div>
+      {Array.from({ length: 3 }).map((_, i) => (
+        <div
+          key={i}
+          className="w-full px-3 py-2.5 flex items-start gap-3 border-b last:border-0"
+        >
+          <Skeleton className="w-8 h-8 rounded-xl shrink-0" />
+          <div className="flex-1 space-y-1.5 pt-0.5">
+            <Skeleton className="h-3.5 w-3/4 rounded" />
+            <Skeleton className="h-3 w-1/2 rounded" />
+          </div>
+        </div>
+      ))}
+    </div>
+  )
 }
 
 export function SearchBar() {
@@ -200,7 +225,13 @@ export function SearchBar() {
           onBlur={() => setIsFocused(false)}
           onKeyDown={handleKeyDown}
           placeholder={isFocused ? "Search the map..." : "Search the map... (/ to search)"}
-          className="pl-9 pr-9 h-11 bg-background/90 backdrop-blur-md border-border/50 shadow-lg hover:shadow-xl rounded-xl transition-all duration-200 focus:shadow-xl focus:shadow-[0_0_20px_rgba(16,185,129,0.15)] focus:ring-2 focus:ring-primary/20 focus:border-primary/30"
+          className={cn(
+            "pl-9 pr-9 h-11 bg-background/90 backdrop-blur-md border-border/50 shadow-lg rounded-xl transition-all duration-300",
+            "hover:shadow-xl",
+            isFocused
+              ? "shadow-xl shadow-[0_0_24px_rgba(16,185,129,0.2)] ring-2 ring-emerald-500/25 border-emerald-500/40"
+              : "focus:shadow-xl focus:shadow-[0_0_20px_rgba(16,185,129,0.15)] focus:ring-2 focus:ring-primary/20 focus:border-primary/30"
+          )}
           aria-label="Search locations on the map"
         />
         {isSearching && (
@@ -222,7 +253,10 @@ export function SearchBar() {
         )}
       </div>
 
-      {showResults && results.length === 0 && (
+      {/* Loading skeleton */}
+      {isSearching && <SearchSkeleton />}
+
+      {showResults && !isSearching && results.length === 0 && (
         <div className="map-tooltip absolute top-full mt-1.5 w-full overflow-hidden z-50">
           <div className="px-4 py-6 text-center">
             <Search className="h-8 w-8 text-muted-foreground/30 mx-auto mb-2" />
@@ -232,7 +266,7 @@ export function SearchBar() {
         </div>
       )}
 
-      {showResults && results.length > 0 && (
+      {showResults && !isSearching && results.length > 0 && (
         <div className="map-tooltip absolute top-full mt-1.5 w-full overflow-hidden z-50 max-h-80 overflow-y-auto">
           <div className="px-3 py-2 border-b bg-muted/30">
             <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">
@@ -244,11 +278,13 @@ export function SearchBar() {
               key={`${result.latitude}-${result.longitude}-${i}`}
               onClick={() => handleSelect(result)}
               className={cn(
-                'search-result-hover w-full px-3 py-2.5 text-left hover:bg-accent/80 transition-all duration-150 flex items-start gap-3 border-b last:border-0 rounded-lg mx-1',
-                selectedIndex === i && 'bg-accent'
+                'w-full px-3 py-2.5 text-left transition-all duration-200 flex items-start gap-3 border-b last:border-0 mx-0.5',
+                selectedIndex === i
+                  ? 'bg-primary/10 translate-x-1'
+                  : 'hover:bg-accent/80 hover:translate-x-1'
               )}
             >
-              <div className="w-8 h-8 rounded-xl bg-muted/50 flex items-center justify-center shrink-0 mt-0.5">
+              <div className="w-8 h-8 rounded-xl bg-muted/50 flex items-center justify-center shrink-0 mt-0.5 transition-colors group-hover:bg-primary/10">
                 <span className="text-sm">
                   {getTypeIcon(result.type, result.category)}
                 </span>
@@ -283,7 +319,7 @@ export function SearchBar() {
             <div
               key={searchTerm}
               onClick={() => handleRecentSearchClick(searchTerm)}
-              className="w-full px-3 py-2.5 text-left hover:bg-accent transition-colors flex items-center gap-3 border-b last:border-0 cursor-pointer"
+              className="w-full px-3 py-2.5 text-left hover:bg-accent/80 hover:translate-x-1 transition-all duration-200 flex items-center gap-3 border-b last:border-0 cursor-pointer"
               tabIndex={0}
               onKeyDown={(e) => { if (e.key === 'Enter') handleRecentSearchClick(searchTerm) }}
             >

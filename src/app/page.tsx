@@ -27,6 +27,8 @@ import { MapExportDialog } from '@/components/map/MapExportDialog'
 import { BookmarkManager } from '@/components/map/BookmarkManager'
 import { SunPositionOverlay } from '@/components/map/SunPositionOverlay'
 import { SunInfoPanel } from '@/components/map/SunInfoPanel'
+import { HeatmapLayer } from '@/components/map/HeatmapLayer'
+import { HeatmapControls } from '@/components/map/HeatmapControls'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useMapStore, type ToolMode, MAP_STYLES } from '@/lib/map-store'
@@ -54,7 +56,7 @@ import {
 } from 'lucide-react'
 
 export default function Home() {
-  const { toolMode, sidebarOpen, center, zoom, currentStyle, weatherEnabled, comparisonEnabled, sunPositionEnabled, setSidebarOpen, setToolMode, setCenter, setZoom, setCurrentStyle, setComparisonEnabled } = useMapStore()
+  const { toolMode, sidebarOpen, center, zoom, currentStyle, weatherEnabled, comparisonEnabled, sunPositionEnabled, heatmapEnabled, elevationRouteId, setSidebarOpen, setToolMode, setCenter, setZoom, setCurrentStyle, setComparisonEnabled } = useMapStore()
   const pushNotification = useMapStore((s) => s.pushNotification)
   const [addDialogOpen, setAddDialogOpen] = useState(false)
   const [shortcutsOpen, setShortcutsOpen] = useState(false)
@@ -422,6 +424,9 @@ export default function Home() {
       {/* Sun Position Overlay - renders terminator and subsolar point on the map */}
       <SunPositionOverlay />
 
+      {/* Heatmap Layer - renders density heatmap from markers */}
+      <HeatmapLayer />
+
       {/* Map Comparison / Swipe View */}
       <MapComparison />
 
@@ -674,16 +679,28 @@ export default function Home() {
         <WeatherPanel />
       </div>
 
-      {/* Elevation Profile Panel - above weather panel when measuring or routing (desktop only) */}
+      {/* Elevation Profile Panel - above weather panel when measuring, routing, or viewing route elevation (desktop only) */}
       <div
         className="hidden md:block absolute z-10"
         style={{
           left: sidebarOpen ? '332px' : '20px',
-          bottom: (toolMode === 'measure' || toolMode === 'directions') && weatherEnabled ? '260px' : '12px',
+          bottom: (toolMode === 'measure' || toolMode === 'directions' || elevationRouteId !== null) && weatherEnabled ? '260px' : '12px',
           transition: 'left 0.3s ease-in-out, bottom 0.3s ease-in-out',
         }}
       >
         <ElevationProfile />
+      </div>
+
+      {/* Heatmap Controls - bottom-left above coordinates (desktop only) */}
+      <div
+        className="hidden md:block absolute z-10"
+        style={{
+          left: sidebarOpen ? '332px' : '20px',
+          bottom: (toolMode === 'measure' || toolMode === 'directions' || elevationRouteId !== null) ? (weatherEnabled ? '360px' : '120px') : (weatherEnabled ? '260px' : '12px'),
+          transition: 'left 0.3s ease-in-out, bottom 0.3s ease-in-out',
+        }}
+      >
+        <HeatmapControls />
       </div>
 
       {/* Sun Info Panel - right side above map stats (desktop only) */}
@@ -741,7 +758,41 @@ export default function Home() {
             transition={{ duration: 0.4, ease: 'easeOut' }}
             className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 max-w-md w-full px-4 hidden md:block"
           >
-            <div className="gradient-border bg-background/95 backdrop-blur-xl rounded-2xl p-5 shadow-2xl">
+            <div className="relative bg-background/95 backdrop-blur-xl rounded-2xl p-5 shadow-2xl overflow-hidden">
+              {/* Animated gradient border */}
+              <div className="absolute inset-0 rounded-2xl p-[1.5px] pointer-events-none">
+                <div className="absolute inset-0 rounded-2xl animate-gradient-rotate" style={{
+                  background: 'conic-gradient(from 0deg, #10b981, #14b8a6, #06b6d4, #10b981)',
+                  mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                  maskComposite: 'exclude',
+                  WebkitMaskComposite: 'xor',
+                  padding: '1.5px',
+                }} />
+              </div>
+              {/* Floating particles background */}
+              <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
+                {[...Array(6)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    className="absolute w-1 h-1 rounded-full bg-emerald-400"
+                    initial={{
+                      x: Math.random() * 300,
+                      y: Math.random() * 150,
+                      opacity: 0,
+                    }}
+                    animate={{
+                      y: [Math.random() * 150, Math.random() * 50, Math.random() * 150],
+                      opacity: [0, 0.6, 0],
+                    }}
+                    transition={{
+                      duration: 3 + Math.random() * 2,
+                      repeat: Infinity,
+                      delay: i * 0.5,
+                      ease: 'easeInOut',
+                    }}
+                  />
+                ))}
+              </div>
               <button
                 onClick={() => setShowWelcome(false)}
                 className="absolute top-3 right-3 text-muted-foreground hover:text-foreground transition-colors p-1 rounded-lg hover:bg-accent z-10"
@@ -749,8 +800,8 @@ export default function Home() {
               >
                 <X className="h-4 w-4" />
               </button>
-              <div className="flex items-start gap-4">
-                <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/20 animate-gradient-border gradient-border">
+              <div className="flex items-start gap-4 relative">
+                <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/20">
                   <Layers className="h-6 w-6 text-white" />
                 </div>
                 <div className="flex-1">
@@ -770,7 +821,7 @@ export default function Home() {
                       { label: 'Weather', emoji: '🌤️', bg: 'bg-sky-500/10 text-sky-700 dark:text-sky-400' },
                       { label: 'Save Places', emoji: '📍', bg: 'bg-red-500/10 text-red-700 dark:text-red-400' },
                       { label: 'Measure', emoji: '📏', bg: 'bg-orange-500/10 text-orange-700 dark:text-orange-400' },
-                      { label: 'Share View', emoji: '🔗', bg: 'bg-cyan-500/10 text-cyan-700 dark:text-cyan-400' },
+                      { label: 'Custom Tiles', emoji: '🧩', bg: 'bg-purple-500/10 text-purple-700 dark:text-purple-400' },
                       { label: 'Shortcuts', emoji: '⌨️', bg: 'bg-violet-500/10 text-violet-700 dark:text-violet-400' },
                     ].map((feature, featureIndex) => (
                       <motion.div
@@ -788,18 +839,24 @@ export default function Home() {
                       </motion.div>
                     ))}
                   </div>
-                  <Button
-                    size="sm"
-                    className="mt-3 h-8 text-xs bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white border-0 shadow-md shadow-emerald-500/20"
-                    onClick={() => {
-                      setShowWelcome(false)
-                      setTimeout(() => {
-                        document.getElementById('map-search-input')?.focus()
-                      }, 100)
-                    }}
+                  <motion.div
+                    whileHover={{ scale: 1.04 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="inline-block"
                   >
-                    Get Started
-                  </Button>
+                    <Button
+                      size="sm"
+                      className="mt-3 h-9 text-xs bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white border-0 shadow-lg shadow-emerald-500/25 px-5 font-medium"
+                      onClick={() => {
+                        setShowWelcome(false)
+                        setTimeout(() => {
+                          document.getElementById('map-search-input')?.focus()
+                        }, 100)
+                      }}
+                    >
+                      Get Started →
+                    </Button>
+                  </motion.div>
                 </div>
               </div>
             </div>

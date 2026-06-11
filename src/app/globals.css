@@ -2055,3 +2055,22 @@ select:focus-visible {
   opacity: 1;
   transform: scale(1);
 }
+
+/* ===== Animated Gradient Rotation (for Welcome Banner border) ===== */
+@keyframes gradient-rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.animate-gradient-rotate {
+  animation: gradient-rotate 3s linear infinite;
+}
+
+/* ===== Search Result Hover Slide ===== */
+.search-result-slide {
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.search-result-slide:hover {
+  transform: translateX(4px);
+}

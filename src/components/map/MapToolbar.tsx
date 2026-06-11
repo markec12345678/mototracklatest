@@ -4,83 +4,101 @@ import { useEffect, useRef, useState } from 'react'
 import { MapPin, Navigation, Ruler, Crosshair, Pencil, Maximize2, Type } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 import { useMapStore, type ToolMode } from '@/lib/map-store'
 
-const tools: {
-  id: ToolMode
-  icon: React.ReactNode
-  label: string
-  activeClass: string
-  shortcut: string
-  description: string
+const toolGroups: {
+  separatorAfter?: boolean
+  tools: {
+    id: ToolMode
+    icon: React.ReactNode
+    label: string
+    activeClass: string
+    shortcut: string
+    description: string
+  }[]
 }[] = [
   {
-    id: 'navigate',
-    icon: <Navigation className="h-4 w-4" />,
-    label: 'Navigate',
-    activeClass: 'bg-emerald-500 text-white shadow-md shadow-emerald-500/30',
-    shortcut: '1',
-    description: 'Pan & zoom the map',
+    tools: [
+      {
+        id: 'navigate',
+        icon: <Navigation className="h-4 w-4" />,
+        label: 'Navigate',
+        activeClass: 'bg-emerald-500 text-white shadow-md shadow-emerald-500/30',
+        shortcut: '1',
+        description: 'Pan & zoom the map',
+      },
+      {
+        id: 'mark',
+        icon: <MapPin className="h-4 w-4" />,
+        label: 'Drop Pin',
+        activeClass: 'bg-red-500 text-white shadow-md shadow-red-500/30',
+        shortcut: '2',
+        description: 'Click map to add markers',
+      },
+    ],
   },
   {
-    id: 'mark',
-    icon: <MapPin className="h-4 w-4" />,
-    label: 'Drop Pin',
-    activeClass: 'bg-red-500 text-white shadow-md shadow-red-500/30',
-    shortcut: '2',
-    description: 'Click map to add markers',
+    separatorAfter: true,
+    tools: [
+      {
+        id: 'measure',
+        icon: <Ruler className="h-4 w-4" />,
+        label: 'Measure',
+        activeClass: 'bg-amber-500 text-white shadow-md shadow-amber-500/30',
+        shortcut: '3',
+        description: 'Click points to measure distance',
+      },
+      {
+        id: 'directions',
+        icon: <Crosshair className="h-4 w-4" />,
+        label: 'Directions',
+        activeClass: 'bg-cyan-500 text-white shadow-md shadow-cyan-500/30',
+        shortcut: '4',
+        description: 'Draw routes between points',
+      },
+      {
+        id: 'area',
+        icon: <Maximize2 className="h-4 w-4" />,
+        label: 'Area',
+        activeClass: 'bg-violet-500 text-white shadow-md shadow-violet-500/30',
+        shortcut: '6',
+        description: 'Measure polygon area on the map',
+      },
+    ],
   },
   {
-    id: 'measure',
-    icon: <Ruler className="h-4 w-4" />,
-    label: 'Measure',
-    activeClass: 'bg-amber-500 text-white shadow-md shadow-amber-500/30',
-    shortcut: '3',
-    description: 'Click points to measure distance',
-  },
-  {
-    id: 'directions',
-    icon: <Crosshair className="h-4 w-4" />,
-    label: 'Directions',
-    activeClass: 'bg-cyan-500 text-white shadow-md shadow-cyan-500/30',
-    shortcut: '4',
-    description: 'Draw routes between points',
-  },
-  {
-    id: 'draw',
-    icon: <Pencil className="h-4 w-4" />,
-    label: 'Draw',
-    activeClass: 'bg-green-500 text-white shadow-md shadow-green-500/30',
-    shortcut: '5',
-    description: 'Freehand drawing on the map',
-  },
-  {
-    id: 'area',
-    icon: <Maximize2 className="h-4 w-4" />,
-    label: 'Area',
-    activeClass: 'bg-violet-500 text-white shadow-md shadow-violet-500/30',
-    shortcut: '6',
-    description: 'Measure polygon area on the map',
-  },
-  {
-    id: 'annotate',
-    icon: <Type className="h-4 w-4" />,
-    label: 'Label',
-    activeClass: 'bg-pink-500 text-white shadow-md shadow-pink-500/30',
-    shortcut: '8',
-    description: 'Add text labels on the map',
+    tools: [
+      {
+        id: 'draw',
+        icon: <Pencil className="h-4 w-4" />,
+        label: 'Draw',
+        activeClass: 'bg-green-500 text-white shadow-md shadow-green-500/30',
+        shortcut: '5',
+        description: 'Freehand drawing on the map',
+      },
+      {
+        id: 'annotate',
+        icon: <Type className="h-4 w-4" />,
+        label: 'Label',
+        activeClass: 'bg-pink-500 text-white shadow-md shadow-pink-500/30',
+        shortcut: '8',
+        description: 'Add text labels on the map',
+      },
+    ],
   },
 ]
 
 function ToolButton({ tool, isActive, onClick, index }: {
-  tool: typeof tools[number]
+  tool: toolGroups[number]['tools'][number]
   isActive: boolean
   onClick: () => void
   index: number
 }) {
   const buttonRef = useRef<HTMLButtonElement>(null)
   const [mounted, setMounted] = useState(false)
+  const [isPressed, setIsPressed] = useState(false)
 
   useEffect(() => {
     // Trigger stagger animation on mount
@@ -116,18 +134,25 @@ function ToolButton({ tool, isActive, onClick, index }: {
             variant="ghost"
             size="icon"
             className={cn(
-              'h-11 w-11 rounded-xl transition-all duration-200 relative toolbar-btn-press',
-              // 44px minimum touch target
+              'h-11 w-11 rounded-xl transition-all duration-200 relative',
               isActive
                 ? cn(tool.activeClass, 'tool-active-glow')
-                : 'hover:bg-accent'
+                : 'hover:bg-accent',
+              isPressed && 'scale-90'
             )}
-            onClick={onClick}
+            onClick={() => {
+              setIsPressed(true)
+              onClick()
+              setTimeout(() => setIsPressed(false), 150)
+            }}
             aria-label={`${tool.label} tool (press ${tool.shortcut})`}
           >
             {tool.icon}
             {isActive && (
-              <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-white tool-dot-glow" />
+              <>
+                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-white tool-dot-glow" />
+                <span className="absolute inset-0 rounded-xl ring-2 ring-white/30 pointer-events-none" />
+              </>
             )}
           </Button>
         </TooltipTrigger>
@@ -148,17 +173,32 @@ function ToolButton({ tool, isActive, onClick, index }: {
 export function MapToolbar() {
   const { toolMode, setToolMode } = useMapStore()
 
+  // Flatten tools for index counting
+  let globalIndex = 0
+
   return (
     <TooltipProvider delayDuration={200}>
-      <div className="flex flex-col gap-2 bg-background/90 backdrop-blur-md border border-border/50 rounded-2xl shadow-lg p-2">
-        {tools.map((tool, index) => (
-          <ToolButton
-            key={tool.id}
-            tool={tool}
-            isActive={toolMode === tool.id}
-            onClick={() => setToolMode(tool.id)}
-            index={index}
-          />
+      <div className="flex flex-col gap-1 bg-background/90 backdrop-blur-md border border-border/50 rounded-2xl shadow-lg p-2">
+        {toolGroups.map((group, groupIdx) => (
+          <div key={groupIdx}>
+            {groupIdx > 0 && (
+              <Separator className="my-1 opacity-50" />
+            )}
+            <div className="flex flex-col gap-1">
+              {group.tools.map((tool) => {
+                const idx = globalIndex++
+                return (
+                  <ToolButton
+                    key={tool.id}
+                    tool={tool}
+                    isActive={toolMode === tool.id}
+                    onClick={() => setToolMode(tool.id)}
+                    index={idx}
+                  />
+                )
+              })}
+            </div>
+          </div>
         ))}
       </div>
     </TooltipProvider>

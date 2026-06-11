@@ -63,6 +63,28 @@ import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
 import { LocationDetailDrawer } from '@/components/map/LocationDetailDrawer'
 import { NearbyPanel } from '@/components/map/NearbyPanel'
+import { CustomTileSourceList } from '@/components/map/CustomTileSourceList'
+import { Skeleton } from '@/components/ui/skeleton'
+import { ElevationProfile } from '@/components/map/ElevationProfile'
+
+function SidebarSkeleton() {
+  return (
+    <div className="p-3 space-y-3">
+      <Skeleton className="h-8 w-full rounded-lg" />
+      <div className="space-y-2">
+        {[...Array(5)].map((_, i) => (
+          <div key={i} className="flex items-center gap-3 p-2.5 rounded-xl">
+            <Skeleton className="h-9 w-9 rounded-xl shrink-0" />
+            <div className="flex-1 space-y-1.5">
+              <Skeleton className="h-3.5 w-3/4 rounded" />
+              <Skeleton className="h-3 w-1/2 rounded" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
 
 function mapSymbolToCategory(sym?: string): string {
   if (!sym) return 'general'
@@ -523,15 +545,15 @@ function SidebarContent({ onCloseMobile }: { onCloseMobile?: () => void }) {
         ))}
       </div>
 
-      {/* Tab content with AnimatePresence */}
+      {/* Tab content with AnimatePresence - smooth slide transition */}
       <div className="flex-1 overflow-hidden">
         <AnimatePresence mode="wait">
           <motion.div
             key={sidebarTab}
-            initial={{ opacity: 0, x: 8 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -8 }}
-            transition={{ duration: 0.15, ease: 'easeOut' }}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
             className="h-full"
           >
             {sidebarTab === 'locations' && (
@@ -1186,6 +1208,17 @@ function LayersTab() {
               />
             </div>
           </div>
+        </div>
+
+        <Separator />
+
+        {/* Custom Tile Sources */}
+        <div>
+          <h3 className="text-sm font-semibold flex items-center gap-2 mb-2">
+            <Globe2 className="h-3.5 w-3.5 text-muted-foreground" />
+            Custom Tile Sources
+          </h3>
+          <CustomTileSourceList />
         </div>
       </div>
     </ScrollArea>
@@ -1981,6 +2014,8 @@ function RoutesTab({ onGPXImportClick }: { onGPXImportClick: () => void }) {
   const setToolMode = useMapStore((s) => s.setToolMode)
   const osrmDistance = useMapStore((s) => s.osrmDistance)
   const osrmDuration = useMapStore((s) => s.osrmDuration)
+  const elevationRouteId = useMapStore((s) => s.elevationRouteId)
+  const setElevationRouteId = useMapStore((s) => s.setElevationRouteId)
 
   const [routeName, setRouteName] = useState('')
   const [savedRouteIds, setSavedRouteIds] = useState<Set<string>>(new Set())
@@ -2323,8 +2358,9 @@ function RoutesTab({ onGPXImportClick }: { onGPXImportClick: () => void }) {
               {routes.map((route) => (
                 <div
                   key={route.id}
-                  className="flex items-center gap-2.5 p-2.5 rounded-xl border hover:bg-accent/50 hover:translate-x-0.5 hover:shadow-sm transition-all duration-200 cursor-pointer"
+                  className="rounded-xl border hover:bg-accent/50 hover:translate-x-0.5 hover:shadow-sm transition-all duration-200 overflow-hidden"
                 >
+                  <div className="flex items-center gap-2.5 p-2.5 cursor-pointer">
                   <button
                     className="w-3 h-8 rounded-full shrink-0 transition-opacity"
                     style={{ backgroundColor: route.color, opacity: savedRouteIds.has(route.id) ? 1 : 0.4 }}
@@ -2341,6 +2377,19 @@ function RoutesTab({ onGPXImportClick }: { onGPXImportClick: () => void }) {
                     )}
                   </div>
                   <button
+                    className={cn(
+                      'p-1 transition-colors',
+                      elevationRouteId === route.id
+                        ? 'text-emerald-500 hover:text-emerald-600'
+                        : 'text-muted-foreground hover:text-primary'
+                    )}
+                    onClick={() => setElevationRouteId(elevationRouteId === route.id ? null : route.id)}
+                    aria-label={`Elevation profile for ${route.name}`}
+                    title="Toggle elevation profile"
+                  >
+                    <Mountain className="h-3.5 w-3.5" />
+                  </button>
+                  <button
                     className="p-1 hover:text-primary transition-colors text-muted-foreground"
                     onClick={() => exportGPX('route', route as unknown as Record<string, unknown>)}
                     aria-label={`Export route ${route.name} as GPX`}
@@ -2354,6 +2403,13 @@ function RoutesTab({ onGPXImportClick }: { onGPXImportClick: () => void }) {
                   >
                     <Trash2 className="h-3.5 w-3.5" />
                   </button>
+                  </div>
+                  {/* Elevation profile expandable section */}
+                  {elevationRouteId === route.id && route.points.length >= 2 && (
+                    <div className="px-2.5 pb-2.5 border-t border-border/30 pt-2">
+                      <ElevationProfileInline route={route} />
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -2383,6 +2439,13 @@ function RoutesTab({ onGPXImportClick }: { onGPXImportClick: () => void }) {
         )}
       </div>
     </ScrollArea>
+  )
+}
+
+// Inline elevation profile component for route detail
+function ElevationProfileInline({ route }: { route: MapRoute }) {
+  return (
+    <ElevationProfile route={route} compact />
   )
 }
 
