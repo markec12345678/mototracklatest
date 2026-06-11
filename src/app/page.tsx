@@ -15,6 +15,8 @@ import { CompassIndicator } from '@/components/map/CompassIndicator'
 import { KeyboardShortcutsDialog } from '@/components/map/KeyboardShortcutsDialog'
 import { MiniMap } from '@/components/map/MiniMap'
 import { WeatherPanel } from '@/components/map/WeatherPanel'
+import { ElevationProfile } from '@/components/map/ElevationProfile'
+import { QuickJumpPanel } from '@/components/map/QuickJumpPanel'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useMapStore, type ToolMode, MAP_STYLES } from '@/lib/map-store'
@@ -24,6 +26,7 @@ import {
   MapPin,
   Ruler,
   Crosshair,
+  Pencil,
   Github,
   X,
   Plus,
@@ -36,7 +39,7 @@ import {
 } from 'lucide-react'
 
 export default function Home() {
-  const { toolMode, sidebarOpen, center, zoom, currentStyle, setSidebarOpen, setToolMode, setCenter, setZoom, setCurrentStyle } = useMapStore()
+  const { toolMode, sidebarOpen, center, zoom, currentStyle, weatherEnabled, setSidebarOpen, setToolMode, setCenter, setZoom, setCurrentStyle } = useMapStore()
   const [addDialogOpen, setAddDialogOpen] = useState(false)
   const [shortcutsOpen, setShortcutsOpen] = useState(false)
   const [showWelcome, setShowWelcome] = useState(true)
@@ -171,7 +174,10 @@ export default function Home() {
         case '4':
           setToolMode('directions')
           break
-        case '5': {
+        case '5':
+          setToolMode('draw')
+          break
+        case '0': {
           const streets = MAP_STYLES.find((s) => s.id === 'streets')
           if (streets) useMapStore.getState().setCurrentStyle(streets)
           break
@@ -250,6 +256,11 @@ export default function Home() {
       color: 'from-cyan-500 to-sky-500',
       icon: <Crosshair className="h-3 w-3" />,
     },
+    draw: {
+      label: 'Draw',
+      color: 'from-green-500 to-emerald-500',
+      icon: <Pencil className="h-3 w-3" />,
+    },
   }
 
   const currentTool = toolIndicator[toolMode]
@@ -268,7 +279,7 @@ export default function Home() {
             style={{
               width: 60,
               height: 2,
-              background: toolMode === 'mark' ? 'rgba(239,68,68,0.6)' : toolMode === 'measure' ? 'rgba(245,158,11,0.6)' : 'rgba(6,182,212,0.6)',
+              background: toolMode === 'mark' ? 'rgba(239,68,68,0.6)' : toolMode === 'measure' ? 'rgba(245,158,11,0.6)' : toolMode === 'draw' ? 'rgba(34,197,94,0.6)' : 'rgba(6,182,212,0.6)',
               borderRadius: 1,
             }}
           />
@@ -278,7 +289,7 @@ export default function Home() {
             style={{
               width: 2,
               height: 60,
-              background: toolMode === 'mark' ? 'rgba(239,68,68,0.6)' : toolMode === 'measure' ? 'rgba(245,158,11,0.6)' : 'rgba(6,182,212,0.6)',
+              background: toolMode === 'mark' ? 'rgba(239,68,68,0.6)' : toolMode === 'measure' ? 'rgba(245,158,11,0.6)' : toolMode === 'draw' ? 'rgba(34,197,94,0.6)' : 'rgba(6,182,212,0.6)',
               borderRadius: 1,
             }}
           />
@@ -288,7 +299,7 @@ export default function Home() {
             style={{
               width: 8,
               height: 8,
-              background: toolMode === 'mark' ? 'rgba(239,68,68,0.7)' : toolMode === 'measure' ? 'rgba(245,158,11,0.7)' : 'rgba(6,182,212,0.7)',
+              background: toolMode === 'mark' ? 'rgba(239,68,68,0.7)' : toolMode === 'measure' ? 'rgba(245,158,11,0.7)' : toolMode === 'draw' ? 'rgba(34,197,94,0.7)' : 'rgba(6,182,212,0.7)',
             }}
           />
         </div>
@@ -319,7 +330,7 @@ export default function Home() {
           <Button
             variant="outline"
             size="icon"
-            className="bg-background/90 backdrop-blur-md shadow-lg hover:shadow-xl h-10 w-10 rounded-xl border-border/50 transition-all hover:scale-105"
+            className="map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={handleLocateMe}
             title="My Location"
             aria-label="My Location"
@@ -329,7 +340,7 @@ export default function Home() {
           <Button
             variant="outline"
             size="icon"
-            className="bg-background/90 backdrop-blur-md shadow-lg hover:shadow-xl h-10 w-10 rounded-xl border-border/50 transition-all hover:scale-105"
+            className="map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={toggleFullscreen}
             title="Fullscreen"
             aria-label="Toggle fullscreen"
@@ -343,7 +354,7 @@ export default function Home() {
           <Button
             variant="outline"
             size="icon"
-            className="hidden sm:flex bg-background/90 backdrop-blur-md shadow-lg hover:shadow-xl h-10 w-10 rounded-xl border-border/50 transition-all hover:scale-105"
+            className="hidden sm:flex map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={() => setShortcutsOpen(true)}
             title="Keyboard Shortcuts"
             aria-label="Keyboard shortcuts"
@@ -353,7 +364,7 @@ export default function Home() {
           <Button
             variant="outline"
             size="icon"
-            className="bg-background/90 backdrop-blur-md shadow-lg hover:shadow-xl h-10 w-10 rounded-xl border-border/50 transition-all hover:scale-105"
+            className="map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={handleShare}
             title="Share Map View"
             aria-label="Share map view"
@@ -363,7 +374,7 @@ export default function Home() {
           <Button
             variant="outline"
             size="icon"
-            className="hidden sm:flex bg-background/90 backdrop-blur-md shadow-lg hover:shadow-xl h-10 w-10 rounded-xl border-border/50 transition-all hover:scale-105"
+            className="hidden sm:flex map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={() =>
               window.open('https://github.com/maplibre/maplibre-native', '_blank')
             }
@@ -378,6 +389,11 @@ export default function Home() {
       {/* Tool toolbar - left side (desktop only) */}
       <div className="hidden md:block absolute left-4 z-10 transition-all duration-300" style={{ top: '80px' }}>
         <MapToolbar />
+      </div>
+
+      {/* Quick Jump Panel - left side below toolbar (desktop only) */}
+      <div className="hidden md:block absolute z-10 transition-all duration-300" style={{ left: sidebarOpen ? '332px' : '16px', top: '140px' }}>
+        <QuickJumpPanel />
       </div>
 
       {/* Current tool indicator */}
@@ -422,6 +438,7 @@ export default function Home() {
             { mode: 'mark' as ToolMode, icon: <MapPin className="h-4 w-4" />, label: 'Pin', activeClass: 'bg-red-500 text-white' },
             { mode: 'measure' as ToolMode, icon: <Ruler className="h-4 w-4" />, label: 'Measure', activeClass: 'bg-amber-500 text-white' },
             { mode: 'directions' as ToolMode, icon: <Crosshair className="h-4 w-4" />, label: 'Route', activeClass: 'bg-cyan-500 text-white' },
+            { mode: 'draw' as ToolMode, icon: <Pencil className="h-4 w-4" />, label: 'Draw', activeClass: 'bg-green-500 text-white' },
           ]).map((tool) => (
             <button
               key={tool.mode}
@@ -457,6 +474,18 @@ export default function Home() {
         <WeatherPanel />
       </div>
 
+      {/* Elevation Profile Panel - above weather panel when measuring (desktop only) */}
+      <div
+        className="hidden md:block absolute z-10"
+        style={{
+          left: sidebarOpen ? '332px' : '20px',
+          bottom: toolMode === 'measure' && weatherEnabled ? '260px' : '12px',
+          transition: 'left 0.3s ease-in-out, bottom 0.3s ease-in-out',
+        }}
+      >
+        <ElevationProfile />
+      </div>
+
       {/* Minimap - bottom right above MapStatsPanel (desktop only) */}
       <MiniMap />
 
@@ -473,7 +502,7 @@ export default function Home() {
       >
         <Button
           size="lg"
-          className="rounded-2xl shadow-xl hover:shadow-2xl h-12 md:h-14 px-4 md:px-5 gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white border-0 transition-all"
+          className="rounded-2xl shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 h-12 md:h-14 px-4 md:px-5 gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white border-0 transition-all duration-200 fab-pulse-shadow"
           onClick={() => setAddDialogOpen(true)}
           aria-label="Add new location"
         >
@@ -501,7 +530,7 @@ export default function Home() {
                 <X className="h-4 w-4" />
               </button>
               <div className="flex items-start gap-4">
-                <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/20">
+                <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/20 animate-gradient-border gradient-border">
                   <Layers className="h-6 w-6 text-white" />
                 </div>
                 <div className="flex-1">
@@ -523,14 +552,20 @@ export default function Home() {
                       { label: 'Measure', emoji: '📏', bg: 'bg-orange-500/10 text-orange-700 dark:text-orange-400' },
                       { label: 'Share View', emoji: '🔗', bg: 'bg-cyan-500/10 text-cyan-700 dark:text-cyan-400' },
                       { label: 'Shortcuts', emoji: '⌨️', bg: 'bg-violet-500/10 text-violet-700 dark:text-violet-400' },
-                    ].map((feature) => (
-                      <Badge
+                    ].map((feature, featureIndex) => (
+                      <motion.div
                         key={feature.label}
-                        variant="secondary"
-                        className={`text-[10px] px-2 py-0.5 gap-1 ${feature.bg}`}
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3, delay: 0.1 + featureIndex * 0.06 }}
                       >
-                        {feature.emoji} {feature.label}
-                      </Badge>
+                        <Badge
+                          variant="secondary"
+                          className={`text-[10px] px-2 py-0.5 gap-1 ${feature.bg}`}
+                        >
+                          {feature.emoji} {feature.label}
+                        </Badge>
+                      </motion.div>
                     ))}
                   </div>
                   <Button
@@ -559,7 +594,7 @@ export default function Home() {
       <KeyboardShortcutsDialog open={shortcutsOpen} onOpenChange={setShortcutsOpen} />
 
       {/* Footer */}
-      <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1.5 px-3 md:px-4">
+      <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-3 md:px-4 before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">
         <div className="flex items-center justify-between text-[10px] md:text-[11px] text-muted-foreground">
           <div className="flex items-center gap-1.5 md:gap-2">
             <div className="h-3.5 w-3.5 md:h-4 md:w-4 rounded-md bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">

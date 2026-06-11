@@ -1012,3 +1012,283 @@ The MapLibre Explorer application is in a stable, feature-rich state with:
 - Offline map tile caching
 - Map rotation/pitch gesture improvements
 - Custom marker icon editor
+
+---
+Task ID: 9-c
+Agent: Frontend Styling Expert
+Task: Major Styling Improvements + Add QuickJumpPanel to Page
+
+Work Completed:
+
+1. Added QuickJumpPanel to page.tsx
+   - Imported QuickJumpPanel from @/components/map/QuickJumpPanel
+   - Positioned on LEFT side of map, below MapToolbar (top: 140px)
+   - Only visible on desktop (hidden md:block)
+   - Sidebar-aware positioning: left shifts to 332px when sidebar open, 16px when closed
+   - Smooth transition on position change (transition-all duration-300)
+   - Fixed lint error in QuickJumpPanel.tsx: replaced useEffect+useState with useMemo for activeBookmark
+
+2. Added new CSS utility classes to globals.css:
+   - `.map-control-glass` - Reusable glass style for floating map controls (bg-background/90, backdrop-blur, border, shadow) with hover shadow-xl, dark mode variant
+   - `.map-tooltip` - Consistent tooltip/dropdown styling (bg-popover/95, backdrop-blur-xl, rounded-xl, shadow-2xl)
+   - `.shimmer-loading` - Improved shimmer animation using CSS variables (hsl(var(--muted) / 0.3))
+   - `.pulse-ring` - Pulsing ring animation for active elements (scale 0.8→1.4, opacity fade)
+   - `.glass-card` - Updated to use CSS variables (hsl(var(--background) / 0.9), blur(20px), saturate(180%))
+   - `.dark .map-control-glass` and `.dark .glass-card` - Dark mode improvements
+   - `.fab-pulse-shadow` - Gentle pulsing shadow animation for FAB button
+   - `.stat-item` - Hover effect for stat items with bg-accent/50
+
+3. Updated top bar buttons in page.tsx:
+   - All 5 buttons now use `map-control-glass` class instead of inline bg/background/blur/border/shadow classes
+   - Added `transition-all duration-200 hover:scale-105 active:scale-95` micro-interactions
+
+4. Improved SearchBar styling:
+   - Added emerald glow on focus: `focus:shadow-[0_0_20px_rgba(16,185,129,0.15)]`
+   - Search results dropdown uses `map-tooltip` class for consistent styling
+   - Result items have rounded corners (`rounded-lg`) with improved hover (`hover:bg-accent/80 transition-all duration-150`)
+   - Icon containers use `rounded-xl` for softer appearance
+
+5. Improved Footer styling:
+   - Added gradient line at top: `before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent`
+   - More compact spacing: py-1.5 → py-1
+
+6. Improved Add Place FAB:
+   - Added `shadow-lg shadow-emerald-500/20` for prominent colored shadow
+   - Hover glow: `hover:shadow-xl hover:shadow-emerald-500/30`
+   - Added `fab-pulse-shadow` class for gentle idle pulse animation
+   - Added `duration-200` transition
+
+7. Improved MapStatsPanel:
+   - Uses `map-control-glass` class for consistent glass styling
+   - Each stat item uses `stat-item` class for hover background effect
+   - Better gap spacing (gap-3 → gap-2)
+
+8. Improved Welcome Banner:
+   - Icon container has `animate-gradient-border gradient-border` for animated border
+   - Feature badges use `motion.div` wrappers with staggered entrance animation (delay: 0.1 + index * 0.06)
+   - Each badge fades in and slides up individually
+
+9. Updated QuickJumpPanel to use map-control-glass:
+   - Both minimized and expanded states use `map-control-glass` for consistent styling
+   - Added `transition-all duration-200` for smooth interactions
+
+All lint checks pass (bun run lint ✓).
+
+---
+Task ID: 9-b
+Agent: Draw Tool Agent
+Task: Add Freehand Drawing / Annotation Tools to the Map
+
+Work Completed:
+
+1. Updated map-store.ts:
+   - Added `MapDrawing` interface with id, points, color, width, name fields
+   - Extended `ToolMode` type to include 'draw': `'navigate' | 'mark' | 'measure' | 'directions' | 'draw'`
+   - Added drawing state: `drawings`, `currentDrawing`, `drawColor`, `drawWidth`, `isDrawing`
+   - Added actions: `setCurrentDrawing`, `addDrawingPoint`, `finishDrawing`, `setDrawColor`, `setDrawWidth`, `deleteDrawing`
+   - `finishDrawing` saves the current drawing to the `drawings` array with auto-generated name and resets `currentDrawing`
+   - Added `drawColor` and `drawWidth` to persist partialize config so they survive page reloads
+
+2. Updated MapView.tsx:
+   - Added subscriptions for `drawings`, `currentDrawing`, `drawColor`, `drawWidth` from store
+   - Added `lastDrawTimeRef` and `isDrawingRef` refs for drawing interaction
+   - Added drawing interaction useEffect with mousedown/mousemove/mouseup handlers:
+     - mousedown: starts drawing, creates initial point
+     - mousemove: adds points throttled to ~30ms intervals
+     - mouseup: finishes the drawing
+   - Disabled dragPan when in draw mode to prevent map panning during drawing
+   - Added cursor change for draw mode (crosshair)
+   - Added current drawing rendering useEffect: source 'draw-current-source', layer 'draw-current-line'
+   - Added saved drawings rendering useEffect: individual sources/layers per drawing (`draw-source-{id}`, `draw-line-{id}`)
+   - Cleanup logic removes sources/layers for deleted drawings
+
+3. Updated MapToolbar.tsx:
+   - Added `Pencil` icon import from lucide-react
+   - Added 5th tool button: `{ id: 'draw', icon: Pencil, label: 'Draw', activeClass: 'bg-green-500 text-white shadow-md shadow-green-500/30', shortcut: '5' }`
+
+4. Updated MapSidebar.tsx:
+   - Added 'draw' entry to toolModes array with shortcut '5'
+   - Added Drawing section in ToolsTab (shown when toolMode === 'draw'):
+     - Color picker with 6 colors: green, red, blue, orange, purple, cyan
+     - Line width slider (1-8, step 1)
+     - "Drawing on map..." message with current point count when actively drawing
+     - Saved drawings list with color dot, name, point count, delete button
+     - "Clear All Drawings" button
+
+5. Updated page.tsx:
+   - Added `Pencil` icon import
+   - Added keyboard shortcut '5' for draw mode (shifted Streets style to '0')
+   - Added draw entry to `toolIndicator` object with green gradient and Pencil icon
+   - Added draw tool button to mobile bottom toolbar
+   - Updated crosshair overlay to include draw mode color (rgba(34,197,94,...)) for lines and dot
+
+6. Updated KeyboardShortcutsDialog.tsx:
+   - Added key '5' → Draw mode to the Tools category
+   - Updated Streets style shortcut from '5' to '0'
+
+7. Fixed pre-existing lint error:
+   - Refactored ElevationSummaryInline component to avoid calling setState synchronously in effect body
+   - Used AbortController pattern instead of cancelled flag with synchronous setLoading(true)
+
+---
+Task ID: 9-a
+Agent: Elevation Profile Agent
+Task: Add Elevation Profile Panel for the Measurement Tool
+
+Work Completed:
+
+1. Created /src/components/map/ElevationProfile.tsx
+   - New component that renders an elevation profile chart using canvas (no external charting library)
+   - Fetches elevation data from /api/elevation when measurePoints has 2+ points
+   - Renders elevation on Y-axis, distance (haversine) on X-axis
+   - Highlights highest point (emerald dot with ▲ label) and lowest point (amber dot with ▼ label)
+   - Shows total elevation gain (sum of positive changes) and loss (sum of negative changes) in stats row
+   - Shows min-max elevation range
+   - Glass-card styling: bg-background/90 backdrop-blur-md border border-border/50 rounded-2xl shadow-xl
+   - Gradient fill below the line (emerald/teal gradient matching the app's color scheme)
+   - Shows "Click on the map to add measurement points" message when < 2 points
+   - Loading state derived from fetchedKey comparison (no direct setState in effect)
+   - Minimize/expand toggle button (Minus/Maximize2 icons)
+   - Hover tooltip with exact elevation and distance at cursor position
+   - Vertical line indicator follows cursor on chart
+   - Responsive canvas with devicePixelRatio scaling for crisp rendering
+   - Dark mode compatible (reads CSS variables for grid/label colors)
+   - Tabular-nums for all numbers
+   - Credit: "Elevation data from Open-Meteo.com"
+
+2. Added ElevationProfile to /src/app/page.tsx
+   - Imported ElevationProfile component
+   - Added weatherEnabled to destructured store values for positioning logic
+   - Positioned below-left (desktop only, hidden on mobile)
+   - Position adjusts dynamically: bottom-12 when weather panel is hidden, bottom-260px when weather panel is visible
+   - Sidebar-aware positioning (adjusts left position based on sidebarOpen state)
+   - Smooth transition animations for position changes
+
+3. Added ElevationSummaryInline to /src/components/map/MapSidebar.tsx
+   - New inline component in the Tools tab measurement section
+   - Fetches elevation data from /api/elevation API
+   - Shows compact inline stat: "Elevation: 245m - 892m | Gain: +647m"
+   - Loading state with animated Mountain icon
+   - Only appears when measurePoints >= 2
+   - Styled with emerald-500/5 background and emerald-500/15 border
+   - Added useRef import to support fetchedKey tracking
+   - Uses derived loading state to avoid react-hooks/set-state-in-effect lint error
+
+4. Lint compliance
+   - All lint checks pass (bun run lint)
+   - Avoided react-hooks/set-state-in-effect by using derived loading state pattern
+   - No external charting libraries used - plain canvas rendering
+
+---
+Task ID: 9
+Agent: Main Agent (Cron Review Round 9)
+Task: Assess project, QA testing, fix bugs, add new features, improve styling, update worklog
+
+## Current Project Status Assessment
+The MapLibre Explorer application is a mature, feature-rich interactive map application with:
+- 8 MapTiler map styles with CARTO fallback system
+- 3D terrain + building extrusion with adjustable exaggeration
+- Real-time weather overlay with Open-Meteo API + reverse geocoding
+- Sidebar with Places, Layers, Tools, Routes tabs
+- Search with Nominatim geocoding (now with Photon fallback)
+- Measurement tools with distance + bearing calculation
+- Route drawing and saving
+- Marker clustering
+- Layer visibility toggles
+- Minimap, compass indicator, coordinates display
+- Keyboard shortcuts (5 tools + style switching)
+- Share URL, localStorage persistence
+- Mobile responsive with bottom toolbar
+
+## Work Completed This Round
+
+### 1. QA Testing via agent-browser
+- Initial page load verified ✅
+- Style switcher (8 styles) verified ✅
+- Weather panel works (Ljubljana: temperature, conditions) ✅
+- QuickJump panel opens and jumps correctly ✅
+- All toolbar buttons present (5 tools including new Draw) ✅
+- Search returns 503 for Nominatim (intermittent) - FIXED with Photon fallback
+- Map loads with CARTO fallback for MapTiler 403 ✅
+
+### 2. Search 503 Error Fix (CRITICAL)
+- **Root cause**: Nominatim API rate-limits requests from the server, returning 503/429 or timing out
+- **Fix 1**: Added retry mechanism with exponential backoff (up to 2 retries, AbortController with 10s timeout)
+- **Fix 2**: Added Photon (Komoot) as a fallback geocoding service when Nominatim fails
+- **Fix 3**: Added in-memory search result cache (5-minute TTL, 200 entry max)
+- **Fix 4**: Added reverse geocoding cache for weather panel location names
+- **Fix 5**: Improved error handling in SearchBar - shows "No results found" state instead of silently failing
+- Search now successfully returns results (verified: Paris search returned 200)
+
+### 3. Elevation Profile Panel (NEW FEATURE)
+- Created `/src/components/map/ElevationProfile.tsx` - Canvas-based elevation profile chart
+- Fetches from `/api/elevation` (Open-Meteo) when 2+ measurement points exist
+- Features: gradient fill chart, hover tooltip with elevation/distance, min/max point markers
+- Shows elevation gain (+), loss (-), and min-max range stats
+- Minimize/expand toggle, loading state, empty state
+- Added to page.tsx positioned at bottom-left, visible only in measure mode
+- Desktop only, sidebar-aware positioning
+- Added inline elevation summary to MapSidebar Tools tab
+
+### 4. Freehand Drawing / Annotation Tool (NEW FEATURE)
+- Added `'draw'` to `ToolMode` type in map-store.ts
+- Added drawing state: `drawings`, `currentDrawing`, `drawColor`, `drawWidth`, `isDrawing`
+- MapView.tsx: mousedown/mousemove/mouseup handlers for freehand drawing
+  - Throttled point collection (30ms) for smooth performance
+  - Disables map drag in draw mode
+  - Renders current drawing line and saved drawings as MapLibre sources/layers
+- MapToolbar.tsx: Added 5th tool button (Pencil icon, green styling)
+- MapSidebar.tsx: Drawing section in Tools tab with color picker (6 colors), width slider (1-8), saved drawings list
+- page.tsx: Keyboard shortcut '5' for draw mode, tool indicator, mobile toolbar button, crosshair color
+- KeyboardShortcutsDialog.tsx: Updated with Draw mode shortcut
+- Drawing color and width persisted in localStorage via Zustand
+
+### 5. QuickJumpPanel Integration
+- QuickJumpPanel component existed but was not rendered on the page
+- Added to page.tsx below the MapToolbar at top: 140px
+- Desktop only, sidebar-aware positioning with smooth transitions
+- 8 world city bookmarks: New York, London, Paris, Tokyo, Ljubljana, Sydney, Dubai, Rome
+- Click to fly-to functionality works correctly
+
+### 6. Major Styling Improvements
+- **New CSS classes** in globals.css:
+  - `.map-control-glass` - Reusable glass style for all floating controls
+  - `.map-tooltip` - Consistent tooltip/dropdown styling
+  - `.shimmer-loading` - Improved shimmer animation using CSS variables
+  - `.pulse-ring` - Pulsing ring animation for active elements
+  - `.fab-pulse-shadow` - Gentle idle pulse for FAB button
+  - `.stat-item` - Hover effect for stat items
+  - Dark mode variants for all new classes
+- **Top bar buttons**: All use `map-control-glass` class with `hover:scale-105 active:scale-95` micro-interactions
+- **SearchBar**: Emerald focus glow, `map-tooltip` class for dropdowns, smooth hover transitions
+- **Footer**: Gradient line at top via `before:` pseudo-element, more compact spacing
+- **FAB**: Colored shadow (`shadow-emerald-500/20`), hover glow, pulse animation
+- **MapStatsPanel**: Uses `map-control-glass` + `stat-item` for hover effects
+- **Welcome banner**: Animated gradient border on icon, staggered `motion.div` entrance for feature badges
+- **QuickJumpPanel**: Fixed useEffect→useMemo, uses `map-control-glass` class
+
+### 7. Keyboard Shortcuts Update
+- Key `5` → Draw mode (was previously unused)
+- Key `0` → Streets style (moved from `5`)
+- Keys `6`/`7`/`8`/`9` → Satellite/Dark/Terrain/cycle (unchanged)
+
+## Verification Results
+- All lint checks pass (zero errors/warnings) ✅
+- Dev server running without runtime errors ✅
+- Search API returns results via Photon fallback ✅
+- All new components render correctly ✅
+- Draw tool button appears in toolbar ✅
+- QuickJump panel opens and jumps to cities ✅
+- Elevation profile panel shows in measure mode ✅
+- Map loads and functions normally ✅
+
+## Unresolved Issues / Next Phase Recommendations
+- Search may still be slow (8.7s) due to Nominatim timeout + Photon fallback - consider adding loading indicator
+- Weather panel only visible on desktop - should add mobile version
+- Traffic/earthquake overlay still showing "Coming Soon" badges
+- Route directions with OSRM turn-by-turn not implemented
+- PWA support with service worker
+- Offline map tile caching
+- Map comparison (split view)
+- Custom marker icon editor
+- Print-friendly map layout

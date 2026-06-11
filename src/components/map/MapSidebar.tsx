@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   MapPin,
@@ -93,6 +93,14 @@ const toolModes: {
     description: 'Click points to measure distance',
     color: 'from-amber-500 to-orange-500',
     shortcut: '3',
+  },
+  {
+    id: 'draw',
+    label: 'Draw',
+    icon: <Pencil className="h-4 w-4" />,
+    description: 'Freehand drawing on the map',
+    color: 'from-green-500 to-emerald-500',
+    shortcut: '5',
   },
 ]
 
@@ -832,6 +840,22 @@ function ToolsTab({
   onExportGeoJSON: () => void
 }) {
   const center = useMapStore((s) => s.center)
+  const drawings = useMapStore((s) => s.drawings)
+  const currentDrawing = useMapStore((s) => s.currentDrawing)
+  const drawColor = useMapStore((s) => s.drawColor)
+  const drawWidth = useMapStore((s) => s.drawWidth)
+  const setDrawColor = useMapStore((s) => s.setDrawColor)
+  const setDrawWidth = useMapStore((s) => s.setDrawWidth)
+  const deleteDrawing = useMapStore((s) => s.deleteDrawing)
+
+  const drawColorOptions = [
+    { id: '#22c55e', label: 'Green', class: 'bg-green-500' },
+    { id: '#ef4444', label: 'Red', class: 'bg-red-500' },
+    { id: '#3b82f6', label: 'Blue', class: 'bg-blue-500' },
+    { id: '#f97316', label: 'Orange', class: 'bg-orange-500' },
+    { id: '#8b5cf6', label: 'Purple', class: 'bg-purple-500' },
+    { id: '#06b6d4', label: 'Cyan', class: 'bg-cyan-500' },
+  ]
   return (
     <ScrollArea className="h-full">
       <div className="p-3 space-y-4">
@@ -881,6 +905,137 @@ function ToolsTab({
             ))}
           </div>
         </div>
+
+        {/* Drawing section */}
+        {toolMode === 'draw' && (
+          <>
+            <Separator />
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="text-sm font-semibold flex items-center gap-2">
+                  <Pencil className="h-3.5 w-3.5 text-muted-foreground" />
+                  Drawing
+                </h4>
+              </div>
+
+              {/* Drawing mode hint */}
+              {currentDrawing && currentDrawing.length > 0 ? (
+                <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-3 mb-3">
+                  <p className="text-xs font-medium text-green-700 dark:text-green-400 flex items-center gap-1.5">
+                    <Pencil className="h-3.5 w-3.5" />
+                    Drawing on map... {currentDrawing.length} points
+                  </p>
+                </div>
+              ) : (
+                <div className="bg-muted/50 rounded-xl p-3 mb-3">
+                  <p className="text-xs text-muted-foreground">
+                    Click and drag on the map to draw freehand annotations.
+                  </p>
+                </div>
+              )}
+
+              {/* Color picker */}
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-xs text-muted-foreground">Color:</span>
+                <div className="flex gap-1.5">
+                  {drawColorOptions.map((c) => (
+                    <button
+                      key={c.id}
+                      className={cn(
+                        'w-6 h-6 rounded-full transition-all',
+                        c.class,
+                        drawColor === c.id
+                          ? 'ring-2 ring-offset-2 ring-offset-background ring-foreground scale-110'
+                          : 'opacity-60 hover:opacity-100'
+                      )}
+                      onClick={() => setDrawColor(c.id)}
+                      title={c.label}
+                      aria-label={`Drawing color: ${c.label}`}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Line width slider */}
+              <div className="mb-3">
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="text-xs text-muted-foreground">Line width</span>
+                  <span className="text-xs font-mono tabular-nums text-muted-foreground">
+                    {drawWidth}px
+                  </span>
+                </div>
+                <input
+                  type="range"
+                  min={1}
+                  max={8}
+                  step={1}
+                  value={drawWidth}
+                  onChange={(e) => setDrawWidth(parseInt(e.target.value))}
+                  className="w-full h-1.5 rounded-full appearance-none cursor-pointer bg-accent accent-green-500"
+                  aria-label="Drawing line width"
+                />
+                <div className="flex justify-between mt-0.5">
+                  <span className="text-[9px] text-muted-foreground/60">1</span>
+                  <span className="text-[9px] text-muted-foreground/60">8</span>
+                </div>
+              </div>
+
+              {/* Saved drawings list */}
+              {drawings.length > 0 && (
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <h5 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                      Saved Drawings
+                    </h5>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-6 text-[10px] px-2 text-muted-foreground hover:text-destructive"
+                      onClick={() => {
+                        drawings.forEach((d) => deleteDrawing(d.id))
+                        toast.success('All drawings cleared')
+                      }}
+                    >
+                      <Minus className="h-3 w-3 mr-1" />
+                      Clear All
+                    </Button>
+                  </div>
+                  <div className="space-y-1 max-h-48 overflow-y-auto">
+                    {drawings.map((drawing) => (
+                      <div
+                        key={drawing.id}
+                        className="flex items-center gap-2 p-2 rounded-lg border bg-background/50 text-xs group"
+                      >
+                        <span
+                          className="w-3 h-3 rounded-full shrink-0"
+                          style={{ backgroundColor: drawing.color }}
+                        />
+                        <div className="flex-1 min-w-0">
+                          <span className="text-sm font-medium truncate block">
+                            {drawing.name}
+                          </span>
+                          <span className="text-muted-foreground text-[10px]">
+                            {drawing.points.length} points · {drawing.width}px
+                          </span>
+                        </div>
+                        <button
+                          className="p-1 opacity-0 group-hover:opacity-100 hover:text-red-500 transition-all"
+                          onClick={() => {
+                            deleteDrawing(drawing.id)
+                            toast.success(`"${drawing.name}" deleted`)
+                          }}
+                          aria-label={`Delete ${drawing.name}`}
+                        >
+                          <Trash2 className="h-3 w-3" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </>
+        )}
 
         {/* Measurement results */}
         {toolMode === 'measure' && (
@@ -981,6 +1136,8 @@ function ToolsTab({
                       </div>
                     ))}
                   </div>
+                  {/* Elevation summary */}
+                  <ElevationSummaryInline measurePoints={measurePoints} />
                   <div className="flex gap-2">
                     <Button
                       variant="outline"
@@ -1424,6 +1581,77 @@ function RoutesTab() {
         )}
       </div>
     </ScrollArea>
+  )
+}
+
+// Inline elevation summary component for the measurement section
+function ElevationSummaryInline({ measurePoints }: { measurePoints: { longitude: number; latitude: number }[] }) {
+  const [elevations, setElevations] = useState<number[]>([])
+  const [fetchedKey, setFetchedKey] = useState('')
+
+  const pointsKey = measurePoints.length >= 2
+    ? measurePoints.map((p) => `${p.longitude.toFixed(6)},${p.latitude.toFixed(6)}`).join(';')
+    : ''
+
+  const loading = pointsKey !== '' && pointsKey !== fetchedKey
+
+  useEffect(() => {
+    if (!pointsKey) return
+    if (pointsKey === fetchedKey) return
+
+    fetch(`/api/elevation?points=${encodeURIComponent(pointsKey)}`)
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed')
+        return res.json()
+      })
+      .then((data) => {
+        setFetchedKey(pointsKey)
+        setElevations(data.elevations || [])
+      })
+      .catch(() => {
+        setFetchedKey(pointsKey)
+        setElevations([])
+      })
+  }, [pointsKey, fetchedKey])
+
+  if (measurePoints.length < 2) return null
+
+  if (loading) {
+    return (
+      <div className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg bg-muted/40 text-xs text-muted-foreground">
+        <Mountain className="h-3 w-3 animate-pulse" />
+        <span>Loading elevation...</span>
+      </div>
+    )
+  }
+
+  if (elevations.length < 2) return null
+
+  const minElev = Math.min(...elevations)
+  const maxElev = Math.max(...elevations)
+
+  // Compute gain
+  let gain = 0
+  for (let i = 1; i < elevations.length; i++) {
+    const diff = elevations[i] - elevations[i - 1]
+    if (diff > 0) gain += diff
+  }
+
+  return (
+    <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-emerald-500/5 border border-emerald-500/15 text-xs">
+      <Mountain className="h-3 w-3 text-emerald-500 shrink-0" />
+      <span className="text-muted-foreground">
+        Elevation:
+      </span>
+      <span className="font-semibold tabular-nums text-emerald-600 dark:text-emerald-400">
+        {Math.round(minElev)}m - {Math.round(maxElev)}m
+      </span>
+      <span className="text-border">|</span>
+      <span className="text-muted-foreground">Gain:</span>
+      <span className="font-semibold tabular-nums text-emerald-600 dark:text-emerald-400">
+        +{Math.round(gain)}m
+      </span>
+    </div>
   )
 }
 

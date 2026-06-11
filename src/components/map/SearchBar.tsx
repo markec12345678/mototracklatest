@@ -110,11 +110,24 @@ export function SearchBar() {
         )
         if (res.ok) {
           const data = await res.json()
-          setResults(data)
-          setShowResults(true)
+          if (Array.isArray(data) && data.length > 0) {
+            setResults(data)
+            setShowResults(true)
+          } else if (Array.isArray(data) && data.length === 0) {
+            setResults([])
+            setShowResults(true)
+          } else if (data.error) {
+            setResults([])
+            setShowResults(false)
+          }
+        } else {
+          setResults([])
+          setShowResults(false)
         }
       } catch (err) {
         console.error('Search failed:', err)
+        setResults([])
+        setShowResults(false)
       } finally {
         setIsSearching(false)
       }
@@ -176,7 +189,7 @@ export function SearchBar() {
           onBlur={() => setIsFocused(false)}
           onKeyDown={handleKeyDown}
           placeholder="Search the map..."
-          className="pl-9 pr-9 h-11 bg-background/90 backdrop-blur-md border-border/50 shadow-lg hover:shadow-xl rounded-xl transition-all focus:shadow-xl focus:ring-2 focus:ring-primary/20 focus:border-primary/30"
+          className="pl-9 pr-9 h-11 bg-background/90 backdrop-blur-md border-border/50 shadow-lg hover:shadow-xl rounded-xl transition-all duration-200 focus:shadow-xl focus:shadow-[0_0_20px_rgba(16,185,129,0.15)] focus:ring-2 focus:ring-primary/20 focus:border-primary/30"
           aria-label="Search locations on the map"
         />
         {isSearching && (
@@ -198,8 +211,18 @@ export function SearchBar() {
         )}
       </div>
 
+      {showResults && results.length === 0 && (
+        <div className="map-tooltip absolute top-full mt-1.5 w-full overflow-hidden z-50">
+          <div className="px-4 py-6 text-center">
+            <Search className="h-8 w-8 text-muted-foreground/30 mx-auto mb-2" />
+            <p className="text-sm text-muted-foreground">No results found</p>
+            <p className="text-xs text-muted-foreground/60 mt-1">Try a different search term</p>
+          </div>
+        </div>
+      )}
+
       {showResults && results.length > 0 && (
-        <div className="absolute top-full mt-1.5 w-full bg-popover/95 backdrop-blur-xl border rounded-xl shadow-2xl overflow-hidden z-50 max-h-80 overflow-y-auto ring-1 ring-border/50">
+        <div className="map-tooltip absolute top-full mt-1.5 w-full overflow-hidden z-50 max-h-80 overflow-y-auto">
           <div className="px-3 py-2 border-b bg-muted/30">
             <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">
               Search Results ({results.length})
@@ -210,11 +233,11 @@ export function SearchBar() {
               key={`${result.latitude}-${result.longitude}-${i}`}
               onClick={() => handleSelect(result)}
               className={cn(
-                'w-full px-3 py-2.5 text-left hover:bg-accent transition-colors flex items-start gap-3 border-b last:border-0',
+                'w-full px-3 py-2.5 text-left hover:bg-accent/80 transition-all duration-150 flex items-start gap-3 border-b last:border-0 rounded-lg mx-1',
                 selectedIndex === i && 'bg-accent'
               )}
             >
-              <div className="w-8 h-8 rounded-lg bg-muted/50 flex items-center justify-center shrink-0 mt-0.5">
+              <div className="w-8 h-8 rounded-xl bg-muted/50 flex items-center justify-center shrink-0 mt-0.5">
                 <span className="text-sm">
                   {getTypeIcon(result.type, result.category)}
                 </span>
@@ -234,7 +257,7 @@ export function SearchBar() {
       )}
 
       {showRecentSearches && (
-        <div className="absolute top-full mt-1.5 w-full bg-popover/95 backdrop-blur-xl border rounded-xl shadow-2xl overflow-hidden z-50 max-h-80 overflow-y-auto ring-1 ring-border/50">
+        <div className="map-tooltip absolute top-full mt-1.5 w-full overflow-hidden z-50 max-h-80 overflow-y-auto">
           <div className="px-3 py-2 border-b bg-muted/30">
             <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">
               Recent Searches

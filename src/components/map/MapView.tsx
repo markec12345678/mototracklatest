@@ -80,6 +80,14 @@ export function MapView() {
   const buildingExtrusion = useMapStore((s) => s.buildingExtrusion)
   const terrainExaggeration = useMapStore((s) => s.terrainExaggeration)
   const toolMode = useMapStore((s) => s.toolMode)
+  const drawings = useMapStore((s) => s.drawings)
+  const currentDrawing = useMapStore((s) => s.currentDrawing)
+  const drawColor = useMapStore((s) => s.drawColor)
+  const drawWidth = useMapStore((s) => s.drawWidth)
+
+  // Ref for throttling drawing point addition
+  const lastDrawTimeRef = useRef(0)
+  const isDrawingRef = useRef(false)
 
   const markMapLoaded = useCallback((loaded: boolean) => {
     mapLoadedRef.current = loaded
@@ -855,10 +863,211 @@ export function MapView() {
     const canvas = map.current.getCanvas()
     if (toolMode === 'mark' || toolMode === 'measure' || toolMode === 'directions') {
       canvas.style.cursor = 'crosshair'
+    } else if (toolMode === 'draw') {
+      canvas.style.cursor = 'crosshair'
     } else {
       canvas.style.cursor = ''
     }
   }, [toolMode, mapLoadedVersion])
+
+  // Drawing interaction - mousedown/mousemove/mouseup for freehand drawing
+  useEffect(() => {
+    if (!map.current) return
+
+    const handleMouseDown = (e: maplibregl.MapMouseEvent) => {
+      if (toolModeRef.current !== 'draw') return
+      // Only respond to left click
+      if (e.originalEvent.button !== 0) return
+      e.preventDefault()
+      isDrawingRef.current = true
+      useMapStore.getState().setCurrentDrawing([[e.lngLat.lng, e.lngLat.lat]])
+      useMapStore.getState().isDrawing = true
+    }
+
+    const handleMouseMove = (e: maplibregl.MapMouseEvent) => {
+      if (!isDrawingRef.current || toolModeRef.current !== 'draw') return
+      const now = Date.now()
+      if (now - lastDrawTimeRef.current < 30) return // Throttle to ~30ms
+      lastDrawTimeRef.current = now
+      useMapStore.getState().addDrawingPoint([e.lngLat.lng, e.lngLat.lat])
+    }
+
+    const handleMouseUp = () => {
+      if (!isDrawingRef.current) return
+      isDrawingRef.current = false
+      useMapStore.getState().finishDrawing()
+    }
+
+    // Disable map drag when in draw mode
+    if (toolMode === 'draw') {
+      map.current.dragPan.disable()
+    } else {
+      map.current.dragPan.enable()
+    }
+
+    map.current.on('mousedown', handleMouseDown)
+    map.current.on('mousemove', handleMouseMove)
+    map.current.on('mouseup', handleMouseUp)
+
+    return () => {
+      if (map.current) {
+        map.current.off('mousedown', handleMouseDown)
+        map.current.off('mousemove', handleMouseMove)
+        map.current.off('mouseup', handleMouseUp)
+        map.current.dragPan.enable()
+      }
+    }
+  }, [toolMode, mapLoadedVersion])
+
+  // Render current drawing line
+  useEffect(() => {
+    if (!map.current || !mapLoadedRef.current) return
+
+    const sourceId = 'draw-current-source'
+    const layerId = 'draw-current-line'
+
+    if (!currentDrawing || currentDrawing.length < 2) {
+      // Remove if exists
+      if (map.current.getLayer(layerId)) map.current.removeLayer(layerId)
+      if (map.current.getSource(sourceId)) map.current.removeSource(sourceId)
+      return
+    }
+
+    if (!map.current.getSource(sourceId)) {
+      map.current.addSource(sourceId, {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: [],
+        },
+      })
+    }
+
+    if (!map.current.getLayer(layerId)) {
+      map.current.addLayer({
+        id: layerId,
+        type: 'line',
+        source: sourceId,
+        paint: {
+          'line-color': drawColor,
+          'line-width': drawWidth,
+          'line-opacity': 0.8,
+          'line-cap': 'round',
+          'line-join': 'round',
+        },
+      })
+    } else {
+      map.current.setPaintProperty(layerId, 'line-color', drawColor)
+      map.current.setPaintProperty(layerId, 'line-width', drawWidth)
+    }
+
+    const source = map.current.getSource(sourceId) as maplibregl.GeoJSONSource
+    source.setData({
+      type: 'FeatureCollection',
+      features: [
+        {
+          type: 'Feature',
+          properties: {},
+          geometry: {
+            type: 'LineString',
+            coordinates: currentDrawing,
+          },
+        },
+      ],
+    })
+
+    return () => {
+      if (map.current) {
+        if (map.current.getLayer(layerId)) map.current.removeLayer(layerId)
+        if (map.current.getSource(sourceId)) map.current.removeSource(sourceId)
+      }
+    }
+  }, [currentDrawing, drawColor, drawWidth, mapLoadedVersion])
+
+  // Render saved drawings
+  useEffect(() => {
+    if (!map.current || !mapLoadedRef.current) return
+
+    // Render each saved drawing as its own source/layer
+    drawings.forEach((drawing) => {
+      const dSourceId = `draw-source-${drawing.id}`
+      const dLayerId = `draw-line-${drawing.id}`
+
+      if (!map.current!.getSource(dSourceId)) {
+        map.current!.addSource(dSourceId, {
+          type: 'geojson',
+          data: {
+            type: 'FeatureCollection',
+            features: [],
+          },
+        })
+      }
+
+      if (!map.current!.getLayer(dLayerId)) {
+        map.current!.addLayer({
+          id: dLayerId,
+          type: 'line',
+          source: dSourceId,
+          paint: {
+            'line-color': drawing.color,
+            'line-width': drawing.width,
+            'line-opacity': 0.85,
+            'line-cap': 'round',
+            'line-join': 'round',
+          },
+        })
+      } else {
+        map.current!.setPaintProperty(dLayerId, 'line-color', drawing.color)
+        map.current!.setPaintProperty(dLayerId, 'line-width', drawing.width)
+      }
+
+      if (drawing.points.length >= 2) {
+        const dSource = map.current!.getSource(dSourceId) as maplibregl.GeoJSONSource
+        dSource.setData({
+          type: 'FeatureCollection',
+          features: [
+            {
+              type: 'Feature',
+              properties: {},
+              geometry: {
+                type: 'LineString',
+                coordinates: drawing.points,
+              },
+            },
+          ],
+        })
+      }
+    })
+
+    // Cleanup: remove sources/layers for deleted drawings
+    const currentDrawingIds = new Set(drawings.map((d) => d.id))
+    const style = map.current.getStyle()
+    if (style?.layers) {
+      for (const layer of style.layers) {
+        const match = layer.id.match(/^draw-line-(drawing-.+)$/) || layer.id.match(/^draw-source-(drawing-.+)$/)
+        if (match) {
+          const drawId = match[1]
+          if (!currentDrawingIds.has(drawId)) {
+            const layerId = `draw-line-${drawId}`
+            const srcId = `draw-source-${drawId}`
+            if (map.current!.getLayer(layerId)) map.current!.removeLayer(layerId)
+            if (map.current!.getSource(srcId)) map.current!.removeSource(srcId)
+          }
+        }
+      }
+    }
+
+    return () => {
+      if (map.current) {
+        drawings.forEach((drawing) => {
+          const dSourceId = `draw-source-${drawing.id}`
+          const dLayerId = `draw-line-${drawing.id}`
+          if (map.current!.getLayer(dLayerId)) map.current!.removeLayer(dLayerId)
+          if (map.current!.getSource(dSourceId)) map.current!.removeSource(dSourceId)
+        })
+      }
+    }
+  }, [drawings, mapLoadedVersion])
 
   // 3D Buildings + Terrain
   useEffect(() => {

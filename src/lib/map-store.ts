@@ -146,7 +146,15 @@ export function getMinimapStyleUrl(isDark: boolean): string {
     : 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json'
 }
 
-export type ToolMode = 'navigate' | 'mark' | 'measure' | 'directions'
+export interface MapDrawing {
+  id: string
+  points: number[][]
+  color: string
+  width: number
+  name: string
+}
+
+export type ToolMode = 'navigate' | 'mark' | 'measure' | 'directions' | 'draw'
 
 export interface Geolocation {
   longitude: number
@@ -204,11 +212,21 @@ interface MapState {
   currentRouteColor: string
   routes: MapRoute[]
 
+  // Drawing / annotations
+  drawings: MapDrawing[]
+  currentDrawing: number[][] | null
+  drawColor: string
+  drawWidth: number
+  isDrawing: boolean
+
   // Clustering
   clusteringEnabled: boolean
 
   // 3D Building extrusion
   buildingExtrusion: boolean
+
+  // 3D Terrain
+  terrainEnabled: boolean
 
   // 3D Terrain exaggeration
   terrainExaggeration: number
@@ -244,8 +262,15 @@ interface MapState {
   setCurrentRouteColor: (color: string) => void
   saveRoute: (name: string) => void
   deleteRoute: (id: string) => void
+  setCurrentDrawing: (points: number[][] | null) => void
+  addDrawingPoint: (point: number[]) => void
+  finishDrawing: () => void
+  setDrawColor: (color: string) => void
+  setDrawWidth: (width: number) => void
+  deleteDrawing: (id: string) => void
   setClusteringEnabled: (enabled: boolean) => void
   setBuildingExtrusion: (enabled: boolean) => void
+  setTerrainEnabled: (enabled: boolean) => void
   setTerrainExaggeration: (exaggeration: number) => void
   setWeatherEnabled: (enabled: boolean) => void
 }
@@ -278,8 +303,15 @@ export const useMapStore = create<MapState>()(
       currentRouteColor: '#3b82f6',
       routes: [],
 
+      drawings: [],
+      currentDrawing: null,
+      drawColor: '#22c55e',
+      drawWidth: 3,
+      isDrawing: false,
+
       clusteringEnabled: true,
       buildingExtrusion: false,
+      terrainEnabled: false,
       terrainExaggeration: 1.5,
       weatherEnabled: false,
 
@@ -368,8 +400,40 @@ export const useMapStore = create<MapState>()(
         set((state) => ({
           routes: state.routes.filter((r) => r.id !== id),
         })),
+      setCurrentDrawing: (currentDrawing) => set({ currentDrawing }),
+      addDrawingPoint: (point) =>
+        set((state) => ({
+          currentDrawing: state.currentDrawing
+            ? [...state.currentDrawing, point]
+            : [point],
+        })),
+      finishDrawing: () =>
+        set((state) => {
+          if (!state.currentDrawing || state.currentDrawing.length < 2) {
+            return { currentDrawing: null, isDrawing: false }
+          }
+          const newDrawing: MapDrawing = {
+            id: `drawing-${Date.now()}`,
+            points: [...state.currentDrawing],
+            color: state.drawColor,
+            width: state.drawWidth,
+            name: `Drawing ${state.drawings.length + 1}`,
+          }
+          return {
+            drawings: [...state.drawings, newDrawing],
+            currentDrawing: null,
+            isDrawing: false,
+          }
+        }),
+      setDrawColor: (drawColor) => set({ drawColor }),
+      setDrawWidth: (drawWidth) => set({ drawWidth }),
+      deleteDrawing: (id) =>
+        set((state) => ({
+          drawings: state.drawings.filter((d) => d.id !== id),
+        })),
       setClusteringEnabled: (clusteringEnabled) => set({ clusteringEnabled }),
       setBuildingExtrusion: (buildingExtrusion) => set({ buildingExtrusion }),
+      setTerrainEnabled: (terrainEnabled) => set({ terrainEnabled }),
       setTerrainExaggeration: (terrainExaggeration) => set({ terrainExaggeration }),
       setWeatherEnabled: (weatherEnabled) => set({ weatherEnabled }),
     }),
@@ -379,7 +443,12 @@ export const useMapStore = create<MapState>()(
         sidebarOpen: state.sidebarOpen,
         clusteringEnabled: state.clusteringEnabled,
         weatherEnabled: state.weatherEnabled,
+        terrainEnabled: state.terrainEnabled,
+        buildingExtrusion: state.buildingExtrusion,
+        terrainExaggeration: state.terrainExaggeration,
         layerVisibility: state.layerVisibility,
+        drawColor: state.drawColor,
+        drawWidth: state.drawWidth,
       }),
     }
   )

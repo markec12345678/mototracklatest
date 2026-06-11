@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import { MapPin, Navigation, Ruler, Crosshair } from 'lucide-react'
+import { MapPin, Navigation, Ruler, Crosshair, Pencil } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { cn } from '@/lib/utils'
@@ -41,6 +41,13 @@ const tools: {
     label: 'Directions',
     activeClass: 'bg-cyan-500 text-white shadow-md shadow-cyan-500/30',
     shortcut: '4',
+  },
+  {
+    id: 'draw',
+    icon: <Pencil className="h-4 w-4" />,
+    label: 'Draw',
+    activeClass: 'bg-green-500 text-white shadow-md shadow-green-500/30',
+    shortcut: '5',
   },
 ]
 

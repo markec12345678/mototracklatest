@@ -53,11 +53,11 @@ export function MapStatsPanel() {
   ].filter((stat) => stat.visible)
 
   return (
-    <div className="floating-panel flex items-center gap-3 px-3 py-1.5 bg-background/90 backdrop-blur-md rounded-xl border border-border/50 shadow-lg">
+    <div className="map-control-glass floating-panel flex items-center gap-2 px-3 py-1.5 rounded-xl">
       {stats.map((stat, i) => (
         <div
           key={stat.label}
-          className="flex items-center gap-1.5 group transition-transform hover:scale-105"
+          className="stat-item flex items-center gap-1.5 group"
         >
           <span className={stat.color}>{stat.icon}</span>
           <span className="text-[10px] text-muted-foreground">{stat.label}</span>

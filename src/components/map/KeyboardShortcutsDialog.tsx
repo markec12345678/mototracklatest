@@ -15,10 +15,11 @@ const shortcuts = [
     { keys: ['2'], description: 'Drop Pin mode' },
     { keys: ['3'], description: 'Measure mode' },
     { keys: ['4'], description: 'Directions mode' },
+    { keys: ['5'], description: 'Draw mode' },
     { keys: ['Esc'], description: 'Clear selection' },
   ]},
   { category: 'Map Styles', items: [
-    { keys: ['5'], description: 'Streets style' },
+    { keys: ['0'], description: 'Streets style' },
     { keys: ['6'], description: 'Satellite style' },
     { keys: ['7'], description: 'Dark style' },
     { keys: ['8'], description: 'Terrain style' },
