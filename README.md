@@ -45,9 +45,11 @@ A feature-rich, interactive mapping application built with **Next.js 16**, **Map
 - **Right-Click Context Menu** — Add markers, measure, copy coordinates, and more
 
 ### 🏔️ Terrain & Elevation
-- **Elevation Profile** — Visualize terrain along routes and paths
+- **Elevation Profile** — Visualize terrain along routes with Recharts area chart
 - **3D Terrain Rendering** with adjustable exaggeration
 - **Elevation at Cursor** — Real-time altitude display
+- **Route Elevation** — See elevation gain/loss for planned routes
+- **3D Building Explorer** — Click buildings to inspect height, levels, and type
 
 ### 🌤️ Weather & Sun
 - **Weather Panel** — Current conditions with temperature, wind, humidity, and more
@@ -60,7 +62,8 @@ A feature-rich, interactive mapping application built with **Next.js 16**, **Map
 - **GPX Import** — Load GPX 1.1 tracks and waypoints onto the map
 - **GPX Export** — Save routes and tracks as GPX files
 - **Map Export** — Screenshot the map as PNG, JPEG, or WebP at custom resolutions
-- **Share Link** — Generate a shareable URL with current map view
+- **Share Dialog** — Generate shareable link, embed code, or QR code
+- **Social Sharing** — Share to Twitter/X, Facebook, WhatsApp, Telegram
 
 ### 🏪 Points of Interest
 - **POI Search** via Overpass API with 10+ categories:
@@ -81,19 +84,36 @@ A feature-rich, interactive mapping application built with **Next.js 16**, **Map
 ### 🔧 Tools & Utilities
 - **Undo/Redo System** — Ctrl+Z / Ctrl+Y with visual toolbar
 - **Keyboard Shortcuts** — Full list of hotkeys for power users
-- **Context Menu** — Right-click for quick actions
+- **Context Menu** — Right-click for quick actions (add marker, measure, geofence)
 - **Map Stats Panel** — Zoom level, center coordinates, bearing, pitch
 - **Notifications** — Real-time feedback for all actions
 - **Location Detail Drawer** — Expandable info panel for markers and POIs
+- **Heatmap Layer** — Visualize density of markers/POIs with adjustable intensity and radius
+- **Custom Tile Sources** — Add your own tile server URLs with presets (OSM, Stamen, CartoDB)
+
+### 🏃 GPS & Tracking
+- **Track Recording** — Record GPS tracks in real-time with speed, distance, elevation
+- **Track Playback** — Animate marker along saved tracks
+- **Track Export** — Export recorded tracks as GPX
+- **Saved Tracks** — Browse and manage all recorded tracks
+
+### 🛡️ Geofencing
+- **Create Geofences** — Define circular areas with custom radius (100m-10km)
+- **Enter/Exit Alerts** — Toast notifications when crossing geofence boundaries
+- **Geofence Management** — Toggle, edit, and delete geofences
+- **Right-Click to Create** — Create geofence from context menu
 
 ### 🎨 Design & UX
 - **Dark/Light Mode** with next-themes
+- **PWA Installable** — Install as native app on supported browsers
 - **Fully Responsive** — Optimized for desktop, tablet, and mobile
 - **Glassmorphism UI** — Frosted glass panels with blur effects
 - **Smooth Animations** — Framer Motion transitions throughout
 - **Custom Scrollbars** — Styled for both light and dark themes
 - **Mobile Safe Areas** — Respects iOS notch and home indicator
 - **Accessible** — Semantic HTML, ARIA labels, keyboard navigation
+- **Custom Marker Icons** — 8 icon presets with color picker
+- **Category-Specific POI Icons** — Each POI type has its own icon and color
 
 ---
 
@@ -216,11 +236,25 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 │   │   │   ├── MapAnnotations.tsx  # Text annotations
 │   │   │   ├── MapContextMenu.tsx  # Right-click menu
 │   │   │   ├── UndoRedoBar.tsx    # Undo/redo controls
-│   │   │   └── ...                # 25+ more components
+│   │   │   ├── HeatmapLayer.tsx   # Heatmap visualization
+│   │   │   ├── HeatmapControls.tsx # Heatmap settings
+│   │   │   ├── TrackRecorder.tsx  # GPS track recording
+│   │   │   ├── TrackPlayer.tsx    # Track playback
+│   │   │   ├── GeofenceDialog.tsx  # Geofence creation
+│   │   │   ├── GeofenceManager.tsx # Geofence management
+│   │   │   ├── ShareDialog.tsx    # Share/QR/embed
+│   │   │   ├── Buildings3DLayer.tsx # 3D building explorer
+│   │   │   ├── BuildingInfoPanel.tsx # Building details
+│   │   │   ├── MarkerIconPicker.tsx # Custom marker icons
+│   │   │   ├── CustomTileSourceDialog.tsx # Add custom tiles
+│   │   │   ├── CustomTileSourceList.tsx # Manage custom tiles
+│   │   │   ├── PWAInstallBanner.tsx # PWA install prompt
+│   │   │   └── ...                # 35+ map components
 │   │   └── ui/                # shadcn/ui components (40+)
 │   ├── hooks/
 │   │   ├── use-mobile.ts      # Mobile detection hook
-│   │   └── use-toast.ts       # Toast notification hook
+│   │   ├── use-toast.ts       # Toast notification hook
+│   │   └── use-pwa-install.ts # PWA install detection hook
 │   └── lib/
 │       ├── map-store.ts       # Zustand map state (persisted)
 │       ├── undo-manager.ts    # Generic undo/redo engine
@@ -263,7 +297,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 | `/api/search` | GET | Geocoding search (MapTiler) |
 | `/api/reverse-geocode` | GET | Reverse geocode coordinates |
 | `/api/directions` | GET | Route directions (OSRM) |
-| `/api/elevation` | GET | Elevation data lookup |
+| `/api/elevation` | GET/POST | Elevation data lookup (GET) or batch coordinate query (POST) |
 | `/api/weather` | GET | Current weather data |
 | `/api/sun-position` | GET | Solar position calculations |
 | `/api/poi` | GET | POI search (Overpass) |
@@ -301,16 +335,18 @@ The app is fully responsive with three breakpoints:
 
 ## 🎯 Roadmap
 
-- [ ] **Offline / PWA Support** — Service worker caching for offline maps
-- [ ] **Terrain Profile for Routes** — Elevation graph along route path
+- [x] ~~PWA Support~~ — Installable as native app ✅
+- [x] ~~Route Elevation Profile~~ — Recharts area chart ✅
+- [x] ~~Custom Tile Sources~~ — Add any tile URL with presets ✅
+- [x] ~~3D Building Explorer~~ — Click to inspect buildings ✅
+- [x] ~~Heatmap Layer~~ — Density visualization with controls ✅
+- [x] ~~Geofencing Alerts~~ — Enter/exit notifications ✅
+- [x] ~~Track Recording~~ — Real-time GPS tracking ✅
 - [ ] **Multi-route Comparison** — Compare multiple routes side by side
 - [ ] **Collaborative Maps** — Share and edit maps with others in real-time
-- [ ] **Custom Tile Sources** — Add your own tile server URLs
-- [ ] **3D Building Explorer** — Interactive 3D building inspection
-- [ ] **Heatmap Layer** — Visualize density of markers/POIs
-- [ ] **Geofencing Alerts** — Notification when entering/leaving areas
-- [ ] **Track Recording** — Record GPS tracks in real-time
 - [ ] **Multi-language Support** — i18n with next-intl
+- [ ] **Offline Map Caching** — Service worker for tile caching
+- [ ] **AI-Powered Suggestions** — Smart location recommendations
 
 ---
 
