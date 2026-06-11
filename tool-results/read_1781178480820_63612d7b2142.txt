@@ -1,0 +1,1040 @@
+     1→     1→'use client'
+     2→     2→
+     3→     3→import { useState, useEffect, useCallback } from 'react'
+     4→     4→import {
+     5→     5→  MapPin,
+     6→     6→  Layers,
+     7→     7→  Wrench,
+     8→     8→  Route,
+     9→     9→  Trash2,
+    10→    10→  Navigation,
+    11→    11→  Pencil,
+    12→    12→  Ruler,
+    13→    13→  ChevronLeft,
+    14→    14→  ChevronRight,
+    15→    15→  Eye,
+    16→    16→  EyeOff,
+    17→    17→  Download,
+    18→    18→  Star,
+    19→    19→  Share2,
+    20→    20→  MapPinned,
+    21→    21→  Globe2,
+    22→    22→  Mountain,
+    23→    23→  ArrowRight,
+    24→    24→  PanelLeft,
+    25→    25→  Keyboard,
+    26→    26→} from 'lucide-react'
+    27→    27→import { Button } from '@/components/ui/button'
+    28→    28→import { Input } from '@/components/ui/input'
+    29→    29→import { Badge } from '@/components/ui/badge'
+    30→    30→import { ScrollArea } from '@/components/ui/scroll-area'
+    31→    31→import { Separator } from '@/components/ui/separator'
+    32→    32→import { Switch } from '@/components/ui/switch'
+    33→    33→import {
+    34→    34→  Sheet,
+    35→    35→  SheetContent,
+    36→    36→  SheetHeader,
+    37→    37→  SheetTitle,
+    38→    38→} from '@/components/ui/sheet'
+    39→    39→import {
+    40→    40→  useMapStore,
+    41→    41→  type SavedLocation,
+    42→    42→  type ToolMode,
+    43→    43→} from '@/lib/map-store'
+    44→    44→import { cn } from '@/lib/utils'
+    45→    45→import { toast } from 'sonner'
+    46→    46→import { LocationDetailDrawer } from '@/components/map/LocationDetailDrawer'
+    47→    47→
+    48→    48→const categories = [
+    49→    49→  { id: 'general', label: 'General', color: '#6b7280', icon: '📌' },
+    50→    50→  { id: 'favorite', label: 'Favorite', color: '#f59e0b', icon: '⭐' },
+    51→    51→  { id: 'restaurant', label: 'Restaurant', color: '#ef4444', icon: '🍽️' },
+    52→    52→  { id: 'hotel', label: 'Hotel', color: '#8b5cf6', icon: '🏨' },
+    53→    53→  { id: 'park', label: 'Park', color: '#22c55e', icon: '🌳' },
+    54→    54→  { id: 'shop', label: 'Shop', color: '#3b82f6', icon: '🛍️' },
+    55→    55→  { id: 'landmark', label: 'Landmark', color: '#f97316', icon: '🏛️' },
+    56→    56→  { id: 'transport', label: 'Transport', color: '#06b6d4', icon: '🚌' },
+    57→    57→]
+    58→    58→
+    59→    59→const toolModes: {
+    60→    60→  id: ToolMode
+    61→    61→  label: string
+    62→    62→  icon: React.ReactNode
+    63→    63→  description: string
+    64→    64→  color: string
+    65→    65→  shortcut: string
+    66→    66→}[] = [
+    67→    67→  {
+    68→    68→    id: 'navigate',
+    69→    69→    label: 'Navigate',
+    70→    70→    icon: <Navigation className="h-4 w-4" />,
+    71→    71→    description: 'Pan & zoom the map',
+    72→    72→    color: 'from-emerald-500 to-teal-500',
+    73→    73→    shortcut: '1',
+    74→    74→  },
+    75→    75→  {
+    76→    76→    id: 'mark',
+    77→    77→    label: 'Drop Pin',
+    78→    78→    icon: <Pencil className="h-4 w-4" />,
+    79→    79→    description: 'Click map to add markers',
+    80→    80→    color: 'from-red-500 to-rose-500',
+    81→    81→    shortcut: '2',
+    82→    82→  },
+    83→    83→  {
+    84→    84→    id: 'measure',
+    85→    85→    label: 'Measure',
+    86→    86→    icon: <Ruler className="h-4 w-4" />,
+    87→    87→    description: 'Click points to measure distance',
+    88→    88→    color: 'from-amber-500 to-orange-500',
+    89→    89→    shortcut: '3',
+    90→    90→  },
+    91→    91→]
+    92→    92→
+    93→    93→// Shared sidebar content component
+    94→    94→function SidebarContent({ onCloseMobile }: { onCloseMobile?: () => void }) {
+    95→    95→  const {
+    96→    96→    sidebarTab,
+    97→    97→    setSidebarTab,
+    98→    98→    savedLocations,
+    99→    99→    setSavedLocations,
+   100→   100→    addSavedLocation,
+   101→   101→    removeSavedLocation,
+   102→   102→    markers,
+   103→   103→    removeMarker,
+   104→   104→    toolMode,
+   105→   105→    setToolMode,
+   106→   106→    measurePoints,
+   107→   107→    measureDistance,
+   108→   108→    setMeasureDistance,
+   109→   109→    clearMeasurePoints,
+   110→   110→    selectedMarker,
+   111→   111→    setSelectedMarker,
+   112→   112→  } = useMapStore()
+   113→   113→
+   114→   114→  const [filterCategory, setFilterCategory] = useState<string>('all')
+   115→   115→  const [searchFilter, setSearchFilter] = useState('')
+   116→   116→  const [detailLocation, setDetailLocation] = useState<SavedLocation | null>(null)
+   117→   117→  const [detailOpen, setDetailOpen] = useState(false)
+   118→   118→
+   119→   119→  // Load saved locations
+   120→   120→  useEffect(() => {
+   121→   121→    async function loadLocations() {
+   122→   122→      try {
+   123→   123→        const res = await fetch('/api/locations')
+   124→   124→        if (res.ok) {
+   125→   125→          const data = await res.json()
+   126→   126→          setSavedLocations(data)
+   127→   127→          useMapStore.getState().setMarkers(
+   128→   128→            data.map((loc: SavedLocation) => ({
+   129→   129→              id: loc.id,
+   130→   130→              longitude: loc.longitude,
+   131→   131→              latitude: loc.latitude,
+   132→   132→              name: loc.name,
+   133→   133→              description: loc.description || undefined,
+   134→   134→              color: loc.color,
+   135→   135→              category: loc.category,
+   136→   136→            }))
+   137→   137→          )
+   138→   138→        }
+   139→   139→      } catch (err) {
+   140→   140→        console.error('Failed to load locations:', err)
+   141→   141→      }
+   142→   142→    }
+   143→   143→    loadLocations()
+   144→   144→  }, [setSavedLocations])
+   145→   145→
+   146→   146→  // Calculate measurement distance
+   147→   147→  useEffect(() => {
+   148→   148→    if (measurePoints.length < 2) {
+   149→   149→      setMeasureDistance(null)
+   150→   150→      return
+   151→   151→    }
+   152→   152→
+   153→   153→    let total = 0
+   154→   154→    for (let i = 1; i < measurePoints.length; i++) {
+   155→   155→      total += haversineDistance(
+   156→   156→        measurePoints[i - 1].latitude,
+   157→   157→        measurePoints[i - 1].longitude,
+   158→   158→        measurePoints[i].latitude,
+   159→   159→        measurePoints[i].longitude
+   160→   160→      )
+   161→   161→    }
+   162→   162→    setMeasureDistance(total)
+   163→   163→  }, [measurePoints, setMeasureDistance])
+   164→   164→
+   165→   165→  const handleDeleteLocation = async (id: string) => {
+   166→   166→    try {
+   167→   167→      const res = await fetch(`/api/locations/${id}`, { method: 'DELETE' })
+   168→   168→      if (res.ok) {
+   169→   169→        removeSavedLocation(id)
+   170→   170→        removeMarker(id)
+   171→   171→        if (selectedMarker === id) setSelectedMarker(null)
+   172→   172→        toast.success('Location removed')
+   173→   173→      }
+   174→   174→    } catch (err) {
+   175→   175→      console.error('Failed to delete location:', err)
+   176→   176→      toast.error('Failed to delete location')
+   177→   177→    }
+   178→   178→  }
+   179→   179→
+   180→   180→  const handleFlyTo = useCallback((lng: number, lat: number) => {
+   181→   181→    const flyTo = (window as unknown as Record<string, (lng: number, lat: number, z?: number) => void>).__mapFlyTo
+   182→   182→    if (flyTo) flyTo(lng, lat, 14)
+   183→   183→  }, [])
+   184→   184→
+   185→   185→  const handleExportGeoJSON = useCallback(() => {
+   186→   186→    const geojson = {
+   187→   187→      type: 'FeatureCollection' as const,
+   188→   188→      features: savedLocations.map((loc) => ({
+   189→   189→        type: 'Feature' as const,
+   190→   190→        properties: {
+   191→   191→          name: loc.name,
+   192→   192→          description: loc.description,
+   193→   193→          category: loc.category,
+   194→   194→          color: loc.color,
+   195→   195→        },
+   196→   196→        geometry: {
+   197→   197→          type: 'Point' as const,
+   198→   198→          coordinates: [loc.longitude, loc.latitude],
+   199→   199→        },
+   200→   200→      })),
+   201→   201→    }
+   202→   202→
+   203→   203→    const blob = new Blob([JSON.stringify(geojson, null, 2)], {
+   204→   204→      type: 'application/geo+json',
+   205→   205→    })
+   206→   206→    const url = URL.createObjectURL(blob)
+   207→   207→    const a = document.createElement('a')
+   208→   208→    a.href = url
+   209→   209→    a.download = 'maplibre-explorer-locations.geojson'
+   210→   210→    a.click()
+   211→   211→    URL.revokeObjectURL(url)
+   212→   212→    toast.success('GeoJSON exported!')
+   213→   213→  }, [savedLocations])
+   214→   214→
+   215→   215→  const filteredLocations = savedLocations.filter((loc) => {
+   216→   216→    const matchesCategory =
+   217→   217→      filterCategory === 'all' || loc.category === filterCategory
+   218→   218→    const matchesSearch =
+   219→   219→      !searchFilter ||
+   220→   220→      loc.name.toLowerCase().includes(searchFilter.toLowerCase())
+   221→   221→    return matchesCategory && matchesSearch
+   222→   222→  })
+   223→   223→
+   224→   224→  const tabs = [
+   225→   225→    {
+   226→   226→      id: 'locations' as const,
+   227→   227→      label: 'Places',
+   228→   228→      icon: <MapPin className="h-4 w-4" />,
+   229→   229→    },
+   230→   230→    {
+   231→   231→      id: 'layers' as const,
+   232→   232→      label: 'Layers',
+   233→   233→      icon: <Layers className="h-4 w-4" />,
+   234→   234→    },
+   235→   235→    {
+   236→   236→      id: 'tools' as const,
+   237→   237→      label: 'Tools',
+   238→   238→      icon: <Wrench className="h-4 w-4" />,
+   239→   239→    },
+   240→   240→    {
+   241→   241→      id: 'routes' as const,
+   242→   242→      label: 'Routes',
+   243→   243→      icon: <Route className="h-4 w-4" />,
+   244→   244→    },
+   245→   245→  ]
+   246→   246→
+   247→   247→  return (
+   248→   248→    <div className="flex flex-col h-full">
+   249→   249→      {/* Header with gradient accent */}
+   250→   250→      <div className="relative overflow-hidden shrink-0">
+   251→   251→        <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-transparent" />
+   252→   252→        <div className="relative px-4 py-3 border-b">
+   253→   253→          <h1 className="font-bold text-lg flex items-center gap-2.5">
+   254→   254→            <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-md shadow-emerald-500/20">
+   255→   255→              <MapPin className="h-4 w-4 text-white" />
+   256→   256→            </div>
+   257→   257→            <div>
+   258→   258→              <span className="text-base">MapLibre Explorer</span>
+   259→   259→              <p className="text-[10px] text-muted-foreground font-normal -mt-0.5">
+   260→   260→                Interactive Map Application
+   261→   261→              </p>
+   262→   262→            </div>
+   263→   263→          </h1>
+   264→   264→        </div>
+   265→   265→      </div>
+   266→   266→
+   267→   267→      {/* Tab navigation */}
+   268→   268→      <div className="flex border-b bg-muted/30 shrink-0">
+   269→   269→        {tabs.map((tab) => (
+   270→   270→          <button
+   271→   271→            key={tab.id}
+   272→   272→            onClick={() => setSidebarTab(tab.id)}
+   273→   273→            className={cn(
+   274→   274→              'flex-1 py-2.5 px-1 text-xs font-medium transition-all flex flex-col items-center gap-1 relative',
+   275→   275→              sidebarTab === tab.id
+   276→   276→                ? 'text-primary'
+   277→   277→                : 'text-muted-foreground hover:text-foreground'
+   278→   278→            )}
+   279→   279→          >
+   280→   280→            {tab.icon}
+   281→   281→            {tab.label}
+   282→   282→            {sidebarTab === tab.id && (
+   283→   283→              <div className="absolute bottom-0 left-2 right-2 h-0.5 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full" />
+   284→   284→            )}
+   285→   285→          </button>
+   286→   286→        ))}
+   287→   287→      </div>
+   288→   288→
+   289→   289→      {/* Tab content */}
+   290→   290→      <div className="flex-1 overflow-hidden">
+   291→   291→        {sidebarTab === 'locations' && (
+   292→   292→          <LocationsTab
+   293→   293→            locations={filteredLocations}
+   294→   294→            searchFilter={searchFilter}
+   295→   295→            setSearchFilter={setSearchFilter}
+   296→   296→            filterCategory={filterCategory}
+   297→   297→            setFilterCategory={setFilterCategory}
+   298→   298→            onFlyTo={handleFlyTo}
+   299→   299→            onDelete={handleDeleteLocation}
+   300→   300→            selectedMarker={selectedMarker}
+   301→   301→            onSelectMarker={setSelectedMarker}
+   302→   302→            totalCount={savedLocations.length}
+   303→   303→            onOpenDetail={(loc) => {
+   304→   304→              setDetailLocation(loc)
+   305→   305→              setDetailOpen(true)
+   306→   306→            }}
+   307→   307→          />
+   308→   308→        )}
+   309→   309→        {sidebarTab === 'layers' && <LayersTab />}
+   310→   310→        {sidebarTab === 'tools' && (
+   311→   311→          <ToolsTab
+   312→   312→            toolMode={toolMode}
+   313→   313→            setToolMode={setToolMode}
+   314→   314→            measurePoints={measurePoints}
+   315→   315→            measureDistance={measureDistance}
+   316→   316→            clearMeasurePoints={clearMeasurePoints}
+   317→   317→            onExportGeoJSON={handleExportGeoJSON}
+   318→   318→          />
+   319→   319→        )}
+   320→   320→        {sidebarTab === 'routes' && <RoutesTab />}
+   321→   321→      </div>
+   322→   322→
+   323→   323→      {/* Location Detail Drawer */}
+   324→   324→      <LocationDetailDrawer
+   325→   325→        location={detailLocation}
+   326→   326→        open={detailOpen}
+   327→   327→        onOpenChange={setDetailOpen}
+   328→   328→        onDelete={handleDeleteLocation}
+   329→   329→      />
+   330→   330→    </div>
+   331→   331→  )
+   332→   332→}
+   333→   333→
+   334→   334→export function MapSidebar() {
+   335→   335→  const { sidebarOpen, setSidebarOpen } = useMapStore()
+   336→   336→
+   337→   337→  // Close sidebar on mobile by default on initial mount
+   338→   338→  useEffect(() => {
+   339→   339→    if (window.innerWidth < 768) {
+   340→   340→      setSidebarOpen(false)
+   341→   341→    }
+   342→   342→  }, [setSidebarOpen])
+   343→   343→
+   344→   344→  return (
+   345→   345→    <>
+   346→   346→      {/* Desktop sidebar - hidden on mobile */}
+   347→   347→      <div
+   348→   348→        className={cn(
+   349→   349→          'hidden md:flex absolute left-0 top-0 bottom-0 z-20 transition-all duration-300 ease-in-out',
+   350→   350→          sidebarOpen ? 'w-80' : 'w-0'
+   351→   351→        )}
+   352→   352→      >
+   353→   353→        {/* Toggle button */}
+   354→   354→        <button
+   355→   355→          onClick={() => setSidebarOpen(!sidebarOpen)}
+   356→   356→          className={cn(
+   357→   357→            'absolute z-30 bg-background/95 backdrop-blur-sm border rounded-full p-1.5 shadow-lg hover:bg-accent transition-all duration-200 hover:scale-110',
+   358→   358→            sidebarOpen ? '-right-3 top-4' : 'right-0 top-4 translate-x-full'
+   359→   359→          )}
+   360→   360→          aria-label={sidebarOpen ? 'Close sidebar' : 'Open sidebar'}
+   361→   361→        >
+   362→   362→          {sidebarOpen ? (
+   363→   363→            <ChevronLeft className="h-3 w-3" />
+   364→   364→          ) : (
+   365→   365→            <ChevronRight className="h-3 w-3" />
+   366→   366→          )}
+   367→   367→        </button>
+   368→   368→
+   369→   369→        {/* Sidebar content */}
+   370→   370→        <div
+   371→   371→          className={cn(
+   372→   372→            'w-80 bg-background/95 backdrop-blur-xl border-r flex flex-col shadow-2xl transition-opacity duration-200',
+   373→   373→            sidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+   374→   374→          )}
+   375→   375→        >
+   376→   376→          <SidebarContent />
+   377→   377→        </div>
+   378→   378→      </div>
+   379→   379→
+   380→   380→      {/* Mobile sidebar - Sheet/drawer */}
+   381→   381→      <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
+   382→   382→        <SheetContent side="left" className="w-80 p-0 md:hidden">
+   383→   383→          <SheetHeader className="sr-only">
+   384→   384→            <SheetTitle>MapLibre Explorer Sidebar</SheetTitle>
+   385→   385→          </SheetHeader>
+   386→   386→          <SidebarContent onCloseMobile={() => setSidebarOpen(false)} />
+   387→   387→        </SheetContent>
+   388→   388→      </Sheet>
+   389→   389→
+   390→   390→      {/* Mobile toggle button - visible only on mobile when sidebar is closed */}
+   391→   391→      {!sidebarOpen && (
+   392→   392→        <button
+   393→   393→          onClick={() => setSidebarOpen(true)}
+   394→   394→          className="md:hidden absolute left-3 top-3 z-20 bg-background/95 backdrop-blur-sm border rounded-xl p-2 shadow-lg hover:bg-accent transition-all duration-200 hover:scale-105"
+   395→   395→          aria-label="Open sidebar"
+   396→   396→        >
+   397→   397→          <PanelLeft className="h-4 w-4" />
+   398→   398→        </button>
+   399→   399→      )}
+   400→   400→    </>
+   401→   401→  )
+   402→   402→}
+   403→   403→
+   404→   404→function LocationsTab({
+   405→   405→  locations,
+   406→   406→  searchFilter,
+   407→   407→  setSearchFilter,
+   408→   408→  filterCategory,
+   409→   409→  setFilterCategory,
+   410→   410→  onFlyTo,
+   411→   411→  onDelete,
+   412→   412→  selectedMarker,
+   413→   413→  onSelectMarker,
+   414→   414→  totalCount,
+   415→   415→  onOpenDetail,
+   416→   416→}: {
+   417→   417→  locations: SavedLocation[]
+   418→   418→  searchFilter: string
+   419→   419→  setSearchFilter: (v: string) => void
+   420→   420→  filterCategory: string
+   421→   421→  setFilterCategory: (v: string) => void
+   422→   422→  onFlyTo: (lng: number, lat: number) => void
+   423→   423→  onDelete: (id: string) => void
+   424→   424→  selectedMarker: string | null
+   425→   425→  onSelectMarker: (id: string | null) => void
+   426→   426→  totalCount: number
+   427→   427→  onOpenDetail: (loc: SavedLocation) => void
+   428→   428→}) {
+   429→   429→  return (
+   430→   430→    <div className="flex flex-col h-full">
+   431→   431→      {/* Search & filter */}
+   432→   432→      <div className="p-3 space-y-2 border-b bg-muted/20 shrink-0">
+   433→   433→        <Input
+   434→   434→          placeholder="Filter locations..."
+   435→   435→          value={searchFilter}
+   436→   436→          onChange={(e) => setSearchFilter(e.target.value)}
+   437→   437→          className="h-8 text-sm"
+   438→   438→          aria-label="Filter locations"
+   439→   439→        />
+   440→   440→        <div className="flex flex-wrap gap-1">
+   441→   441→          <button
+   442→   442→            onClick={() => setFilterCategory('all')}
+   443→   443→            className={cn(
+   444→   444→              'text-[11px] px-2.5 py-1 rounded-full border transition-all duration-200',
+   445→   445→              filterCategory === 'all'
+   446→   446→                ? 'bg-primary text-primary-foreground shadow-sm'
+   447→   447→                : 'hover:bg-accent bg-background'
+   448→   448→            )}
+   449→   449→          >
+   450→   450→            All ({totalCount})
+   451→   451→          </button>
+   452→   452→          {categories.slice(0, 6).map((cat) => (
+   453→   453→            <button
+   454→   454→              key={cat.id}
+   455→   455→              onClick={() => setFilterCategory(cat.id)}
+   456→   456→              className={cn(
+   457→   457→                'text-[11px] px-2 py-1 rounded-full border transition-all duration-200',
+   458→   458→                filterCategory === cat.id
+   459→   459→                  ? 'text-white shadow-sm'
+   460→   460→                  : 'hover:bg-accent bg-background'
+   461→   461→              )}
+   462→   462→              style={
+   463→   463→                filterCategory === cat.id
+   464→   464→                  ? { backgroundColor: cat.color, borderColor: cat.color }
+   465→   465→                  : undefined
+   466→   466→              }
+   467→   467→              aria-label={`Filter by ${cat.label}`}
+   468→   468→            >
+   469→   469→              {cat.icon} {cat.label}
+   470→   470→            </button>
+   471→   471→          ))}
+   472→   472→        </div>
+   473→   473→      </div>
+   474→   474→
+   475→   475→      {/* Locations list */}
+   476→   476→      <ScrollArea className="flex-1">
+   477→   477→        <div className="p-2 space-y-1">
+   478→   478→          {locations.length === 0 ? (
+   479→   479→            <div className="text-center py-12 text-muted-foreground">
+   480→   480→              <div className="w-16 h-16 mx-auto mb-3 rounded-2xl bg-muted/50 flex items-center justify-center">
+   481→   481→                <MapPinned className="h-8 w-8 opacity-40" />
+   482→   482→              </div>
+   483→   483→              <p className="text-sm font-medium">No saved locations</p>
+   484→   484→              <p className="text-xs mt-1 max-w-[200px] mx-auto">
+   485→   485→                Click the &quot;+&quot; button on the map or use the Drop Pin
+   486→   486→                tool to save places
+   487→   487→              </p>
+   488→   488→            </div>
+   489→   489→          ) : (
+   490→   490→            locations.map((loc) => {
+   491→   491→              const cat = categories.find((c) => c.id === loc.category)
+   492→   492→              const isSelected = selectedMarker === loc.id
+   493→   493→              return (
+   494→   494→                <div
+   495→   495→                  key={loc.id}
+   496→   496→                  className={cn(
+   497→   497→                    'group flex items-start gap-3 p-2.5 rounded-xl border transition-all duration-200 cursor-pointer',
+   498→   498→                    isSelected
+   499→   499→                      ? 'bg-primary/5 border-primary/20 shadow-sm ring-1 ring-primary/10'
+   500→   500→                      : 'hover:bg-accent/50 border-transparent hover:border-border'
+   501→   501→                  )}
+   502→   502→                  onClick={() => {
+   503→   503→                    onSelectMarker(isSelected ? null : loc.id)
+   504→   504→                    onFlyTo(loc.longitude, loc.latitude)
+   505→   505→                  }}
+   506→   506→                  onDoubleClick={() => onOpenDetail(loc)}
+   507→   507→                >
+   508→   508→                  <div
+   509→   509→                    className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 mt-0.5 transition-transform group-hover:scale-110"
+   510→   510→                    style={{
+   511→   511→                      backgroundColor: loc.color + '15',
+   512→   512→                      color: loc.color,
+   513→   513→                    }}
+   514→   514→                  >
+   515→   515→                    <span className="text-sm">{cat?.icon || '📌'}</span>
+   516→   516→                  </div>
+   517→   517→                  <div className="flex-1 min-w-0">
+   518→   518→                    <div className="flex items-center gap-2">
+   519→   519→                      <p className="text-sm font-medium truncate">{loc.name}</p>
+   520→   520→                    </div>
+   521→   521→                    {loc.description && (
+   522→   522→                      <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">
+   523→   523→                        {loc.description}
+   524→   524→                      </p>
+   525→   525→                    )}
+   526→   526→                    <div className="flex items-center gap-2 mt-1.5">
+   527→   527→                      {cat && (
+   528→   528→                        <Badge
+   529→   529→                          variant="secondary"
+   530→   530→                          className="text-[10px] px-1.5 py-0 h-4 shrink-0"
+   531→   531→                          style={{
+   532→   532→                            backgroundColor: cat.color + '15',
+   533→   533→                            color: cat.color,
+   534→   534→                            border: 'none',
+   535→   535→                          }}
+   536→   536→                        >
+   537→   537→                          {cat.label}
+   538→   538→                        </Badge>
+   539→   539→                      )}
+   540→   540→                      <span className="text-[10px] text-muted-foreground font-mono">
+   541→   541→                        {loc.latitude.toFixed(4)}, {loc.longitude.toFixed(4)}
+   542→   542→                      </span>
+   543→   543→                    </div>
+   544→   544→                  </div>
+   545→   545→                  <button
+   546→   546→                    onClick={(e) => {
+   547→   547→                      e.stopPropagation()
+   548→   548→                      onDelete(loc.id)
+   549→   549→                    }}
+   550→   550→                    className="opacity-0 group-hover:opacity-100 p-1.5 hover:text-destructive hover:bg-destructive/10 rounded-lg transition-all shrink-0"
+   551→   551→                    aria-label={`Delete ${loc.name}`}
+   552→   552→                  >
+   553→   553→                    <Trash2 className="h-3.5 w-3.5" />
+   554→   554→                  </button>
+   555→   555→                </div>
+   556→   556→              )
+   557→   557→            })
+   558→   558→          )}
+   559→   559→        </div>
+   560→   560→      </ScrollArea>
+   561→   561→    </div>
+   562→   562→  )
+   563→   563→}
+   564→   564→
+   565→   565→function LayersTab() {
+   566→   566→  const [layers, setLayers] = useState([
+   567→   567→    { id: 'water', name: 'Water Bodies', visible: true, icon: '🌊', color: '#06b6d4' },
+   568→   568→    { id: 'roads', name: 'Roads', visible: true, icon: '🛣️', color: '#6b7280' },
+   569→   569→    { id: 'buildings', name: 'Buildings', visible: true, icon: '🏗️', color: '#f59e0b' },
+   570→   570→    { id: 'landuse', name: 'Land Use', visible: true, icon: '🌳', color: '#22c55e' },
+   571→   571→    { id: 'poi', name: 'Points of Interest', visible: true, icon: '📍', color: '#ef4444' },
+   572→   572→    { id: 'transit', name: 'Transit', visible: false, icon: '🚌', color: '#8b5cf6' },
+   573→   573→    { id: 'boundaries', name: 'Boundaries', visible: true, icon: '🗺️', color: '#f97316' },
+   574→   574→    { id: 'terrain', name: 'Terrain', visible: false, icon: '⛰️', color: '#78716c' },
+   575→   575→  ])
+   576→   576→
+   577→   577→  const [terrain3D, setTerrain3D] = useState(false)
+   578→   578→  const [show3DBuildings, setShow3DBuildings] = useState(false)
+   579→   579→
+   580→   580→  const toggleLayer = (id: string) => {
+   581→   581→    setLayers((prev) =>
+   582→   582→      prev.map((l) => (l.id === id ? { ...l, visible: !l.visible } : l))
+   583→   583→    )
+   584→   584→  }
+   585→   585→
+   586→   586→  return (
+   587→   587→    <ScrollArea className="h-full">
+   588→   588→      <div className="p-3 space-y-4">
+   589→   589→        {/* Map Layers */}
+   590→   590→        <div>
+   591→   591→          <div className="flex items-center justify-between mb-2">
+   592→   592→            <h3 className="text-sm font-semibold flex items-center gap-2">
+   593→   593→              <Layers className="h-3.5 w-3.5 text-muted-foreground" />
+   594→   594→              Map Layers
+   595→   595→            </h3>
+   596→   596→            <Badge variant="secondary" className="text-xs font-mono">
+   597→   597→              {layers.filter((l) => l.visible).length}/{layers.length}
+   598→   598→            </Badge>
+   599→   599→          </div>
+   600→   600→          <div className="space-y-1">
+   601→   601→            {layers.map((layer) => (
+   602→   602→              <button
+   603→   603→                key={layer.id}
+   604→   604→                onClick={() => toggleLayer(layer.id)}
+   605→   605→                className={cn(
+   606→   606→                  'w-full flex items-center gap-3 px-3 py-2 rounded-xl border transition-all duration-200 text-left group',
+   607→   607→                  layer.visible
+   608→   608→                    ? 'bg-background border-border/50 shadow-sm'
+   609→   609→                    : 'opacity-40 border-transparent hover:border-border'
+   610→   610→                )}
+   611→   611→              >
+   612→   612→                <span className="text-base">{layer.icon}</span>
+   613→   613→                <span className="text-sm flex-1">{layer.name}</span>
+   614→   614→                <div
+   615→   615→                  className="w-1.5 h-4 rounded-full transition-opacity"
+   616→   616→                  style={{
+   617→   617→                    backgroundColor: layer.color,
+   618→   618→                    opacity: layer.visible ? 1 : 0.3,
+   619→   619→                  }}
+   620→   620→                />
+   621→   621→                {layer.visible ? (
+   622→   622→                  <Eye className="h-3.5 w-3.5 text-primary" />
+   623→   623→                ) : (
+   624→   624→                  <EyeOff className="h-3.5 w-3.5 text-muted-foreground" />
+   625→   625→                )}
+   626→   626→              </button>
+   627→   627→            ))}
+   628→   628→          </div>
+   629→   629→        </div>
+   630→   630→
+   631→   631→        <Separator />
+   632→   632→
+   633→   633→        {/* 3D Options */}
+   634→   634→        <div>
+   635→   635→          <h3 className="text-sm font-semibold flex items-center gap-2 mb-2">
+   636→   636→            <Mountain className="h-3.5 w-3.5 text-muted-foreground" />
+   637→   637→            3D Options
+   638→   638→          </h3>
+   639→   639→          <div className="space-y-3">
+   640→   640→            <div className="flex items-center justify-between px-3 py-2 rounded-xl border bg-background">
+   641→   641→              <div className="flex items-center gap-2">
+   642→   642→                <Mountain className="h-4 w-4 text-muted-foreground" />
+   643→   643→                <div>
+   644→   644→                  <p className="text-sm">3D Terrain</p>
+   645→   645→                  <p className="text-[10px] text-muted-foreground">
+   646→   646→                    Elevation rendering
+   647→   647→                  </p>
+   648→   648→                </div>
+   649→   649→              </div>
+   650→   650→              <Switch
+   651→   651→                checked={terrain3D}
+   652→   652→                onCheckedChange={setTerrain3D}
+   653→   653→                aria-label="Toggle 3D terrain"
+   654→   654→              />
+   655→   655→            </div>
+   656→   656→            <div className="flex items-center justify-between px-3 py-2 rounded-xl border bg-background">
+   657→   657→              <div className="flex items-center gap-2">
+   658→   658→                <Globe2 className="h-4 w-4 text-muted-foreground" />
+   659→   659→                <div>
+   660→   660→                  <p className="text-sm">3D Buildings</p>
+   661→   661→                  <p className="text-[10px] text-muted-foreground">
+   662→   662→                    Extruded building footprints
+   663→   663→                  </p>
+   664→   664→                </div>
+   665→   665→              </div>
+   666→   666→              <Switch
+   667→   667→                checked={show3DBuildings}
+   668→   668→                onCheckedChange={setShow3DBuildings}
+   669→   669→                aria-label="Toggle 3D buildings"
+   670→   670→              />
+   671→   671→            </div>
+   672→   672→          </div>
+   673→   673→        </div>
+   674→   674→
+   675→   675→        <Separator />
+   676→   676→
+   677→   677→        {/* Overlay Data */}
+   678→   678→        <div>
+   679→   679→          <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2">
+   680→   680→            Overlay Data
+   681→   681→          </h3>
+   682→   682→          <div className="space-y-1.5">
+   683→   683→            {[
+   684→   684→              { id: 'weather', name: 'Weather', icon: '🌤️', desc: 'Real-time weather' },
+   685→   685→              { id: 'traffic', name: 'Traffic', icon: '🚗', desc: 'Live traffic flow' },
+   686→   686→              { id: 'earthquakes', name: 'Earthquakes', icon: '🌍', desc: 'Seismic activity' },
+   687→   687→            ].map((overlay) => (
+   688→   688→              <div
+   689→   689→                key={overlay.id}
+   690→   690→                className="flex items-center gap-3 px-3 py-2 rounded-xl border border-dashed text-muted-foreground"
+   691→   691→              >
+   692→   692→                <span className="text-base">{overlay.icon}</span>
+   693→   693→                <div className="flex-1">
+   694→   694→                  <p className="text-sm">{overlay.name}</p>
+   695→   695→                  <p className="text-[10px] text-muted-foreground/70">
+   696→   696→                    {overlay.desc}
+   697→   697→                  </p>
+   698→   698→                </div>
+   699→   699→                <Badge
+   700→   700→                  variant="outline"
+   701→   701→                  className="text-[9px] px-1.5 py-0 h-4"
+   702→   702→                >
+   703→   703→                  Soon
+   704→   704→                </Badge>
+   705→   705→              </div>
+   706→   706→            ))}
+   707→   707→          </div>
+   708→   708→        </div>
+   709→   709→      </div>
+   710→   710→    </ScrollArea>
+   711→   711→  )
+   712→   712→}
+   713→   713→
+   714→   714→function ToolsTab({
+   715→   715→  toolMode,
+   716→   716→  setToolMode,
+   717→   717→  measurePoints,
+   718→   718→  measureDistance,
+   719→   719→  clearMeasurePoints,
+   720→   720→  onExportGeoJSON,
+   721→   721→}: {
+   722→   722→  toolMode: ToolMode
+   723→   723→  setToolMode: (mode: ToolMode) => void
+   724→   724→  measurePoints: { longitude: number; latitude: number }[]
+   725→   725→  measureDistance: number | null
+   726→   726→  clearMeasurePoints: () => void
+   727→   727→  onExportGeoJSON: () => void
+   728→   728→}) {
+   729→   729→  return (
+   730→   730→    <ScrollArea className="h-full">
+   731→   731→      <div className="p-3 space-y-4">
+   732→   732→        {/* Active Tool */}
+   733→   733→        <div>
+   734→   734→          <h3 className="text-sm font-semibold mb-2 flex items-center gap-2">
+   735→   735→            <Wrench className="h-3.5 w-3.5 text-muted-foreground" />
+   736→   736→            Active Tool
+   737→   737→          </h3>
+   738→   738→          <div className="space-y-1.5">
+   739→   739→            {toolModes.map((tool) => (
+   740→   740→              <button
+   741→   741→                key={tool.id}
+   742→   742→                onClick={() => setToolMode(tool.id)}
+   743→   743→                className={cn(
+   744→   744→                  'w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border transition-all duration-200 text-left group',
+   745→   745→                  toolMode === tool.id
+   746→   746→                    ? 'bg-primary/5 border-primary/20 shadow-sm ring-1 ring-primary/10'
+   747→   747→                    : 'hover:bg-accent/50 border-transparent'
+   748→   748→                )}
+   749→   749→              >
+   750→   750→                <div
+   751→   751→                  className={cn(
+   752→   752→                    'w-9 h-9 rounded-xl flex items-center justify-center transition-all',
+   753→   753→                    toolMode === tool.id
+   754→   754→                      ? `bg-gradient-to-br ${tool.color} text-white shadow-md`
+   755→   755→                      : 'bg-muted text-muted-foreground group-hover:bg-accent'
+   756→   756→                  )}
+   757→   757→                >
+   758→   758→                  {tool.icon}
+   759→   759→                </div>
+   760→   760→                <div>
+   761→   761→                  <p className="text-sm font-medium">{tool.label}</p>
+   762→   762→                  <p className="text-[11px] text-muted-foreground">
+   763→   763→                    {tool.description}
+   764→   764→                  </p>
+   765→   765→                </div>
+   766→   766→                <div className="ml-auto flex items-center gap-2 shrink-0">
+   767→   767→                  <kbd className="text-[10px] px-1.5 py-0.5 rounded border bg-muted/50 font-mono">
+   768→   768→                    {tool.shortcut}
+   769→   769→                  </kbd>
+   770→   770→                  {toolMode === tool.id && (
+   771→   771→                    <ArrowRight className="h-4 w-4 text-primary" />
+   772→   772→                  )}
+   773→   773→                </div>
+   774→   774→              </button>
+   775→   775→            ))}
+   776→   776→          </div>
+   777→   777→        </div>
+   778→   778→
+   779→   779→        {/* Measurement results */}
+   780→   780→        {toolMode === 'measure' && (
+   781→   781→          <>
+   782→   782→            <Separator />
+   783→   783→            <div>
+   784→   784→              <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
+   785→   785→                <Ruler className="h-3.5 w-3.5 text-muted-foreground" />
+   786→   786→                Measurement
+   787→   787→              </h4>
+   788→   788→              {measurePoints.length === 0 ? (
+   789→   789→                <div className="text-center py-6 text-muted-foreground">
+   790→   790→                  <div className="w-12 h-12 mx-auto mb-2 rounded-xl bg-muted/50 flex items-center justify-center">
+   791→   791→                    <Ruler className="h-6 w-6 opacity-40" />
+   792→   792→                  </div>
+   793→   793→                  <p className="text-xs">
+   794→   794→                    Click on the map to add measurement points
+   795→   795→                  </p>
+   796→   796→                </div>
+   797→   797→              ) : (
+   798→   798→                <div className="space-y-2">
+   799→   799→                  {measureDistance !== null && (
+   800→   800→                    <div className="p-3 rounded-xl bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20">
+   801→   801→                      <div className="flex items-center justify-between">
+   802→   802→                        <span className="text-xs text-muted-foreground">
+   803→   803→                          Total Distance
+   804→   804→                        </span>
+   805→   805→                        <span className="text-lg font-bold text-amber-600">
+   806→   806→                          {measureDistance < 1
+   807→   807→                            ? `${(measureDistance * 1000).toFixed(0)} m`
+   808→   808→                            : `${measureDistance.toFixed(2)} km`}
+   809→   809→                        </span>
+   810→   810→                      </div>
+   811→   811→                    </div>
+   812→   812→                  )}
+   813→   813→                  <div className="flex items-center justify-between p-2.5 bg-muted/50 rounded-xl">
+   814→   814→                    <span className="text-xs text-muted-foreground">
+   815→   815→                      Points
+   816→   816→                    </span>
+   817→   817→                    <Badge variant="secondary" className="font-mono">
+   818→   818→                      {measurePoints.length}
+   819→   819→                    </Badge>
+   820→   820→                  </div>
+   821→   821→                  <div className="space-y-1 max-h-32 overflow-y-auto">
+   822→   822→                    {measurePoints.map((p, i) => (
+   823→   823→                      <div
+   824→   824→                        key={i}
+   825→   825→                        className="text-xs text-muted-foreground flex items-center gap-2 px-2 py-1"
+   826→   826→                      >
+   827→   827→                        <span className="w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center text-[10px] font-bold">
+   828→   828→                          {i + 1}
+   829→   829→                        </span>
+   830→   830→                        <span className="font-mono">
+   831→   831→                          {p.latitude.toFixed(4)}, {p.longitude.toFixed(4)}
+   832→   832→                        </span>
+   833→   833→                      </div>
+   834→   834→                    ))}
+   835→   835→                  </div>
+   836→   836→                  <Button
+   837→   837→                    variant="outline"
+   838→   838→                    size="sm"
+   839→   839→                    className="w-full h-8 text-xs"
+   840→   840→                    onClick={clearMeasurePoints}
+   841→   841→                  >
+   842→   842→                    <Trash2 className="h-3 w-3 mr-1.5" />
+   843→   843→                    Clear Measurement
+   844→   844→                  </Button>
+   845→   845→                </div>
+   846→   846→              )}
+   847→   847→            </div>
+   848→   848→          </>
+   849→   849→        )}
+   850→   850→
+   851→   851→        <Separator />
+   852→   852→
+   853→   853→        {/* Export */}
+   854→   854→        <div>
+   855→   855→          <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
+   856→   856→            <Download className="h-3.5 w-3.5 text-muted-foreground" />
+   857→   857→            Export Data
+   858→   858→          </h4>
+   859→   859→          <div className="space-y-1.5">
+   860→   860→            <Button
+   861→   861→              variant="outline"
+   862→   862→              size="sm"
+   863→   863→              className="w-full h-9 text-xs justify-start rounded-xl"
+   864→   864→              onClick={onExportGeoJSON}
+   865→   865→            >
+   866→   866→              <Download className="h-3.5 w-3.5 mr-2" />
+   867→   867→              Export as GeoJSON
+   868→   868→            </Button>
+   869→   869→            <Button
+   870→   870→              variant="outline"
+   871→   871→              size="sm"
+   872→   872→              className="w-full h-9 text-xs justify-start rounded-xl"
+   873→   873→            >
+   874→   874→              <Share2 className="h-3.5 w-3.5 mr-2" />
+   875→   875→              Share Map View
+   876→   876→            </Button>
+   877→   877→          </div>
+   878→   878→        </div>
+   879→   879→
+   880→   880→        <Separator />
+   881→   881→
+   882→   882→        {/* Quick Bookmarks */}
+   883→   883→        <div>
+   884→   884→          <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
+   885→   885→            <Star className="h-3.5 w-3.5 text-muted-foreground" />
+   886→   886→            Quick Bookmarks
+   887→   887→          </h4>
+   888→   888→          <div className="grid grid-cols-2 gap-1.5">
+   889→   889→            {[
+   890→   890→              { name: 'Paris', lat: 48.8566, lng: 2.3522, emoji: '🗼' },
+   891→   891→              { name: 'London', lat: 51.5074, lng: -0.1278, emoji: '🎡' },
+   892→   892→              { name: 'New York', lat: 40.7128, lng: -74.006, emoji: '🗽' },
+   893→   893→              { name: 'Tokyo', lat: 35.6762, lng: 139.6503, emoji: '⛩️' },
+   894→   894→              { name: 'Sydney', lat: -33.8688, lng: 151.2093, emoji: '🎭' },
+   895→   895→              { name: 'Dubai', lat: 25.2048, lng: 55.2708, emoji: '🏙️' },
+   896→   896→            ].map((city) => (
+   897→   897→              <button
+   898→   898→                key={city.name}
+   899→   899→                onClick={() => {
+   900→   900→                  const flyTo = (window as unknown as Record<string, (lng: number, lat: number, z?: number) => void>).__mapFlyTo
+   901→   901→                  if (flyTo) flyTo(city.lng, city.lat, 12)
+   902→   902→                }}
+   903→   903→                className="flex items-center gap-2 px-2.5 py-2 rounded-xl border border-transparent hover:border-border hover:bg-accent/50 transition-all text-left"
+   904→   904→              >
+   905→   905→                <span className="text-sm">{city.emoji}</span>
+   906→   906→                <span className="text-xs font-medium">{city.name}</span>
+   907→   907→              </button>
+   908→   908→            ))}
+   909→   909→          </div>
+   910→   910→        </div>
+   911→   911→
+   912→   912→        <Separator />
+   913→   913→
+   914→   914→        {/* Keyboard shortcuts reference */}
+   915→   915→        <div>
+   916→   916→          <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
+   917→   917→            <Keyboard className="h-3.5 w-3.5 text-muted-foreground" />
+   918→   918→            Keyboard Shortcuts
+   919→   919→          </h4>
+   920→   920→          <div className="space-y-1">
+   921→   921→            {[
+   922→   922→              { keys: ['1', '2', '3'], desc: 'Switch tools' },
+   923→   923→              { keys: ['/'], desc: 'Focus search' },
+   924→   924→              { keys: ['Esc'], desc: 'Clear selection' },
+   925→   925→              { keys: ['B'], desc: 'Toggle sidebar' },
+   926→   926→              { keys: ['F'], desc: 'Fullscreen' },
+   927→   927→              { keys: ['L'], desc: 'My location' },
+   928→   928→            ].map((shortcut) => (
+   929→   929→              <div key={shortcut.desc} className="flex items-center justify-between px-2 py-1">
+   930→   930→                <span className="text-xs text-muted-foreground">{shortcut.desc}</span>
+   931→   931→                <div className="flex gap-1">
+   932→   932→                  {shortcut.keys.map((key) => (
+   933→   933→                    <kbd key={key} className="text-[10px] px-1.5 py-0.5 rounded border bg-muted/50 font-mono">
+   934→   934→                      {key}
+   935→   935→                    </kbd>
+   936→   936→                  ))}
+   937→   937→                </div>
+   938→   938→              </div>
+   939→   939→            ))}
+   940→   940→          </div>
+   941→   941→        </div>
+   942→   942→      </div>
+   943→   943→    </ScrollArea>
+   944→   944→  )
+   945→   945→}
+   946→   946→
+   947→   947→function RoutesTab() {
+   948→   948→  const [routes, setRoutes] = useState<
+   949→   949→    Array<{
+   950→   950→      id: string
+   951→   951→      name: string
+   952→   952→      color: string
+   953→   953→      distance: number | null
+   954→   954→      waypoints: string
+   955→   955→    }>
+   956→   956→  >([])
+   957→   957→
+   958→   958→  useEffect(() => {
+   959→   959→    async function loadRoutes() {
+   960→   960→      try {
+   961→   961→        const res = await fetch('/api/routes')
+   962→   962→        if (res.ok) {
+   963→   963→          const data = await res.json()
+   964→   964→          setRoutes(data)
+   965→   965→        }
+   966→   966→      } catch (err) {
+   967→   967→        console.error('Failed to load routes:', err)
+   968→   968→      }
+   969→   969→    }
+   970→   970→    loadRoutes()
+   971→   971→  }, [])
+   972→   972→
+   973→   973→  return (
+   974→   974→    <ScrollArea className="h-full">
+   975→   975→      <div className="p-3 space-y-3">
+   976→   976→        <h3 className="text-sm font-semibold flex items-center gap-2">
+   977→   977→          <Route className="h-3.5 w-3.5 text-muted-foreground" />
+   978→   978→          Saved Routes
+   979→   979→        </h3>
+   980→   980→        <Separator />
+   981→   981→        {routes.length === 0 ? (
+   982→   982→          <div className="text-center py-12 text-muted-foreground">
+   983→   983→            <div className="w-16 h-16 mx-auto mb-3 rounded-2xl bg-muted/50 flex items-center justify-center">
+   984→   984→              <Route className="h-8 w-8 opacity-40" />
+   985→   985→            </div>
+   986→   986→            <p className="text-sm font-medium">No saved routes</p>
+   987→   987→            <p className="text-xs mt-1 max-w-[200px] mx-auto">
+   988→   988→              Use the Measure tool to trace a route, then save it
+   989→   989→            </p>
+   990→   990→          </div>
+   991→   991→        ) : (
+   992→   992→          <div className="space-y-1.5">
+   993→   993→            {routes.map((route) => (
+   994→   994→              <div
+   995→   995→                key={route.id}
+   996→   996→                className="flex items-center gap-3 p-2.5 rounded-xl border hover:bg-accent/50 transition-colors"
+   997→   997→              >
+   998→   998→                <div
+   999→   999→                  className="w-3 h-8 rounded-full"
+  1000→  1000→                  style={{ backgroundColor: route.color }}
+  1001→  1001→                />
+  1002→  1002→                <div className="flex-1 min-w-0">
+  1003→  1003→                  <p className="text-sm font-medium truncate">{route.name}</p>
+  1004→  1004→                  {route.distance && (
+  1005→  1005→                    <p className="text-xs text-muted-foreground">
+  1006→  1006→                      {route.distance < 1
+  1007→  1007→                        ? `${(route.distance * 1000).toFixed(0)} m`
+  1008→  1008→                        : `${route.distance.toFixed(2)} km`}
+  1009→  1009→                    </p>
+  1010→  1010→                  )}
+  1011→  1011→                </div>
+  1012→  1012→              </div>
+  1013→  1013→            ))}
+  1014→  1014→          </div>
+  1015→  1015→        )}
+  1016→  1016→      </div>
+  1017→  1017→    </ScrollArea>
+  1018→  1018→  )
+  1019→  1019→}
+  1020→  1020→
+  1021→  1021→// Haversine distance calculation
+  1022→  1022→function haversineDistance(
+  1023→  1023→  lat1: number,
+  1024→  1024→  lon1: number,
+  1025→  1025→  lat2: number,
+  1026→  1026→  lon2: number
+  1027→  1027→): number {
+  1028→  1028→  const R = 6371 // km
+  1029→  1029→  const dLat = ((lat2 - lat1) * Math.PI) / 180
+  1030→  1030→  const dLon = ((lon2 - lon1) * Math.PI) / 180
+  1031→  1031→  const a =
+  1032→  1032→    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+  1033→  1033→    Math.cos((lat1 * Math.PI) / 180) *
+  1034→  1034→      Math.cos((lat2 * Math.PI) / 180) *
+  1035→  1035→      Math.sin(dLon / 2) *
+  1036→  1036→      Math.sin(dLon / 2)
+  1037→  1037→  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+  1038→  1038→  return R * c
+  1039→  1039→}
+  1040→  1040→

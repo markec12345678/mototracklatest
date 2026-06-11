@@ -13,6 +13,7 @@ import { ThemeToggle } from '@/components/map/ThemeToggle'
 import { MapStatsPanel } from '@/components/map/MapStatsPanel'
 import { CompassIndicator } from '@/components/map/CompassIndicator'
 import { KeyboardShortcutsDialog } from '@/components/map/KeyboardShortcutsDialog'
+import { MiniMap } from '@/components/map/MiniMap'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useMapStore, type ToolMode } from '@/lib/map-store'
@@ -59,13 +60,15 @@ export default function Home() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
+          const { longitude, latitude, accuracy } = position.coords
           const flyTo = (window as unknown as Record<
             string,
             (lng: number, lat: number, z?: number) => void
           >).__mapFlyTo
           if (flyTo) {
-            flyTo(position.coords.longitude, position.coords.latitude, 14)
+            flyTo(longitude, latitude, 14)
           }
+          useMapStore.getState().setGeolocation({ longitude, latitude, accuracy })
         },
         () => {
           // Geolocation denied
@@ -104,7 +107,7 @@ export default function Home() {
           break
         case '/':
           e.preventDefault()
-          document.querySelector<HTMLInputElement>('input[placeholder*="Search"]')?.focus()
+          document.getElementById('map-search-input')?.focus()
           break
         case 'b':
         case 'B':
@@ -279,6 +282,9 @@ export default function Home() {
         <MapStatsPanel />
       </div>
 
+      {/* Minimap - bottom right above MapStatsPanel (desktop only) */}
+      <MiniMap />
+
       {/* Coordinates display - bottom center (desktop only) */}
       <div className="hidden md:block absolute bottom-12 left-1/2 -translate-x-1/2 z-10">
         <CoordinatesDisplay />
@@ -311,10 +317,10 @@ export default function Home() {
             transition={{ duration: 0.4, ease: 'easeOut' }}
             className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 max-w-md w-full px-4 hidden md:block"
           >
-            <div className="bg-background/95 backdrop-blur-xl border rounded-2xl p-5 shadow-2xl ring-1 ring-border/50">
+            <div className="gradient-border bg-background/95 backdrop-blur-xl rounded-2xl p-5 shadow-2xl">
               <button
                 onClick={() => setShowWelcome(false)}
-                className="absolute top-3 right-3 text-muted-foreground hover:text-foreground transition-colors p-1 rounded-lg hover:bg-accent"
+                className="absolute top-3 right-3 text-muted-foreground hover:text-foreground transition-colors p-1 rounded-lg hover:bg-accent z-10"
                 aria-label="Dismiss welcome"
               >
                 <X className="h-4 w-4" />
@@ -323,7 +329,7 @@ export default function Home() {
                 <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/20">
                   <Layers className="h-6 w-6 text-white" />
                 </div>
-                <div>
+                <div className="flex-1">
                   <h1 className="font-bold text-base">
                     Welcome to MapLibre Explorer
                   </h1>
@@ -334,23 +340,35 @@ export default function Home() {
                   </p>
                   <div className="flex gap-1.5 mt-3 flex-wrap">
                     {[
-                      { label: '5 Map Styles', emoji: '🗺️' },
-                      { label: 'Save Locations', emoji: '📍' },
-                      { label: 'Measure', emoji: '📏' },
-                      { label: 'Geocoding', emoji: '🔍' },
-                      { label: 'Export GeoJSON', emoji: '📦' },
-                      { label: 'Dark Mode', emoji: '🌙' },
-                      { label: 'Shortcuts', emoji: '⌨️' },
+                      { label: '5 Map Styles', emoji: '🗺️', bg: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400' },
+                      { label: 'Save Locations', emoji: '📍', bg: 'bg-red-500/10 text-red-700 dark:text-red-400' },
+                      { label: 'Measure', emoji: '📏', bg: 'bg-amber-500/10 text-amber-700 dark:text-amber-400' },
+                      { label: 'Geocoding', emoji: '🔍', bg: 'bg-cyan-500/10 text-cyan-700 dark:text-cyan-400' },
+                      { label: 'Export GeoJSON', emoji: '📦', bg: 'bg-purple-500/10 text-purple-700 dark:text-purple-400' },
+                      { label: 'Dark Mode', emoji: '🌙', bg: 'bg-indigo-500/10 text-indigo-700 dark:text-indigo-400' },
+                      { label: 'Shortcuts', emoji: '⌨️', bg: 'bg-teal-500/10 text-teal-700 dark:text-teal-400' },
                     ].map((feature) => (
                       <Badge
                         key={feature.label}
                         variant="secondary"
-                        className="text-[10px] px-2 py-0.5 gap-1"
+                        className={`text-[10px] px-2 py-0.5 gap-1 ${feature.bg}`}
                       >
                         {feature.emoji} {feature.label}
                       </Badge>
                     ))}
                   </div>
+                  <Button
+                    size="sm"
+                    className="mt-3 h-8 text-xs bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white border-0 shadow-md shadow-emerald-500/20"
+                    onClick={() => {
+                      setShowWelcome(false)
+                      setTimeout(() => {
+                        document.getElementById('map-search-input')?.focus()
+                      }, 100)
+                    }}
+                  >
+                    Get Started
+                  </Button>
                 </div>
               </div>
             </div>

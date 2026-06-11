@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { Search, X, MapPin, Loader2, Navigation2 } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { useMapStore } from '@/lib/map-store'
+import { cn } from '@/lib/utils'
 
 interface SearchResult {
   name: string
@@ -108,6 +109,7 @@ export function SearchBar() {
       <div className="relative group">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
         <Input
+          id="map-search-input"
           ref={inputRef}
           value={query}
           onChange={(e) => handleSearch(e.target.value)}
@@ -172,8 +174,4 @@ export function SearchBar() {
       )}
     </div>
   )
-}
-
-function cn(...classes: (string | boolean | undefined)[]) {
-  return classes.filter(Boolean).join(' ')
 }

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import {
   MapPin,
   Layers,
@@ -23,6 +24,8 @@ import {
   ArrowRight,
   PanelLeft,
   Keyboard,
+  Circle,
+  Minus,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -246,6 +249,9 @@ function SidebarContent({ onCloseMobile }: { onCloseMobile?: () => void }) {
 
   return (
     <div className="flex flex-col h-full">
+      {/* Gradient top border */}
+      <div className="h-1 bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 shrink-0" />
+
       {/* Header with gradient accent */}
       <div className="relative overflow-hidden shrink-0">
         <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-transparent" />
@@ -264,60 +270,68 @@ function SidebarContent({ onCloseMobile }: { onCloseMobile?: () => void }) {
         </div>
       </div>
 
-      {/* Tab navigation */}
-      <div className="flex border-b bg-muted/30 shrink-0">
+      {/* Tab navigation with pill-style indicator */}
+      <div className="flex border-b bg-muted/30 shrink-0 px-2 py-1.5">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setSidebarTab(tab.id)}
             className={cn(
-              'flex-1 py-2.5 px-1 text-xs font-medium transition-all flex flex-col items-center gap-1 relative',
+              'flex-1 py-2 px-1 text-xs font-medium transition-all flex flex-col items-center gap-1 relative rounded-lg',
               sidebarTab === tab.id
-                ? 'text-primary'
-                : 'text-muted-foreground hover:text-foreground'
+                ? 'sidebar-tab-active bg-primary/5 text-primary'
+                : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
             )}
           >
             {tab.icon}
             {tab.label}
-            {sidebarTab === tab.id && (
-              <div className="absolute bottom-0 left-2 right-2 h-0.5 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full" />
-            )}
           </button>
         ))}
       </div>
 
-      {/* Tab content */}
+      {/* Tab content with AnimatePresence */}
       <div className="flex-1 overflow-hidden">
-        {sidebarTab === 'locations' && (
-          <LocationsTab
-            locations={filteredLocations}
-            searchFilter={searchFilter}
-            setSearchFilter={setSearchFilter}
-            filterCategory={filterCategory}
-            setFilterCategory={setFilterCategory}
-            onFlyTo={handleFlyTo}
-            onDelete={handleDeleteLocation}
-            selectedMarker={selectedMarker}
-            onSelectMarker={setSelectedMarker}
-            totalCount={savedLocations.length}
-            onOpenDetail={(loc) => {
-              setDetailLocation(loc)
-              setDetailOpen(true)
-            }}
-          />
-        )}
-        {sidebarTab === 'layers' && <LayersTab />}
-        {sidebarTab === 'tools' && (
-          <ToolsTab
-            toolMode={toolMode}
-            setToolMode={setToolMode}
-            measurePoints={measurePoints}
-            measureDistance={measureDistance}
-            clearMeasurePoints={clearMeasurePoints}
-            onExportGeoJSON={handleExportGeoJSON}
-          />
-        )}
-        {sidebarTab === 'routes' && <RoutesTab />}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={sidebarTab}
+            initial={{ opacity: 0, x: 8 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -8 }}
+            transition={{ duration: 0.15, ease: 'easeOut' }}
+            className="h-full"
+          >
+            {sidebarTab === 'locations' && (
+              <LocationsTab
+                locations={filteredLocations}
+                searchFilter={searchFilter}
+                setSearchFilter={setSearchFilter}
+                filterCategory={filterCategory}
+                setFilterCategory={setFilterCategory}
+                onFlyTo={handleFlyTo}
+                onDelete={handleDeleteLocation}
+                selectedMarker={selectedMarker}
+                onSelectMarker={setSelectedMarker}
+                totalCount={savedLocations.length}
+                onOpenDetail={(loc) => {
+                  setDetailLocation(loc)
+                  setDetailOpen(true)
+                }}
+              />
+            )}
+            {sidebarTab === 'layers' && <LayersTab />}
+            {sidebarTab === 'tools' && (
+              <ToolsTab
+                toolMode={toolMode}
+                setToolMode={setToolMode}
+                measurePoints={measurePoints}
+                measureDistance={measureDistance}
+                clearMeasurePoints={clearMeasurePoints}
+                onExportGeoJSON={handleExportGeoJSON}
+              />
+            )}
+            {sidebarTab === 'routes' && <RoutesTab />}
+          </motion.div>
+        </AnimatePresence>
       </div>
 
       {/* Location Detail Drawer */}
@@ -497,7 +511,7 @@ function LocationsTab({
                     'group flex items-start gap-3 p-2.5 rounded-xl border transition-all duration-200 cursor-pointer',
                     isSelected
                       ? 'bg-primary/5 border-primary/20 shadow-sm ring-1 ring-primary/10'
-                      : 'hover:bg-accent/50 border-transparent hover:border-border'
+                      : 'hover:bg-accent/50 border-transparent hover:border-border hover:shadow-sm hover:translate-x-0.5'
                   )}
                   onClick={() => {
                     onSelectMarker(isSelected ? null : loc.id)
@@ -516,6 +530,10 @@ function LocationsTab({
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
+                      <span
+                        className="w-2 h-2 rounded-full shrink-0"
+                        style={{ backgroundColor: loc.color }}
+                      />
                       <p className="text-sm font-medium truncate">{loc.name}</p>
                     </div>
                     {loc.description && (
@@ -563,25 +581,20 @@ function LocationsTab({
 }
 
 function LayersTab() {
-  const [layers, setLayers] = useState([
-    { id: 'water', name: 'Water Bodies', visible: true, icon: '🌊', color: '#06b6d4' },
-    { id: 'roads', name: 'Roads', visible: true, icon: '🛣️', color: '#6b7280' },
-    { id: 'buildings', name: 'Buildings', visible: true, icon: '🏗️', color: '#f59e0b' },
-    { id: 'landuse', name: 'Land Use', visible: true, icon: '🌳', color: '#22c55e' },
-    { id: 'poi', name: 'Points of Interest', visible: true, icon: '📍', color: '#ef4444' },
-    { id: 'transit', name: 'Transit', visible: false, icon: '🚌', color: '#8b5cf6' },
-    { id: 'boundaries', name: 'Boundaries', visible: true, icon: '🗺️', color: '#f97316' },
-    { id: 'terrain', name: 'Terrain', visible: false, icon: '⛰️', color: '#78716c' },
-  ])
+  const { layerVisibility, setLayerVisibility, clusteringEnabled, setClusteringEnabled } = useMapStore()
+
+  const layerConfig = [
+    { id: 'water' as const, name: 'Water Bodies', icon: '🌊', color: '#06b6d4' },
+    { id: 'roads' as const, name: 'Roads', icon: '🛣️', color: '#6b7280' },
+    { id: 'buildings' as const, name: 'Buildings', icon: '🏗️', color: '#f59e0b' },
+    { id: 'parks' as const, name: 'Parks & Land Use', icon: '🌳', color: '#22c55e' },
+    { id: 'labels' as const, name: 'Labels & Places', icon: '🏷️', color: '#f97316' },
+  ]
 
   const [terrain3D, setTerrain3D] = useState(false)
   const [show3DBuildings, setShow3DBuildings] = useState(false)
 
-  const toggleLayer = (id: string) => {
-    setLayers((prev) =>
-      prev.map((l) => (l.id === id ? { ...l, visible: !l.visible } : l))
-    )
-  }
+  const visibleCount = Object.values(layerVisibility).filter(Boolean).length
 
   return (
     <ScrollArea className="h-full">
@@ -594,17 +607,21 @@ function LayersTab() {
               Map Layers
             </h3>
             <Badge variant="secondary" className="text-xs font-mono">
-              {layers.filter((l) => l.visible).length}/{layers.length}
+              {visibleCount}/{layerConfig.length}
             </Badge>
           </div>
           <div className="space-y-1">
-            {layers.map((layer) => (
+            {layerConfig.map((layer) => (
               <button
                 key={layer.id}
-                onClick={() => toggleLayer(layer.id)}
+                onClick={() =>
+                  setLayerVisibility({
+                    [layer.id]: !layerVisibility[layer.id],
+                  })
+                }
                 className={cn(
                   'w-full flex items-center gap-3 px-3 py-2 rounded-xl border transition-all duration-200 text-left group',
-                  layer.visible
+                  layerVisibility[layer.id]
                     ? 'bg-background border-border/50 shadow-sm'
                     : 'opacity-40 border-transparent hover:border-border'
                 )}
@@ -615,10 +632,10 @@ function LayersTab() {
                   className="w-1.5 h-4 rounded-full transition-opacity"
                   style={{
                     backgroundColor: layer.color,
-                    opacity: layer.visible ? 1 : 0.3,
+                    opacity: layerVisibility[layer.id] ? 1 : 0.3,
                   }}
                 />
-                {layer.visible ? (
+                {layerVisibility[layer.id] ? (
                   <Eye className="h-3.5 w-3.5 text-primary" />
                 ) : (
                   <EyeOff className="h-3.5 w-3.5 text-muted-foreground" />
@@ -669,6 +686,32 @@ function LayersTab() {
                 aria-label="Toggle 3D buildings"
               />
             </div>
+          </div>
+        </div>
+
+        <Separator />
+
+        {/* Marker Clustering */}
+        <div>
+          <h3 className="text-sm font-semibold flex items-center gap-2 mb-2">
+            <Circle className="h-3.5 w-3.5 text-muted-foreground" />
+            Marker Clustering
+          </h3>
+          <div className="flex items-center justify-between px-3 py-2 rounded-xl border bg-background">
+            <div className="flex items-center gap-2">
+              <Circle className="h-4 w-4 text-muted-foreground" />
+              <div>
+                <p className="text-sm">Cluster Markers</p>
+                <p className="text-[10px] text-muted-foreground">
+                  Group nearby markers (&gt;5)
+                </p>
+              </div>
+            </div>
+            <Switch
+              checked={clusteringEnabled}
+              onCheckedChange={setClusteringEnabled}
+              aria-label="Toggle marker clustering"
+            />
           </div>
         </div>
 
@@ -781,10 +824,23 @@ function ToolsTab({
           <>
             <Separator />
             <div>
-              <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
-                <Ruler className="h-3.5 w-3.5 text-muted-foreground" />
-                Measurement
-              </h4>
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="text-sm font-semibold flex items-center gap-2">
+                  <Ruler className="h-3.5 w-3.5 text-muted-foreground" />
+                  Measurement
+                </h4>
+                {measurePoints.length > 0 && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-6 text-[10px] px-2 text-muted-foreground hover:text-destructive"
+                    onClick={clearMeasurePoints}
+                  >
+                    <Minus className="h-3 w-3 mr-1" />
+                    Clear All
+                  </Button>
+                )}
+              </div>
               {measurePoints.length === 0 ? (
                 <div className="text-center py-6 text-muted-foreground">
                   <div className="w-12 h-12 mx-auto mb-2 rounded-xl bg-muted/50 flex items-center justify-center">
@@ -797,12 +853,12 @@ function ToolsTab({
               ) : (
                 <div className="space-y-2">
                   {measureDistance !== null && (
-                    <div className="p-3 rounded-xl bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20">
+                    <div className="p-3 rounded-xl bg-gradient-to-br from-amber-500/10 via-orange-500/5 to-amber-500/10 border border-amber-500/20 shadow-sm">
                       <div className="flex items-center justify-between">
                         <span className="text-xs text-muted-foreground">
                           Total Distance
                         </span>
-                        <span className="text-lg font-bold text-amber-600">
+                        <span className="text-lg font-bold text-amber-600 tabular-nums">
                           {measureDistance < 1
                             ? `${(measureDistance * 1000).toFixed(0)} m`
                             : `${measureDistance.toFixed(2)} km`}
@@ -814,7 +870,7 @@ function ToolsTab({
                     <span className="text-xs text-muted-foreground">
                       Points
                     </span>
-                    <Badge variant="secondary" className="font-mono">
+                    <Badge variant="secondary" className="font-mono tabular-nums">
                       {measurePoints.length}
                     </Badge>
                   </div>
@@ -822,12 +878,12 @@ function ToolsTab({
                     {measurePoints.map((p, i) => (
                       <div
                         key={i}
-                        className="text-xs text-muted-foreground flex items-center gap-2 px-2 py-1"
+                        className="text-xs text-muted-foreground flex items-center gap-2 px-2 py-1 rounded-lg hover:bg-accent/50 transition-colors"
                       >
                         <span className="w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center text-[10px] font-bold">
                           {i + 1}
                         </span>
-                        <span className="font-mono">
+                        <span className="font-mono tabular-nums">
                           {p.latitude.toFixed(4)}, {p.longitude.toFixed(4)}
                         </span>
                       </div>
@@ -870,9 +926,17 @@ function ToolsTab({
               variant="outline"
               size="sm"
               className="w-full h-9 text-xs justify-start rounded-xl"
+              onClick={() => {
+                const exportImage = (window as unknown as Record<string, () => void>).__mapExportImage
+                if (exportImage) {
+                  exportImage()
+                } else {
+                  toast.error('Map not ready for export')
+                }
+              }}
             >
               <Share2 className="h-3.5 w-3.5 mr-2" />
-              Share Map View
+              Export as Image
             </Button>
           </div>
         </div>
@@ -887,12 +951,12 @@ function ToolsTab({
           </h4>
           <div className="grid grid-cols-2 gap-1.5">
             {[
-              { name: 'Paris', lat: 48.8566, lng: 2.3522, emoji: '🗼' },
-              { name: 'London', lat: 51.5074, lng: -0.1278, emoji: '🎡' },
-              { name: 'New York', lat: 40.7128, lng: -74.006, emoji: '🗽' },
-              { name: 'Tokyo', lat: 35.6762, lng: 139.6503, emoji: '⛩️' },
-              { name: 'Sydney', lat: -33.8688, lng: 151.2093, emoji: '🎭' },
-              { name: 'Dubai', lat: 25.2048, lng: 55.2708, emoji: '🏙️' },
+              { name: 'Paris', lat: 48.8566, lng: 2.3522, emoji: '🗼', color: '#3b82f6' },
+              { name: 'London', lat: 51.5074, lng: -0.1278, emoji: '🎡', color: '#8b5cf6' },
+              { name: 'New York', lat: 40.7128, lng: -74.006, emoji: '🗽', color: '#22c55e' },
+              { name: 'Tokyo', lat: 35.6762, lng: 139.6503, emoji: '⛩️', color: '#ef4444' },
+              { name: 'Sydney', lat: -33.8688, lng: 151.2093, emoji: '🎭', color: '#f59e0b' },
+              { name: 'Dubai', lat: 25.2048, lng: 55.2708, emoji: '🏙️', color: '#06b6d4' },
             ].map((city) => (
               <button
                 key={city.name}
@@ -900,7 +964,11 @@ function ToolsTab({
                   const flyTo = (window as unknown as Record<string, (lng: number, lat: number, z?: number) => void>).__mapFlyTo
                   if (flyTo) flyTo(city.lng, city.lat, 12)
                 }}
-                className="flex items-center gap-2 px-2.5 py-2 rounded-xl border border-transparent hover:border-border hover:bg-accent/50 transition-all text-left"
+                className="flex items-center gap-2 px-2.5 py-2 rounded-xl border transition-all text-left hover:shadow-sm hover:scale-[1.02] active:scale-[0.98]"
+                style={{
+                  borderColor: city.color + '30',
+                  backgroundColor: city.color + '08',
+                }}
               >
                 <span className="text-sm">{city.emoji}</span>
                 <span className="text-xs font-medium">{city.name}</span>

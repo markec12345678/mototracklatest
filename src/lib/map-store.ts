@@ -70,6 +70,28 @@ export const MAP_STYLES: MapStyleOption[] = [
 
 export type ToolMode = 'navigate' | 'mark' | 'measure' | 'directions'
 
+export interface Geolocation {
+  longitude: number
+  latitude: number
+  accuracy: number
+}
+
+export interface LayerVisibility {
+  water: boolean
+  roads: boolean
+  buildings: boolean
+  parks: boolean
+  labels: boolean
+}
+
+const DEFAULT_LAYER_VISIBILITY: LayerVisibility = {
+  water: true,
+  roads: true,
+  buildings: true,
+  parks: true,
+  labels: true,
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -88,10 +110,19 @@ interface MapState {
   savedLocations: SavedLocation[]
   selectedMarker: string | null
 
+  // Geolocation
+  geolocation: Geolocation | null
+
+  // Layer visibility
+  layerVisibility: LayerVisibility
+
   // Tools
   toolMode: ToolMode
   measurePoints: MeasurePoint[]
   measureDistance: number | null
+
+  // Clustering
+  clusteringEnabled: boolean
 
   // Actions
   setCenter: (center: [number, number]) => void
@@ -109,10 +140,13 @@ interface MapState {
   addSavedLocation: (location: SavedLocation) => void
   removeSavedLocation: (id: string) => void
   setSelectedMarker: (id: string | null) => void
+  setGeolocation: (geo: Geolocation | null) => void
+  setLayerVisibility: (layers: Partial<LayerVisibility>) => void
   setToolMode: (mode: ToolMode) => void
   addMeasurePoint: (point: MeasurePoint) => void
   clearMeasurePoints: () => void
   setMeasureDistance: (distance: number | null) => void
+  setClusteringEnabled: (enabled: boolean) => void
 }
 
 export const useMapStore = create<MapState>((set) => ({
@@ -130,9 +164,14 @@ export const useMapStore = create<MapState>((set) => ({
   savedLocations: [],
   selectedMarker: null,
 
+  geolocation: null,
+  layerVisibility: { ...DEFAULT_LAYER_VISIBILITY },
+
   toolMode: 'navigate',
   measurePoints: [],
   measureDistance: null,
+
+  clusteringEnabled: true,
 
   setCenter: (center) => set({ center }),
   setZoom: (zoom) => set({ zoom }),
@@ -160,10 +199,17 @@ export const useMapStore = create<MapState>((set) => ({
 
   setSelectedMarker: (selectedMarker) => set({ selectedMarker }),
 
+  setGeolocation: (geolocation) => set({ geolocation }),
+  setLayerVisibility: (layers) =>
+    set((state) => ({
+      layerVisibility: { ...state.layerVisibility, ...layers },
+    })),
+
   setToolMode: (toolMode) =>
     set({ toolMode, measurePoints: [], measureDistance: null }),
   addMeasurePoint: (point) =>
     set((state) => ({ measurePoints: [...state.measurePoints, point] })),
   clearMeasurePoints: () => set({ measurePoints: [], measureDistance: null }),
   setMeasureDistance: (measureDistance) => set({ measureDistance }),
+  setClusteringEnabled: (clusteringEnabled) => set({ clusteringEnabled }),
 }))
