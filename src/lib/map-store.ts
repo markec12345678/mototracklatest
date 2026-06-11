@@ -41,6 +41,7 @@ export interface MapRoute {
   color: string
   points: RoutePoint[]
   distance: number | null
+  duration: number | null
 }
 
 export type MapStyleOption = {
@@ -219,6 +220,8 @@ interface MapState {
   routePoints: RoutePoint[]
   currentRouteColor: string
   routes: MapRoute[]
+  osrmDistance: number | null
+  osrmDuration: number | null
 
   // Drawing / annotations
   drawings: MapDrawing[]
@@ -241,6 +244,12 @@ interface MapState {
 
   // Weather overlay
   weatherEnabled: boolean
+
+  // Traffic overlay
+  trafficEnabled: boolean
+
+  // Earthquakes overlay
+  earthquakesEnabled: boolean
 
   // Notifications
   notifications: MapNotification[]
@@ -272,7 +281,9 @@ interface MapState {
   clearRoutePoints: () => void
   setCurrentRouteColor: (color: string) => void
   saveRoute: (name: string) => void
+  setOsmrData: (distance: number | null, duration: number | null) => void
   deleteRoute: (id: string) => void
+  setRoutes: (routes: MapRoute[]) => void
   setCurrentDrawing: (points: number[][] | null) => void
   addDrawingPoint: (point: number[]) => void
   finishDrawing: () => void
@@ -284,6 +295,8 @@ interface MapState {
   setTerrainEnabled: (enabled: boolean) => void
   setTerrainExaggeration: (exaggeration: number) => void
   setWeatherEnabled: (enabled: boolean) => void
+  setEarthquakesEnabled: (enabled: boolean) => void
+  setTrafficEnabled: (enabled: boolean) => void
   pushNotification: (notification: Omit<MapNotification, 'id' | 'timestamp'>) => void
   dismissNotification: (id: string) => void
 }
@@ -315,6 +328,8 @@ export const useMapStore = create<MapState>()(
       routePoints: [],
       currentRouteColor: '#3b82f6',
       routes: [],
+      osrmDistance: null,
+      osrmDuration: null,
 
       drawings: [],
       currentDrawing: null,
@@ -327,6 +342,8 @@ export const useMapStore = create<MapState>()(
       terrainEnabled: false,
       terrainExaggeration: 1.5,
       weatherEnabled: false,
+      trafficEnabled: false,
+      earthquakesEnabled: false,
       notifications: [],
 
       setCenter: (center) => set({ center }),
@@ -378,8 +395,9 @@ export const useMapStore = create<MapState>()(
       saveRoute: (name) =>
         set((state) => {
           if (state.routePoints.length < 2) return state
-          let distance: number | null = null
-          if (state.routePoints.length > 1) {
+          // Use OSRM distance if available, otherwise fall back to Haversine
+          let distance: number | null = state.osrmDistance
+          if (distance === null && state.routePoints.length > 1) {
             let total = 0
             for (let i = 1; i < state.routePoints.length; i++) {
               const p1 = state.routePoints[i - 1]
@@ -404,16 +422,21 @@ export const useMapStore = create<MapState>()(
             color: state.currentRouteColor,
             points: [...state.routePoints],
             distance,
+            duration: state.osrmDuration,
           }
           return {
             routes: [...state.routes, newRoute],
             routePoints: [],
+            osrmDistance: null,
+            osrmDuration: null,
           }
         }),
+      setOsmrData: (distance, duration) => set({ osrmDistance: distance, osrmDuration: duration }),
       deleteRoute: (id) =>
         set((state) => ({
           routes: state.routes.filter((r) => r.id !== id),
         })),
+      setRoutes: (routes) => set({ routes }),
       setCurrentDrawing: (currentDrawing) => set({ currentDrawing }),
       addDrawingPoint: (point) =>
         set((state) => ({
@@ -450,6 +473,8 @@ export const useMapStore = create<MapState>()(
       setTerrainEnabled: (terrainEnabled) => set({ terrainEnabled }),
       setTerrainExaggeration: (terrainExaggeration) => set({ terrainExaggeration }),
       setWeatherEnabled: (weatherEnabled) => set({ weatherEnabled }),
+      setEarthquakesEnabled: (earthquakesEnabled) => set({ earthquakesEnabled }),
+      setTrafficEnabled: (trafficEnabled) => set({ trafficEnabled }),
 
       pushNotification: (notification) =>
         set((state) => ({
@@ -469,6 +494,8 @@ export const useMapStore = create<MapState>()(
         sidebarOpen: state.sidebarOpen,
         clusteringEnabled: state.clusteringEnabled,
         weatherEnabled: state.weatherEnabled,
+        trafficEnabled: state.trafficEnabled,
+        earthquakesEnabled: state.earthquakesEnabled,
         terrainEnabled: state.terrainEnabled,
         buildingExtrusion: state.buildingExtrusion,
         terrainExaggeration: state.terrainExaggeration,

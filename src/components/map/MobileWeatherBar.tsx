@@ -5,48 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { CloudSun, Droplets, Wind, Thermometer, X, Loader2, ChevronDown } from 'lucide-react'
 import { useMapStore } from '@/lib/map-store'
 import { cn } from '@/lib/utils'
-
-// WMO Weather Code to emoji and description mapping
-const WMO_CODES: Record<number, { emoji: string; description: string; accent: 'warm' | 'cold' | 'neutral' }> = {
-  0: { emoji: '☀️', description: 'Clear sky', accent: 'warm' },
-  1: { emoji: '🌤️', description: 'Mainly clear', accent: 'warm' },
-  2: { emoji: '⛅', description: 'Partly cloudy', accent: 'neutral' },
-  3: { emoji: '🌥️', description: 'Overcast', accent: 'neutral' },
-  45: { emoji: '🌫️', description: 'Fog', accent: 'neutral' },
-  48: { emoji: '🌫️', description: 'Depositing rime fog', accent: 'cold' },
-  51: { emoji: '🌦️', description: 'Light drizzle', accent: 'cold' },
-  53: { emoji: '🌦️', description: 'Moderate drizzle', accent: 'cold' },
-  55: { emoji: '🌧️', description: 'Dense drizzle', accent: 'cold' },
-  56: { emoji: '🌧️', description: 'Freezing drizzle', accent: 'cold' },
-  57: { emoji: '🌧️', description: 'Dense freezing drizzle', accent: 'cold' },
-  61: { emoji: '🌧️', description: 'Slight rain', accent: 'cold' },
-  63: { emoji: '🌧️', description: 'Moderate rain', accent: 'cold' },
-  65: { emoji: '🌧️', description: 'Heavy rain', accent: 'cold' },
-  66: { emoji: '🌧️', description: 'Freezing rain', accent: 'cold' },
-  67: { emoji: '🌧️', description: 'Heavy freezing rain', accent: 'cold' },
-  71: { emoji: '❄️', description: 'Slight snow', accent: 'cold' },
-  73: { emoji: '❄️', description: 'Moderate snow', accent: 'cold' },
-  75: { emoji: '🌨️', description: 'Heavy snow', accent: 'cold' },
-  77: { emoji: '🌨️', description: 'Snow grains', accent: 'cold' },
-  80: { emoji: '🌦️', description: 'Slight rain showers', accent: 'cold' },
-  81: { emoji: '🌧️', description: 'Moderate rain showers', accent: 'cold' },
-  82: { emoji: '🌧️', description: 'Violent rain showers', accent: 'cold' },
-  85: { emoji: '🌨️', description: 'Slight snow showers', accent: 'cold' },
-  86: { emoji: '🌨️', description: 'Heavy snow showers', accent: 'cold' },
-  95: { emoji: '⛈️', description: 'Thunderstorm', accent: 'neutral' },
-  96: { emoji: '⛈️', description: 'Thunderstorm with hail', accent: 'neutral' },
-  99: { emoji: '⛈️', description: 'Thunderstorm with heavy hail', accent: 'neutral' },
-}
-
-function getWeatherInfo(code: number) {
-  return WMO_CODES[code] || { emoji: '🌡️', description: 'Unknown', accent: 'neutral' as const }
-}
-
-function getWindDirection(degrees: number): string {
-  const dirs = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
-  const index = Math.round(degrees / 22.5) % 16
-  return dirs[index]
-}
+import { getWeatherInfo, getWindDirection } from '@/lib/weather-utils'
 
 interface WeatherData {
   current: {
@@ -62,6 +21,14 @@ interface WeatherData {
     temperature_2m: number[]
     precipitation_probability: number[]
     time: string[]
+  }
+  daily?: {
+    time: string[]
+    temperature_2m_max: number[]
+    temperature_2m_min: number[]
+    weather_code: number[]
+    precipitation_sum: number[]
+    wind_speed_10m_max: number[]
   }
 }
 
@@ -338,6 +305,42 @@ export function MobileWeatherBar() {
                                     {precip}%
                                   </span>
                                 )}
+                              </div>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* 3-Day Forecast preview */}
+                    {weatherData?.daily && weatherData.daily.time.length > 0 && (
+                      <div>
+                        <p className="text-[10px] text-muted-foreground font-medium mb-1.5">3-Day Forecast</p>
+                        <div className="flex gap-2">
+                          {weatherData.daily.time.slice(0, 3).map((dateStr, i) => {
+                            const date = new Date(dateStr + 'T00:00:00')
+                            const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+                            const isToday = new Date().toDateString() === date.toDateString()
+                            const dayInfo = getWeatherInfo(weatherData.daily!.weather_code[i])
+                            return (
+                              <div
+                                key={i}
+                                className={`flex flex-col items-center gap-0.5 flex-1 px-2 py-1.5 rounded-lg transition-colors ${
+                                  isToday ? 'bg-primary/10' : 'bg-background/50'
+                                }`}
+                              >
+                                <span className="text-[9px] font-medium text-muted-foreground">
+                                  {isToday ? 'Today' : dayNames[date.getDay()]}
+                                </span>
+                                <span className="text-sm leading-none">{dayInfo.emoji}</span>
+                                <div className="flex items-baseline gap-0.5">
+                                  <span className="text-[11px] font-semibold tabular-nums">
+                                    {weatherData.daily!.temperature_2m_max[i].toFixed(0)}°
+                                  </span>
+                                  <span className="text-[9px] text-muted-foreground tabular-nums">
+                                    {weatherData.daily!.temperature_2m_min[i].toFixed(0)}°
+                                  </span>
+                                </div>
                               </div>
                             )
                           })}

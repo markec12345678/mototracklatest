@@ -46,6 +46,8 @@ import {
   useMapStore,
   type SavedLocation,
   type ToolMode,
+  type MapRoute,
+  type RoutePoint,
 } from '@/lib/map-store'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
@@ -621,7 +623,7 @@ function LocationsTab({
 }
 
 function LayersTab() {
-  const { layerVisibility, setLayerVisibility, clusteringEnabled, setClusteringEnabled, buildingExtrusion, setBuildingExtrusion, terrainExaggeration, setTerrainExaggeration, weatherEnabled, setWeatherEnabled } = useMapStore()
+  const { layerVisibility, setLayerVisibility, clusteringEnabled, setClusteringEnabled, buildingExtrusion, setBuildingExtrusion, terrainExaggeration, setTerrainExaggeration, weatherEnabled, setWeatherEnabled, trafficEnabled, setTrafficEnabled, earthquakesEnabled, setEarthquakesEnabled } = useMapStore()
 
   const layerConfig = [
     { id: 'water' as const, name: 'Water Bodies', icon: '🌊', color: '#06b6d4' },
@@ -799,42 +801,56 @@ function LayersTab() {
               />
             </div>
 
-            {/* Traffic overlay - coming soon */}
+            {/* Traffic overlay - real toggle */}
             <div
-              className="flex items-center gap-3 px-3 py-2 rounded-xl border border-dashed text-muted-foreground"
+              className={cn(
+                'flex items-center gap-3 px-3 py-2 rounded-xl border transition-all duration-200',
+                trafficEnabled
+                  ? 'bg-background border-border/50 shadow-sm'
+                  : 'border-dashed text-muted-foreground hover:border-border'
+              )}
             >
-              <span className="text-base">🚗</span>
+              <Navigation className="h-4 w-4 text-red-500" />
               <div className="flex-1">
                 <p className="text-sm">Traffic</p>
                 <p className="text-[10px] text-muted-foreground/70">
-                  Live traffic flow
+                  Live traffic flow data
                 </p>
               </div>
-              <Badge
-                variant="outline"
-                className="text-[9px] px-1.5 py-0 h-4"
-              >
-                Soon
-              </Badge>
+              <Switch
+                checked={trafficEnabled}
+                onCheckedChange={(checked) => {
+                  setTrafficEnabled(checked)
+                  useMapStore.getState().pushNotification({ type: 'general', icon: 'car', message: checked ? 'Traffic overlay enabled' : 'Traffic overlay disabled' })
+                }}
+                aria-label="Toggle traffic overlay"
+              />
             </div>
 
-            {/* Earthquakes overlay - coming soon */}
+            {/* Earthquakes overlay */}
             <div
-              className="flex items-center gap-3 px-3 py-2 rounded-xl border border-dashed text-muted-foreground"
+              className={cn(
+                'flex items-center gap-3 px-3 py-2 rounded-xl border transition-all duration-200',
+                earthquakesEnabled
+                  ? 'bg-background border-border/50 shadow-sm'
+                  : 'border-dashed text-muted-foreground hover:border-border'
+              )}
             >
-              <span className="text-base">🌍</span>
+              <Globe2 className="h-4 w-4 text-orange-500" />
               <div className="flex-1">
                 <p className="text-sm">Earthquakes</p>
                 <p className="text-[10px] text-muted-foreground/70">
-                  Seismic activity
+                  Real-time seismic activity (USGS)
                 </p>
               </div>
-              <Badge
-                variant="outline"
-                className="text-[9px] px-1.5 py-0 h-4"
-              >
-                Soon
-              </Badge>
+              <Switch
+                checked={earthquakesEnabled}
+                onCheckedChange={(checked) => {
+                  setEarthquakesEnabled(checked)
+                  useMapStore.getState().pushNotification({ type: 'general', icon: 'globe', message: checked ? 'Earthquake data loaded' : 'Earthquake overlay disabled' })
+                }}
+                aria-label="Toggle earthquakes overlay"
+              />
             </div>
           </div>
         </div>
@@ -1347,10 +1363,38 @@ function RoutesTab() {
   const setCurrentRouteColor = useMapStore((s) => s.setCurrentRouteColor)
   const saveRoute = useMapStore((s) => s.saveRoute)
   const deleteRoute = useMapStore((s) => s.deleteRoute)
+  const setRoutes = useMapStore((s) => s.setRoutes)
   const setToolMode = useMapStore((s) => s.setToolMode)
+  const osrmDistance = useMapStore((s) => s.osrmDistance)
+  const osrmDuration = useMapStore((s) => s.osrmDuration)
 
   const [routeName, setRouteName] = useState('')
   const [savedRouteIds, setSavedRouteIds] = useState<Set<string>>(new Set())
+
+  // Load routes from database on mount
+  useEffect(() => {
+    fetch('/api/routes')
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch routes')
+        return res.json()
+      })
+      .then((dbRoutes) => {
+        if (Array.isArray(dbRoutes) && dbRoutes.length > 0) {
+          const mapRoutes: MapRoute[] = dbRoutes.map((r: Record<string, unknown>) => ({
+            id: r.id as string,
+            name: r.name as string,
+            color: r.color as string,
+            points: JSON.parse(r.waypoints as string || '[]') as RoutePoint[],
+            distance: r.distance as number | null,
+            duration: r.duration as number | null,
+          }))
+          setRoutes(mapRoutes)
+        }
+      })
+      .catch((err) => {
+        console.error('Failed to load routes from database:', err)
+      })
+  }, [setRoutes])
 
   const colorOptions = [
     { id: '#3b82f6', label: 'Blue', class: 'bg-blue-500' },
@@ -1376,16 +1420,37 @@ function RoutesTab() {
     return total
   })()
 
-  const handleSaveRoute = () => {
+  const handleSaveRoute = async () => {
     if (routePoints.length < 2) return
     const name = routeName.trim() || `Route ${routes.length + 1}`
     saveRoute(name)
     setRouteName('')
     useMapStore.getState().pushNotification({ type: 'route', icon: 'route', message: `Route "${name}" saved` })
     toast.success(`Route "${name}" saved`)
+
+    // Persist to database - get the newly saved route from the store
+    const savedRoutes = useMapStore.getState().routes
+    const newRoute = savedRoutes.find((r) => r.name === name)
+    if (newRoute) {
+      try {
+        await fetch('/api/routes', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: newRoute.name,
+            color: newRoute.color,
+            distance: newRoute.distance,
+            duration: newRoute.duration,
+            waypoints: JSON.stringify(newRoute.points),
+          }),
+        })
+      } catch (err) {
+        console.error('Failed to persist route to database:', err)
+      }
+    }
   }
 
-  const handleDeleteRoute = (id: string, name: string) => {
+  const handleDeleteRoute = async (id: string, name: string) => {
     deleteRoute(id)
     setSavedRouteIds((prev) => {
       const next = new Set(prev)
@@ -1393,6 +1458,13 @@ function RoutesTab() {
       return next
     })
     toast.success(`Route "${name}" deleted`)
+
+    // Delete from database
+    try {
+      await fetch(`/api/routes/${id}`, { method: 'DELETE' })
+    } catch (err) {
+      console.error('Failed to delete route from database:', err)
+    }
   }
 
   const toggleRouteVisibility = (id: string) => {
@@ -1410,6 +1482,13 @@ function RoutesTab() {
   const formatDistanceLocal = (d: number | null) => {
     if (d === null) return ''
     return d < 1 ? `${Math.round(d * 1000)} m` : `${d.toFixed(1)} km`
+  }
+
+  const formatDurationLocal = (sec: number | null) => {
+    if (sec === null) return ''
+    if (sec < 60) return `${Math.round(sec)} sec`
+    if (sec < 3600) return `${Math.floor(sec / 60)} min ${Math.round(sec % 60)} sec`
+    return `${Math.floor(sec / 3600)} hr ${Math.floor((sec % 3600) / 60)} min`
   }
 
   return (
@@ -1506,10 +1585,16 @@ function RoutesTab() {
             </div>
 
             {/* Distance display */}
-            {currentDistance !== null && (
+            {(currentDistance !== null || osrmDistance !== null) && (
               <div className="text-xs text-muted-foreground flex items-center gap-1.5 px-1">
                 <Ruler className="h-3 w-3" />
-                Total: {formatDistanceLocal(currentDistance)}
+                {osrmDistance !== null ? (
+                  <>
+                    Road: {formatDistanceLocal(osrmDistance)}{osrmDuration !== null ? ` · ${formatDurationLocal(osrmDuration)}` : ''}
+                  </>
+                ) : (
+                  <>Straight: {formatDistanceLocal(currentDistance)}</>
+                )}
               </div>
             )}
 
@@ -1570,7 +1655,7 @@ function RoutesTab() {
                     <p className="text-sm font-medium truncate">{route.name}</p>
                     {route.distance !== null && (
                       <p className="text-xs text-muted-foreground">
-                        {formatDistanceLocal(route.distance)} · {route.points.length} points
+                        {formatDistanceLocal(route.distance)}{route.duration !== null ? ` · ${formatDurationLocal(route.duration)}` : ''} · {route.points.length} pts
                       </p>
                     )}
                   </div>

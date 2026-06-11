@@ -54,6 +54,7 @@ export function MapView() {
   const mapLoadedRef = useRef(false)
   const geolocationMarkerRef = useRef<maplibregl.Marker | null>(null)
   const [mapLoadedVersion, setMapLoadedVersion] = useState(0)
+  const [osrmRoute, setOsrmRoute] = useState<[number, number][] | null>(null)
 
   // Use refs for values needed in map event handlers to avoid stale closures
   const toolModeRef = useRef(useMapStore.getState().toolMode)
@@ -85,6 +86,8 @@ export function MapView() {
   const drawColor = useMapStore((s) => s.drawColor)
   const drawWidth = useMapStore((s) => s.drawWidth)
   const weatherEnabled = useMapStore((s) => s.weatherEnabled)
+  const trafficEnabled = useMapStore((s) => s.trafficEnabled)
+  const earthquakesEnabled = useMapStore((s) => s.earthquakesEnabled)
 
   // Ref for throttling drawing point addition
   const lastDrawTimeRef = useRef(0)
@@ -811,6 +814,127 @@ export function MapView() {
     }
   }, [routePoints, routes, mapLoadedVersion])
 
+  // OSRM routing: fetch real road-following route when in directions mode
+  useEffect(() => {
+    if (toolMode !== 'directions' || routePoints.length < 2) {
+      setOsrmRoute(null)
+      useMapStore.getState().setOsmrData(null, null)
+      return
+    }
+
+    let cancelled = false
+    const coords = routePoints.map((p) => `${p.longitude},${p.latitude}`).join(';')
+
+    fetch(`/api/directions?coordinates=${coords}`)
+      .then((res) => {
+        if (!res.ok) throw new Error('OSRM fetch failed')
+        return res.json()
+      })
+      .then((data) => {
+        if (cancelled) return
+        if (data.code === 'Ok' && data.routes && data.routes.length > 0) {
+          const route = data.routes[0]
+          const coordinates: [number, number][] = route.geometry.coordinates
+          setOsrmRoute(coordinates)
+
+          // OSRM returns distance in meters and duration in seconds
+          const distanceKm = route.distance / 1000
+          const durationSec = route.duration
+          useMapStore.getState().setOsmrData(distanceKm, durationSec)
+
+          // Format and show notification
+          const distStr = distanceKm < 1
+            ? `${Math.round(route.distance)} m`
+            : `${distanceKm.toFixed(1)} km`
+          const durStr = durationSec < 60
+            ? `${Math.round(durationSec)} sec`
+            : durationSec < 3600
+              ? `${Math.floor(durationSec / 60)} min ${Math.round(durationSec % 60)} sec`
+              : `${Math.floor(durationSec / 3600)} hr ${Math.floor((durationSec % 3600) / 60)} min`
+          useMapStore.getState().pushNotification({
+            type: 'route',
+            icon: '🚗',
+            message: `Route: ${distStr} · ${durStr}`,
+          })
+        } else {
+          setOsrmRoute(null)
+          useMapStore.getState().setOsmrData(null, null)
+        }
+      })
+      .catch((err) => {
+        console.error('OSRM routing error:', err)
+        if (!cancelled) {
+          setOsrmRoute(null)
+          useMapStore.getState().setOsmrData(null, null)
+        }
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [toolMode, routePoints])
+
+  // Render OSRM route on the map
+  useEffect(() => {
+    if (!map.current || !mapLoadedRef.current) return
+
+    const sourceId = 'osrm-route-source'
+    const layerId = 'osrm-route-layer'
+
+    if (!osrmRoute || osrmRoute.length < 2) {
+      // Remove OSRM route layers if no route
+      if (map.current.getLayer(layerId)) map.current.removeLayer(layerId)
+      if (map.current.getSource(sourceId)) map.current.removeSource(sourceId)
+      return
+    }
+
+    // Add or update OSRM route source
+    if (!map.current.getSource(sourceId)) {
+      map.current.addSource(sourceId, {
+        type: 'geojson',
+        data: {
+          type: 'Feature',
+          properties: {},
+          geometry: {
+            type: 'LineString',
+            coordinates: osrmRoute,
+          },
+        },
+      })
+    } else {
+      const source = map.current.getSource(sourceId) as maplibregl.GeoJSONSource
+      source.setData({
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'LineString',
+          coordinates: osrmRoute,
+        },
+      })
+    }
+
+    // Add or update OSRM route layer
+    if (!map.current.getLayer(layerId)) {
+      map.current.addLayer({
+        id: layerId,
+        type: 'line',
+        source: sourceId,
+        paint: {
+          'line-color': '#3b82f6',
+          'line-width': 4,
+          'line-opacity': 0.8,
+        },
+      })
+    }
+
+    return () => {
+      if (map.current) {
+        if (map.current.getLayer(layerId)) map.current.removeLayer(layerId)
+        if (map.current.getSource(sourceId)) map.current.removeSource(sourceId)
+      }
+    }
+  }, [osrmRoute, mapLoadedVersion])
+
   // Geolocation marker with accuracy circle
   useEffect(() => {
     if (!map.current || !mapLoadedRef.current) return
@@ -1297,6 +1421,204 @@ export function MapView() {
       }
     }
   }, [weatherEnabled, mapLoadedVersion])
+
+  // Traffic overlay
+  useEffect(() => {
+    if (!map.current || !mapLoadedRef.current) return
+
+    const trafficSourceId = 'traffic-source'
+    const trafficLayerId = 'traffic-layer'
+
+    if (trafficEnabled) {
+      if (!map.current!.getSource(trafficSourceId)) {
+        map.current!.addSource(trafficSourceId, {
+          type: 'raster',
+          url: `https://api.maptiler.com/tiles/traffic-flow/tiles.json?key=${process.env.NEXT_PUBLIC_MAPTILER_KEY || ''}`,
+          tileSize: 256,
+        })
+      }
+      if (!map.current!.getLayer(trafficLayerId)) {
+        map.current!.addLayer({
+          id: trafficLayerId,
+          type: 'raster',
+          source: trafficSourceId,
+          paint: {
+            'raster-opacity': 0.7,
+          },
+        })
+      }
+    } else {
+      if (map.current!.getLayer(trafficLayerId)) {
+        map.current!.removeLayer(trafficLayerId)
+      }
+      if (map.current!.getSource(trafficSourceId)) {
+        map.current!.removeSource(trafficSourceId)
+      }
+    }
+  }, [trafficEnabled, mapLoadedVersion])
+
+  // Earthquakes overlay
+  useEffect(() => {
+    if (!map.current || !mapLoadedRef.current) return
+
+    const sourceId = 'earthquakes-source'
+    const circlesLayerId = 'earthquakes-circles'
+    const labelsLayerId = 'earthquakes-labels'
+
+    let intervalId: ReturnType<typeof setInterval> | null = null
+
+    const fetchAndRender = async () => {
+      try {
+        const res = await fetch(
+          'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson'
+        )
+        if (!res.ok) return
+        const geojson = await res.json()
+
+        if (!map.current) return
+
+        // Add or update source
+        if (!map.current.getSource(sourceId)) {
+          map.current.addSource(sourceId, {
+            type: 'geojson',
+            data: geojson,
+          })
+        } else {
+          ;(map.current.getSource(sourceId) as maplibregl.GeoJSONSource).setData(geojson)
+        }
+
+        // Add circles layer
+        if (!map.current.getLayer(circlesLayerId)) {
+          map.current.addLayer({
+            id: circlesLayerId,
+            type: 'circle',
+            source: sourceId,
+            paint: {
+              'circle-radius': [
+                'interpolate',
+                ['linear'],
+                ['get', 'mag'],
+                1, 3,
+                3, 8,
+                5, 15,
+                7, 25,
+              ],
+              'circle-color': [
+                'interpolate',
+                ['linear'],
+                ['get', 'mag'],
+                2, '#22c55e',
+                4, '#eab308',
+                6, '#f97316',
+                8, '#ef4444',
+              ],
+              'circle-opacity': 0.7,
+            },
+          })
+        }
+
+        // Add labels layer
+        if (!map.current.getLayer(labelsLayerId)) {
+          map.current.addLayer({
+            id: labelsLayerId,
+            type: 'symbol',
+            source: sourceId,
+            layout: {
+              'text-field': ['concat', 'M', ['to-string', ['get', 'mag']]],
+              'text-size': 11,
+              'text-anchor': 'top',
+              'text-offset': [0, 0.8],
+            },
+            paint: {
+              'text-color': '#ffffff',
+              'text-halo-color': '#000000',
+              'text-halo-width': 1.5,
+            },
+          })
+        }
+      } catch {
+        // Silently handle fetch errors
+      }
+    }
+
+    if (earthquakesEnabled) {
+      fetchAndRender()
+      // Refresh every 5 minutes
+      intervalId = setInterval(fetchAndRender, 5 * 60 * 1000)
+
+      // Click handler for earthquake popups
+      const handleClick = (e: maplibregl.MapMouseEvent & { features?: maplibregl.MapboxGeoJSONFeature[] }) => {
+        if (!map.current) return
+        const features = map.current.queryRenderedFeatures(e.point, {
+          layers: [circlesLayerId],
+        })
+        if (!features.length) return
+
+        const feature = features[0]
+        const props = feature.properties
+        if (!props) return
+
+        const mag = props.mag ?? 'N/A'
+        const place = props.place ?? 'Unknown location'
+        const time = props.time ? new Date(props.time).toLocaleString() : 'N/A'
+        const depth = props.depth ?? 'N/A'
+
+        const coordinates = (feature.geometry as GeoJSON.Point).coordinates.slice()
+        // Ensure popup appears on top of clicked point
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+          coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360
+        }
+
+        new maplibregl.Popup({ offset: 12, closeButton: true })
+          .setLngLat(coordinates as [number, number])
+          .setHTML(
+            `<div style="font-family:system-ui;font-size:13px;line-height:1.5">
+              <strong style="font-size:14px">${place}</strong><br/>
+              <span>Magnitude: <strong>${mag}</strong></span><br/>
+              <span>Time: ${time}</span><br/>
+              <span>Depth: ${depth} km</span>
+            </div>`
+          )
+          .addTo(map.current)
+      }
+
+      map.current.on('click', handleClick)
+
+      // Change cursor on hover
+      const handleMouseMove = (e: maplibregl.MapMouseEvent) => {
+        if (!map.current) return
+        const features = map.current.queryRenderedFeatures(e.point, {
+          layers: [circlesLayerId],
+        })
+        map.current.getCanvas().style.cursor = features.length ? 'pointer' : ''
+      }
+
+      map.current.on('mousemove', handleMouseMove)
+
+      return () => {
+        if (intervalId) clearInterval(intervalId)
+        if (map.current) {
+          map.current.off('click', handleClick)
+          map.current.off('mousemove', handleMouseMove)
+        }
+      }
+    } else {
+      // Remove earthquakes overlay
+      if (map.current.getLayer(labelsLayerId)) {
+        map.current.removeLayer(labelsLayerId)
+      }
+      if (map.current.getLayer(circlesLayerId)) {
+        map.current.removeLayer(circlesLayerId)
+      }
+      if (map.current.getSource(sourceId)) {
+        map.current.removeSource(sourceId)
+      }
+    }
+
+    return () => {
+      if (intervalId) clearInterval(intervalId)
+    }
+  }, [earthquakesEnabled, mapLoadedVersion])
 
   const flyToLocation = useCallback(
     (longitude: number, latitude: number, zoom?: number) => {

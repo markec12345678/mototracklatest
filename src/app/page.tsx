@@ -88,6 +88,21 @@ export default function Home() {
     }
   }, [setCenter, setZoom, setCurrentStyle])
 
+  // Update URL (debounced) when map state changes
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const [lng, lat] = center
+      const params = new URLSearchParams({
+        lat: lat.toFixed(5),
+        lng: lng.toFixed(5),
+        zoom: zoom.toFixed(2),
+        style: currentStyle.id,
+      })
+      window.history.replaceState(null, '', `${window.location.pathname}?${params.toString()}`)
+    }, 500)
+    return () => clearTimeout(timer)
+  }, [center, zoom, currentStyle])
+
   // Handle share URL
   const handleShare = useCallback(() => {
     const [lng, lat] = center
