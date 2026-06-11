@@ -52,7 +52,9 @@ A feature-rich, interactive mapping application built with **Next.js 16**, **Map
 - **3D Building Explorer** — Click buildings to inspect height, levels, and type
 
 ### 🌤️ Weather & Sun
-- **Weather Panel** — Current conditions with temperature, wind, humidity, and more
+- **Weather Panel** — Current conditions with temperature, wind, humidity, UV, and AQI
+- **7-Day Forecast** — Daily forecast with max/min temps, precipitation, and wind
+- **Weather Alerts** — Severity-based alerts (yellow/orange/red) for extreme conditions
 - **Mobile Weather Bar** — Compact weather strip for mobile
 - **Sun Position Overlay** — Day/night terminator line and subsolar point
 - **Golden & Blue Hour** indicators for photography planning
@@ -87,9 +89,13 @@ A feature-rich, interactive mapping application built with **Next.js 16**, **Map
 - **Context Menu** — Right-click for quick actions (add marker, measure, geofence)
 - **Map Stats Panel** — Zoom level, center coordinates, bearing, pitch
 - **Notifications** — Real-time feedback for all actions
+- **Notification Center** — Bell icon with history, mark-as-read, and clear
 - **Location Detail Drawer** — Expandable info panel for markers and POIs
 - **Heatmap Layer** — Visualize density of markers/POIs with adjustable intensity and radius
 - **Custom Tile Sources** — Add your own tile server URLs with presets (OSM, Stamen, CartoDB)
+- **Distance Matrix** — Calculate distances between multiple points (haversine + OSRM)
+- **Map Snapshots** — Save and restore map views with markers
+- **Style Gallery** — Visual style browser with categories and search
 
 ### 🏃 GPS & Tracking
 - **Track Recording** — Record GPS tracks in real-time with speed, distance, elevation
@@ -102,6 +108,16 @@ A feature-rich, interactive mapping application built with **Next.js 16**, **Map
 - **Enter/Exit Alerts** — Toast notifications when crossing geofence boundaries
 - **Geofence Management** — Toggle, edit, and delete geofences
 - **Right-Click to Create** — Create geofence from context menu
+
+### 🤖 AI & Intelligence
+- **AI-Powered Suggestions** — Smart location recommendations based on your position
+- **Personalized Preferences** — Tell the AI what you like (hiking, food, history, etc.)
+- **One-Click Fly-to** — Jump to suggested places on the map
+
+### 🌍 Internationalization
+- **7 Languages Supported** — English, Slovenian, German, Croatian, Italian, French, Spanish
+- **Language Selector** — Quick switch with flag emojis
+- **Translated UI** — Sidebar, search, tools, and categories all translated
 
 ### 🎨 Design & UX
 - **Dark/Light Mode** with next-themes
@@ -342,11 +358,18 @@ The app is fully responsive with three breakpoints:
 - [x] ~~Heatmap Layer~~ — Density visualization with controls ✅
 - [x] ~~Geofencing Alerts~~ — Enter/exit notifications ✅
 - [x] ~~Track Recording~~ — Real-time GPS tracking ✅
+- [x] ~~Multi-language Support~~ — 7 languages with i18n foundation ✅
+- [x] ~~AI-Powered Suggestions~~ — LLM-based location recommendations ✅
+- [x] ~~Weather Alerts & Forecast~~ — 7-day forecast with severity alerts ✅
+- [x] ~~Distance Matrix~~ — Multi-point distance calculator ✅
+- [x] ~~Style Gallery~~ — Visual style browser ✅
+- [x] ~~Map Snapshots~~ — Save/restore map views ✅
+- [x] ~~Notification Center~~ — Centralized notification history ✅
 - [ ] **Multi-route Comparison** — Compare multiple routes side by side
 - [ ] **Collaborative Maps** — Share and edit maps with others in real-time
-- [ ] **Multi-language Support** — i18n with next-intl
 - [ ] **Offline Map Caching** — Service worker for tile caching
-- [ ] **AI-Powered Suggestions** — Smart location recommendations
+- [ ] **Real-time Chat** — Discuss locations with other users
+- [ ] **Voice Navigation** — Turn-by-turn voice instructions
 
 ---
 
