@@ -9,6 +9,9 @@ import { StyleSwitcher } from '@/components/map/StyleSwitcher'
 import { CoordinatesDisplay } from '@/components/map/CoordinatesDisplay'
 import { MapToolbar } from '@/components/map/MapToolbar'
 import { AddLocationDialog } from '@/components/map/AddLocationDialog'
+import { ThemeToggle } from '@/components/map/ThemeToggle'
+import { MapStatsPanel } from '@/components/map/MapStatsPanel'
+import { CompassIndicator } from '@/components/map/CompassIndicator'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useMapStore, type ToolMode } from '@/lib/map-store'
@@ -23,6 +26,7 @@ import {
   LocateFixed,
   Layers,
   Maximize2,
+  Minimize2,
 } from 'lucide-react'
 
 export default function Home() {
@@ -52,13 +56,16 @@ export default function Home() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          const flyTo = (window as unknown as Record<string, (lng: number, lat: number, z?: number) => void>).__mapFlyTo
+          const flyTo = (window as unknown as Record<
+            string,
+            (lng: number, lat: number, z?: number) => void
+          >).__mapFlyTo
           if (flyTo) {
             flyTo(position.coords.longitude, position.coords.latitude, 14)
           }
         },
         () => {
-          // Geolocation denied - fly to default
+          // Geolocation denied
         }
       )
     }
@@ -100,19 +107,23 @@ export default function Home() {
       {/* Sidebar */}
       <MapSidebar />
 
+      {/* Compass indicator (visible when map is rotated) */}
+      <CompassIndicator />
+
       {/* Top bar - Search and controls */}
       <div
-        className="absolute top-4 right-4 left-4 z-10 flex items-start gap-3 transition-all duration-300"
+        className="absolute top-4 right-4 left-4 z-10 flex items-start gap-2 transition-all duration-300"
         style={{ paddingLeft: sidebarOpen ? '332px' : '16px' }}
       >
         <div className="flex-1 max-w-lg">
           <SearchBar />
         </div>
         <StyleSwitcher />
+        <ThemeToggle />
         <Button
           variant="outline"
           size="icon"
-          className="bg-background/90 backdrop-blur-sm shadow-sm h-10 w-10 rounded-xl"
+          className="bg-background/90 backdrop-blur-sm shadow-md h-10 w-10 rounded-xl"
           onClick={handleLocateMe}
           title="My Location"
         >
@@ -121,16 +132,20 @@ export default function Home() {
         <Button
           variant="outline"
           size="icon"
-          className="bg-background/90 backdrop-blur-sm shadow-sm h-10 w-10 rounded-xl"
+          className="bg-background/90 backdrop-blur-sm shadow-md h-10 w-10 rounded-xl"
           onClick={toggleFullscreen}
           title="Fullscreen"
         >
-          <Maximize2 className="h-4 w-4" />
+          {isFullscreen ? (
+            <Minimize2 className="h-4 w-4" />
+          ) : (
+            <Maximize2 className="h-4 w-4" />
+          )}
         </Button>
         <Button
           variant="outline"
           size="icon"
-          className="bg-background/90 backdrop-blur-sm shadow-sm h-10 w-10 rounded-xl"
+          className="bg-background/90 backdrop-blur-sm shadow-md h-10 w-10 rounded-xl"
           onClick={() =>
             window.open('https://github.com/maplibre/maplibre-native', '_blank')
           }
@@ -171,6 +186,11 @@ export default function Home() {
         </motion.div>
       </AnimatePresence>
 
+      {/* Map Stats Panel - right side above footer */}
+      <div className="absolute bottom-10 right-5 z-10">
+        <MapStatsPanel />
+      </div>
+
       {/* Coordinates display - bottom center */}
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10">
         <CoordinatesDisplay />
@@ -179,12 +199,12 @@ export default function Home() {
       {/* Add Location FAB */}
       <motion.div
         className="absolute bottom-20 right-5 z-10"
-        whileHover={{ scale: 1.1 }}
+        whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
         <Button
           size="lg"
-          className="rounded-2xl shadow-xl h-14 px-5 gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white border-0"
+          className="rounded-2xl shadow-xl h-14 px-5 gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white border-0 transition-all"
           onClick={() => setAddDialogOpen(true)}
         >
           <Plus className="h-5 w-5" />
@@ -229,6 +249,7 @@ export default function Home() {
                       { label: 'Measure', emoji: '📏' },
                       { label: 'Geocoding', emoji: '🔍' },
                       { label: 'Export GeoJSON', emoji: '📦' },
+                      { label: 'Dark Mode', emoji: '🌙' },
                     ].map((feature) => (
                       <Badge
                         key={feature.label}

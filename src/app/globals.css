@@ -130,11 +130,21 @@
   border-radius: 0.75rem !important;
   overflow: hidden !important;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid oklch(0.922 0 0) !important;
+}
+
+.dark .maplibregl-ctrl-group {
+  border-color: oklch(1 0 0 / 10%) !important;
+  background: oklch(0.205 0 0) !important;
 }
 
 .maplibregl-ctrl-group button {
   width: 36px !important;
   height: 36px !important;
+}
+
+.dark .maplibregl-ctrl-group button + button {
+  border-top-color: oklch(1 0 0 / 10%) !important;
 }
 
 .maplibregl-ctrl-scale {
@@ -143,10 +153,36 @@
   padding: 2px 6px !important;
 }
 
+.dark .maplibregl-ctrl-scale {
+  background: oklch(0.205 0 0 / 80%) !important;
+  color: oklch(0.985 0 0) !important;
+  border-color: oklch(1 0 0 / 20%) !important;
+}
+
+.maplibregl-ctrl-attrib {
+  border-radius: 0.375rem !important;
+  font-size: 10px !important;
+}
+
+.dark .maplibregl-ctrl-attrib {
+  background: oklch(0.205 0 0 / 80%) !important;
+  color: oklch(0.708 0 0) !important;
+}
+
+.dark .maplibregl-ctrl-attrib a {
+  color: oklch(0.708 0 0) !important;
+}
+
 .maplibregl-popup-content {
   border-radius: 0.75rem !important;
   padding: 0 !important;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.dark .maplibregl-popup-content {
+  background: oklch(0.205 0 0) !important;
+  color: oklch(0.985 0 0) !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3) !important;
 }
 
 .maplibregl-popup-close-button {
@@ -158,6 +194,22 @@
 .maplibregl-popup-close-button:hover {
   color: #333 !important;
   background: transparent !important;
+}
+
+.dark .maplibregl-popup-close-button {
+  color: #888 !important;
+}
+
+.dark .maplibregl-popup-close-button:hover {
+  color: #fff !important;
+}
+
+.maplibregl-popup-tip {
+  border-top-color: oklch(1 0 0) !important;
+}
+
+.dark .maplibregl-popup-tip {
+  border-top-color: oklch(0.205 0 0) !important;
 }
 
 /* Custom marker animation */
@@ -185,4 +237,12 @@
 
 .overflow-y-auto::-webkit-scrollbar-thumb:hover {
   background: oklch(0.5 0 0 / 50%);
+}
+
+/* Dark mode smooth transitions */
+.dark .maplibregl-ctrl-group,
+.dark .maplibregl-ctrl-scale,
+.dark .maplibregl-ctrl-attrib,
+.dark .maplibregl-popup-content {
+  transition: background-color 0.3s ease, color 0.3s ease;
 }

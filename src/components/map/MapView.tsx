@@ -285,11 +285,17 @@ export function MapView() {
     []
   )
 
-  // Expose flyToLocation through window for other components
+  // Expose flyToLocation and resetNorth through window for other components
   useEffect(() => {
     ;(window as unknown as Record<string, unknown>).__mapFlyTo = flyToLocation
+    ;(window as unknown as Record<string, unknown>).__mapResetNorth = () => {
+      if (map.current) {
+        map.current.easeTo({ bearing: 0, duration: 500 })
+      }
+    }
     return () => {
       delete (window as unknown as Record<string, unknown>).__mapFlyTo
+      delete (window as unknown as Record<string, unknown>).__mapResetNorth
     }
   }, [flyToLocation])
 
