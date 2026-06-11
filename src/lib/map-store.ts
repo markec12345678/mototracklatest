@@ -265,6 +265,17 @@ export interface SelectedBuilding {
 
 export type ToolMode = 'navigate' | 'mark' | 'measure' | 'directions' | 'draw' | 'area' | 'annotate'
 
+export type AppLanguage = 'en' | 'sl' | 'de' | 'hr' | 'it' | 'fr' | 'es'
+
+export interface AppNotification {
+  id: string
+  type: 'geofence' | 'track' | 'weather' | 'location' | 'general'
+  message: string
+  timestamp: number
+  read: boolean
+  icon?: string
+}
+
 export interface CustomTileSource {
   id: string
   name: string
@@ -443,6 +454,16 @@ interface MapState {
 
   // Notifications
   notifications: MapNotification[]
+
+  // Language
+  language: AppLanguage
+  setLanguage: (lang: AppLanguage) => void
+
+  // App notifications (notification center)
+  appNotifications: AppNotification[]
+  addAppNotification: (notification: Omit<AppNotification, 'id' | 'timestamp' | 'read'>) => void
+  markAllNotificationsRead: () => void
+  clearAppNotifications: () => void
 
   // Actions
   setCenter: (center: [number, number]) => void
@@ -627,6 +648,12 @@ export const useMapStore = create<MapState>()(
 
       // Geofence defaults
       geofences: [],
+
+      // Language defaults
+      language: 'en',
+
+      // App notification defaults
+      appNotifications: [],
 
       setCenter: (center) => set({ center }),
       setZoom: (zoom) => set({ zoom }),
@@ -1363,6 +1390,23 @@ export const useMapStore = create<MapState>()(
           g.id === id ? { ...g, isActive: !g.isActive } : g
         ),
       })),
+
+      // Language actions
+      setLanguage: (language) => set({ language }),
+
+      // App notification actions
+      addAppNotification: (notification) => set((state) => ({
+        appNotifications: [
+          { ...notification, id: `appnotif-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`, timestamp: Date.now(), read: false },
+          ...state.appNotifications,
+        ].slice(0, 50),
+      })),
+
+      markAllNotificationsRead: () => set((state) => ({
+        appNotifications: state.appNotifications.map((n) => ({ ...n, read: true })),
+      })),
+
+      clearAppNotifications: () => set({ appNotifications: [] }),
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -1396,6 +1440,8 @@ export const useMapStore = create<MapState>()(
         routeProfile: state.routeProfile,
         savedTracks: state.savedTracks,
         geofences: state.geofences,
+        language: state.language,
+        appNotifications: state.appNotifications,
       }),
     }
   )

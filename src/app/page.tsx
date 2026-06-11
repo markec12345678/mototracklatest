@@ -35,6 +35,10 @@ import { Buildings3DLayer } from '@/components/map/Buildings3DLayer'
 import { BuildingInfoPanel } from '@/components/map/BuildingInfoPanel'
 import { GeofenceDialog } from '@/components/map/GeofenceDialog'
 import { ShareDialog } from '@/components/map/ShareDialog'
+import { LanguageSelector } from '@/components/map/LanguageSelector'
+import { NotificationCenter } from '@/components/map/NotificationCenter'
+import { AISuggestionsPanel } from '@/components/map/AISuggestionsPanel'
+import { RouteAnalyticsPanel } from '@/components/map/RouteAnalyticsPanel'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
@@ -73,6 +77,7 @@ export default function Home() {
   const [bookmarkManagerOpen, setBookmarkManagerOpen] = useState(false)
   const [shareDialogOpen, setShareDialogOpen] = useState(false)
   const [geofenceDialogOpen, setGeofenceDialogOpen] = useState(false)
+  const [aiSuggestionsOpen, setAiSuggestionsOpen] = useState(false)
   const [geofenceCoords, setGeofenceCoords] = useState<{ lat: number; lng: number } | null>(null)
   const [showWelcome, setShowWelcome] = useState(true)
   const [isFullscreen, setIsFullscreen] = useState(false)
@@ -559,6 +564,8 @@ export default function Home() {
             <GitCompare className="h-4 w-4" />
           </Button>
           <ThemeToggle />
+          <LanguageSelector />
+          <NotificationCenter />
           <Button
             variant="outline"
             size="icon"
@@ -640,7 +647,7 @@ export default function Home() {
 
       {/* Tool toolbar - left side (desktop only) */}
       <div className="hidden md:block absolute left-4 z-10 transition-all duration-300" style={{ top: '80px' }}>
-        <MapToolbar />
+        <MapToolbar aiSuggestionsOpen={aiSuggestionsOpen} setAiSuggestionsOpen={setAiSuggestionsOpen} />
         {/* Track Record Button */}
         <div className="mt-2 flex justify-center">
           <TooltipProvider delayDuration={200}>
@@ -687,6 +694,18 @@ export default function Home() {
             </Tooltip>
           </TooltipProvider>
         </div>
+      </div>
+
+      {/* AI Suggestions Panel - left side below toolbar (desktop only) */}
+      {aiSuggestionsOpen && (
+        <div className="hidden md:block absolute z-10" style={{ left: '80px', top: '80px' }}>
+          <AISuggestionsPanel />
+        </div>
+      )}
+
+      {/* Route Analytics Panel - left side below AI suggestions (desktop only) */}
+      <div className="hidden md:block absolute z-10" style={{ left: aiSuggestionsOpen ? '400px' : '80px', top: '80px', transition: 'left 0.3s ease-in-out' }}>
+        <RouteAnalyticsPanel />
       </div>
 
       {/* Quick Jump Panel - left side below toolbar (desktop only) */}

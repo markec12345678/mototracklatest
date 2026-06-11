@@ -1,97 +1,25 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { MapPin, Navigation, Ruler, Crosshair, Pencil, Maximize2, Type, Building2 } from 'lucide-react'
+import { MapPin, Navigation, Ruler, Crosshair, Pencil, Maximize2, Type, Building2, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 import { useMapStore, type ToolMode } from '@/lib/map-store'
+import { useTranslation } from '@/lib/translations'
 
-const toolGroups: {
-  separatorAfter?: boolean
-  tools: {
-    id: ToolMode
-    icon: React.ReactNode
-    label: string
-    activeClass: string
-    shortcut: string
-    description: string
-  }[]
-}[] = [
-  {
-    tools: [
-      {
-        id: 'navigate',
-        icon: <Navigation className="h-4 w-4" />,
-        label: 'Navigate',
-        activeClass: 'bg-emerald-500 text-white shadow-md shadow-emerald-500/30',
-        shortcut: '1',
-        description: 'Pan & zoom the map',
-      },
-      {
-        id: 'mark',
-        icon: <MapPin className="h-4 w-4" />,
-        label: 'Drop Pin',
-        activeClass: 'bg-red-500 text-white shadow-md shadow-red-500/30',
-        shortcut: '2',
-        description: 'Click map to add markers',
-      },
-    ],
-  },
-  {
-    separatorAfter: true,
-    tools: [
-      {
-        id: 'measure',
-        icon: <Ruler className="h-4 w-4" />,
-        label: 'Measure',
-        activeClass: 'bg-amber-500 text-white shadow-md shadow-amber-500/30',
-        shortcut: '3',
-        description: 'Click points to measure distance',
-      },
-      {
-        id: 'directions',
-        icon: <Crosshair className="h-4 w-4" />,
-        label: 'Directions',
-        activeClass: 'bg-cyan-500 text-white shadow-md shadow-cyan-500/30',
-        shortcut: '4',
-        description: 'Draw routes between points',
-      },
-      {
-        id: 'area',
-        icon: <Maximize2 className="h-4 w-4" />,
-        label: 'Area',
-        activeClass: 'bg-violet-500 text-white shadow-md shadow-violet-500/30',
-        shortcut: '6',
-        description: 'Measure polygon area on the map',
-      },
-    ],
-  },
-  {
-    tools: [
-      {
-        id: 'draw',
-        icon: <Pencil className="h-4 w-4" />,
-        label: 'Draw',
-        activeClass: 'bg-green-500 text-white shadow-md shadow-green-500/30',
-        shortcut: '5',
-        description: 'Freehand drawing on the map',
-      },
-      {
-        id: 'annotate',
-        icon: <Type className="h-4 w-4" />,
-        label: 'Label',
-        activeClass: 'bg-pink-500 text-white shadow-md shadow-pink-500/30',
-        shortcut: '8',
-        description: 'Add text labels on the map',
-      },
-    ],
-  },
-]
+interface ToolDef {
+  id: ToolMode
+  icon: React.ReactNode
+  label: string
+  activeClass: string
+  shortcut: string
+  description: string
+}
 
 function ToolButton({ tool, isActive, onClick, index }: {
-  tool: toolGroups[number]['tools'][number]
+  tool: ToolDef
   isActive: boolean
   onClick: () => void
   index: number
@@ -170,10 +98,86 @@ function ToolButton({ tool, isActive, onClick, index }: {
   )
 }
 
-export function MapToolbar() {
+export function MapToolbar({ aiSuggestionsOpen, setAiSuggestionsOpen }: { aiSuggestionsOpen: boolean; setAiSuggestionsOpen: (v: boolean) => void }) {
   const { toolMode, setToolMode } = useMapStore()
   const buildings3DEnabled = useMapStore((s) => s.buildings3DEnabled)
   const setBuildings3DEnabled = useMapStore((s) => s.setBuildings3DEnabled)
+  const { t } = useTranslation()
+
+  const toolGroups: {
+    separatorAfter?: boolean
+    tools: ToolDef[]
+  }[] = [
+    {
+      tools: [
+        {
+          id: 'navigate',
+          icon: <Navigation className="h-4 w-4" />,
+          label: t('toolNavigate'),
+          activeClass: 'bg-emerald-500 text-white shadow-md shadow-emerald-500/30',
+          shortcut: '1',
+          description: t('toolNavigateDesc'),
+        },
+        {
+          id: 'mark',
+          icon: <MapPin className="h-4 w-4" />,
+          label: t('toolMark'),
+          activeClass: 'bg-red-500 text-white shadow-md shadow-red-500/30',
+          shortcut: '2',
+          description: t('toolMarkDesc'),
+        },
+      ],
+    },
+    {
+      separatorAfter: true,
+      tools: [
+        {
+          id: 'measure',
+          icon: <Ruler className="h-4 w-4" />,
+          label: t('toolMeasure'),
+          activeClass: 'bg-amber-500 text-white shadow-md shadow-amber-500/30',
+          shortcut: '3',
+          description: t('toolMeasureDesc'),
+        },
+        {
+          id: 'directions',
+          icon: <Crosshair className="h-4 w-4" />,
+          label: t('toolDirections'),
+          activeClass: 'bg-cyan-500 text-white shadow-md shadow-cyan-500/30',
+          shortcut: '4',
+          description: t('toolDirectionsDesc'),
+        },
+        {
+          id: 'area',
+          icon: <Maximize2 className="h-4 w-4" />,
+          label: t('toolArea'),
+          activeClass: 'bg-violet-500 text-white shadow-md shadow-violet-500/30',
+          shortcut: '6',
+          description: t('toolAreaDesc'),
+        },
+      ],
+    },
+    {
+      tools: [
+        {
+          id: 'draw',
+          icon: <Pencil className="h-4 w-4" />,
+          label: t('toolDraw'),
+          activeClass: 'bg-green-500 text-white shadow-md shadow-green-500/30',
+          shortcut: '5',
+          description: t('toolDrawDesc'),
+        },
+        {
+          id: 'annotate',
+          icon: <Type className="h-4 w-4" />,
+          label: t('toolAnnotate'),
+          activeClass: 'bg-pink-500 text-white shadow-md shadow-pink-500/30',
+          shortcut: '8',
+          description: t('toolAnnotateDesc'),
+        },
+      ],
+    },
+  ]
 
   // Flatten tools for index counting
   let globalIndex = 0
@@ -217,6 +221,19 @@ export function MapToolbar() {
             isActive={buildings3DEnabled}
             onClick={() => setBuildings3DEnabled(!buildings3DEnabled)}
             index={globalIndex}
+          />
+          <ToolButton
+            tool={{
+              id: 'navigate' as any,
+              icon: <Sparkles className="h-4 w-4" />,
+              label: t('aiTitle'),
+              activeClass: 'bg-purple-600 text-white shadow-md shadow-purple-600/30',
+              shortcut: 'A',
+              description: 'Get AI-powered location suggestions',
+            }}
+            isActive={aiSuggestionsOpen}
+            onClick={() => setAiSuggestionsOpen(!aiSuggestionsOpen)}
+            index={globalIndex + 1}
           />
         </div>
       </div>

@@ -62,12 +62,14 @@ import {
 } from '@/lib/map-store'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
+import { useTranslation } from '@/lib/translations'
 import { LocationDetailDrawer } from '@/components/map/LocationDetailDrawer'
 import { NearbyPanel } from '@/components/map/NearbyPanel'
 import { CustomTileSourceList } from '@/components/map/CustomTileSourceList'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ElevationProfile } from '@/components/map/ElevationProfile'
 import { GeofenceManager } from '@/components/map/GeofenceManager'
+import { RouteAnalyticsPanel } from '@/components/map/RouteAnalyticsPanel'
 
 function SidebarSkeleton() {
   return (
@@ -453,10 +455,12 @@ function SidebarContent({ onCloseMobile }: { onCloseMobile?: () => void }) {
 
   const routesList = useMapStore((s) => s.routes)
 
+  const { t } = useTranslation()
+
   const tabs = [
     {
       id: 'locations' as const,
-      label: 'Places',
+      label: t('tabPlaces'),
       icon: <MapPin className="h-4 w-4" />,
       count: savedLocations.length,
       gradientClass: 'sidebar-section-gradient-locations',
@@ -464,7 +468,7 @@ function SidebarContent({ onCloseMobile }: { onCloseMobile?: () => void }) {
     },
     {
       id: 'layers' as const,
-      label: 'Layers',
+      label: t('tabLayers'),
       icon: <Layers className="h-4 w-4" />,
       count: null,
       gradientClass: 'sidebar-section-gradient-layers',
@@ -472,7 +476,7 @@ function SidebarContent({ onCloseMobile }: { onCloseMobile?: () => void }) {
     },
     {
       id: 'tools' as const,
-      label: 'Tools',
+      label: t('tabTools'),
       icon: <Wrench className="h-4 w-4" />,
       count: null,
       gradientClass: 'sidebar-section-gradient-tools',
@@ -480,7 +484,7 @@ function SidebarContent({ onCloseMobile }: { onCloseMobile?: () => void }) {
     },
     {
       id: 'routes' as const,
-      label: 'Routes',
+      label: t('tabRoutes'),
       icon: <Route className="h-4 w-4" />,
       count: routesList.length,
       gradientClass: 'sidebar-section-gradient-routes',
@@ -2046,6 +2050,7 @@ function RoutesTab({ onGPXImportClick }: { onGPXImportClick: () => void }) {
 
   const [routeName, setRouteName] = useState('')
   const [savedRouteIds, setSavedRouteIds] = useState<Set<string>>(new Set())
+  const [routeSubTab, setRouteSubTab] = useState<'directions' | 'analytics'>('directions')
 
   // Load routes from database on mount
   useEffect(() => {
@@ -2167,15 +2172,52 @@ function RoutesTab({ onGPXImportClick }: { onGPXImportClick: () => void }) {
     return `${Math.floor(sec / 3600)} hr ${Math.floor((sec % 3600) / 60)} min`
   }
 
+  const { t } = useTranslation()
+
   return (
     <ScrollArea className="h-full">
       <div className="p-3 space-y-3">
         <h3 className="text-sm font-semibold flex items-center gap-2">
           <Route className="h-3.5 w-3.5 text-muted-foreground" />
-          Routes
+          {t('tabRoutes')}
         </h3>
+
+        {/* Sub-tab toggle: Directions / Analytics */}
+        <div className="flex rounded-lg bg-muted/50 p-0.5 gap-0.5">
+          <button
+            onClick={() => setRouteSubTab('directions')}
+            className={cn(
+              'flex-1 py-1.5 px-3 text-xs font-medium rounded-md transition-all',
+              routeSubTab === 'directions'
+                ? 'bg-background shadow-sm text-foreground'
+                : 'text-muted-foreground hover:text-foreground'
+            )}
+          >
+            {t('toolDirections')}
+          </button>
+          <button
+            onClick={() => setRouteSubTab('analytics')}
+            className={cn(
+              'flex-1 py-1.5 px-3 text-xs font-medium rounded-md transition-all',
+              routeSubTab === 'analytics'
+                ? 'bg-background shadow-sm text-foreground'
+                : 'text-muted-foreground hover:text-foreground'
+            )}
+          >
+            {t('analyticsTitle')}
+          </button>
+        </div>
+
         <Separator />
 
+        {/* Analytics sub-tab */}
+        {routeSubTab === 'analytics' && (
+          <RouteAnalyticsPanel inline />
+        )}
+
+        {/* Directions sub-tab */}
+        {routeSubTab === 'directions' && (
+        <>
         {/* Directions tool hint */}
         {toolMode === 'directions' && (
           <div className="bg-cyan-500/10 border border-cyan-500/20 rounded-xl p-3">
@@ -2468,6 +2510,7 @@ function RoutesTab({ onGPXImportClick }: { onGPXImportClick: () => void }) {
         {/* Saved Tracks section */}
         <Separator className="my-4" />
         <SavedTracksSection />
+        </> )} {/* End directions sub-tab */}
       </div>
     </ScrollArea>
   )

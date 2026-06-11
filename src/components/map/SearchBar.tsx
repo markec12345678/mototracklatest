@@ -5,6 +5,7 @@ import { Search, X, MapPin, Loader2, Navigation2, Clock } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useMapStore } from '@/lib/map-store'
+import { useTranslation } from '@/lib/translations'
 import { cn } from '@/lib/utils'
 
 interface SearchResult {
@@ -50,6 +51,7 @@ export function SearchBar() {
   const inputRef = useRef<HTMLInputElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const { t } = useTranslation()
 
   const STORAGE_KEY = 'maplibre-recent-searches'
 
@@ -224,7 +226,7 @@ export function SearchBar() {
           }}
           onBlur={() => setIsFocused(false)}
           onKeyDown={handleKeyDown}
-          placeholder={isFocused ? "Search the map..." : "Search the map... (/ to search)"}
+          placeholder={isFocused ? t('searchPlaceholder') : `${t('searchPlaceholder')} (/ to search)`}
           className={cn(
             "pl-9 pr-9 h-11 bg-background/90 backdrop-blur-md border-border/50 shadow-lg rounded-xl transition-all duration-300",
             "hover:shadow-xl",
