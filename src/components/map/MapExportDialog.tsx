@@ -72,6 +72,28 @@ const FORMAT_OPTIONS: { id: ExportFormat; label: string; icon: React.ReactNode; 
   { id: 'pdf', label: 'PDF', icon: <FileText className="h-4 w-4" />, description: 'Document format with metadata' },
 ]
 
+function ExportDimensionsSummary({ options, getExportDimensions }: {
+  options: ExportOptions
+  getExportDimensions: () => { width: number; height: number }
+}) {
+  // Only compute dimensions on the client to avoid SSR document access
+  if (typeof window === 'undefined') return null
+
+  const dims = getExportDimensions()
+
+  return (
+    <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/40 border border-border/30">
+      <Monitor className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+      <span className="text-xs text-muted-foreground">
+        Output: {dims.width} × {dims.height} px
+        <span className="ml-2 text-muted-foreground/60">
+          ({options.format.toUpperCase()}, {options.resolution}x resolution)
+        </span>
+      </span>
+    </div>
+  )
+}
+
 export function MapExportDialog({
   open,
   onOpenChange,
@@ -139,8 +161,11 @@ export function MapExportDialog({
   }, [center, zoom, bearing, pitch])
 
   const getExportDimensions = useCallback(() => {
+    if (typeof document === 'undefined') {
+      return { width: 1280 * options.resolution, height: 720 * options.resolution }
+    }
     if (options.sizePreset === 'current') {
-      const mapEl = typeof document !== 'undefined' ? document.querySelector('.maplibregl-map canvas') as HTMLCanvasElement | null : null
+      const mapEl = document.querySelector('.maplibregl-map canvas') as HTMLCanvasElement | null
       const w = mapEl?.width || 1280
       const h = mapEl?.height || 720
       return { width: w * options.resolution, height: h * options.resolution }
@@ -539,15 +564,7 @@ export function MapExportDialog({
           </div>
 
           {/* Export dimensions summary */}
-          <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/40 border border-border/30">
-            <Monitor className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-            <span className="text-xs text-muted-foreground">
-              Output: {getExportDimensions().width} × {getExportDimensions().height} px
-              <span className="ml-2 text-muted-foreground/60">
-                ({options.format.toUpperCase()}, {options.resolution}x resolution)
-              </span>
-            </span>
-          </div>
+          <ExportDimensionsSummary options={options} getExportDimensions={getExportDimensions} />
 
           {/* Overlays section */}
           <div className="space-y-3">
