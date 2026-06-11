@@ -1,31 +1,36 @@
 ---
-Task ID: 1
-Agent: Main Agent
-Task: Build MapLibre Explorer - Interactive Map Application
+Task ID: 2
+Agent: Main Agent (Cron Review Round)
+Task: Assess project, QA, fix bugs, add features, improve styling
 
 Work Log:
-- Explored current Next.js project structure
-- Installed maplibre-gl and @maplibre/maplibre-gl-geocoder packages
-- Updated Prisma schema with Location, MapStyle, and Route models
-- Ran db:push to sync database
-- Created API routes: /api/locations, /api/locations/[id], /api/search, /api/styles, /api/routes, /api/routes/[id]
-- Created Zustand store for map state management (map-store.ts)
-- Built MapView component with MapLibre GL JS integration
-- Built SearchBar component with geocoding (Nominatim)
-- Built StyleSwitcher component with 5 map styles
-- Built MapSidebar with 4 tabs (Places, Layers, Tools, Routes)
-- Built AddLocationDialog for adding saved locations
-- Built CoordinatesDisplay showing lng/lat/zoom
-- Built MapToolbar with tool modes (Navigate, Drop Pin, Measure)
-- Created main page.tsx assembling all components
-- Fixed critical bug: MapLibre "Style is not done loading" race condition (added mapLoaded state tracking)
-- Fixed lint error: setState in useEffect (refactored to use ref + version counter)
-- Fixed layout bug: Map container collapsing to 0px (MapLibre CSS conflict with Tailwind absolute class - used inline styles)
+- Reviewed worklog.md and current project status
+- Performed comprehensive QA via agent-browser (search, style switching, tabs, dialogs, coordinates)
+- Found and fixed critical bug: MapView stale closure - map event handlers were using stale state values from useMapStore. Fixed by using `useMapStore.getState()` directly in event handlers and subscribing via refs instead of destructured values in the dependency array.
+- Fixed broken Dialog wrapper in MapSidebar (was wrapping Add Location button incorrectly)
+- Removed unused imports (Clock, Tag, Star, DialogTrigger, etc.)
+- Added LocationDetailDrawer component with Sheet - shows full location details, coordinates, OpenStreetMap link, fly-to, delete action
+- Added GeoJSON export functionality - downloads all saved locations as a .geojson file
+- Added Quick Bookmarks in Tools tab - Paris, London, New York, Tokyo, Sydney, Dubai with one-click flyTo
+- Added "Locate Me" button using browser geolocation API
+- Added Fullscreen toggle button
+- Added keyboard navigation in search (ArrowUp/Down, Enter, Escape)
+- Improved search bar with type icons, result count header, navigation arrows
+- Added 3D Terrain and 3D Buildings toggle switches in Layers tab
+- Improved sidebar styling: gradient header, animated tab indicator, rounded-xl cards, category emojis, color-coded badges, hover scale effects
+- Improved MapToolbar with active state color gradients and shadow effects
+- Improved StyleSwitcher with gradient preview thumbnails and emoji indicators
+- Improved CoordinatesDisplay with icon, compact zoom display
+- Improved AddLocationDialog with gradient header, rounded-xl inputs, emoji categories
+- Added custom CSS for MapLibre controls (rounded corners, better shadows, popup styling)
+- Added custom scrollbar styling for sidebar
+- Added framer-motion animations (tool mode badge transition, welcome banner enter/exit, FAB hover/tap)
+- Changed "Add Location" FAB to pill-shaped button with "Add Place" text
 - Verified all features work via agent-browser
 
 Stage Summary:
-- Fully functional MapLibre Explorer application
-- Features: Interactive map, 5 map styles, geocoding search, location management (CRUD), sidebar with 4 tabs, marker/pin dropping, distance measurement, coordinate display
+- Application is stable and feature-rich
 - All lint checks pass, no runtime errors
-- API routes working for locations, search, routes, styles
-- Minor issue: External geocoding API (Nominatim) may occasionally timeout in sandbox
+- New features: LocationDetailDrawer, GeoJSON export, Quick Bookmarks, Locate Me, Fullscreen, keyboard search nav, 3D options toggles
+- Styling significantly improved: gradients, animations, glass morphism, custom MapLibre controls, polished UI
+- Next phase recommendations: Dark mode support with next-themes, responsive mobile layout, marker clustering, actual layer toggle implementation with MapLibre API, weather/traffic overlay integration

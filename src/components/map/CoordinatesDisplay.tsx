@@ -1,17 +1,21 @@
 'use client'
 
-import { useMapStore, MAP_STYLES } from '@/lib/map-store'
+import { Crosshair, MousePointer2 } from 'lucide-react'
+import { useMapStore } from '@/lib/map-store'
 
 export function CoordinatesDisplay() {
   const { center, zoom, bearing, pitch } = useMapStore()
 
   return (
-    <div className="flex items-center gap-3 px-3 py-1.5 bg-background/90 backdrop-blur-sm rounded-lg border shadow-sm text-xs text-muted-foreground font-mono">
-      <span title="Longitude">Lng: {center[0].toFixed(4)}</span>
+    <div className="flex items-center gap-2 px-3 py-1.5 bg-background/90 backdrop-blur-sm rounded-xl border shadow-md text-[11px] text-muted-foreground font-mono">
+      <MousePointer2 className="h-3 w-3 text-primary/60" />
+      <span title="Longitude">{center[0].toFixed(4)}</span>
       <span className="w-px h-3 bg-border" />
-      <span title="Latitude">Lat: {center[1].toFixed(4)}</span>
+      <span title="Latitude">{center[1].toFixed(4)}</span>
       <span className="w-px h-3 bg-border" />
-      <span title="Zoom">Z: {zoom.toFixed(1)}</span>
+      <span title="Zoom" className="text-primary/80 font-semibold">
+        {zoom.toFixed(1)}z
+      </span>
       {bearing !== 0 && (
         <>
           <span className="w-px h-3 bg-border" />

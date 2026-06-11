@@ -120,3 +120,69 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* MapLibre custom styles */
+.maplibregl-map {
+  font-family: var(--font-geist-sans), sans-serif !important;
+}
+
+.maplibregl-ctrl-group {
+  border-radius: 0.75rem !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+.maplibregl-ctrl-group button {
+  width: 36px !important;
+  height: 36px !important;
+}
+
+.maplibregl-ctrl-scale {
+  border-radius: 0.375rem !important;
+  font-size: 10px !important;
+  padding: 2px 6px !important;
+}
+
+.maplibregl-popup-content {
+  border-radius: 0.75rem !important;
+  padding: 0 !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.maplibregl-popup-close-button {
+  font-size: 18px !important;
+  padding: 4px 8px !important;
+  color: #999 !important;
+}
+
+.maplibregl-popup-close-button:hover {
+  color: #333 !important;
+  background: transparent !important;
+}
+
+/* Custom marker animation */
+.custom-marker {
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.custom-marker:hover {
+  transform: scale(1.15) !important;
+}
+
+/* Scrollbar styling for sidebar */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 4px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: oklch(0.7 0 0 / 30%);
+  border-radius: 2px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.5 0 0 / 50%);
+}

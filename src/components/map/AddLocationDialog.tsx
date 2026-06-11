@@ -4,12 +4,8 @@ import { useState } from 'react'
 import {
   Plus,
   MapPin,
-  Navigation,
   Crosshair,
-  ZoomIn,
-  ZoomOut,
-  Compass,
-  Locate,
+  Sparkles,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -18,6 +14,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
+  DialogDescription,
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -33,14 +30,14 @@ import { useMapStore } from '@/lib/map-store'
 import { toast } from 'sonner'
 
 const categories = [
-  { id: 'general', label: 'General', color: '#6b7280' },
-  { id: 'favorite', label: 'Favorite', color: '#f59e0b' },
-  { id: 'restaurant', label: 'Restaurant', color: '#ef4444' },
-  { id: 'hotel', label: 'Hotel', color: '#8b5cf6' },
-  { id: 'park', label: 'Park', color: '#22c55e' },
-  { id: 'shop', label: 'Shop', color: '#3b82f6' },
-  { id: 'landmark', label: 'Landmark', color: '#f97316' },
-  { id: 'transport', label: 'Transport', color: '#06b6d4' },
+  { id: 'general', label: 'General', color: '#6b7280', icon: '📌' },
+  { id: 'favorite', label: 'Favorite', color: '#f59e0b', icon: '⭐' },
+  { id: 'restaurant', label: 'Restaurant', color: '#ef4444', icon: '🍽️' },
+  { id: 'hotel', label: 'Hotel', color: '#8b5cf6', icon: '🏨' },
+  { id: 'park', label: 'Park', color: '#22c55e', icon: '🌳' },
+  { id: 'shop', label: 'Shop', color: '#3b82f6', icon: '🛍️' },
+  { id: 'landmark', label: 'Landmark', color: '#f97316', icon: '🏛️' },
+  { id: 'transport', label: 'Transport', color: '#06b6d4', icon: '🚌' },
 ]
 
 const colorOptions = [
@@ -125,39 +122,52 @@ export function AddLocationDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md rounded-2xl">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <MapPin className="h-5 w-5 text-primary" />
+          <DialogTitle className="flex items-center gap-2.5">
+            <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-md shadow-emerald-500/20">
+              <MapPin className="h-4 w-4 text-white" />
+            </div>
             Add New Location
           </DialogTitle>
+          <DialogDescription>
+            Save a new place on the map with details and custom styling.
+          </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 py-2">
           <div className="space-y-2">
-            <Label htmlFor="name">Name *</Label>
+            <Label htmlFor="name" className="text-xs font-medium">
+              Name <span className="text-destructive">*</span>
+            </Label>
             <Input
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Enter location name"
+              className="rounded-xl"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description" className="text-xs font-medium">
+              Description
+            </Label>
             <Textarea
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Optional description"
+              placeholder="Optional description..."
               rows={2}
+              className="rounded-xl resize-none"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-2">
-              <Label htmlFor="latitude">Latitude *</Label>
+              <Label htmlFor="latitude" className="text-xs font-medium">
+                Latitude <span className="text-destructive">*</span>
+              </Label>
               <Input
                 id="latitude"
                 type="number"
@@ -165,10 +175,13 @@ export function AddLocationDialog({
                 value={lat}
                 onChange={(e) => setLat(e.target.value)}
                 placeholder="46.0569"
+                className="rounded-xl font-mono text-sm"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="longitude">Longitude *</Label>
+              <Label htmlFor="longitude" className="text-xs font-medium">
+                Longitude <span className="text-destructive">*</span>
+              </Label>
               <Input
                 id="longitude"
                 type="number"
@@ -176,6 +189,7 @@ export function AddLocationDialog({
                 value={lng}
                 onChange={(e) => setLng(e.target.value)}
                 placeholder="14.5058"
+                className="rounded-xl font-mono text-sm"
               />
             </div>
           </div>
@@ -184,23 +198,25 @@ export function AddLocationDialog({
             type="button"
             variant="outline"
             size="sm"
-            className="w-full"
+            className="w-full rounded-xl"
             onClick={handleUseMapCenter}
           >
             <Crosshair className="h-3.5 w-3.5 mr-1.5" />
-            Use current map center ({center[1].toFixed(4)}, {center[0].toFixed(4)})
+            Use current map center ({center[1].toFixed(4)},{' '}
+            {center[0].toFixed(4)})
           </Button>
 
           <div className="space-y-2">
-            <Label>Category</Label>
+            <Label className="text-xs font-medium">Category</Label>
             <Select value={category} onValueChange={setCategory}>
-              <SelectTrigger>
+              <SelectTrigger className="rounded-xl">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
                 {categories.map((cat) => (
                   <SelectItem key={cat.id} value={cat.id}>
                     <div className="flex items-center gap-2">
+                      <span>{cat.icon}</span>
                       <div
                         className="w-2.5 h-2.5 rounded-full"
                         style={{ backgroundColor: cat.color }}
@@ -214,16 +230,17 @@ export function AddLocationDialog({
           </div>
 
           <div className="space-y-2">
-            <Label>Marker Color</Label>
+            <Label className="text-xs font-medium">Marker Color</Label>
             <div className="flex gap-2 flex-wrap">
               {colorOptions.map((c) => (
                 <button
                   key={c}
                   onClick={() => setColor(c)}
-                  className="w-7 h-7 rounded-full border-2 transition-all hover:scale-110"
+                  className="w-8 h-8 rounded-xl border-2 transition-all hover:scale-110 shadow-sm"
                   style={{
                     backgroundColor: c,
                     borderColor: color === c ? '#000' : 'transparent',
+                    transform: color === c ? 'scale(1.15)' : undefined,
                   }}
                 />
               ))}
@@ -231,9 +248,10 @@ export function AddLocationDialog({
           </div>
         </div>
 
-        <DialogFooter>
+        <DialogFooter className="gap-2">
           <Button
             variant="outline"
+            className="rounded-xl"
             onClick={() => {
               onOpenChange(false)
               resetForm()
@@ -241,8 +259,19 @@ export function AddLocationDialog({
           >
             Cancel
           </Button>
-          <Button onClick={handleSubmit} disabled={isSubmitting}>
-            {isSubmitting ? 'Adding...' : 'Add Location'}
+          <Button
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+            className="rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white border-0"
+          >
+            {isSubmitting ? (
+              'Adding...'
+            ) : (
+              <>
+                <Plus className="h-4 w-4 mr-1.5" />
+                Add Location
+              </>
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>

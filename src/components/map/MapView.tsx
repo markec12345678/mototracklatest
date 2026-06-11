@@ -12,27 +12,30 @@ export function MapView() {
   const mapLoadedRef = useRef(false)
   const [mapLoadedVersion, setMapLoadedVersion] = useState(0)
 
-  const {
-    currentStyle,
-    setCenter,
-    setZoom,
-    setBearing,
-    setPitch,
-    markers,
-    selectedMarker,
-    setSelectedMarker,
-    toolMode,
-    addMarker,
-    addMeasurePoint,
-    measurePoints,
-  } = useMapStore()
+  // Use refs for values needed in map event handlers to avoid stale closures
+  const toolModeRef = useRef(useMapStore.getState().toolMode)
+  const selectedMarkerRef = useRef(useMapStore.getState().selectedMarker)
+
+  // Keep refs in sync
+  useEffect(() => {
+    const unsub = useMapStore.subscribe((state) => {
+      toolModeRef.current = state.toolMode
+      selectedMarkerRef.current = state.selectedMarker
+    })
+    return unsub
+  }, [])
+
+  const currentStyle = useMapStore((s) => s.currentStyle)
+  const markers = useMapStore((s) => s.markers)
+  const selectedMarker = useMapStore((s) => s.selectedMarker)
+  const measurePoints = useMapStore((s) => s.measurePoints)
 
   const markMapLoaded = useCallback((loaded: boolean) => {
     mapLoadedRef.current = loaded
     setMapLoadedVersion((v) => v + 1)
   }, [])
 
-  // Initialize map
+  // Initialize map (only once)
   useEffect(() => {
     if (!mapContainer.current || map.current) return
 
@@ -46,29 +49,33 @@ export function MapView() {
 
     newMap.addControl(new maplibregl.NavigationControl(), 'bottom-right')
     newMap.addControl(new maplibregl.ScaleControl(), 'bottom-left')
-    newMap.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-right')
+    newMap.addControl(
+      new maplibregl.AttributionControl({ compact: true }),
+      'bottom-right'
+    )
 
     newMap.on('move', () => {
       const center = newMap.getCenter()
-      setCenter([center.lng, center.lat])
+      useMapStore.getState().setCenter([center.lng, center.lat])
     })
 
     newMap.on('zoom', () => {
-      setZoom(newMap.getZoom())
+      useMapStore.getState().setZoom(newMap.getZoom())
     })
 
     newMap.on('rotate', () => {
-      setBearing(newMap.getBearing())
+      useMapStore.getState().setBearing(newMap.getBearing())
     })
 
     newMap.on('pitch', () => {
-      setPitch(newMap.getPitch())
+      useMapStore.getState().setPitch(newMap.getPitch())
     })
 
     newMap.on('click', (e) => {
-      if (toolMode === 'mark') {
+      const mode = toolModeRef.current
+      if (mode === 'mark') {
         const id = `marker-${Date.now()}`
-        addMarker({
+        useMapStore.getState().addMarker({
           id,
           longitude: e.lngLat.lng,
           latitude: e.lngLat.lat,
@@ -76,13 +83,13 @@ export function MapView() {
           color: '#ef4444',
           category: 'general',
         })
-      } else if (toolMode === 'measure') {
-        addMeasurePoint({
+      } else if (mode === 'measure') {
+        useMapStore.getState().addMeasurePoint({
           longitude: e.lngLat.lng,
           latitude: e.lngLat.lat,
         })
       } else {
-        setSelectedMarker(null)
+        useMapStore.getState().setSelectedMarker(null)
       }
     })
 
@@ -107,7 +114,7 @@ export function MapView() {
       map.current = null
       mapLoadedRef.current = false
     }
-  }, [currentStyle, setCenter, setZoom, setBearing, setPitch, toolMode, addMarker, addMeasurePoint, setSelectedMarker, markMapLoaded])
+  }, [markMapLoaded])
 
   // Update map style
   useEffect(() => {
@@ -146,7 +153,10 @@ export function MapView() {
           </svg>
         `
         el.style.cursor = 'pointer'
-        el.style.filter = selectedMarker === m.id ? 'drop-shadow(0 0 6px rgba(0,0,0,0.5))' : 'none'
+        el.style.filter =
+          selectedMarker === m.id
+            ? 'drop-shadow(0 0 6px rgba(0,0,0,0.5))'
+            : 'none'
         el.style.transform = selectedMarker === m.id ? 'scale(1.2)' : 'scale(1)'
         el.style.transition = 'transform 0.2s, filter 0.2s'
 
@@ -156,8 +166,14 @@ export function MapView() {
             new maplibregl.Popup({ offset: 25, closeButton: true }).setHTML(
               `<div style="padding: 8px; min-width: 150px;">
                 <h3 style="font-weight: 600; font-size: 14px; margin-bottom: 4px;">${m.name}</h3>
-                ${m.description ? `<p style="font-size: 12px; color: #666; margin-bottom: 4px;">${m.description}</p>` : ''}
-                <p style="font-size: 11px; color: #999;">📍 ${m.latitude.toFixed(4)}, ${m.longitude.toFixed(4)}</p>
+                ${
+                  m.description
+                    ? `<p style="font-size: 12px; color: #666; margin-bottom: 4px;">${m.description}</p>`
+                    : ''
+                }
+                <p style="font-size: 11px; color: #999;">📍 ${m.latitude.toFixed(
+                  4
+                )}, ${m.longitude.toFixed(4)}</p>
               </div>`
             )
           )
@@ -165,7 +181,7 @@ export function MapView() {
 
         el.addEventListener('click', (e) => {
           e.stopPropagation()
-          setSelectedMarker(m.id)
+          useMapStore.getState().setSelectedMarker(m.id)
         })
 
         markerRefs.current.set(m.id, marker)
@@ -174,12 +190,15 @@ export function MapView() {
         const existing = markerRefs.current.get(m.id)
         if (existing) {
           const el = existing.getElement()
-          el.style.filter = selectedMarker === m.id ? 'drop-shadow(0 0 6px rgba(0,0,0,0.5))' : 'none'
+          el.style.filter =
+            selectedMarker === m.id
+              ? 'drop-shadow(0 0 6px rgba(0,0,0,0.5))'
+              : 'none'
           el.style.transform = selectedMarker === m.id ? 'scale(1.2)' : 'scale(1)'
         }
       }
     })
-  }, [markers, selectedMarker, setSelectedMarker])
+  }, [markers, selectedMarker])
 
   // Sync measurement line
   useEffect(() => {
@@ -276,7 +295,18 @@ export function MapView() {
 
   return (
     <div className="relative w-full h-full">
-      <div ref={mapContainer} style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, width: '100%', height: '100%' }} />
+      <div
+        ref={mapContainer}
+        style={{
+          position: 'absolute',
+          top: 0,
+          bottom: 0,
+          left: 0,
+          right: 0,
+          width: '100%',
+          height: '100%',
+        }}
+      />
     </div>
   )
 }
