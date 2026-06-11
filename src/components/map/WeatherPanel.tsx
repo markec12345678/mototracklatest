@@ -137,22 +137,23 @@ export function WeatherPanel() {
         : 'weather-accent-neutral'
     : 'weather-accent-neutral'
 
-  // Get next 6 hours of forecast (from current hour)
+  // Get next hours of forecast (from current hour) — 4 on mobile, 6 on desktop
   const now = new Date()
   const currentHourIndex = weatherData?.hourly.time.findIndex(t => new Date(t) >= now) ?? -1
+  const forecastCount = 6
   const forecastHours = weatherData?.hourly.temperature_2m.slice(
     Math.max(0, currentHourIndex),
-    Math.max(0, currentHourIndex) + 6
+    Math.max(0, currentHourIndex) + forecastCount
   ) ?? []
 
   const forecastPrecip = weatherData?.hourly.precipitation_probability.slice(
     Math.max(0, currentHourIndex),
-    Math.max(0, currentHourIndex) + 6
+    Math.max(0, currentHourIndex) + forecastCount
   ) ?? []
 
   const forecastTimes = weatherData?.hourly.time.slice(
     Math.max(0, currentHourIndex),
-    Math.max(0, currentHourIndex) + 6
+    Math.max(0, currentHourIndex) + forecastCount
   ) ?? []
 
   return (
@@ -166,11 +167,11 @@ export function WeatherPanel() {
           'glass-card rounded-2xl shadow-xl overflow-hidden',
           accentClass
         )}
-        style={{ minWidth: minimized ? 48 : 280, maxWidth: 300, backdropFilter: 'blur(20px) saturate(180%)' }}
+        style={{ minWidth: minimized ? 48 : undefined, maxWidth: 300, width: minimized ? 48 : undefined, backdropFilter: 'blur(20px) saturate(180%)' }}
       >
         {/* Gradient header */}
         <div className={`relative bg-gradient-to-r ${weatherInfo?.gradient || 'from-gray-400/20 to-gray-200/10'}`}>
-          <div className="p-3 flex items-start gap-3">
+          <div className="p-2.5 sm:p-3 flex items-start gap-2 sm:gap-3">
             {minimized ? (
               <button
                 onClick={() => setMinimized(false)}
@@ -198,18 +199,18 @@ export function WeatherPanel() {
                   ) : weatherData ? (
                     <>
                       <div className="flex items-center gap-2">
-                        <span className="text-3xl">{weatherInfo?.emoji}</span>
+                        <span className="text-2xl sm:text-3xl">{weatherInfo?.emoji}</span>
                         <div>
-                          <p className="text-3xl font-bold tabular-nums leading-tight">
+                          <p className="text-2xl sm:text-3xl font-bold tabular-nums leading-tight">
                             {weatherData.current.temperature_2m.toFixed(1)}°C
                           </p>
-                          <p className="text-[10px] text-muted-foreground mt-0.5">
+                          <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-0.5">
                             {weatherInfo?.description}
                           </p>
                         </div>
                       </div>
                       {weatherData.current.apparent_temperature !== weatherData.current.temperature_2m && (
-                        <p className="text-[10px] text-muted-foreground mt-0.5">
+                        <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-0.5">
                           Feels like {weatherData.current.apparent_temperature.toFixed(1)}°C
                         </p>
                       )}
@@ -238,10 +239,10 @@ export function WeatherPanel() {
         </div>
 
         {!minimized && (
-          <div className="px-3 pb-3">
+          <div className="px-2.5 sm:px-3 pb-2.5 sm:pb-3">
             {/* Location name */}
             {locationName && (
-              <p className="text-[10px] text-muted-foreground mb-2 flex items-center gap-1">
+              <p className="text-[9px] sm:text-[10px] text-muted-foreground mb-1.5 sm:mb-2 flex items-center gap-1">
                 <CloudSun className="h-2.5 w-2.5" />
                 {locationName}
               </p>
@@ -249,25 +250,25 @@ export function WeatherPanel() {
 
             {/* Stats grid */}
             {weatherData && (
-              <div className="grid grid-cols-3 gap-2 mb-2">
-                <div className="flex flex-col items-center gap-0.5 p-1.5 rounded-lg bg-background/50">
-                  <Droplets className="h-3 w-3 text-sky-500" />
-                  <span className="text-[10px] text-muted-foreground">Humidity</span>
-                  <span className="text-xs font-semibold tabular-nums">
+              <div className="grid grid-cols-3 gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
+                <div className="flex flex-col items-center gap-0.5 p-1 sm:p-1.5 rounded-lg bg-background/50">
+                  <Droplets className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-sky-500" />
+                  <span className="text-[8px] sm:text-[10px] text-muted-foreground">Humidity</span>
+                  <span className="text-[10px] sm:text-xs font-semibold tabular-nums">
                     {weatherData.current.relative_humidity_2m}%
                   </span>
                 </div>
-                <div className="flex flex-col items-center gap-0.5 p-1.5 rounded-lg bg-background/50">
-                  <Wind className="h-3 w-3 text-teal-500" />
-                  <span className="text-[10px] text-muted-foreground">Wind</span>
-                  <span className="text-xs font-semibold tabular-nums">
+                <div className="flex flex-col items-center gap-0.5 p-1 sm:p-1.5 rounded-lg bg-background/50">
+                  <Wind className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-teal-500" />
+                  <span className="text-[8px] sm:text-[10px] text-muted-foreground">Wind</span>
+                  <span className="text-[10px] sm:text-xs font-semibold tabular-nums">
                     {weatherData.current.wind_speed_10m.toFixed(0)} km/h
                   </span>
                 </div>
-                <div className="flex flex-col items-center gap-0.5 p-1.5 rounded-lg bg-background/50">
-                  <Thermometer className="h-3 w-3 text-orange-500" />
-                  <span className="text-[10px] text-muted-foreground">Precip</span>
-                  <span className="text-xs font-semibold tabular-nums">
+                <div className="flex flex-col items-center gap-0.5 p-1 sm:p-1.5 rounded-lg bg-background/50">
+                  <Thermometer className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-orange-500" />
+                  <span className="text-[8px] sm:text-[10px] text-muted-foreground">Precip</span>
+                  <span className="text-[10px] sm:text-xs font-semibold tabular-nums">
                     {weatherData.current.precipitation.toFixed(1)} mm
                   </span>
                 </div>
@@ -276,9 +277,9 @@ export function WeatherPanel() {
 
             {/* Wind direction */}
             {weatherData && weatherData.current.wind_direction_10m !== undefined && (
-              <div className="flex items-center gap-2 mb-2 px-1">
-                <span className="text-[10px] text-muted-foreground">Wind direction:</span>
-                <span className="text-xs font-medium">
+              <div className="flex items-center gap-2 mb-1.5 sm:mb-2 px-1">
+                <span className="text-[9px] sm:text-[10px] text-muted-foreground">Wind direction:</span>
+                <span className="text-[10px] sm:text-xs font-medium">
                   {getWindDirection(weatherData.current.wind_direction_10m)} ({weatherData.current.wind_direction_10m.toFixed(0)}°)
                 </span>
               </div>
@@ -287,8 +288,8 @@ export function WeatherPanel() {
             {/* Hourly forecast - horizontal scroll with snap */}
             {weatherData && forecastHours.length > 0 && (
               <div className="mt-1">
-                <p className="text-[10px] text-muted-foreground font-medium mb-1.5">Next hours</p>
-                <div className="flex gap-1.5 overflow-x-auto snap-x snap-mandatory pb-1 scrollbar-none" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                <p className="text-[9px] sm:text-[10px] text-muted-foreground font-medium mb-1 sm:mb-1.5">Next hours</p>
+                <div className="flex gap-1 sm:gap-1.5 overflow-x-auto snap-x snap-mandatory pb-1 scrollbar-none" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                   {forecastHours.map((temp, i) => {
                     const time = forecastTimes[i]
                     const precip = forecastPrecip[i]
@@ -297,14 +298,14 @@ export function WeatherPanel() {
                     return (
                       <div
                         key={i}
-                        className={`flex flex-col items-center gap-0.5 px-2.5 py-1.5 rounded-lg shrink-0 snap-start transition-colors ${
+                        className={`flex flex-col items-center gap-0.5 px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-lg shrink-0 snap-start transition-colors ${
                           isNow ? 'bg-primary/10' : 'bg-background/50'
                         }`}
                       >
-                        <span className="text-[9px] text-muted-foreground">
+                        <span className="text-[8px] sm:text-[9px] text-muted-foreground">
                           {isNow ? 'Now' : `${hour}:00`}
                         </span>
-                        <span className="text-[11px] font-semibold tabular-nums">
+                        <span className="text-[10px] sm:text-[11px] font-semibold tabular-nums">
                           {temp.toFixed(0)}°
                         </span>
                         {precip > 0 && (
@@ -321,9 +322,9 @@ export function WeatherPanel() {
 
             {/* 7-Day Forecast */}
             {weatherData?.daily && weatherData.daily.time.length > 0 && (
-              <div className="mt-2">
-                <p className="text-[10px] text-muted-foreground font-medium mb-1.5">7-Day Forecast</p>
-                <div className="flex gap-1.5 overflow-x-auto snap-x snap-mandatory pb-1 sm:grid sm:grid-cols-7 sm:overflow-x-visible" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+              <div className="mt-1.5 sm:mt-2">
+                <p className="text-[9px] sm:text-[10px] text-muted-foreground font-medium mb-1 sm:mb-1.5">7-Day Forecast</p>
+                <div className="flex gap-1 sm:gap-1.5 overflow-x-auto snap-x snap-mandatory pb-1 sm:grid sm:grid-cols-7 sm:overflow-x-visible" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                   {weatherData.daily.time.map((dateStr, i) => {
                     const date = new Date(dateStr + 'T00:00:00')
                     const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
@@ -332,18 +333,18 @@ export function WeatherPanel() {
                     return (
                       <div
                         key={i}
-                        className={`flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-lg shrink-0 snap-start transition-colors min-w-[52px] ${
+                        className={`flex flex-col items-center gap-0.5 px-1.5 py-1 sm:px-2 sm:py-1.5 rounded-lg shrink-0 snap-start transition-colors min-w-[44px] sm:min-w-[52px] ${
                           isToday ? 'bg-primary/10' : 'bg-background/50'
                         }`}
                       >
-                        <span className="text-[9px] font-medium text-muted-foreground">
+                        <span className="text-[8px] sm:text-[9px] font-medium text-muted-foreground">
                           {isToday ? 'Today' : dayNames[date.getDay()]}
                         </span>
-                        <span className="text-sm leading-none">{dayInfo.emoji}</span>
-                        <span className="text-[11px] font-semibold tabular-nums">
+                        <span className="text-xs sm:text-sm leading-none">{dayInfo.emoji}</span>
+                        <span className="text-[10px] sm:text-[11px] font-semibold tabular-nums">
                           {weatherData.daily!.temperature_2m_max[i].toFixed(0)}°
                         </span>
-                        <span className="text-[9px] text-muted-foreground tabular-nums">
+                        <span className="text-[8px] sm:text-[9px] text-muted-foreground tabular-nums">
                           {weatherData.daily!.temperature_2m_min[i].toFixed(0)}°
                         </span>
                         {weatherData.daily!.precipitation_sum[i] > 0 && (

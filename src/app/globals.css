@@ -1069,3 +1069,128 @@
 .dark .nearby-item:hover {
   background: oklch(0.6 0.2 160 / 6%);
 }
+
+/* ===== POI Marker Shadow ===== */
+@utility poi-marker-shadow {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: transform 0.15s ease;
+}
+
+/* ===== Tile Loading Bar Animation ===== */
+@keyframes loading-bar {
+  0% { width: 0%; margin-left: 0%; }
+  50% { width: 60%; margin-left: 20%; }
+  100% { width: 0%; margin-left: 100%; }
+}
+
+@utility animate-loading-bar {
+  animation: loading-bar 1.5s ease-in-out infinite;
+}
+
+/* ===== Map Container Loading Shimmer ===== */
+@keyframes map-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@utility map-shimmer {
+  background: linear-gradient(90deg, oklch(0.95 0 0 / 0.1) 25%, oklch(0.95 0 0 / 0.3) 50%, oklch(0.95 0 0 / 0.1) 75%);
+  background-size: 200% 100%;
+  animation: map-shimmer 1.5s ease-in-out infinite;
+}
+
+/* ===== Sidebar Slide Animation ===== */
+@utility sidebar-slide-in {
+  animation: sidebar-slide-in 0.3s ease-out;
+}
+
+@keyframes sidebar-slide-in {
+  from { transform: translateX(-20px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* ===== Toast Notification Enhanced ===== */
+@utility toast-enhanced {
+  @apply rounded-xl shadow-xl border;
+  backdrop-filter: blur(12px) saturate(180%);
+}
+
+/* ===== Marker Bounce Animation ===== */
+@keyframes marker-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@utility marker-bounce {
+  animation: marker-bounce 0.4s ease-out;
+}
+
+/* ===== Map Control Hover Glow ===== */
+@utility control-glow {
+  transition: box-shadow 0.2s ease;
+}
+
+@utility control-glow-hover {
+  box-shadow: 0 0 12px oklch(0.7 0.15 160 / 0.2);
+}
+
+/* ===== Smooth Panel Transitions ===== */
+@utility panel-transition {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== Card Hover Lift ===== */
+@utility card-lift {
+  @apply transition-all duration-200;
+}
+
+@utility card-lift-hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px oklch(0 0 0 / 0.1);
+}
+
+/* ===== Gradient Text for Headings ===== */
+@utility gradient-text {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 to-teal-500;
+}
+
+/* ===== Mobile Toolbar Bottom Bar ===== */
+@utility mobile-toolbar-bar {
+  @apply bg-background/90 backdrop-blur-md border border-border/50 rounded-2xl shadow-lg;
+}
+
+/* ===== Route Item Hover ===== */
+@utility route-item-hover {
+  @apply transition-all duration-200;
+}
+
+@utility route-item-hover-hover {
+  transform: translateX(2px);
+  box-shadow: 0 2px 8px oklch(0 0 0 / 0.08);
+}
+
+/* ===== GPX Export Button Gradient ===== */
+@utility gpx-export-btn {
+  @apply bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border-emerald-500/20 hover:from-emerald-500/20 hover:to-teal-500/20 hover:border-emerald-500/30 transition-all duration-200;
+}
+
+/* ===== Section Divider in Tools ===== */
+@utility tools-section-divider {
+  @apply relative my-3;
+}
+
+/* Pseudo-element handled via the class itself with CSS */
+.tools-section-divider::after {
+  content: '';
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, oklch(0.7 0 0 / 20%), transparent);
+}
+
+/* ===== Empty State Illustration ===== */
+@utility empty-state-icon {
+  @apply w-16 h-16 mx-auto mb-3 rounded-2xl bg-gradient-to-br from-muted/30 to-muted/60 flex items-center justify-center;
+}

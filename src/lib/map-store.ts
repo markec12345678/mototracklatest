@@ -44,6 +44,16 @@ export interface MapRoute {
   duration: number | null
 }
 
+export interface POIMarker {
+  id: string
+  longitude: number
+  latitude: number
+  name: string
+  category: string
+  icon: string
+  distance: number | null
+}
+
 export type MapStyleOption = {
   id: string
   name: string
@@ -251,6 +261,14 @@ interface MapState {
   // Earthquakes overlay
   earthquakesEnabled: boolean
 
+  // Isochrone visualization
+  isochroneEnabled: boolean
+  isochroneMinutes: number
+  isochroneMode: 'walking' | 'cycling' | 'driving'
+
+  // POI Markers (temporary, for nearby search)
+  poiMarkers: POIMarker[]
+
   // Notifications
   notifications: MapNotification[]
 
@@ -297,8 +315,13 @@ interface MapState {
   setWeatherEnabled: (enabled: boolean) => void
   setEarthquakesEnabled: (enabled: boolean) => void
   setTrafficEnabled: (enabled: boolean) => void
+  setIsochroneEnabled: (enabled: boolean) => void
+  setIsochroneMinutes: (minutes: number) => void
+  setIsochroneMode: (mode: 'walking' | 'cycling' | 'driving') => void
   pushNotification: (notification: Omit<MapNotification, 'id' | 'timestamp'>) => void
   dismissNotification: (id: string) => void
+  setPoiMarkers: (poiMarkers: POIMarker[]) => void
+  clearPoiMarkers: () => void
 }
 
 export const useMapStore = create<MapState>()(
@@ -344,6 +367,10 @@ export const useMapStore = create<MapState>()(
       weatherEnabled: false,
       trafficEnabled: false,
       earthquakesEnabled: false,
+      isochroneEnabled: false,
+      isochroneMinutes: 15,
+      isochroneMode: 'walking',
+      poiMarkers: [],
       notifications: [],
 
       setCenter: (center) => set({ center }),
@@ -475,6 +502,9 @@ export const useMapStore = create<MapState>()(
       setWeatherEnabled: (weatherEnabled) => set({ weatherEnabled }),
       setEarthquakesEnabled: (earthquakesEnabled) => set({ earthquakesEnabled }),
       setTrafficEnabled: (trafficEnabled) => set({ trafficEnabled }),
+      setIsochroneEnabled: (isochroneEnabled) => set({ isochroneEnabled }),
+      setIsochroneMinutes: (isochroneMinutes) => set({ isochroneMinutes }),
+      setIsochroneMode: (isochroneMode) => set({ isochroneMode }),
 
       pushNotification: (notification) =>
         set((state) => ({
@@ -487,6 +517,8 @@ export const useMapStore = create<MapState>()(
         set((state) => ({
           notifications: state.notifications.filter((n) => n.id !== id),
         })),
+      setPoiMarkers: (poiMarkers) => set({ poiMarkers }),
+      clearPoiMarkers: () => set({ poiMarkers: [] }),
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -496,6 +528,9 @@ export const useMapStore = create<MapState>()(
         weatherEnabled: state.weatherEnabled,
         trafficEnabled: state.trafficEnabled,
         earthquakesEnabled: state.earthquakesEnabled,
+        isochroneEnabled: state.isochroneEnabled,
+        isochroneMinutes: state.isochroneMinutes,
+        isochroneMode: state.isochroneMode,
         terrainEnabled: state.terrainEnabled,
         buildingExtrusion: state.buildingExtrusion,
         terrainExaggeration: state.terrainExaggeration,

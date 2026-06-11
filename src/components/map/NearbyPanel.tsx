@@ -44,12 +44,32 @@ export function NearbyPanel() {
         const data = await res.json()
         setPois(data.pois || [])
         lastFetchRef.current = fetchKey
+
+        // Update POI markers on map
+        const { setPoiMarkers, clearPoiMarkers } = useMapStore.getState()
+        if (data.pois && data.pois.length > 0) {
+          setPoiMarkers(
+            data.pois.map((poi: POI, i: number) => ({
+              id: `poi-${i}-${poi.latitude.toFixed(4)}-${poi.longitude.toFixed(4)}`,
+              longitude: poi.longitude,
+              latitude: poi.latitude,
+              name: poi.name,
+              category: poi.category,
+              icon: poi.icon,
+              distance: poi.distance,
+            }))
+          )
+        } else {
+          clearPoiMarkers()
+        }
       } else {
         setPois([])
+        useMapStore.getState().clearPoiMarkers()
       }
     } catch (err) {
       console.error('POI fetch error:', err)
       setPois([])
+      useMapStore.getState().clearPoiMarkers()
     } finally {
       setLoading(false)
     }
@@ -96,6 +116,16 @@ export function NearbyPanel() {
     })
     toast.success(`Added "${poi.name}" to saved locations`)
   }
+
+  // Clear POI markers when panel unmounts or sidebar closes
+  useEffect(() => {
+    if (!sidebarOpen) {
+      useMapStore.getState().clearPoiMarkers()
+    }
+    return () => {
+      useMapStore.getState().clearPoiMarkers()
+    }
+  }, [sidebarOpen])
 
   if (!sidebarOpen) return null
 

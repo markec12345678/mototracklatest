@@ -1968,3 +1968,133 @@ Unresolved Issues / Next Phase Recommendations:
 - Could enhance POI panel with map markers for POI locations
 - Could add map tile loading indicator
 - Could add offline/PWA support
+
+---
+Task ID: 5-7
+Agent: Full Stack Developer
+Task: POI Map Markers + Tile Loading Indicator + Route Elevation
+
+Work Log:
+- Added POIMarker interface and poiMarkers state to map-store.ts with setPoiMarkers/clearPoiMarkers actions (not persisted in partialize)
+- Updated NearbyPanel.tsx to call setPoiMarkers after POI fetch and clearPoiMarkers on unmount/sidebar close/error
+- Added POI marker rendering useEffect in MapView.tsx - creates green circle markers with emoji icons, hover scale effect, and click-to-fly-to behavior
+- Added tilesLoading state with dataloading/idle event listeners on the map in MapView.tsx
+- Added subtle tile loading indicator (thin animated bar at top of map) in MapView.tsx render
+- Updated ElevationProfile.tsx to support both measure and directions modes using routePoints
+- Changed activePoints logic: toolMode==='directions' uses routePoints, otherwise measurePoints
+- Updated visibility condition from toolMode!=='measure' to include directions mode
+- Updated prompt text for directions mode ("Click on the map to add route waypoints")
+- Updated page.tsx ElevationProfile positioning to show in both measure and directions modes
+- Added CSS: poi-marker-shadow utility, loading-bar keyframes, animate-loading-bar utility to globals.css
+- Ran lint - all passes cleanly
+
+Stage Summary:
+- Feature 1 (POI Markers): Nearby POIs now appear as green circle markers with emoji icons on the map. Markers have hover scale effect and click-to-fly-to. They are cleared when sidebar closes or panel unmounts.
+- Feature 2 (Tile Loading): Subtle animated loading bar appears at the top of the map when tiles are loading, driven by dataloading/idle map events.
+- Feature 3 (Route Elevation): Elevation profile now works in directions mode, showing elevation data for route waypoints. The panel appears in the correct position for both measure and directions tool modes.
+
+---
+Task ID: 2-4
+Agent: Full Stack Developer
+Task: POI Cache Optimization + GPX Import + Isochrone Visualization
+
+Work Log:
+- Read worklog.md and all relevant source files (poi/route.ts, MapSidebar.tsx, MapView.tsx, map-store.ts, search/route.ts for cache pattern)
+- Feature 1: Optimized POI API with in-memory caching (10-min TTL, rounded coords for cache keys, 100 max entries with eviction)
+  - Reduced Overpass timeout 10→6s, radius 5000→3000, max results 20→15
+  - Removed `next: { revalidate: 300 }` from both Overpass and MapTiler fetches (fixes Next.js cache errors with large responses)
+  - Added AbortSignal.timeout(8000) for hard fetch timeout
+  - Added proper error handling for Overpass timeouts (429, 504)
+- Feature 2: Created GPX Import API route (/api/import/gpx) with regex-based XML parsing
+  - Parses waypoints (wpt), tracks (trk), and routes (rte)
+  - Added GPX Import UI: "Import GPX File" button in TOOLS tab, "Import GPX Route" button in ROUTES tab
+  - Handler imports waypoints as markers + saved locations with category mapping
+  - Handler imports tracks as routes with green color
+  - Toast notifications showing import results
+- Feature 3: Created Isochrone API route (/api/isochrone) generating concentric reachability rings
+  - Supports walking (5km/h), cycling (15km/h), driving (40km/h) modes
+  - Generates 4 concentric rings at 25%, 50%, 75%, 100% of travel distance
+  - Updated MapStore with isochroneEnabled, isochroneMinutes, isochroneMode state + actions
+  - Added isochrone visualization in MapView.tsx (fill + line layers with color-coded rings)
+  - Added IsochroneControls component in TOOLS tab (switch, slider, mode buttons)
+- All changes pass lint checks with no errors
+- Dev server compiles successfully
+
+Stage Summary:
+- Feature 1 (POI Cache): POI API now uses in-memory cache with 10-minute TTL, reduced query parameters for faster responses, and proper timeout error handling. Cache uses rounded coordinate keys for better hit rates.
+- Feature 2 (GPX Import): Users can now import GPX files via the TOOLS or ROUTES tab. Waypoints are imported as markers/saved locations with automatic category mapping, and tracks are imported as routes. A toast notification confirms the number of imported items.
+- Feature 3 (Isochrone): Users can visualize travel reachability areas as concentric colored rings on the map. Controls include enable/disable switch, travel time slider (5-60 min), and travel mode selection (Walking/Cycling/Driving). The visualization updates when the map center or parameters change.
+
+---
+Task ID: 8
+Agent: Frontend Styling Expert
+Task: Mobile Polish + Enhanced Styling
+
+Work Log:
+- Added CSS micro-interaction utilities to globals.css: map-shimmer, sidebar-slide-in, toast-enhanced, marker-bounce, control-glow/hover, panel-transition, card-lift/hover, gradient-text, mobile-toolbar-bar, route-item-hover, gpx-export-btn, tools-section-divider, empty-state-icon
+- Enhanced MapToolbar: Increased button sizes from h-10/w-10 to h-11/w-11 for 44px touch targets, increased gap from gap-1.5 to gap-2, increased padding from p-1.5 to p-2
+- Improved WeatherPanel responsiveness: Added responsive sizing (sm: breakpoints for padding, font sizes, gaps), reduced sizes on mobile (text-2xl vs text-3xl for emoji/temp, smaller stat grid items, compact forecast cards min-w-[44px] on mobile vs min-w-[52px] on desktop), flexible width instead of fixed 280px minWidth
+- Enhanced MapSidebar: Added animated gradient top border with shimmer overlay, applied gradient-text class to "MapLibre Explorer" header, enhanced GPX export button with gpx-export-btn gradient class, added hover animation to route items (hover:translate-x-0.5 hover:shadow-sm), improved empty states with gradient icon backgrounds (from-muted/30 to-muted/60), better Tools tab section headers (uppercase tracking-wider with icon), consistent styling across all sub-sections
+- Enhanced StyleSwitcher: Added shadow-sm hover:shadow-md to style cards for depth effect
+- Enhanced MapStatsPanel: Added coordinate display with DMS format (degrees+minutes), click-to-copy functionality for all stats and coordinates, responsive font sizing (9px mobile / 10px tablet / 11px desktop), added coordinate string display
+- Improved page.tsx mobile layout: Reduced top bar padding on mobile (top-2 vs top-3), smaller button sizes on mobile (h-9 vs h-10), responsive gaps, adjusted mobile weather bar position, adjusted mobile toolbar with min-w-[44px] min-h-[44px] for 44px touch targets, responsive text sizes on toolbar labels, repositioned Add Location FAB for mobile
+- Enhanced footer: More responsive sizing (text-[9px] mobile / text-[10px] tablet / text-[11px] desktop), semi-transparent text (text-muted-foreground/70), compact spacing, smaller icon sizes on mobile
+
+Stage Summary:
+- All CSS utilities added for micro-interactions (shimmer, slide, glow, bounce, lift, gradient text)
+- Mobile experience significantly improved with 44px touch targets throughout
+- WeatherPanel fully responsive with compact mobile layout
+- MapSidebar enhanced with gradient border, animated header, improved empty states, hover animations on routes
+- MapStatsPanel now shows coordinates and supports click-to-copy
+- Footer more minimal and responsive across all screen sizes
+- All changes pass lint checks and compile successfully
+
+---
+Task ID: 10
+Agent: Main Developer
+Task: POI Optimization, Isochrone, GPX Import, POI Markers, Tile Loading, Route Elevation, Mobile Polish
+
+Work Log:
+- Fixed critical CSS bug: `@utility tools-section-divider::after` was invalid (utilities can't have pseudo-elements) - converted to plain CSS class
+- POI API optimization: Added in-memory cache with 10-min TTL, reduced Overpass timeout 10→6s, radius 5000→3000, limit 15 results, removed next.revalidate, added AbortSignal.timeout(8000)
+- POI API speed improvement: 14.5s → 1.9s for Ljubljana queries
+- Created Isochrone API (/api/isochrone) with concentric reachability rings based on walking/cycling/driving speed
+- Added isochrone state to MapStore (isochroneEnabled, isochroneMinutes, isochroneMode) - persisted
+- Added isochrone visualization in MapView with color-coded fill/line layers (green→teal→cyan→blue)
+- Added IsochroneControls in Tools tab with switch, slider (5-60 min), and mode buttons
+- Created GPX Import API (/api/import/gpx) - parses waypoints, tracks, and routes from GPX XML
+- Added GPX Import buttons in Tools tab and Routes tab
+- Import handler adds waypoints as markers/saved locations, tracks as routes
+- Added POIMarker interface and poiMarkers state to MapStore (temporary, not persisted)
+- NearbyPanel now sets poiMarkers in store after fetching POIs
+- MapView renders POI markers as green circles with emoji icons, hover scale, click-to-fly
+- Added tile loading indicator (animated bar at top of map)
+- ElevationProfile now works in both measure AND directions modes
+- Added 10+ new CSS utility classes and animations
+- Enhanced mobile experience: 44px touch targets, responsive weather panel, bottom toolbar
+- Enhanced MapSidebar with gradient top border, animated transitions, improved empty states
+- Added subtle footer with "Powered by MapTiler, OpenStreetMap, Open-Meteo"
+- All lint checks pass clean
+- All APIs verified: isochrone, GPX import, POI search all return 200
+
+Stage Summary:
+- 8 new features implemented in this round
+- Critical CSS bug fixed (invalid @utility name)
+- POI API dramatically faster (14.5s → 1.9s)
+- Isochrone visualization with 4 concentric rings and 3 travel modes
+- GPX Import/Export now both supported
+- POI markers appear on map when searching nearby
+- Route elevation profile works in directions mode
+- Tile loading indicator added
+- Mobile experience significantly improved
+- Styling polish with micro-interactions throughout
+
+Unresolved Issues / Next Phase Recommendations:
+- Could add real isochrone using OSRM routing instead of circle approximation
+- Could add shareable isochrone links
+- Could add heatmap visualization
+- Could add 3D building info on click
+- Could add route editing (drag route points)
+- Could add comparison of multiple routes
+- Could add persistent notification history
+- Could add more keyboard shortcuts

@@ -75,7 +75,8 @@ function ToolButton({ tool, isActive, onClick }: {
           variant="ghost"
           size="icon"
           className={cn(
-            'h-10 w-10 rounded-xl transition-all duration-200 relative',
+            'h-11 w-11 rounded-xl transition-all duration-200 relative',
+            // 44px minimum touch target
             isActive
               ? tool.activeClass
               : 'hover:bg-accent'
@@ -104,7 +105,7 @@ export function MapToolbar() {
 
   return (
     <TooltipProvider delayDuration={200}>
-      <div className="flex flex-col gap-1.5 bg-background/90 backdrop-blur-md border border-border/50 rounded-2xl shadow-lg p-1.5">
+      <div className="flex flex-col gap-2 bg-background/90 backdrop-blur-md border border-border/50 rounded-2xl shadow-lg p-2">
         {tools.map((tool) => (
           <ToolButton
             key={tool.id}

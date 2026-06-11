@@ -1,11 +1,51 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+interface POI {
+  name: string
+  latitude: number
+  longitude: number
+  category: string
+  type: string
+  distance: number
+  icon: string
+}
+
+// In-memory cache for POI results (similar to search route cache)
+const poiCache = new Map<string, { data: { pois: POI[] }; timestamp: number }>()
+const POI_CACHE_TTL = 10 * 60 * 1000 // 10 minutes
+const MAX_CACHE_SIZE = 100
+
+function getPoiCacheKey(lat: number, lng: number, category: string): string {
+  // Round to 3 decimal places (~111m precision) for better cache hits
+  return `${lat.toFixed(3)},${lng.toFixed(3)},${category}`
+}
+
+function getPoiCached(key: string): { pois: POI[] } | null {
+  const entry = poiCache.get(key)
+  if (!entry) return null
+  if (Date.now() - entry.timestamp > POI_CACHE_TTL) {
+    poiCache.delete(key)
+    return null
+  }
+  return entry.data
+}
+
+function setPoiCache(key: string, data: { pois: POI[] }) {
+  // Evict old entries if cache is too large
+  if (poiCache.size >= MAX_CACHE_SIZE) {
+    const oldest = [...poiCache.entries()].sort((a, b) => a[1].timestamp - b[1].timestamp)
+    for (let i = 0; i < Math.floor(MAX_CACHE_SIZE / 4); i++) {
+      poiCache.delete(oldest[i][0])
+    }
+  }
+  poiCache.set(key, { data, timestamp: Date.now() })
+}
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const lat = searchParams.get('lat')
   const lng = searchParams.get('lng')
   const category = searchParams.get('category') || 'eating_out'
-  const radius = parseInt(searchParams.get('radius') || '5000')
 
   if (!lat || !lng) {
     return NextResponse.json({ error: 'Missing lat or lng parameters' }, { status: 400 })
@@ -18,22 +58,33 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid coordinates' }, { status: 400 })
   }
 
+  // Check cache first
+  const cacheKey = getPoiCacheKey(latitude, longitude, category)
+  const cached = getPoiCached(cacheKey)
+  if (cached) {
+    return NextResponse.json(cached)
+  }
+
+  // Reduced radius for faster queries (3000 instead of 5000)
+  const radius = 3000
+
   try {
     // Use Overpass API to find nearby POIs
-    // Build the Overpass QL query based on category
+    // Reduced timeout from 10 to 6 seconds
     const overpassQuery = buildOverpassQuery(latitude, longitude, category, radius)
     const overpassUrl = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(overpassQuery)}`
 
     const res = await fetch(overpassUrl, {
-      next: { revalidate: 300 },
       headers: { 'User-Agent': 'MapLibreExplorer/1.0' },
+      // Removed next: { revalidate: 300 } — it causes Next.js cache errors with large responses
+      signal: AbortSignal.timeout(8000), // 8 second hard timeout for the fetch itself
     })
 
     if (res.ok) {
       const data = await res.json()
       const pois = (data.elements || [])
         .filter((el: Record<string, unknown>) => el.lat && el.lon)
-        .slice(0, 20)
+        .slice(0, 15) // Limit results to 15 max
         .map((el: Record<string, unknown>) => {
           const tags = (el.tags || {}) as Record<string, string>
           const elLat = el.lat as number
@@ -52,7 +103,14 @@ export async function GET(request: NextRequest) {
         })
         .sort((a: { distance: number }, b: { distance: number }) => a.distance - b.distance)
 
-      return NextResponse.json({ pois })
+      const result = { pois }
+      setPoiCache(cacheKey, result)
+      return NextResponse.json(result)
+    }
+
+    // Handle Overpass timeout errors specifically
+    if (res.status === 429 || res.status === 504) {
+      console.warn(`Overpass API returned ${res.status}, falling back to MapTiler`)
     }
 
     // Fallback: Use MapTiler Geocoding API with proximity
@@ -60,7 +118,7 @@ export async function GET(request: NextRequest) {
     if (maptilerKey) {
       const searchTerm = getCategorySearchTerm(category)
       const geocodeUrl = `https://api.maptiler.com/geocoding/${encodeURIComponent(searchTerm)}.json?proximity=${longitude},${latitude}&key=${maptilerKey}&limit=10`
-      const geoRes = await fetch(geocodeUrl, { next: { revalidate: 300 } })
+      const geoRes = await fetch(geocodeUrl)
 
       if (geoRes.ok) {
         const geoData = await geoRes.json()
@@ -79,12 +137,19 @@ export async function GET(request: NextRequest) {
             icon: getPOIIcon(category),
           }
         })
-        return NextResponse.json({ pois })
+        const result = { pois }
+        setPoiCache(cacheKey, result)
+        return NextResponse.json(result)
       }
     }
 
     return NextResponse.json({ pois: [] })
   } catch (error) {
+    // Handle Overpass timeout and network errors
+    if (error instanceof Error && (error.name === 'TimeoutError' || error.message.includes('abort'))) {
+      console.warn('Overpass API request timed out, returning empty results')
+      return NextResponse.json({ pois: [], warning: 'POI search timed out, please try again' })
+    }
     console.error('POI search error:', error)
     return NextResponse.json({ error: 'Failed to search POIs', pois: [] }, { status: 500 })
   }
@@ -106,7 +171,8 @@ function buildOverpassQuery(lat: number, lng: number, category: string, radius: 
     `${filter}(around:${radius},${lat},${lng});`
   ).join('')
 
-  return `[out:json][timeout:10];(${queryParts});out body;`
+  // Reduced timeout from 10 to 6 seconds
+  return `[out:json][timeout:6];(${queryParts});out body;`
 }
 
 function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {

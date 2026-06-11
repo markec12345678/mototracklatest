@@ -28,6 +28,10 @@ import {
   Minus,
   Copy,
   Compass,
+  Upload,
+  Footprints,
+  Bike,
+  Car,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -53,6 +57,46 @@ import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
 import { LocationDetailDrawer } from '@/components/map/LocationDetailDrawer'
 import { NearbyPanel } from '@/components/map/NearbyPanel'
+
+function mapSymbolToCategory(sym?: string): string {
+  if (!sym) return 'general'
+  const lower = sym.toLowerCase()
+  if (lower.includes('restaurant') || lower.includes('food')) return 'restaurant'
+  if (lower.includes('hotel') || lower.includes('lodging')) return 'hotel'
+  if (lower.includes('park')) return 'park'
+  if (lower.includes('star') || lower.includes('favorite')) return 'favorite'
+  if (lower.includes('shop') || lower.includes('store')) return 'shop'
+  if (lower.includes('landmark') || lower.includes('museum')) return 'landmark'
+  return 'general'
+}
+
+function getCategoryColor(category: string): string {
+  const colors: Record<string, string> = {
+    general: '#6b7280',
+    favorite: '#f59e0b',
+    restaurant: '#ef4444',
+    hotel: '#8b5cf6',
+    park: '#22c55e',
+    shop: '#3b82f6',
+    landmark: '#f97316',
+    transport: '#06b6d4',
+  }
+  return colors[category] || '#6b7280'
+}
+
+function getCategoryIcon(category: string): string {
+  const icons: Record<string, string> = {
+    general: '📌',
+    favorite: '⭐',
+    restaurant: '🍽️',
+    hotel: '🏨',
+    park: '🌳',
+    shop: '🛍️',
+    landmark: '🏛️',
+    transport: '🚌',
+  }
+  return icons[category] || '📌'
+}
 
 async function exportGPX(type: 'route' | 'markers' | 'all', data: Record<string, unknown>) {
   try {
@@ -164,6 +208,89 @@ function SidebarContent({ onCloseMobile }: { onCloseMobile?: () => void }) {
   const [searchFilter, setSearchFilter] = useState('')
   const [detailLocation, setDetailLocation] = useState<SavedLocation | null>(null)
   const [detailOpen, setDetailOpen] = useState(false)
+  const gpxInputRef = useRef<HTMLInputElement>(null)
+  const gpxRouteInputRef = useRef<HTMLInputElement>(null)
+
+  // GPX Import handler
+  const handleGPXImport = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+
+      const res = await fetch('/api/import/gpx', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (!res.ok) throw new Error('Import failed')
+
+      const data = await res.json()
+      const { waypoints, tracks } = data
+
+      // Import waypoints as markers/locations
+      const { addMarker, addSavedLocation, pushNotification, setRoutes } = useMapStore.getState()
+
+      let importedWaypoints = 0
+      for (const wp of waypoints) {
+        const id = `import-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`
+        const category = mapSymbolToCategory(wp.sym || wp.type)
+        addMarker({
+          id,
+          longitude: wp.longitude,
+          latitude: wp.latitude,
+          name: wp.name,
+          category,
+          color: getCategoryColor(category),
+        })
+        addSavedLocation({
+          id,
+          name: wp.name,
+          latitude: wp.latitude,
+          longitude: wp.longitude,
+          category,
+          color: getCategoryColor(category),
+          icon: getCategoryIcon(category),
+          description: wp.description,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        })
+        importedWaypoints++
+      }
+
+      // Import tracks as routes
+      let importedTracks = 0
+      const currentRoutes = useMapStore.getState().routes
+      const newRoutes = [...currentRoutes]
+      for (const track of tracks) {
+        newRoutes.push({
+          id: `route-import-${Date.now()}-${importedTracks}`,
+          name: track.name,
+          color: '#10b981',
+          points: track.points.map((p: { latitude: number; longitude: number }) => ({ latitude: p.latitude, longitude: p.longitude })),
+          distance: null,
+          duration: null,
+        })
+        importedTracks++
+      }
+      setRoutes(newRoutes)
+
+      pushNotification({
+        type: 'general',
+        icon: '📥',
+        message: `Imported ${importedWaypoints} waypoints and ${importedTracks} tracks`,
+      })
+      toast.success(`Imported ${importedWaypoints} waypoints and ${importedTracks} tracks from GPX`)
+    } catch (err) {
+      console.error('GPX import error:', err)
+      toast.error('Failed to import GPX file')
+    }
+
+    // Reset the input
+    e.target.value = ''
+  }, [])
 
   // Load saved locations
   useEffect(() => {
@@ -300,8 +427,10 @@ function SidebarContent({ onCloseMobile }: { onCloseMobile?: () => void }) {
 
   return (
     <div className="flex flex-col h-full">
-      {/* Gradient top border */}
-      <div className="h-1 bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 shrink-0" />
+      {/* Gradient top border - enhanced with animation */}
+      <div className="h-1 bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 shrink-0 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
+      </div>
 
       {/* Header with gradient accent */}
       <div className="relative overflow-hidden shrink-0">
@@ -312,7 +441,7 @@ function SidebarContent({ onCloseMobile }: { onCloseMobile?: () => void }) {
               <MapPin className="h-4 w-4 text-white" />
             </div>
             <div>
-              <span className="text-base">MapLibre Explorer</span>
+              <span className="gradient-text text-base font-bold">MapLibre Explorer</span>
               <p className="text-[10px] text-muted-foreground font-normal -mt-0.5">
                 Interactive Map Application
               </p>
@@ -383,12 +512,35 @@ function SidebarContent({ onCloseMobile }: { onCloseMobile?: () => void }) {
                 measureDistance={measureDistance}
                 clearMeasurePoints={clearMeasurePoints}
                 onExportGeoJSON={handleExportGeoJSON}
+                onGPXImportClick={() => gpxInputRef.current?.click()}
               />
             )}
-            {sidebarTab === 'routes' && <RoutesTab />}
+            {sidebarTab === 'routes' && (
+              <RoutesTab
+                onGPXImportClick={() => gpxRouteInputRef.current?.click()}
+              />
+            )}
           </motion.div>
         </AnimatePresence>
       </div>
+
+      {/* Hidden file inputs for GPX import */}
+      <input
+        ref={gpxInputRef}
+        type="file"
+        accept=".gpx"
+        className="hidden"
+        onChange={handleGPXImport}
+        aria-label="Import GPX file"
+      />
+      <input
+        ref={gpxRouteInputRef}
+        type="file"
+        accept=".gpx"
+        className="hidden"
+        onChange={handleGPXImport}
+        aria-label="Import GPX file for routes"
+      />
 
       {/* Location Detail Drawer */}
       <LocationDetailDrawer
@@ -564,7 +716,7 @@ function LocationsTab({
           <Button
             variant="outline"
             size="sm"
-            className="w-full h-7 text-[11px] justify-center rounded-lg"
+            className="w-full h-8 text-[11px] justify-center rounded-xl gpx-export-btn"
             onClick={() => exportGPX('markers', { markers: locations as unknown as Record<string, unknown>[] })}
           >
             <Download className="h-3 w-3 mr-1.5" />
@@ -579,7 +731,7 @@ function LocationsTab({
           <div className="p-2 space-y-1">
             {locations.length === 0 ? (
               <div className="text-center py-12 text-muted-foreground">
-                <div className="w-16 h-16 mx-auto mb-3 rounded-2xl bg-muted/50 flex items-center justify-center">
+                <div className="w-16 h-16 mx-auto mb-3 rounded-2xl bg-gradient-to-br from-muted/30 to-muted/60 flex items-center justify-center">
                   <MapPinned className="h-8 w-8 opacity-40" />
                 </div>
                 <p className="text-sm font-medium">No saved locations yet</p>
@@ -923,6 +1075,7 @@ function ToolsTab({
   measureDistance,
   clearMeasurePoints,
   onExportGeoJSON,
+  onGPXImportClick,
 }: {
   toolMode: ToolMode
   setToolMode: (mode: ToolMode) => void
@@ -930,6 +1083,7 @@ function ToolsTab({
   measureDistance: number | null
   clearMeasurePoints: () => void
   onExportGeoJSON: () => void
+  onGPXImportClick: () => void
 }) {
   const center = useMapStore((s) => s.center)
   const drawings = useMapStore((s) => s.drawings)
@@ -953,8 +1107,8 @@ function ToolsTab({
       <div className="p-3 space-y-4">
         {/* Active Tool */}
         <div>
-          <h3 className="text-sm font-semibold mb-2 flex items-center gap-2">
-            <Wrench className="h-3.5 w-3.5 text-muted-foreground" />
+          <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 flex items-center gap-2">
+            <Wrench className="h-3.5 w-3.5" />
             Active Tool
           </h3>
           <div className="space-y-1.5">
@@ -1004,8 +1158,8 @@ function ToolsTab({
             <Separator />
             <div>
               <div className="flex items-center justify-between mb-2">
-                <h4 className="text-sm font-semibold flex items-center gap-2">
-                  <Pencil className="h-3.5 w-3.5 text-muted-foreground" />
+                <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wider flex items-center gap-2">
+                  <Pencil className="h-3.5 w-3.5" />
                   Drawing
                 </h4>
               </div>
@@ -1135,8 +1289,8 @@ function ToolsTab({
             <Separator />
             <div>
               <div className="flex items-center justify-between mb-2">
-                <h4 className="text-sm font-semibold flex items-center gap-2">
-                  <Ruler className="h-3.5 w-3.5 text-muted-foreground" />
+                <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wider flex items-center gap-2">
+                  <Ruler className="h-3.5 w-3.5" />
                   Measurement
                 </h4>
                 {measurePoints.length > 0 && (
@@ -1279,8 +1433,8 @@ function ToolsTab({
 
         {/* Export */}
         <div>
-          <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
-            <Download className="h-3.5 w-3.5 text-muted-foreground" />
+          <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 flex items-center gap-2">
+            <Download className="h-3.5 w-3.5" />
             Export Data
           </h4>
           <div className="space-y-1.5">
@@ -1312,7 +1466,7 @@ function ToolsTab({
             <Button
               variant="outline"
               size="sm"
-              className="w-full h-9 text-xs justify-start rounded-xl"
+              className="w-full h-9 text-xs justify-start rounded-xl gpx-export-btn"
               onClick={() => {
                 const state = useMapStore.getState()
                 exportGPX('all', {
@@ -1329,10 +1483,37 @@ function ToolsTab({
 
         <Separator />
 
+        {/* Import GPX */}
+        <div>
+          <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 flex items-center gap-2">
+            <Upload className="h-3.5 w-3.5" />
+            Import Data
+          </h4>
+          <Button
+            variant="outline"
+            size="sm"
+            className="w-full h-9 text-xs justify-start rounded-xl"
+            onClick={onGPXImportClick}
+          >
+            <Upload className="h-3.5 w-3.5 mr-2" />
+            Import GPX File
+          </Button>
+          <p className="text-[10px] text-muted-foreground mt-1.5 px-1">
+            Import waypoints and tracks from GPX files
+          </p>
+        </div>
+
+        <Separator />
+
+        {/* Isochrone Visualization */}
+        <IsochroneControls />
+
+        <Separator />
+
         {/* Quick Bookmarks - European Cities */}
         <div>
-          <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
-            <Star className="h-3.5 w-3.5 text-muted-foreground" />
+          <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 flex items-center gap-2">
+            <Star className="h-3.5 w-3.5" />
             Popular Destinations
           </h4>
           <div className="space-y-1">
@@ -1394,8 +1575,8 @@ function ToolsTab({
 
         {/* Keyboard shortcuts reference */}
         <div>
-          <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
-            <Keyboard className="h-3.5 w-3.5 text-muted-foreground" />
+          <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 flex items-center gap-2">
+            <Keyboard className="h-3.5 w-3.5" />
             Keyboard Shortcuts
           </h4>
           <div className="space-y-1">
@@ -1425,7 +1606,112 @@ function ToolsTab({
   )
 }
 
-function RoutesTab() {
+// Isochrone visualization controls component
+function IsochroneControls() {
+  const isochroneEnabled = useMapStore((s) => s.isochroneEnabled)
+  const isochroneMinutes = useMapStore((s) => s.isochroneMinutes)
+  const isochroneMode = useMapStore((s) => s.isochroneMode)
+  const setIsochroneEnabled = useMapStore((s) => s.setIsochroneEnabled)
+  const setIsochroneMinutes = useMapStore((s) => s.setIsochroneMinutes)
+  const setIsochroneMode = useMapStore((s) => s.setIsochroneMode)
+
+  const modeOptions = [
+    { id: 'walking' as const, label: 'Walking', icon: <Footprints className="h-3.5 w-3.5" />, speed: '5 km/h' },
+    { id: 'cycling' as const, label: 'Cycling', icon: <Bike className="h-3.5 w-3.5" />, speed: '15 km/h' },
+    { id: 'driving' as const, label: 'Driving', icon: <Car className="h-3.5 w-3.5" />, speed: '40 km/h' },
+  ]
+
+  return (
+    <div>
+      <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 flex items-center gap-2">
+        <span className="text-sm">🎯</span>
+        Reachability (Isochrone)
+      </h4>
+      <div
+        className={cn(
+          'px-3 py-2.5 rounded-xl border transition-all duration-200',
+          isochroneEnabled
+            ? 'bg-background border-border/50 shadow-sm'
+            : 'border-dashed text-muted-foreground hover:border-border'
+        )}
+      >
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-2">
+            <span className="text-sm">⏱️</span>
+            <div>
+              <p className="text-sm">Isochrone</p>
+              <p className="text-[10px] text-muted-foreground/70">
+                Show travel reachability area
+              </p>
+            </div>
+          </div>
+          <Switch
+            checked={isochroneEnabled}
+            onCheckedChange={(checked) => {
+              setIsochroneEnabled(checked)
+              useMapStore.getState().pushNotification({ type: 'general', icon: 'target', message: checked ? 'Isochrone visualization enabled' : 'Isochrone visualization disabled' })
+            }}
+            aria-label="Toggle isochrone visualization"
+          />
+        </div>
+
+        {isochroneEnabled && (
+          <div className="space-y-3 pt-2 border-t border-border/50">
+            {/* Minutes slider */}
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-xs text-muted-foreground">Travel time</span>
+                <span className="text-xs font-mono tabular-nums text-muted-foreground">
+                  {isochroneMinutes} min
+                </span>
+              </div>
+              <input
+                type="range"
+                min={5}
+                max={60}
+                step={5}
+                value={isochroneMinutes}
+                onChange={(e) => setIsochroneMinutes(parseInt(e.target.value))}
+                className="w-full h-1.5 rounded-full appearance-none cursor-pointer bg-accent accent-emerald-500"
+                aria-label="Isochrone travel time in minutes"
+              />
+              <div className="flex justify-between mt-0.5">
+                <span className="text-[9px] text-muted-foreground/60">5 min</span>
+                <span className="text-[9px] text-muted-foreground/60">60 min</span>
+              </div>
+            </div>
+
+            {/* Mode buttons */}
+            <div>
+              <span className="text-xs text-muted-foreground block mb-1.5">Travel mode</span>
+              <div className="flex gap-1.5">
+                {modeOptions.map((mode) => (
+                  <button
+                    key={mode.id}
+                    onClick={() => setIsochroneMode(mode.id)}
+                    className={cn(
+                      'flex-1 flex flex-col items-center gap-1 px-2 py-2 rounded-lg border text-xs transition-all duration-200',
+                      isochroneMode === mode.id
+                        ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-700 dark:text-emerald-400 shadow-sm'
+                        : 'border-border/50 hover:border-border hover:bg-accent/50 text-muted-foreground'
+                    )}
+                    aria-label={`Isochrone mode: ${mode.label}`}
+                  >
+                    {mode.icon}
+                    <span className="text-[10px] font-medium">{mode.label}</span>
+                    <span className="text-[9px] text-muted-foreground/60">{mode.speed}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function RoutesTab({ onGPXImportClick }: { onGPXImportClick: () => void }) {
   const routePoints = useMapStore((s) => s.routePoints)
   const currentRouteColor = useMapStore((s) => s.currentRouteColor)
   const routes = useMapStore((s) => s.routes)
@@ -1582,6 +1868,17 @@ function RoutesTab() {
           </div>
         )}
 
+        {/* Import GPX button */}
+        <Button
+          variant="outline"
+          size="sm"
+          className="w-full h-9 text-xs justify-center rounded-xl"
+          onClick={onGPXImportClick}
+        >
+          <Upload className="h-3.5 w-3.5 mr-2" />
+          Import GPX Route
+        </Button>
+
         {toolMode !== 'directions' && routePoints.length === 0 && (
           <div className="bg-muted/50 rounded-xl p-3">
             <p className="text-xs text-muted-foreground">
@@ -1714,7 +2011,7 @@ function RoutesTab() {
               {routes.map((route) => (
                 <div
                   key={route.id}
-                  className="flex items-center gap-2.5 p-2.5 rounded-xl border hover:bg-accent/50 transition-colors"
+                  className="flex items-center gap-2.5 p-2.5 rounded-xl border hover:bg-accent/50 hover:translate-x-0.5 hover:shadow-sm transition-all duration-200 cursor-pointer"
                 >
                   <button
                     className="w-3 h-8 rounded-full shrink-0 transition-opacity"
@@ -1754,7 +2051,7 @@ function RoutesTab() {
         {/* Empty state */}
         {routes.length === 0 && routePoints.length === 0 && toolMode !== 'directions' && (
           <div className="text-center py-8 text-muted-foreground">
-            <div className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-muted/50 flex items-center justify-center">
+            <div className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-gradient-to-br from-muted/30 to-muted/60 flex items-center justify-center">
               <Route className="h-7 w-7 opacity-40" />
             </div>
             <p className="text-sm font-medium">No saved routes</p>

@@ -60,7 +60,7 @@ export function StyleSwitcher() {
                     setOpen(false)
                   }}
                   className={cn(
-                    'relative flex flex-col items-center gap-1.5 p-2 rounded-xl border text-center transition-all duration-200 group',
+                    'relative flex flex-col items-center gap-1.5 p-2 rounded-xl border text-center transition-all duration-200 group shadow-sm hover:shadow-md',
                     isActive
                       ? 'style-card-glow border-primary/40 bg-primary/8 scale-[1.02]'
                       : 'hover:bg-accent border-transparent hover:border-border/50 hover:scale-[1.05]'

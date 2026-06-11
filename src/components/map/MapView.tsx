@@ -56,6 +56,7 @@ export function MapView() {
   const geolocationMarkerRef = useRef<maplibregl.Marker | null>(null)
   const [mapLoadedVersion, setMapLoadedVersion] = useState(0)
   const [osrmRoute, setOsrmRoute] = useState<[number, number][] | null>(null)
+  const [tilesLoading, setTilesLoading] = useState(false)
 
   // Use refs for values needed in map event handlers to avoid stale closures
   const toolModeRef = useRef(useMapStore.getState().toolMode)
@@ -89,6 +90,11 @@ export function MapView() {
   const weatherEnabled = useMapStore((s) => s.weatherEnabled)
   const trafficEnabled = useMapStore((s) => s.trafficEnabled)
   const earthquakesEnabled = useMapStore((s) => s.earthquakesEnabled)
+  const isochroneEnabled = useMapStore((s) => s.isochroneEnabled)
+  const isochroneMinutes = useMapStore((s) => s.isochroneMinutes)
+  const isochroneMode = useMapStore((s) => s.isochroneMode)
+  const center = useMapStore((s) => s.center)
+  const poiMarkers = useMapStore((s) => s.poiMarkers)
 
   // Ref for throttling drawing point addition
   const lastDrawTimeRef = useRef(0)
@@ -186,6 +192,10 @@ export function MapView() {
       // Notify page that map is ready
       window.dispatchEvent(new Event('map-ready'))
     })
+
+    // Tile loading indicator events
+    newMap.on('dataloading', () => setTilesLoading(true))
+    newMap.on('idle', () => setTilesLoading(false))
 
     newMap.on('styledataloading', () => {
       mapLoadedRef.current = false
@@ -1650,6 +1660,133 @@ export function MapView() {
     }
   }, [earthquakesEnabled, mapLoadedVersion])
 
+  // Isochrone visualization
+  useEffect(() => {
+    if (!map.current || !mapLoadedRef.current) return
+
+    const currentMap = map.current
+
+    if (isochroneEnabled) {
+      // Fetch isochrone data
+      const [lng, lat] = center
+
+      fetch(`/api/isochrone?lat=${lat.toFixed(4)}&lng=${lng.toFixed(4)}&minutes=${isochroneMinutes}&mode=${isochroneMode}`)
+        .then(res => res.json())
+        .then(data => {
+          if (!data.rings || !map.current) return
+
+          // Remove existing isochrone layers/sources
+          if (map.current.getLayer('isochrone-fill')) map.current.removeLayer('isochrone-fill')
+          if (map.current.getLayer('isochrone-line')) map.current.removeLayer('isochrone-line')
+          if (map.current.getSource('isochrone')) map.current.removeSource('isochrone')
+
+          // Create a GeoJSON FeatureCollection with all rings
+          const features = data.rings.map((ring: { minutes: number; geometry: { type: string; coordinates: number[][][] } }, i: number) => ({
+            type: 'Feature',
+            properties: {
+              minutes: ring.minutes,
+              color: i === 0 ? '#10b981' : i === 1 ? '#14b8a6' : i === 2 ? '#06b6d4' : '#0ea5e9',
+              opacity: 0.15 + i * 0.05,
+            },
+            geometry: ring.geometry,
+          })).reverse() // Draw outer rings first
+
+          map.current.addSource('isochrone', {
+            type: 'geojson',
+            data: { type: 'FeatureCollection', features },
+          })
+
+          map.current.addLayer({
+            id: 'isochrone-fill',
+            type: 'fill',
+            source: 'isochrone',
+            paint: {
+              'fill-color': ['get', 'color'],
+              'fill-opacity': ['get', 'opacity'],
+            },
+          })
+
+          map.current.addLayer({
+            id: 'isochrone-line',
+            type: 'line',
+            source: 'isochrone',
+            paint: {
+              'line-color': ['get', 'color'],
+              'line-width': 2,
+              'line-opacity': 0.8,
+            },
+          })
+        })
+        .catch(err => console.error('Isochrone fetch error:', err))
+    } else {
+      // Remove isochrone layers when disabled
+      if (currentMap.getLayer('isochrone-fill')) currentMap.removeLayer('isochrone-fill')
+      if (currentMap.getLayer('isochrone-line')) currentMap.removeLayer('isochrone-line')
+      if (currentMap.getSource('isochrone')) currentMap.removeSource('isochrone')
+    }
+
+    return () => {
+      if (currentMap) {
+        try {
+          if (currentMap.getLayer('isochrone-fill')) currentMap.removeLayer('isochrone-fill')
+          if (currentMap.getLayer('isochrone-line')) currentMap.removeLayer('isochrone-line')
+          if (currentMap.getSource('isochrone')) currentMap.removeSource('isochrone')
+        } catch { /* ignore cleanup errors */ }
+      }
+    }
+  }, [isochroneEnabled, isochroneMinutes, isochroneMode, center, mapLoadedVersion])
+
+  // POI Markers (temporary markers for nearby search)
+  useEffect(() => {
+    if (!map.current || !mapLoadedRef.current) return
+
+    const poiMarkerRefs: maplibregl.Marker[] = []
+
+    for (const poi of poiMarkers) {
+      const el = document.createElement('div')
+      el.className = 'poi-marker'
+      el.style.cssText = `
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: rgba(16, 185, 129, 0.9);
+        border: 2px solid white;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        font-size: 12px;
+        cursor: pointer;
+        transition: transform 0.15s ease;
+      `
+      el.textContent = poi.icon
+      el.title = poi.name
+
+      el.addEventListener('mouseenter', () => {
+        el.style.transform = 'scale(1.2)'
+      })
+      el.addEventListener('mouseleave', () => {
+        el.style.transform = 'scale(1)'
+      })
+      el.addEventListener('click', () => {
+        const flyTo = (window as unknown as Record<string, (lng: number, lat: number, z?: number) => void>).__mapFlyTo
+        if (flyTo) flyTo(poi.longitude, poi.latitude, 17)
+      })
+
+      const marker = new maplibregl.Marker({ element: el })
+        .setLngLat([poi.longitude, poi.latitude])
+        .addTo(map.current!)
+
+      poiMarkerRefs.push(marker)
+    }
+
+    return () => {
+      for (const m of poiMarkerRefs) {
+        m.remove()
+      }
+    }
+  }, [poiMarkers, mapLoadedVersion])
+
   const flyToLocation = useCallback(
     (longitude: number, latitude: number, zoom?: number) => {
       if (!map.current) return
@@ -1719,6 +1856,12 @@ export function MapView() {
           height: '100%',
         }}
       />
+      {/* Tile loading indicator */}
+      {tilesLoading && (
+        <div className="absolute top-0 left-0 right-0 z-10 h-0.5 bg-muted overflow-hidden">
+          <div className="h-full bg-primary animate-loading-bar" style={{ width: '60%' }} />
+        </div>
+      )}
       {/* Map loading overlay */}
       {isMapLoading && (
         <div className="absolute inset-0 z-10 pointer-events-none">

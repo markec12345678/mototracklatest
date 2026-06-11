@@ -411,26 +411,23 @@ export default function Home() {
 
       {/* Top bar - Search and controls */}
       <div
-        className="absolute top-3 right-3 left-3 z-10 flex items-start gap-2 transition-all duration-300 md:pl-0"
-        style={{
-          paddingLeft: undefined, // Override with responsive class below
-        }}
+        className="absolute top-2 right-2 left-2 sm:top-3 sm:right-3 sm:left-3 z-10 flex items-start gap-1.5 sm:gap-2 transition-all duration-300 md:pl-0"
       >
         {/* Responsive padding for desktop sidebar */}
-        <div className="w-full md:w-auto md:flex-1 md:max-w-lg md:ml-0" style={{ marginLeft: sidebarOpen ? '0px' : undefined }}>
+        <div className="flex-1 md:flex-1 md:max-w-lg md:ml-0" style={{ marginLeft: sidebarOpen ? '0px' : undefined }}>
           <div className={sidebarOpen ? 'md:pl-[332px]' : ''} style={{ transition: 'padding-left 0.3s ease-in-out' }}>
             <div className="w-full md:min-w-[280px]">
               <SearchBar />
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-1.5 shrink-0">
+        <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
           <StyleSwitcher />
           <ThemeToggle />
           <Button
             variant="outline"
             size="icon"
-            className="map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={handleLocateMe}
             title="My Location"
             aria-label="My Location"
@@ -440,7 +437,7 @@ export default function Home() {
           <Button
             variant="outline"
             size="icon"
-            className="map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={toggleFullscreen}
             title="Fullscreen"
             aria-label="Toggle fullscreen"
@@ -464,7 +461,7 @@ export default function Home() {
           <Button
             variant="outline"
             size="icon"
-            className="map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={handleExportMap}
             title="Export Map as Image"
             aria-label="Export map as image"
@@ -474,7 +471,7 @@ export default function Home() {
           <Button
             variant="outline"
             size="icon"
-            className="map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={handleShare}
             title="Share Map View"
             aria-label="Share map view"
@@ -531,12 +528,12 @@ export default function Home() {
       </AnimatePresence>
 
       {/* Mobile weather bar - below search on mobile only */}
-      <div className="md:hidden absolute top-[58px] left-3 right-3 z-10">
+      <div className="md:hidden absolute top-[52px] sm:top-[58px] left-2 right-2 sm:left-3 sm:right-3 z-10">
         <MobileWeatherBar />
       </div>
 
       {/* Mobile tool indicator - shows on mobile below search/weather */}
-      <div className="md:hidden absolute top-24 left-3 z-10">
+      <div className="md:hidden absolute top-[88px] sm:top-24 left-2 sm:left-3 z-10">
         <Badge
           className={`bg-gradient-to-r ${currentTool.color} text-white border-0 px-2.5 py-1 gap-1 shadow-lg text-xs`}
         >
@@ -546,8 +543,8 @@ export default function Home() {
       </div>
 
       {/* Mobile bottom toolbar */}
-      <div className="md:hidden absolute bottom-12 left-3 right-3 z-10">
-        <div className="flex items-center justify-center gap-2 bg-background/90 backdrop-blur-md border border-border/50 rounded-2xl shadow-lg p-2">
+      <div className="md:hidden absolute bottom-10 left-2 right-2 sm:left-3 sm:right-3 z-10">
+        <div className="flex items-center justify-center gap-1 sm:gap-2 bg-background/90 backdrop-blur-md border border-border/50 rounded-2xl shadow-lg p-1.5 sm:p-2">
           {([
             { mode: 'navigate' as ToolMode, icon: <Navigation className="h-4 w-4" />, label: 'Navigate', activeClass: 'bg-emerald-500 text-white' },
             { mode: 'mark' as ToolMode, icon: <MapPin className="h-4 w-4" />, label: 'Pin', activeClass: 'bg-red-500 text-white' },
@@ -558,23 +555,23 @@ export default function Home() {
             <button
               key={tool.mode}
               onClick={() => setToolMode(tool.mode)}
-              className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl text-xs transition-all ${
+              className={`flex flex-col items-center gap-0.5 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl text-xs transition-all min-w-[44px] min-h-[44px] justify-center ${
                 toolMode === tool.mode ? tool.activeClass + ' shadow-md' : 'text-muted-foreground hover:text-foreground hover:bg-accent'
               }`}
               aria-label={`${tool.label} tool`}
             >
               {tool.icon}
-              <span className="text-[9px] font-medium">{tool.label}</span>
+              <span className="text-[8px] sm:text-[9px] font-medium">{tool.label}</span>
             </button>
           ))}
-          <div className="w-px h-6 bg-border mx-1" />
+          <div className="w-px h-6 bg-border mx-0.5 sm:mx-1" />
           <button
             onClick={handleLocateMe}
-            className="flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl text-xs text-muted-foreground hover:text-foreground hover:bg-accent transition-all"
+            className="flex flex-col items-center gap-0.5 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl text-xs text-muted-foreground hover:text-foreground hover:bg-accent transition-all min-w-[44px] min-h-[44px] justify-center"
             aria-label="My location"
           >
             <LocateFixed className="h-4 w-4" />
-            <span className="text-[9px] font-medium">Locate</span>
+            <span className="text-[8px] sm:text-[9px] font-medium">Locate</span>
           </button>
         </div>
       </div>
@@ -589,12 +586,12 @@ export default function Home() {
         <WeatherPanel />
       </div>
 
-      {/* Elevation Profile Panel - above weather panel when measuring (desktop only) */}
+      {/* Elevation Profile Panel - above weather panel when measuring or routing (desktop only) */}
       <div
         className="hidden md:block absolute z-10"
         style={{
           left: sidebarOpen ? '332px' : '20px',
-          bottom: toolMode === 'measure' && weatherEnabled ? '260px' : '12px',
+          bottom: (toolMode === 'measure' || toolMode === 'directions') && weatherEnabled ? '260px' : '12px',
           transition: 'left 0.3s ease-in-out, bottom 0.3s ease-in-out',
         }}
       >
@@ -614,7 +611,7 @@ export default function Home() {
 
       {/* Add Location FAB */}
       <motion.div
-        className="absolute bottom-20 right-4 md:right-5 z-10"
+        className="absolute bottom-16 right-3 sm:bottom-20 sm:right-5 md:bottom-20 md:right-5 z-10"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
@@ -712,17 +709,17 @@ export default function Home() {
       <KeyboardShortcutsDialog open={shortcutsOpen} onOpenChange={setShortcutsOpen} />
 
       {/* Footer */}
-      <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-3 md:px-4 before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">
-        <div className="flex items-center justify-between text-[10px] md:text-[11px] text-muted-foreground">
-          <div className="flex items-center gap-1.5 md:gap-2">
-            <div className="h-3.5 w-3.5 md:h-4 md:w-4 rounded-md bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
-              <MapPin className="h-2 w-2 md:h-2.5 md:w-2.5 text-white" />
+      <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-2 sm:px-3 md:px-4 before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">
+        <div className="flex items-center justify-between text-[9px] sm:text-[10px] md:text-[11px] text-muted-foreground/70">
+          <div className="flex items-center gap-1 sm:gap-1.5 md:gap-2">
+            <div className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 rounded-md bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
+              <MapPin className="h-1.5 w-1.5 sm:h-2 sm:w-2 md:h-2.5 md:w-2.5 text-white" />
             </div>
             <span className="font-medium hidden sm:inline">MapLibre Explorer</span>
             <span className="text-border hidden sm:inline">|</span>
-            <span className="hidden md:inline">MapLibre GL JS · MapTiler · Open-Meteo</span>
+            <span className="hidden md:inline">MapTiler · OpenStreetMap · Open-Meteo</span>
           </div>
-          <div className="flex items-center gap-1.5 md:gap-2">
+          <div className="flex items-center gap-1 sm:gap-1.5 md:gap-2">
             <a
               href="https://maplibre.org"
               target="_blank"

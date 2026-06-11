@@ -47,7 +47,7 @@ interface TooltipData {
 }
 
 export function ElevationProfile() {
-  const { toolMode, measurePoints } = useMapStore()
+  const { toolMode, measurePoints, routePoints } = useMapStore()
   const [elevations, setElevations] = useState<number[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -56,9 +56,12 @@ export function ElevationProfile() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
-  // Fetch elevation data when measurePoints has 2+ points
+  // Use routePoints in directions mode, measurePoints in measure mode
+  const activePoints = toolMode === 'directions' ? routePoints : measurePoints
+
+  // Fetch elevation data when activePoints has 2+ points
   const fetchElevation = useCallback(async () => {
-    if (measurePoints.length < 2) {
+    if (activePoints.length < 2) {
       setElevations([])
       return
     }
@@ -67,7 +70,7 @@ export function ElevationProfile() {
     setError(null)
 
     try {
-      const pointsParam = measurePoints
+      const pointsParam = activePoints
         .map((p) => `${p.longitude.toFixed(6)},${p.latitude.toFixed(6)}`)
         .join(';')
 
@@ -84,19 +87,19 @@ export function ElevationProfile() {
     } finally {
       setLoading(false)
     }
-  }, [measurePoints])
+  }, [activePoints])
 
   useEffect(() => {
     fetchElevation()
   }, [fetchElevation])
 
   // Compute cumulative distances for each point
-  const distances = measurePoints.length >= 2
-    ? measurePoints.reduce((acc, p, i) => {
+  const distances = activePoints.length >= 2
+    ? activePoints.reduce((acc, p, i) => {
         if (i === 0) {
           acc.push(0)
         } else {
-          const prev = measurePoints[i - 1]
+          const prev = activePoints[i - 1]
           const d = haversineDistance(prev.latitude, prev.longitude, p.latitude, p.longitude)
           acc.push(acc[i - 1] + d)
         }
@@ -323,11 +326,11 @@ export function ElevationProfile() {
     setTooltip(null)
   }, [])
 
-  // Don't render if not in measure mode
-  if (toolMode !== 'measure') return null
+  // Don't render if not in measure or directions mode
+  if (toolMode !== 'measure' && toolMode !== 'directions') return null
 
   // Less than 2 points message
-  if (measurePoints.length < 2) {
+  if (activePoints.length < 2) {
     return (
       <AnimatePresence>
         <motion.div
@@ -343,7 +346,9 @@ export function ElevationProfile() {
               <Mountain className="h-5 w-5 text-emerald-500" />
             </div>
             <p className="text-xs text-muted-foreground">
-              Click on the map to add measurement points
+              {toolMode === 'directions'
+                ? 'Click on the map to add route waypoints'
+                : 'Click on the map to add measurement points'}
             </p>
           </div>
         </motion.div>

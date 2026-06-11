@@ -1,0 +1,1072 @@
+     1→     1→@import "tailwindcss";
+     2→     2→@import "tw-animate-css";
+     3→     3→
+     4→     4→@custom-variant dark (&:is(.dark *));
+     5→     5→
+     6→     6→@theme inline {
+     7→     7→  --color-background: var(--background);
+     8→     8→  --color-foreground: var(--foreground);
+     9→     9→  --font-sans: var(--font-geist-sans);
+    10→    10→  --font-mono: var(--font-geist-mono);
+    11→    11→  --color-sidebar-ring: var(--sidebar-ring);
+    12→    12→  --color-sidebar-border: var(--sidebar-border);
+    13→    13→  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    14→    14→  --color-sidebar-accent: var(--sidebar-accent);
+    15→    15→  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    16→    16→  --color-sidebar-primary: var(--sidebar-primary);
+    17→    17→  --color-sidebar-foreground: var(--sidebar-foreground);
+    18→    18→  --color-sidebar: var(--sidebar);
+    19→    19→  --color-chart-5: var(--chart-5);
+    20→    20→  --color-chart-4: var(--chart-4);
+    21→    21→  --color-chart-3: var(--chart-3);
+    22→    22→  --color-chart-2: var(--chart-2);
+    23→    23→  --color-chart-1: var(--chart-1);
+    24→    24→  --color-ring: var(--ring);
+    25→    25→  --color-input: var(--input);
+    26→    26→  --color-border: var(--border);
+    27→    27→  --color-destructive: var(--destructive);
+    28→    28→  --color-accent-foreground: var(--accent-foreground);
+    29→    29→  --color-accent: var(--accent);
+    30→    30→  --color-muted-foreground: var(--muted-foreground);
+    31→    31→  --color-muted: var(--muted);
+    32→    32→  --color-secondary-foreground: var(--secondary-foreground);
+    33→    33→  --color-secondary: var(--secondary);
+    34→    34→  --color-primary-foreground: var(--primary-foreground);
+    35→    35→  --color-primary: var(--primary);
+    36→    36→  --color-popover-foreground: var(--popover-foreground);
+    37→    37→  --color-popover: var(--popover);
+    38→    38→  --color-card-foreground: var(--card-foreground);
+    39→    39→  --color-card: var(--card);
+    40→    40→  --radius-sm: calc(var(--radius) - 4px);
+    41→    41→  --radius-md: calc(var(--radius) - 2px);
+    42→    42→  --radius-lg: var(--radius);
+    43→    43→  --radius-xl: calc(var(--radius) + 4px);
+    44→    44→}
+    45→    45→
+    46→    46→:root {
+    47→    47→  --radius: 0.625rem;
+    48→    48→  --background: oklch(1 0 0);
+    49→    49→  --foreground: oklch(0.145 0 0);
+    50→    50→  --card: oklch(1 0 0);
+    51→    51→  --card-foreground: oklch(0.145 0 0);
+    52→    52→  --popover: oklch(1 0 0);
+    53→    53→  --popover-foreground: oklch(0.145 0 0);
+    54→    54→  --primary: oklch(0.205 0 0);
+    55→    55→  --primary-foreground: oklch(0.985 0 0);
+    56→    56→  --secondary: oklch(0.97 0 0);
+    57→    57→  --secondary-foreground: oklch(0.205 0 0);
+    58→    58→  --muted: oklch(0.97 0 0);
+    59→    59→  --muted-foreground: oklch(0.556 0 0);
+    60→    60→  --accent: oklch(0.97 0 0);
+    61→    61→  --accent-foreground: oklch(0.205 0 0);
+    62→    62→  --destructive: oklch(0.577 0.245 27.325);
+    63→    63→  --border: oklch(0.922 0 0);
+    64→    64→  --input: oklch(0.922 0 0);
+    65→    65→  --ring: oklch(0.708 0 0);
+    66→    66→  --chart-1: oklch(0.646 0.222 41.116);
+    67→    67→  --chart-2: oklch(0.6 0.118 184.704);
+    68→    68→  --chart-3: oklch(0.398 0.07 227.392);
+    69→    69→  --chart-4: oklch(0.828 0.189 84.429);
+    70→    70→  --chart-5: oklch(0.769 0.188 70.08);
+    71→    71→  --sidebar: oklch(0.985 0 0);
+    72→    72→  --sidebar-foreground: oklch(0.145 0 0);
+    73→    73→  --sidebar-primary: oklch(0.205 0 0);
+    74→    74→  --sidebar-primary-foreground: oklch(0.985 0 0);
+    75→    75→  --sidebar-accent: oklch(0.97 0 0);
+    76→    76→  --sidebar-accent-foreground: oklch(0.205 0 0);
+    77→    77→  --sidebar-border: oklch(0.922 0 0);
+    78→    78→  --sidebar-ring: oklch(0.708 0 0);
+    79→    79→}
+    80→    80→
+    81→    81→.dark {
+    82→    82→  --background: oklch(0.145 0 0);
+    83→    83→  --foreground: oklch(0.985 0 0);
+    84→    84→  --card: oklch(0.205 0 0);
+    85→    85→  --card-foreground: oklch(0.985 0 0);
+    86→    86→  --popover: oklch(0.205 0 0);
+    87→    87→  --popover-foreground: oklch(0.985 0 0);
+    88→    88→  --primary: oklch(0.922 0 0);
+    89→    89→  --primary-foreground: oklch(0.205 0 0);
+    90→    90→  --secondary: oklch(0.269 0 0);
+    91→    91→  --secondary-foreground: oklch(0.985 0 0);
+    92→    92→  --muted: oklch(0.269 0 0);
+    93→    93→  --muted-foreground: oklch(0.708 0 0);
+    94→    94→  --accent: oklch(0.269 0 0);
+    95→    95→  --accent-foreground: oklch(0.985 0 0);
+    96→    96→  --destructive: oklch(0.704 0.191 22.216);
+    97→    97→  --border: oklch(1 0 0 / 10%);
+    98→    98→  --input: oklch(1 0 0 / 15%);
+    99→    99→  --ring: oklch(0.556 0 0);
+   100→   100→  --chart-1: oklch(0.488 0.243 264.376);
+   101→   101→  --chart-2: oklch(0.696 0.17 162.48);
+   102→   102→  --chart-3: oklch(0.769 0.188 70.08);
+   103→   103→  --chart-4: oklch(0.627 0.265 303.9);
+   104→   104→  --chart-5: oklch(0.645 0.246 16.439);
+   105→   105→  --sidebar: oklch(0.205 0 0);
+   106→   106→  --sidebar-foreground: oklch(0.985 0 0);
+   107→   107→  --sidebar-primary: oklch(0.488 0.243 264.376);
+   108→   108→  --sidebar-primary-foreground: oklch(0.985 0 0);
+   109→   109→  --sidebar-accent: oklch(0.269 0 0);
+   110→   110→  --sidebar-accent-foreground: oklch(0.985 0 0);
+   111→   111→  --sidebar-border: oklch(1 0 0 / 10%);
+   112→   112→  --sidebar-ring: oklch(0.556 0 0);
+   113→   113→}
+   114→   114→
+   115→   115→@layer base {
+   116→   116→  * {
+   117→   117→    @apply border-border outline-ring/50;
+   118→   118→  }
+   119→   119→  body {
+   120→   120→    @apply bg-background text-foreground;
+   121→   121→  }
+   122→   122→}
+   123→   123→
+   124→   124→/* ===== MapLibre Custom Styles ===== */
+   125→   125→
+   126→   126→.maplibregl-map {
+   127→   127→  font-family: var(--font-geist-sans), sans-serif !important;
+   128→   128→}
+   129→   129→
+   130→   130→/* Navigation control group */
+   131→   131→.maplibregl-ctrl-group {
+   132→   132→  border-radius: 0.75rem !important;
+   133→   133→  overflow: hidden !important;
+   134→   134→  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+   135→   135→  border: 1px solid oklch(0.922 0 0 / 60%) !important;
+   136→   136→  backdrop-filter: blur(8px) !important;
+   137→   137→}
+   138→   138→
+   139→   139→.dark .maplibregl-ctrl-group {
+   140→   140→  border-color: oklch(1 0 0 / 10%) !important;
+   141→   141→  background: oklch(0.18 0 0 / 90%) !important;
+   142→   142→  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2) !important;
+   143→   143→}
+   144→   144→
+   145→   145→.maplibregl-ctrl-group button {
+   146→   146→  width: 36px !important;
+   147→   147→  height: 36px !important;
+   148→   148→  transition: background-color 0.15s ease !important;
+   149→   149→}
+   150→   150→
+   151→   151→.maplibregl-ctrl-group button:hover {
+   152→   152→  background-color: oklch(0.95 0 0) !important;
+   153→   153→}
+   154→   154→
+   155→   155→.dark .maplibregl-ctrl-group button:hover {
+   156→   156→  background-color: oklch(0.3 0 0) !important;
+   157→   157→}
+   158→   158→
+   159→   159→.dark .maplibregl-ctrl-group button + button {
+   160→   160→  border-top-color: oklch(1 0 0 / 10%) !important;
+   161→   161→}
+   162→   162→
+   163→   163→/* Scale bar */
+   164→   164→.maplibregl-ctrl-scale {
+   165→   165→  border-radius: 0.375rem !important;
+   166→   166→  font-size: 10px !important;
+   167→   167→  padding: 2px 6px !important;
+   168→   168→  background: oklch(1 0 0 / 80%) !important;
+   169→   169→  backdrop-filter: blur(4px) !important;
+   170→   170→}
+   171→   171→
+   172→   172→.dark .maplibregl-ctrl-scale {
+   173→   173→  background: oklch(0.18 0 0 / 85%) !important;
+   174→   174→  color: oklch(0.9 0 0) !important;
+   175→   175→  border-color: oklch(1 0 0 / 20%) !important;
+   176→   176→}
+   177→   177→
+   178→   178→/* Attribution */
+   179→   179→.maplibregl-ctrl-attrib {
+   180→   180→  border-radius: 0.375rem !important;
+   181→   181→  font-size: 10px !important;
+   182→   182→  background: oklch(1 0 0 / 70%) !important;
+   183→   183→  backdrop-filter: blur(4px) !important;
+   184→   184→}
+   185→   185→
+   186→   186→.dark .maplibregl-ctrl-attrib {
+   187→   187→  background: oklch(0.18 0 0 / 80%) !important;
+   188→   188→  color: oklch(0.6 0 0) !important;
+   189→   189→}
+   190→   190→
+   191→   191→.dark .maplibregl-ctrl-attrib a {
+   192→   192→  color: oklch(0.6 0 0) !important;
+   193→   193→}
+   194→   194→
+   195→   195→/* Popup */
+   196→   196→.maplibregl-popup-content {
+   197→   197→  border-radius: 0.75rem !important;
+   198→   198→  padding: 0 !important;
+   199→   199→  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.12), 0 4px 10px -4px rgba(0, 0, 0, 0.06) !important;
+   200→   200→}
+   201→   201→
+   202→   202→.dark .maplibregl-popup-content {
+   203→   203→  background: oklch(0.2 0 0 / 95%) !important;
+   204→   204→  color: oklch(0.95 0 0) !important;
+   205→   205→  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 4px 10px -4px rgba(0, 0, 0, 0.3) !important;
+   206→   206→  border: 1px solid oklch(1 0 0 / 8%) !important;
+   207→   207→}
+   208→   208→
+   209→   209→.maplibregl-popup-close-button {
+   210→   210→  font-size: 18px !important;
+   211→   211→  padding: 4px 8px !important;
+   212→   212→  color: #999 !important;
+   213→   213→  transition: color 0.15s ease !important;
+   214→   214→}
+   215→   215→
+   216→   216→.maplibregl-popup-close-button:hover {
+   217→   217→  color: #333 !important;
+   218→   218→  background: transparent !important;
+   219→   219→}
+   220→   220→
+   221→   221→.dark .maplibregl-popup-close-button {
+   222→   222→  color: #888 !important;
+   223→   223→}
+   224→   224→
+   225→   225→.dark .maplibregl-popup-close-button:hover {
+   226→   226→  color: #fff !important;
+   227→   227→}
+   228→   228→
+   229→   229→.maplibregl-popup-tip {
+   230→   230→  border-top-color: oklch(1 0 0) !important;
+   231→   231→}
+   232→   232→
+   233→   233→.dark .maplibregl-popup-tip {
+   234→   234→  border-top-color: oklch(0.2 0 0 / 95%) !important;
+   235→   235→}
+   236→   236→
+   237→   237→/* Custom marker animation - replaced by marker-drop in new styles section */
+   238→   238→
+   239→   239→/* ===== Custom Scrollbar Styling ===== */
+   240→   240→
+   241→   241→.overflow-y-auto::-webkit-scrollbar,
+   242→   242→[data-radix-scroll-area-viewport]::-webkit-scrollbar {
+   243→   243→  width: 4px;
+   244→   244→}
+   245→   245→
+   246→   246→.overflow-y-auto::-webkit-scrollbar-track,
+   247→   247→[data-radix-scroll-area-viewport]::-webkit-scrollbar-track {
+   248→   248→  background: transparent;
+   249→   249→}
+   250→   250→
+   251→   251→.overflow-y-auto::-webkit-scrollbar-thumb,
+   252→   252→[data-radix-scroll-area-viewport]::-webkit-scrollbar-thumb {
+   253→   253→  background: oklch(0.7 0 0 / 25%);
+   254→   254→  border-radius: 2px;
+   255→   255→}
+   256→   256→
+   257→   257→.overflow-y-auto::-webkit-scrollbar-thumb:hover,
+   258→   258→[data-radix-scroll-area-viewport]::-webkit-scrollbar-thumb:hover {
+   259→   259→  background: oklch(0.5 0 0 / 45%);
+   260→   260→}
+   261→   261→
+   262→   262→/* ===== Smooth Transitions for Dark Mode ===== */
+   263→   263→
+   264→   264→.dark .maplibregl-ctrl-group,
+   265→   265→.dark .maplibregl-ctrl-scale,
+   266→   266→.dark .maplibregl-ctrl-attrib,
+   267→   267→.dark .maplibregl-popup-content {
+   268→   268→  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+   269→   269→}
+   270→   270→
+   271→   271→/* ===== Glassmorphism Utility ===== */
+   272→   272→
+   273→   273→@utility glass {
+   274→   274→  background: oklch(1 0 0 / 70%);
+   275→   275→  backdrop-filter: blur(12px);
+   276→   276→  border: 1px solid oklch(1 0 0 / 30%);
+   277→   277→}
+   278→   278→
+   279→   279→.dark .glass {
+   280→   280→  background: oklch(0.18 0 0 / 80%);
+   281→   281→  border: 1px solid oklch(1 0 0 / 8%);
+   282→   282→}
+   283→   283→
+   284→   284→/* ===== Pulse Animation for Active Tools ===== */
+   285→   285→
+   286→   286→@keyframes pulse-ring {
+   287→   287→  0% {
+   288→   288→    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+   289→   289→  }
+   290→   290→  70% {
+   291→   291→    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+   292→   292→  }
+   293→   293→  100% {
+   294→   294→    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+   295→   295→  }
+   296→   296→}
+   297→   297→
+   298→   298→.animate-pulse-ring {
+   299→   299→  animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+   300→   300→}
+   301→   301→
+   302→   302→/* ===== Gradient Border Effect ===== */
+   303→   303→
+   304→   304→.gradient-border {
+   305→   305→  position: relative;
+   306→   306→}
+   307→   307→
+   308→   308→.gradient-border::before {
+   309→   309→  content: '';
+   310→   310→  position: absolute;
+   311→   311→  inset: 0;
+   312→   312→  border-radius: inherit;
+   313→   313→  padding: 1px;
+   314→   314→  background: linear-gradient(135deg, oklch(0.6 0.2 160), oklch(0.5 0.15 280));
+   315→   315→  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+   316→   316→  -webkit-mask-composite: xor;
+   317→   317→  mask-composite: exclude;
+   318→   318→  pointer-events: none;
+   319→   319→}
+   320→   320→
+   321→   321→/* ===== Shimmer Effect ===== */
+   322→   322→
+   323→   323→@keyframes shimmer {
+   324→   324→  0% {
+   325→   325→    background-position: -200% 0;
+   326→   326→  }
+   327→   327→  100% {
+   328→   328→    background-position: 200% 0;
+   329→   329→  }
+   330→   330→}
+   331→   331→
+   332→   332→.animate-shimmer {
+   333→   333→  background: linear-gradient(90deg, transparent 0%, oklch(1 0 0 / 15%) 50%, transparent 100%);
+   334→   334→  background-size: 200% 100%;
+   335→   335→  animation: shimmer 2s infinite;
+   336→   336→}
+   337→   337→
+   338→   338→/* ===== Floating Action Button Shadow ===== */
+   339→   339→
+   340→   340→.fab-shadow {
+   341→   341→  box-shadow:
+   342→   342→    0 4px 14px 0 rgba(16, 185, 129, 0.35),
+   343→   343→    0 2px 6px -1px rgba(0, 0, 0, 0.1);
+   344→   344→}
+   345→   345→
+   346→   346→.fab-shadow:hover {
+   347→   347→  box-shadow:
+   348→   348→    0 8px 20px 0 rgba(16, 185, 129, 0.4),
+   349→   349→    0 4px 10px -2px rgba(0, 0, 0, 0.15);
+   350→   350→}
+   351→   351→
+   352→   352→/* ===== Sheet Sidebar Mobile Override ===== */
+   353→   353→
+   354→   354→@media (max-width: 768px) {
+   355→   355→  .maplibregl-ctrl-bottom-right {
+   356→   356→    bottom: 40px !important;
+   357→   357→    right: 8px !important;
+   358→   358→  }
+   359→   359→
+   360→   360→  .maplibregl-ctrl-bottom-left {
+   361→   361→    bottom: 40px !important;
+   362→   362→    left: 8px !important;
+   363→   363→  }
+   364→   364→}
+   365→   365→
+   366→   366→/* ===== Map Loading Skeleton ===== */
+   367→   367→@keyframes map-loading {
+   368→   368→  0% { background-position: -200% 0; }
+   369→   369→  100% { background-position: 200% 0; }
+   370→   370→}
+   371→   371→
+   372→   372→.map-loading-skeleton {
+   373→   373→  background: linear-gradient(90deg, oklch(0.95 0 0) 25%, oklch(0.9 0 0) 50%, oklch(0.95 0 0) 75%);
+   374→   374→  background-size: 200% 100%;
+   375→   375→  animation: map-loading 1.5s ease-in-out infinite;
+   376→   376→}
+   377→   377→
+   378→   378→.dark .map-loading-skeleton {
+   379→   379→  background: linear-gradient(90deg, oklch(0.2 0 0) 25%, oklch(0.25 0 0) 50%, oklch(0.2 0 0) 75%);
+   380→   380→  background-size: 200% 100%;
+   381→   381→}
+   382→   382→
+   383→   383→/* ===== Geolocation Pulse ===== */
+   384→   384→@keyframes geolocation-pulse {
+   385→   385→  0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.5); }
+   386→   386→  70% { box-shadow: 0 0 0 12px rgba(59, 130, 246, 0); }
+   387→   387→  100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+   388→   388→}
+   389→   389→
+   390→   390→.geolocation-dot {
+   391→   391→  width: 16px;
+   392→   392→  height: 16px;
+   393→   393→  border-radius: 50%;
+   394→   394→  background: #3b82f6;
+   395→   395→  border: 3px solid white;
+   396→   396→  box-shadow: 0 0 6px rgba(59, 130, 246, 0.4);
+   397→   397→  animation: geolocation-pulse 2s infinite;
+   398→   398→}
+   399→   399→
+   400→   400→/* ===== Sidebar Tab Active Indicator ===== */
+   401→   401→.sidebar-tab-active {
+   402→   402→  position: relative;
+   403→   403→}
+   404→   404→
+   405→   405→.sidebar-tab-active::after {
+   406→   406→  content: '';
+   407→   407→  position: absolute;
+   408→   408→  bottom: -2px;
+   409→   409→  left: 50%;
+   410→   410→  transform: translateX(-50%);
+   411→   411→  width: 16px;
+   412→   412→  height: 2px;
+   413→   413→  border-radius: 1px;
+   414→   414→  background: oklch(0.6 0.2 160);
+   415→   415→}
+   416→   416→
+   417→   417→/* ===== Floating Panel Hover Effect ===== */
+   418→   418→.floating-panel {
+   419→   419→  transition: transform 0.2s ease, box-shadow 0.2s ease;
+   420→   420→}
+   421→   421→
+   422→   422→.floating-panel:hover {
+   423→   423→  transform: translateY(-1px);
+   424→   424→  box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 10px -4px rgba(0, 0, 0, 0.06);
+   425→   425→}
+   426→   426→
+   427→   427→/* ===== Marker Drop Animation ===== */
+   428→   428→@keyframes marker-drop {
+   429→   429→  0% { transform: translateY(-20px); opacity: 0; }
+   430→   430→  60% { transform: translateY(2px); opacity: 1; }
+   431→   431→  100% { transform: translateY(0); opacity: 1; }
+   432→   432→}
+   433→   433→
+   434→   434→.custom-marker {
+   435→   435→  animation: marker-drop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+   436→   436→}
+   437→   437→
+   438→   438→.custom-marker:hover {
+   439→   439→  transform: scale(1.2) translateY(-4px) !important;
+   440→   440→  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35)) !important;
+   441→   441→}
+   442→   442→
+   443→   443→/* ===== Minimap Border ===== */
+   444→   444→.minimap-container {
+   445→   445→  border: 2px solid oklch(0.922 0 0 / 60%);
+   446→   446→  border-radius: 0.75rem;
+   447→   447→  overflow: hidden;
+   448→   448→  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.12);
+   449→   449→}
+   450→   450→
+   451→   451→.dark .minimap-container {
+   452→   452→  border-color: oklch(1 0 0 / 15%);
+   453→   453→}
+   454→   454→
+   455→   455→/* ===== Toast Styling ===== */
+   456→   456→[data-sonner-toast] {
+   457→   457→  border-radius: 0.75rem !important;
+   458→   458→}
+   459→   459→
+   460→   460→/* ===== Smooth Page Transitions ===== */
+   461→   461→@keyframes fade-in {
+   462→   462→  from { opacity: 0; transform: translateY(4px); }
+   463→   463→  to { opacity: 1; transform: translateY(0); }
+   464→   464→}
+   465→   465→
+   466→   466→.animate-fade-in {
+   467→   467→  animation: fade-in 0.3s ease-out;
+   468→   468→}
+   469→   469→
+   470→   470→/* ===== Style Card Active Ring ===== */
+   471→   471→.style-card-active {
+   472→   472→  box-shadow: 0 0 0 2px var(--primary), 0 0 0 4px var(--background);
+   473→   473→}
+   474→   474→
+   475→   475→/* ===== Ripple Effect for Buttons ===== */
+   476→   476→@keyframes ripple {
+   477→   477→  0% { transform: scale(0); opacity: 0.5; }
+   478→   478→  100% { transform: scale(4); opacity: 0; }
+   479→   479→}
+   480→   480→
+   481→   481→.animate-ripple {
+   482→   482→  position: relative;
+   483→   483→  overflow: hidden;
+   484→   484→}
+   485→   485→
+   486→   486→.animate-ripple::after {
+   487→   487→  content: '';
+   488→   488→  position: absolute;
+   489→   489→  inset: 0;
+   490→   490→  background: radial-gradient(circle, currentColor 10%, transparent 10%);
+   491→   491→  transform: scale(0);
+   492→   492→  opacity: 0;
+   493→   493→  pointer-events: none;
+   494→   494→}
+   495→   495→
+   496→   496→.animate-ripple:active::after {
+   497→   497→  animation: ripple 0.5s ease-out;
+   498→   498→}
+   499→   499→
+   500→   500→/* ===== Map Crosshair Cursor for Tools ===== */
+   501→   501→.cursor-crosshair-tool {
+   502→   502→  cursor: crosshair !important;
+   503→   503→}
+   504→   504→
+   505→   505→.cursor-pin-tool {
+   506→   506→  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ef4444' stroke-width='2'%3E%3Cpath d='M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z'/%3E%3Ccircle cx='12' cy='9' r='2.5'/%3E%3C/svg%3E") 12 24, pointer;
+   507→   507→}
+   508→   508→
+   509→   509→/* ===== Tooltip Glow Effect ===== */
+   510→   510→.tooltip-glow {
+   511→   511→  box-shadow: 0 0 15px -3px rgba(16, 185, 129, 0.2);
+   512→   512→}
+   513→   513→
+   514→   514→/* ===== Stat Value Animation ===== */
+   515→   515→@keyframes stat-pulse {
+   516→   516→  0%, 100% { opacity: 1; }
+   517→   517→  50% { opacity: 0.7; }
+   518→   518→}
+   519→   519→
+   520→   520→.stat-updating {
+   521→   521→  animation: stat-pulse 0.6s ease-in-out;
+   522→   522→}
+   523→   523→
+   524→   524→/* ===== Sidebar Scroll Shadow ===== */
+   525→   525→.sidebar-scroll-shadow {
+   526→   526→  mask-image: linear-gradient(to bottom, transparent, black 8px, black calc(100% - 8px), transparent);
+   527→   527→}
+   528→   528→
+   529→   529→/* ===== Welcome Banner Gradient Animation ===== */
+   530→   530→@keyframes gradient-shift {
+   531→   531→  0% { background-position: 0% 50%; }
+   532→   532→  50% { background-position: 100% 50%; }
+   533→   533→  100% { background-position: 0% 50%; }
+   534→   534→}
+   535→   535→
+   536→   536→.animate-gradient-border::before {
+   537→   537→  background: linear-gradient(135deg, oklch(0.6 0.2 160), oklch(0.5 0.15 200), oklch(0.55 0.18 280), oklch(0.6 0.2 160)) !important;
+   538→   538→  background-size: 300% 300% !important;
+   539→   539→  animation: gradient-shift 4s ease infinite !important;
+   540→   540→}
+   541→   541→
+   542→   542→/* ===== Glass Card Effect ===== */
+   543→   543→@utility glass-card {
+   544→   544→  background: oklch(1 0 0 / 90%);
+   545→   545→  backdrop-filter: blur(20px) saturate(180%);
+   546→   546→  -webkit-backdrop-filter: blur(20px) saturate(180%);
+   547→   547→  border: 1px solid oklch(0 0 0 / 10%);
+   548→   548→}
+   549→   549→
+   550→   550→.dark .glass-card {
+   551→   551→  background: oklch(0.18 0 0 / 85%);
+   552→   552→  border-color: oklch(1 0 0 / 8%);
+   553→   553→}
+   554→   554→
+   555→   555→/* ===== Smooth Number Transition ===== */
+   556→   556→.tabular-nums-smooth {
+   557→   557→  font-variant-numeric: tabular-nums;
+   558→   558→  transition: all 0.15s ease-out;
+   559→   559→}
+   560→   560→
+   561→   561→/* ===== Sidebar Shadow (right edge extends onto map) ===== */
+   562→   562→.sidebar-shadow {
+   563→   563→  box-shadow: 4px 0 24px -4px rgba(0, 0, 0, 0.12);
+   564→   564→}
+   565→   565→
+   566→   566→.dark .sidebar-shadow {
+   567→   567→  box-shadow: 4px 0 24px -4px rgba(0, 0, 0, 0.4);
+   568→   568→}
+   569→   569→
+   570→   570→/* ===== Weather Accent Borders ===== */
+   571→   571→.weather-accent-warm {
+   572→   572→  border-left: 4px solid #f59e0b;
+   573→   573→}
+   574→   574→
+   575→   575→.weather-accent-cold {
+   576→   576→  border-left: 4px solid #3b82f6;
+   577→   577→}
+   578→   578→
+   579→   579→.weather-accent-neutral {
+   580→   580→  border-left: 4px solid #6b7280;
+   581→   581→}
+   582→   582→
+   583→   583→/* ===== Tool Bounce Animation ===== */
+   584→   584→@keyframes tool-bounce {
+   585→   585→  0% { transform: scale(1); }
+   586→   586→  30% { transform: scale(0.9); }
+   587→   587→  60% { transform: scale(1.1); }
+   588→   588→  80% { transform: scale(0.97); }
+   589→   589→  100% { transform: scale(1); }
+   590→   590→}
+   591→   591→
+   592→   592→.tool-bounce {
+   593→   593→  animation: tool-bounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+   594→   594→}
+   595→   595→
+   596→   596→/* ===== Style Card Glow Effect ===== */
+   597→   597→.style-card-glow {
+   598→   598→  box-shadow: 0 0 12px 2px rgba(16, 185, 129, 0.25), 0 0 0 2px var(--primary), 0 0 0 4px var(--background);
+   599→   599→}
+   600→   600→
+   601→   601→.dark .style-card-glow {
+   602→   602→  box-shadow: 0 0 16px 4px rgba(16, 185, 129, 0.2), 0 0 0 2px var(--primary), 0 0 0 4px var(--background);
+   603→   603→}
+   604→   604→
+   605→   605→/* ===== Map Crosshair Overlay ===== */
+   606→   606→.map-crosshair-overlay {
+   607→   607→  position: absolute;
+   608→   608→  inset: 0;
+   609→   609→  pointer-events: none;
+   610→   610→  z-index: 5;
+   611→   611→}
+   612→   612→
+   613→   613→.map-crosshair-overlay::before,
+   614→   614→.map-crosshair-overlay::after {
+   615→   615→  content: '';
+   616→   616→  position: absolute;
+   617→   617→  background: oklch(0.5 0 0 / 20%);
+   618→   618→}
+   619→   619→
+   620→   620→.map-crosshair-overlay::before {
+   621→   621→  /* Horizontal line */
+   622→   622→  top: 50%;
+   623→   623→  left: calc(50% - 20px);
+   624→   624→  width: 40px;
+   625→   625→  height: 1px;
+   626→   626→  transform: translateY(-0.5px);
+   627→   627→}
+   628→   628→
+   629→   629→.map-crosshair-overlay::after {
+   630→   630→  /* Vertical line */
+   631→   631→  left: 50%;
+   632→   632→  top: calc(50% - 20px);
+   633→   633→  height: 40px;
+   634→   634→  width: 1px;
+   635→   635→  transform: translateX(-0.5px);
+   636→   636→}
+   637→   637→
+   638→   638→.dark .map-crosshair-overlay::before,
+   639→   639→.dark .map-crosshair-overlay::after {
+   640→   640→  background: oklch(0.8 0 0 / 25%);
+   641→   641→}
+   642→   642→
+   643→   643→/* ===== Active Tool Dot Pulse Glow ===== */
+   644→   644→@keyframes dot-pulse-glow {
+   645→   645→  0% {
+   646→   646→    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+   647→   647→  }
+   648→   648→  50% {
+   649→   649→    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.3);
+   650→   650→  }
+   651→   651→  100% {
+   652→   652→    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+   653→   653→  }
+   654→   654→}
+   655→   655→
+   656→   656→.tool-dot-glow {
+   657→   657→  animation: dot-pulse-glow 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+   658→   658→}
+   659→   659→
+   660→   660→/* ===== Sidebar Inner Glow (top) ===== */
+   661→   661→.sidebar-inner-glow::before {
+   662→   662→  content: '';
+   663→   663→  position: absolute;
+   664→   664→  top: 0;
+   665→   665→  left: 0;
+   666→   666→  right: 0;
+   667→   667→  height: 48px;
+   668→   668→  background: linear-gradient(to bottom, oklch(0.6 0.15 160 / 6%), transparent);
+   669→   669→  pointer-events: none;
+   670→   670→  z-index: 1;
+   671→   671→}
+   672→   672→
+   673→   673→.dark .sidebar-inner-glow::before {
+   674→   674→  background: linear-gradient(to bottom, oklch(0.6 0.15 160 / 8%), transparent);
+   675→   675→}
+   676→   676→
+   677→   677→/* ===== Map Control Glass Style ===== */
+   678→   678→@utility map-control-glass {
+   679→   679→  background: oklch(1 0 0 / 90%);
+   680→   680→  backdrop-filter: blur(12px) saturate(180%);
+   681→   681→  -webkit-backdrop-filter: blur(12px) saturate(180%);
+   682→   682→  border: 1px solid oklch(0 0 0 / 10%);
+   683→   683→  box-shadow: 0 4px 12px -2px oklch(0 0 0 / 12%), 0 2px 4px -1px oklch(0 0 0 / 6%);
+   684→   684→}
+   685→   685→
+   686→   686→.map-control-glass:hover {
+   687→   687→  box-shadow: 0 8px 25px -5px oklch(0 0 0 / 15%), 0 4px 10px -4px oklch(0 0 0 / 8%);
+   688→   688→}
+   689→   689→
+   690→   690→.dark .map-control-glass {
+   691→   691→  background: oklch(0.18 0 0 / 85%);
+   692→   692→  border-color: oklch(1 0 0 / 8%);
+   693→   693→}
+   694→   694→
+   695→   695→/* ===== Map Tooltip Style ===== */
+   696→   696→@utility map-tooltip {
+   697→   697→  background: oklch(1 0 0 / 95%);
+   698→   698→  backdrop-filter: blur(16px) saturate(180%);
+   699→   699→  -webkit-backdrop-filter: blur(16px) saturate(180%);
+   700→   700→  color: oklch(0.2 0 0);
+   701→   701→  border-radius: 0.75rem;
+   702→   702→  box-shadow: 0 10px 25px -5px oklch(0 0 0 / 12%), 0 4px 10px -4px oklch(0 0 0 / 6%);
+   703→   703→  border: 1px solid oklch(0 0 0 / 6%);
+   704→   704→}
+   705→   705→
+   706→   706→/* ===== Shimmer Loading ===== */
+   707→   707→.shimmer-loading {
+   708→   708→  background: linear-gradient(
+   709→   709→    90deg,
+   710→   710→    transparent 0%,
+   711→   711→    oklch(0.9 0 0 / 30%) 50%,
+   712→   712→    transparent 100%
+   713→   713→  );
+   714→   714→  background-size: 200% 100%;
+   715→   715→  animation: shimmer-slide 1.5s ease-in-out infinite;
+   716→   716→}
+   717→   717→
+   718→   718→@keyframes shimmer-slide {
+   719→   719→  0% { background-position: 200% 0; }
+   720→   720→  100% { background-position: -200% 0; }
+   721→   721→}
+   722→   722→
+   723→   723→/* ===== Pulse Ring Animation ===== */
+   724→   724→.pulse-ring {
+   725→   725→  animation: pulse-ring-scale 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+   726→   726→}
+   727→   727→
+   728→   728→@keyframes pulse-ring-scale {
+   729→   729→  0% { transform: scale(0.8); opacity: 1; }
+   730→   730→  80%, 100% { transform: scale(1.4); opacity: 0; }
+   731→   731→}
+   732→   732→
+   733→   733→/* ===== FAB Pulse Shadow ===== */
+   734→   734→@keyframes fab-pulse {
+   735→   735→  0%, 100% {
+   736→   736→    box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.25), 0 2px 6px -1px rgba(0, 0, 0, 0.1);
+   737→   737→  }
+   738→   738→  50% {
+   739→   739→    box-shadow: 0 4px 20px 0 rgba(16, 185, 129, 0.4), 0 2px 8px -1px rgba(0, 0, 0, 0.15);
+   740→   740→  }
+   741→   741→}
+   742→   742→
+   743→   743→.fab-pulse-shadow {
+   744→   744→  animation: fab-pulse 3s ease-in-out infinite;
+   745→   745→}
+   746→   746→
+   747→   747→/* ===== Stat Item Hover ===== */
+   748→   748→.stat-item {
+   749→   749→  @apply transition-all duration-200 rounded-lg px-2 py-1 -mx-1;
+   750→   750→}
+   751→   751→
+   752→   752→.stat-item:hover {
+   753→   753→  @apply bg-accent/50;
+   754→   754→}
+   755→   755→
+   756→   756→/* ===== Search Result Hover Glow ===== */
+   757→   757→.search-result-hover {
+   758→   758→  transition: all 0.15s ease;
+   759→   759→  border-left: 3px solid transparent;
+   760→   760→}
+   761→   761→
+   762→   762→.search-result-hover:hover {
+   763→   763→  border-left-color: oklch(0.6 0.2 160);
+   764→   764→  background: oklch(0.6 0.2 160 / 5%);
+   765→   765→}
+   766→   766→
+   767→   767→.dark .search-result-hover:hover {
+   768→   768→  background: oklch(0.6 0.2 160 / 8%);
+   769→   769→}
+   770→   770→
+   771→   771→/* ===== Mobile Weather Bar Slide-Down Animation ===== */
+   772→   772→@keyframes slide-down {
+   773→   773→  0% {
+   774→   774→    transform: translateY(-8px);
+   775→   775→    opacity: 0;
+   776→   776→  }
+   777→   777→  100% {
+   778→   778→    transform: translateY(0);
+   779→   779→    opacity: 1;
+   780→   780→  }
+   781→   781→}
+   782→   782→
+   783→   783→.animate-slide-down {
+   784→   784→  animation: slide-down 0.25s ease-out;
+   785→   785→}
+   786→   786→
+   787→   787→/* ===== Notification Badge Pulse ===== */
+   788→   788→.notification-badge {
+   789→   789→  position: relative;
+   790→   790→}
+   791→   791→
+   792→   792→.notification-badge::after {
+   793→   793→  content: '';
+   794→   794→  position: absolute;
+   795→   795→  top: -2px;
+   796→   796→  right: -2px;
+   797→   797→  width: 8px;
+   798→   798→  height: 8px;
+   799→   799→  border-radius: 50%;
+   800→   800→  background: oklch(0.577 0.245 27.325);
+   801→   801→  animation: notification-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+   802→   802→}
+   803→   803→
+   804→   804→@keyframes notification-pulse {
+   805→   805→  0% {
+   806→   806→    box-shadow: 0 0 0 0 oklch(0.577 0.245 27.325 / 60%);
+   807→   807→  }
+   808→   808→  70% {
+   809→   809→    box-shadow: 0 0 0 6px oklch(0.577 0.245 27.325 / 0%);
+   810→   810→  }
+   811→   811→  100% {
+   812→   812→    box-shadow: 0 0 0 0 oklch(0.577 0.245 27.325 / 0%);
+   813→   813→  }
+   814→   814→}
+   815→   815→
+   816→   816→/* ===== Map Legend Glass Effect ===== */
+   817→   817→.map-legend {
+   818→   818→  background: oklch(1 0 0 / 80%);
+   819→   819→  backdrop-filter: blur(16px) saturate(180%);
+   820→   820→  -webkit-backdrop-filter: blur(16px) saturate(180%);
+   821→   821→  border: 1px solid oklch(1 0 0 / 30%);
+   822→   822→  border-radius: 0.75rem;
+   823→   823→  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+   824→   824→}
+   825→   825→
+   826→   826→.dark .map-legend {
+   827→   827→  background: oklch(0.18 0 0 / 85%);
+   828→   828→  border-color: oklch(1 0 0 / 10%);
+   829→   829→  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+   830→   830→}
+   831→   831→
+   832→   832→/* ===== Sidebar Tab Hover Transition ===== */
+   833→   833→.sidebar-tab-hover {
+   834→   834→  position: relative;
+   835→   835→  transition: color 0.2s ease;
+   836→   836→}
+   837→   837→
+   838→   838→.sidebar-tab-hover::after {
+   839→   839→  content: '';
+   840→   840→  position: absolute;
+   841→   841→  bottom: -2px;
+   842→   842→  left: 50%;
+   843→   843→  width: 0;
+   844→   844→  height: 2px;
+   845→   845→  border-radius: 1px;
+   846→   846→  background: oklch(0.6 0.2 160);
+   847→   847→  transition: width 0.25s ease, left 0.25s ease;
+   848→   848→}
+   849→   849→
+   850→   850→.sidebar-tab-hover:hover::after,
+   851→   851→.sidebar-tab-hover.active::after {
+   852→   852→  width: 60%;
+   853→   853→  left: 20%;
+   854→   854→}
+   855→   855→
+   856→   856→/* ===== Notification Slide Animation ===== */
+   857→   857→@keyframes notification-enter {
+   858→   858→  from {
+   859→   859→    opacity: 0;
+   860→   860→    transform: translateX(40px) scale(0.95);
+   861→   861→  }
+   862→   862→  to {
+   863→   863→    opacity: 1;
+   864→   864→    transform: translateX(0) scale(1);
+   865→   865→  }
+   866→   866→}
+   867→   867→
+   868→   868→@keyframes notification-exit {
+   869→   869→  from {
+   870→   870→    opacity: 1;
+   871→   871→    transform: translateX(0) scale(1);
+   872→   872→  }
+   873→   873→  to {
+   874→   874→    opacity: 0;
+   875→   875→    transform: translateX(40px) scale(0.95);
+   876→   876→  }
+   877→   877→}
+   878→   878→
+   879→   879→/* ===== Sidebar Location Item Hover ===== */
+   880→   880→.sidebar-location-item {
+   881→   881→  transition: all 0.15s ease;
+   882→   882→  border-left: 3px solid transparent;
+   883→   883→}
+   884→   884→
+   885→   885→.sidebar-location-item:hover {
+   886→   886→  border-left-color: oklch(0.6 0.2 160 / 60%);
+   887→   887→  background: oklch(0.6 0.2 160 / 4%);
+   888→   888→  transform: translateX(2px);
+   889→   889→}
+   890→   890→
+   891→   891→.dark .sidebar-location-item:hover {
+   892→   892→  background: oklch(0.6 0.2 160 / 6%);
+   893→   893→}
+   894→   894→
+   895→   895→/* ===== Bookmark Card Hover ===== */
+   896→   896→.bookmark-card {
+   897→   897→  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+   898→   898→}
+   899→   899→
+   900→   900→.bookmark-card:hover {
+   901→   901→  transform: scale(1.02);
+   902→   902→  box-shadow: 0 4px 16px -4px rgba(0, 0, 0, 0.1);
+   903→   903→}
+   904→   904→
+   905→   905→.dark .bookmark-card:hover {
+   906→   906→  box-shadow: 0 4px 16px -4px rgba(0, 0, 0, 0.3);
+   907→   907→}
+   908→   908→
+   909→   909→/* ===== Glass Card Hover ===== */
+   910→   910→@utility glass-card-hover {
+   911→   911→  transition: all 0.2s ease;
+   912→   912→}
+   913→   913→
+   914→   914→.glass-card-hover:hover {
+   915→   915→  box-shadow: 0 8px 30px -8px rgba(0, 0, 0, 0.12);
+   916→   916→  transform: translateY(-1px);
+   917→   917→}
+   918→   918→
+   919→   919→.dark .glass-card-hover:hover {
+   920→   920→  box-shadow: 0 8px 30px -8px rgba(0, 0, 0, 0.4);
+   921→   921→}
+   922→   922→
+   923→   923→/* ===== Map Tool Button Group ===== */
+   924→   924→@utility map-tool-group {
+   925→   925→  background: oklch(1 0 0 / 90%);
+   926→   926→  backdrop-filter: blur(20px) saturate(180%);
+   927→   927→  -webkit-backdrop-filter: blur(20px) saturate(180%);
+   928→   928→  border: 1px solid oklch(0 0 0 / 10%);
+   929→   929→  border-radius: 0.75rem;
+   930→   930→  overflow: hidden;
+   931→   931→}
+   932→   932→
+   933→   933→.dark .map-tool-group {
+   934→   934→  background: oklch(0.18 0 0 / 85%);
+   935→   935→  border-color: oklch(1 0 0 / 8%);
+   936→   936→}
+   937→   937→
+   938→   938→.map-tool-group > * + * {
+   939→   939→  border-top: 1px solid oklch(0 0 0 / 10%);
+   940→   940→}
+   941→   941→
+   942→   942→/* ===== Tooltip Arrow ===== */
+   943→   943→.tooltip-arrow {
+   944→   944→  position: relative;
+   945→   945→}
+   946→   946→
+   947→   947→.tooltip-arrow::before {
+   948→   948→  content: '';
+   949→   949→  position: absolute;
+   950→   950→  left: -6px;
+   951→   951→  top: 50%;
+   952→   952→  transform: translateY(-50%) rotate(45deg);
+   953→   953→  width: 10px;
+   954→   954→  height: 10px;
+   955→   955→  background: inherit;
+   956→   956→  border: inherit;
+   957→   957→  border-right: none;
+   958→   958→  border-top: none;
+   959→   959→}
+   960→   960→
+   961→   961→/* ===== Scale Bar Enhancement ===== */
+   962→   962→.maplibregl-ctrl-scale {
+   963→   963→  font-family: var(--font-geist-sans), sans-serif !important;
+   964→   964→  font-weight: 500 !important;
+   965→   965→  letter-spacing: 0.02em !important;
+   966→   966→}
+   967→   967→
+   968→   968→/* ===== Smooth Style Transition ===== */
+   969→   969→.maplibregl-canvas {
+   970→   970→  transition: opacity 0.3s ease;
+   971→   971→}
+   972→   972→
+   973→   973→/* ===== Badge Gradient Shimmer ===== */
+   974→   974→@keyframes badge-shimmer {
+   975→   975→  0% { background-position: -100% 0; }
+   976→   976→  100% { background-position: 200% 0; }
+   977→   977→}
+   978→   978→
+   979→   979→.badge-shimmer {
+   980→   980→  background: linear-gradient(90deg, transparent, oklch(1 0 0 / 30%), transparent);
+   981→   981→  background-size: 200% 100%;
+   982→   982→  animation: badge-shimmer 3s ease-in-out infinite;
+   983→   983→}
+   984→   984→
+   985→   985→/* ===== POI Category pill hover effect ===== */
+   986→   986→@utility poi-pill {
+   987→   987→  @apply flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-medium transition-all;
+   988→   988→}
+   989→   989→
+   990→   990→/* ===== Map screenshot flash animation ===== */
+   991→   991→@keyframes screenshot-flash {
+   992→   992→  0% { opacity: 0; }
+   993→   993→  50% { opacity: 0.3; }
+   994→   994→  100% { opacity: 0; }
+   995→   995→}
+   996→   996→
+   997→   997→@utility screenshot-flash {
+   998→   998→  animation: screenshot-flash 0.5s ease-out;
+   999→   999→}
+  1000→  1000→
+  1001→  1001→/* ===== Export button glow ===== */
+  1002→  1002→@utility export-glow {
+  1003→  1003→  @apply shadow-lg hover:shadow-emerald-500/20 transition-shadow duration-300;
+  1004→  1004→}
+  1005→  1005→
+  1006→  1006→/* ===== Marker drag preview ===== */
+  1007→  1007→@utility marker-dragging {
+  1008→  1008→  @apply scale-125 opacity-80;
+  1009→  1009→  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+  1010→  1010→  transition: transform 0.15s ease, opacity 0.15s ease;
+  1011→  1011→}
+  1012→  1012→
+  1013→  1013→/* ===== Nearby panel slide in ===== */
+  1014→  1014→@keyframes slide-in-right {
+  1015→  1015→  from { transform: translateX(10px); opacity: 0; }
+  1016→  1016→  to { transform: translateX(0); opacity: 1; }
+  1017→  1017→}
+  1018→  1018→
+  1019→  1019→@utility slide-in-right {
+  1020→  1020→  animation: slide-in-right 0.2s ease-out;
+  1021→  1021→}
+  1022→  1022→
+  1023→  1023→/* ===== Glass card enhanced v2 ===== */
+  1024→  1024→@utility glass-card-v2 {
+  1025→  1025→  @apply bg-background/80 backdrop-blur-xl border border-border/30;
+  1026→  1026→  box-shadow:
+  1027→  1027→    0 4px 6px -1px oklch(0 0 0 / 0.05),
+  1028→  1028→    0 2px 4px -2px oklch(0 0 0 / 0.05),
+  1029→  1029→    inset 0 1px 0 oklch(1 0 0 / 0.1);
+  1030→  1030→}
+  1031→  1031→
+  1032→  1032→/* ===== Smooth scrolling for POI lists ===== */
+  1033→  1033→@utility smooth-scroll {
+  1034→  1034→  scroll-behavior: smooth;
+  1035→  1035→  -webkit-overflow-scrolling: touch;
+  1036→  1036→}
+  1037→  1037→
+  1038→  1038→/* ===== Toolbar button active state ===== */
+  1039→  1039→@utility toolbar-btn-active {
+  1040→  1040→  @apply bg-primary/15 text-primary ring-1 ring-primary/20;
+  1041→  1041→}
+  1042→  1042→
+  1043→  1043→/* ===== Category badge enhanced ===== */
+  1044→  1044→@utility category-badge {
+  1045→  1045→  @apply text-[10px] px-1.5 py-0.5 rounded-full font-medium;
+  1046→  1046→}
+  1047→  1047→
+  1048→  1048→/* ===== Coordinates Change Pulse ===== */
+  1049→  1049→@keyframes coords-pulse {
+  1050→  1050→  0% { background-color: oklch(0.6 0.2 160 / 10%); }
+  1051→  1051→  100% { background-color: transparent; }
+  1052→  1052→}
+  1053→  1053→
+  1054→  1054→.coords-pulse {
+  1055→  1055→  animation: coords-pulse 0.6s ease-out;
+  1056→  1056→}
+  1057→  1057→
+  1058→  1058→/* ===== Nearby Panel Item Hover ===== */
+  1059→  1059→.nearby-item {
+  1060→  1060→  transition: all 0.15s ease;
+  1061→  1061→  border-left: 3px solid transparent;
+  1062→  1062→}
+  1063→  1063→
+  1064→  1064→.nearby-item:hover {
+  1065→  1065→  border-left-color: oklch(0.6 0.2 160 / 50%);
+  1066→  1066→  background: oklch(0.6 0.2 160 / 4%);
+  1067→  1067→}
+  1068→  1068→
+  1069→  1069→.dark .nearby-item:hover {
+  1070→  1070→  background: oklch(0.6 0.2 160 / 6%);
+  1071→  1071→}
+  1072→  1072→
