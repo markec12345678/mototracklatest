@@ -273,7 +273,6 @@ export function SearchBar() {
               key={searchTerm}
               onClick={() => handleRecentSearchClick(searchTerm)}
               className="w-full px-3 py-2.5 text-left hover:bg-accent transition-colors flex items-center gap-3 border-b last:border-0 cursor-pointer"
-              role="button"
               tabIndex={0}
               onKeyDown={(e) => { if (e.key === 'Enter') handleRecentSearchClick(searchTerm) }}
             >

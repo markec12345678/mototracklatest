@@ -1291,7 +1291,7 @@ function ToolsTab({
                       const flyTo = (window as unknown as Record<string, (lng: number, lat: number, z?: number) => void>).__mapFlyTo
                       if (flyTo) flyTo(city.lng, city.lat, 12)
                     }}
-                    className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg hover:bg-background/80 transition-all shrink-0"
+                    className="opacity-60 hover:opacity-100 p-1.5 rounded-lg hover:bg-background/80 transition-all shrink-0"
                     aria-label={`Fly to ${city.name}`}
                   >
                     <Navigation className="h-3 w-3" style={{ color: city.color }} />

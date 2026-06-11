@@ -270,7 +270,7 @@
 
 /* ===== Glassmorphism Utility ===== */
 
-.glass {
+@utility glass {
   background: oklch(1 0 0 / 70%);
   backdrop-filter: blur(12px);
   border: 1px solid oklch(1 0 0 / 30%);
@@ -540,15 +540,16 @@
 }
 
 /* ===== Glass Card Effect ===== */
-.glass-card {
-  background: hsl(var(--background) / 0.9);
+@utility glass-card {
+  background: oklch(1 0 0 / 90%);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid hsl(var(--border) / 0.5);
+  border: 1px solid oklch(0 0 0 / 10%);
 }
 
 .dark .glass-card {
-  background: hsl(var(--background) / 0.85);
+  background: oklch(0.18 0 0 / 85%);
+  border-color: oklch(1 0 0 / 8%);
 }
 
 /* ===== Smooth Number Transition ===== */
@@ -674,26 +675,32 @@
 }
 
 /* ===== Map Control Glass Style ===== */
-.map-control-glass {
-  @apply bg-background/90 backdrop-blur-md border border-border/50 shadow-lg;
+@utility map-control-glass {
+  background: oklch(1 0 0 / 90%);
   backdrop-filter: blur(12px) saturate(180%);
   -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid oklch(0 0 0 / 10%);
+  box-shadow: 0 4px 12px -2px oklch(0 0 0 / 12%), 0 2px 4px -1px oklch(0 0 0 / 6%);
 }
 
 .map-control-glass:hover {
-  @apply shadow-xl;
+  box-shadow: 0 8px 25px -5px oklch(0 0 0 / 15%), 0 4px 10px -4px oklch(0 0 0 / 8%);
 }
 
 .dark .map-control-glass {
-  background: hsl(var(--background) / 0.85);
-  border-color: hsl(var(--border) / 0.3);
+  background: oklch(0.18 0 0 / 85%);
+  border-color: oklch(1 0 0 / 8%);
 }
 
 /* ===== Map Tooltip Style ===== */
-.map-tooltip {
-  @apply bg-popover/95 backdrop-blur-xl text-popover-foreground rounded-xl shadow-2xl border border-border/50;
+@utility map-tooltip {
+  background: oklch(1 0 0 / 95%);
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
+  color: oklch(0.2 0 0);
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 25px -5px oklch(0 0 0 / 12%), 0 4px 10px -4px oklch(0 0 0 / 6%);
+  border: 1px solid oklch(0 0 0 / 6%);
 }
 
 /* ===== Shimmer Loading ===== */
@@ -701,7 +708,7 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    hsl(var(--muted) / 0.3) 50%,
+    oklch(0.9 0 0 / 30%) 50%,
     transparent 100%
   );
   background-size: 200% 100%;
@@ -900,7 +907,7 @@
 }
 
 /* ===== Glass Card Hover ===== */
-.glass-card-hover {
+@utility glass-card-hover {
   transition: all 0.2s ease;
 }
 
@@ -914,21 +921,22 @@
 }
 
 /* ===== Map Tool Button Group ===== */
-.map-tool-group {
-  background: hsl(var(--background) / 0.9);
+@utility map-tool-group {
+  background: oklch(1 0 0 / 90%);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid hsl(var(--border) / 0.5);
+  border: 1px solid oklch(0 0 0 / 10%);
   border-radius: 0.75rem;
   overflow: hidden;
 }
 
 .dark .map-tool-group {
-  background: hsl(var(--background) / 0.85);
+  background: oklch(0.18 0 0 / 85%);
+  border-color: oklch(1 0 0 / 8%);
 }
 
 .map-tool-group > * + * {
-  border-top: 1px solid hsl(var(--border) / 30%);
+  border-top: 1px solid oklch(0 0 0 / 10%);
 }
 
 /* ===== Tooltip Arrow ===== */

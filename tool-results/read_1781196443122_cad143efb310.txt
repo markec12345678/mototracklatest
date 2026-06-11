@@ -1,0 +1,976 @@
+     1→@import "tailwindcss";
+     2→@import "tw-animate-css";
+     3→
+     4→@custom-variant dark (&:is(.dark *));
+     5→
+     6→@theme inline {
+     7→  --color-background: var(--background);
+     8→  --color-foreground: var(--foreground);
+     9→  --font-sans: var(--font-geist-sans);
+    10→  --font-mono: var(--font-geist-mono);
+    11→  --color-sidebar-ring: var(--sidebar-ring);
+    12→  --color-sidebar-border: var(--sidebar-border);
+    13→  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    14→  --color-sidebar-accent: var(--sidebar-accent);
+    15→  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    16→  --color-sidebar-primary: var(--sidebar-primary);
+    17→  --color-sidebar-foreground: var(--sidebar-foreground);
+    18→  --color-sidebar: var(--sidebar);
+    19→  --color-chart-5: var(--chart-5);
+    20→  --color-chart-4: var(--chart-4);
+    21→  --color-chart-3: var(--chart-3);
+    22→  --color-chart-2: var(--chart-2);
+    23→  --color-chart-1: var(--chart-1);
+    24→  --color-ring: var(--ring);
+    25→  --color-input: var(--input);
+    26→  --color-border: var(--border);
+    27→  --color-destructive: var(--destructive);
+    28→  --color-accent-foreground: var(--accent-foreground);
+    29→  --color-accent: var(--accent);
+    30→  --color-muted-foreground: var(--muted-foreground);
+    31→  --color-muted: var(--muted);
+    32→  --color-secondary-foreground: var(--secondary-foreground);
+    33→  --color-secondary: var(--secondary);
+    34→  --color-primary-foreground: var(--primary-foreground);
+    35→  --color-primary: var(--primary);
+    36→  --color-popover-foreground: var(--popover-foreground);
+    37→  --color-popover: var(--popover);
+    38→  --color-card-foreground: var(--card-foreground);
+    39→  --color-card: var(--card);
+    40→  --radius-sm: calc(var(--radius) - 4px);
+    41→  --radius-md: calc(var(--radius) - 2px);
+    42→  --radius-lg: var(--radius);
+    43→  --radius-xl: calc(var(--radius) + 4px);
+    44→}
+    45→
+    46→:root {
+    47→  --radius: 0.625rem;
+    48→  --background: oklch(1 0 0);
+    49→  --foreground: oklch(0.145 0 0);
+    50→  --card: oklch(1 0 0);
+    51→  --card-foreground: oklch(0.145 0 0);
+    52→  --popover: oklch(1 0 0);
+    53→  --popover-foreground: oklch(0.145 0 0);
+    54→  --primary: oklch(0.205 0 0);
+    55→  --primary-foreground: oklch(0.985 0 0);
+    56→  --secondary: oklch(0.97 0 0);
+    57→  --secondary-foreground: oklch(0.205 0 0);
+    58→  --muted: oklch(0.97 0 0);
+    59→  --muted-foreground: oklch(0.556 0 0);
+    60→  --accent: oklch(0.97 0 0);
+    61→  --accent-foreground: oklch(0.205 0 0);
+    62→  --destructive: oklch(0.577 0.245 27.325);
+    63→  --border: oklch(0.922 0 0);
+    64→  --input: oklch(0.922 0 0);
+    65→  --ring: oklch(0.708 0 0);
+    66→  --chart-1: oklch(0.646 0.222 41.116);
+    67→  --chart-2: oklch(0.6 0.118 184.704);
+    68→  --chart-3: oklch(0.398 0.07 227.392);
+    69→  --chart-4: oklch(0.828 0.189 84.429);
+    70→  --chart-5: oklch(0.769 0.188 70.08);
+    71→  --sidebar: oklch(0.985 0 0);
+    72→  --sidebar-foreground: oklch(0.145 0 0);
+    73→  --sidebar-primary: oklch(0.205 0 0);
+    74→  --sidebar-primary-foreground: oklch(0.985 0 0);
+    75→  --sidebar-accent: oklch(0.97 0 0);
+    76→  --sidebar-accent-foreground: oklch(0.205 0 0);
+    77→  --sidebar-border: oklch(0.922 0 0);
+    78→  --sidebar-ring: oklch(0.708 0 0);
+    79→}
+    80→
+    81→.dark {
+    82→  --background: oklch(0.145 0 0);
+    83→  --foreground: oklch(0.985 0 0);
+    84→  --card: oklch(0.205 0 0);
+    85→  --card-foreground: oklch(0.985 0 0);
+    86→  --popover: oklch(0.205 0 0);
+    87→  --popover-foreground: oklch(0.985 0 0);
+    88→  --primary: oklch(0.922 0 0);
+    89→  --primary-foreground: oklch(0.205 0 0);
+    90→  --secondary: oklch(0.269 0 0);
+    91→  --secondary-foreground: oklch(0.985 0 0);
+    92→  --muted: oklch(0.269 0 0);
+    93→  --muted-foreground: oklch(0.708 0 0);
+    94→  --accent: oklch(0.269 0 0);
+    95→  --accent-foreground: oklch(0.985 0 0);
+    96→  --destructive: oklch(0.704 0.191 22.216);
+    97→  --border: oklch(1 0 0 / 10%);
+    98→  --input: oklch(1 0 0 / 15%);
+    99→  --ring: oklch(0.556 0 0);
+   100→  --chart-1: oklch(0.488 0.243 264.376);
+   101→  --chart-2: oklch(0.696 0.17 162.48);
+   102→  --chart-3: oklch(0.769 0.188 70.08);
+   103→  --chart-4: oklch(0.627 0.265 303.9);
+   104→  --chart-5: oklch(0.645 0.246 16.439);
+   105→  --sidebar: oklch(0.205 0 0);
+   106→  --sidebar-foreground: oklch(0.985 0 0);
+   107→  --sidebar-primary: oklch(0.488 0.243 264.376);
+   108→  --sidebar-primary-foreground: oklch(0.985 0 0);
+   109→  --sidebar-accent: oklch(0.269 0 0);
+   110→  --sidebar-accent-foreground: oklch(0.985 0 0);
+   111→  --sidebar-border: oklch(1 0 0 / 10%);
+   112→  --sidebar-ring: oklch(0.556 0 0);
+   113→}
+   114→
+   115→@layer base {
+   116→  * {
+   117→    @apply border-border outline-ring/50;
+   118→  }
+   119→  body {
+   120→    @apply bg-background text-foreground;
+   121→  }
+   122→}
+   123→
+   124→/* ===== MapLibre Custom Styles ===== */
+   125→
+   126→.maplibregl-map {
+   127→  font-family: var(--font-geist-sans), sans-serif !important;
+   128→}
+   129→
+   130→/* Navigation control group */
+   131→.maplibregl-ctrl-group {
+   132→  border-radius: 0.75rem !important;
+   133→  overflow: hidden !important;
+   134→  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+   135→  border: 1px solid oklch(0.922 0 0 / 60%) !important;
+   136→  backdrop-filter: blur(8px) !important;
+   137→}
+   138→
+   139→.dark .maplibregl-ctrl-group {
+   140→  border-color: oklch(1 0 0 / 10%) !important;
+   141→  background: oklch(0.18 0 0 / 90%) !important;
+   142→  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2) !important;
+   143→}
+   144→
+   145→.maplibregl-ctrl-group button {
+   146→  width: 36px !important;
+   147→  height: 36px !important;
+   148→  transition: background-color 0.15s ease !important;
+   149→}
+   150→
+   151→.maplibregl-ctrl-group button:hover {
+   152→  background-color: oklch(0.95 0 0) !important;
+   153→}
+   154→
+   155→.dark .maplibregl-ctrl-group button:hover {
+   156→  background-color: oklch(0.3 0 0) !important;
+   157→}
+   158→
+   159→.dark .maplibregl-ctrl-group button + button {
+   160→  border-top-color: oklch(1 0 0 / 10%) !important;
+   161→}
+   162→
+   163→/* Scale bar */
+   164→.maplibregl-ctrl-scale {
+   165→  border-radius: 0.375rem !important;
+   166→  font-size: 10px !important;
+   167→  padding: 2px 6px !important;
+   168→  background: oklch(1 0 0 / 80%) !important;
+   169→  backdrop-filter: blur(4px) !important;
+   170→}
+   171→
+   172→.dark .maplibregl-ctrl-scale {
+   173→  background: oklch(0.18 0 0 / 85%) !important;
+   174→  color: oklch(0.9 0 0) !important;
+   175→  border-color: oklch(1 0 0 / 20%) !important;
+   176→}
+   177→
+   178→/* Attribution */
+   179→.maplibregl-ctrl-attrib {
+   180→  border-radius: 0.375rem !important;
+   181→  font-size: 10px !important;
+   182→  background: oklch(1 0 0 / 70%) !important;
+   183→  backdrop-filter: blur(4px) !important;
+   184→}
+   185→
+   186→.dark .maplibregl-ctrl-attrib {
+   187→  background: oklch(0.18 0 0 / 80%) !important;
+   188→  color: oklch(0.6 0 0) !important;
+   189→}
+   190→
+   191→.dark .maplibregl-ctrl-attrib a {
+   192→  color: oklch(0.6 0 0) !important;
+   193→}
+   194→
+   195→/* Popup */
+   196→.maplibregl-popup-content {
+   197→  border-radius: 0.75rem !important;
+   198→  padding: 0 !important;
+   199→  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.12), 0 4px 10px -4px rgba(0, 0, 0, 0.06) !important;
+   200→}
+   201→
+   202→.dark .maplibregl-popup-content {
+   203→  background: oklch(0.2 0 0 / 95%) !important;
+   204→  color: oklch(0.95 0 0) !important;
+   205→  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 4px 10px -4px rgba(0, 0, 0, 0.3) !important;
+   206→  border: 1px solid oklch(1 0 0 / 8%) !important;
+   207→}
+   208→
+   209→.maplibregl-popup-close-button {
+   210→  font-size: 18px !important;
+   211→  padding: 4px 8px !important;
+   212→  color: #999 !important;
+   213→  transition: color 0.15s ease !important;
+   214→}
+   215→
+   216→.maplibregl-popup-close-button:hover {
+   217→  color: #333 !important;
+   218→  background: transparent !important;
+   219→}
+   220→
+   221→.dark .maplibregl-popup-close-button {
+   222→  color: #888 !important;
+   223→}
+   224→
+   225→.dark .maplibregl-popup-close-button:hover {
+   226→  color: #fff !important;
+   227→}
+   228→
+   229→.maplibregl-popup-tip {
+   230→  border-top-color: oklch(1 0 0) !important;
+   231→}
+   232→
+   233→.dark .maplibregl-popup-tip {
+   234→  border-top-color: oklch(0.2 0 0 / 95%) !important;
+   235→}
+   236→
+   237→/* Custom marker animation - replaced by marker-drop in new styles section */
+   238→
+   239→/* ===== Custom Scrollbar Styling ===== */
+   240→
+   241→.overflow-y-auto::-webkit-scrollbar,
+   242→[data-radix-scroll-area-viewport]::-webkit-scrollbar {
+   243→  width: 4px;
+   244→}
+   245→
+   246→.overflow-y-auto::-webkit-scrollbar-track,
+   247→[data-radix-scroll-area-viewport]::-webkit-scrollbar-track {
+   248→  background: transparent;
+   249→}
+   250→
+   251→.overflow-y-auto::-webkit-scrollbar-thumb,
+   252→[data-radix-scroll-area-viewport]::-webkit-scrollbar-thumb {
+   253→  background: oklch(0.7 0 0 / 25%);
+   254→  border-radius: 2px;
+   255→}
+   256→
+   257→.overflow-y-auto::-webkit-scrollbar-thumb:hover,
+   258→[data-radix-scroll-area-viewport]::-webkit-scrollbar-thumb:hover {
+   259→  background: oklch(0.5 0 0 / 45%);
+   260→}
+   261→
+   262→/* ===== Smooth Transitions for Dark Mode ===== */
+   263→
+   264→.dark .maplibregl-ctrl-group,
+   265→.dark .maplibregl-ctrl-scale,
+   266→.dark .maplibregl-ctrl-attrib,
+   267→.dark .maplibregl-popup-content {
+   268→  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+   269→}
+   270→
+   271→/* ===== Glassmorphism Utility ===== */
+   272→
+   273→.glass {
+   274→  background: oklch(1 0 0 / 70%);
+   275→  backdrop-filter: blur(12px);
+   276→  border: 1px solid oklch(1 0 0 / 30%);
+   277→}
+   278→
+   279→.dark .glass {
+   280→  background: oklch(0.18 0 0 / 80%);
+   281→  border: 1px solid oklch(1 0 0 / 8%);
+   282→}
+   283→
+   284→/* ===== Pulse Animation for Active Tools ===== */
+   285→
+   286→@keyframes pulse-ring {
+   287→  0% {
+   288→    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+   289→  }
+   290→  70% {
+   291→    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+   292→  }
+   293→  100% {
+   294→    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+   295→  }
+   296→}
+   297→
+   298→.animate-pulse-ring {
+   299→  animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+   300→}
+   301→
+   302→/* ===== Gradient Border Effect ===== */
+   303→
+   304→.gradient-border {
+   305→  position: relative;
+   306→}
+   307→
+   308→.gradient-border::before {
+   309→  content: '';
+   310→  position: absolute;
+   311→  inset: 0;
+   312→  border-radius: inherit;
+   313→  padding: 1px;
+   314→  background: linear-gradient(135deg, oklch(0.6 0.2 160), oklch(0.5 0.15 280));
+   315→  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+   316→  -webkit-mask-composite: xor;
+   317→  mask-composite: exclude;
+   318→  pointer-events: none;
+   319→}
+   320→
+   321→/* ===== Shimmer Effect ===== */
+   322→
+   323→@keyframes shimmer {
+   324→  0% {
+   325→    background-position: -200% 0;
+   326→  }
+   327→  100% {
+   328→    background-position: 200% 0;
+   329→  }
+   330→}
+   331→
+   332→.animate-shimmer {
+   333→  background: linear-gradient(90deg, transparent 0%, oklch(1 0 0 / 15%) 50%, transparent 100%);
+   334→  background-size: 200% 100%;
+   335→  animation: shimmer 2s infinite;
+   336→}
+   337→
+   338→/* ===== Floating Action Button Shadow ===== */
+   339→
+   340→.fab-shadow {
+   341→  box-shadow:
+   342→    0 4px 14px 0 rgba(16, 185, 129, 0.35),
+   343→    0 2px 6px -1px rgba(0, 0, 0, 0.1);
+   344→}
+   345→
+   346→.fab-shadow:hover {
+   347→  box-shadow:
+   348→    0 8px 20px 0 rgba(16, 185, 129, 0.4),
+   349→    0 4px 10px -2px rgba(0, 0, 0, 0.15);
+   350→}
+   351→
+   352→/* ===== Sheet Sidebar Mobile Override ===== */
+   353→
+   354→@media (max-width: 768px) {
+   355→  .maplibregl-ctrl-bottom-right {
+   356→    bottom: 40px !important;
+   357→    right: 8px !important;
+   358→  }
+   359→
+   360→  .maplibregl-ctrl-bottom-left {
+   361→    bottom: 40px !important;
+   362→    left: 8px !important;
+   363→  }
+   364→}
+   365→
+   366→/* ===== Map Loading Skeleton ===== */
+   367→@keyframes map-loading {
+   368→  0% { background-position: -200% 0; }
+   369→  100% { background-position: 200% 0; }
+   370→}
+   371→
+   372→.map-loading-skeleton {
+   373→  background: linear-gradient(90deg, oklch(0.95 0 0) 25%, oklch(0.9 0 0) 50%, oklch(0.95 0 0) 75%);
+   374→  background-size: 200% 100%;
+   375→  animation: map-loading 1.5s ease-in-out infinite;
+   376→}
+   377→
+   378→.dark .map-loading-skeleton {
+   379→  background: linear-gradient(90deg, oklch(0.2 0 0) 25%, oklch(0.25 0 0) 50%, oklch(0.2 0 0) 75%);
+   380→  background-size: 200% 100%;
+   381→}
+   382→
+   383→/* ===== Geolocation Pulse ===== */
+   384→@keyframes geolocation-pulse {
+   385→  0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.5); }
+   386→  70% { box-shadow: 0 0 0 12px rgba(59, 130, 246, 0); }
+   387→  100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+   388→}
+   389→
+   390→.geolocation-dot {
+   391→  width: 16px;
+   392→  height: 16px;
+   393→  border-radius: 50%;
+   394→  background: #3b82f6;
+   395→  border: 3px solid white;
+   396→  box-shadow: 0 0 6px rgba(59, 130, 246, 0.4);
+   397→  animation: geolocation-pulse 2s infinite;
+   398→}
+   399→
+   400→/* ===== Sidebar Tab Active Indicator ===== */
+   401→.sidebar-tab-active {
+   402→  position: relative;
+   403→}
+   404→
+   405→.sidebar-tab-active::after {
+   406→  content: '';
+   407→  position: absolute;
+   408→  bottom: -2px;
+   409→  left: 50%;
+   410→  transform: translateX(-50%);
+   411→  width: 16px;
+   412→  height: 2px;
+   413→  border-radius: 1px;
+   414→  background: oklch(0.6 0.2 160);
+   415→}
+   416→
+   417→/* ===== Floating Panel Hover Effect ===== */
+   418→.floating-panel {
+   419→  transition: transform 0.2s ease, box-shadow 0.2s ease;
+   420→}
+   421→
+   422→.floating-panel:hover {
+   423→  transform: translateY(-1px);
+   424→  box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 10px -4px rgba(0, 0, 0, 0.06);
+   425→}
+   426→
+   427→/* ===== Marker Drop Animation ===== */
+   428→@keyframes marker-drop {
+   429→  0% { transform: translateY(-20px); opacity: 0; }
+   430→  60% { transform: translateY(2px); opacity: 1; }
+   431→  100% { transform: translateY(0); opacity: 1; }
+   432→}
+   433→
+   434→.custom-marker {
+   435→  animation: marker-drop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+   436→}
+   437→
+   438→.custom-marker:hover {
+   439→  transform: scale(1.2) translateY(-4px) !important;
+   440→  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35)) !important;
+   441→}
+   442→
+   443→/* ===== Minimap Border ===== */
+   444→.minimap-container {
+   445→  border: 2px solid oklch(0.922 0 0 / 60%);
+   446→  border-radius: 0.75rem;
+   447→  overflow: hidden;
+   448→  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.12);
+   449→}
+   450→
+   451→.dark .minimap-container {
+   452→  border-color: oklch(1 0 0 / 15%);
+   453→}
+   454→
+   455→/* ===== Toast Styling ===== */
+   456→[data-sonner-toast] {
+   457→  border-radius: 0.75rem !important;
+   458→}
+   459→
+   460→/* ===== Smooth Page Transitions ===== */
+   461→@keyframes fade-in {
+   462→  from { opacity: 0; transform: translateY(4px); }
+   463→  to { opacity: 1; transform: translateY(0); }
+   464→}
+   465→
+   466→.animate-fade-in {
+   467→  animation: fade-in 0.3s ease-out;
+   468→}
+   469→
+   470→/* ===== Style Card Active Ring ===== */
+   471→.style-card-active {
+   472→  box-shadow: 0 0 0 2px var(--primary), 0 0 0 4px var(--background);
+   473→}
+   474→
+   475→/* ===== Ripple Effect for Buttons ===== */
+   476→@keyframes ripple {
+   477→  0% { transform: scale(0); opacity: 0.5; }
+   478→  100% { transform: scale(4); opacity: 0; }
+   479→}
+   480→
+   481→.animate-ripple {
+   482→  position: relative;
+   483→  overflow: hidden;
+   484→}
+   485→
+   486→.animate-ripple::after {
+   487→  content: '';
+   488→  position: absolute;
+   489→  inset: 0;
+   490→  background: radial-gradient(circle, currentColor 10%, transparent 10%);
+   491→  transform: scale(0);
+   492→  opacity: 0;
+   493→  pointer-events: none;
+   494→}
+   495→
+   496→.animate-ripple:active::after {
+   497→  animation: ripple 0.5s ease-out;
+   498→}
+   499→
+   500→/* ===== Map Crosshair Cursor for Tools ===== */
+   501→.cursor-crosshair-tool {
+   502→  cursor: crosshair !important;
+   503→}
+   504→
+   505→.cursor-pin-tool {
+   506→  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ef4444' stroke-width='2'%3E%3Cpath d='M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z'/%3E%3Ccircle cx='12' cy='9' r='2.5'/%3E%3C/svg%3E") 12 24, pointer;
+   507→}
+   508→
+   509→/* ===== Tooltip Glow Effect ===== */
+   510→.tooltip-glow {
+   511→  box-shadow: 0 0 15px -3px rgba(16, 185, 129, 0.2);
+   512→}
+   513→
+   514→/* ===== Stat Value Animation ===== */
+   515→@keyframes stat-pulse {
+   516→  0%, 100% { opacity: 1; }
+   517→  50% { opacity: 0.7; }
+   518→}
+   519→
+   520→.stat-updating {
+   521→  animation: stat-pulse 0.6s ease-in-out;
+   522→}
+   523→
+   524→/* ===== Sidebar Scroll Shadow ===== */
+   525→.sidebar-scroll-shadow {
+   526→  mask-image: linear-gradient(to bottom, transparent, black 8px, black calc(100% - 8px), transparent);
+   527→}
+   528→
+   529→/* ===== Welcome Banner Gradient Animation ===== */
+   530→@keyframes gradient-shift {
+   531→  0% { background-position: 0% 50%; }
+   532→  50% { background-position: 100% 50%; }
+   533→  100% { background-position: 0% 50%; }
+   534→}
+   535→
+   536→.animate-gradient-border::before {
+   537→  background: linear-gradient(135deg, oklch(0.6 0.2 160), oklch(0.5 0.15 200), oklch(0.55 0.18 280), oklch(0.6 0.2 160)) !important;
+   538→  background-size: 300% 300% !important;
+   539→  animation: gradient-shift 4s ease infinite !important;
+   540→}
+   541→
+   542→/* ===== Glass Card Effect ===== */
+   543→.glass-card {
+   544→  background: hsl(var(--background) / 0.9);
+   545→  backdrop-filter: blur(20px) saturate(180%);
+   546→  -webkit-backdrop-filter: blur(20px) saturate(180%);
+   547→  border: 1px solid hsl(var(--border) / 0.5);
+   548→}
+   549→
+   550→.dark .glass-card {
+   551→  background: hsl(var(--background) / 0.85);
+   552→}
+   553→
+   554→/* ===== Smooth Number Transition ===== */
+   555→.tabular-nums-smooth {
+   556→  font-variant-numeric: tabular-nums;
+   557→  transition: all 0.15s ease-out;
+   558→}
+   559→
+   560→/* ===== Sidebar Shadow (right edge extends onto map) ===== */
+   561→.sidebar-shadow {
+   562→  box-shadow: 4px 0 24px -4px rgba(0, 0, 0, 0.12);
+   563→}
+   564→
+   565→.dark .sidebar-shadow {
+   566→  box-shadow: 4px 0 24px -4px rgba(0, 0, 0, 0.4);
+   567→}
+   568→
+   569→/* ===== Weather Accent Borders ===== */
+   570→.weather-accent-warm {
+   571→  border-left: 4px solid #f59e0b;
+   572→}
+   573→
+   574→.weather-accent-cold {
+   575→  border-left: 4px solid #3b82f6;
+   576→}
+   577→
+   578→.weather-accent-neutral {
+   579→  border-left: 4px solid #6b7280;
+   580→}
+   581→
+   582→/* ===== Tool Bounce Animation ===== */
+   583→@keyframes tool-bounce {
+   584→  0% { transform: scale(1); }
+   585→  30% { transform: scale(0.9); }
+   586→  60% { transform: scale(1.1); }
+   587→  80% { transform: scale(0.97); }
+   588→  100% { transform: scale(1); }
+   589→}
+   590→
+   591→.tool-bounce {
+   592→  animation: tool-bounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+   593→}
+   594→
+   595→/* ===== Style Card Glow Effect ===== */
+   596→.style-card-glow {
+   597→  box-shadow: 0 0 12px 2px rgba(16, 185, 129, 0.25), 0 0 0 2px var(--primary), 0 0 0 4px var(--background);
+   598→}
+   599→
+   600→.dark .style-card-glow {
+   601→  box-shadow: 0 0 16px 4px rgba(16, 185, 129, 0.2), 0 0 0 2px var(--primary), 0 0 0 4px var(--background);
+   602→}
+   603→
+   604→/* ===== Map Crosshair Overlay ===== */
+   605→.map-crosshair-overlay {
+   606→  position: absolute;
+   607→  inset: 0;
+   608→  pointer-events: none;
+   609→  z-index: 5;
+   610→}
+   611→
+   612→.map-crosshair-overlay::before,
+   613→.map-crosshair-overlay::after {
+   614→  content: '';
+   615→  position: absolute;
+   616→  background: oklch(0.5 0 0 / 20%);
+   617→}
+   618→
+   619→.map-crosshair-overlay::before {
+   620→  /* Horizontal line */
+   621→  top: 50%;
+   622→  left: calc(50% - 20px);
+   623→  width: 40px;
+   624→  height: 1px;
+   625→  transform: translateY(-0.5px);
+   626→}
+   627→
+   628→.map-crosshair-overlay::after {
+   629→  /* Vertical line */
+   630→  left: 50%;
+   631→  top: calc(50% - 20px);
+   632→  height: 40px;
+   633→  width: 1px;
+   634→  transform: translateX(-0.5px);
+   635→}
+   636→
+   637→.dark .map-crosshair-overlay::before,
+   638→.dark .map-crosshair-overlay::after {
+   639→  background: oklch(0.8 0 0 / 25%);
+   640→}
+   641→
+   642→/* ===== Active Tool Dot Pulse Glow ===== */
+   643→@keyframes dot-pulse-glow {
+   644→  0% {
+   645→    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+   646→  }
+   647→  50% {
+   648→    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.3);
+   649→  }
+   650→  100% {
+   651→    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+   652→  }
+   653→}
+   654→
+   655→.tool-dot-glow {
+   656→  animation: dot-pulse-glow 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+   657→}
+   658→
+   659→/* ===== Sidebar Inner Glow (top) ===== */
+   660→.sidebar-inner-glow::before {
+   661→  content: '';
+   662→  position: absolute;
+   663→  top: 0;
+   664→  left: 0;
+   665→  right: 0;
+   666→  height: 48px;
+   667→  background: linear-gradient(to bottom, oklch(0.6 0.15 160 / 6%), transparent);
+   668→  pointer-events: none;
+   669→  z-index: 1;
+   670→}
+   671→
+   672→.dark .sidebar-inner-glow::before {
+   673→  background: linear-gradient(to bottom, oklch(0.6 0.15 160 / 8%), transparent);
+   674→}
+   675→
+   676→/* ===== Map Control Glass Style ===== */
+   677→.map-control-glass {
+   678→  @apply bg-background/90 backdrop-blur-md border border-border/50 shadow-lg;
+   679→  backdrop-filter: blur(12px) saturate(180%);
+   680→  -webkit-backdrop-filter: blur(12px) saturate(180%);
+   681→}
+   682→
+   683→.map-control-glass:hover {
+   684→  @apply shadow-xl;
+   685→}
+   686→
+   687→.dark .map-control-glass {
+   688→  background: hsl(var(--background) / 0.85);
+   689→  border-color: hsl(var(--border) / 0.3);
+   690→}
+   691→
+   692→/* ===== Map Tooltip Style ===== */
+   693→.map-tooltip {
+   694→  @apply bg-popover/95 backdrop-blur-xl text-popover-foreground rounded-xl shadow-2xl border border-border/50;
+   695→  backdrop-filter: blur(16px) saturate(180%);
+   696→  -webkit-backdrop-filter: blur(16px) saturate(180%);
+   697→}
+   698→
+   699→/* ===== Shimmer Loading ===== */
+   700→.shimmer-loading {
+   701→  background: linear-gradient(
+   702→    90deg,
+   703→    transparent 0%,
+   704→    hsl(var(--muted) / 0.3) 50%,
+   705→    transparent 100%
+   706→  );
+   707→  background-size: 200% 100%;
+   708→  animation: shimmer-slide 1.5s ease-in-out infinite;
+   709→}
+   710→
+   711→@keyframes shimmer-slide {
+   712→  0% { background-position: 200% 0; }
+   713→  100% { background-position: -200% 0; }
+   714→}
+   715→
+   716→/* ===== Pulse Ring Animation ===== */
+   717→.pulse-ring {
+   718→  animation: pulse-ring-scale 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+   719→}
+   720→
+   721→@keyframes pulse-ring-scale {
+   722→  0% { transform: scale(0.8); opacity: 1; }
+   723→  80%, 100% { transform: scale(1.4); opacity: 0; }
+   724→}
+   725→
+   726→/* ===== FAB Pulse Shadow ===== */
+   727→@keyframes fab-pulse {
+   728→  0%, 100% {
+   729→    box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.25), 0 2px 6px -1px rgba(0, 0, 0, 0.1);
+   730→  }
+   731→  50% {
+   732→    box-shadow: 0 4px 20px 0 rgba(16, 185, 129, 0.4), 0 2px 8px -1px rgba(0, 0, 0, 0.15);
+   733→  }
+   734→}
+   735→
+   736→.fab-pulse-shadow {
+   737→  animation: fab-pulse 3s ease-in-out infinite;
+   738→}
+   739→
+   740→/* ===== Stat Item Hover ===== */
+   741→.stat-item {
+   742→  @apply transition-all duration-200 rounded-lg px-2 py-1 -mx-1;
+   743→}
+   744→
+   745→.stat-item:hover {
+   746→  @apply bg-accent/50;
+   747→}
+   748→
+   749→/* ===== Search Result Hover Glow ===== */
+   750→.search-result-hover {
+   751→  transition: all 0.15s ease;
+   752→  border-left: 3px solid transparent;
+   753→}
+   754→
+   755→.search-result-hover:hover {
+   756→  border-left-color: oklch(0.6 0.2 160);
+   757→  background: oklch(0.6 0.2 160 / 5%);
+   758→}
+   759→
+   760→.dark .search-result-hover:hover {
+   761→  background: oklch(0.6 0.2 160 / 8%);
+   762→}
+   763→
+   764→/* ===== Mobile Weather Bar Slide-Down Animation ===== */
+   765→@keyframes slide-down {
+   766→  0% {
+   767→    transform: translateY(-8px);
+   768→    opacity: 0;
+   769→  }
+   770→  100% {
+   771→    transform: translateY(0);
+   772→    opacity: 1;
+   773→  }
+   774→}
+   775→
+   776→.animate-slide-down {
+   777→  animation: slide-down 0.25s ease-out;
+   778→}
+   779→
+   780→/* ===== Notification Badge Pulse ===== */
+   781→.notification-badge {
+   782→  position: relative;
+   783→}
+   784→
+   785→.notification-badge::after {
+   786→  content: '';
+   787→  position: absolute;
+   788→  top: -2px;
+   789→  right: -2px;
+   790→  width: 8px;
+   791→  height: 8px;
+   792→  border-radius: 50%;
+   793→  background: oklch(0.577 0.245 27.325);
+   794→  animation: notification-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+   795→}
+   796→
+   797→@keyframes notification-pulse {
+   798→  0% {
+   799→    box-shadow: 0 0 0 0 oklch(0.577 0.245 27.325 / 60%);
+   800→  }
+   801→  70% {
+   802→    box-shadow: 0 0 0 6px oklch(0.577 0.245 27.325 / 0%);
+   803→  }
+   804→  100% {
+   805→    box-shadow: 0 0 0 0 oklch(0.577 0.245 27.325 / 0%);
+   806→  }
+   807→}
+   808→
+   809→/* ===== Map Legend Glass Effect ===== */
+   810→.map-legend {
+   811→  background: oklch(1 0 0 / 80%);
+   812→  backdrop-filter: blur(16px) saturate(180%);
+   813→  -webkit-backdrop-filter: blur(16px) saturate(180%);
+   814→  border: 1px solid oklch(1 0 0 / 30%);
+   815→  border-radius: 0.75rem;
+   816→  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+   817→}
+   818→
+   819→.dark .map-legend {
+   820→  background: oklch(0.18 0 0 / 85%);
+   821→  border-color: oklch(1 0 0 / 10%);
+   822→  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+   823→}
+   824→
+   825→/* ===== Sidebar Tab Hover Transition ===== */
+   826→.sidebar-tab-hover {
+   827→  position: relative;
+   828→  transition: color 0.2s ease;
+   829→}
+   830→
+   831→.sidebar-tab-hover::after {
+   832→  content: '';
+   833→  position: absolute;
+   834→  bottom: -2px;
+   835→  left: 50%;
+   836→  width: 0;
+   837→  height: 2px;
+   838→  border-radius: 1px;
+   839→  background: oklch(0.6 0.2 160);
+   840→  transition: width 0.25s ease, left 0.25s ease;
+   841→}
+   842→
+   843→.sidebar-tab-hover:hover::after,
+   844→.sidebar-tab-hover.active::after {
+   845→  width: 60%;
+   846→  left: 20%;
+   847→}
+   848→
+   849→/* ===== Notification Slide Animation ===== */
+   850→@keyframes notification-enter {
+   851→  from {
+   852→    opacity: 0;
+   853→    transform: translateX(40px) scale(0.95);
+   854→  }
+   855→  to {
+   856→    opacity: 1;
+   857→    transform: translateX(0) scale(1);
+   858→  }
+   859→}
+   860→
+   861→@keyframes notification-exit {
+   862→  from {
+   863→    opacity: 1;
+   864→    transform: translateX(0) scale(1);
+   865→  }
+   866→  to {
+   867→    opacity: 0;
+   868→    transform: translateX(40px) scale(0.95);
+   869→  }
+   870→}
+   871→
+   872→/* ===== Sidebar Location Item Hover ===== */
+   873→.sidebar-location-item {
+   874→  transition: all 0.15s ease;
+   875→  border-left: 3px solid transparent;
+   876→}
+   877→
+   878→.sidebar-location-item:hover {
+   879→  border-left-color: oklch(0.6 0.2 160 / 60%);
+   880→  background: oklch(0.6 0.2 160 / 4%);
+   881→  transform: translateX(2px);
+   882→}
+   883→
+   884→.dark .sidebar-location-item:hover {
+   885→  background: oklch(0.6 0.2 160 / 6%);
+   886→}
+   887→
+   888→/* ===== Bookmark Card Hover ===== */
+   889→.bookmark-card {
+   890→  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+   891→}
+   892→
+   893→.bookmark-card:hover {
+   894→  transform: scale(1.02);
+   895→  box-shadow: 0 4px 16px -4px rgba(0, 0, 0, 0.1);
+   896→}
+   897→
+   898→.dark .bookmark-card:hover {
+   899→  box-shadow: 0 4px 16px -4px rgba(0, 0, 0, 0.3);
+   900→}
+   901→
+   902→/* ===== Glass Card Hover ===== */
+   903→.glass-card-hover {
+   904→  transition: all 0.2s ease;
+   905→}
+   906→
+   907→.glass-card-hover:hover {
+   908→  box-shadow: 0 8px 30px -8px rgba(0, 0, 0, 0.12);
+   909→  transform: translateY(-1px);
+   910→}
+   911→
+   912→.dark .glass-card-hover:hover {
+   913→  box-shadow: 0 8px 30px -8px rgba(0, 0, 0, 0.4);
+   914→}
+   915→
+   916→/* ===== Map Tool Button Group ===== */
+   917→.map-tool-group {
+   918→  background: hsl(var(--background) / 0.9);
+   919→  backdrop-filter: blur(20px) saturate(180%);
+   920→  -webkit-backdrop-filter: blur(20px) saturate(180%);
+   921→  border: 1px solid hsl(var(--border) / 0.5);
+   922→  border-radius: 0.75rem;
+   923→  overflow: hidden;
+   924→}
+   925→
+   926→.dark .map-tool-group {
+   927→  background: hsl(var(--background) / 0.85);
+   928→}
+   929→
+   930→.map-tool-group > * + * {
+   931→  border-top: 1px solid hsl(var(--border) / 30%);
+   932→}
+   933→
+   934→/* ===== Tooltip Arrow ===== */
+   935→.tooltip-arrow {
+   936→  position: relative;
+   937→}
+   938→
+   939→.tooltip-arrow::before {
+   940→  content: '';
+   941→  position: absolute;
+   942→  left: -6px;
+   943→  top: 50%;
+   944→  transform: translateY(-50%) rotate(45deg);
+   945→  width: 10px;
+   946→  height: 10px;
+   947→  background: inherit;
+   948→  border: inherit;
+   949→  border-right: none;
+   950→  border-top: none;
+   951→}
+   952→
+   953→/* ===== Scale Bar Enhancement ===== */
+   954→.maplibregl-ctrl-scale {
+   955→  font-family: var(--font-geist-sans), sans-serif !important;
+   956→  font-weight: 500 !important;
+   957→  letter-spacing: 0.02em !important;
+   958→}
+   959→
+   960→/* ===== Smooth Style Transition ===== */
+   961→.maplibregl-canvas {
+   962→  transition: opacity 0.3s ease;
+   963→}
+   964→
+   965→/* ===== Badge Gradient Shimmer ===== */
+   966→@keyframes badge-shimmer {
+   967→  0% { background-position: -100% 0; }
+   968→  100% { background-position: 200% 0; }
+   969→}
+   970→
+   971→.badge-shimmer {
+   972→  background: linear-gradient(90deg, transparent, oklch(1 0 0 / 30%), transparent);
+   973→  background-size: 200% 100%;
+   974→  animation: badge-shimmer 3s ease-in-out infinite;
+   975→}
+   976→

@@ -1395,3 +1395,171 @@ The MapLibre Explorer application is a mature, feature-rich interactive map appl
 - Map comparison (split view)
 - Custom marker icon editor
 - Print-friendly map layout
+
+---
+Task ID: 6-b
+Agent: General Purpose Agent
+Task: Add weather overlay rendering to MapView component
+
+Work Completed:
+
+1. Added `weatherEnabled` store subscription (line 87)
+   - `const weatherEnabled = useMapStore((s) => s.weatherEnabled)` added after other useMapStore calls
+
+2. Added weather overlay useEffect (lines 1167-1201)
+   - Subscribes to `weatherEnabled` from store
+   - When enabled: adds raster source (`weather-overlay-source`) pointing to MapTiler weather tiles API with `NEXT_PUBLIC_MAPTILER_KEY`, and raster layer (`weather-overlay-layer`) with 0.6 opacity
+   - When disabled: removes the layer and source from the map
+   - Dependencies: `[weatherEnabled, mapLoadedVersion]`
+   - Placed after the buildingExtrusion/terrain effects
+
+No pre-existing type errors introduced; the existing MapView.tsx errors are unrelated to this change.
+
+---
+Task ID: 6-a
+Agent: Page UX Improvements Agent
+Task: Improve page.tsx with loading overlay, mobile search, share feature, welcome back toast, compass animation
+
+Work Completed:
+
+1. Map Loading Overlay (page.tsx + MapView.tsx)
+   - Added `mapInitialized` state to page.tsx (starts false)
+   - Added full-page skeleton overlay with AnimatePresence that shows before map initializes
+   - Skeleton includes: app icon with pulse indicator, "Loading Map…" text with animated dots, and a progress bar
+   - Overlay fades out smoothly (0.5s duration) when map becomes ready
+   - MapView.tsx now dispatches `window.dispatchEvent(new Event('map-ready'))` in the `newMap.on('load')` callback
+   - page.tsx listens for 'map-ready' event and also has a fallback setTimeout(0) check for `__mainMap`
+
+2. Mobile Search Bar Width (page.tsx)
+   - Changed SearchBar container from `flex-1 max-w-lg` to `w-full md:w-auto md:flex-1 md:max-w-lg`
+   - Added inner wrapper `w-full md:min-w-[280px]` around SearchBar component
+   - This ensures the search bar takes full width on mobile and has a proper minimum on desktop
+
+3. Share Location Feature (page.tsx)
+   - Verified existing `handleShare` already builds URL with lat/lng/zoom/style params and copies to clipboard
+   - Already includes clipboard API with fallback for older browsers
+   - Already shows appropriate toast messages
+   - No changes needed - feature was already implemented correctly
+
+4. Welcome Back Toast (page.tsx)
+   - Added `savedLocations` selector from store: `useMapStore((s) => s.savedLocations)`
+   - Added useEffect that checks `savedLocations.length > 0` after a 1200ms delay
+   - Shows toast: "Welcome back! You have X saved location(s)" with proper pluralization
+   - Only fires once on mount (depends on `savedLocations.length`)
+
+5. Compass Reset Animation (CompassIndicator.tsx)
+   - Added `isResetting` state with `useState(false)`
+   - Wrapped button in `AnimatePresence` with entry/exit animations (opacity + y offset)
+   - Compass icon wrapped in `motion.div` with dynamic animation:
+     - Normal state: rotates with bearing (`rotate: -bearing`)
+     - Resetting state: animates to `rotate: 0` with scale pulse `[1, 1.3, 1]` over 0.5s
+   - Text shows "N" in emerald color during reset, returns to bearing degrees after 600ms
+   - Compass icon turns emerald during reset animation for additional visual feedback
+   - Component stays visible during reset animation even when bearing reaches 0
+
+Files Modified:
+- /home/z/my-project/src/app/page.tsx (loading overlay, search bar, welcome back toast)
+- /home/z/my-project/src/components/map/MapView.tsx (map-ready event dispatch)
+- /home/z/my-project/src/components/map/CompassIndicator.tsx (reset animation)
+
+---
+Task ID: 7-b
+Agent: Map Features Agent
+Task: Add measurement distance tooltip and route point numbering features
+
+Work Completed:
+
+1. Measurement Distance Tooltip (MapView.tsx, lines 521-605)
+   - Added 'measure-distance-label' symbol layer after the measure-points-layer
+   - Layer uses text-field with 'distance' property, red text color, white halo for readability
+   - Implemented Haversine formula distance calculation across all measurement segments
+   - Added distance property to the midpoint feature (middle measure point) so the label appears there
+   - Distance formatted as "X.XX km" for >=1km or "X m" for sub-kilometer distances
+   - Updated setLayoutProperty to toggle text-field based on measure points count
+   - Calls useMapStore.getState().setMeasureDistance() to sync distance value to the store
+
+2. Route Point Numbering (MapView.tsx, lines 665-682)
+   - Added 'route-numbers' symbol layer on top of route-points circle layer
+   - Uses ['to-string', ['get', 'index']] to display sequence numbers (0, 1, 2...)
+   - White text color over the colored circle markers for clear visibility
+   - Leverages existing 'index' property already present on route point features
+
+Files Modified:
+- /home/z/my-project/src/components/map/MapView.tsx (measure distance tooltip + route numbering)
+
+---
+Task ID: 7-a
+Agent: Enhancement Agent
+Task: Enhance LocationDetailDrawer with weather, DMS, and edit; add pin drop toast
+
+Work Completed:
+
+1. LocationDetailDrawer.tsx - Weather Info Section
+   - Added WeatherCard inline component that fetches from /api/weather?lat=X&lng=Y
+   - Uses combined state type (loading/success/error) to avoid lint issues with setState in effects
+   - Shows temperature, weather condition with WMO code icon mapping, wind speed, humidity, and apparent temperature
+   - Skeleton loading state while fetching, hidden on error
+   - Keyed on location.id so it remounts when location changes (clean loading state)
+   - Added weatherDescriptions map for WMO weather codes (0-99)
+
+2. LocationDetailDrawer.tsx - DMS Coordinates Section
+   - Added toDMS() utility function converting decimal degrees to degrees/minutes/seconds format
+   - Added "DMS Coordinates" section after weather card with Compass icon header
+   - Shows latitude and longitude in DMS format (e.g., 46° 3' 24.84" N)
+
+3. LocationDetailDrawer.tsx - Edit Functionality
+   - Replaced Edit3 import with Pencil icon
+   - Added isEditing state with editName and editDescription fields
+   - Pencil button in header toggles edit mode
+   - In edit mode: name becomes Input field, description becomes Textarea, Save/Cancel buttons appear
+   - Save updates both savedLocations and markers in the store
+   - Uses toast.success for feedback, validates non-empty name
+   - Added Check/X icons for Save/Cancel buttons
+
+4. MapView.tsx - Pin Drop Toast
+   - Added pushNotification call after addMarker in 'mark' mode click handler
+   - Notification: { type: 'location', icon: 'pin', message: 'Pin dropped at LAT, LNG' }
+
+Files Modified:
+- /home/z/my-project/src/components/map/LocationDetailDrawer.tsx (weather + DMS + edit)
+- /home/z/my-project/src/components/map/MapView.tsx (pin drop notification)
+
+---
+Task ID: 8
+Agent: Main Developer
+Task: Bug fixes, QA testing, cursor improvements, feature enhancements
+
+Work Completed:
+
+1. Bug Fixes
+   - Fixed invisible Fly-to buttons in MapSidebar.tsx (opacity-0 → opacity-60)
+   - Fixed HTML nesting violation in SearchBar.tsx (removed role="button" from div containing button)
+   - Fixed glass-card CSS for Tailwind v4 (converted to @utility directive, replaced hsl(var()) with oklch())
+   - Fixed 3D view pitch (auto-sets pitch to 60° when buildingExtrusion enabled, resets to 0° when disabled)
+   - Updated terrain-rgb URL to terrain-rgb-v2 for better DEM data
+   - Fixed cursor for tool modes (added mousemove handler to counteract MapLibre cursor resets)
+
+2. Feature Enhancements
+   - Added weather overlay rendering in MapView.tsx (raster tiles from MapTiler)
+   - Added map loading overlay with animated skeleton
+   - Added welcome back toast when saved locations exist
+   - Added compass reset animation in CompassIndicator.tsx
+   - Improved mobile search bar width (full width on mobile)
+   - Added measurement distance tooltip on map (Haversine distance label at midpoint)
+   - Added route point numbering on map (sequence numbers on route points)
+   - Enhanced LocationDetailDrawer with weather info, DMS coordinates, and inline editing
+   - Added pin drop notification when using mark tool
+
+3. QA Testing
+   - Tested with agent-browser: map renders correctly, tools work, fly-to works
+   - Keyboard shortcuts dialog opens with ? key
+   - 3D view toggle sets pitch to 60°
+   - Dark mode toggle works
+   - No console errors
+   - Lint passes clean
+
+Stage Summary:
+- All critical bugs fixed (invisible buttons, HTML nesting, CSS errors)
+- All major features working (map, tools, search, style switching, 3D view, weather, measurement, routes)
+- App is stable with no console errors and clean lint
+- Remaining: MapTiler API key limitations in sandbox, more polish needed

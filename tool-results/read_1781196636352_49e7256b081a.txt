@@ -1,0 +1,648 @@
+     1→     1→'use client'
+     2→     2→
+     3→     3→import { useState, useEffect, useCallback } from 'react'
+     4→     4→import { motion, AnimatePresence } from 'framer-motion'
+     5→     5→import { MapView } from '@/components/map/MapView'
+     6→     6→import { MapSidebar } from '@/components/map/MapSidebar'
+     7→     7→import { SearchBar } from '@/components/map/SearchBar'
+     8→     8→import { StyleSwitcher } from '@/components/map/StyleSwitcher'
+     9→     9→import { CoordinatesDisplay } from '@/components/map/CoordinatesDisplay'
+    10→    10→import { MapToolbar } from '@/components/map/MapToolbar'
+    11→    11→import { AddLocationDialog } from '@/components/map/AddLocationDialog'
+    12→    12→import { ThemeToggle } from '@/components/map/ThemeToggle'
+    13→    13→import { MapStatsPanel } from '@/components/map/MapStatsPanel'
+    14→    14→import { CompassIndicator } from '@/components/map/CompassIndicator'
+    15→    15→import { KeyboardShortcutsDialog } from '@/components/map/KeyboardShortcutsDialog'
+    16→    16→import { MiniMap } from '@/components/map/MiniMap'
+    17→    17→import { MapLegend } from '@/components/map/MapLegend'
+    18→    18→import { MapNotifications } from '@/components/map/MapNotifications'
+    19→    19→import { WeatherPanel } from '@/components/map/WeatherPanel'
+    20→    20→import { MobileWeatherBar } from '@/components/map/MobileWeatherBar'
+    21→    21→import { ElevationProfile } from '@/components/map/ElevationProfile'
+    22→    22→import { QuickJumpPanel } from '@/components/map/QuickJumpPanel'
+    23→    23→import { Button } from '@/components/ui/button'
+    24→    24→import { Badge } from '@/components/ui/badge'
+    25→    25→import { useMapStore, type ToolMode, MAP_STYLES } from '@/lib/map-store'
+    26→    26→import { toast } from 'sonner'
+    27→    27→import {
+    28→    28→  Navigation,
+    29→    29→  MapPin,
+    30→    30→  Ruler,
+    31→    31→  Crosshair,
+    32→    32→  Pencil,
+    33→    33→  Github,
+    34→    34→  X,
+    35→    35→  Plus,
+    36→    36→  LocateFixed,
+    37→    37→  Layers,
+    38→    38→  Maximize2,
+    39→    39→  Minimize2,
+    40→    40→  Keyboard,
+    41→    41→  Share2,
+    42→    42→} from 'lucide-react'
+    43→    43→
+    44→    44→export default function Home() {
+    45→    45→  const { toolMode, sidebarOpen, center, zoom, currentStyle, weatherEnabled, setSidebarOpen, setToolMode, setCenter, setZoom, setCurrentStyle } = useMapStore()
+    46→    46→  const pushNotification = useMapStore((s) => s.pushNotification)
+    47→    47→  const [addDialogOpen, setAddDialogOpen] = useState(false)
+    48→    48→  const [shortcutsOpen, setShortcutsOpen] = useState(false)
+    49→    49→  const [showWelcome, setShowWelcome] = useState(true)
+    50→    50→  const [isFullscreen, setIsFullscreen] = useState(false)
+    51→    51→
+    52→    52→  // Restore map state from URL params on page load
+    53→    53→  useEffect(() => {
+    54→    54→    const params = new URLSearchParams(window.location.search)
+    55→    55→    const lat = params.get('lat')
+    56→    56→    const lng = params.get('lng')
+    57→    57→    const zoomParam = params.get('zoom')
+    58→    58→    const styleParam = params.get('style')
+    59→    59→
+    60→    60→    if (lat && lng) {
+    61→    61→      const latNum = parseFloat(lat)
+    62→    62→      const lngNum = parseFloat(lng)
+    63→    63→      if (!isNaN(latNum) && !isNaN(lngNum)) {
+    64→    64→        setCenter([lngNum, latNum])
+    65→    65→        // Fly to the position after map loads
+    66→    66→        setTimeout(() => {
+    67→    67→          const flyTo = (window as unknown as Record<string, (lng: number, lat: number, z?: number) => void>).__mapFlyTo
+    68→    68→          if (flyTo) {
+    69→    69→            flyTo(lngNum, latNum, zoomParam ? parseFloat(zoomParam) : undefined)
+    70→    70→          }
+    71→    71→        }, 500)
+    72→    72→      }
+    73→    73→    }
+    74→    74→    if (zoomParam) {
+    75→    75→      const zoomNum = parseFloat(zoomParam)
+    76→    76→      if (!isNaN(zoomNum)) {
+    77→    77→        setZoom(zoomNum)
+    78→    78→      }
+    79→    79→    }
+    80→    80→    if (styleParam) {
+    81→    81→      const found = MAP_STYLES.find((s) => s.id === styleParam)
+    82→    82→      if (found) {
+    83→    83→        setCurrentStyle(found)
+    84→    84→      }
+    85→    85→    }
+    86→    86→  }, [setCenter, setZoom, setCurrentStyle])
+    87→    87→
+    88→    88→  // Handle share URL
+    89→    89→  const handleShare = useCallback(() => {
+    90→    90→    const [lng, lat] = center
+    91→    91→    const params = new URLSearchParams({
+    92→    92→      lat: lat.toFixed(5),
+    93→    93→      lng: lng.toFixed(5),
+    94→    94→      zoom: zoom.toFixed(2),
+    95→    95→      style: currentStyle.id,
+    96→    96→    })
+    97→    97→    const shareUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`
+    98→    98→    navigator.clipboard.writeText(shareUrl).then(() => {
+    99→    99→      toast.success('Share URL copied to clipboard!')
+   100→   100→    }).catch(() => {
+   101→   101→      // Fallback for older browsers
+   102→   102→      const textArea = document.createElement('textarea')
+   103→   103→      textArea.value = shareUrl
+   104→   104→      document.body.appendChild(textArea)
+   105→   105→      textArea.select()
+   106→   106→      document.execCommand('copy')
+   107→   107→      document.body.removeChild(textArea)
+   108→   108→      toast.success('Share URL copied to clipboard!')
+   109→   109→    })
+   110→   110→  }, [center, zoom, currentStyle])
+   111→   111→
+   112→   112→  // Dismiss welcome after 10 seconds
+   113→   113→  useEffect(() => {
+   114→   114→    const timer = setTimeout(() => setShowWelcome(false), 10000)
+   115→   115→    return () => clearTimeout(timer)
+   116→   116→  }, [])
+   117→   117→
+   118→   118→  // Handle fullscreen
+   119→   119→  const toggleFullscreen = useCallback(() => {
+   120→   120→    if (!document.fullscreenElement) {
+   121→   121→      document.documentElement.requestFullscreen()
+   122→   122→      setIsFullscreen(true)
+   123→   123→    } else {
+   124→   124→      document.exitFullscreen()
+   125→   125→      setIsFullscreen(false)
+   126→   126→    }
+   127→   127→  }, [])
+   128→   128→
+   129→   129→  const handleLocateMe = useCallback(() => {
+   130→   130→    if (navigator.geolocation) {
+   131→   131→      navigator.geolocation.getCurrentPosition(
+   132→   132→        (position) => {
+   133→   133→          const { longitude, latitude, accuracy } = position.coords
+   134→   134→          const flyTo = (window as unknown as Record<
+   135→   135→            string,
+   136→   136→            (lng: number, lat: number, z?: number) => void
+   137→   137→          >).__mapFlyTo
+   138→   138→          if (flyTo) {
+   139→   139→            flyTo(longitude, latitude, 14)
+   140→   140→          }
+   141→   141→          useMapStore.getState().setGeolocation({ longitude, latitude, accuracy })
+   142→   142→        },
+   143→   143→        () => {
+   144→   144→          // Geolocation denied
+   145→   145→        }
+   146→   146→      )
+   147→   147→    }
+   148→   148→  }, [])
+   149→   149→
+   150→   150→  // Keyboard shortcuts
+   151→   151→  useEffect(() => {
+   152→   152→    function handleKeyDown(e: KeyboardEvent) {
+   153→   153→      // Don't trigger shortcuts when typing in inputs
+   154→   154→      const target = e.target as HTMLElement
+   155→   155→      if (
+   156→   156→        target.tagName === 'INPUT' ||
+   157→   157→        target.tagName === 'TEXTAREA' ||
+   158→   158→        target.tagName === 'SELECT' ||
+   159→   159→        target.isContentEditable
+   160→   160→      ) {
+   161→   161→        // Allow Escape from inputs
+   162→   162→        if (e.key === 'Escape') {
+   163→   163→          target.blur()
+   164→   164→        }
+   165→   165→        return
+   166→   166→      }
+   167→   167→
+   168→   168→      switch (e.key) {
+   169→   169→        case '1':
+   170→   170→          setToolMode('navigate')
+   171→   171→          break
+   172→   172→        case '2':
+   173→   173→          setToolMode('mark')
+   174→   174→          break
+   175→   175→        case '3':
+   176→   176→          setToolMode('measure')
+   177→   177→          break
+   178→   178→        case '4':
+   179→   179→          setToolMode('directions')
+   180→   180→          break
+   181→   181→        case '5':
+   182→   182→          setToolMode('draw')
+   183→   183→          break
+   184→   184→        case '0': {
+   185→   185→          const streets = MAP_STYLES.find((s) => s.id === 'streets')
+   186→   186→          if (streets) useMapStore.getState().setCurrentStyle(streets)
+   187→   187→          break
+   188→   188→        }
+   189→   189→        case '6': {
+   190→   190→          const satellite = MAP_STYLES.find((s) => s.id === 'satellite')
+   191→   191→          if (satellite) useMapStore.getState().setCurrentStyle(satellite)
+   192→   192→          break
+   193→   193→        }
+   194→   194→        case '7': {
+   195→   195→          const dark = MAP_STYLES.find((s) => s.id === 'dark')
+   196→   196→          if (dark) useMapStore.getState().setCurrentStyle(dark)
+   197→   197→          break
+   198→   198→        }
+   199→   199→        case '8': {
+   200→   200→          const terrain = MAP_STYLES.find((s) => s.id === 'terrain')
+   201→   201→          if (terrain) useMapStore.getState().setCurrentStyle(terrain)
+   202→   202→          break
+   203→   203→        }
+   204→   204→        case '9': {
+   205→   205→          const currentIdx = MAP_STYLES.findIndex((s) => s.id === useMapStore.getState().currentStyle.id)
+   206→   206→          const nextIdx = (currentIdx + 1) % MAP_STYLES.length
+   207→   207→          useMapStore.getState().setCurrentStyle(MAP_STYLES[nextIdx])
+   208→   208→          break
+   209→   209→        }
+   210→   210→        case '/':
+   211→   211→          e.preventDefault()
+   212→   212→          document.getElementById('map-search-input')?.focus()
+   213→   213→          break
+   214→   214→        case 'b':
+   215→   215→        case 'B':
+   216→   216→          setSidebarOpen(!useMapStore.getState().sidebarOpen)
+   217→   217→          break
+   218→   218→        case 'f':
+   219→   219→        case 'F':
+   220→   220→          toggleFullscreen()
+   221→   221→          break
+   222→   222→        case 'l':
+   223→   223→        case 'L':
+   224→   224→          handleLocateMe()
+   225→   225→          break
+   226→   226→        case 'Escape':
+   227→   227→          useMapStore.getState().setSelectedMarker(null)
+   228→   228→          break
+   229→   229→        case '?':
+   230→   230→          setShortcutsOpen(true)
+   231→   231→          break
+   232→   232→      }
+   233→   233→    }
+   234→   234→
+   235→   235→    window.addEventListener('keydown', handleKeyDown)
+   236→   236→    return () => window.removeEventListener('keydown', handleKeyDown)
+   237→   237→  }, [setToolMode, setSidebarOpen, toggleFullscreen, handleLocateMe, setShortcutsOpen])
+   238→   238→
+   239→   239→  const toolIndicator: Record<
+   240→   240→    ToolMode,
+   241→   241→    { label: string; color: string; icon: React.ReactNode }
+   242→   242→  > = {
+   243→   243→    navigate: {
+   244→   244→      label: 'Navigate',
+   245→   245→      color: 'from-emerald-500 to-teal-500',
+   246→   246→      icon: <Navigation className="h-3 w-3" />,
+   247→   247→    },
+   248→   248→    mark: {
+   249→   249→      label: 'Drop Pin',
+   250→   250→      color: 'from-red-500 to-rose-500',
+   251→   251→      icon: <MapPin className="h-3 w-3" />,
+   252→   252→    },
+   253→   253→    measure: {
+   254→   254→      label: 'Measure',
+   255→   255→      color: 'from-amber-500 to-orange-500',
+   256→   256→      icon: <Ruler className="h-3 w-3" />,
+   257→   257→    },
+   258→   258→    directions: {
+   259→   259→      label: 'Directions',
+   260→   260→      color: 'from-cyan-500 to-sky-500',
+   261→   261→      icon: <Crosshair className="h-3 w-3" />,
+   262→   262→    },
+   263→   263→    draw: {
+   264→   264→      label: 'Draw',
+   265→   265→      color: 'from-green-500 to-emerald-500',
+   266→   266→      icon: <Pencil className="h-3 w-3" />,
+   267→   267→    },
+   268→   268→  }
+   269→   269→
+   270→   270→  const currentTool = toolIndicator[toolMode]
+   271→   271→
+   272→   272→  return (
+   273→   273→    <div className="relative w-screen h-screen overflow-hidden bg-background">
+   274→   274→      {/* Map */}
+   275→   275→      <MapView />
+   276→   276→
+   277→   277→      {/* Crosshair overlay for measure/mark/directions mode */}
+   278→   278→      {toolMode !== 'navigate' && (
+   279→   279→        <div className="absolute inset-0 pointer-events-none z-[15]" aria-hidden="true">
+   280→   280→          {/* Horizontal line */}
+   281→   281→          <div
+   282→   282→            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+   283→   283→            style={{
+   284→   284→              width: 60,
+   285→   285→              height: 2,
+   286→   286→              background: toolMode === 'mark' ? 'rgba(239,68,68,0.6)' : toolMode === 'measure' ? 'rgba(245,158,11,0.6)' : toolMode === 'draw' ? 'rgba(34,197,94,0.6)' : 'rgba(6,182,212,0.6)',
+   287→   287→              borderRadius: 1,
+   288→   288→            }}
+   289→   289→          />
+   290→   290→          {/* Vertical line */}
+   291→   291→          <div
+   292→   292→            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+   293→   293→            style={{
+   294→   294→              width: 2,
+   295→   295→              height: 60,
+   296→   296→              background: toolMode === 'mark' ? 'rgba(239,68,68,0.6)' : toolMode === 'measure' ? 'rgba(245,158,11,0.6)' : toolMode === 'draw' ? 'rgba(34,197,94,0.6)' : 'rgba(6,182,212,0.6)',
+   297→   297→              borderRadius: 1,
+   298→   298→            }}
+   299→   299→          />
+   300→   300→          {/* Center dot */}
+   301→   301→          <div
+   302→   302→            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
+   303→   303→            style={{
+   304→   304→              width: 8,
+   305→   305→              height: 8,
+   306→   306→              background: toolMode === 'mark' ? 'rgba(239,68,68,0.7)' : toolMode === 'measure' ? 'rgba(245,158,11,0.7)' : toolMode === 'draw' ? 'rgba(34,197,94,0.7)' : 'rgba(6,182,212,0.7)',
+   307→   307→            }}
+   308→   308→          />
+   309→   309→        </div>
+   310→   310→      )}
+   311→   311→
+   312→   312→      {/* Sidebar - responsive */}
+   313→   313→      <MapSidebar />
+   314→   314→
+   315→   315→      {/* Map Notifications - top right below top bar */}
+   316→   316→      <MapNotifications />
+   317→   317→
+   318→   318→      {/* Compass indicator (visible when map is rotated) */}
+   319→   319→      <CompassIndicator />
+   320→   320→
+   321→   321→      {/* Top bar - Search and controls */}
+   322→   322→      <div
+   323→   323→        className="absolute top-3 right-3 left-3 z-10 flex items-start gap-2 transition-all duration-300 md:pl-0"
+   324→   324→        style={{
+   325→   325→          paddingLeft: undefined, // Override with responsive class below
+   326→   326→        }}
+   327→   327→      >
+   328→   328→        {/* Responsive padding for desktop sidebar */}
+   329→   329→        <div className="flex-1 max-w-lg md:ml-0" style={{ marginLeft: sidebarOpen ? '0px' : undefined }}>
+   330→   330→          <div className={sidebarOpen ? 'md:pl-[332px]' : ''} style={{ transition: 'padding-left 0.3s ease-in-out' }}>
+   331→   331→            <SearchBar />
+   332→   332→          </div>
+   333→   333→        </div>
+   334→   334→        <div className="flex items-center gap-1.5 shrink-0">
+   335→   335→          <StyleSwitcher />
+   336→   336→          <ThemeToggle />
+   337→   337→          <Button
+   338→   338→            variant="outline"
+   339→   339→            size="icon"
+   340→   340→            className="map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+   341→   341→            onClick={handleLocateMe}
+   342→   342→            title="My Location"
+   343→   343→            aria-label="My Location"
+   344→   344→          >
+   345→   345→            <LocateFixed className="h-4 w-4" />
+   346→   346→          </Button>
+   347→   347→          <Button
+   348→   348→            variant="outline"
+   349→   349→            size="icon"
+   350→   350→            className="map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+   351→   351→            onClick={toggleFullscreen}
+   352→   352→            title="Fullscreen"
+   353→   353→            aria-label="Toggle fullscreen"
+   354→   354→          >
+   355→   355→            {isFullscreen ? (
+   356→   356→              <Minimize2 className="h-4 w-4" />
+   357→   357→            ) : (
+   358→   358→              <Maximize2 className="h-4 w-4" />
+   359→   359→            )}
+   360→   360→          </Button>
+   361→   361→          <Button
+   362→   362→            variant="outline"
+   363→   363→            size="icon"
+   364→   364→            className="hidden sm:flex map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+   365→   365→            onClick={() => setShortcutsOpen(true)}
+   366→   366→            title="Keyboard Shortcuts"
+   367→   367→            aria-label="Keyboard shortcuts"
+   368→   368→          >
+   369→   369→            <Keyboard className="h-4 w-4" />
+   370→   370→          </Button>
+   371→   371→          <Button
+   372→   372→            variant="outline"
+   373→   373→            size="icon"
+   374→   374→            className="map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+   375→   375→            onClick={handleShare}
+   376→   376→            title="Share Map View"
+   377→   377→            aria-label="Share map view"
+   378→   378→          >
+   379→   379→            <Share2 className="h-4 w-4" />
+   380→   380→          </Button>
+   381→   381→          <Button
+   382→   382→            variant="outline"
+   383→   383→            size="icon"
+   384→   384→            className="hidden sm:flex map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+   385→   385→            onClick={() =>
+   386→   386→              window.open('https://github.com/maplibre/maplibre-native', '_blank')
+   387→   387→            }
+   388→   388→            title="GitHub"
+   389→   389→            aria-label="View on GitHub"
+   390→   390→          >
+   391→   391→            <Github className="h-4 w-4" />
+   392→   392→          </Button>
+   393→   393→        </div>
+   394→   394→      </div>
+   395→   395→
+   396→   396→      {/* Tool toolbar - left side (desktop only) */}
+   397→   397→      <div className="hidden md:block absolute left-4 z-10 transition-all duration-300" style={{ top: '80px' }}>
+   398→   398→        <MapToolbar />
+   399→   399→      </div>
+   400→   400→
+   401→   401→      {/* Quick Jump Panel - left side below toolbar (desktop only) */}
+   402→   402→      <div className="hidden md:block absolute z-10 transition-all duration-300" style={{ left: sidebarOpen ? '332px' : '16px', top: '140px' }}>
+   403→   403→        <QuickJumpPanel />
+   404→   404→      </div>
+   405→   405→
+   406→   406→      {/* Current tool indicator */}
+   407→   407→      <AnimatePresence mode="wait">
+   408→   408→        <motion.div
+   409→   409→          key={toolMode}
+   410→   410→          initial={{ opacity: 0, x: -10 }}
+   411→   411→          animate={{ opacity: 1, x: 0 }}
+   412→   412→          exit={{ opacity: 0, x: 10 }}
+   413→   413→          transition={{ duration: 0.2 }}
+   414→   414→          className="absolute z-10 hidden md:block transition-all"
+   415→   415→          style={{
+   416→   416→            left: sidebarOpen ? '332px' : '60px',
+   417→   417→            top: '80px',
+   418→   418→            transition: 'left 0.3s ease-in-out',
+   419→   419→          }}
+   420→   420→        >
+   421→   421→          <Badge
+   422→   422→            className={`bg-gradient-to-r ${currentTool.color} text-white border-0 px-3 py-1.5 gap-1.5 shadow-lg`}
+   423→   423→          >
+   424→   424→            {currentTool.icon}
+   425→   425→            {currentTool.label} Mode
+   426→   426→          </Badge>
+   427→   427→        </motion.div>
+   428→   428→      </AnimatePresence>
+   429→   429→
+   430→   430→      {/* Mobile weather bar - below search on mobile only */}
+   431→   431→      <div className="md:hidden absolute top-[58px] left-3 right-3 z-10">
+   432→   432→        <MobileWeatherBar />
+   433→   433→      </div>
+   434→   434→
+   435→   435→      {/* Mobile tool indicator - shows on mobile below search/weather */}
+   436→   436→      <div className="md:hidden absolute top-24 left-3 z-10">
+   437→   437→        <Badge
+   438→   438→          className={`bg-gradient-to-r ${currentTool.color} text-white border-0 px-2.5 py-1 gap-1 shadow-lg text-xs`}
+   439→   439→        >
+   440→   440→          {currentTool.icon}
+   441→   441→          {currentTool.label}
+   442→   442→        </Badge>
+   443→   443→      </div>
+   444→   444→
+   445→   445→      {/* Mobile bottom toolbar */}
+   446→   446→      <div className="md:hidden absolute bottom-12 left-3 right-3 z-10">
+   447→   447→        <div className="flex items-center justify-center gap-2 bg-background/90 backdrop-blur-md border border-border/50 rounded-2xl shadow-lg p-2">
+   448→   448→          {([
+   449→   449→            { mode: 'navigate' as ToolMode, icon: <Navigation className="h-4 w-4" />, label: 'Navigate', activeClass: 'bg-emerald-500 text-white' },
+   450→   450→            { mode: 'mark' as ToolMode, icon: <MapPin className="h-4 w-4" />, label: 'Pin', activeClass: 'bg-red-500 text-white' },
+   451→   451→            { mode: 'measure' as ToolMode, icon: <Ruler className="h-4 w-4" />, label: 'Measure', activeClass: 'bg-amber-500 text-white' },
+   452→   452→            { mode: 'directions' as ToolMode, icon: <Crosshair className="h-4 w-4" />, label: 'Route', activeClass: 'bg-cyan-500 text-white' },
+   453→   453→            { mode: 'draw' as ToolMode, icon: <Pencil className="h-4 w-4" />, label: 'Draw', activeClass: 'bg-green-500 text-white' },
+   454→   454→          ]).map((tool) => (
+   455→   455→            <button
+   456→   456→              key={tool.mode}
+   457→   457→              onClick={() => setToolMode(tool.mode)}
+   458→   458→              className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl text-xs transition-all ${
+   459→   459→                toolMode === tool.mode ? tool.activeClass + ' shadow-md' : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+   460→   460→              }`}
+   461→   461→              aria-label={`${tool.label} tool`}
+   462→   462→            >
+   463→   463→              {tool.icon}
+   464→   464→              <span className="text-[9px] font-medium">{tool.label}</span>
+   465→   465→            </button>
+   466→   466→          ))}
+   467→   467→          <div className="w-px h-6 bg-border mx-1" />
+   468→   468→          <button
+   469→   469→            onClick={handleLocateMe}
+   470→   470→            className="flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl text-xs text-muted-foreground hover:text-foreground hover:bg-accent transition-all"
+   471→   471→            aria-label="My location"
+   472→   472→          >
+   473→   473→            <LocateFixed className="h-4 w-4" />
+   474→   474→            <span className="text-[9px] font-medium">Locate</span>
+   475→   475→          </button>
+   476→   476→        </div>
+   477→   477→      </div>
+   478→   478→
+   479→   479→      {/* Map Stats Panel - right side above footer (desktop only) */}
+   480→   480→      <div className="hidden md:block absolute bottom-12 right-5 z-10">
+   481→   481→        <MapStatsPanel />
+   482→   482→      </div>
+   483→   483→
+   484→   484→      {/* Weather Panel - left side above footer (desktop only) */}
+   485→   485→      <div className="hidden md:block absolute bottom-12 z-10" style={{ left: sidebarOpen ? '332px' : '20px', transition: 'left 0.3s ease-in-out' }}>
+   486→   486→        <WeatherPanel />
+   487→   487→      </div>
+   488→   488→
+   489→   489→      {/* Elevation Profile Panel - above weather panel when measuring (desktop only) */}
+   490→   490→      <div
+   491→   491→        className="hidden md:block absolute z-10"
+   492→   492→        style={{
+   493→   493→          left: sidebarOpen ? '332px' : '20px',
+   494→   494→          bottom: toolMode === 'measure' && weatherEnabled ? '260px' : '12px',
+   495→   495→          transition: 'left 0.3s ease-in-out, bottom 0.3s ease-in-out',
+   496→   496→        }}
+   497→   497→      >
+   498→   498→        <ElevationProfile />
+   499→   499→      </div>
+   500→   500→
+   501→   501→      {/* Minimap - bottom right above MapStatsPanel (desktop only) */}
+   502→   502→      <MiniMap />
+   503→   503→
+   504→   504→      {/* Map Legend - right side below minimap (desktop only) */}
+   505→   505→      <MapLegend />
+   506→   506→
+   507→   507→      {/* Coordinates display - bottom center (desktop only) */}
+   508→   508→      <div className="hidden md:block absolute bottom-12 left-1/2 -translate-x-1/2 z-10">
+   509→   509→        <CoordinatesDisplay />
+   510→   510→      </div>
+   511→   511→
+   512→   512→      {/* Add Location FAB */}
+   513→   513→      <motion.div
+   514→   514→        className="absolute bottom-20 right-4 md:right-5 z-10"
+   515→   515→        whileHover={{ scale: 1.05 }}
+   516→   516→        whileTap={{ scale: 0.95 }}
+   517→   517→      >
+   518→   518→        <Button
+   519→   519→          size="lg"
+   520→   520→          className="rounded-2xl shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 h-12 md:h-14 px-4 md:px-5 gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white border-0 transition-all duration-200 fab-pulse-shadow"
+   521→   521→          onClick={() => setAddDialogOpen(true)}
+   522→   522→          aria-label="Add new location"
+   523→   523→        >
+   524→   524→          <Plus className="h-5 w-5" />
+   525→   525→          <span className="text-sm font-medium hidden sm:inline">Add Place</span>
+   526→   526→        </Button>
+   527→   527→      </motion.div>
+   528→   528→
+   529→   529→      {/* Welcome banner */}
+   530→   530→      <AnimatePresence>
+   531→   531→        {showWelcome && (
+   532→   532→          <motion.div
+   533→   533→            initial={{ opacity: 0, y: 20 }}
+   534→   534→            animate={{ opacity: 1, y: 0 }}
+   535→   535→            exit={{ opacity: 0, y: 20 }}
+   536→   536→            transition={{ duration: 0.4, ease: 'easeOut' }}
+   537→   537→            className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 max-w-md w-full px-4 hidden md:block"
+   538→   538→          >
+   539→   539→            <div className="gradient-border bg-background/95 backdrop-blur-xl rounded-2xl p-5 shadow-2xl">
+   540→   540→              <button
+   541→   541→                onClick={() => setShowWelcome(false)}
+   542→   542→                className="absolute top-3 right-3 text-muted-foreground hover:text-foreground transition-colors p-1 rounded-lg hover:bg-accent z-10"
+   543→   543→                aria-label="Dismiss welcome"
+   544→   544→              >
+   545→   545→                <X className="h-4 w-4" />
+   546→   546→              </button>
+   547→   547→              <div className="flex items-start gap-4">
+   548→   548→                <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/20 animate-gradient-border gradient-border">
+   549→   549→                  <Layers className="h-6 w-6 text-white" />
+   550→   550→                </div>
+   551→   551→                <div className="flex-1">
+   552→   552→                  <h1 className="font-bold text-base">
+   553→   553→                    Welcome to MapLibre Explorer
+   554→   554→                  </h1>
+   555→   555→                  <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
+   556→   556→                    An interactive map application powered by MapLibre GL JS.
+   557→   557→                    Explore the world, drop pins, measure distances, and switch
+   558→   558→                    between beautiful map styles.
+   559→   559→                  </p>
+   560→   560→                  <div className="flex gap-1.5 mt-3 flex-wrap">
+   561→   561→                    {[
+   562→   562→                      { label: '8 Map Styles', emoji: '🗺️', bg: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400' },
+   563→   563→                      { label: '3D Terrain', emoji: '⛰️', bg: 'bg-amber-500/10 text-amber-700 dark:text-amber-400' },
+   564→   564→                      { label: 'Satellite', emoji: '🛰️', bg: 'bg-teal-500/10 text-teal-700 dark:text-teal-400' },
+   565→   565→                      { label: 'Weather', emoji: '🌤️', bg: 'bg-sky-500/10 text-sky-700 dark:text-sky-400' },
+   566→   566→                      { label: 'Save Places', emoji: '📍', bg: 'bg-red-500/10 text-red-700 dark:text-red-400' },
+   567→   567→                      { label: 'Measure', emoji: '📏', bg: 'bg-orange-500/10 text-orange-700 dark:text-orange-400' },
+   568→   568→                      { label: 'Share View', emoji: '🔗', bg: 'bg-cyan-500/10 text-cyan-700 dark:text-cyan-400' },
+   569→   569→                      { label: 'Shortcuts', emoji: '⌨️', bg: 'bg-violet-500/10 text-violet-700 dark:text-violet-400' },
+   570→   570→                    ].map((feature, featureIndex) => (
+   571→   571→                      <motion.div
+   572→   572→                        key={feature.label}
+   573→   573→                        initial={{ opacity: 0, y: 8 }}
+   574→   574→                        animate={{ opacity: 1, y: 0 }}
+   575→   575→                        transition={{ duration: 0.3, delay: 0.1 + featureIndex * 0.06 }}
+   576→   576→                      >
+   577→   577→                        <Badge
+   578→   578→                          variant="secondary"
+   579→   579→                          className={`text-[10px] px-2 py-0.5 gap-1 ${feature.bg}`}
+   580→   580→                        >
+   581→   581→                          {feature.emoji} {feature.label}
+   582→   582→                        </Badge>
+   583→   583→                      </motion.div>
+   584→   584→                    ))}
+   585→   585→                  </div>
+   586→   586→                  <Button
+   587→   587→                    size="sm"
+   588→   588→                    className="mt-3 h-8 text-xs bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white border-0 shadow-md shadow-emerald-500/20"
+   589→   589→                    onClick={() => {
+   590→   590→                      setShowWelcome(false)
+   591→   591→                      setTimeout(() => {
+   592→   592→                        document.getElementById('map-search-input')?.focus()
+   593→   593→                      }, 100)
+   594→   594→                    }}
+   595→   595→                  >
+   596→   596→                    Get Started
+   597→   597→                  </Button>
+   598→   598→                </div>
+   599→   599→              </div>
+   600→   600→            </div>
+   601→   601→          </motion.div>
+   602→   602→        )}
+   603→   603→      </AnimatePresence>
+   604→   604→
+   605→   605→      {/* Add Location Dialog */}
+   606→   606→      <AddLocationDialog open={addDialogOpen} onOpenChange={setAddDialogOpen} />
+   607→   607→
+   608→   608→      {/* Keyboard Shortcuts Dialog */}
+   609→   609→      <KeyboardShortcutsDialog open={shortcutsOpen} onOpenChange={setShortcutsOpen} />
+   610→   610→
+   611→   611→      {/* Footer */}
+   612→   612→      <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-3 md:px-4 before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">
+   613→   613→        <div className="flex items-center justify-between text-[10px] md:text-[11px] text-muted-foreground">
+   614→   614→          <div className="flex items-center gap-1.5 md:gap-2">
+   615→   615→            <div className="h-3.5 w-3.5 md:h-4 md:w-4 rounded-md bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
+   616→   616→              <MapPin className="h-2 w-2 md:h-2.5 md:w-2.5 text-white" />
+   617→   617→            </div>
+   618→   618→            <span className="font-medium hidden sm:inline">MapLibre Explorer</span>
+   619→   619→            <span className="text-border hidden sm:inline">|</span>
+   620→   620→            <span className="hidden md:inline">MapLibre GL JS · MapTiler · Open-Meteo</span>
+   621→   621→          </div>
+   622→   622→          <div className="flex items-center gap-1.5 md:gap-2">
+   623→   623→            <a
+   624→   624→              href="https://maplibre.org"
+   625→   625→              target="_blank"
+   626→   626→              rel="noopener noreferrer"
+   627→   627→              className="hover:text-foreground transition-colors hidden sm:inline"
+   628→   628→            >
+   629→   629→              maplibre.org
+   630→   630→            </a>
+   631→   631→            <span className="text-border hidden sm:inline">|</span>
+   632→   632→            <a
+   633→   633→              href="https://github.com/maplibre/maplibre-native"
+   634→   634→              target="_blank"
+   635→   635→              rel="noopener noreferrer"
+   636→   636→              className="hover:text-foreground transition-colors hidden md:inline"
+   637→   637→            >
+   638→   638→              GitHub
+   639→   639→            </a>
+   640→   640→            <span className="text-border hidden md:inline">|</span>
+   641→   641→            <span>© OpenStreetMap</span>
+   642→   642→          </div>
+   643→   643→        </div>
+   644→   644→      </footer>
+   645→   645→    </div>
+   646→   646→  )
+   647→   647→}
+   648→   648→

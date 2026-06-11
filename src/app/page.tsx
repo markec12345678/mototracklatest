@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MapView } from '@/components/map/MapView'
 import { MapSidebar } from '@/components/map/MapSidebar'
@@ -48,6 +48,9 @@ export default function Home() {
   const [shortcutsOpen, setShortcutsOpen] = useState(false)
   const [showWelcome, setShowWelcome] = useState(true)
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const [mapInitialized, setMapInitialized] = useState(false)
+  const compassAnimatingRef = useRef(false)
+  const savedLocations = useMapStore((s) => s.savedLocations)
 
   // Restore map state from URL params on page load
   useEffect(() => {
@@ -108,6 +111,32 @@ export default function Home() {
       toast.success('Share URL copied to clipboard!')
     })
   }, [center, zoom, currentStyle])
+
+  // Listen for map initialization
+  useEffect(() => {
+    const handleMapReady = () => setMapInitialized(true)
+    window.addEventListener('map-ready', handleMapReady)
+    // Fallback: check if map is already ready after a tick
+    const fallbackTimer = setTimeout(() => {
+      if ((window as unknown as Record<string, unknown>).__mainMap) {
+        setMapInitialized(true)
+      }
+    }, 0)
+    return () => {
+      window.removeEventListener('map-ready', handleMapReady)
+      clearTimeout(fallbackTimer)
+    }
+  }, [])
+
+  // Welcome back toast for returning users
+  useEffect(() => {
+    if (savedLocations.length > 0) {
+      const timer = setTimeout(() => {
+        toast.success(`Welcome back! You have ${savedLocations.length} saved location${savedLocations.length > 1 ? 's' : ''}`)
+      }, 1200)
+      return () => clearTimeout(timer)
+    }
+  }, [savedLocations.length])
 
   // Dismiss welcome after 10 seconds
   useEffect(() => {
@@ -271,6 +300,38 @@ export default function Home() {
 
   return (
     <div className="relative w-screen h-screen overflow-hidden bg-background">
+      {/* Map loading overlay - shows before map initializes */}
+      <AnimatePresence>
+        {!mapInitialized && (
+          <motion.div
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="absolute inset-0 z-50 bg-background"
+          >
+            <div className="flex flex-col items-center justify-center h-full gap-4">
+              <div className="relative">
+                <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                  <Layers className="h-8 w-8 text-white" />
+                </div>
+                <div className="absolute -bottom-1 -right-1 h-5 w-5 rounded-full border-2 border-background bg-emerald-400 animate-pulse" />
+              </div>
+              <div className="flex flex-col items-center gap-2">
+                <span className="text-sm font-medium text-foreground">Loading Map…</span>
+                <div className="flex gap-1">
+                  <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-bounce" style={{ animationDelay: '0ms' }} />
+                  <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-bounce" style={{ animationDelay: '150ms' }} />
+                  <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-bounce" style={{ animationDelay: '300ms' }} />
+                </div>
+              </div>
+              <div className="w-48 h-1 rounded-full bg-muted overflow-hidden mt-2">
+                <div className="h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full animate-[shimmer_1.5s_ease-in-out_infinite]" style={{ width: '60%' }} />
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Map */}
       <MapView />
 
@@ -326,9 +387,11 @@ export default function Home() {
         }}
       >
         {/* Responsive padding for desktop sidebar */}
-        <div className="flex-1 max-w-lg md:ml-0" style={{ marginLeft: sidebarOpen ? '0px' : undefined }}>
+        <div className="w-full md:w-auto md:flex-1 md:max-w-lg md:ml-0" style={{ marginLeft: sidebarOpen ? '0px' : undefined }}>
           <div className={sidebarOpen ? 'md:pl-[332px]' : ''} style={{ transition: 'padding-left 0.3s ease-in-out' }}>
-            <SearchBar />
+            <div className="w-full md:min-w-[280px]">
+              <SearchBar />
+            </div>
           </div>
         </div>
         <div className="flex items-center gap-1.5 shrink-0">

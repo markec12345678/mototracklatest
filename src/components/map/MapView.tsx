@@ -84,6 +84,7 @@ export function MapView() {
   const currentDrawing = useMapStore((s) => s.currentDrawing)
   const drawColor = useMapStore((s) => s.drawColor)
   const drawWidth = useMapStore((s) => s.drawWidth)
+  const weatherEnabled = useMapStore((s) => s.weatherEnabled)
 
   // Ref for throttling drawing point addition
   const lastDrawTimeRef = useRef(0)
@@ -157,6 +158,7 @@ export function MapView() {
           color: '#ef4444',
           category: 'general',
         })
+        useMapStore.getState().pushNotification({ type: 'location', icon: 'pin', message: `Pin dropped at ${e.lngLat.lat.toFixed(4)}, ${e.lngLat.lng.toFixed(4)}` })
       } else if (mode === 'measure') {
         useMapStore.getState().addMeasurePoint({
           longitude: e.lngLat.lng,
@@ -176,6 +178,8 @@ export function MapView() {
       markMapLoaded(true)
       // Expose main map reference for minimap
       ;(window as unknown as Record<string, unknown>).__mainMap = newMap
+      // Notify page that map is ready
+      window.dispatchEvent(new Event('map-ready'))
     })
 
     newMap.on('styledataloading', () => {
@@ -515,9 +519,57 @@ export function MapView() {
       })
     }
 
-    const features: GeoJSON.Feature[] = measurePoints.map((p) => ({
+    const textLayerId = 'measure-distance-label'
+    if (!map.current.getLayer(textLayerId)) {
+      map.current.addLayer({
+        id: textLayerId,
+        type: 'symbol',
+        source: sourceId,
+        layout: {
+          'text-field': '',
+          'text-size': 12,
+          'text-offset': [0, 1.5],
+          'text-anchor': 'top',
+          'text-font': ['Open Sans Regular'],
+        },
+        paint: {
+          'text-color': '#ef4444',
+          'text-halo-color': '#ffffff',
+          'text-halo-width': 1.5,
+        },
+        filter: ['==', '$type', 'Point'],
+      })
+    }
+
+    // Calculate total distance using Haversine formula
+    let totalDist = 0
+    for (let i = 1; i < measurePoints.length; i++) {
+      const p1 = measurePoints[i - 1]
+      const p2 = measurePoints[i]
+      const R = 6371
+      const dLat = ((p2.latitude - p1.latitude) * Math.PI) / 180
+      const dLon = ((p2.longitude - p1.longitude) * Math.PI) / 180
+      const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos((p1.latitude * Math.PI) / 180) *
+          Math.cos((p2.latitude * Math.PI) / 180) *
+          Math.sin(dLon / 2) *
+          Math.sin(dLon / 2)
+      totalDist += R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+    }
+
+    // Format distance for display
+    const distanceLabel =
+      totalDist >= 1
+        ? `${totalDist.toFixed(2)} km`
+        : `${(totalDist * 1000).toFixed(0)} m`
+
+    const features: GeoJSON.Feature[] = measurePoints.map((p, idx) => ({
       type: 'Feature',
-      properties: {},
+      properties:
+        measurePoints.length > 1 && idx === Math.floor(measurePoints.length / 2)
+          ? { distance: distanceLabel }
+          : {},
       geometry: {
         type: 'Point',
         coordinates: [p.longitude, p.latitude],
@@ -540,6 +592,18 @@ export function MapView() {
       type: 'FeatureCollection',
       features,
     })
+
+    // Update the text-field on the distance label layer
+    if (map.current.getLayer(textLayerId)) {
+      map.current.setLayoutProperty(
+        textLayerId,
+        'text-field',
+        measurePoints.length > 1 ? ['get', 'distance'] : ''
+      )
+    }
+
+    // Update store with measured distance
+    useMapStore.getState().setMeasureDistance(measurePoints.length > 1 ? totalDist : null)
   }, [measurePoints, mapLoadedVersion])
 
   // Sync route drawing lines and points
@@ -597,6 +661,25 @@ export function MapView() {
       })
     } else {
       map.current.setPaintProperty(pointLayerId, 'circle-color', currentColor)
+    }
+
+    // Add route number labels on top of route points
+    const routeNumberLayerId = 'route-numbers'
+    if (!map.current.getLayer(routeNumberLayerId)) {
+      map.current.addLayer({
+        id: routeNumberLayerId,
+        type: 'symbol',
+        source: sourceId,
+        layout: {
+          'text-field': ['to-string', ['get', 'index']],
+          'text-size': 11,
+          'text-font': ['Open Sans Bold'],
+        },
+        paint: {
+          'text-color': '#ffffff',
+        },
+        filter: ['==', '$type', 'Point'],
+      })
     }
 
     const features: GeoJSON.Feature[] = routePoints.map((p, idx) => ({
@@ -856,17 +939,33 @@ export function MapView() {
     }
   }, [layerVisibility, mapLoadedVersion])
 
-  // Cursor for tool modes
+  // Cursor for tool modes (use mousemove to override MapLibre's cursor reset)
   useEffect(() => {
     if (!map.current) return
 
     const canvas = map.current.getCanvas()
-    if (toolMode === 'mark' || toolMode === 'measure' || toolMode === 'directions') {
-      canvas.style.cursor = 'crosshair'
-    } else if (toolMode === 'draw') {
-      canvas.style.cursor = 'crosshair'
-    } else {
-      canvas.style.cursor = ''
+    const setCursor = () => {
+      if (toolMode === 'mark' || toolMode === 'measure' || toolMode === 'directions') {
+        canvas.style.cursor = 'crosshair'
+      } else if (toolMode === 'draw') {
+        canvas.style.cursor = 'crosshair'
+      } else {
+        canvas.style.cursor = ''
+      }
+    }
+
+    // Set immediately
+    setCursor()
+
+    // Also set on mousemove to counteract MapLibre's cursor resets
+    const handleMouseMove = () => setCursor()
+    map.current.on('mousemove', handleMouseMove)
+
+    return () => {
+      if (map.current) {
+        map.current.off('mousemove', handleMouseMove)
+        canvas.style.cursor = ''
+      }
     }
   }, [toolMode, mapLoadedVersion])
 
@@ -1078,12 +1177,17 @@ export function MapView() {
     const terrainSourceId = 'terrain-source'
 
     if (buildingExtrusion) {
+      // Set pitch to 60° for 3D view
+      if (map.current.getPitch() < 30) {
+        map.current.easeTo({ pitch: 60, duration: 800 })
+      }
+
       // --- Terrain ---
       try {
         if (!map.current.getSource(terrainSourceId)) {
           map.current.addSource(terrainSourceId, {
             type: 'raster-dem',
-            url: `https://api.maptiler.com/tiles/terrain-rgb/tiles.json?key=${process.env.NEXT_PUBLIC_MAPTILER_KEY || ''}`,
+            url: `https://api.maptiler.com/tiles/terrain-rgb-v2/tiles.json?key=${process.env.NEXT_PUBLIC_MAPTILER_KEY || ''}`,
           })
         }
         map.current.setTerrain({
@@ -1119,6 +1223,11 @@ export function MapView() {
         }
       }
     } else {
+      // Reset pitch when disabling 3D
+      if (map.current.getPitch() > 0) {
+        map.current.easeTo({ pitch: 0, duration: 600 })
+      }
+
       // Remove terrain
       try {
         map.current.setTerrain(null)
@@ -1152,6 +1261,42 @@ export function MapView() {
       // Terrain not available
     }
   }, [terrainExaggeration, buildingExtrusion, mapLoadedVersion])
+
+  // Weather overlay
+  useEffect(() => {
+    if (!map.current || !mapLoadedRef.current) return
+
+    const weatherSourceId = 'weather-overlay-source'
+    const weatherLayerId = 'weather-overlay-layer'
+
+    if (weatherEnabled) {
+      if (!map.current!.getSource(weatherSourceId)) {
+        map.current!.addSource(weatherSourceId, {
+          type: 'raster',
+          url: `https://api.maptiler.com/tiles/weather-overlay/tiles.json?key=${process.env.NEXT_PUBLIC_MAPTILER_KEY || ''}`,
+          tileSize: 256,
+        })
+      }
+      if (!map.current!.getLayer(weatherLayerId)) {
+        map.current!.addLayer({
+          id: weatherLayerId,
+          type: 'raster',
+          source: weatherSourceId,
+          paint: {
+            'raster-opacity': 0.6,
+          },
+        })
+      }
+    } else {
+      // Remove weather overlay
+      if (map.current!.getLayer(weatherLayerId)) {
+        map.current!.removeLayer(weatherLayerId)
+      }
+      if (map.current!.getSource(weatherSourceId)) {
+        map.current!.removeSource(weatherSourceId)
+      }
+    }
+  }, [weatherEnabled, mapLoadedVersion])
 
   const flyToLocation = useCallback(
     (longitude: number, latitude: number, zoom?: number) => {
