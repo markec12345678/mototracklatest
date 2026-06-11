@@ -2180,3 +2180,127 @@ Unresolved Issues / Next Phase Recommendations:
 - Could add map comparison/split view
 - Could add coordinate system conversion (UTM, etc.)
 - Could add print-friendly map layout
+
+---
+Task ID: 14
+Agent: Feature Developer - Map Comparison View
+Task: Add map comparison/swipe view feature
+
+Work Log:
+- Read existing codebase: map-store.ts, MapView.tsx, page.tsx, StyleSwitcher.tsx to understand patterns
+- Updated Zustand store (map-store.ts) with comparisonEnabled, comparisonStyle state and actions (setComparisonEnabled, setComparisonStyle)
+- Added comparison state to persist partialize so preferences survive page refresh
+- Created MapComparison.tsx component with:
+  - Second MapLibre GL map overlaid on top of the base map with CSS clip-path swipe effect
+  - Draggable vertical divider with circular grip handle (44px touch target)
+  - Style labels on each side showing which style is being viewed
+  - Control panel at top center with Change Style picker and close button
+  - Smooth framer-motion entry animation
+  - Map sync via requestAnimationFrame on move/zoom/rotate/pitch events
+  - Comparison map is interactive: false; only base map handles interactions
+  - Touch support for mobile (touchmove/touchend events)
+  - Auto-fading hint text "Drag the divider to compare map styles"
+  - Exported enableComparison() helper function for programmatic activation
+- Updated page.tsx:
+  - Added GitCompare icon button to the top toolbar (between StyleSwitcher and ThemeToggle)
+  - Active state styling when comparison is enabled (bg-primary/20 border)
+  - Notification on enable
+  - Integrated MapComparison component into the page layout
+- Updated StyleSwitcher.tsx:
+  - Added per-style "Compare" button (GitCompare icon) that appears on hover for non-active styles
+  - Uses enableComparison() helper to activate comparison mode with selected style
+  - Button hidden when comparison is already active
+
+Stage Summary:
+- Created `/home/z/my-project/src/components/map/MapComparison.tsx` - Full-featured comparison/swipe view component
+- Updated `/home/z/my-project/src/lib/map-store.ts` - Added comparisonEnabled, comparisonStyle, setComparisonEnabled, setComparisonStyle
+- Updated `/home/z/my-project/src/app/page.tsx` - Added GitCompare toolbar button + MapComparison component
+- Updated `/home/z/my-project/src/components/map/StyleSwitcher.tsx` - Added per-style compare buttons
+- All files pass ESLint with no new errors
+- Dev server compiles successfully
+
+---
+Task ID: 15
+Agent: Feature Developer - Undo/Redo System
+Task: Add undo/redo system for map tools
+
+Work Log:
+- Read existing files: map-store.ts, page.tsx, KeyboardShortcutsDialog.tsx, MapSidebar.tsx, worklog.md
+- Created `/home/z/my-project/src/lib/undo-manager.ts` - Generic UndoManager class using the Command Pattern with:
+  - UndoAction interface with type, description, undo(), redo() functions
+  - Undo and redo stacks with max 50 actions
+  - isExecuting flag to prevent recursive pushes during undo/redo
+  - Subscribe/emit pattern for state change notifications
+  - Singleton undoManager instance
+- Created `/home/z/my-project/src/lib/use-undo-store.ts` - Zustand store for undo/redo with:
+  - undoStack, redoStack snapshots (synced from UndoManager)
+  - canUndo, canRedo computed booleans
+  - pushAction, undo, redo, clearHistory methods
+  - Automatic sync via UndoManager subscription
+- Modified `/home/z/my-project/src/lib/map-store.ts` - Integrated undo tracking into 16 actions:
+  - addMarker: undo removes marker, redo adds it back
+  - removeMarker: undo re-adds marker, redo removes it
+  - addSavedLocation: undo removes location, redo adds it back
+  - removeSavedLocation: undo re-adds location+marker, redo removes them
+  - addMeasurePoint: undo removes last point, redo adds it back
+  - clearMeasurePoints: undo restores all points+distance, redo clears them
+  - addAreaPoint: undo removes last point, redo adds it back
+  - clearAreaPoints: undo restores all points+area, redo clears them
+  - addRoutePoint: undo removes last point, redo adds it back
+  - removeRoutePoint: undo re-inserts point at index, redo removes it
+  - clearRoutePoints: undo restores all points, redo clears them
+  - saveRoute: undo removes saved route+restores route points, redo re-saves
+  - deleteRoute: undo re-adds route, redo deletes it
+  - addDrawingPoint: undo removes last point from currentDrawing, redo adds it back
+  - finishDrawing: undo removes finished drawing+restores currentDrawing, redo finishes again
+  - deleteDrawing: undo re-adds drawing, redo deletes it
+  - All actions check undoManager.isExecuting to avoid recursive undo entries
+  - Undo/redo closures use useMapStore.setState() directly (not store actions) to avoid re-triggering undo tracking
+- Created `/home/z/my-project/src/components/map/UndoRedoBar.tsx` - Compact floating undo/redo bar with:
+  - Undo2/Redo2 icons from lucide-react
+  - Disabled state when stacks are empty
+  - Tooltips showing action description and keyboard shortcut
+  - AnimatePresence for smooth show/hide animations
+  - Only visible when there's undo or redo history
+  - Glass-morphism styling consistent with map controls
+- Updated `/home/z/my-project/src/app/page.tsx`:
+  - Added UndoRedoBar import and placement in top bar controls area
+  - Added keyboard shortcuts: Ctrl+Z / Cmd+Z for undo, Ctrl+Y / Cmd+Y and Ctrl+Shift+Z for redo
+  - Shortcuts work even in input fields (Ctrl+Z is a standard text editing shortcut, so it's handled before the input check)
+- Updated `/home/z/my-project/src/components/map/KeyboardShortcutsDialog.tsx`:
+  - Added "Undo / Redo" category with Ctrl+Z, Ctrl+Y, Ctrl+Shift+Z shortcuts
+- All modified files pass ESLint with no new errors
+- Dev server compiles successfully
+
+Stage Summary:
+- Created undo-manager.ts: Generic UndoManager with Command Pattern, 50-action max history
+- Created use-undo-store.ts: Zustand store bridging UndoManager to React components
+- Modified map-store.ts: 16 actions now support undo/redo (markers, locations, measurements, routes, drawings)
+- Created UndoRedoBar.tsx: Compact floating bar with undo/redo buttons, tooltips, animations
+- Updated page.tsx: Keyboard shortcuts (Ctrl+Z/Y/Ctrl+Shift+Z) and UndoRedoBar in layout
+- Updated KeyboardShortcutsDialog.tsx: Added Undo/Redo shortcuts section
+- Undo history persists across tool mode switches, clears on page reload (not persisted)
+- Undo/redo operations don't create new undo entries (isExecuting guard)
+
+---
+Task ID: 13
+Agent: Feature Developer - Context Menu & Coordinate Input
+Task: Add right-click context menu on map + coordinate input dialog
+
+Work Log:
+- Created MapContextMenu component at `/src/components/map/MapContextMenu.tsx` with glassmorphism styling, framer-motion animations, and 8 context-sensitive menu items
+- Created reverse geocoding API endpoint at `/src/app/api/reverse-geocode/route.ts` using MapTiler API with Nominatim fallback and in-memory caching
+- Integrated context menu into MapView.tsx by adding contextmenu event listener, closing on click/move/zoom/Escape
+- Created CoordinateInputDialog component at `/src/components/map/CoordinateInputDialog.tsx` with dual input modes (Lat/Lng and Combined/DMS), zoom level, validation, and recent coordinates history
+- Added Globe2 button in top toolbar for coordinate input dialog with Ctrl+G / Cmd+G keyboard shortcut
+- Connected "Add to Saved Locations" context menu item to AddLocationDialog via custom DOM events with pre-filled coordinates
+- Updated AddLocationDialog to listen for prefill events from context menu
+- All lint errors resolved, dev server running successfully
+
+Stage Summary:
+- MapContextMenu.tsx: Right-click context menu with 8 items (Add Marker, Start Measurement, Add Route Point, Add Area Point, What's Here, Copy Coordinates, Center Map Here, Add to Saved Locations), glassmorphism design, reverse geocoding integration, framer-motion animations
+- CoordinateInputDialog.tsx: Full coordinate input dialog with Lat/Lng mode, Combined/DMS mode, optional zoom level, inline validation, recent coordinates history (localStorage, max 5), emerald/teal gradient styling
+- reverse-geocode/route.ts: API endpoint using MapTiler Geocoding API with Nominatim fallback, in-memory cache with 10min TTL
+- MapView.tsx: Added contextmenu event handler, context menu state management, closes on map interactions
+- page.tsx: Added CoordinateInputDialog integration, Globe2 toolbar button, Ctrl+G shortcut, context-menu-to-add-location event bridge
+- AddLocationDialog.tsx: Added prefill event listener for context menu integration

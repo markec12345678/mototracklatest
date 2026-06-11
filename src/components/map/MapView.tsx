@@ -5,6 +5,7 @@ import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { useMapStore, type LayerVisibility, getStyleUrl } from '@/lib/map-store'
 import { toast } from 'sonner'
+import { MapContextMenu, type ContextMenuPosition } from '@/components/map/MapContextMenu'
 
 // Inject pulsing dot CSS animation
 if (typeof document !== 'undefined' && !document.getElementById('geolocation-pulse-style')) {
@@ -57,6 +58,7 @@ export function MapView() {
   const [mapLoadedVersion, setMapLoadedVersion] = useState(0)
   const [osrmRoute, setOsrmRoute] = useState<[number, number][] | null>(null)
   const [tilesLoading, setTilesLoading] = useState(false)
+  const [contextMenuPos, setContextMenuPos] = useState<ContextMenuPosition | null>(null)
 
   // Use refs for values needed in map event handlers to avoid stale closures
   const toolModeRef = useRef(useMapStore.getState().toolMode)
@@ -161,6 +163,9 @@ export function MapView() {
     })
 
     newMap.on('click', (e) => {
+      // Close context menu on any left-click
+      setContextMenuPos(null)
+
       const mode = toolModeRef.current
       if (mode === 'mark') {
         const id = `marker-${Date.now()}`
@@ -192,6 +197,21 @@ export function MapView() {
         useMapStore.getState().setSelectedMarker(null)
       }
     })
+
+    // Right-click context menu
+    newMap.on('contextmenu', (e) => {
+      e.preventDefault()
+      setContextMenuPos({
+        x: e.point.x,
+        y: e.point.y,
+        lng: e.lngLat.lng,
+        lat: e.lngLat.lat,
+      })
+    })
+
+    // Close context menu on map move/zoom
+    newMap.on('movestart', () => setContextMenuPos(null))
+    newMap.on('zoomstart', () => setContextMenuPos(null))
 
     newMap.on('load', () => {
       markMapLoaded(true)
@@ -2187,6 +2207,15 @@ export function MapView() {
           height: '100%',
         }}
       />
+      {/* Context Menu */}
+      <MapContextMenu
+        position={contextMenuPos}
+        onClose={() => setContextMenuPos(null)}
+        onAddToSavedLocations={(lat, lng) => {
+          window.dispatchEvent(new CustomEvent('map-add-saved-location', { detail: { lat, lng } }))
+        }}
+      />
+
       {/* Tile loading indicator */}
       {tilesLoading && (
         <div className="absolute top-0 left-0 right-0 z-10 h-0.5 bg-muted overflow-hidden">

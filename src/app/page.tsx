@@ -20,9 +20,13 @@ import { WeatherPanel } from '@/components/map/WeatherPanel'
 import { MobileWeatherBar } from '@/components/map/MobileWeatherBar'
 import { ElevationProfile } from '@/components/map/ElevationProfile'
 import { QuickJumpPanel } from '@/components/map/QuickJumpPanel'
+import { UndoRedoBar } from '@/components/map/UndoRedoBar'
+import { MapComparison } from '@/components/map/MapComparison'
+import { CoordinateInputDialog } from '@/components/map/CoordinateInputDialog'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useMapStore, type ToolMode, MAP_STYLES } from '@/lib/map-store'
+import { useUndoStore } from '@/lib/use-undo-store'
 import { toast } from 'sonner'
 import {
   Navigation,
@@ -40,13 +44,16 @@ import {
   Keyboard,
   Share2,
   Camera,
+  GitCompare,
+  Globe2,
 } from 'lucide-react'
 
 export default function Home() {
-  const { toolMode, sidebarOpen, center, zoom, currentStyle, weatherEnabled, setSidebarOpen, setToolMode, setCenter, setZoom, setCurrentStyle } = useMapStore()
+  const { toolMode, sidebarOpen, center, zoom, currentStyle, weatherEnabled, comparisonEnabled, setSidebarOpen, setToolMode, setCenter, setZoom, setCurrentStyle, setComparisonEnabled } = useMapStore()
   const pushNotification = useMapStore((s) => s.pushNotification)
   const [addDialogOpen, setAddDialogOpen] = useState(false)
   const [shortcutsOpen, setShortcutsOpen] = useState(false)
+  const [coordDialogOpen, setCoordDialogOpen] = useState(false)
   const [showWelcome, setShowWelcome] = useState(true)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [mapInitialized, setMapInitialized] = useState(false)
@@ -206,9 +213,47 @@ export default function Home() {
     }
   }, [])
 
+  // Listen for context menu "Add to Saved Locations" event
+  useEffect(() => {
+    const handleAddSavedLocation = (e: Event) => {
+      const detail = (e as CustomEvent).detail as { lat: number; lng: number }
+      if (detail) {
+        // Open the Add Location dialog with pre-filled coordinates
+        setAddDialogOpen(true)
+        // The dialog reads center from store, so temporarily set it
+        // We'll use a custom event to pass the coordinates
+        window.dispatchEvent(new CustomEvent('add-location-prefill', { detail }))
+      }
+    }
+    window.addEventListener('map-add-saved-location', handleAddSavedLocation)
+    return () => window.removeEventListener('map-add-saved-location', handleAddSavedLocation)
+  }, [])
+
   // Keyboard shortcuts
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
+      // Ctrl+Z / Cmd+Z: Undo
+      if (e.key === 'z' && (e.ctrlKey || e.metaKey) && !e.shiftKey) {
+        e.preventDefault()
+        useUndoStore.getState().undo()
+        return
+      }
+      // Ctrl+Y / Cmd+Y or Ctrl+Shift+Z / Cmd+Shift+Z: Redo
+      if (
+        (e.key === 'y' && (e.ctrlKey || e.metaKey)) ||
+        (e.key === 'z' && (e.ctrlKey || e.metaKey) && e.shiftKey)
+      ) {
+        e.preventDefault()
+        useUndoStore.getState().redo()
+        return
+      }
+      // Ctrl+G / Cmd+G: Open coordinate dialog
+      if (e.key === 'g' && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault()
+        setCoordDialogOpen(true)
+        return
+      }
+
       // Don't trigger shortcuts when typing in inputs
       const target = e.target as HTMLElement
       if (
@@ -363,6 +408,9 @@ export default function Home() {
       {/* Map */}
       <MapView />
 
+      {/* Map Comparison / Swipe View */}
+      <MapComparison />
+
       {/* Crosshair overlay for measure/mark/directions mode */}
       {toolMode !== 'navigate' && (
         <div className="absolute inset-0 pointer-events-none z-[15]" aria-hidden="true">
@@ -420,7 +468,23 @@ export default function Home() {
           </div>
         </div>
         <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
+          <UndoRedoBar />
           <StyleSwitcher />
+          <Button
+            variant="outline"
+            size="icon"
+            className={`map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95 ${comparisonEnabled ? 'bg-primary/20 border-primary/50 text-primary' : ''}`}
+            onClick={() => {
+              setComparisonEnabled(!comparisonEnabled)
+              if (!comparisonEnabled) {
+                pushNotification({ type: 'style', icon: 'compare', message: 'Style comparison mode enabled' })
+              }
+            }}
+            title="Compare map styles"
+            aria-label="Toggle style comparison"
+          >
+            <GitCompare className="h-4 w-4" />
+          </Button>
           <ThemeToggle />
           <Button
             variant="outline"
@@ -445,6 +509,16 @@ export default function Home() {
             ) : (
               <Maximize2 className="h-4 w-4" />
             )}
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => setCoordDialogOpen(true)}
+            title="Go to Coordinates (Ctrl+G)"
+            aria-label="Go to coordinates"
+          >
+            <Globe2 className="h-4 w-4" />
           </Button>
           <Button
             variant="outline"
@@ -703,6 +777,9 @@ export default function Home() {
 
       {/* Add Location Dialog */}
       <AddLocationDialog open={addDialogOpen} onOpenChange={setAddDialogOpen} />
+
+      {/* Coordinate Input Dialog */}
+      <CoordinateInputDialog open={coordDialogOpen} onOpenChange={setCoordDialogOpen} />
 
       {/* Keyboard Shortcuts Dialog */}
       <KeyboardShortcutsDialog open={shortcutsOpen} onOpenChange={setShortcutsOpen} />

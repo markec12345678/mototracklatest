@@ -1,10 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import { Check, Palette } from 'lucide-react'
+import { Check, Palette, GitCompare } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { useMapStore, MAP_STYLES } from '@/lib/map-store'
+import { enableComparison } from '@/components/map/MapComparison'
 import { cn } from '@/lib/utils'
 
 // Distinctive gradient backgrounds for each style preview card (inline styles)
@@ -20,7 +21,7 @@ const STYLE_GRADIENTS: Record<string, string> = {
 }
 
 export function StyleSwitcher() {
-  const { currentStyle, setCurrentStyle } = useMapStore()
+  const { currentStyle, setCurrentStyle, comparisonEnabled } = useMapStore()
   const [open, setOpen] = useState(false)
 
   return (
@@ -102,6 +103,21 @@ export function StyleSwitcher() {
                     <span className="text-[8px] font-bold uppercase tracking-wider text-primary/80 relative z-10">
                       Active
                     </span>
+                  )}
+                  {/* Compare button - only on non-active styles */}
+                  {!isActive && !comparisonEnabled && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        enableComparison(style)
+                        setOpen(false)
+                      }}
+                      className="absolute bottom-1 right-1 w-5 h-5 rounded-md bg-background/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all hover:bg-primary hover:text-primary-foreground shadow-sm border border-border/30 z-20"
+                      title={`Compare with ${style.name}`}
+                      aria-label={`Compare current style with ${style.name}`}
+                    >
+                      <GitCompare className="h-2.5 w-2.5" />
+                    </button>
                   )}
                 </button>
               )

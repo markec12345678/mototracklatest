@@ -25,6 +25,11 @@ const shortcuts = [
     { keys: ['8'], description: 'Dark style' },
     { keys: ['9'], description: 'Cycle all styles' },
   ]},
+  { category: 'Undo / Redo', items: [
+    { keys: ['Ctrl', 'Z'], description: 'Undo last action' },
+    { keys: ['Ctrl', 'Y'], description: 'Redo last action' },
+    { keys: ['Ctrl', 'Shift', 'Z'], description: 'Redo (alternative)' },
+  ]},
   { category: 'Navigation', items: [
     { keys: ['B'], description: 'Toggle sidebar' },
     { keys: ['F'], description: 'Toggle fullscreen' },

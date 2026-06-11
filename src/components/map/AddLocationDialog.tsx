@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   Plus,
   MapPin,
@@ -59,6 +59,19 @@ export function AddLocationDialog({
   const [lat, setLat] = useState('')
   const [lng, setLng] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  // Listen for prefill event from context menu
+  useEffect(() => {
+    const handlePrefill = (e: Event) => {
+      const detail = (e as CustomEvent).detail as { lat: number; lng: number }
+      if (detail) {
+        setLat(detail.lat.toFixed(6))
+        setLng(detail.lng.toFixed(6))
+      }
+    }
+    window.addEventListener('add-location-prefill', handlePrefill)
+    return () => window.removeEventListener('add-location-prefill', handlePrefill)
+  }, [])
 
   const handleUseMapCenter = () => {
     setLat(center[1].toFixed(6))
