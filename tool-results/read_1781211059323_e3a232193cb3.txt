@@ -1,0 +1,992 @@
+     1→     1→import { create } from 'zustand'
+     2→     2→import { persist } from 'zustand/middleware'
+     3→     3→import { undoManager } from '@/lib/undo-manager'
+     4→     4→
+     5→     5→export interface SavedLocation {
+     6→     6→  id: string
+     7→     7→  name: string
+     8→     8→  description?: string
+     9→     9→  latitude: number
+    10→    10→  longitude: number
+    11→    11→  category: string
+    12→    12→  color: string
+    13→    13→  icon: string
+    14→    14→  createdAt: string
+    15→    15→  updatedAt: string
+    16→    16→}
+    17→    17→
+    18→    18→export interface MapMarker {
+    19→    19→  id: string
+    20→    20→  longitude: number
+    21→    21→  latitude: number
+    22→    22→  name: string
+    23→    23→  description?: string
+    24→    24→  color: string
+    25→    25→  category: string
+    26→    26→}
+    27→    27→
+    28→    28→export interface MeasurePoint {
+    29→    29→  longitude: number
+    30→    30→  latitude: number
+    31→    31→}
+    32→    32→
+    33→    33→export interface RoutePoint {
+    34→    34→  longitude: number
+    35→    35→  latitude: number
+    36→    36→  name?: string
+    37→    37→}
+    38→    38→
+    39→    39→export interface MapRoute {
+    40→    40→  id: string
+    41→    41→  name: string
+    42→    42→  color: string
+    43→    43→  points: RoutePoint[]
+    44→    44→  distance: number | null
+    45→    45→  duration: number | null
+    46→    46→}
+    47→    47→
+    48→    48→export interface POIMarker {
+    49→    49→  id: string
+    50→    50→  longitude: number
+    51→    51→  latitude: number
+    52→    52→  name: string
+    53→    53→  category: string
+    54→    54→  icon: string
+    55→    55→  distance: number | null
+    56→    56→}
+    57→    57→
+    58→    58→export interface BookmarkFolder {
+    59→    59→  id: string
+    60→    60→  name: string
+    61→    61→  color: string
+    62→    62→  emoji: string
+    63→    63→  locationIds: string[]
+    64→    64→}
+    65→    65→
+    66→    66→export type MapStyleOption = {
+    67→    67→  id: string
+    68→    68→  name: string
+    69→    69→  url: string
+    70→    70→  fallbackUrl?: string
+    71→    71→  category: 'standard' | 'dark' | 'satellite' | 'terrain' | 'custom'
+    72→    72→  preview: { gradient: string; emoji: string }
+    73→    73→  provider: 'maptiler' | 'carto' | 'osm'
+    74→    74→}
+    75→    75→
+    76→    76→const MAPTILER_KEY = process.env.NEXT_PUBLIC_MAPTILER_KEY || ''
+    77→    77→
+    78→    78→function maptilerUrl(styleId: string): string {
+    79→    79→  return `https://api.maptiler.com/maps/${styleId}/style.json?key=${MAPTILER_KEY}`
+    80→    80→}
+    81→    81→
+    82→    82→export const MAP_STYLES: MapStyleOption[] = [
+    83→    83→  {
+    84→    84→    id: 'streets',
+    85→    85→    name: 'Streets',
+    86→    86→    url: maptilerUrl('streets-v2'),
+    87→    87→    fallbackUrl: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json',
+    88→    88→    category: 'standard',
+    89→    89→    preview: { gradient: 'from-emerald-400 to-cyan-400', emoji: '🏙️' },
+    90→    90→    provider: 'maptiler',
+    91→    91→  },
+    92→    92→  {
+    93→    93→    id: 'satellite',
+    94→    94→    name: 'Satellite',
+    95→    95→    url: maptilerUrl('satellite'),
+    96→    96→    category: 'satellite',
+    97→    97→    preview: { gradient: 'from-green-800 to-teal-900', emoji: '🛰️' },
+    98→    98→    provider: 'maptiler',
+    99→    99→  },
+   100→   100→  {
+   101→   101→    id: 'hybrid',
+   102→   102→    name: 'Hybrid',
+   103→   103→    url: maptilerUrl('hybrid'),
+   104→   104→    category: 'satellite',
+   105→   105→    preview: { gradient: 'from-teal-600 to-emerald-800', emoji: '🌐' },
+   106→   106→    provider: 'maptiler',
+   107→   107→  },
+   108→   108→  {
+   109→   109→    id: 'terrain',
+   110→   110→    name: 'Terrain',
+   111→   111→    url: maptilerUrl('terrain'),
+   112→   112→    fallbackUrl: 'https://tiles.openfreemap.org/styles/liberty',
+   113→   113→    category: 'terrain',
+   114→   114→    preview: { gradient: 'from-amber-500 to-orange-600', emoji: '⛰️' },
+   115→   115→    provider: 'maptiler',
+   116→   116→  },
+   117→   117→  {
+   118→   118→    id: 'topo',
+   119→   119→    name: 'Topographic',
+   120→   120→    url: maptilerUrl('topo-v2'),
+   121→   121→    fallbackUrl: 'https://tiles.openfreemap.org/styles/liberty',
+   122→   122→    category: 'terrain',
+   123→   123→    preview: { gradient: 'from-yellow-500 to-amber-600', emoji: '🗺️' },
+   124→   124→    provider: 'maptiler',
+   125→   125→  },
+   126→   126→  {
+   127→   127→    id: 'dark',
+   128→   128→    name: 'Dark',
+   129→   129→    url: maptilerUrl('dark'),
+   130→   130→    fallbackUrl: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+   131→   131→    category: 'dark',
+   132→   132→    preview: { gradient: 'from-gray-700 to-gray-900', emoji: '🌙' },
+   133→   133→    provider: 'maptiler',
+   134→   134→  },
+   135→   135→  {
+   136→   136→    id: 'outdoor',
+   137→   137→    name: 'Outdoor',
+   138→   138→    url: maptilerUrl('outdoor-v2'),
+   139→   139→    fallbackUrl: 'https://tiles.openfreemap.org/styles/liberty',
+   140→   140→    category: 'terrain',
+   141→   141→    preview: { gradient: 'from-lime-500 to-green-600', emoji: '🏕️' },
+   142→   142→    provider: 'maptiler',
+   143→   143→  },
+   144→   144→  {
+   145→   145→    id: 'osm',
+   146→   146→    name: 'OpenStreetMap',
+   147→   147→    url: 'https://tiles.openfreemap.org/styles/liberty',
+   148→   148→    category: 'standard',
+   149→   149→    preview: { gradient: 'from-green-400 to-emerald-400', emoji: '🌍' },
+   150→   150→    provider: 'osm',
+   151→   151→  },
+   152→   152→]
+   153→   153→
+   154→   154→/** Get the effective URL for a style (uses fallback if MapTiler key is not available) */
+   155→   155→export function getStyleUrl(style: MapStyleOption): string {
+   156→   156→  if (!MAPTILER_KEY && style.provider === 'maptiler' && style.fallbackUrl) {
+   157→   157→    return style.fallbackUrl
+   158→   158→  }
+   159→   159→  return style.url
+   160→   160→}
+   161→   161→
+   162→   162→/** Get a lightweight minimap style URL based on current theme */
+   163→   163→export function getMinimapStyleUrl(isDark: boolean): string {
+   164→   164→  return isDark
+   165→   165→    ? 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'
+   166→   166→    : 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json'
+   167→   167→}
+   168→   168→
+   169→   169→export interface MapDrawing {
+   170→   170→  id: string
+   171→   171→  points: number[][]
+   172→   172→  color: string
+   173→   173→  width: number
+   174→   174→  name: string
+   175→   175→}
+   176→   176→
+   177→   177→export type ToolMode = 'navigate' | 'mark' | 'measure' | 'directions' | 'draw' | 'area'
+   178→   178→
+   179→   179→export interface Geolocation {
+   180→   180→  longitude: number
+   181→   181→  latitude: number
+   182→   182→  accuracy: number
+   183→   183→}
+   184→   184→
+   185→   185→export interface LayerVisibility {
+   186→   186→  water: boolean
+   187→   187→  roads: boolean
+   188→   188→  buildings: boolean
+   189→   189→  parks: boolean
+   190→   190→  labels: boolean
+   191→   191→}
+   192→   192→
+   193→   193→export interface MapNotification {
+   194→   194→  id: string
+   195→   195→  type: 'style' | 'location' | 'route' | 'drawing' | 'measurement' | 'weather' | 'terrain' | 'general'
+   196→   196→  icon: string
+   197→   197→  message: string
+   198→   198→  timestamp: number
+   199→   199→}
+   200→   200→
+   201→   201→const DEFAULT_LAYER_VISIBILITY: LayerVisibility = {
+   202→   202→  water: true,
+   203→   203→  roads: true,
+   204→   204→  buildings: true,
+   205→   205→  parks: true,
+   206→   206→  labels: true,
+   207→   207→}
+   208→   208→
+   209→   209→interface MapState {
+   210→   210→  // Map view state
+   211→   211→  center: [number, number]
+   212→   212→  zoom: number
+   213→   213→  currentStyle: MapStyleOption
+   214→   214→  bearing: number
+   215→   215→  pitch: number
+   216→   216→
+   217→   217→  // UI state
+   218→   218→  sidebarOpen: boolean
+   219→   219→  sidebarTab: 'locations' | 'layers' | 'tools' | 'routes'
+   220→   220→  searchQuery: string
+   221→   221→
+   222→   222→  // Markers & locations
+   223→   223→  markers: MapMarker[]
+   224→   224→  savedLocations: SavedLocation[]
+   225→   225→  selectedMarker: string | null
+   226→   226→
+   227→   227→  // Geolocation
+   228→   228→  geolocation: Geolocation | null
+   229→   229→
+   230→   230→  // Layer visibility
+   231→   231→  layerVisibility: LayerVisibility
+   232→   232→
+   233→   233→  // Tools
+   234→   234→  toolMode: ToolMode
+   235→   235→  measurePoints: MeasurePoint[]
+   236→   236→  measureDistance: number | null
+   237→   237→
+   238→   238→  // Route drawing
+   239→   239→  routePoints: RoutePoint[]
+   240→   240→  currentRouteColor: string
+   241→   241→  routes: MapRoute[]
+   242→   242→  osrmDistance: number | null
+   243→   243→  osrmDuration: number | null
+   244→   244→
+   245→   245→  // Drawing / annotations
+   246→   246→  drawings: MapDrawing[]
+   247→   247→  currentDrawing: number[][] | null
+   248→   248→  drawColor: string
+   249→   249→  drawWidth: number
+   250→   250→  isDrawing: boolean
+   251→   251→
+   252→   252→  // Clustering
+   253→   253→  clusteringEnabled: boolean
+   254→   254→
+   255→   255→  // 3D Building extrusion
+   256→   256→  buildingExtrusion: boolean
+   257→   257→
+   258→   258→  // 3D Terrain
+   259→   259→  terrainEnabled: boolean
+   260→   260→
+   261→   261→  // 3D Terrain exaggeration
+   262→   262→  terrainExaggeration: number
+   263→   263→
+   264→   264→  // Weather overlay
+   265→   265→  weatherEnabled: boolean
+   266→   266→
+   267→   267→  // Traffic overlay
+   268→   268→  trafficEnabled: boolean
+   269→   269→
+   270→   270→  // Earthquakes overlay
+   271→   271→  earthquakesEnabled: boolean
+   272→   272→
+   273→   273→  // Sun position & day/night overlay
+   274→   274→  sunPositionEnabled: boolean
+   275→   275→
+   276→   276→  // Isochrone visualization
+   277→   277→  isochroneEnabled: boolean
+   278→   278→  isochroneMinutes: number
+   279→   279→  isochroneMode: 'walking' | 'cycling' | 'driving'
+   280→   280→
+   281→   281→  // Area measurement
+   282→   282→  areaPoints: MeasurePoint[]
+   283→   283→  areaResult: number | null
+   284→   284→
+   285→   285→  // POI Markers (temporary, for nearby search)
+   286→   286→  poiMarkers: POIMarker[]
+   287→   287→
+   288→   288→  // Heatmap visualization
+   289→   289→  heatmapEnabled: boolean
+   290→   290→
+   291→   291→  // Map comparison / swipe view
+   292→   292→  comparisonEnabled: boolean
+   293→   293→  comparisonStyle: MapStyleOption
+   294→   294→
+   295→   295→  // Bookmark folders
+   296→   296→  bookmarkFolders: BookmarkFolder[]
+   297→   297→
+   298→   298→  // Notifications
+   299→   299→  notifications: MapNotification[]
+   300→   300→
+   301→   301→  // Actions
+   302→   302→  setCenter: (center: [number, number]) => void
+   303→   303→  setZoom: (zoom: number) => void
+   304→   304→  setCurrentStyle: (style: MapStyleOption) => void
+   305→   305→  setBearing: (bearing: number) => void
+   306→   306→  setPitch: (pitch: number) => void
+   307→   307→  setSidebarOpen: (open: boolean) => void
+   308→   308→  setSidebarTab: (tab: 'locations' | 'layers' | 'tools' | 'routes') => void
+   309→   309→  setSearchQuery: (query: string) => void
+   310→   310→  addMarker: (marker: MapMarker) => void
+   311→   311→  removeMarker: (id: string) => void
+   312→   312→  setMarkers: (markers: MapMarker[]) => void
+   313→   313→  setSavedLocations: (locations: SavedLocation[]) => void
+   314→   314→  addSavedLocation: (location: SavedLocation) => void
+   315→   315→  removeSavedLocation: (id: string) => void
+   316→   316→  setSelectedMarker: (id: string | null) => void
+   317→   317→  setGeolocation: (geo: Geolocation | null) => void
+   318→   318→  setLayerVisibility: (layers: Partial<LayerVisibility>) => void
+   319→   319→  setToolMode: (mode: ToolMode) => void
+   320→   320→  addMeasurePoint: (point: MeasurePoint) => void
+   321→   321→  clearMeasurePoints: () => void
+   322→   322→  setMeasureDistance: (distance: number | null) => void
+   323→   323→  addAreaPoint: (point: MeasurePoint) => void
+   324→   324→  clearAreaPoints: () => void
+   325→   325→  setAreaResult: (area: number | null) => void
+   326→   326→  addRoutePoint: (point: RoutePoint) => void
+   327→   327→  removeRoutePoint: (index: number) => void
+   328→   328→  clearRoutePoints: () => void
+   329→   329→  setCurrentRouteColor: (color: string) => void
+   330→   330→  saveRoute: (name: string) => void
+   331→   331→  setOsmrData: (distance: number | null, duration: number | null) => void
+   332→   332→  deleteRoute: (id: string) => void
+   333→   333→  setRoutes: (routes: MapRoute[]) => void
+   334→   334→  setCurrentDrawing: (points: number[][] | null) => void
+   335→   335→  addDrawingPoint: (point: number[]) => void
+   336→   336→  finishDrawing: () => void
+   337→   337→  setDrawColor: (color: string) => void
+   338→   338→  setDrawWidth: (width: number) => void
+   339→   339→  deleteDrawing: (id: string) => void
+   340→   340→  setClusteringEnabled: (enabled: boolean) => void
+   341→   341→  setBuildingExtrusion: (enabled: boolean) => void
+   342→   342→  setTerrainEnabled: (enabled: boolean) => void
+   343→   343→  setTerrainExaggeration: (exaggeration: number) => void
+   344→   344→  setWeatherEnabled: (enabled: boolean) => void
+   345→   345→  setEarthquakesEnabled: (enabled: boolean) => void
+   346→   346→  setSunPositionEnabled: (enabled: boolean) => void
+   347→   347→  setTrafficEnabled: (enabled: boolean) => void
+   348→   348→  setIsochroneEnabled: (enabled: boolean) => void
+   349→   349→  setIsochroneMinutes: (minutes: number) => void
+   350→   350→  setIsochroneMode: (mode: 'walking' | 'cycling' | 'driving') => void
+   351→   351→  pushNotification: (notification: Omit<MapNotification, 'id' | 'timestamp'>) => void
+   352→   352→  dismissNotification: (id: string) => void
+   353→   353→  setPoiMarkers: (poiMarkers: POIMarker[]) => void
+   354→   354→  clearPoiMarkers: () => void
+   355→   355→  setHeatmapEnabled: (enabled: boolean) => void
+   356→   356→  setComparisonEnabled: (enabled: boolean) => void
+   357→   357→  setComparisonStyle: (style: MapStyleOption) => void
+   358→   358→  addBookmarkFolder: (folder: BookmarkFolder) => void
+   359→   359→  deleteBookmarkFolder: (id: string) => void
+   360→   360→  renameBookmarkFolder: (id: string, name: string) => void
+   361→   361→  updateBookmarkFolder: (id: string, updates: Partial<Omit<BookmarkFolder, 'id'>>) => void
+   362→   362→  addLocationToFolder: (folderId: string, locationId: string) => void
+   363→   363→  removeLocationFromFolder: (folderId: string, locationId: string) => void
+   364→   364→}
+   365→   365→
+   366→   366→export const useMapStore = create<MapState>()(
+   367→   367→  persist(
+   368→   368→    (set) => ({
+   369→   369→      center: [14.5058, 46.0569], // Ljubljana, Slovenia (user timezone)
+   370→   370→      zoom: 5,
+   371→   371→      currentStyle: MAP_STYLES[0],
+   372→   372→      bearing: 0,
+   373→   373→      pitch: 0,
+   374→   374→
+   375→   375→      sidebarOpen: true,
+   376→   376→      sidebarTab: 'locations',
+   377→   377→      searchQuery: '',
+   378→   378→
+   379→   379→      markers: [],
+   380→   380→      savedLocations: [],
+   381→   381→      selectedMarker: null,
+   382→   382→
+   383→   383→      geolocation: null,
+   384→   384→      layerVisibility: { ...DEFAULT_LAYER_VISIBILITY },
+   385→   385→
+   386→   386→      toolMode: 'navigate',
+   387→   387→      measurePoints: [],
+   388→   388→      measureDistance: null,
+   389→   389→      areaPoints: [],
+   390→   390→      areaResult: null,
+   391→   391→
+   392→   392→      routePoints: [],
+   393→   393→      currentRouteColor: '#3b82f6',
+   394→   394→      routes: [],
+   395→   395→      osrmDistance: null,
+   396→   396→      osrmDuration: null,
+   397→   397→
+   398→   398→      drawings: [],
+   399→   399→      currentDrawing: null,
+   400→   400→      drawColor: '#22c55e',
+   401→   401→      drawWidth: 3,
+   402→   402→      isDrawing: false,
+   403→   403→
+   404→   404→      clusteringEnabled: true,
+   405→   405→      buildingExtrusion: false,
+   406→   406→      terrainEnabled: false,
+   407→   407→      terrainExaggeration: 1.5,
+   408→   408→      weatherEnabled: false,
+   409→   409→      trafficEnabled: false,
+   410→   410→      earthquakesEnabled: false,
+   411→   411→      sunPositionEnabled: false,
+   412→   412→      isochroneEnabled: false,
+   413→   413→      isochroneMinutes: 15,
+   414→   414→      isochroneMode: 'walking',
+   415→   415→      poiMarkers: [],
+   416→   416→      heatmapEnabled: false,
+   417→   417→      notifications: [],
+   418→   418→      comparisonEnabled: false,
+   419→   419→      comparisonStyle: MAP_STYLES[1], // Default to Satellite for comparison
+   420→   420→      bookmarkFolders: [],
+   421→   421→
+   422→   422→      setCenter: (center) => set({ center }),
+   423→   423→      setZoom: (zoom) => set({ zoom }),
+   424→   424→      setCurrentStyle: (currentStyle) => set({ currentStyle }),
+   425→   425→      setBearing: (bearing) => set({ bearing }),
+   426→   426→      setPitch: (pitch) => set({ pitch }),
+   427→   427→      setSidebarOpen: (sidebarOpen) => set({ sidebarOpen }),
+   428→   428→      setSidebarTab: (sidebarTab) => set({ sidebarTab }),
+   429→   429→      setSearchQuery: (searchQuery) => set({ searchQuery }),
+   430→   430→
+   431→   431→      addMarker: (marker) => {
+   432→   432→        set((state) => ({ markers: [...state.markers, marker] }))
+   433→   433→        if (!undoManager.isExecuting) {
+   434→   434→          undoManager.pushAction({
+   435→   435→            type: 'marker',
+   436→   436→            description: 'Add Marker',
+   437→   437→            undo: () => {
+   438→   438→              useMapStore.setState((s) => ({ markers: s.markers.filter((m) => m.id !== marker.id) }))
+   439→   439→            },
+   440→   440→            redo: () => {
+   441→   441→              useMapStore.setState((s) => ({ markers: [...s.markers, marker] }))
+   442→   442→            },
+   443→   443→          })
+   444→   444→        }
+   445→   445→      },
+   446→   446→
+   447→   447→      removeMarker: (id) => {
+   448→   448→        // Capture the marker before removing it for undo
+   449→   449→        const marker = useMapStore.getState().markers.find((m) => m.id === id)
+   450→   450→        set((state) => ({ markers: state.markers.filter((m) => m.id !== id) }))
+   451→   451→        if (!undoManager.isExecuting && marker) {
+   452→   452→          undoManager.pushAction({
+   453→   453→            type: 'marker',
+   454→   454→            description: 'Remove Marker',
+   455→   455→            undo: () => {
+   456→   456→              useMapStore.setState((s) => ({ markers: [...s.markers, marker] }))
+   457→   457→            },
+   458→   458→            redo: () => {
+   459→   459→              useMapStore.setState((s) => ({ markers: s.markers.filter((m) => m.id !== id) }))
+   460→   460→            },
+   461→   461→          })
+   462→   462→        }
+   463→   463→      },
+   464→   464→
+   465→   465→      setMarkers: (markers) => set({ markers }),
+   466→   466→
+   467→   467→      setSavedLocations: (savedLocations) => set({ savedLocations }),
+   468→   468→
+   469→   469→      addSavedLocation: (location) => {
+   470→   470→        set((state) => ({ savedLocations: [location, ...state.savedLocations] }))
+   471→   471→        if (!undoManager.isExecuting) {
+   472→   472→          undoManager.pushAction({
+   473→   473→            type: 'location',
+   474→   474→            description: 'Add Location',
+   475→   475→            undo: () => {
+   476→   476→              useMapStore.setState((s) => ({ savedLocations: s.savedLocations.filter((l) => l.id !== location.id) }))
+   477→   477→            },
+   478→   478→            redo: () => {
+   479→   479→              useMapStore.setState((s) => ({ savedLocations: [location, ...s.savedLocations] }))
+   480→   480→            },
+   481→   481→          })
+   482→   482→        }
+   483→   483→      },
+   484→   484→
+   485→   485→      removeSavedLocation: (id) => {
+   486→   486→        // Capture the location and marker before removing for undo
+   487→   487→        const location = useMapStore.getState().savedLocations.find((l) => l.id === id)
+   488→   488→        const marker = useMapStore.getState().markers.find((m) => m.id === id)
+   489→   489→        set((state) => ({
+   490→   490→          savedLocations: state.savedLocations.filter((l) => l.id !== id),
+   491→   491→          markers: state.markers.filter((m) => m.id !== id),
+   492→   492→        }))
+   493→   493→        if (!undoManager.isExecuting && location) {
+   494→   494→          undoManager.pushAction({
+   495→   495→            type: 'location',
+   496→   496→            description: 'Remove Location',
+   497→   497→            undo: () => {
+   498→   498→              useMapStore.setState((s) => {
+   499→   499→                const newLocations = [location, ...s.savedLocations.filter((l) => l.id !== id)]
+   500→   500→                const newMarkers = marker ? [...s.markers.filter((m) => m.id !== id), marker] : s.markers
+   501→   501→                return { savedLocations: newLocations, markers: newMarkers }
+   502→   502→              })
+   503→   503→            },
+   504→   504→            redo: () => {
+   505→   505→              useMapStore.setState((s) => ({
+   506→   506→                savedLocations: s.savedLocations.filter((l) => l.id !== id),
+   507→   507→                markers: s.markers.filter((m) => m.id !== id),
+   508→   508→              }))
+   509→   509→            },
+   510→   510→          })
+   511→   511→        }
+   512→   512→      },
+   513→   513→
+   514→   514→      setSelectedMarker: (selectedMarker) => set({ selectedMarker }),
+   515→   515→
+   516→   516→      setGeolocation: (geolocation) => set({ geolocation }),
+   517→   517→      setLayerVisibility: (layers) =>
+   518→   518→        set((state) => ({
+   519→   519→          layerVisibility: { ...state.layerVisibility, ...layers },
+   520→   520→        })),
+   521→   521→
+   522→   522→      setToolMode: (toolMode) =>
+   523→   523→        set({ toolMode, measurePoints: [], measureDistance: null, areaPoints: [], areaResult: null }),
+   524→   524→
+   525→   525→      addMeasurePoint: (point) => {
+   526→   526→        set((state) => ({ measurePoints: [...state.measurePoints, point] }))
+   527→   527→        if (!undoManager.isExecuting) {
+   528→   528→          undoManager.pushAction({
+   529→   529→            type: 'measure',
+   530→   530→            description: 'Add Measure Point',
+   531→   531→            undo: () => {
+   532→   532→              useMapStore.setState((s) => ({
+   533→   533→                measurePoints: s.measurePoints.slice(0, -1),
+   534→   534→              }))
+   535→   535→            },
+   536→   536→            redo: () => {
+   537→   537→              useMapStore.setState((s) => ({
+   538→   538→                measurePoints: [...s.measurePoints, point],
+   539→   539→              }))
+   540→   540→            },
+   541→   541→          })
+   542→   542→        }
+   543→   543→      },
+   544→   544→
+   545→   545→      clearMeasurePoints: () => {
+   546→   546→        // Capture current state for undo
+   547→   547→        const { measurePoints, measureDistance } = useMapStore.getState()
+   548→   548→        set({ measurePoints: [], measureDistance: null })
+   549→   549→        if (!undoManager.isExecuting && measurePoints.length > 0) {
+   550→   550→          undoManager.pushAction({
+   551→   551→            type: 'measure',
+   552→   552→            description: 'Clear Measurements',
+   553→   553→            undo: () => {
+   554→   554→              useMapStore.setState({ measurePoints, measureDistance })
+   555→   555→            },
+   556→   556→            redo: () => {
+   557→   557→              useMapStore.setState({ measurePoints: [], measureDistance: null })
+   558→   558→            },
+   559→   559→          })
+   560→   560→        }
+   561→   561→      },
+   562→   562→
+   563→   563→      setMeasureDistance: (measureDistance) => set({ measureDistance }),
+   564→   564→
+   565→   565→      addAreaPoint: (point) => {
+   566→   566→        set((state) => ({ areaPoints: [...state.areaPoints, point] }))
+   567→   567→        if (!undoManager.isExecuting) {
+   568→   568→          undoManager.pushAction({
+   569→   569→            type: 'area',
+   570→   570→            description: 'Add Area Point',
+   571→   571→            undo: () => {
+   572→   572→              useMapStore.setState((s) => ({
+   573→   573→                areaPoints: s.areaPoints.slice(0, -1),
+   574→   574→              }))
+   575→   575→            },
+   576→   576→            redo: () => {
+   577→   577→              useMapStore.setState((s) => ({
+   578→   578→                areaPoints: [...s.areaPoints, point],
+   579→   579→              }))
+   580→   580→            },
+   581→   581→          })
+   582→   582→        }
+   583→   583→      },
+   584→   584→
+   585→   585→      clearAreaPoints: () => {
+   586→   586→        const { areaPoints, areaResult } = useMapStore.getState()
+   587→   587→        set({ areaPoints: [], areaResult: null })
+   588→   588→        if (!undoManager.isExecuting && areaPoints.length > 0) {
+   589→   589→          undoManager.pushAction({
+   590→   590→            type: 'area',
+   591→   591→            description: 'Clear Area Measurements',
+   592→   592→            undo: () => {
+   593→   593→              useMapStore.setState({ areaPoints, areaResult })
+   594→   594→            },
+   595→   595→            redo: () => {
+   596→   596→              useMapStore.setState({ areaPoints: [], areaResult: null })
+   597→   597→            },
+   598→   598→          })
+   599→   599→        }
+   600→   600→      },
+   601→   601→
+   602→   602→      setAreaResult: (areaResult) => set({ areaResult }),
+   603→   603→
+   604→   604→      addRoutePoint: (point) => {
+   605→   605→        set((state) => ({ routePoints: [...state.routePoints, point] }))
+   606→   606→        if (!undoManager.isExecuting) {
+   607→   607→          undoManager.pushAction({
+   608→   608→            type: 'route',
+   609→   609→            description: 'Add Route Point',
+   610→   610→            undo: () => {
+   611→   611→              useMapStore.setState((s) => ({
+   612→   612→                routePoints: s.routePoints.slice(0, -1),
+   613→   613→              }))
+   614→   614→            },
+   615→   615→            redo: () => {
+   616→   616→              useMapStore.setState((s) => ({
+   617→   617→                routePoints: [...s.routePoints, point],
+   618→   618→              }))
+   619→   619→            },
+   620→   620→          })
+   621→   621→        }
+   622→   622→      },
+   623→   623→
+   624→   624→      removeRoutePoint: (index) => {
+   625→   625→        const point = useMapStore.getState().routePoints[index]
+   626→   626→        set((state) => ({
+   627→   627→          routePoints: state.routePoints.filter((_, i) => i !== index),
+   628→   628→        }))
+   629→   629→        if (!undoManager.isExecuting && point) {
+   630→   630→          undoManager.pushAction({
+   631→   631→            type: 'route',
+   632→   632→            description: 'Remove Route Point',
+   633→   633→            undo: () => {
+   634→   634→              useMapStore.setState((s) => {
+   635→   635→                const newPoints = [...s.routePoints]
+   636→   636→                newPoints.splice(index, 0, point)
+   637→   637→                return { routePoints: newPoints }
+   638→   638→              })
+   639→   639→            },
+   640→   640→            redo: () => {
+   641→   641→              useMapStore.setState((s) => ({
+   642→   642→                routePoints: s.routePoints.filter((_, i) => i !== index),
+   643→   643→              }))
+   644→   644→            },
+   645→   645→          })
+   646→   646→        }
+   647→   647→      },
+   648→   648→
+   649→   649→      clearRoutePoints: () => {
+   650→   650→        const { routePoints } = useMapStore.getState()
+   651→   651→        set({ routePoints: [] })
+   652→   652→        if (!undoManager.isExecuting && routePoints.length > 0) {
+   653→   653→          undoManager.pushAction({
+   654→   654→            type: 'route',
+   655→   655→            description: 'Clear Route Points',
+   656→   656→            undo: () => {
+   657→   657→              useMapStore.setState({ routePoints })
+   658→   658→            },
+   659→   659→            redo: () => {
+   660→   660→              useMapStore.setState({ routePoints: [] })
+   661→   661→            },
+   662→   662→          })
+   663→   663→        }
+   664→   664→      },
+   665→   665→
+   666→   666→      setCurrentRouteColor: (currentRouteColor) => set({ currentRouteColor }),
+   667→   667→
+   668→   668→      saveRoute: (name) => {
+   669→   669→        const stateBefore = useMapStore.getState()
+   670→   670→        set((state) => {
+   671→   671→          if (state.routePoints.length < 2) return state
+   672→   672→          // Use OSRM distance if available, otherwise fall back to Haversine
+   673→   673→          let distance: number | null = state.osrmDistance
+   674→   674→          if (distance === null && state.routePoints.length > 1) {
+   675→   675→            let total = 0
+   676→   676→            for (let i = 1; i < state.routePoints.length; i++) {
+   677→   677→              const p1 = state.routePoints[i - 1]
+   678→   678→              const p2 = state.routePoints[i]
+   679→   679→              const R = 6371
+   680→   680→              const dLat = ((p2.latitude - p1.latitude) * Math.PI) / 180
+   681→   681→              const dLon = ((p2.longitude - p1.longitude) * Math.PI) / 180
+   682→   682→              const a =
+   683→   683→                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+   684→   684→                Math.cos((p1.latitude * Math.PI) / 180) *
+   685→   685→                  Math.cos((p2.latitude * Math.PI) / 180) *
+   686→   686→                  Math.sin(dLon / 2) *
+   687→   687→                  Math.sin(dLon / 2)
+   688→   688→              const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+   689→   689→              total += R * c
+   690→   690→            }
+   691→   691→            distance = total
+   692→   692→          }
+   693→   693→          const newRoute: MapRoute = {
+   694→   694→            id: `route-${Date.now()}`,
+   695→   695→            name,
+   696→   696→            color: state.currentRouteColor,
+   697→   697→            points: [...state.routePoints],
+   698→   698→            distance,
+   699→   699→            duration: state.osrmDuration,
+   700→   700→          }
+   701→   701→          return {
+   702→   702→            routes: [...state.routes, newRoute],
+   703→   703→            routePoints: [],
+   704→   704→            osrmDistance: null,
+   705→   705→            osrmDuration: null,
+   706→   706→          }
+   707→   707→        })
+   708→   708→        // Push undo action for the saved route
+   709→   709→        if (!undoManager.isExecuting && stateBefore.routePoints.length >= 2) {
+   710→   710→          const newRouteId = `route-${Date.now()}`
+   711→   711→          const routePointsBefore = [...stateBefore.routePoints]
+   712→   712→          const osrmDistanceBefore = stateBefore.osrmDistance
+   713→   713→          const osrmDurationBefore = stateBefore.osrmDuration
+   714→   714→          undoManager.pushAction({
+   715→   715→            type: 'route',
+   716→   716→            description: 'Save Route',
+   717→   717→            undo: () => {
+   718→   718→              useMapStore.setState((s) => ({
+   719→   719→                routes: s.routes.filter((r) => r.id !== newRouteId),
+   720→   720→                routePoints: routePointsBefore,
+   721→   721→                osrmDistance: osrmDistanceBefore,
+   722→   722→                osrmDuration: osrmDurationBefore,
+   723→   723→              }))
+   724→   724→            },
+   725→   725→            redo: () => {
+   726→   726→              useMapStore.setState((s) => {
+   727→   727→                const existingRoute = s.routes.find((r) => r.id === newRouteId)
+   728→   728→                if (existingRoute) return s // already exists
+   729→   729→                // Recalculate the route from the saved points
+   730→   730→                let distance: number | null = null
+   731→   731→                if (routePointsBefore.length > 1) {
+   732→   732→                  let total = 0
+   733→   733→                  for (let i = 1; i < routePointsBefore.length; i++) {
+   734→   734→                    const p1 = routePointsBefore[i - 1]
+   735→   735→                    const p2 = routePointsBefore[i]
+   736→   736→                    const R = 6371
+   737→   737→                    const dLat = ((p2.latitude - p1.latitude) * Math.PI) / 180
+   738→   738→                    const dLon = ((p2.longitude - p1.longitude) * Math.PI) / 180
+   739→   739→                    const a =
+   740→   740→                      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+   741→   741→                      Math.cos((p1.latitude * Math.PI) / 180) *
+   742→   742→                        Math.cos((p2.latitude * Math.PI) / 180) *
+   743→   743→                        Math.sin(dLon / 2) *
+   744→   744→                        Math.sin(dLon / 2)
+   745→   745→                    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+   746→   746→                    total += R * c
+   747→   747→                  }
+   748→   748→                  distance = total
+   749→   749→                }
+   750→   750→                const route: MapRoute = {
+   751→   751→                  id: newRouteId,
+   752→   752→                  name,
+   753→   753→                  color: s.currentRouteColor,
+   754→   754→                  points: routePointsBefore,
+   755→   755→                  distance,
+   756→   756→                  duration: osrmDurationBefore,
+   757→   757→                }
+   758→   758→                return {
+   759→   759→                  routes: [...s.routes, route],
+   760→   760→                  routePoints: [],
+   761→   761→                  osrmDistance: null,
+   762→   762→                  osrmDuration: null,
+   763→   763→                }
+   764→   764→              })
+   765→   765→            },
+   766→   766→          })
+   767→   767→        }
+   768→   768→      },
+   769→   769→
+   770→   770→      setOsmrData: (distance, duration) => set({ osrmDistance: distance, osrmDuration: duration }),
+   771→   771→
+   772→   772→      deleteRoute: (id) => {
+   773→   773→        const route = useMapStore.getState().routes.find((r) => r.id === id)
+   774→   774→        set((state) => ({
+   775→   775→          routes: state.routes.filter((r) => r.id !== id),
+   776→   776→        }))
+   777→   777→        if (!undoManager.isExecuting && route) {
+   778→   778→          undoManager.pushAction({
+   779→   779→            type: 'route',
+   780→   780→            description: 'Delete Route',
+   781→   781→            undo: () => {
+   782→   782→              useMapStore.setState((s) => ({
+   783→   783→                routes: [...s.routes, route],
+   784→   784→              }))
+   785→   785→            },
+   786→   786→            redo: () => {
+   787→   787→              useMapStore.setState((s) => ({
+   788→   788→                routes: s.routes.filter((r) => r.id !== id),
+   789→   789→              }))
+   790→   790→            },
+   791→   791→          })
+   792→   792→        }
+   793→   793→      },
+   794→   794→
+   795→   795→      setRoutes: (routes) => set({ routes }),
+   796→   796→      setCurrentDrawing: (currentDrawing) => set({ currentDrawing }),
+   797→   797→
+   798→   798→      addDrawingPoint: (point) => {
+   799→   799→        set((state) => ({
+   800→   800→          currentDrawing: state.currentDrawing
+   801→   801→            ? [...state.currentDrawing, point]
+   802→   802→            : [point],
+   803→   803→        }))
+   804→   804→        if (!undoManager.isExecuting) {
+   805→   805→          undoManager.pushAction({
+   806→   806→            type: 'drawing',
+   807→   807→            description: 'Add Drawing Point',
+   808→   808→            undo: () => {
+   809→   809→              useMapStore.setState((s) => ({
+   810→   810→                currentDrawing: s.currentDrawing ? s.currentDrawing.slice(0, -1) : null,
+   811→   811→              }))
+   812→   812→            },
+   813→   813→            redo: () => {
+   814→   814→              useMapStore.setState((s) => ({
+   815→   815→                currentDrawing: s.currentDrawing ? [...s.currentDrawing, point] : [point],
+   816→   816→              }))
+   817→   817→            },
+   818→   818→          })
+   819→   819→        }
+   820→   820→      },
+   821→   821→
+   822→   822→      finishDrawing: () => {
+   823→   823→        const stateBefore = useMapStore.getState()
+   824→   824→        const currentDrawingBefore = stateBefore.currentDrawing ? [...stateBefore.currentDrawing] : null
+   825→   825→        set((state) => {
+   826→   826→          if (!state.currentDrawing || state.currentDrawing.length < 2) {
+   827→   827→            return { currentDrawing: null, isDrawing: false }
+   828→   828→          }
+   829→   829→          const newDrawing: MapDrawing = {
+   830→   830→            id: `drawing-${Date.now()}`,
+   831→   831→            points: [...state.currentDrawing],
+   832→   832→            color: state.drawColor,
+   833→   833→            width: state.drawWidth,
+   834→   834→            name: `Drawing ${state.drawings.length + 1}`,
+   835→   835→          }
+   836→   836→          return {
+   837→   837→            drawings: [...state.drawings, newDrawing],
+   838→   838→            currentDrawing: null,
+   839→   839→            isDrawing: false,
+   840→   840→          }
+   841→   841→        })
+   842→   842→        // Push undo for finish drawing
+   843→   843→        if (!undoManager.isExecuting && currentDrawingBefore && currentDrawingBefore.length >= 2) {
+   844→   844→          const newDrawingId = `drawing-${Date.now()}`
+   845→   845→          undoManager.pushAction({
+   846→   846→            type: 'drawing',
+   847→   847→            description: 'Finish Drawing',
+   848→   848→            undo: () => {
+   849→   849→              useMapStore.setState((s) => ({
+   850→   850→                drawings: s.drawings.filter((d) => d.id !== newDrawingId),
+   851→   851→                currentDrawing: currentDrawingBefore,
+   852→   852→                isDrawing: true,
+   853→   853→              }))
+   854→   854→            },
+   855→   855→            redo: () => {
+   856→   856→              useMapStore.setState((s) => {
+   857→   857→                const drawing: MapDrawing = {
+   858→   858→                  id: newDrawingId,
+   859→   859→                  points: currentDrawingBefore,
+   860→   860→                  color: s.drawColor,
+   861→   861→                  width: s.drawWidth,
+   862→   862→                  name: `Drawing ${s.drawings.length + 1}`,
+   863→   863→                }
+   864→   864→                return {
+   865→   865→                  drawings: [...s.drawings, drawing],
+   866→   866→                  currentDrawing: null,
+   867→   867→                  isDrawing: false,
+   868→   868→                }
+   869→   869→              })
+   870→   870→            },
+   871→   871→          })
+   872→   872→        }
+   873→   873→      },
+   874→   874→
+   875→   875→      setDrawColor: (drawColor) => set({ drawColor }),
+   876→   876→      setDrawWidth: (drawWidth) => set({ drawWidth }),
+   877→   877→
+   878→   878→      deleteDrawing: (id) => {
+   879→   879→        const drawing = useMapStore.getState().drawings.find((d) => d.id === id)
+   880→   880→        set((state) => ({
+   881→   881→          drawings: state.drawings.filter((d) => d.id !== id),
+   882→   882→        }))
+   883→   883→        if (!undoManager.isExecuting && drawing) {
+   884→   884→          undoManager.pushAction({
+   885→   885→            type: 'drawing',
+   886→   886→            description: 'Delete Drawing',
+   887→   887→            undo: () => {
+   888→   888→              useMapStore.setState((s) => ({
+   889→   889→                drawings: [...s.drawings, drawing],
+   890→   890→              }))
+   891→   891→            },
+   892→   892→            redo: () => {
+   893→   893→              useMapStore.setState((s) => ({
+   894→   894→                drawings: s.drawings.filter((d) => d.id !== id),
+   895→   895→              }))
+   896→   896→            },
+   897→   897→          })
+   898→   898→        }
+   899→   899→      },
+   900→   900→
+   901→   901→      setClusteringEnabled: (clusteringEnabled) => set({ clusteringEnabled }),
+   902→   902→      setBuildingExtrusion: (buildingExtrusion) => set({ buildingExtrusion }),
+   903→   903→      setTerrainEnabled: (terrainEnabled) => set({ terrainEnabled }),
+   904→   904→      setTerrainExaggeration: (terrainExaggeration) => set({ terrainExaggeration }),
+   905→   905→      setWeatherEnabled: (weatherEnabled) => set({ weatherEnabled }),
+   906→   906→      setEarthquakesEnabled: (earthquakesEnabled) => set({ earthquakesEnabled }),
+   907→   907→      setSunPositionEnabled: (sunPositionEnabled) => set({ sunPositionEnabled }),
+   908→   908→      setTrafficEnabled: (trafficEnabled) => set({ trafficEnabled }),
+   909→   909→      setIsochroneEnabled: (isochroneEnabled) => set({ isochroneEnabled }),
+   910→   910→      setIsochroneMinutes: (isochroneMinutes) => set({ isochroneMinutes }),
+   911→   911→      setIsochroneMode: (isochroneMode) => set({ isochroneMode }),
+   912→   912→
+   913→   913→      pushNotification: (notification) =>
+   914→   914→        set((state) => ({
+   915→   915→          notifications: [
+   916→   916→            { ...notification, id: `notif-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`, timestamp: Date.now() },
+   917→   917→            ...state.notifications,
+   918→   918→          ].slice(0, 10),
+   919→   919→        })),
+   920→   920→      dismissNotification: (id) =>
+   921→   921→        set((state) => ({
+   922→   922→          notifications: state.notifications.filter((n) => n.id !== id),
+   923→   923→        })),
+   924→   924→      setPoiMarkers: (poiMarkers) => set({ poiMarkers }),
+   925→   925→      clearPoiMarkers: () => set({ poiMarkers: [] }),
+   926→   926→      setHeatmapEnabled: (heatmapEnabled) => set({ heatmapEnabled }),
+   927→   927→      setComparisonEnabled: (comparisonEnabled) => set({ comparisonEnabled }),
+   928→   928→      setComparisonStyle: (comparisonStyle) => set({ comparisonStyle }),
+   929→   929→
+   930→   930→      addBookmarkFolder: (folder) => set((state) => ({
+   931→   931→        bookmarkFolders: [...state.bookmarkFolders, folder],
+   932→   932→      })),
+   933→   933→
+   934→   934→      deleteBookmarkFolder: (id) => set((state) => ({
+   935→   935→        bookmarkFolders: state.bookmarkFolders.filter((f) => f.id !== id),
+   936→   936→      })),
+   937→   937→
+   938→   938→      renameBookmarkFolder: (id, name) => set((state) => ({
+   939→   939→        bookmarkFolders: state.bookmarkFolders.map((f) =>
+   940→   940→          f.id === id ? { ...f, name } : f
+   941→   941→        ),
+   942→   942→      })),
+   943→   943→
+   944→   944→      updateBookmarkFolder: (id, updates) => set((state) => ({
+   945→   945→        bookmarkFolders: state.bookmarkFolders.map((f) =>
+   946→   946→          f.id === id ? { ...f, ...updates } : f
+   947→   947→        ),
+   948→   948→      })),
+   949→   949→
+   950→   950→      addLocationToFolder: (folderId, locationId) => set((state) => ({
+   951→   951→        bookmarkFolders: state.bookmarkFolders.map((f) =>
+   952→   952→          f.id === folderId && !f.locationIds.includes(locationId)
+   953→   953→            ? { ...f, locationIds: [...f.locationIds, locationId] }
+   954→   954→            : f
+   955→   955→        ),
+   956→   956→      })),
+   957→   957→
+   958→   958→      removeLocationFromFolder: (folderId, locationId) => set((state) => ({
+   959→   959→        bookmarkFolders: state.bookmarkFolders.map((f) =>
+   960→   960→          f.id === folderId
+   961→   961→            ? { ...f, locationIds: f.locationIds.filter((id) => id !== locationId) }
+   962→   962→            : f
+   963→   963→        ),
+   964→   964→      })),
+   965→   965→    }),
+   966→   966→    {
+   967→   967→      name: 'maplibre-explorer-prefs',
+   968→   968→      partialize: (state) => ({
+   969→   969→        sidebarOpen: state.sidebarOpen,
+   970→   970→        clusteringEnabled: state.clusteringEnabled,
+   971→   971→        weatherEnabled: state.weatherEnabled,
+   972→   972→        trafficEnabled: state.trafficEnabled,
+   973→   973→        earthquakesEnabled: state.earthquakesEnabled,
+   974→   974→        sunPositionEnabled: state.sunPositionEnabled,
+   975→   975→        isochroneEnabled: state.isochroneEnabled,
+   976→   976→        isochroneMinutes: state.isochroneMinutes,
+   977→   977→        isochroneMode: state.isochroneMode,
+   978→   978→        terrainEnabled: state.terrainEnabled,
+   979→   979→        buildingExtrusion: state.buildingExtrusion,
+   980→   980→        terrainExaggeration: state.terrainExaggeration,
+   981→   981→        layerVisibility: state.layerVisibility,
+   982→   982→        drawColor: state.drawColor,
+   983→   983→        drawWidth: state.drawWidth,
+   984→   984→        heatmapEnabled: state.heatmapEnabled,
+   985→   985→        comparisonEnabled: state.comparisonEnabled,
+   986→   986→        comparisonStyle: state.comparisonStyle,
+   987→   987→        bookmarkFolders: state.bookmarkFolders,
+   988→   988→      }),
+   989→   989→    }
+   990→   990→  )
+   991→   991→)
+   992→   992→

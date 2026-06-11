@@ -2159,6 +2159,29 @@ function RoutesTab({ onGPXImportClick }: { onGPXImportClick: () => void }) {
               Current Route
             </h4>
 
+            {/* Route profile selector */}
+            <div className="flex gap-1.5">
+              {[
+                { id: 'driving' as const, label: 'Drive', icon: <Car className="h-3 w-3" /> },
+                { id: 'cycling' as const, label: 'Bike', icon: <Bike className="h-3 w-3" /> },
+                { id: 'walking' as const, label: 'Walk', icon: <Footprints className="h-3 w-3" /> },
+              ].map((mode) => (
+                <button
+                  key={mode.id}
+                  onClick={() => useMapStore.getState().setRouteProfile(mode.id)}
+                  className={cn(
+                    'flex-1 flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-lg text-xs font-medium transition-all border',
+                    useMapStore.getState().routeProfile === mode.id
+                      ? 'bg-primary/10 text-primary border-primary/30'
+                      : 'border-border/50 text-muted-foreground hover:bg-accent hover:text-foreground'
+                  )}
+                >
+                  {mode.icon}
+                  {mode.label}
+                </button>
+              ))}
+            </div>
+
             {/* Color picker */}
             <div className="flex items-center gap-2">
               <span className="text-xs text-muted-foreground">Color:</span>
@@ -2220,6 +2243,39 @@ function RoutesTab({ onGPXImportClick }: { onGPXImportClick: () => void }) {
                 ) : (
                   <>Straight: {formatDistanceLocal(currentDistance)}</>
                 )}
+              </div>
+            )}
+
+            {/* Turn-by-turn directions */}
+            {useMapStore.getState().routeSteps.length > 0 && (
+              <div className="space-y-1">
+                <h5 className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
+                  Turn-by-turn
+                </h5>
+                <div className="max-h-40 overflow-y-auto space-y-0.5">
+                  {useMapStore.getState().routeSteps.map((step, idx) => {
+                    const icon = getManeuverIcon(step.maneuver.type, step.maneuver.modifier)
+                    return (
+                      <button
+                        key={idx}
+                        className="w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs hover:bg-accent/50 transition-colors text-left"
+                        onClick={() => {
+                          useMapStore.getState().setHighlightedStepIndex(idx)
+                          const flyTo = (window as unknown as Record<string, (lng: number, lat: number, z?: number) => void>).__mapFlyTo
+                          if (flyTo) flyTo(step.maneuver.location[0], step.maneuver.location[1], 16)
+                        }}
+                      >
+                        <span className="text-sm shrink-0">{icon}</span>
+                        <span className="flex-1 truncate text-muted-foreground">
+                          {step.name || getManeuverLabel(step.maneuver.type, step.maneuver.modifier)}
+                        </span>
+                        <span className="text-[10px] text-muted-foreground/70 font-mono tabular-nums shrink-0">
+                          {step.distance < 1000 ? `${Math.round(step.distance)}m` : `${(step.distance / 1000).toFixed(1)}km`}
+                        </span>
+                      </button>
+                    )
+                  })}
+                </div>
               </div>
             )}
 
@@ -2489,4 +2545,52 @@ function calculatePerimeter(points: { latitude: number; longitude: number }[]): 
     total += haversineDistance(points[i].latitude, points[i].longitude, points[j].latitude, points[j].longitude)
   }
   return total
+}
+
+// Get maneuver icon for turn-by-turn directions
+function getManeuverIcon(type: string, modifier?: string): string {
+  if (type === 'depart') return '🏁'
+  if (type === 'arrive') return '📍'
+  if (type === 'turn') {
+    if (modifier?.includes('left')) return '↰'
+    if (modifier?.includes('right')) return '↱'
+    return '↪'
+  }
+  if (type === 'new name' || type === 'continue') return '⬆️'
+  if (type === 'merge') return '↗️'
+  if (type === 'fork') {
+    if (modifier?.includes('left')) return '↰'
+    if (modifier?.includes('right')) return '↱'
+    return '↪'
+  }
+  if (type === 'roundabout' || type === 'rotary') return '🔄'
+  if (type === 'end of road') {
+    if (modifier?.includes('left')) return '↰'
+    if (modifier?.includes('right')) return '↱'
+    return '↪'
+  }
+  return '→'
+}
+
+// Get maneuver label for turn-by-turn directions
+function getManeuverLabel(type: string, modifier?: string): string {
+  if (type === 'depart') return 'Start'
+  if (type === 'arrive') return 'Arrive at destination'
+  if (type === 'turn') {
+    if (modifier?.includes('sharp') && modifier?.includes('left')) return 'Sharp left turn'
+    if (modifier?.includes('sharp') && modifier?.includes('right')) return 'Sharp right turn'
+    if (modifier?.includes('slight') && modifier?.includes('left')) return 'Slight left turn'
+    if (modifier?.includes('slight') && modifier?.includes('right')) return 'Slight right turn'
+    if (modifier?.includes('left')) return 'Turn left'
+    if (modifier?.includes('right')) return 'Turn right'
+    if (modifier?.includes('uturn')) return 'U-turn'
+    return 'Turn'
+  }
+  if (type === 'new name') return 'Continue'
+  if (type === 'continue') return 'Continue straight'
+  if (type === 'merge') return 'Merge'
+  if (type === 'fork') return 'Take the fork'
+  if (type === 'roundabout' || type === 'rotary') return 'Enter roundabout'
+  if (type === 'end of road') return 'End of road'
+  return type.charAt(0).toUpperCase() + type.slice(1).replace(/_/g, ' ')
 }
