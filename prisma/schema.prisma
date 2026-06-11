@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Location {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  latitude    Float
+  longitude   Float
+  category    String   @default("general")
+  color       String   @default("#ef4444")
+  icon        String   @default("map-pin")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model MapStyle {
+  id          String   @id @default(cuid())
+  name        String
+  url         String
+  thumbnail   String?
+  isDefault   Boolean  @default(false)
+  category    String   @default("custom")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Route {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  color       String   @default("#3b82f6")
+  distance    Float?
+  duration    Float?
+  waypoints   String   // JSON string of [lng, lat] pairs
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
