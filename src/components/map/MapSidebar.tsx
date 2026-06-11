@@ -416,26 +416,40 @@ function SidebarContent({ onCloseMobile }: { onCloseMobile?: () => void }) {
     return matchesCategory && matchesSearch
   })
 
+  const routesList = useMapStore((s) => s.routes)
+
   const tabs = [
     {
       id: 'locations' as const,
       label: 'Places',
       icon: <MapPin className="h-4 w-4" />,
+      count: savedLocations.length,
+      gradientClass: 'sidebar-section-gradient-locations',
+      borderClass: 'sidebar-border-locations',
     },
     {
       id: 'layers' as const,
       label: 'Layers',
       icon: <Layers className="h-4 w-4" />,
+      count: null,
+      gradientClass: 'sidebar-section-gradient-layers',
+      borderClass: 'sidebar-border-layers',
     },
     {
       id: 'tools' as const,
       label: 'Tools',
       icon: <Wrench className="h-4 w-4" />,
+      count: null,
+      gradientClass: 'sidebar-section-gradient-tools',
+      borderClass: 'sidebar-border-tools',
     },
     {
       id: 'routes' as const,
       label: 'Routes',
       icon: <Route className="h-4 w-4" />,
+      count: routesList.length,
+      gradientClass: 'sidebar-section-gradient-routes',
+      borderClass: 'sidebar-border-routes',
     },
   ]
 
@@ -464,7 +478,7 @@ function SidebarContent({ onCloseMobile }: { onCloseMobile?: () => void }) {
         </div>
       </div>
 
-      {/* Tab navigation with pill-style indicator */}
+      {/* Tab navigation with pill-style indicator and count badges */}
       <div className="flex border-b bg-muted/30 shrink-0 px-2 py-1.5">
         {tabs.map((tab) => (
           <button
@@ -478,10 +492,20 @@ function SidebarContent({ onCloseMobile }: { onCloseMobile?: () => void }) {
             )}
           >
             <span className={cn(
-              'transition-transform duration-200',
+              'transition-transform duration-200 relative',
               sidebarTab === tab.id && 'scale-110'
             )}>
               {tab.icon}
+              {tab.count !== null && tab.count > 0 && (
+                <span className={cn(
+                  'sidebar-count-badge absolute -top-1.5 -right-3',
+                  sidebarTab === tab.id
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-muted-foreground/20 text-muted-foreground'
+                )}>
+                  {tab.count}
+                </span>
+              )}
             </span>
             {tab.label}
           </button>
@@ -500,6 +524,7 @@ function SidebarContent({ onCloseMobile }: { onCloseMobile?: () => void }) {
             className="h-full"
           >
             {sidebarTab === 'locations' && (
+              <div className="h-full sidebar-section-gradient-locations">
               <LocationsTab
                 locations={filteredLocations}
                 searchFilter={searchFilter}
@@ -516,9 +541,15 @@ function SidebarContent({ onCloseMobile }: { onCloseMobile?: () => void }) {
                   setDetailOpen(true)
                 }}
               />
+              </div>
             )}
-            {sidebarTab === 'layers' && <LayersTab />}
+            {sidebarTab === 'layers' && (
+              <div className="h-full sidebar-section-gradient-layers">
+              <LayersTab />
+              </div>
+            )}
             {sidebarTab === 'tools' && (
+              <div className="h-full sidebar-section-gradient-tools">
               <ToolsTab
                 toolMode={toolMode}
                 setToolMode={setToolMode}
@@ -531,11 +562,14 @@ function SidebarContent({ onCloseMobile }: { onCloseMobile?: () => void }) {
                 areaResult={areaResult}
                 clearAreaPoints={clearAreaPoints}
               />
+              </div>
             )}
             {sidebarTab === 'routes' && (
+              <div className="h-full sidebar-section-gradient-routes">
               <RoutesTab
                 onGPXImportClick={() => gpxRouteInputRef.current?.click()}
               />
+              </div>
             )}
           </motion.div>
         </AnimatePresence>
@@ -747,32 +781,42 @@ function LocationsTab({
         <ScrollArea className="h-full">
           <div className="p-2 space-y-1">
             {locations.length === 0 ? (
-              <div className="text-center py-12 text-muted-foreground">
-                <div className="w-16 h-16 mx-auto mb-3 rounded-2xl bg-gradient-to-br from-muted/30 to-muted/60 flex items-center justify-center">
+              <div className="empty-state-container">
+                <div className="empty-state-icon-wrapper">
                   <MapPinned className="h-8 w-8 opacity-40" />
                 </div>
                 <p className="text-sm font-medium">No saved locations yet</p>
-                <p className="text-xs mt-1 max-w-[200px] mx-auto">
+                <p className="text-xs mt-1 max-w-[200px] mx-auto text-muted-foreground">
                   Click the &quot;+&quot; button on the map or use the Drop Pin
                   tool to save places
                 </p>
-                <div className="mt-4 flex flex-col items-center gap-1.5">
-                  <span className="text-[10px] text-muted-foreground/60">or explore nearby places below</span>
+                <div className="mt-4 flex flex-col items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-8 text-xs gap-1.5 rounded-xl"
+                    onClick={() => useMapStore.getState().setToolMode('mark')}
+                  >
+                    <MapPin className="h-3.5 w-3.5" />
+                    Start Dropping Pins
+                  </Button>
+                  <span className="text-[10px] text-muted-foreground/50">or explore nearby places below</span>
                 </div>
               </div>
           ) : (
-            locations.map((loc) => {
+            locations.map((loc, locIndex) => {
               const cat = categories.find((c) => c.id === loc.category)
               const isSelected = selectedMarker === loc.id
               return (
                 <div
                   key={loc.id}
                   className={cn(
-                    'group flex items-start gap-3 p-2.5 rounded-xl border transition-all duration-200 cursor-pointer',
+                    'group flex items-start gap-3 p-2.5 rounded-xl border transition-all duration-200 cursor-pointer sidebar-item-slide-in',
                     isSelected
                       ? 'bg-primary/5 border-primary/20 shadow-sm ring-1 ring-primary/10'
                       : 'hover:bg-accent/50 border-transparent hover:border-border hover:shadow-sm hover:translate-x-0.5'
                   )}
+                  style={{ animationDelay: `${locIndex * 40}ms` }}
                   onClick={() => {
                     onSelectMarker(isSelected ? null : loc.id)
                     onFlyTo(loc.longitude, loc.latitude)
@@ -794,7 +838,7 @@ function LocationsTab({
                         className="w-2 h-2 rounded-full shrink-0"
                         style={{ backgroundColor: loc.color }}
                       />
-                      <p className="text-sm font-medium truncate">{loc.name}</p>
+                      <p className="text-sm font-medium truncate location-name-truncate" title={loc.name}>{loc.name}</p>
                     </div>
                     {loc.description && (
                       <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">
@@ -849,7 +893,7 @@ function LocationsTab({
 }
 
 function LayersTab() {
-  const { layerVisibility, setLayerVisibility, clusteringEnabled, setClusteringEnabled, buildingExtrusion, setBuildingExtrusion, terrainExaggeration, setTerrainExaggeration, weatherEnabled, setWeatherEnabled, trafficEnabled, setTrafficEnabled, earthquakesEnabled, setEarthquakesEnabled, heatmapEnabled, setHeatmapEnabled } = useMapStore()
+  const { layerVisibility, setLayerVisibility, clusteringEnabled, setClusteringEnabled, buildingExtrusion, setBuildingExtrusion, terrainExaggeration, setTerrainExaggeration, weatherEnabled, setWeatherEnabled, trafficEnabled, setTrafficEnabled, earthquakesEnabled, setEarthquakesEnabled, heatmapEnabled, setHeatmapEnabled, sunPositionEnabled, setSunPositionEnabled } = useMapStore()
 
   const layerConfig = [
     { id: 'water' as const, name: 'Water Bodies', icon: '🌊', color: '#06b6d4' },
@@ -1104,6 +1148,32 @@ function LayersTab() {
                 aria-label="Toggle heatmap overlay"
               />
             </div>
+
+            {/* Sun Position & Day/Night overlay */}
+            <div
+              className={cn(
+                'flex items-center gap-3 px-3 py-2 rounded-xl border transition-all duration-200',
+                sunPositionEnabled
+                  ? 'bg-background border-border/50 shadow-sm'
+                  : 'border-dashed text-muted-foreground hover:border-border'
+              )}
+            >
+              <span className="text-base">☀️</span>
+              <div className="flex-1">
+                <p className="text-sm">Sun Position & Day/Night</p>
+                <p className="text-[10px] text-muted-foreground/70">
+                  Terminator line & solar position
+                </p>
+              </div>
+              <Switch
+                checked={sunPositionEnabled}
+                onCheckedChange={(checked) => {
+                  setSunPositionEnabled(checked)
+                  useMapStore.getState().pushNotification({ type: 'general', icon: 'sun', message: checked ? 'Sun position overlay enabled' : 'Sun position overlay disabled' })
+                }}
+                aria-label="Toggle sun position overlay"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -1155,7 +1225,7 @@ function ToolsTab({
     <ScrollArea className="h-full">
       <div className="p-3 space-y-4">
         {/* Active Tool */}
-        <div>
+        <div className="sidebar-border-tools pl-3">
           <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 flex items-center gap-2">
             <Wrench className="h-3.5 w-3.5" />
             Active Tool
@@ -1205,7 +1275,7 @@ function ToolsTab({
         {toolMode === 'draw' && (
           <>
             <Separator />
-            <div>
+            <div className="sidebar-border-draw pl-3">
               <div className="flex items-center justify-between mb-2">
                 <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wider flex items-center gap-2">
                   <Pencil className="h-3.5 w-3.5" />
@@ -1336,7 +1406,7 @@ function ToolsTab({
         {toolMode === 'measure' && (
           <>
             <Separator />
-            <div>
+            <div className="sidebar-border-measure pl-3">
               <div className="flex items-center justify-between mb-2">
                 <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wider flex items-center gap-2">
                   <Ruler className="h-3.5 w-3.5" />
@@ -1355,11 +1425,12 @@ function ToolsTab({
                 )}
               </div>
               {measurePoints.length === 0 ? (
-                <div className="text-center py-6 text-muted-foreground">
-                  <div className="w-12 h-12 mx-auto mb-2 rounded-xl bg-muted/50 flex items-center justify-center">
+                <div className="empty-state-container py-6">
+                  <div className="empty-state-icon-wrapper" style={{ width: 48, height: 48, borderRadius: '0.75rem' }}>
                     <Ruler className="h-6 w-6 opacity-40" />
                   </div>
-                  <p className="text-xs">
+                  <p className="text-xs font-medium mt-2">No measurements yet</p>
+                  <p className="text-[10px] mt-1 text-muted-foreground">
                     Click on the map to add measurement points
                   </p>
                 </div>
@@ -1482,7 +1553,7 @@ function ToolsTab({
         {toolMode === 'area' && (
           <>
             <Separator />
-            <div>
+            <div className="sidebar-border-area pl-3">
               <div className="flex items-center justify-between mb-2">
                 <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wider flex items-center gap-2">
                   <Pentagon className="h-3.5 w-3.5" />
@@ -1501,14 +1572,15 @@ function ToolsTab({
                 )}
               </div>
               {areaPoints.length === 0 ? (
-                <div className="text-center py-6 text-muted-foreground">
-                  <div className="w-12 h-12 mx-auto mb-2 rounded-xl bg-violet-500/10 flex items-center justify-center">
+                <div className="empty-state-container py-6">
+                  <div className="empty-state-icon-wrapper" style={{ width: 48, height: 48, borderRadius: '0.75rem', background: 'linear-gradient(135deg, oklch(0.6 0.2 300 / 8%), oklch(0.5 0.22 280 / 4%))', borderColor: 'oklch(0.6 0.2 300 / 10%)' }}>
                     <Pentagon className="h-6 w-6 text-violet-500 opacity-60" />
                   </div>
-                  <p className="text-xs">
+                  <p className="text-xs font-medium mt-2">No area measurements</p>
+                  <p className="text-[10px] mt-1 text-muted-foreground">
                     Click on the map to place polygon vertices
                   </p>
-                  <p className="text-[10px] text-muted-foreground/60 mt-1">
+                  <p className="text-[10px] text-muted-foreground/60 mt-0.5">
                     3+ points required to calculate area
                   </p>
                 </div>
@@ -2223,14 +2295,23 @@ function RoutesTab({ onGPXImportClick }: { onGPXImportClick: () => void }) {
 
         {/* Empty state */}
         {routes.length === 0 && routePoints.length === 0 && toolMode !== 'directions' && (
-          <div className="text-center py-8 text-muted-foreground">
-            <div className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-gradient-to-br from-muted/30 to-muted/60 flex items-center justify-center">
+          <div className="empty-state-container">
+            <div className="empty-state-icon-wrapper" style={{ background: 'linear-gradient(135deg, oklch(0.6 0.15 200 / 8%), oklch(0.55 0.12 180 / 4%))', borderColor: 'oklch(0.6 0.15 200 / 10%)' }}>
               <Route className="h-7 w-7 opacity-40" />
             </div>
             <p className="text-sm font-medium">No saved routes</p>
-            <p className="text-xs mt-1 max-w-[200px] mx-auto">
+            <p className="text-xs mt-1 max-w-[200px] mx-auto text-muted-foreground">
               Use the Directions tool to draw a route on the map, then save it
             </p>
+            <Button
+              variant="outline"
+              size="sm"
+              className="mt-3 h-8 text-xs gap-1.5 rounded-xl"
+              onClick={() => setToolMode('directions')}
+            >
+              <Navigation className="h-3.5 w-3.5" />
+              Start Drawing Route
+            </Button>
           </div>
         )}
       </div>

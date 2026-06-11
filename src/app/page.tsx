@@ -23,6 +23,10 @@ import { QuickJumpPanel } from '@/components/map/QuickJumpPanel'
 import { UndoRedoBar } from '@/components/map/UndoRedoBar'
 import { MapComparison } from '@/components/map/MapComparison'
 import { CoordinateInputDialog } from '@/components/map/CoordinateInputDialog'
+import { MapExportDialog } from '@/components/map/MapExportDialog'
+import { BookmarkManager } from '@/components/map/BookmarkManager'
+import { SunPositionOverlay } from '@/components/map/SunPositionOverlay'
+import { SunInfoPanel } from '@/components/map/SunInfoPanel'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useMapStore, type ToolMode, MAP_STYLES } from '@/lib/map-store'
@@ -49,11 +53,13 @@ import {
 } from 'lucide-react'
 
 export default function Home() {
-  const { toolMode, sidebarOpen, center, zoom, currentStyle, weatherEnabled, comparisonEnabled, setSidebarOpen, setToolMode, setCenter, setZoom, setCurrentStyle, setComparisonEnabled } = useMapStore()
+  const { toolMode, sidebarOpen, center, zoom, currentStyle, weatherEnabled, comparisonEnabled, sunPositionEnabled, setSidebarOpen, setToolMode, setCenter, setZoom, setCurrentStyle, setComparisonEnabled } = useMapStore()
   const pushNotification = useMapStore((s) => s.pushNotification)
   const [addDialogOpen, setAddDialogOpen] = useState(false)
   const [shortcutsOpen, setShortcutsOpen] = useState(false)
   const [coordDialogOpen, setCoordDialogOpen] = useState(false)
+  const [exportDialogOpen, setExportDialogOpen] = useState(false)
+  const [bookmarkManagerOpen, setBookmarkManagerOpen] = useState(false)
   const [showWelcome, setShowWelcome] = useState(true)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [mapInitialized, setMapInitialized] = useState(false)
@@ -111,18 +117,9 @@ export default function Home() {
     return () => clearTimeout(timer)
   }, [center, zoom, currentStyle])
 
-  // Handle map export/screenshot
-  const handleExportMap = useCallback(async () => {
-    const screenshot = await (window as unknown as Record<string, () => Promise<string | null>>).__mapScreenshot?.()
-    if (screenshot) {
-      const a = document.createElement('a')
-      a.href = screenshot
-      a.download = `maplibre-export-${Date.now()}.png`
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
-      toast.success('Map exported as image')
-    }
+  // Handle map export - now opens the export dialog
+  const handleExportMap = useCallback(() => {
+    setExportDialogOpen(true)
   }, [])
 
   // Handle share URL
@@ -408,6 +405,9 @@ export default function Home() {
       {/* Map */}
       <MapView />
 
+      {/* Sun Position Overlay - renders terminator and subsolar point on the map */}
+      <SunPositionOverlay />
+
       {/* Map Comparison / Swipe View */}
       <MapComparison />
 
@@ -572,7 +572,7 @@ export default function Home() {
 
       {/* Quick Jump Panel - left side below toolbar (desktop only) */}
       <div className="hidden md:block absolute z-10 transition-all duration-300" style={{ left: sidebarOpen ? '332px' : '16px', top: '140px' }}>
-        <QuickJumpPanel />
+        <QuickJumpPanel onOpenBookmarkManager={() => setBookmarkManagerOpen(true)} />
       </div>
 
       {/* Current tool indicator */}
@@ -615,8 +615,8 @@ export default function Home() {
       </div>
 
       {/* Mobile bottom toolbar */}
-      <div className="md:hidden absolute bottom-10 left-2 right-2 sm:left-3 sm:right-3 z-10">
-        <div className="flex items-center justify-center gap-1 sm:gap-2 bg-background/90 backdrop-blur-md border border-border/50 rounded-2xl shadow-lg p-1.5 sm:p-2">
+      <div className="md:hidden absolute bottom-10 left-2 right-2 sm:left-3 sm:right-3 z-10 safe-area-bottom">
+        <div className="flex items-center justify-center gap-1 sm:gap-2 bg-background/90 backdrop-blur-md border border-border/50 rounded-2xl shadow-lg p-1.5 sm:p-2 mobile-toolbar-container">
           {([
             { mode: 'navigate' as ToolMode, icon: <Navigation className="h-4 w-4" />, label: 'Navigate', activeClass: 'bg-emerald-500 text-white' },
             { mode: 'mark' as ToolMode, icon: <MapPin className="h-4 w-4" />, label: 'Pin', activeClass: 'bg-red-500 text-white' },
@@ -628,7 +628,7 @@ export default function Home() {
             <button
               key={tool.mode}
               onClick={() => setToolMode(tool.mode)}
-              className={`flex flex-col items-center gap-0.5 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl text-xs transition-all min-w-[44px] min-h-[44px] justify-center ${
+              className={`flex flex-col items-center gap-0.5 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl text-xs transition-all min-w-[44px] min-h-[44px] justify-center touch-feedback ${
                 toolMode === tool.mode ? tool.activeClass + ' shadow-md' : 'text-muted-foreground hover:text-foreground hover:bg-accent'
               }`}
               aria-label={`${tool.label} tool`}
@@ -640,7 +640,7 @@ export default function Home() {
           <div className="w-px h-6 bg-border mx-0.5 sm:mx-1" />
           <button
             onClick={handleLocateMe}
-            className="flex flex-col items-center gap-0.5 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl text-xs text-muted-foreground hover:text-foreground hover:bg-accent transition-all min-w-[44px] min-h-[44px] justify-center"
+            className="flex flex-col items-center gap-0.5 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl text-xs text-muted-foreground hover:text-foreground hover:bg-accent transition-all min-w-[44px] min-h-[44px] justify-center touch-feedback"
             aria-label="My location"
           >
             <LocateFixed className="h-4 w-4" />
@@ -669,6 +669,23 @@ export default function Home() {
         }}
       >
         <ElevationProfile />
+      </div>
+
+      {/* Sun Info Panel - right side above map stats (desktop only) */}
+      <div
+        className="hidden md:block absolute z-10"
+        style={{
+          right: '20px',
+          bottom: sunPositionEnabled ? '100px' : '12px',
+          transition: 'bottom 0.3s ease-in-out',
+        }}
+      >
+        <SunInfoPanel />
+      </div>
+
+      {/* Sun Info Panel - mobile version, bottom-left */}
+      <div className="md:hidden absolute bottom-20 left-3 z-10">
+        <SunInfoPanel />
       </div>
 
       {/* Minimap - bottom right above MapStatsPanel (desktop only) */}
@@ -781,11 +798,17 @@ export default function Home() {
       {/* Coordinate Input Dialog */}
       <CoordinateInputDialog open={coordDialogOpen} onOpenChange={setCoordDialogOpen} />
 
+      {/* Map Export Dialog */}
+      <MapExportDialog open={exportDialogOpen} onOpenChange={setExportDialogOpen} />
+
+      {/* Bookmark Manager Dialog */}
+      <BookmarkManager open={bookmarkManagerOpen} onOpenChange={setBookmarkManagerOpen} />
+
       {/* Keyboard Shortcuts Dialog */}
       <KeyboardShortcutsDialog open={shortcutsOpen} onOpenChange={setShortcutsOpen} />
 
       {/* Footer */}
-      <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-2 sm:px-3 md:px-4 before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">
+      <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-2 sm:px-3 md:px-4 safe-area-bottom before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">
         <div className="flex items-center justify-between text-[9px] sm:text-[10px] md:text-[11px] text-muted-foreground/70">
           <div className="flex items-center gap-1 sm:gap-1.5 md:gap-2">
             <div className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 rounded-md bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">

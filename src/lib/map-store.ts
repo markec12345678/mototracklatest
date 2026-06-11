@@ -55,6 +55,14 @@ export interface POIMarker {
   distance: number | null
 }
 
+export interface BookmarkFolder {
+  id: string
+  name: string
+  color: string
+  emoji: string
+  locationIds: string[]
+}
+
 export type MapStyleOption = {
   id: string
   name: string
@@ -262,6 +270,9 @@ interface MapState {
   // Earthquakes overlay
   earthquakesEnabled: boolean
 
+  // Sun position & day/night overlay
+  sunPositionEnabled: boolean
+
   // Isochrone visualization
   isochroneEnabled: boolean
   isochroneMinutes: number
@@ -280,6 +291,9 @@ interface MapState {
   // Map comparison / swipe view
   comparisonEnabled: boolean
   comparisonStyle: MapStyleOption
+
+  // Bookmark folders
+  bookmarkFolders: BookmarkFolder[]
 
   // Notifications
   notifications: MapNotification[]
@@ -329,6 +343,7 @@ interface MapState {
   setTerrainExaggeration: (exaggeration: number) => void
   setWeatherEnabled: (enabled: boolean) => void
   setEarthquakesEnabled: (enabled: boolean) => void
+  setSunPositionEnabled: (enabled: boolean) => void
   setTrafficEnabled: (enabled: boolean) => void
   setIsochroneEnabled: (enabled: boolean) => void
   setIsochroneMinutes: (minutes: number) => void
@@ -340,6 +355,12 @@ interface MapState {
   setHeatmapEnabled: (enabled: boolean) => void
   setComparisonEnabled: (enabled: boolean) => void
   setComparisonStyle: (style: MapStyleOption) => void
+  addBookmarkFolder: (folder: BookmarkFolder) => void
+  deleteBookmarkFolder: (id: string) => void
+  renameBookmarkFolder: (id: string, name: string) => void
+  updateBookmarkFolder: (id: string, updates: Partial<Omit<BookmarkFolder, 'id'>>) => void
+  addLocationToFolder: (folderId: string, locationId: string) => void
+  removeLocationFromFolder: (folderId: string, locationId: string) => void
 }
 
 export const useMapStore = create<MapState>()(
@@ -387,6 +408,7 @@ export const useMapStore = create<MapState>()(
       weatherEnabled: false,
       trafficEnabled: false,
       earthquakesEnabled: false,
+      sunPositionEnabled: false,
       isochroneEnabled: false,
       isochroneMinutes: 15,
       isochroneMode: 'walking',
@@ -395,6 +417,7 @@ export const useMapStore = create<MapState>()(
       notifications: [],
       comparisonEnabled: false,
       comparisonStyle: MAP_STYLES[1], // Default to Satellite for comparison
+      bookmarkFolders: [],
 
       setCenter: (center) => set({ center }),
       setZoom: (zoom) => set({ zoom }),
@@ -881,6 +904,7 @@ export const useMapStore = create<MapState>()(
       setTerrainExaggeration: (terrainExaggeration) => set({ terrainExaggeration }),
       setWeatherEnabled: (weatherEnabled) => set({ weatherEnabled }),
       setEarthquakesEnabled: (earthquakesEnabled) => set({ earthquakesEnabled }),
+      setSunPositionEnabled: (sunPositionEnabled) => set({ sunPositionEnabled }),
       setTrafficEnabled: (trafficEnabled) => set({ trafficEnabled }),
       setIsochroneEnabled: (isochroneEnabled) => set({ isochroneEnabled }),
       setIsochroneMinutes: (isochroneMinutes) => set({ isochroneMinutes }),
@@ -902,6 +926,42 @@ export const useMapStore = create<MapState>()(
       setHeatmapEnabled: (heatmapEnabled) => set({ heatmapEnabled }),
       setComparisonEnabled: (comparisonEnabled) => set({ comparisonEnabled }),
       setComparisonStyle: (comparisonStyle) => set({ comparisonStyle }),
+
+      addBookmarkFolder: (folder) => set((state) => ({
+        bookmarkFolders: [...state.bookmarkFolders, folder],
+      })),
+
+      deleteBookmarkFolder: (id) => set((state) => ({
+        bookmarkFolders: state.bookmarkFolders.filter((f) => f.id !== id),
+      })),
+
+      renameBookmarkFolder: (id, name) => set((state) => ({
+        bookmarkFolders: state.bookmarkFolders.map((f) =>
+          f.id === id ? { ...f, name } : f
+        ),
+      })),
+
+      updateBookmarkFolder: (id, updates) => set((state) => ({
+        bookmarkFolders: state.bookmarkFolders.map((f) =>
+          f.id === id ? { ...f, ...updates } : f
+        ),
+      })),
+
+      addLocationToFolder: (folderId, locationId) => set((state) => ({
+        bookmarkFolders: state.bookmarkFolders.map((f) =>
+          f.id === folderId && !f.locationIds.includes(locationId)
+            ? { ...f, locationIds: [...f.locationIds, locationId] }
+            : f
+        ),
+      })),
+
+      removeLocationFromFolder: (folderId, locationId) => set((state) => ({
+        bookmarkFolders: state.bookmarkFolders.map((f) =>
+          f.id === folderId
+            ? { ...f, locationIds: f.locationIds.filter((id) => id !== locationId) }
+            : f
+        ),
+      })),
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -911,6 +971,7 @@ export const useMapStore = create<MapState>()(
         weatherEnabled: state.weatherEnabled,
         trafficEnabled: state.trafficEnabled,
         earthquakesEnabled: state.earthquakesEnabled,
+        sunPositionEnabled: state.sunPositionEnabled,
         isochroneEnabled: state.isochroneEnabled,
         isochroneMinutes: state.isochroneMinutes,
         isochroneMode: state.isochroneMode,
@@ -923,6 +984,7 @@ export const useMapStore = create<MapState>()(
         heatmapEnabled: state.heatmapEnabled,
         comparisonEnabled: state.comparisonEnabled,
         comparisonStyle: state.comparisonStyle,
+        bookmarkFolders: state.bookmarkFolders,
       }),
     }
   )

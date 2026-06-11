@@ -136,7 +136,7 @@ export function AddLocationDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md rounded-2xl">
-        <DialogHeader>
+        <DialogHeader className="dialog-gradient-header -mx-6 -mt-6 px-6 pt-6 pb-4 mb-2 rounded-t-2xl">
           <DialogTitle className="flex items-center gap-2.5">
             <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-md shadow-emerald-500/20">
               <MapPin className="h-4 w-4 text-white" />

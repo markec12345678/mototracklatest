@@ -2304,3 +2304,180 @@ Stage Summary:
 - MapView.tsx: Added contextmenu event handler, context menu state management, closes on map interactions
 - page.tsx: Added CoordinateInputDialog integration, Globe2 toolbar button, Ctrl+G shortcut, context-menu-to-add-location event bridge
 - AddLocationDialog.tsx: Added prefill event listener for context menu integration
+
+---
+Task ID: 17
+Agent: Feature Developer - Map Print & Enhanced Bookmarks
+Task: Add enhanced map export dialog + bookmark folders
+
+Work Log:
+- Read existing project files (page.tsx, map-store.ts, QuickJumpPanel.tsx, AddLocationDialog.tsx, MapToolbar.tsx)
+- Created MapExportDialog.tsx with format/resolution/size/overlay options and live preview
+- Modified page.tsx to replace direct Camera export with MapExportDialog
+- Added BookmarkFolder interface to map-store.ts with CRUD actions
+- Created BookmarkManager.tsx with folder creation, editing, deletion, and location assignment
+- Enhanced QuickJumpPanel.tsx with folder grouping, collapsible sections, and Organize button
+- Integrated BookmarkManager into page.tsx with state management
+- Fixed lint warnings (alt props, unused directives, 4K height typo)
+- Verified dev server compiles without errors
+
+Stage Summary:
+- MapExportDialog: Full-featured export dialog with PNG/JPEG/PDF formats, 1x/2x/3x resolution, size presets (Current/1080p/QHD/4K/Custom), overlay options (title, compass, scale, coords, date), live preview thumbnail
+- BookmarkManager: Complete folder management with create/edit/delete folders, color+emoji customization, location assignment, search/filter, and confirmation dialogs
+- QuickJumpPanel: Enhanced with collapsible folder sections, "Organize" button, and integration with BookmarkManager
+- Store: BookmarkFolder interface + 6 new actions (addBookmarkFolder, deleteBookmarkFolder, renameBookmarkFolder, updateBookmarkFolder, addLocationToFolder, removeLocationFromFolder) with persistence
+
+---
+Task ID: 16
+Agent: Feature Developer - Sun Position & Day/Night
+Task: Add sun position overlay + day/night terminator line
+
+Work Log:
+- Read existing project files (worklog.md, MapView.tsx, MapSidebar.tsx, map-store.ts, page.tsx) to understand codebase patterns
+- Created `/home/z/my-project/src/app/api/sun-position/route.ts` - API endpoint using NOAA Solar Position Algorithm
+  - Accepts lat, lng, and tz (timezone offset) query parameters
+  - Calculates sun altitude, azimuth, subsolar point coordinates
+  - Calculates sunrise/sunset using NOAA algorithm with proper equation of time
+  - Calculates golden hour (6° to -4°) and blue hour (-4° to -6°) times
+  - Returns formatted times adjusted for timezone offset
+- Updated Zustand store (`/home/z/my-project/src/lib/map-store.ts`)
+  - Added `sunPositionEnabled: boolean` state (default false)
+  - Added `setSunPositionEnabled` action
+  - Added `sunPositionEnabled` to partialize config for persistence
+  - Added type declaration in the store interface
+- Created `/home/z/my-project/src/components/map/SunPositionOverlay.tsx`
+  - Client-side solar calculations for terminator polygon generation
+  - Generates night-side polygon from terminator latitude at each longitude
+  - Generates golden hour band (sun between -4° and 6° altitude)
+  - Generates blue hour band (sun between -6° and -4° altitude)
+  - Renders subsolar point marker with glow effect and hover popup
+  - Auto-updates every 60 seconds via setInterval
+  - Properly handles layer/source cleanup on unmount and toggle
+  - Waits for map style load before adding layers
+- Created `/home/z/my-project/src/components/map/SunInfoPanel.tsx`
+  - Shows current sun altitude and azimuth at map center
+  - Shows sunrise/sunset times in local timezone
+  - Shows day/night status with day length
+  - Shows golden hour and blue hour time ranges
+  - Shows subsolar point coordinates
+  - Auto-updates when map is panned (debounced by 5km threshold)
+  - Auto-refreshes every 5 minutes
+  - Supports minimize/close with framer-motion animations
+  - Glassmorphism design matching existing UI language
+- Added toggle in Layers tab of sidebar (`MapSidebar.tsx`)
+  - "Sun Position & Day/Night" toggle with ☀️ icon
+  - Placed after Heatmap toggle in the Overlay Data section
+  - Sends notification on toggle
+- Integrated components in `page.tsx`
+  - Added SunPositionOverlay component after MapView
+  - Added SunInfoPanel for desktop (absolute positioned, right side)
+  - Added SunInfoPanel for mobile (bottom-left area)
+  - Added sunPositionEnabled to useMapStore destructured values
+
+Stage Summary:
+- API endpoint: `/api/sun-position?lat=X&lng=Y&tz=Z` returns sun position data
+- Map overlay: Night side polygon (dark semi-transparent), golden hour band (amber tint), blue hour band (blue tint), subsolar point marker
+- Info panel: Comprehensive sun data display with auto-update
+- Sidebar toggle: Layers tab → "Sun Position & Day/Night"
+- All files pass lint with zero errors/warnings
+- Client-side terminator calculation updates every 60 seconds
+
+---
+Task ID: 18
+Agent: Styling Polish Expert
+Task: Comprehensive styling polish and micro-interactions
+
+Work Log:
+- Enhanced globals.css with 600+ lines of comprehensive CSS polish:
+  - Smooth color transitions on theme change for all glass/glassmorphism elements
+  - Custom enhanced scrollbar styling (thin, rounded, themed) for both WebKit and Firefox
+  - Smooth focus-visible ring animation with emerald-themed pulse
+  - Selection color styling (emerald themed) for both light and dark modes
+  - Print media query adjustments (hides controls, map-only output)
+  - Reduced motion media query support (disables all animations for a11y)
+  - Glassmorphism v3 utility class with improved blur and shadows
+  - Skeleton shimmer loading animation utility
+  - Notification progress bar auto-dismiss timer animation
+  - Notification category-colored left borders (8 categories)
+  - Sidebar count badge styling
+  - Sidebar section gradient backgrounds (4 tabs)
+  - Sidebar section left border color indicators (7 sections)
+  - Enhanced empty state styling with shimmer animation
+  - Dialog spring animation (open/close) with backdrop blur
+  - Dialog gradient header styling
+  - Toolbar button press scale animation
+  - Active tool indicator glow pulse animation
+  - Toolbar stagger animation on initial load
+  - Map style loading spinner
+  - Scale bar smooth transition
+  - Compass needle smooth rotation
+  - Sidebar list item slide-in animation
+  - Smooth collapse animation utilities
+  - Enhanced geolocation dot pulse with outer ring
+  - Mobile touch feedback utility
+  - Mobile safe-area padding support
+  - Mobile bottom toolbar safe area container
+  - Pull-to-refresh hint animation
+  - Enhanced tooltip styling (themed, with blur)
+  - Location name truncate utility
+  - Haptic-like press feedback for mobile (touch devices)
+  - Smooth transitions for map feature toggles
+
+- Polished MapNotifications.tsx:
+  - Added auto-dismiss progress bar with category-colored progress
+  - Enhanced entrance/exit animations with blur effect
+  - Added category-colored left borders (8 notification types)
+  - Added pause-on-hover behavior for notifications
+  - Added click-to-dismiss
+  - Added proper role="alert" for accessibility
+
+- Polished MapToolbar.tsx:
+  - Added stagger animation on initial load (80ms per button)
+  - Enhanced tooltip with description text and keyboard shortcut
+  - Added toolbar-btn-press scale animation on button press
+  - Added tool-active-glow pulsing effect for active tool
+  - Added tool.description field for richer tooltips
+
+- Polished MapSidebar.tsx:
+  - Added count badges on tabs (Places count, Routes count) that update live
+  - Added gradient backgrounds to tab sections (locations, layers, tools, routes)
+  - Added hover tooltip (title attr) for truncated location names
+  - Added slide-in animation for location list items (40ms stagger)
+  - Enhanced empty states with call-to-action buttons:
+    - Locations: "Start Dropping Pins" button
+    - Routes: "Start Drawing Route" button
+    - Measurement: Enhanced with icon and description
+    - Area: Enhanced with icon and description
+  - Added border-left color indicators for tool sections:
+    - Tools section (green), Drawing (green), Measurement (amber), Area (violet)
+  - Added sidebar-border-* classes for visual section distinction
+
+- Polished page.tsx:
+  - Added safe-area-bottom to mobile toolbar container
+  - Added mobile-toolbar-container class for safe-area padding
+  - Added touch-feedback class to mobile toolbar buttons
+  - Added safe-area-bottom to footer
+
+- Polished MapView.tsx:
+  - Enhanced tile loading bar with gradient (emerald→teal→cyan)
+  - Upgraded map loading spinner to custom map-style-spinner
+  - Improved loading overlay with rounded-xl glass card
+
+- Polished all dialogs with gradient headers:
+  - AddLocationDialog.tsx: Added dialog-gradient-header
+  - CoordinateInputDialog.tsx: Added dialog-gradient-header
+  - KeyboardShortcutsDialog.tsx: Added dialog-gradient-header
+  - MapExportDialog.tsx: Updated to use dialog-gradient-header class
+
+- Bug fix: Fixed SSR crash in MapExportDialog.tsx where document.querySelector
+  was called during server-side rendering. Added typeof document !== 'undefined'
+  check.
+
+Stage Summary:
+- Added 600+ lines of polished CSS to globals.css covering: scrollbar styling, focus rings, selection colors, print/reduced-motion media queries, glassmorphism improvements, skeleton animations, notification progress bars, sidebar badges/gradients/borders, dialog animations, toolbar stagger/press/glow effects, map loading spinners, mobile touch feedback, and safe-area padding
+- Enhanced MapNotifications with auto-dismiss progress bars, category-colored borders, and blur animations
+- Enhanced MapToolbar with stagger animations, richer tooltips, press effects, and active glow
+- Enhanced MapSidebar with count badges, gradient backgrounds, border indicators, slide-in animations, and CTA-enabled empty states
+- Added dialog gradient headers across all dialog components
+- Added mobile safe-area and touch feedback improvements
+- Fixed SSR crash in MapExportDialog.tsx

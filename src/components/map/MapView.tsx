@@ -2219,7 +2219,7 @@ export function MapView() {
       {/* Tile loading indicator */}
       {tilesLoading && (
         <div className="absolute top-0 left-0 right-0 z-10 h-0.5 bg-muted overflow-hidden">
-          <div className="h-full bg-primary animate-loading-bar" style={{ width: '60%' }} />
+          <div className="h-full bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 animate-loading-bar" style={{ width: '60%' }} />
         </div>
       )}
       {/* Map loading overlay */}
@@ -2227,8 +2227,8 @@ export function MapView() {
         <div className="absolute inset-0 z-10 pointer-events-none">
           <div className="absolute inset-0 map-loading-skeleton opacity-40" />
           <div className="absolute top-4 left-1/2 -translate-x-1/2">
-            <div className="glass rounded-lg px-4 py-2 flex items-center gap-2 shadow-lg">
-              <div className="h-4 w-4 rounded-full border-2 border-muted-foreground border-t-transparent animate-spin" />
+            <div className="glass rounded-xl px-4 py-2.5 flex items-center gap-2.5 shadow-lg">
+              <div className="map-style-spinner" />
               <span className="text-xs font-medium text-muted-foreground">Loading map…</span>
             </div>
           </div>

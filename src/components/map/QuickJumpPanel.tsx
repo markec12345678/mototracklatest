@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Bookmark, MapPin, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Bookmark, MapPin, ChevronLeft, ChevronRight, FolderOpen, Settings2 } from 'lucide-react'
 import { useMapStore } from '@/lib/map-store'
 import { cn } from '@/lib/utils'
 
@@ -51,9 +51,15 @@ function isNearBookmark(
   return lngDist < thresholdDeg && latDist < thresholdDeg && zoomDist < thresholdZoom
 }
 
-export function QuickJumpPanel() {
-  const { center, zoom } = useMapStore()
+interface QuickJumpPanelProps {
+  onOpenBookmarkManager?: () => void
+}
+
+export function QuickJumpPanel({ onOpenBookmarkManager }: QuickJumpPanelProps) {
+  const { center, zoom, bookmarkFolders, savedLocations } = useMapStore()
   const [expanded, setExpanded] = useState(false)
+  const [expandedFolderIds, setExpandedFolderIds] = useState<Set<string>>(new Set())
+  const [showFolders, setShowFolders] = useState(true)
 
   // Determine which bookmark is closest to the current map view
   const activeBookmark = useMemo(() => {
@@ -69,6 +75,29 @@ export function QuickJumpPanel() {
     // Collapse after selection
     setExpanded(false)
   }, [])
+
+  const handleJumpToLocation = useCallback((lat: number, lng: number) => {
+    const flyTo = (window as unknown as Record<string, (lng: number, lat: number, z?: number) => void>).__mapFlyTo
+    if (flyTo) {
+      flyTo(lng, lat, 14)
+    }
+    setExpanded(false)
+  }, [])
+
+  const toggleFolder = useCallback((folderId: string) => {
+    setExpandedFolderIds((prev) => {
+      const next = new Set(prev)
+      if (next.has(folderId)) {
+        next.delete(folderId)
+      } else {
+        next.add(folderId)
+      }
+      return next
+    })
+  }, [])
+
+  // Check if there are saved locations or folders to show
+  const hasUserContent = bookmarkFolders.length > 0 || savedLocations.length > 0
 
   return (
     <div className="relative">
@@ -101,7 +130,7 @@ export function QuickJumpPanel() {
             <ChevronRight className="h-3 w-3 text-muted-foreground" />
           </motion.button>
         ) : (
-          /* Expanded state: vertical list of bookmarks */
+          /* Expanded state: vertical list of bookmarks with folders */
           <motion.div
             key="expanded"
             initial={{ opacity: 0, x: -10, scale: 0.95 }}
@@ -111,7 +140,8 @@ export function QuickJumpPanel() {
             className={cn(
               'rounded-2xl overflow-hidden',
               'map-control-glass',
-              'shadow-xl'
+              'shadow-xl',
+              'w-64'
             )}
           >
             {/* Header */}
@@ -120,17 +150,137 @@ export function QuickJumpPanel() {
                 <Bookmark className="h-3.5 w-3.5 text-primary" />
                 <span className="text-xs font-semibold">Bookmarks</span>
               </div>
-              <button
-                onClick={() => setExpanded(false)}
-                className="p-1 rounded-lg hover:bg-accent/50 transition-colors"
-                aria-label="Minimize bookmarks panel"
-              >
-                <ChevronLeft className="h-3.5 w-3.5 text-muted-foreground" />
-              </button>
+              <div className="flex items-center gap-1">
+                {onOpenBookmarkManager && hasUserContent && (
+                  <button
+                    onClick={() => {
+                      setExpanded(false)
+                      onOpenBookmarkManager()
+                    }}
+                    className="p-1 rounded-lg hover:bg-accent/50 transition-colors"
+                    aria-label="Open bookmark manager"
+                    title="Organize Bookmarks"
+                  >
+                    <Settings2 className="h-3.5 w-3.5 text-muted-foreground" />
+                  </button>
+                )}
+                <button
+                  onClick={() => setExpanded(false)}
+                  className="p-1 rounded-lg hover:bg-accent/50 transition-colors"
+                  aria-label="Minimize bookmarks panel"
+                >
+                  <ChevronLeft className="h-3.5 w-3.5 text-muted-foreground" />
+                </button>
+              </div>
             </div>
 
             {/* Bookmark list */}
-            <div className="p-2 flex flex-col gap-1 max-h-80 overflow-y-auto scrollbar-none" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            <div className="p-2 flex flex-col gap-1 max-h-96 overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
+              {/* User Folders Section */}
+              {hasUserContent && (
+                <>
+                  {/* Folder toggle */}
+                  {bookmarkFolders.length > 0 && (
+                    <button
+                      onClick={() => setShowFolders(!showFolders)}
+                      className={cn(
+                        'flex items-center gap-2 w-full px-2 py-1.5 rounded-lg',
+                        'text-xs font-medium text-muted-foreground',
+                        'hover:bg-accent/50 transition-colors',
+                        'cursor-pointer'
+                      )}
+                    >
+                      {showFolders ? (
+                        <ChevronRight className="h-3 w-3 transition-transform rotate-90" />
+                      ) : (
+                        <ChevronRight className="h-3 w-3" />
+                      )}
+                      <FolderOpen className="h-3 w-3" />
+                      My Folders ({bookmarkFolders.length})
+                    </button>
+                  )}
+
+                  <AnimatePresence>
+                    {showFolders && bookmarkFolders.map((folder) => {
+                      const isFolderExpanded = expandedFolderIds.has(folder.id)
+                      const folderLocations = folder.locationIds
+                        .map((id) => savedLocations.find((l) => l.id === id))
+                        .filter(Boolean)
+
+                      return (
+                        <motion.div
+                          key={folder.id}
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          className="overflow-hidden"
+                        >
+                          {/* Folder header */}
+                          <button
+                            onClick={() => toggleFolder(folder.id)}
+                            className={cn(
+                              'flex items-center gap-2 w-full px-3 py-1.5 rounded-lg',
+                              'text-left transition-all duration-150',
+                              'hover:bg-accent/50 cursor-pointer',
+                              'border-l-2'
+                            )}
+                            style={{ borderLeftColor: folder.color }}
+                          >
+                            {isFolderExpanded ? (
+                              <ChevronRight className="h-3 w-3 transition-transform rotate-90 shrink-0" />
+                            ) : (
+                              <ChevronRight className="h-3 w-3 shrink-0" />
+                            )}
+                            <span className="text-sm leading-none shrink-0">{folder.emoji}</span>
+                            <span className="text-xs font-medium truncate flex-1">{folder.name}</span>
+                            <span className="text-[9px] text-muted-foreground font-mono shrink-0">
+                              {folder.locationIds.length}
+                            </span>
+                          </button>
+
+                          {/* Folder locations */}
+                          <AnimatePresence>
+                            {isFolderExpanded && folderLocations.length > 0 && (
+                              <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: 'auto', opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{ duration: 0.15 }}
+                                className="overflow-hidden pl-4"
+                              >
+                                {folderLocations.map((loc) => (
+                                  <motion.button
+                                    key={loc!.id}
+                                    initial={{ opacity: 0, x: -8 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ duration: 0.1 }}
+                                    onClick={() => handleJumpToLocation(loc!.latitude, loc!.longitude)}
+                                    className={cn(
+                                      'flex items-center gap-2 w-full px-3 py-1.5 rounded-lg border border-transparent',
+                                      'transition-all duration-150 text-left',
+                                      'hover:scale-[1.02] active:scale-[0.98] cursor-pointer',
+                                      'hover:bg-accent/50'
+                                    )}
+                                    aria-label={`Jump to ${loc!.name}`}
+                                  >
+                                    <MapPin className="h-3 w-3 shrink-0" style={{ color: loc!.color }} />
+                                    <span className="text-xs font-medium truncate">{loc!.name}</span>
+                                  </motion.button>
+                                ))}
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </motion.div>
+                      )
+                    })}
+                  </AnimatePresence>
+
+                  {/* Separator between folders and preset bookmarks */}
+                  <div className="h-px bg-border/30 my-1" />
+                </>
+              )}
+
+              {/* Preset Bookmarks */}
               {BOOKMARKS.map((bookmark, index) => {
                 const isActive = activeBookmark === bookmark.name
                 return (
@@ -171,11 +321,22 @@ export function QuickJumpPanel() {
               })}
             </div>
 
-            {/* Footer hint */}
-            <div className="px-3 py-1.5 border-t border-border/30">
-              <p className="text-[9px] text-muted-foreground text-center">
+            {/* Footer */}
+            <div className="px-3 py-1.5 border-t border-border/30 flex items-center justify-between">
+              <p className="text-[9px] text-muted-foreground">
                 Click a location to fly there
               </p>
+              {onOpenBookmarkManager && (
+                <button
+                  onClick={() => {
+                    setExpanded(false)
+                    onOpenBookmarkManager()
+                  }}
+                  className="text-[9px] text-primary hover:text-primary/80 font-medium transition-colors cursor-pointer"
+                >
+                  Organize
+                </button>
+              )}
             </div>
           </motion.div>
         )}
