@@ -1,6 +1,6 @@
 'use client'
 
-import { MapPin, Navigation, Ruler } from 'lucide-react'
+import { MapPin, Navigation, Ruler, Crosshair } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { cn } from '@/lib/utils'
@@ -33,6 +33,13 @@ const tools: {
     label: 'Measure',
     activeClass: 'bg-amber-500 text-white shadow-md shadow-amber-500/30',
     shortcut: '3',
+  },
+  {
+    id: 'directions',
+    icon: <Crosshair className="h-4 w-4" />,
+    label: 'Directions',
+    activeClass: 'bg-cyan-500 text-white shadow-md shadow-cyan-500/30',
+    shortcut: '4',
   },
 ]
 

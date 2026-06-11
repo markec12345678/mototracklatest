@@ -29,6 +29,20 @@ export interface MeasurePoint {
   latitude: number
 }
 
+export interface RoutePoint {
+  longitude: number
+  latitude: number
+  name?: string
+}
+
+export interface MapRoute {
+  id: string
+  name: string
+  color: string
+  points: RoutePoint[]
+  distance: number | null
+}
+
 export type MapStyleOption = {
   id: string
   name: string
@@ -185,6 +199,11 @@ interface MapState {
   measurePoints: MeasurePoint[]
   measureDistance: number | null
 
+  // Route drawing
+  routePoints: RoutePoint[]
+  currentRouteColor: string
+  routes: MapRoute[]
+
   // Clustering
   clusteringEnabled: boolean
 
@@ -213,6 +232,12 @@ interface MapState {
   addMeasurePoint: (point: MeasurePoint) => void
   clearMeasurePoints: () => void
   setMeasureDistance: (distance: number | null) => void
+  addRoutePoint: (point: RoutePoint) => void
+  removeRoutePoint: (index: number) => void
+  clearRoutePoints: () => void
+  setCurrentRouteColor: (color: string) => void
+  saveRoute: (name: string) => void
+  deleteRoute: (id: string) => void
   setClusteringEnabled: (enabled: boolean) => void
   setBuildingExtrusion: (enabled: boolean) => void
 }
@@ -240,6 +265,10 @@ export const useMapStore = create<MapState>()(
       toolMode: 'navigate',
       measurePoints: [],
       measureDistance: null,
+
+      routePoints: [],
+      currentRouteColor: '#3b82f6',
+      routes: [],
 
       clusteringEnabled: true,
       buildingExtrusion: false,
@@ -282,6 +311,53 @@ export const useMapStore = create<MapState>()(
         set((state) => ({ measurePoints: [...state.measurePoints, point] })),
       clearMeasurePoints: () => set({ measurePoints: [], measureDistance: null }),
       setMeasureDistance: (measureDistance) => set({ measureDistance }),
+      addRoutePoint: (point) =>
+        set((state) => ({ routePoints: [...state.routePoints, point] })),
+      removeRoutePoint: (index) =>
+        set((state) => ({
+          routePoints: state.routePoints.filter((_, i) => i !== index),
+        })),
+      clearRoutePoints: () => set({ routePoints: [] }),
+      setCurrentRouteColor: (currentRouteColor) => set({ currentRouteColor }),
+      saveRoute: (name) =>
+        set((state) => {
+          if (state.routePoints.length < 2) return state
+          let distance: number | null = null
+          if (state.routePoints.length > 1) {
+            let total = 0
+            for (let i = 1; i < state.routePoints.length; i++) {
+              const p1 = state.routePoints[i - 1]
+              const p2 = state.routePoints[i]
+              const R = 6371
+              const dLat = ((p2.latitude - p1.latitude) * Math.PI) / 180
+              const dLon = ((p2.longitude - p1.longitude) * Math.PI) / 180
+              const a =
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos((p1.latitude * Math.PI) / 180) *
+                  Math.cos((p2.latitude * Math.PI) / 180) *
+                  Math.sin(dLon / 2) *
+                  Math.sin(dLon / 2)
+              const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+              total += R * c
+            }
+            distance = total
+          }
+          const newRoute: MapRoute = {
+            id: `route-${Date.now()}`,
+            name,
+            color: state.currentRouteColor,
+            points: [...state.routePoints],
+            distance,
+          }
+          return {
+            routes: [...state.routes, newRoute],
+            routePoints: [],
+          }
+        }),
+      deleteRoute: (id) =>
+        set((state) => ({
+          routes: state.routes.filter((r) => r.id !== id),
+        })),
       setClusteringEnabled: (clusteringEnabled) => set({ clusteringEnabled }),
       setBuildingExtrusion: (buildingExtrusion) => set({ buildingExtrusion }),
     }),

@@ -39,6 +39,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
+  SheetDescription,
 } from '@/components/ui/sheet'
 import {
   useMapStore,
@@ -349,6 +350,15 @@ function SidebarContent({ onCloseMobile }: { onCloseMobile?: () => void }) {
 export function MapSidebar() {
   const { sidebarOpen, setSidebarOpen } = useMapStore()
 
+  // Mobile detection - only render Sheet on mobile viewports
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
+
   // Close sidebar on mobile by default on initial mount
   useEffect(() => {
     if (window.innerWidth < 768) {
@@ -392,15 +402,20 @@ export function MapSidebar() {
         </div>
       </div>
 
-      {/* Mobile sidebar - Sheet/drawer */}
-      <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
-        <SheetContent side="left" className="w-80 p-0 md:hidden">
-          <SheetHeader className="sr-only">
-            <SheetTitle>MapLibre Explorer Sidebar</SheetTitle>
-          </SheetHeader>
-          <SidebarContent onCloseMobile={() => setSidebarOpen(false)} />
-        </SheetContent>
-      </Sheet>
+      {/* Mobile sidebar - Sheet/drawer (only renders on mobile) */}
+      {isMobile && (
+        <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
+          <SheetContent side="left" className="w-80 p-0">
+            <SheetHeader className="sr-only">
+              <SheetTitle>MapLibre Explorer Sidebar</SheetTitle>
+              <SheetDescription className="sr-only">
+                Navigation sidebar for map locations, layers, and tools
+              </SheetDescription>
+            </SheetHeader>
+            <SidebarContent onCloseMobile={() => setSidebarOpen(false)} />
+          </SheetContent>
+        </Sheet>
+      )}
 
       {/* Mobile toggle button - positioned below search bar to avoid overlap */}
       {!sidebarOpen && (
@@ -1013,72 +1028,264 @@ function ToolsTab({
 }
 
 function RoutesTab() {
-  const [routes, setRoutes] = useState<
-    Array<{
-      id: string
-      name: string
-      color: string
-      distance: number | null
-      waypoints: string
-    }>
-  >([])
+  const routePoints = useMapStore((s) => s.routePoints)
+  const currentRouteColor = useMapStore((s) => s.currentRouteColor)
+  const routes = useMapStore((s) => s.routes)
+  const toolMode = useMapStore((s) => s.toolMode)
+  const removeRoutePoint = useMapStore((s) => s.removeRoutePoint)
+  const clearRoutePoints = useMapStore((s) => s.clearRoutePoints)
+  const setCurrentRouteColor = useMapStore((s) => s.setCurrentRouteColor)
+  const saveRoute = useMapStore((s) => s.saveRoute)
+  const deleteRoute = useMapStore((s) => s.deleteRoute)
+  const setToolMode = useMapStore((s) => s.setToolMode)
 
-  useEffect(() => {
-    async function loadRoutes() {
-      try {
-        const res = await fetch('/api/routes')
-        if (res.ok) {
-          const data = await res.json()
-          setRoutes(data)
-        }
-      } catch (err) {
-        console.error('Failed to load routes:', err)
-      }
+  const [routeName, setRouteName] = useState('')
+  const [savedRouteIds, setSavedRouteIds] = useState<Set<string>>(new Set())
+
+  const colorOptions = [
+    { id: '#3b82f6', label: 'Blue', class: 'bg-blue-500' },
+    { id: '#ef4444', label: 'Red', class: 'bg-red-500' },
+    { id: '#22c55e', label: 'Green', class: 'bg-green-500' },
+    { id: '#f97316', label: 'Orange', class: 'bg-orange-500' },
+    { id: '#8b5cf6', label: 'Purple', class: 'bg-purple-500' },
+    { id: '#06b6d4', label: 'Cyan', class: 'bg-cyan-500' },
+  ]
+
+  // Calculate live distance for current route
+  const currentDistance = (() => {
+    if (routePoints.length < 2) return null
+    let total = 0
+    for (let i = 1; i < routePoints.length; i++) {
+      total += haversineDistance(
+        routePoints[i - 1].latitude,
+        routePoints[i - 1].longitude,
+        routePoints[i].latitude,
+        routePoints[i].longitude
+      )
     }
-    loadRoutes()
-  }, [])
+    return total
+  })()
+
+  const handleSaveRoute = () => {
+    if (routePoints.length < 2) return
+    const name = routeName.trim() || `Route ${routes.length + 1}`
+    saveRoute(name)
+    setRouteName('')
+    toast.success(`Route "${name}" saved`)
+  }
+
+  const handleDeleteRoute = (id: string, name: string) => {
+    deleteRoute(id)
+    setSavedRouteIds((prev) => {
+      const next = new Set(prev)
+      next.delete(id)
+      return next
+    })
+    toast.success(`Route "${name}" deleted`)
+  }
+
+  const toggleRouteVisibility = (id: string) => {
+    setSavedRouteIds((prev) => {
+      const next = new Set(prev)
+      if (next.has(id)) {
+        next.delete(id)
+      } else {
+        next.add(id)
+      }
+      return next
+    })
+  }
+
+  const formatDistance = (d: number | null) => {
+    if (d === null) return ''
+    return d < 1 ? `${(d * 1000).toFixed(0)} m` : `${d.toFixed(2)} km`
+  }
 
   return (
     <ScrollArea className="h-full">
       <div className="p-3 space-y-3">
         <h3 className="text-sm font-semibold flex items-center gap-2">
           <Route className="h-3.5 w-3.5 text-muted-foreground" />
-          Saved Routes
+          Routes
         </h3>
         <Separator />
-        {routes.length === 0 ? (
-          <div className="text-center py-12 text-muted-foreground">
-            <div className="w-16 h-16 mx-auto mb-3 rounded-2xl bg-muted/50 flex items-center justify-center">
-              <Route className="h-8 w-8 opacity-40" />
+
+        {/* Directions tool hint */}
+        {toolMode === 'directions' && (
+          <div className="bg-cyan-500/10 border border-cyan-500/20 rounded-xl p-3">
+            <p className="text-xs font-medium text-cyan-700 dark:text-cyan-400 flex items-center gap-1.5">
+              <Navigation className="h-3.5 w-3.5" />
+              Directions mode active — click on the map to add waypoints
+            </p>
+          </div>
+        )}
+
+        {toolMode !== 'directions' && routePoints.length === 0 && (
+          <div className="bg-muted/50 rounded-xl p-3">
+            <p className="text-xs text-muted-foreground">
+              Select the Directions tool to start drawing a route on the map.
+            </p>
+            <Button
+              variant="outline"
+              size="sm"
+              className="mt-2 h-7 text-xs w-full"
+              onClick={() => setToolMode('directions')}
+            >
+              <Navigation className="h-3 w-3 mr-1" />
+              Start Drawing
+            </Button>
+          </div>
+        )}
+
+        {/* Current route drawing */}
+        {routePoints.length > 0 && (
+          <div className="space-y-2">
+            <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+              Current Route
+            </h4>
+
+            {/* Color picker */}
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-muted-foreground">Color:</span>
+              <div className="flex gap-1.5">
+                {colorOptions.map((c) => (
+                  <button
+                    key={c.id}
+                    className={cn(
+                      'w-6 h-6 rounded-full transition-all',
+                      c.class,
+                      currentRouteColor === c.id
+                        ? 'ring-2 ring-offset-2 ring-offset-background ring-foreground scale-110'
+                        : 'opacity-60 hover:opacity-100'
+                    )}
+                    onClick={() => setCurrentRouteColor(c.id)}
+                    title={c.label}
+                    aria-label={`Route color: ${c.label}`}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Waypoints list */}
+            <div className="space-y-1">
+              {routePoints.map((point, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center gap-2 p-2 rounded-lg border bg-background/50 text-xs"
+                >
+                  <div
+                    className="w-3 h-3 rounded-full shrink-0"
+                    style={{ backgroundColor: currentRouteColor }}
+                  />
+                  <span className="flex-1 text-muted-foreground truncate">
+                    {point.name || `${point.latitude.toFixed(4)}, ${point.longitude.toFixed(4)}`}
+                  </span>
+                  <span className="text-muted-foreground font-mono text-[10px]">
+                    {idx === 0 ? 'A' : idx === routePoints.length - 1 ? 'B' : String(idx + 1)}
+                  </span>
+                  <button
+                    className="p-0.5 hover:text-red-500 transition-colors"
+                    onClick={() => removeRoutePoint(idx)}
+                    aria-label={`Remove waypoint ${idx + 1}`}
+                  >
+                    <Trash2 className="h-3 w-3" />
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {/* Distance display */}
+            {currentDistance !== null && (
+              <div className="text-xs text-muted-foreground flex items-center gap-1.5 px-1">
+                <Ruler className="h-3 w-3" />
+                Total: {formatDistance(currentDistance)}
+              </div>
+            )}
+
+            {/* Save / Clear buttons */}
+            <div className="flex gap-2">
+              {routePoints.length >= 2 && (
+                <div className="flex-1 flex gap-2">
+                  <Input
+                    placeholder="Route name..."
+                    value={routeName}
+                    onChange={(e) => setRouteName(e.target.value)}
+                    className="h-8 text-xs"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') handleSaveRoute()
+                    }}
+                  />
+                  <Button
+                    size="sm"
+                    className="h-8 text-xs bg-cyan-500 hover:bg-cyan-600 text-white"
+                    onClick={handleSaveRoute}
+                  >
+                    Save
+                  </Button>
+                </div>
+              )}
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-8 text-xs"
+                onClick={clearRoutePoints}
+              >
+                Clear
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* Saved routes */}
+        {routes.length > 0 && (
+          <div className="space-y-2">
+            <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+              Saved Routes
+            </h4>
+            <div className="space-y-1.5">
+              {routes.map((route) => (
+                <div
+                  key={route.id}
+                  className="flex items-center gap-2.5 p-2.5 rounded-xl border hover:bg-accent/50 transition-colors"
+                >
+                  <button
+                    className="w-3 h-8 rounded-full shrink-0 transition-opacity"
+                    style={{ backgroundColor: route.color, opacity: savedRouteIds.has(route.id) ? 1 : 0.4 }}
+                    onClick={() => toggleRouteVisibility(route.id)}
+                    title={savedRouteIds.has(route.id) ? 'Hide on map' : 'Show on map'}
+                    aria-label={savedRouteIds.has(route.id) ? 'Hide route on map' : 'Show route on map'}
+                  />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium truncate">{route.name}</p>
+                    {route.distance !== null && (
+                      <p className="text-xs text-muted-foreground">
+                        {formatDistance(route.distance)} · {route.points.length} points
+                      </p>
+                    )}
+                  </div>
+                  <button
+                    className="p-1 hover:text-red-500 transition-colors text-muted-foreground"
+                    onClick={() => handleDeleteRoute(route.id, route.name)}
+                    aria-label={`Delete route ${route.name}`}
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Empty state */}
+        {routes.length === 0 && routePoints.length === 0 && toolMode !== 'directions' && (
+          <div className="text-center py-8 text-muted-foreground">
+            <div className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-muted/50 flex items-center justify-center">
+              <Route className="h-7 w-7 opacity-40" />
             </div>
             <p className="text-sm font-medium">No saved routes</p>
             <p className="text-xs mt-1 max-w-[200px] mx-auto">
-              Use the Measure tool to trace a route, then save it
+              Use the Directions tool to draw a route on the map, then save it
             </p>
-          </div>
-        ) : (
-          <div className="space-y-1.5">
-            {routes.map((route) => (
-              <div
-                key={route.id}
-                className="flex items-center gap-3 p-2.5 rounded-xl border hover:bg-accent/50 transition-colors"
-              >
-                <div
-                  className="w-3 h-8 rounded-full"
-                  style={{ backgroundColor: route.color }}
-                />
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate">{route.name}</p>
-                  {route.distance && (
-                    <p className="text-xs text-muted-foreground">
-                      {route.distance < 1
-                        ? `${(route.distance * 1000).toFixed(0)} m`
-                        : `${route.distance.toFixed(2)} km`}
-                    </p>
-                  )}
-                </div>
-              </div>
-            ))}
           </div>
         )}
       </div>

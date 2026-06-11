@@ -167,6 +167,9 @@ export default function Home() {
         case '3':
           setToolMode('measure')
           break
+        case '4':
+          setToolMode('directions')
+          break
         case '/':
           e.preventDefault()
           document.getElementById('map-search-input')?.focus()

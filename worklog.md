@@ -467,3 +467,100 @@ Unresolved Issues / Next Phase Recommendations:
 - Consider adding map comparison (side-by-side) view
 - Improve search with recent searches history
 - Add offline map tile caching
+
+---
+Task ID: 8-a
+Agent: General Purpose Agent
+Task: Fix critical Sheet backdrop bug blocking map interaction on desktop
+
+Bug Description:
+- In MapSidebar.tsx, the Sheet component (mobile drawer) always rendered regardless of viewport
+- The SheetOverlay (backdrop) rendered at `fixed inset-0 z-50 bg-black/50` on ALL viewports
+- This made the map completely unclickable on desktop since the invisible overlay covered the entire screen
+- SheetContent had `md:hidden` but the overlay did not, creating the mismatch
+
+Work Completed:
+
+1. Added SheetDescription to import (line 37-43)
+   - Added `SheetDescription` to the destructured import from '@/components/ui/sheet'
+   - Required for accessibility compliance (radix-ui Dialog requires description)
+
+2. Added isMobile state with resize listener (inside MapSidebar function)
+   - `const [isMobile, setIsMobile] = useState(false)`
+   - useEffect with resize event listener that checks `window.innerWidth < 768`
+   - Sets initial value on mount
+   - Properly cleans up event listener on unmount
+
+3. Replaced unconditional Sheet rendering with conditional mobile-only rendering
+   - Changed: `<Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>` (always rendered)
+   - To: `{isMobile && (<Sheet ...>)}` (only renders on mobile viewports)
+   - This prevents the SheetOverlay from ever being created on desktop
+   - The overlay's `fixed inset-0 z-50 bg-black/50` no longer blocks map clicks on desktop
+
+4. Removed `md:hidden` from SheetContent className
+   - Since the entire Sheet is now conditionally rendered only on mobile, the `md:hidden` class is redundant
+   - Changed from `className="w-80 p-0 md:hidden"` to `className="w-80 p-0"`
+
+5. Added SheetDescription for accessibility
+   - Added `<SheetDescription className="sr-only">Navigation sidebar for map locations, layers, and tools</SheetDescription>`
+   - Visually hidden (sr-only) but present for screen readers and radix-ui compliance
+
+Verification:
+- `bun run lint` passes with zero errors/warnings
+- Fixed JSX parsing error (missing closing `}` on conditional render block)
+
+---
+Task ID: 8-b
+Agent: General-purpose
+Task: Implement Route Drawing feature for MapLibre Explorer
+
+Work Completed:
+
+1. Updated map-store.ts - Route drawing state and actions
+   - Added RoutePoint interface (longitude, latitude, name?)
+   - Added MapRoute interface (id, name, color, points, distance)
+   - Added to MapState: routePoints, currentRouteColor, routes
+   - Added actions: addRoutePoint, removeRoutePoint, clearRoutePoints, setCurrentRouteColor, saveRoute, deleteRoute
+   - saveRoute computes haversine distance over all points, creates MapRoute, clears routePoints
+   - deleteRoute removes route by id from routes array
+   - Default values: routePoints=[], currentRouteColor='#3b82f6', routes=[]
+
+2. Updated MapView.tsx - Route rendering and directions mode
+   - Added routePoints and routes subscriptions from store
+   - Added 'directions' case in map click handler: calls addRoutePoint on click
+   - Added useEffect for route rendering:
+     - Source 'route-source' with GeoJSON FeatureCollection
+     - Line layer 'route-line' (dashed, width 4, currentRouteColor)
+     - Point layer 'route-points' (radius 7, white stroke)
+     - Renders saved routes with per-route sources/layers (route-source-{id}, route-line-{id}, route-points-{id})
+     - Cleanup: removes sources/layers for deleted routes and on unmount
+   - Updates paint properties when currentRouteColor changes
+
+3. Updated MapSidebar.tsx - RoutesTab replacement
+   - Replaced placeholder RoutesTab (API-based) with full route creation UI
+   - Shows directions mode hint when tool is active (cyan banner)
+   - "Start Drawing" button when no points and directions mode inactive
+   - Current route section with:
+     - Color picker (6 colors: blue, red, green, orange, purple, cyan)
+     - Waypoints list with delete buttons per point
+     - Live distance calculation using haversineDistance
+     - Save button + name input (appears when 2+ points)
+     - Clear button
+   - Saved routes section with:
+     - Color indicator (clickable to toggle visibility)
+     - Name, distance, point count
+     - Delete button
+   - Empty state with guidance text
+
+4. Updated MapToolbar.tsx - Directions tool button
+   - Added Crosshair import from lucide-react
+   - Added 4th tool: { id: 'directions', icon: Crosshair, label: 'Directions', activeClass: 'bg-cyan-500 text-white shadow-md shadow-cyan-500/30', shortcut: '4' }
+
+5. Updated page.tsx - Keyboard shortcut
+   - Added case '4' to setToolMode('directions') in keyboard shortcuts handler
+   - Directions tool indicator already existed in page.tsx (toolIndicator object)
+
+Verification:
+- `bun run lint` passes with zero errors/warnings
+- No new TypeScript errors introduced in modified files
+- Pre-existing TS errors in MapView.tsx (clustering event handler overloads) are unrelated

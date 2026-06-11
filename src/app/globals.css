@@ -466,3 +466,93 @@
 .animate-fade-in {
   animation: fade-in 0.3s ease-out;
 }
+
+/* ===== Style Card Active Ring ===== */
+.style-card-active {
+  box-shadow: 0 0 0 2px var(--primary), 0 0 0 4px var(--background);
+}
+
+/* ===== Ripple Effect for Buttons ===== */
+@keyframes ripple {
+  0% { transform: scale(0); opacity: 0.5; }
+  100% { transform: scale(4); opacity: 0; }
+}
+
+.animate-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.animate-ripple::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, currentColor 10%, transparent 10%);
+  transform: scale(0);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.animate-ripple:active::after {
+  animation: ripple 0.5s ease-out;
+}
+
+/* ===== Map Crosshair Cursor for Tools ===== */
+.cursor-crosshair-tool {
+  cursor: crosshair !important;
+}
+
+.cursor-pin-tool {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ef4444' stroke-width='2'%3E%3Cpath d='M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z'/%3E%3Ccircle cx='12' cy='9' r='2.5'/%3E%3C/svg%3E") 12 24, pointer;
+}
+
+/* ===== Tooltip Glow Effect ===== */
+.tooltip-glow {
+  box-shadow: 0 0 15px -3px rgba(16, 185, 129, 0.2);
+}
+
+/* ===== Stat Value Animation ===== */
+@keyframes stat-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.stat-updating {
+  animation: stat-pulse 0.6s ease-in-out;
+}
+
+/* ===== Sidebar Scroll Shadow ===== */
+.sidebar-scroll-shadow {
+  mask-image: linear-gradient(to bottom, transparent, black 8px, black calc(100% - 8px), transparent);
+}
+
+/* ===== Welcome Banner Gradient Animation ===== */
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient-border::before {
+  background: linear-gradient(135deg, oklch(0.6 0.2 160), oklch(0.5 0.15 200), oklch(0.55 0.18 280), oklch(0.6 0.2 160)) !important;
+  background-size: 300% 300% !important;
+  animation: gradient-shift 4s ease infinite !important;
+}
+
+/* ===== Glass Card Effect ===== */
+.glass-card {
+  background: oklch(1 0 0 / 60%);
+  backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid oklch(1 0 0 / 25%);
+}
+
+.dark .glass-card {
+  background: oklch(0.18 0 0 / 70%);
+  border: 1px solid oklch(1 0 0 / 8%);
+}
+
+/* ===== Smooth Number Transition ===== */
+.tabular-nums-smooth {
+  font-variant-numeric: tabular-nums;
+  transition: all 0.15s ease-out;
+}

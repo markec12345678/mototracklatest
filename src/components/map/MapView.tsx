@@ -72,6 +72,8 @@ export function MapView() {
   const markers = useMapStore((s) => s.markers)
   const selectedMarker = useMapStore((s) => s.selectedMarker)
   const measurePoints = useMapStore((s) => s.measurePoints)
+  const routePoints = useMapStore((s) => s.routePoints)
+  const routes = useMapStore((s) => s.routes)
   const geolocation = useMapStore((s) => s.geolocation)
   const layerVisibility = useMapStore((s) => s.layerVisibility)
   const clusteringEnabled = useMapStore((s) => s.clusteringEnabled)
@@ -147,6 +149,11 @@ export function MapView() {
         })
       } else if (mode === 'measure') {
         useMapStore.getState().addMeasurePoint({
+          longitude: e.lngLat.lng,
+          latitude: e.lngLat.lat,
+        })
+      } else if (mode === 'directions') {
+        useMapStore.getState().addRoutePoint({
           longitude: e.lngLat.lng,
           latitude: e.lngLat.lat,
         })
@@ -524,6 +531,192 @@ export function MapView() {
       features,
     })
   }, [measurePoints, mapLoadedVersion])
+
+  // Sync route drawing lines and points
+  useEffect(() => {
+    if (!map.current || !mapLoadedRef.current) return
+
+    const currentColor = useMapStore.getState().currentRouteColor
+
+    const sourceId = 'route-source'
+    const lineLayerId = 'route-line'
+    const pointLayerId = 'route-points'
+
+    // Add source if not exists
+    if (!map.current.getSource(sourceId)) {
+      map.current.addSource(sourceId, {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: [],
+        },
+      })
+    }
+
+    // Add line layer if not exists
+    if (!map.current.getLayer(lineLayerId)) {
+      map.current.addLayer({
+        id: lineLayerId,
+        type: 'line',
+        source: sourceId,
+        paint: {
+          'line-color': currentColor,
+          'line-width': 4,
+          'line-dasharray': [2, 2],
+        },
+        filter: ['==', '$type', 'LineString'],
+      })
+    } else {
+      // Update color
+      map.current.setPaintProperty(lineLayerId, 'line-color', currentColor)
+    }
+
+    // Add point layer if not exists
+    if (!map.current.getLayer(pointLayerId)) {
+      map.current.addLayer({
+        id: pointLayerId,
+        type: 'circle',
+        source: sourceId,
+        paint: {
+          'circle-radius': 7,
+          'circle-color': currentColor,
+          'circle-stroke-width': 2,
+          'circle-stroke-color': '#ffffff',
+        },
+        filter: ['==', '$type', 'Point'],
+      })
+    } else {
+      map.current.setPaintProperty(pointLayerId, 'circle-color', currentColor)
+    }
+
+    const features: GeoJSON.Feature[] = routePoints.map((p, idx) => ({
+      type: 'Feature',
+      properties: { index: idx },
+      geometry: {
+        type: 'Point',
+        coordinates: [p.longitude, p.latitude],
+      },
+    }))
+
+    if (routePoints.length > 1) {
+      features.push({
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'LineString',
+          coordinates: routePoints.map((p) => [p.longitude, p.latitude]),
+        },
+      })
+    }
+
+    const source = map.current.getSource(sourceId) as maplibregl.GeoJSONSource
+    source.setData({
+      type: 'FeatureCollection',
+      features,
+    })
+
+    // Render saved routes
+    routes.forEach((route) => {
+      const rSourceId = `route-source-${route.id}`
+      const rLineLayerId = `route-line-${route.id}`
+      const rPointLayerId = `route-points-${route.id}`
+
+      if (!map.current!.getSource(rSourceId)) {
+        map.current!.addSource(rSourceId, {
+          type: 'geojson',
+          data: {
+            type: 'FeatureCollection',
+            features: [],
+          },
+        })
+      }
+
+      if (!map.current!.getLayer(rLineLayerId)) {
+        map.current!.addLayer({
+          id: rLineLayerId,
+          type: 'line',
+          source: rSourceId,
+          paint: {
+            'line-color': route.color,
+            'line-width': 4,
+            'line-dasharray': [2, 2],
+          },
+          filter: ['==', '$type', 'LineString'],
+        })
+      }
+
+      if (!map.current!.getLayer(rPointLayerId)) {
+        map.current!.addLayer({
+          id: rPointLayerId,
+          type: 'circle',
+          source: rSourceId,
+          paint: {
+            'circle-radius': 7,
+            'circle-color': route.color,
+            'circle-stroke-width': 2,
+            'circle-stroke-color': '#ffffff',
+          },
+          filter: ['==', '$type', 'Point'],
+        })
+      }
+
+      const rFeatures: GeoJSON.Feature[] = route.points.map((p, idx) => ({
+        type: 'Feature',
+        properties: { index: idx },
+        geometry: {
+          type: 'Point',
+          coordinates: [p.longitude, p.latitude],
+        },
+      }))
+
+      if (route.points.length > 1) {
+        rFeatures.push({
+          type: 'Feature',
+          properties: {},
+          geometry: {
+            type: 'LineString',
+            coordinates: route.points.map((p) => [p.longitude, p.latitude]),
+          },
+        })
+      }
+
+      const rSource = map.current!.getSource(rSourceId) as maplibregl.GeoJSONSource
+      rSource.setData({
+        type: 'FeatureCollection',
+        features: rFeatures,
+      })
+    })
+
+    // Cleanup: remove sources/layers for deleted routes
+    const currentRouteIds = new Set(routes.map((r) => r.id))
+    const style = map.current.getStyle()
+    if (style?.layers) {
+      for (const layer of style.layers) {
+        const match = layer.id.match(/^route-(?:source|line|points)-(.+)$/)
+        if (match && !currentRouteIds.has(match[1])) {
+          if (map.current!.getLayer(layer.id)) map.current!.removeLayer(layer.id)
+          const srcId = `route-source-${match[1]}`
+          if (map.current!.getSource(srcId)) map.current!.removeSource(srcId)
+        }
+      }
+    }
+
+    return () => {
+      if (map.current) {
+        if (map.current.getLayer(pointLayerId)) map.current.removeLayer(pointLayerId)
+        if (map.current.getLayer(lineLayerId)) map.current.removeLayer(lineLayerId)
+        if (map.current.getSource(sourceId)) map.current.removeSource(sourceId)
+        routes.forEach((route) => {
+          const rSourceId = `route-source-${route.id}`
+          const rLineLayerId = `route-line-${route.id}`
+          const rPointLayerId = `route-points-${route.id}`
+          if (map.current!.getLayer(rPointLayerId)) map.current!.removeLayer(rPointLayerId)
+          if (map.current!.getLayer(rLineLayerId)) map.current!.removeLayer(rLineLayerId)
+          if (map.current!.getSource(rSourceId)) map.current!.removeSource(rSourceId)
+        })
+      }
+    }
+  }, [routePoints, routes, mapLoadedVersion])
 
   // Geolocation marker with accuracy circle
   useEffect(() => {
