@@ -14,13 +14,22 @@ const shortcuts = [
     { keys: ['1'], description: 'Navigate mode' },
     { keys: ['2'], description: 'Drop Pin mode' },
     { keys: ['3'], description: 'Measure mode' },
+    { keys: ['4'], description: 'Directions mode' },
     { keys: ['Esc'], description: 'Clear selection' },
+  ]},
+  { category: 'Map Styles', items: [
+    { keys: ['5'], description: 'Streets style' },
+    { keys: ['6'], description: 'Satellite style' },
+    { keys: ['7'], description: 'Dark style' },
+    { keys: ['8'], description: 'Terrain style' },
+    { keys: ['9'], description: 'Cycle all styles' },
   ]},
   { category: 'Navigation', items: [
     { keys: ['B'], description: 'Toggle sidebar' },
     { keys: ['F'], description: 'Toggle fullscreen' },
     { keys: ['L'], description: 'My location' },
     { keys: ['/'], description: 'Focus search' },
+    { keys: ['?'], description: 'Keyboard shortcuts' },
   ]},
   { category: 'Map', items: [
     { keys: ['Scroll'], description: 'Zoom in/out' },

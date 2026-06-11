@@ -26,6 +26,8 @@ import {
   Keyboard,
   Circle,
   Minus,
+  Copy,
+  Compass,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -393,11 +395,13 @@ export function MapSidebar() {
         {/* Sidebar content */}
         <div
           className={cn(
-            'w-80 bg-background/95 backdrop-blur-xl border-r flex flex-col shadow-2xl transition-opacity duration-200',
+            'w-80 bg-background/95 backdrop-blur-xl border-r flex flex-col sidebar-shadow sidebar-inner-glow relative transition-opacity duration-200',
             sidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
           )}
         >
-          <SidebarContent />
+          <div className="relative z-10 h-full flex flex-col">
+            <SidebarContent />
+          </div>
         </div>
       </div>
 
@@ -918,9 +922,7 @@ function ToolsTab({
                           Total Distance
                         </span>
                         <span className="text-lg font-bold text-amber-600 tabular-nums">
-                          {measureDistance < 1
-                            ? `${(measureDistance * 1000).toFixed(0)} m`
-                            : `${measureDistance.toFixed(2)} km`}
+                          {formatDistance(measureDistance)}
                         </span>
                       </div>
                     </div>
@@ -933,6 +935,37 @@ function ToolsTab({
                       {measurePoints.length}
                     </Badge>
                   </div>
+                  {/* Segment distances and bearings */}
+                  {measurePoints.length >= 2 && (
+                    <div className="space-y-1.5 max-h-48 overflow-y-auto">
+                      {measurePoints.slice(0, -1).map((p, i) => {
+                        const next = measurePoints[i + 1]
+                        const segDist = haversineDistance(p.latitude, p.longitude, next.latitude, next.longitude)
+                        const bearing = calculateBearing(p.latitude, p.longitude, next.latitude, next.longitude)
+                        return (
+                          <div
+                            key={`seg-${i}`}
+                            className="px-2.5 py-2 rounded-lg bg-muted/40 border border-border/30"
+                          >
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="text-[10px] text-muted-foreground font-medium">
+                                Segment {i + 1} → {i + 2}
+                              </span>
+                              <span className="text-xs font-semibold text-amber-600 tabular-nums">
+                                {formatDistance(segDist)}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                              <Compass className="h-3 w-3 text-muted-foreground" />
+                              <span className="text-[10px] text-muted-foreground tabular-nums">
+                                {formatBearing(bearing)}
+                              </span>
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  )}
                   <div className="space-y-1 max-h-32 overflow-y-auto">
                     {measurePoints.map((p, i) => (
                       <div
@@ -948,15 +981,45 @@ function ToolsTab({
                       </div>
                     ))}
                   </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="w-full h-8 text-xs"
-                    onClick={clearMeasurePoints}
-                  >
-                    <Trash2 className="h-3 w-3 mr-1.5" />
-                    Clear Measurement
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="flex-1 h-8 text-xs"
+                      onClick={clearMeasurePoints}
+                    >
+                      <Trash2 className="h-3 w-3 mr-1.5" />
+                      Clear
+                    </Button>
+                    {measurePoints.length >= 2 && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="flex-1 h-8 text-xs"
+                        onClick={() => {
+                          const lines: string[] = ['Measurement Results', '']
+                          measurePoints.slice(0, -1).forEach((p, i) => {
+                            const next = measurePoints[i + 1]
+                            const segDist = haversineDistance(p.latitude, p.longitude, next.latitude, next.longitude)
+                            const bearing = calculateBearing(p.latitude, p.longitude, next.latitude, next.longitude)
+                            lines.push(`Segment ${i + 1} → ${i + 2}: ${formatDistance(segDist)} (${formatBearing(bearing)})`)
+                          })
+                          if (measureDistance !== null) {
+                            lines.push('')
+                            lines.push(`Total Distance: ${formatDistance(measureDistance)}`)
+                          }
+                          navigator.clipboard.writeText(lines.join('\n')).then(() => {
+                            toast.success('Measurements copied to clipboard!')
+                          }).catch(() => {
+                            toast.error('Failed to copy measurements')
+                          })
+                        }}
+                      >
+                        <Copy className="h-3 w-3 mr-1.5" />
+                        Copy
+                      </Button>
+                    )}
+                  </div>
                 </div>
               )}
             </div>
@@ -1167,9 +1230,9 @@ function RoutesTab() {
     })
   }
 
-  const formatDistance = (d: number | null) => {
+  const formatDistanceLocal = (d: number | null) => {
     if (d === null) return ''
-    return d < 1 ? `${(d * 1000).toFixed(0)} m` : `${d.toFixed(2)} km`
+    return d < 1 ? `${Math.round(d * 1000)} m` : `${d.toFixed(1)} km`
   }
 
   return (
@@ -1269,7 +1332,7 @@ function RoutesTab() {
             {currentDistance !== null && (
               <div className="text-xs text-muted-foreground flex items-center gap-1.5 px-1">
                 <Ruler className="h-3 w-3" />
-                Total: {formatDistance(currentDistance)}
+                Total: {formatDistanceLocal(currentDistance)}
               </div>
             )}
 
@@ -1330,7 +1393,7 @@ function RoutesTab() {
                     <p className="text-sm font-medium truncate">{route.name}</p>
                     {route.distance !== null && (
                       <p className="text-xs text-muted-foreground">
-                        {formatDistance(route.distance)} · {route.points.length} points
+                        {formatDistanceLocal(route.distance)} · {route.points.length} points
                       </p>
                     )}
                   </div>
@@ -1382,4 +1445,34 @@ function haversineDistance(
       Math.sin(dLon / 2)
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
   return R * c
+}
+
+// Calculate bearing between two points (in degrees)
+function calculateBearing(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number
+): number {
+  const dLon = ((lon2 - lon1) * Math.PI) / 180
+  const y = Math.sin(dLon) * Math.cos((lat2 * Math.PI) / 180)
+  const x =
+    Math.cos((lat1 * Math.PI) / 180) * Math.sin((lat2 * Math.PI) / 180) -
+    Math.sin((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) * Math.cos(dLon)
+  const bearing = (Math.atan2(y, x) * 180) / Math.PI
+  return (bearing + 360) % 360
+}
+
+// Format bearing as compass direction with degrees (e.g., "NE 42°")
+function formatBearing(bearing: number): string {
+  const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']
+  const index = Math.round(bearing / 45) % 8
+  return `${directions[index]} ${Math.round(bearing)}°`
+}
+
+// Format distance: < 1km in meters, >= 1km in km with 1 decimal
+function formatDistance(km: number): string {
+  return km < 1
+    ? `${Math.round(km * 1000)} m`
+    : `${km.toFixed(1)} km`
 }

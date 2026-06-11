@@ -556,3 +556,119 @@
   font-variant-numeric: tabular-nums;
   transition: all 0.15s ease-out;
 }
+
+/* ===== Sidebar Shadow (right edge extends onto map) ===== */
+.sidebar-shadow {
+  box-shadow: 4px 0 24px -4px rgba(0, 0, 0, 0.12);
+}
+
+.dark .sidebar-shadow {
+  box-shadow: 4px 0 24px -4px rgba(0, 0, 0, 0.4);
+}
+
+/* ===== Weather Accent Borders ===== */
+.weather-accent-warm {
+  border-left: 4px solid #f59e0b;
+}
+
+.weather-accent-cold {
+  border-left: 4px solid #3b82f6;
+}
+
+.weather-accent-neutral {
+  border-left: 4px solid #6b7280;
+}
+
+/* ===== Tool Bounce Animation ===== */
+@keyframes tool-bounce {
+  0% { transform: scale(1); }
+  30% { transform: scale(0.9); }
+  60% { transform: scale(1.1); }
+  80% { transform: scale(0.97); }
+  100% { transform: scale(1); }
+}
+
+.tool-bounce {
+  animation: tool-bounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ===== Style Card Glow Effect ===== */
+.style-card-glow {
+  box-shadow: 0 0 12px 2px rgba(16, 185, 129, 0.25), 0 0 0 2px var(--primary), 0 0 0 4px var(--background);
+}
+
+.dark .style-card-glow {
+  box-shadow: 0 0 16px 4px rgba(16, 185, 129, 0.2), 0 0 0 2px var(--primary), 0 0 0 4px var(--background);
+}
+
+/* ===== Map Crosshair Overlay ===== */
+.map-crosshair-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.map-crosshair-overlay::before,
+.map-crosshair-overlay::after {
+  content: '';
+  position: absolute;
+  background: oklch(0.5 0 0 / 20%);
+}
+
+.map-crosshair-overlay::before {
+  /* Horizontal line */
+  top: 50%;
+  left: calc(50% - 20px);
+  width: 40px;
+  height: 1px;
+  transform: translateY(-0.5px);
+}
+
+.map-crosshair-overlay::after {
+  /* Vertical line */
+  left: 50%;
+  top: calc(50% - 20px);
+  height: 40px;
+  width: 1px;
+  transform: translateX(-0.5px);
+}
+
+.dark .map-crosshair-overlay::before,
+.dark .map-crosshair-overlay::after {
+  background: oklch(0.8 0 0 / 25%);
+}
+
+/* ===== Active Tool Dot Pulse Glow ===== */
+@keyframes dot-pulse-glow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  }
+}
+
+.tool-dot-glow {
+  animation: dot-pulse-glow 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ===== Sidebar Inner Glow (top) ===== */
+.sidebar-inner-glow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  background: linear-gradient(to bottom, oklch(0.6 0.15 160 / 6%), transparent);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.dark .sidebar-inner-glow::before {
+  background: linear-gradient(to bottom, oklch(0.6 0.15 160 / 8%), transparent);
+}

@@ -22,7 +22,8 @@ import {
   Bookmark,
   ExternalLink,
 } from 'lucide-react'
-import { type SavedLocation } from '@/lib/map-store'
+import { type SavedLocation, useMapStore } from '@/lib/map-store'
+import { toast } from 'sonner'
 
 const categories = [
   { id: 'general', label: 'General', color: '#6b7280', icon: '📌' },
@@ -165,6 +166,21 @@ export function LocationDetailDrawer({
             <Button
               variant="outline"
               className="w-full justify-start rounded-xl"
+              onClick={() => {
+                const currentStyle = useMapStore.getState().currentStyle
+                const shareUrl = `${window.location.origin}${window.location.pathname}?lat=${location.latitude.toFixed(5)}&lng=${location.longitude.toFixed(5)}&zoom=15&style=${currentStyle.id}`
+                navigator.clipboard.writeText(shareUrl).then(() => {
+                  toast.success('Location link copied!')
+                }).catch(() => {
+                  const textArea = document.createElement('textarea')
+                  textArea.value = shareUrl
+                  document.body.appendChild(textArea)
+                  textArea.select()
+                  document.execCommand('copy')
+                  document.body.removeChild(textArea)
+                  toast.success('Location link copied!')
+                })
+              }}
             >
               <Share2 className="h-4 w-4 mr-2" />
               Share Location

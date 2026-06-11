@@ -171,6 +171,32 @@ export default function Home() {
         case '4':
           setToolMode('directions')
           break
+        case '5': {
+          const streets = MAP_STYLES.find((s) => s.id === 'streets')
+          if (streets) useMapStore.getState().setCurrentStyle(streets)
+          break
+        }
+        case '6': {
+          const satellite = MAP_STYLES.find((s) => s.id === 'satellite')
+          if (satellite) useMapStore.getState().setCurrentStyle(satellite)
+          break
+        }
+        case '7': {
+          const dark = MAP_STYLES.find((s) => s.id === 'dark')
+          if (dark) useMapStore.getState().setCurrentStyle(dark)
+          break
+        }
+        case '8': {
+          const terrain = MAP_STYLES.find((s) => s.id === 'terrain')
+          if (terrain) useMapStore.getState().setCurrentStyle(terrain)
+          break
+        }
+        case '9': {
+          const currentIdx = MAP_STYLES.findIndex((s) => s.id === useMapStore.getState().currentStyle.id)
+          const nextIdx = (currentIdx + 1) % MAP_STYLES.length
+          useMapStore.getState().setCurrentStyle(MAP_STYLES[nextIdx])
+          break
+        }
         case '/':
           e.preventDefault()
           document.getElementById('map-search-input')?.focus()
@@ -198,7 +224,7 @@ export default function Home() {
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [setToolMode, setSidebarOpen, toggleFullscreen, handleLocateMe])
+  }, [setToolMode, setSidebarOpen, toggleFullscreen, handleLocateMe, setShortcutsOpen])
 
   const toolIndicator: Record<
     ToolMode,
@@ -232,6 +258,41 @@ export default function Home() {
     <div className="relative w-screen h-screen overflow-hidden bg-background">
       {/* Map */}
       <MapView />
+
+      {/* Crosshair overlay for measure/mark/directions mode */}
+      {toolMode !== 'navigate' && (
+        <div className="absolute inset-0 pointer-events-none z-[15]" aria-hidden="true">
+          {/* Horizontal line */}
+          <div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+            style={{
+              width: 60,
+              height: 2,
+              background: toolMode === 'mark' ? 'rgba(239,68,68,0.6)' : toolMode === 'measure' ? 'rgba(245,158,11,0.6)' : 'rgba(6,182,212,0.6)',
+              borderRadius: 1,
+            }}
+          />
+          {/* Vertical line */}
+          <div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+            style={{
+              width: 2,
+              height: 60,
+              background: toolMode === 'mark' ? 'rgba(239,68,68,0.6)' : toolMode === 'measure' ? 'rgba(245,158,11,0.6)' : 'rgba(6,182,212,0.6)',
+              borderRadius: 1,
+            }}
+          />
+          {/* Center dot */}
+          <div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
+            style={{
+              width: 8,
+              height: 8,
+              background: toolMode === 'mark' ? 'rgba(239,68,68,0.7)' : toolMode === 'measure' ? 'rgba(245,158,11,0.7)' : 'rgba(6,182,212,0.7)',
+            }}
+          />
+        </div>
+      )}
 
       {/* Sidebar - responsive */}
       <MapSidebar />

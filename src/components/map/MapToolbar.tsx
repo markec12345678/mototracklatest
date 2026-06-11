@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useRef } from 'react'
 import { MapPin, Navigation, Ruler, Crosshair } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
@@ -43,6 +44,54 @@ const tools: {
   },
 ]
 
+function ToolButton({ tool, isActive, onClick }: {
+  tool: typeof tools[number]
+  isActive: boolean
+  onClick: () => void
+}) {
+  const buttonRef = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    if (isActive && buttonRef.current) {
+      buttonRef.current.classList.remove('tool-bounce')
+      // Trigger reflow to restart animation
+      void buttonRef.current.offsetWidth
+      buttonRef.current.classList.add('tool-bounce')
+    }
+  }, [isActive])
+
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button
+          ref={buttonRef}
+          variant="ghost"
+          size="icon"
+          className={cn(
+            'h-10 w-10 rounded-xl transition-all duration-200 relative',
+            isActive
+              ? tool.activeClass
+              : 'hover:bg-accent'
+          )}
+          onClick={onClick}
+          aria-label={`${tool.label} tool (press ${tool.shortcut})`}
+        >
+          {tool.icon}
+          {isActive && (
+            <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-white tool-dot-glow" />
+          )}
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent side="right" className="text-xs font-medium flex items-center gap-2 relative">
+        {/* Tooltip arrow pointing left */}
+        <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 rotate-45 bg-popover border-l border-b border-border" />
+        {tool.label}
+        <kbd className="text-[10px] px-1 py-0.5 rounded border bg-muted/50 font-mono">{tool.shortcut}</kbd>
+      </TooltipContent>
+    </Tooltip>
+  )
+}
+
 export function MapToolbar() {
   const { toolMode, setToolMode } = useMapStore()
 
@@ -50,31 +99,12 @@ export function MapToolbar() {
     <TooltipProvider delayDuration={200}>
       <div className="flex flex-col gap-1.5 bg-background/90 backdrop-blur-md border border-border/50 rounded-2xl shadow-lg p-1.5">
         {tools.map((tool) => (
-          <Tooltip key={tool.id}>
-            <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className={cn(
-                  'h-10 w-10 rounded-xl transition-all duration-200 relative',
-                  toolMode === tool.id
-                    ? tool.activeClass
-                    : 'hover:bg-accent'
-                )}
-                onClick={() => setToolMode(tool.id)}
-                aria-label={`${tool.label} tool (press ${tool.shortcut})`}
-              >
-                {tool.icon}
-                {toolMode === tool.id && (
-                  <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-white animate-pulse" />
-                )}
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="right" className="text-xs font-medium flex items-center gap-2">
-              {tool.label}
-              <kbd className="text-[10px] px-1 py-0.5 rounded border bg-muted/50 font-mono">{tool.shortcut}</kbd>
-            </TooltipContent>
-          </Tooltip>
+          <ToolButton
+            key={tool.id}
+            tool={tool}
+            isActive={toolMode === tool.id}
+            onClick={() => setToolMode(tool.id)}
+          />
         ))}
       </div>
     </TooltipProvider>

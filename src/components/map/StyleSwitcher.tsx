@@ -7,6 +7,18 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { useMapStore, MAP_STYLES } from '@/lib/map-store'
 import { cn } from '@/lib/utils'
 
+// Distinctive gradient backgrounds for each style preview card (inline styles)
+const STYLE_GRADIENTS: Record<string, string> = {
+  streets: 'linear-gradient(135deg, #e8f5e9, #b2dfdb, #80cbc4)',
+  satellite: 'linear-gradient(135deg, #1b5e20, #2e7d32, #1b5e20)',
+  hybrid: 'linear-gradient(135deg, #1b5e20, #4caf50, #1b5e20)',
+  terrain: 'linear-gradient(135deg, #f9a825, #ff8f00, #e65100)',
+  topo: 'linear-gradient(135deg, #fff9c4, #f9a825, #ff8f00)',
+  dark: 'linear-gradient(135deg, #212121, #424242, #616161)',
+  outdoor: 'linear-gradient(135deg, #c8e6c9, #66bb6a, #43a047)',
+  osm: 'linear-gradient(135deg, #c8e6c9, #a5d6a7, #81c784)',
+}
+
 export function StyleSwitcher() {
   const { currentStyle, setCurrentStyle } = useMapStore()
   const [open, setOpen] = useState(false)
@@ -38,6 +50,7 @@ export function StyleSwitcher() {
             {MAP_STYLES.map((style) => {
               const preview = style.preview
               const isActive = currentStyle.id === style.id
+              const gradientBg = STYLE_GRADIENTS[style.id] || 'linear-gradient(135deg, #e0e0e0, #bdbdbd)'
               return (
                 <button
                   key={style.id}
@@ -48,8 +61,8 @@ export function StyleSwitcher() {
                   className={cn(
                     'relative flex flex-col items-center gap-1.5 p-2 rounded-xl border text-center transition-all duration-200 group',
                     isActive
-                      ? 'style-card-active border-primary/40 bg-primary/8 scale-[1.02] ring-2 ring-primary ring-offset-2 ring-offset-background'
-                      : 'hover:bg-accent border-transparent hover:border-border/50 hover:scale-[1.01]'
+                      ? 'style-card-glow border-primary/40 bg-primary/8 scale-[1.02]'
+                      : 'hover:bg-accent border-transparent hover:border-border/50 hover:scale-[1.05]'
                   )}
                 >
                   {/* Subtle gradient overlay on active card */}
@@ -58,11 +71,12 @@ export function StyleSwitcher() {
                   )}
                   <div
                     className={cn(
-                      'w-full h-12 rounded-lg bg-gradient-to-br flex items-center justify-center text-lg shadow-sm transition-all duration-200',
-                      isActive ? 'shadow-md scale-[1.02]' : 'group-hover:shadow-md group-hover:scale-[1.03]'
+                      'w-full h-12 rounded-lg flex items-center justify-center text-lg shadow-sm transition-all duration-200',
+                      isActive ? 'shadow-md scale-[1.02]' : 'group-hover:shadow-md group-hover:scale-[1.05]'
                     )}
+                    style={{ background: gradientBg }}
                   >
-                    <span className="relative z-10">{preview.emoji}</span>
+                    <span className="relative z-10 drop-shadow-sm">{preview.emoji}</span>
                   </div>
                   <div className="w-full min-w-0 relative z-10">
                     <p className={cn(
