@@ -2,10 +2,11 @@
 
 import { useEffect, useState, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { CloudSun, Droplets, Wind, Thermometer, X, Loader2, Minus } from 'lucide-react'
+import { CloudSun, Droplets, Wind, Thermometer, X, Loader2, Minus, Sun, Leaf, ChevronUp } from 'lucide-react'
 import { useMapStore } from '@/lib/map-store'
 import { cn } from '@/lib/utils'
 import { getWeatherInfo, getWindDirection } from '@/lib/weather-utils'
+import { WeatherAlerts, getAlertsFromConditions, type WeatherAlert } from '@/components/map/WeatherAlerts'
 
 interface WeatherData {
   current: {
@@ -32,15 +33,50 @@ interface WeatherData {
   }
 }
 
+interface ForecastDay {
+  date: string
+  tempMax: number
+  tempMin: number
+  precipitation: number
+  precipitationProbability: number | null
+  windSpeedMax: number
+  weatherCode: number
+  uvIndexMax: number | null
+}
+
+interface ForecastData {
+  forecast: ForecastDay[]
+  currentUv: number | null
+  aqi: { index: number; description: string } | null
+}
+
+function getUvLevel(uv: number): { label: string; color: string } {
+  if (uv <= 2) return { label: 'Low', color: 'text-green-500' }
+  if (uv <= 5) return { label: 'Moderate', color: 'text-yellow-500' }
+  if (uv <= 7) return { label: 'High', color: 'text-orange-500' }
+  if (uv <= 10) return { label: 'Very High', color: 'text-red-500' }
+  return { label: 'Extreme', color: 'text-purple-500' }
+}
+
+function getAqiColor(index: number): string {
+  if (index <= 25) return 'text-green-500'
+  if (index <= 50) return 'text-yellow-500'
+  if (index <= 75) return 'text-orange-500'
+  return 'text-red-500'
+}
+
 export function WeatherPanel() {
   const { weatherEnabled, center, setWeatherEnabled } = useMapStore()
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null)
+  const [forecastData, setForecastData] = useState<ForecastData | null>(null)
   const [loading, setLoading] = useState(false)
   const [locationName, setLocationName] = useState('')
   const [error, setError] = useState<string | null>(null)
   const lastFetchCenter = useRef<[number, number] | null>(null)
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [minimized, setMinimized] = useState(false)
+  const [selectedDay, setSelectedDay] = useState<number | null>(null)
+  const alertsEmitted = useRef<Set<string>>(new Set())
 
   const fetchWeather = useCallback(async (lat: number, lng: number) => {
     setLoading(true)
@@ -52,6 +88,35 @@ export function WeatherPanel() {
       }
       const data: WeatherData = await res.json()
       setWeatherData(data)
+
+      // Fetch forecast + UV + AQI
+      const forecastRes = await fetch(`/api/weather-forecast?lat=${lat.toFixed(4)}&lng=${lng.toFixed(4)}`)
+      if (forecastRes.ok) {
+        const fData: ForecastData = await forecastRes.json()
+        setForecastData(fData)
+
+        // Generate weather alerts and push to NotificationCenter
+        const todayForecast = fData.forecast[0]
+        const alerts: WeatherAlert[] = getAlertsFromConditions({
+          windSpeed: data.current.wind_speed_10m,
+          precipitation: todayForecast?.precipitation,
+          tempMax: todayForecast?.tempMax,
+          tempMin: todayForecast?.tempMin,
+          weatherCode: data.current.weather_code,
+        })
+
+        for (const alert of alerts) {
+          const key = `${alert.type}-${alert.severity}`
+          if (!alertsEmitted.current.has(key)) {
+            alertsEmitted.current.add(key)
+            useMapStore.getState().addAppNotification({
+              type: 'weather',
+              message: `⚠️ ${alert.title}: ${alert.description}`,
+              icon: 'weather',
+            })
+          }
+        }
+      }
 
       // Try reverse geocoding for location name
       try {
@@ -121,8 +186,11 @@ export function WeatherPanel() {
   useEffect(() => {
     if (!weatherEnabled) {
       setWeatherData(null)
+      setForecastData(null)
       setLocationName('')
       setError(null)
+      setSelectedDay(null)
+      alertsEmitted.current.clear()
     }
   }, [weatherEnabled])
 
@@ -137,7 +205,7 @@ export function WeatherPanel() {
         : 'weather-accent-neutral'
     : 'weather-accent-neutral'
 
-  // Get next hours of forecast (from current hour) — 4 on mobile, 6 on desktop
+  // Get next hours of forecast (from current hour)
   const now = new Date()
   const currentHourIndex = weatherData?.hourly.time.findIndex(t => new Date(t) >= now) ?? -1
   const forecastCount = 6
@@ -156,6 +224,19 @@ export function WeatherPanel() {
     Math.max(0, currentHourIndex) + forecastCount
   ) ?? []
 
+  // Current conditions for alerts
+  const todayForecast = forecastData?.forecast[0]
+  const currentAlerts = weatherData ? getAlertsFromConditions({
+    windSpeed: weatherData.current.wind_speed_10m,
+    precipitation: todayForecast?.precipitation,
+    tempMax: todayForecast?.tempMax,
+    tempMin: todayForecast?.tempMin,
+    weatherCode: weatherData.current.weather_code,
+  }) : []
+
+  const currentUv = forecastData?.currentUv ?? null
+  const aqi = forecastData?.aqi ?? null
+
   return (
     <AnimatePresence>
       <motion.div
@@ -167,7 +248,7 @@ export function WeatherPanel() {
           'glass-card rounded-2xl shadow-xl overflow-hidden',
           accentClass
         )}
-        style={{ minWidth: minimized ? 48 : undefined, maxWidth: 300, width: minimized ? 48 : undefined, backdropFilter: 'blur(20px) saturate(180%)' }}
+        style={{ minWidth: minimized ? 48 : undefined, maxWidth: 320, width: minimized ? 48 : undefined, backdropFilter: 'blur(20px) saturate(180%)' }}
       >
         {/* Gradient header */}
         <div className={`relative bg-gradient-to-r ${weatherInfo?.gradient || 'from-gray-400/20 to-gray-200/10'}`}>
@@ -240,6 +321,19 @@ export function WeatherPanel() {
 
         {!minimized && (
           <div className="px-2.5 sm:px-3 pb-2.5 sm:pb-3">
+            {/* Weather Alerts */}
+            {currentAlerts.length > 0 && (
+              <div className="mb-2">
+                <WeatherAlerts
+                  windSpeed={weatherData?.current.wind_speed_10m}
+                  precipitation={todayForecast?.precipitation}
+                  tempMax={todayForecast?.tempMax}
+                  tempMin={todayForecast?.tempMin}
+                  weatherCode={weatherData?.current.weather_code}
+                />
+              </div>
+            )}
+
             {/* Location name */}
             {locationName && (
               <p className="text-[9px] sm:text-[10px] text-muted-foreground mb-1.5 sm:mb-2 flex items-center gap-1">
@@ -272,6 +366,34 @@ export function WeatherPanel() {
                     {weatherData.current.precipitation.toFixed(1)} mm
                   </span>
                 </div>
+              </div>
+            )}
+
+            {/* UV Index and AQI row */}
+            {(currentUv !== null || aqi !== null) && (
+              <div className="grid grid-cols-2 gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
+                {currentUv !== null && (
+                  <div className="flex items-center gap-1.5 p-1 sm:p-1.5 rounded-lg bg-background/50">
+                    <Sun className={cn('h-3 w-3 sm:h-3.5 sm:w-3.5', getUvLevel(currentUv).color)} />
+                    <div>
+                      <p className="text-[8px] sm:text-[10px] text-muted-foreground">UV Index</p>
+                      <p className={cn('text-[10px] sm:text-xs font-semibold tabular-nums', getUvLevel(currentUv).color)}>
+                        {currentUv.toFixed(1)} · {getUvLevel(currentUv).label}
+                      </p>
+                    </div>
+                  </div>
+                )}
+                {aqi !== null && (
+                  <div className="flex items-center gap-1.5 p-1 sm:p-1.5 rounded-lg bg-background/50">
+                    <Leaf className={cn('h-3 w-3 sm:h-3.5 sm:w-3.5', getAqiColor(aqi.index))} />
+                    <div>
+                      <p className="text-[8px] sm:text-[10px] text-muted-foreground">Air Quality</p>
+                      <p className={cn('text-[10px] sm:text-xs font-semibold tabular-nums', getAqiColor(aqi.index))}>
+                        {aqi.index} · {aqi.description}
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
@@ -321,20 +443,22 @@ export function WeatherPanel() {
             )}
 
             {/* 7-Day Forecast */}
-            {weatherData?.daily && weatherData.daily.time.length > 0 && (
+            {forecastData && forecastData.forecast.length > 0 && (
               <div className="mt-1.5 sm:mt-2">
                 <p className="text-[9px] sm:text-[10px] text-muted-foreground font-medium mb-1 sm:mb-1.5">7-Day Forecast</p>
-                <div className="flex gap-1 sm:gap-1.5 overflow-x-auto snap-x snap-mandatory pb-1 sm:grid sm:grid-cols-7 sm:overflow-x-visible" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-                  {weatherData.daily.time.map((dateStr, i) => {
-                    const date = new Date(dateStr + 'T00:00:00')
+                <div className="flex gap-1 sm:gap-1.5 overflow-x-auto snap-x snap-mandatory pb-1" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                  {forecastData.forecast.map((day, i) => {
+                    const date = new Date(day.date + 'T00:00:00')
                     const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
                     const isToday = new Date().toDateString() === date.toDateString()
-                    const dayInfo = getWeatherInfo(weatherData.daily!.weather_code[i])
+                    const dayInfo = getWeatherInfo(day.weatherCode)
+                    const isSelected = selectedDay === i
                     return (
-                      <div
+                      <button
                         key={i}
-                        className={`flex flex-col items-center gap-0.5 px-1.5 py-1 sm:px-2 sm:py-1.5 rounded-lg shrink-0 snap-start transition-colors min-w-[44px] sm:min-w-[52px] ${
-                          isToday ? 'bg-primary/10' : 'bg-background/50'
+                        onClick={() => setSelectedDay(isSelected ? null : i)}
+                        className={`flex flex-col items-center gap-0.5 px-1.5 py-1 sm:px-2 sm:py-1.5 rounded-lg shrink-0 snap-start transition-all min-w-[44px] sm:min-w-[52px] text-left ${
+                          isSelected ? 'bg-primary/15 ring-1 ring-primary/30' : isToday ? 'bg-primary/10' : 'bg-background/50 hover:bg-background/70'
                         }`}
                       >
                         <span className="text-[8px] sm:text-[9px] font-medium text-muted-foreground">
@@ -342,20 +466,76 @@ export function WeatherPanel() {
                         </span>
                         <span className="text-xs sm:text-sm leading-none">{dayInfo.emoji}</span>
                         <span className="text-[10px] sm:text-[11px] font-semibold tabular-nums">
-                          {weatherData.daily!.temperature_2m_max[i].toFixed(0)}°
+                          {day.tempMax.toFixed(0)}°
                         </span>
                         <span className="text-[8px] sm:text-[9px] text-muted-foreground tabular-nums">
-                          {weatherData.daily!.temperature_2m_min[i].toFixed(0)}°
+                          {day.tempMin.toFixed(0)}°
                         </span>
-                        {weatherData.daily!.precipitation_sum[i] > 0 && (
+                        {day.precipitation > 0 && (
                           <span className="text-[8px] text-sky-500 tabular-nums">
-                            {weatherData.daily!.precipitation_sum[i].toFixed(1)}mm
+                            {day.precipitation.toFixed(1)}mm
                           </span>
                         )}
-                      </div>
+                        {isSelected && <ChevronUp className="h-2.5 w-2.5 text-muted-foreground" />}
+                        {!isSelected && i === selectedDay && null}
+                      </button>
                     )
                   })}
                 </div>
+
+                {/* Selected day detail */}
+                <AnimatePresence>
+                  {selectedDay !== null && forecastData.forecast[selectedDay] && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="overflow-hidden"
+                    >
+                      {(() => {
+                        const day = forecastData.forecast[selectedDay]
+                        const dayInfo = getWeatherInfo(day.weatherCode)
+                        const date = new Date(day.date + 'T00:00:00')
+                        return (
+                          <div className="mt-1.5 p-2 rounded-lg bg-background/60 border border-border/30 space-y-1">
+                            <p className="text-[10px] font-semibold">
+                              {date.toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric' })}
+                            </p>
+                            <div className="flex items-center gap-2">
+                              <span className="text-lg">{dayInfo.emoji}</span>
+                              <span className="text-[10px] text-muted-foreground">{dayInfo.description}</span>
+                            </div>
+                            <div className="grid grid-cols-2 gap-1 text-[9px]">
+                              <div className="flex items-center gap-1">
+                                <Thermometer className="h-2.5 w-2.5 text-red-400" />
+                                <span>High {day.tempMax.toFixed(1)}°C</span>
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <Thermometer className="h-2.5 w-2.5 text-blue-400" />
+                                <span>Low {day.tempMin.toFixed(1)}°C</span>
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <Droplets className="h-2.5 w-2.5 text-sky-400" />
+                                <span>{day.precipitation.toFixed(1)} mm{day.precipitationProbability !== null ? ` (${day.precipitationProbability}%)` : ''}</span>
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <Wind className="h-2.5 w-2.5 text-teal-400" />
+                                <span>{day.windSpeedMax.toFixed(0)} km/h</span>
+                              </div>
+                              {day.uvIndexMax !== null && (
+                                <div className="flex items-center gap-1">
+                                  <Sun className={cn('h-2.5 w-2.5', getUvLevel(day.uvIndexMax).color)} />
+                                  <span>UV {day.uvIndexMax.toFixed(1)} · {getUvLevel(day.uvIndexMax).label}</span>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )
+                      })()}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             )}
 

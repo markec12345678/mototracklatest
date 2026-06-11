@@ -39,6 +39,8 @@ import { LanguageSelector } from '@/components/map/LanguageSelector'
 import { NotificationCenter } from '@/components/map/NotificationCenter'
 import { AISuggestionsPanel } from '@/components/map/AISuggestionsPanel'
 import { RouteAnalyticsPanel } from '@/components/map/RouteAnalyticsPanel'
+import { DistanceMatrix } from '@/components/map/DistanceMatrix'
+import { StyleGallery } from '@/components/map/StyleGallery'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
@@ -65,6 +67,8 @@ import {
   Globe2,
   Type,
   Activity,
+  GitBranch,
+  Save,
 } from 'lucide-react'
 
 export default function Home() {
@@ -78,6 +82,10 @@ export default function Home() {
   const [shareDialogOpen, setShareDialogOpen] = useState(false)
   const [geofenceDialogOpen, setGeofenceDialogOpen] = useState(false)
   const [aiSuggestionsOpen, setAiSuggestionsOpen] = useState(false)
+  const [distanceMatrixOpen, setDistanceMatrixOpen] = useState(false)
+  const [styleGalleryOpen, setStyleGalleryOpen] = useState(false)
+  const [snapshotName, setSnapshotName] = useState('')
+  const [snapshotSaveOpen, setSnapshotSaveOpen] = useState(false)
   const [geofenceCoords, setGeofenceCoords] = useState<{ lat: number; lng: number } | null>(null)
   const [showWelcome, setShowWelcome] = useState(true)
   const [isFullscreen, setIsFullscreen] = useState(false)
@@ -547,7 +555,7 @@ export default function Home() {
         </div>
         <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
           <UndoRedoBar />
-          <StyleSwitcher />
+          <StyleSwitcher onBrowseAll={() => setStyleGalleryOpen(true)} />
           <Button
             variant="outline"
             size="icon"
@@ -562,6 +570,26 @@ export default function Home() {
             aria-label="Toggle style comparison"
           >
             <GitCompare className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => setDistanceMatrixOpen(true)}
+            title="Distance Matrix"
+            aria-label="Distance matrix calculator"
+          >
+            <GitBranch className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => setSnapshotSaveOpen(true)}
+            title="Save Map Snapshot"
+            aria-label="Save map snapshot"
+          >
+            <Save className="h-4 w-4" />
           </Button>
           <ThemeToggle />
           <LanguageSelector />
@@ -1008,6 +1036,69 @@ export default function Home() {
         latitude={geofenceCoords?.lat}
         longitude={geofenceCoords?.lng}
       />
+
+      {/* Distance Matrix Dialog */}
+      <DistanceMatrix open={distanceMatrixOpen} onOpenChange={setDistanceMatrixOpen} />
+
+      {/* Style Gallery Dialog */}
+      <StyleGallery open={styleGalleryOpen} onOpenChange={setStyleGalleryOpen} />
+
+      {/* Snapshot Save Dialog */}
+      {snapshotSaveOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setSnapshotSaveOpen(false)}>
+          <div
+            className="bg-background rounded-2xl shadow-2xl p-6 w-80 space-y-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="text-sm font-bold flex items-center gap-2">
+              <Camera className="h-4 w-4 text-emerald-500" />
+              Save Map Snapshot
+            </h3>
+            <p className="text-xs text-muted-foreground">Save the current map view, position, and markers as a snapshot you can restore later.</p>
+            <input
+              type="text"
+              placeholder="Snapshot name..."
+              value={snapshotName}
+              onChange={(e) => setSnapshotName(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  const name = snapshotName.trim() || `Snapshot ${useMapStore.getState().snapshots.length + 1}`
+                  useMapStore.getState().saveSnapshot(name)
+                  setSnapshotName('')
+                  setSnapshotSaveOpen(false)
+                  toast.success(`Snapshot "${name}" saved`)
+                }
+              }}
+              className="w-full h-9 px-3 text-sm rounded-lg border bg-background focus:outline-none focus:ring-2 focus:ring-primary/50"
+              autoFocus
+            />
+            <div className="flex gap-2 justify-end">
+              <Button
+                size="sm"
+                variant="outline"
+                className="h-8 text-xs"
+                onClick={() => setSnapshotSaveOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                size="sm"
+                className="h-8 text-xs bg-emerald-600 hover:bg-emerald-700 text-white"
+                onClick={() => {
+                  const name = snapshotName.trim() || `Snapshot ${useMapStore.getState().snapshots.length + 1}`
+                  useMapStore.getState().saveSnapshot(name)
+                  setSnapshotName('')
+                  setSnapshotSaveOpen(false)
+                  toast.success(`Snapshot "${name}" saved`)
+                }}
+              >
+                <Camera className="h-3 w-3 mr-1" />
+                Save
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Track Recorder Panel */}
       <TrackRecorder />

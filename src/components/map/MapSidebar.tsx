@@ -70,6 +70,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { ElevationProfile } from '@/components/map/ElevationProfile'
 import { GeofenceManager } from '@/components/map/GeofenceManager'
 import { RouteAnalyticsPanel } from '@/components/map/RouteAnalyticsPanel'
+import { SnapshotManager } from '@/components/map/SnapshotManager'
 
 function SidebarSkeleton() {
   return (
@@ -1870,6 +1871,11 @@ function ToolsTab({
 
         {/* Geofences */}
         <GeofenceSection />
+
+        <Separator />
+
+        {/* Map Snapshots */}
+        <SnapshotManager />
 
         <Separator />
 

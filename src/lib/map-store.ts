@@ -263,6 +263,19 @@ export interface SelectedBuilding {
   levels: number
 }
 
+export interface MapSnapshot {
+  id: string
+  name: string
+  center: [number, number]
+  zoom: number
+  bearing: number
+  pitch: number
+  style: string
+  markers: MapMarker[]
+  timestamp: number
+  thumbnail?: string
+}
+
 export type ToolMode = 'navigate' | 'mark' | 'measure' | 'directions' | 'draw' | 'area' | 'annotate'
 
 export type AppLanguage = 'en' | 'sl' | 'de' | 'hr' | 'it' | 'fr' | 'es'
@@ -465,6 +478,12 @@ interface MapState {
   markAllNotificationsRead: () => void
   clearAppNotifications: () => void
 
+  // Map snapshots
+  snapshots: MapSnapshot[]
+  saveSnapshot: (name: string) => void
+  loadSnapshot: (id: string) => void
+  deleteSnapshot: (id: string) => void
+
   // Actions
   setCenter: (center: [number, number]) => void
   setZoom: (zoom: number) => void
@@ -654,6 +673,9 @@ export const useMapStore = create<MapState>()(
 
       // App notification defaults
       appNotifications: [],
+
+      // Snapshot defaults
+      snapshots: [],
 
       setCenter: (center) => set({ center }),
       setZoom: (zoom) => set({ zoom }),
@@ -1407,6 +1429,56 @@ export const useMapStore = create<MapState>()(
       })),
 
       clearAppNotifications: () => set({ appNotifications: [] }),
+
+      // Snapshot actions
+      saveSnapshot: (name) => set((state) => {
+        const snapshot: MapSnapshot = {
+          id: `snapshot-${Date.now()}`,
+          name,
+          center: [...state.center] as [number, number],
+          zoom: state.zoom,
+          bearing: state.bearing,
+          pitch: state.pitch,
+          style: state.currentStyle.id,
+          markers: [...state.markers],
+          timestamp: Date.now(),
+        }
+        return { snapshots: [...state.snapshots, snapshot] }
+      }),
+
+      loadSnapshot: (id) => {
+        const snapshot = useMapStore.getState().snapshots.find((s) => s.id === id)
+        if (!snapshot) return
+
+        const style = MAP_STYLES.find((s) => s.id === snapshot.style) || MAP_STYLES[0]
+
+        // Fly to position
+        if (typeof window !== 'undefined') {
+          const flyTo = (window as unknown as Record<string, (lng: number, lat: number, z?: number) => void>).__mapFlyTo
+          if (flyTo) {
+            flyTo(snapshot.center[0], snapshot.center[1], snapshot.zoom)
+          }
+        }
+
+        set({
+          center: [...snapshot.center] as [number, number],
+          zoom: snapshot.zoom,
+          bearing: snapshot.bearing,
+          pitch: snapshot.pitch,
+          currentStyle: style,
+          markers: [...snapshot.markers],
+        })
+
+        useMapStore.getState().pushNotification({
+          type: 'general',
+          icon: 'camera',
+          message: `Restored snapshot: ${snapshot.name}`,
+        })
+      },
+
+      deleteSnapshot: (id) => set((state) => ({
+        snapshots: state.snapshots.filter((s) => s.id !== id),
+      })),
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -1442,6 +1514,7 @@ export const useMapStore = create<MapState>()(
         geofences: state.geofences,
         language: state.language,
         appNotifications: state.appNotifications,
+        snapshots: state.snapshots,
       }),
     }
   )

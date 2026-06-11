@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Check, Palette, GitCompare } from 'lucide-react'
+import { Check, Palette, GitCompare, LayoutGrid } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { useMapStore, MAP_STYLES } from '@/lib/map-store'
@@ -20,7 +20,11 @@ const STYLE_GRADIENTS: Record<string, string> = {
   osm: 'linear-gradient(135deg, #c8e6c9, #a5d6a7, #81c784)',
 }
 
-export function StyleSwitcher() {
+interface StyleSwitcherProps {
+  onBrowseAll?: () => void
+}
+
+export function StyleSwitcher({ onBrowseAll }: StyleSwitcherProps) {
   const { currentStyle, setCurrentStyle, comparisonEnabled } = useMapStore()
   const [open, setOpen] = useState(false)
 
@@ -122,6 +126,21 @@ export function StyleSwitcher() {
                 </button>
               )
             })}
+          </div>
+          {/* Browse All Styles button */}
+          <div className="pt-1 border-t mt-1">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="w-full h-8 text-xs gap-2 hover:bg-primary/5 hover:text-primary"
+              onClick={() => {
+                setOpen(false)
+                onBrowseAll?.()
+              }}
+            >
+              <LayoutGrid className="h-3.5 w-3.5" />
+              Browse All Styles
+            </Button>
           </div>
         </div>
       </PopoverContent>
