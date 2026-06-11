@@ -45,6 +45,23 @@ export interface MapRoute {
   duration: number | null
 }
 
+export type RouteProfile = 'driving' | 'cycling' | 'walking'
+
+export interface RouteStep {
+  maneuver: {
+    type: string
+    modifier?: string
+    location: [number, number]
+  }
+  name: string
+  distance: number // meters
+  duration: number // seconds
+  geometry: {
+    type: 'LineString'
+    coordinates: [number, number][]
+  }
+}
+
 export interface POIMarker {
   id: string
   longitude: number
@@ -61,6 +78,17 @@ export interface BookmarkFolder {
   color: string
   emoji: string
   locationIds: string[]
+}
+
+export interface MapAnnotation {
+  id: string
+  longitude: number
+  latitude: number
+  text: string
+  fontSize: number
+  color: string
+  rotation: number
+  createdAt: string
 }
 
 export type MapStyleOption = {
@@ -174,7 +202,7 @@ export interface MapDrawing {
   name: string
 }
 
-export type ToolMode = 'navigate' | 'mark' | 'measure' | 'directions' | 'draw' | 'area'
+export type ToolMode = 'navigate' | 'mark' | 'measure' | 'directions' | 'draw' | 'area' | 'annotate'
 
 export interface Geolocation {
   longitude: number
@@ -241,6 +269,9 @@ interface MapState {
   routes: MapRoute[]
   osrmDistance: number | null
   osrmDuration: number | null
+  routeProfile: RouteProfile
+  routeSteps: RouteStep[]
+  highlightedStepIndex: number | null
 
   // Drawing / annotations
   drawings: MapDrawing[]
@@ -295,6 +326,13 @@ interface MapState {
   // Bookmark folders
   bookmarkFolders: BookmarkFolder[]
 
+  // Annotations
+  annotations: MapAnnotation[]
+
+  // Offline mode
+  offlineModeEnabled: boolean
+  setOfflineModeEnabled: (enabled: boolean) => void
+
   // Notifications
   notifications: MapNotification[]
 
@@ -331,6 +369,11 @@ interface MapState {
   setOsmrData: (distance: number | null, duration: number | null) => void
   deleteRoute: (id: string) => void
   setRoutes: (routes: MapRoute[]) => void
+  setRouteProfile: (profile: RouteProfile) => void
+  setRouteSteps: (steps: RouteStep[]) => void
+  setHighlightedStepIndex: (index: number | null) => void
+  insertRoutePoint: (index: number, point: RoutePoint) => void
+  updateRoutePoint: (index: number, point: RoutePoint) => void
   setCurrentDrawing: (points: number[][] | null) => void
   addDrawingPoint: (point: number[]) => void
   finishDrawing: () => void
@@ -361,6 +404,11 @@ interface MapState {
   updateBookmarkFolder: (id: string, updates: Partial<Omit<BookmarkFolder, 'id'>>) => void
   addLocationToFolder: (folderId: string, locationId: string) => void
   removeLocationFromFolder: (folderId: string, locationId: string) => void
+
+  // Annotation actions
+  addAnnotation: (annotation: MapAnnotation) => void
+  updateAnnotation: (id: string, updates: Partial<Omit<MapAnnotation, 'id' | 'createdAt'>>) => void
+  deleteAnnotation: (id: string) => void
 }
 
 export const useMapStore = create<MapState>()(
@@ -394,6 +442,9 @@ export const useMapStore = create<MapState>()(
       routes: [],
       osrmDistance: null,
       osrmDuration: null,
+      routeProfile: 'driving',
+      routeSteps: [],
+      highlightedStepIndex: null,
 
       drawings: [],
       currentDrawing: null,
@@ -418,6 +469,8 @@ export const useMapStore = create<MapState>()(
       comparisonEnabled: false,
       comparisonStyle: MAP_STYLES[1], // Default to Satellite for comparison
       bookmarkFolders: [],
+      annotations: [],
+      offlineModeEnabled: false,
 
       setCenter: (center) => set({ center }),
       setZoom: (zoom) => set({ zoom }),
@@ -769,6 +822,26 @@ export const useMapStore = create<MapState>()(
 
       setOsmrData: (distance, duration) => set({ osrmDistance: distance, osrmDuration: duration }),
 
+      setRouteProfile: (routeProfile) => set({ routeProfile, routeSteps: [] }),
+      setRouteSteps: (routeSteps) => set({ routeSteps }),
+      setHighlightedStepIndex: (highlightedStepIndex) => set({ highlightedStepIndex }),
+
+      insertRoutePoint: (index, point) => {
+        set((state) => {
+          const newPoints = [...state.routePoints]
+          newPoints.splice(index, 0, point)
+          return { routePoints: newPoints, routeSteps: [] }
+        })
+      },
+
+      updateRoutePoint: (index, point) => {
+        set((state) => {
+          const newPoints = [...state.routePoints]
+          newPoints[index] = point
+          return { routePoints: newPoints, routeSteps: [] }
+        })
+      },
+
       deleteRoute: (id) => {
         const route = useMapStore.getState().routes.find((r) => r.id === id)
         set((state) => ({
@@ -962,6 +1035,22 @@ export const useMapStore = create<MapState>()(
             : f
         ),
       })),
+
+      setOfflineModeEnabled: (offlineModeEnabled) => set({ offlineModeEnabled }),
+
+      addAnnotation: (annotation) => set((state) => ({
+        annotations: [...state.annotations, annotation],
+      })),
+
+      updateAnnotation: (id, updates) => set((state) => ({
+        annotations: state.annotations.map((a) =>
+          a.id === id ? { ...a, ...updates } : a
+        ),
+      })),
+
+      deleteAnnotation: (id) => set((state) => ({
+        annotations: state.annotations.filter((a) => a.id !== id),
+      })),
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -985,6 +1074,9 @@ export const useMapStore = create<MapState>()(
         comparisonEnabled: state.comparisonEnabled,
         comparisonStyle: state.comparisonStyle,
         bookmarkFolders: state.bookmarkFolders,
+        annotations: state.annotations,
+        offlineModeEnabled: state.offlineModeEnabled,
+        routeProfile: state.routeProfile,
       }),
     }
   )

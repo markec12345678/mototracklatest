@@ -6,6 +6,7 @@ import 'maplibre-gl/dist/maplibre-gl.css'
 import { useMapStore, type LayerVisibility, getStyleUrl } from '@/lib/map-store'
 import { toast } from 'sonner'
 import { MapContextMenu, type ContextMenuPosition } from '@/components/map/MapContextMenu'
+import { MapAnnotations } from '@/components/map/MapAnnotations'
 
 // Inject pulsing dot CSS animation
 if (typeof document !== 'undefined' && !document.getElementById('geolocation-pulse-style')) {
@@ -100,6 +101,9 @@ export function MapView() {
   const areaPoints = useMapStore((s) => s.areaPoints)
   const heatmapEnabled = useMapStore((s) => s.heatmapEnabled)
   const savedLocations = useMapStore((s) => s.savedLocations)
+  const routeProfile = useMapStore((s) => s.routeProfile)
+  const highlightedStepIndex = useMapStore((s) => s.highlightedStepIndex)
+  const routeSteps = useMapStore((s) => s.routeSteps)
 
   // Ref for throttling drawing point addition
   const lastDrawTimeRef = useRef(0)
@@ -193,6 +197,21 @@ export function MapView() {
           longitude: e.lngLat.lng,
           latitude: e.lngLat.lat,
         })
+      } else if (mode === 'annotate') {
+        const text = prompt('Enter annotation text:')
+        if (text && text.trim()) {
+          useMapStore.getState().addAnnotation({
+            id: `annotation-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+            longitude: e.lngLat.lng,
+            latitude: e.lngLat.lat,
+            text: text.trim(),
+            fontSize: 16,
+            color: 'white',
+            rotation: 0,
+            createdAt: new Date().toISOString(),
+          })
+          useMapStore.getState().pushNotification({ type: 'general', icon: '📝', message: `Annotation added: "${text.trim()}"` })
+        }
       } else {
         useMapStore.getState().setSelectedMarker(null)
       }
@@ -992,39 +1011,51 @@ export function MapView() {
     }
   }, [routePoints, routes, mapLoadedVersion])
 
-  // Draggable route point markers (in directions mode)
+  // Waypoint label helper (A, B, C, D, ...)
+  const getWaypointLabel = (idx: number): string => {
+    if (idx < 26) return String.fromCharCode(65 + idx) // A-Z
+    return String(idx + 1)
+  }
+
+  // Draggable route point markers with waypoint labels (in directions mode)
   useEffect(() => {
     if (!map.current || !mapLoadedRef.current) return
     if (toolMode !== 'directions') return
 
     const routeMarkerRefs: maplibregl.Marker[] = []
+    const addWaypointMarkerRefs: maplibregl.Marker[] = []
+    const currentColor = useMapStore.getState().currentRouteColor
 
     routePoints.forEach((point, idx) => {
       const el = document.createElement('div')
       el.className = 'route-point-marker'
       el.style.cssText = `
-        width: 24px;
-        height: 24px;
+        width: 28px;
+        height: 28px;
         border-radius: 50%;
-        background: ${useMapStore.getState().currentRouteColor};
+        background: ${currentColor};
         border: 3px solid white;
         box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         cursor: grab;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 10px;
+        font-size: 11px;
         font-weight: bold;
         color: white;
-        transition: transform 0.1s ease;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+        position: relative;
+        z-index: 10;
       `
-      el.textContent = String(idx + 1)
+      el.textContent = getWaypointLabel(idx)
 
       el.addEventListener('mouseenter', () => {
-        el.style.transform = 'scale(1.2)'
+        el.style.transform = 'scale(1.25)'
+        el.style.boxShadow = '0 4px 12px rgba(0,0,0,0.4)'
       })
       el.addEventListener('mouseleave', () => {
         el.style.transform = 'scale(1)'
+        el.style.boxShadow = '0 2px 8px rgba(0,0,0,0.3)'
       })
 
       const marker = new maplibregl.Marker({ element: el, draggable: true })
@@ -1033,25 +1064,81 @@ export function MapView() {
 
       marker.on('dragend', () => {
         const lngLat = marker.getLngLat()
-        const state = useMapStore.getState()
-        const updatedPoints = [...state.routePoints]
-        updatedPoints[idx] = {
+        useMapStore.getState().updateRoutePoint(idx, {
           longitude: lngLat.lng,
           latitude: lngLat.lat,
-          name: updatedPoints[idx]?.name,
-        }
-        // Update route points by removing and re-adding
-        state.clearRoutePoints()
-        for (const p of updatedPoints) {
-          state.addRoutePoint(p)
-        }
+          name: useMapStore.getState().routePoints[idx]?.name,
+        })
       })
 
       routeMarkerRefs.push(marker)
     })
 
+    // Add "Add Waypoint" buttons between existing waypoints
+    if (routePoints.length >= 2) {
+      for (let i = 0; i < routePoints.length - 1; i++) {
+        const p1 = routePoints[i]
+        const p2 = routePoints[i + 1]
+        const midLng = (p1.longitude + p2.longitude) / 2
+        const midLat = (p1.latitude + p2.latitude) / 2
+
+        const addEl = document.createElement('div')
+        addEl.className = 'add-waypoint-btn'
+        addEl.style.cssText = `
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          background: white;
+          border: 2px solid ${currentColor};
+          box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+          font-weight: bold;
+          color: ${currentColor};
+          transition: transform 0.15s ease, box-shadow 0.15s ease;
+          z-index: 9;
+        `
+        addEl.textContent = '+'
+
+        addEl.addEventListener('mouseenter', () => {
+          addEl.style.transform = 'scale(1.3)'
+          addEl.style.boxShadow = '0 3px 8px rgba(0,0,0,0.3)'
+        })
+        addEl.addEventListener('mouseleave', () => {
+          addEl.style.transform = 'scale(1)'
+          addEl.style.boxShadow = '0 1px 4px rgba(0,0,0,0.2)'
+        })
+
+        const insertIndex = i + 1
+        addEl.addEventListener('click', (e) => {
+          e.stopPropagation()
+          const m = map.current!
+          const lngLat = m.unproject([
+            addEl.getBoundingClientRect().left + 10 - m.getContainer().getBoundingClientRect().left,
+            addEl.getBoundingClientRect().top + 10 - m.getContainer().getBoundingClientRect().top,
+          ])
+          useMapStore.getState().insertRoutePoint(insertIndex, {
+            longitude: lngLat.lng,
+            latitude: lngLat.lat,
+          })
+        })
+
+        const addMarker = new maplibregl.Marker({ element: addEl, draggable: false })
+          .setLngLat([midLng, midLat])
+          .addTo(map.current!)
+
+        addWaypointMarkerRefs.push(addMarker)
+      }
+    }
+
     return () => {
       for (const m of routeMarkerRefs) {
+        m.remove()
+      }
+      for (const m of addWaypointMarkerRefs) {
         m.remove()
       }
     }
@@ -1062,13 +1149,15 @@ export function MapView() {
     if (toolMode !== 'directions' || routePoints.length < 2) {
       setOsrmRoute(null)
       useMapStore.getState().setOsmrData(null, null)
+      useMapStore.getState().setRouteSteps([])
       return
     }
 
     let cancelled = false
     const coords = routePoints.map((p) => `${p.longitude},${p.latitude}`).join(';')
+    const profile = useMapStore.getState().routeProfile
 
-    fetch(`/api/directions?coordinates=${coords}`)
+    fetch(`/api/directions?coordinates=${coords}&profile=${profile}`)
       .then((res) => {
         if (!res.ok) throw new Error('OSRM fetch failed')
         return res.json()
@@ -1085,7 +1174,31 @@ export function MapView() {
           const durationSec = route.duration
           useMapStore.getState().setOsmrData(distanceKm, durationSec)
 
+          // Parse turn-by-turn steps from OSRM response
+          const steps: import('@/lib/map-store').RouteStep[] = []
+          if (route.legs) {
+            for (const leg of route.legs) {
+              if (leg.steps) {
+                for (const step of leg.steps) {
+                  steps.push({
+                    maneuver: {
+                      type: step.maneuver?.type || '',
+                      modifier: step.maneuver?.modifier || undefined,
+                      location: step.maneuver?.location || [0, 0],
+                    },
+                    name: step.name || '',
+                    distance: step.distance || 0,
+                    duration: step.duration || 0,
+                    geometry: step.geometry || { type: 'LineString', coordinates: [] },
+                  })
+                }
+              }
+            }
+          }
+          useMapStore.getState().setRouteSteps(steps)
+
           // Format and show notification
+          const profileEmoji = profile === 'driving' ? '🚗' : profile === 'cycling' ? '🚴' : '🚶'
           const distStr = distanceKm < 1
             ? `${Math.round(route.distance)} m`
             : `${distanceKm.toFixed(1)} km`
@@ -1096,12 +1209,13 @@ export function MapView() {
               : `${Math.floor(durationSec / 3600)} hr ${Math.floor((durationSec % 3600) / 60)} min`
           useMapStore.getState().pushNotification({
             type: 'route',
-            icon: '🚗',
+            icon: profileEmoji,
             message: `Route: ${distStr} · ${durStr}`,
           })
         } else {
           setOsrmRoute(null)
           useMapStore.getState().setOsmrData(null, null)
+          useMapStore.getState().setRouteSteps([])
         }
       })
       .catch((err) => {
@@ -1109,13 +1223,14 @@ export function MapView() {
         if (!cancelled) {
           setOsrmRoute(null)
           useMapStore.getState().setOsmrData(null, null)
+          useMapStore.getState().setRouteSteps([])
         }
       })
 
     return () => {
       cancelled = true
     }
-  }, [toolMode, routePoints])
+  }, [toolMode, routePoints, routeProfile])
 
   // Render OSRM route on the map
   useEffect(() => {
@@ -1177,6 +1292,58 @@ export function MapView() {
       }
     }
   }, [osrmRoute, mapLoadedVersion])
+
+  // Highlight step segment on the map
+  useEffect(() => {
+    if (!map.current || !mapLoadedRef.current) return
+
+    const sourceId = 'highlighted-step-source'
+    const layerId = 'highlighted-step-layer'
+
+    // Remove existing highlighted step layer/source
+    if (map.current.getLayer(layerId)) map.current.removeLayer(layerId)
+    if (map.current.getSource(sourceId)) map.current.removeSource(sourceId)
+
+    if (highlightedStepIndex === null || !routeSteps[highlightedStepIndex]) return
+
+    const step = routeSteps[highlightedStepIndex]
+    const coords = step.geometry?.coordinates
+    if (!coords || coords.length < 2) return
+
+    map.current.addSource(sourceId, {
+      type: 'geojson',
+      data: {
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'LineString',
+          coordinates: coords,
+        },
+      },
+    })
+
+    map.current.addLayer({
+      id: layerId,
+      type: 'line',
+      source: sourceId,
+      paint: {
+        'line-color': '#f59e0b',
+        'line-width': 6,
+        'line-opacity': 0.9,
+      },
+      layout: {
+        'line-cap': 'round',
+        'line-join': 'round',
+      },
+    })
+
+    return () => {
+      if (map.current) {
+        if (map.current.getLayer(layerId)) map.current.removeLayer(layerId)
+        if (map.current.getSource(sourceId)) map.current.removeSource(sourceId)
+      }
+    }
+  }, [highlightedStepIndex, routeSteps, mapLoadedVersion])
 
   // Geolocation marker with accuracy circle
   useEffect(() => {
@@ -1999,44 +2166,103 @@ export function MapView() {
     }
   }, [isochroneEnabled, isochroneMinutes, isochroneMode, center, mapLoadedVersion])
 
-  // POI Markers (temporary markers for nearby search)
+  // POI Markers (temporary markers for nearby search) - with category-specific colors
   useEffect(() => {
     if (!map.current || !mapLoadedRef.current) return
 
     const poiMarkerRefs: maplibregl.Marker[] = []
 
+    // Category-specific color mapping
+    const categoryColors: Record<string, string> = {
+      eating_out: 'rgba(239, 68, 68, 0.9)',      // red
+      cafe: 'rgba(245, 158, 11, 0.9)',            // amber
+      accommodation: 'rgba(139, 92, 246, 0.9)',    // purple
+      activity: 'rgba(34, 197, 94, 0.9)',          // green
+      tourism: 'rgba(249, 115, 22, 0.9)',          // orange
+      commercial: 'rgba(14, 165, 233, 0.9)',       // sky
+      healthcare: 'rgba(244, 63, 94, 0.9)',        // rose
+      fuel: 'rgba(202, 138, 4, 0.9)',              // yellow
+      parking: 'rgba(59, 130, 246, 0.9)',          // blue
+      banking: 'rgba(5, 150, 105, 0.9)',           // emerald
+      education: 'rgba(99, 102, 241, 0.9)',        // indigo
+      entertainment: 'rgba(236, 72, 153, 0.9)',    // pink
+      public_transport: 'rgba(20, 184, 166, 0.9)', // teal
+      sports: 'rgba(132, 204, 22, 0.9)',           // lime
+      drinking_water: 'rgba(6, 182, 212, 0.9)',    // cyan
+      toilets: 'rgba(107, 114, 128, 0.9)',         // gray
+    }
+
     for (const poi of poiMarkers) {
+      const bgColor = categoryColors[poi.category] || 'rgba(16, 185, 129, 0.9)'
+
+      // Create marker element with tooltip
+      const container = document.createElement('div')
+      container.style.position = 'relative'
+
       const el = document.createElement('div')
       el.className = 'poi-marker'
       el.style.cssText = `
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 28px;
-        height: 28px;
+        width: 30px;
+        height: 30px;
         border-radius: 50%;
-        background: rgba(16, 185, 129, 0.9);
+        background: ${bgColor};
         border: 2px solid white;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-        font-size: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        font-size: 13px;
         cursor: pointer;
-        transition: transform 0.15s ease;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
       `
       el.textContent = poi.icon
-      el.title = poi.name
+
+      // Hover tooltip for POI name
+      const tooltip = document.createElement('div')
+      tooltip.style.cssText = `
+        position: absolute;
+        bottom: calc(100% + 6px);
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0,0,0,0.85);
+        color: white;
+        padding: 3px 8px;
+        border-radius: 6px;
+        font-size: 11px;
+        white-space: nowrap;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.15s ease;
+        z-index: 10;
+        font-family: system-ui, sans-serif;
+      `
+      tooltip.textContent = poi.name
+
+      // Distance sub-label
+      if (poi.distance !== null) {
+        const distLabel = poi.distance < 1000 ? `${poi.distance}m` : `${(poi.distance / 1000).toFixed(1)}km`
+        tooltip.textContent = `${poi.name} · ${distLabel}`
+      }
+
+      container.appendChild(el)
+      container.appendChild(tooltip)
 
       el.addEventListener('mouseenter', () => {
         el.style.transform = 'scale(1.2)'
+        el.style.boxShadow = '0 4px 12px rgba(0,0,0,0.4)'
+        tooltip.style.opacity = '1'
       })
       el.addEventListener('mouseleave', () => {
         el.style.transform = 'scale(1)'
+        el.style.boxShadow = '0 2px 8px rgba(0,0,0,0.3)'
+        tooltip.style.opacity = '0'
       })
       el.addEventListener('click', () => {
         const flyTo = (window as unknown as Record<string, (lng: number, lat: number, z?: number) => void>).__mapFlyTo
         if (flyTo) flyTo(poi.longitude, poi.latitude, 17)
       })
 
-      const marker = new maplibregl.Marker({ element: el })
+      const marker = new maplibregl.Marker({ element: container })
         .setLngLat([poi.longitude, poi.latitude])
         .addTo(map.current!)
 
@@ -2215,6 +2441,9 @@ export function MapView() {
           window.dispatchEvent(new CustomEvent('map-add-saved-location', { detail: { lat, lng } }))
         }}
       />
+
+      {/* Map Annotations */}
+      <MapAnnotations />
 
       {/* Tile loading indicator */}
       {tilesLoading && (

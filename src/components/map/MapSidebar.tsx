@@ -35,6 +35,7 @@ import {
   Loader2,
   FileUp,
   Pentagon,
+  Type,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -55,6 +56,8 @@ import {
   type ToolMode,
   type MapRoute,
   type RoutePoint,
+  type RouteStep,
+  type RouteProfile,
 } from '@/lib/map-store'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
@@ -191,6 +194,14 @@ const toolModes: {
     description: 'Measure polygon area on the map',
     color: 'from-violet-500 to-purple-500',
     shortcut: '6',
+  },
+  {
+    id: 'annotate',
+    label: 'Label',
+    icon: <Type className="h-4 w-4" />,
+    description: 'Add text labels on the map',
+    color: 'from-pink-500 to-rose-500',
+    shortcut: '8',
   },
 ]
 

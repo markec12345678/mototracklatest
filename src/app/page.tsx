@@ -50,6 +50,7 @@ import {
   Camera,
   GitCompare,
   Globe2,
+  Type,
 } from 'lucide-react'
 
 export default function Home() {
@@ -285,6 +286,9 @@ export default function Home() {
         case '6':
           setToolMode('area')
           break
+        case '8':
+          setToolMode('annotate')
+          break
         case '0': {
           const streets = MAP_STYLES.find((s) => s.id === 'streets')
           if (streets) useMapStore.getState().setCurrentStyle(streets)
@@ -364,6 +368,16 @@ export default function Home() {
       color: 'from-green-500 to-emerald-500',
       icon: <Pencil className="h-3 w-3" />,
     },
+    area: {
+      label: 'Area',
+      color: 'from-violet-500 to-purple-500',
+      icon: <Maximize2 className="h-3 w-3" />,
+    },
+    annotate: {
+      label: 'Label',
+      color: 'from-pink-500 to-rose-500',
+      icon: <Type className="h-3 w-3" />,
+    },
   }
 
   const currentTool = toolIndicator[toolMode]
@@ -420,7 +434,7 @@ export default function Home() {
             style={{
               width: 60,
               height: 2,
-              background: toolMode === 'mark' ? 'rgba(239,68,68,0.6)' : toolMode === 'measure' ? 'rgba(245,158,11,0.6)' : toolMode === 'draw' ? 'rgba(34,197,94,0.6)' : toolMode === 'area' ? 'rgba(139,92,246,0.6)' : 'rgba(6,182,212,0.6)',
+              background: toolMode === 'mark' ? 'rgba(239,68,68,0.6)' : toolMode === 'measure' ? 'rgba(245,158,11,0.6)' : toolMode === 'draw' ? 'rgba(34,197,94,0.6)' : toolMode === 'area' ? 'rgba(139,92,246,0.6)' : toolMode === 'annotate' ? 'rgba(236,72,153,0.6)' : 'rgba(6,182,212,0.6)',
               borderRadius: 1,
             }}
           />
@@ -430,7 +444,7 @@ export default function Home() {
             style={{
               width: 2,
               height: 60,
-              background: toolMode === 'mark' ? 'rgba(239,68,68,0.6)' : toolMode === 'measure' ? 'rgba(245,158,11,0.6)' : toolMode === 'draw' ? 'rgba(34,197,94,0.6)' : toolMode === 'area' ? 'rgba(139,92,246,0.6)' : 'rgba(6,182,212,0.6)',
+              background: toolMode === 'mark' ? 'rgba(239,68,68,0.6)' : toolMode === 'measure' ? 'rgba(245,158,11,0.6)' : toolMode === 'draw' ? 'rgba(34,197,94,0.6)' : toolMode === 'area' ? 'rgba(139,92,246,0.6)' : toolMode === 'annotate' ? 'rgba(236,72,153,0.6)' : 'rgba(6,182,212,0.6)',
               borderRadius: 1,
             }}
           />
@@ -440,7 +454,7 @@ export default function Home() {
             style={{
               width: 8,
               height: 8,
-              background: toolMode === 'mark' ? 'rgba(239,68,68,0.7)' : toolMode === 'measure' ? 'rgba(245,158,11,0.7)' : toolMode === 'draw' ? 'rgba(34,197,94,0.7)' : toolMode === 'area' ? 'rgba(139,92,246,0.7)' : 'rgba(6,182,212,0.7)',
+              background: toolMode === 'mark' ? 'rgba(239,68,68,0.7)' : toolMode === 'measure' ? 'rgba(245,158,11,0.7)' : toolMode === 'draw' ? 'rgba(34,197,94,0.7)' : toolMode === 'area' ? 'rgba(139,92,246,0.7)' : toolMode === 'annotate' ? 'rgba(236,72,153,0.7)' : 'rgba(6,182,212,0.7)',
             }}
           />
         </div>
@@ -624,6 +638,7 @@ export default function Home() {
             { mode: 'directions' as ToolMode, icon: <Crosshair className="h-4 w-4" />, label: 'Route', activeClass: 'bg-cyan-500 text-white' },
             { mode: 'draw' as ToolMode, icon: <Pencil className="h-4 w-4" />, label: 'Draw', activeClass: 'bg-green-500 text-white' },
             { mode: 'area' as ToolMode, icon: <Maximize2 className="h-4 w-4" />, label: 'Area', activeClass: 'bg-violet-500 text-white' },
+            { mode: 'annotate' as ToolMode, icon: <Type className="h-4 w-4" />, label: 'Label', activeClass: 'bg-pink-500 text-white' },
           ]).map((tool) => (
             <button
               key={tool.mode}

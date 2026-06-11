@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { MapPin, Navigation, Ruler, Crosshair, Pencil } from 'lucide-react'
+import { MapPin, Navigation, Ruler, Crosshair, Pencil, Maximize2, Type } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { cn } from '@/lib/utils'
@@ -54,6 +54,22 @@ const tools: {
     activeClass: 'bg-green-500 text-white shadow-md shadow-green-500/30',
     shortcut: '5',
     description: 'Freehand drawing on the map',
+  },
+  {
+    id: 'area',
+    icon: <Maximize2 className="h-4 w-4" />,
+    label: 'Area',
+    activeClass: 'bg-violet-500 text-white shadow-md shadow-violet-500/30',
+    shortcut: '6',
+    description: 'Measure polygon area on the map',
+  },
+  {
+    id: 'annotate',
+    icon: <Type className="h-4 w-4" />,
+    label: 'Label',
+    activeClass: 'bg-pink-500 text-white shadow-md shadow-pink-500/30',
+    shortcut: '8',
+    description: 'Add text labels on the map',
   },
 ]
 
