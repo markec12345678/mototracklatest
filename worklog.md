@@ -2098,3 +2098,85 @@ Unresolved Issues / Next Phase Recommendations:
 - Could add comparison of multiple routes
 - Could add persistent notification history
 - Could add more keyboard shortcuts
+
+---
+Task ID: 13
+Agent: Main Developer
+Task: Area Measurement, Heatmap, Building Info Popup, Route Drag, Styling Polish, Keyboard Shortcuts Expansion
+
+Work Log:
+- Fixed CSS @utility error: `tools-section-divider` had invalid pseudo-element `::after` inside @utility block - converted to plain CSS class
+- Added Area Measurement tool to ToolMode type ('navigate' | 'mark' | 'measure' | 'directions' | 'draw' | 'area')
+- Added areaPoints, areaResult, addAreaPoint, clearAreaPoints, setAreaResult to MapStore
+- Added Area tool button to page.tsx toolbar with violet color and Maximize2 icon
+- Added Area tool to toolModes array in MapSidebar with Pentagon icon and violet gradient
+- Added Area Measurement section in ToolsTab with:
+  - Empty state with violet Pentagon icon
+  - Area result card (violet gradient) showing area + perimeter
+  - Vertices count badge
+  - "Need N more points" warning for <3 points
+  - Point list with violet numbering
+  - Clear and Copy buttons
+- Added area polygon rendering in MapView with:
+  - Semi-transparent violet fill (fill-extrusion, 15% opacity)
+  - Dashed violet stroke outline
+  - Violet circle point markers
+  - Shoelace formula area calculation (spherical approximation)
+- Added click handler for area mode in MapView (adds area points on map click)
+- Added crosshair cursor for area tool mode
+- Added keyboard shortcut '6' for area tool in page.tsx
+- Updated crosshair indicator colors for area mode (violet/purple)
+- Added 3D Building info popup on click when buildingExtrusion is enabled:
+  - Shows building name, type, height, base height, estimated floors
+  - Cursor changes to pointer on hover over buildings
+  - Only active in navigate mode
+- Added Heatmap visualization layer:
+  - Added heatmapEnabled state to MapStore (persisted)
+  - Heatmap toggle in Layers tab under Overlay Data
+  - MapLibre GL heatmap layer with emerald→amber→red gradient
+  - Radius scales with zoom level (15→45)
+  - Combines markers and saved locations as heatmap points
+- Added draggable route point markers in Directions mode:
+  - Numbered circle markers with drag cursor
+  - Hover scale effect
+  - On dragend, updates route points in store
+  - Route line automatically recalculates
+- Added GPX Import drop zone UI (replaced missing GPXDropZone component):
+  - Dashed border, file upload icon, hover effects
+  - Click to browse for GPX files
+- Expanded Keyboard Shortcuts dialog:
+  - Added Area measurement mode (6)
+  - Updated style shortcuts (7/8/9)
+  - Added "Tools Tips" section with interaction hints
+  - Building info click, coordinate copy, route drag tips
+- Added CSS enhancements:
+  - area-gradient-card utility
+  - heatmap-legend utility (gradient bar)
+  - Building popup styling (border-radius 12px, dark mode support)
+  - marker-bounce-in keyframe animation
+  - shimmer-card utility for loading states
+  - shimmer-move keyframe
+- All lint checks pass clean
+- All API endpoints verified returning 200
+- Cron job set up for continuous development (15-min interval)
+
+Stage Summary:
+- 6 new features implemented: Area Measurement, Heatmap, Building Info Popup, Route Drag, GPX Import UI, Keyboard Shortcuts Expansion
+- Critical CSS bug fixed (invalid @utility with pseudo-element)
+- Missing GPXDropZone component replaced with inline implementation
+- Area tool uses Shoelace formula for spherical polygon area calculation
+- Heatmap uses MapLibre GL native heatmap layer type
+- Building info popups work in Navigate mode when 3D is enabled
+- Route points are now draggable in Directions mode
+- Extensive CSS enhancements for micro-interactions and visual polish
+
+Unresolved Issues / Next Phase Recommendations:
+- Could add real isochrone using OSRM routing instead of circle approximation
+- Could add terrain profile for routes along OSRM path
+- Could add comparison of multiple routes side-by-side
+- Could add persistent notification history in database
+- Could add custom marker icons/shapes
+- Could add map tile caching for offline support
+- Could add map comparison/split view
+- Could add coordinate system conversion (UTM, etc.)
+- Could add print-friendly map layout

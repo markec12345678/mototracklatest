@@ -165,7 +165,7 @@ export interface MapDrawing {
   name: string
 }
 
-export type ToolMode = 'navigate' | 'mark' | 'measure' | 'directions' | 'draw'
+export type ToolMode = 'navigate' | 'mark' | 'measure' | 'directions' | 'draw' | 'area'
 
 export interface Geolocation {
   longitude: number
@@ -266,8 +266,15 @@ interface MapState {
   isochroneMinutes: number
   isochroneMode: 'walking' | 'cycling' | 'driving'
 
+  // Area measurement
+  areaPoints: MeasurePoint[]
+  areaResult: number | null
+
   // POI Markers (temporary, for nearby search)
   poiMarkers: POIMarker[]
+
+  // Heatmap visualization
+  heatmapEnabled: boolean
 
   // Notifications
   notifications: MapNotification[]
@@ -294,6 +301,9 @@ interface MapState {
   addMeasurePoint: (point: MeasurePoint) => void
   clearMeasurePoints: () => void
   setMeasureDistance: (distance: number | null) => void
+  addAreaPoint: (point: MeasurePoint) => void
+  clearAreaPoints: () => void
+  setAreaResult: (area: number | null) => void
   addRoutePoint: (point: RoutePoint) => void
   removeRoutePoint: (index: number) => void
   clearRoutePoints: () => void
@@ -322,6 +332,7 @@ interface MapState {
   dismissNotification: (id: string) => void
   setPoiMarkers: (poiMarkers: POIMarker[]) => void
   clearPoiMarkers: () => void
+  setHeatmapEnabled: (enabled: boolean) => void
 }
 
 export const useMapStore = create<MapState>()(
@@ -347,6 +358,8 @@ export const useMapStore = create<MapState>()(
       toolMode: 'navigate',
       measurePoints: [],
       measureDistance: null,
+      areaPoints: [],
+      areaResult: null,
 
       routePoints: [],
       currentRouteColor: '#3b82f6',
@@ -371,6 +384,7 @@ export const useMapStore = create<MapState>()(
       isochroneMinutes: 15,
       isochroneMode: 'walking',
       poiMarkers: [],
+      heatmapEnabled: false,
       notifications: [],
 
       setCenter: (center) => set({ center }),
@@ -406,11 +420,15 @@ export const useMapStore = create<MapState>()(
         })),
 
       setToolMode: (toolMode) =>
-        set({ toolMode, measurePoints: [], measureDistance: null }),
+        set({ toolMode, measurePoints: [], measureDistance: null, areaPoints: [], areaResult: null }),
       addMeasurePoint: (point) =>
         set((state) => ({ measurePoints: [...state.measurePoints, point] })),
       clearMeasurePoints: () => set({ measurePoints: [], measureDistance: null }),
       setMeasureDistance: (measureDistance) => set({ measureDistance }),
+      addAreaPoint: (point) =>
+        set((state) => ({ areaPoints: [...state.areaPoints, point] })),
+      clearAreaPoints: () => set({ areaPoints: [], areaResult: null }),
+      setAreaResult: (areaResult) => set({ areaResult }),
       addRoutePoint: (point) =>
         set((state) => ({ routePoints: [...state.routePoints, point] })),
       removeRoutePoint: (index) =>
@@ -519,6 +537,7 @@ export const useMapStore = create<MapState>()(
         })),
       setPoiMarkers: (poiMarkers) => set({ poiMarkers }),
       clearPoiMarkers: () => set({ poiMarkers: [] }),
+      setHeatmapEnabled: (heatmapEnabled) => set({ heatmapEnabled }),
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -537,6 +556,7 @@ export const useMapStore = create<MapState>()(
         layerVisibility: state.layerVisibility,
         drawColor: state.drawColor,
         drawWidth: state.drawWidth,
+        heatmapEnabled: state.heatmapEnabled,
       }),
     }
   )

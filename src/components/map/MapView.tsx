@@ -95,6 +95,9 @@ export function MapView() {
   const isochroneMode = useMapStore((s) => s.isochroneMode)
   const center = useMapStore((s) => s.center)
   const poiMarkers = useMapStore((s) => s.poiMarkers)
+  const areaPoints = useMapStore((s) => s.areaPoints)
+  const heatmapEnabled = useMapStore((s) => s.heatmapEnabled)
+  const savedLocations = useMapStore((s) => s.savedLocations)
 
   // Ref for throttling drawing point addition
   const lastDrawTimeRef = useRef(0)
@@ -177,6 +180,11 @@ export function MapView() {
         })
       } else if (mode === 'directions') {
         useMapStore.getState().addRoutePoint({
+          longitude: e.lngLat.lng,
+          latitude: e.lngLat.lat,
+        })
+      } else if (mode === 'area') {
+        useMapStore.getState().addAreaPoint({
           longitude: e.lngLat.lng,
           latitude: e.lngLat.lat,
         })
@@ -649,6 +657,116 @@ export function MapView() {
     useMapStore.getState().setMeasureDistance(measurePoints.length > 1 ? totalDist : null)
   }, [measurePoints, mapLoadedVersion])
 
+  // Sync area measurement polygon
+  useEffect(() => {
+    if (!map.current || !mapLoadedRef.current) return
+
+    const fillSourceId = 'area-fill-source'
+    const fillLayerId = 'area-fill-layer'
+    const strokeLayerId = 'area-stroke-layer'
+    const pointLayerId = 'area-points-layer'
+
+    // Add fill source
+    if (!map.current.getSource(fillSourceId)) {
+      map.current.addSource(fillSourceId, {
+        type: 'geojson',
+        data: { type: 'FeatureCollection', features: [] },
+      })
+    }
+
+    // Add fill layer (semi-transparent polygon)
+    if (!map.current.getLayer(fillLayerId)) {
+      map.current.addLayer({
+        id: fillLayerId,
+        type: 'fill',
+        source: fillSourceId,
+        paint: {
+          'fill-color': '#8b5cf6',
+          'fill-opacity': 0.15,
+        },
+        filter: ['==', '$type', 'Polygon'],
+      })
+    }
+
+    // Add stroke layer
+    if (!map.current.getLayer(strokeLayerId)) {
+      map.current.addLayer({
+        id: strokeLayerId,
+        type: 'line',
+        source: fillSourceId,
+        paint: {
+          'line-color': '#8b5cf6',
+          'line-width': 2,
+          'line-dasharray': [3, 2],
+        },
+        filter: ['==', '$type', 'Polygon'],
+      })
+    }
+
+    // Add points layer
+    if (!map.current.getLayer(pointLayerId)) {
+      map.current.addLayer({
+        id: pointLayerId,
+        type: 'circle',
+        source: fillSourceId,
+        paint: {
+          'circle-radius': 5,
+          'circle-color': '#8b5cf6',
+          'circle-stroke-width': 2,
+          'circle-stroke-color': '#ffffff',
+        },
+        filter: ['==', '$type', 'Point'],
+      })
+    }
+
+    const features: GeoJSON.Feature[] = areaPoints.map((p) => ({
+      type: 'Feature',
+      properties: {},
+      geometry: { type: 'Point', coordinates: [p.longitude, p.latitude] },
+    }))
+
+    if (areaPoints.length >= 3) {
+      features.push({
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'Polygon',
+          coordinates: [[...areaPoints.map((p) => [p.longitude, p.latitude]), [areaPoints[0].longitude, areaPoints[0].latitude]]],
+        },
+      })
+    } else if (areaPoints.length === 2) {
+      features.push({
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'LineString',
+          coordinates: areaPoints.map((p) => [p.longitude, p.latitude]),
+        },
+      })
+    }
+
+    const source = map.current.getSource(fillSourceId) as maplibregl.GeoJSONSource
+    source.setData({ type: 'FeatureCollection', features })
+
+    // Calculate area using Shoelace formula (spherical approximation)
+    if (areaPoints.length >= 3) {
+      const R = 6371000
+      const rad = areaPoints.map((p) => ({
+        lat: (p.latitude * Math.PI) / 180,
+        lng: (p.longitude * Math.PI) / 180,
+      }))
+      let sum = 0
+      for (let i = 0; i < rad.length; i++) {
+        const j = (i + 1) % rad.length
+        sum += (rad[j].lng - rad[i].lng) * (2 + Math.sin(rad[i].lat) + Math.sin(rad[j].lat))
+      }
+      const area = Math.abs((sum * R * R) / 2)
+      useMapStore.getState().setAreaResult(area)
+    } else {
+      useMapStore.getState().setAreaResult(null)
+    }
+  }, [areaPoints, mapLoadedVersion])
+
   // Sync route drawing lines and points
   useEffect(() => {
     if (!map.current || !mapLoadedRef.current) return
@@ -853,6 +971,71 @@ export function MapView() {
       }
     }
   }, [routePoints, routes, mapLoadedVersion])
+
+  // Draggable route point markers (in directions mode)
+  useEffect(() => {
+    if (!map.current || !mapLoadedRef.current) return
+    if (toolMode !== 'directions') return
+
+    const routeMarkerRefs: maplibregl.Marker[] = []
+
+    routePoints.forEach((point, idx) => {
+      const el = document.createElement('div')
+      el.className = 'route-point-marker'
+      el.style.cssText = `
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: ${useMapStore.getState().currentRouteColor};
+        border: 3px solid white;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        cursor: grab;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        font-weight: bold;
+        color: white;
+        transition: transform 0.1s ease;
+      `
+      el.textContent = String(idx + 1)
+
+      el.addEventListener('mouseenter', () => {
+        el.style.transform = 'scale(1.2)'
+      })
+      el.addEventListener('mouseleave', () => {
+        el.style.transform = 'scale(1)'
+      })
+
+      const marker = new maplibregl.Marker({ element: el, draggable: true })
+        .setLngLat([point.longitude, point.latitude])
+        .addTo(map.current!)
+
+      marker.on('dragend', () => {
+        const lngLat = marker.getLngLat()
+        const state = useMapStore.getState()
+        const updatedPoints = [...state.routePoints]
+        updatedPoints[idx] = {
+          longitude: lngLat.lng,
+          latitude: lngLat.lat,
+          name: updatedPoints[idx]?.name,
+        }
+        // Update route points by removing and re-adding
+        state.clearRoutePoints()
+        for (const p of updatedPoints) {
+          state.addRoutePoint(p)
+        }
+      })
+
+      routeMarkerRefs.push(marker)
+    })
+
+    return () => {
+      for (const m of routeMarkerRefs) {
+        m.remove()
+      }
+    }
+  }, [routePoints, toolMode, mapLoadedVersion])
 
   // OSRM routing: fetch real road-following route when in directions mode
   useEffect(() => {
@@ -1109,7 +1292,7 @@ export function MapView() {
 
     const canvas = map.current.getCanvas()
     const setCursor = () => {
-      if (toolMode === 'mark' || toolMode === 'measure' || toolMode === 'directions') {
+      if (toolMode === 'mark' || toolMode === 'measure' || toolMode === 'directions' || toolMode === 'area') {
         canvas.style.cursor = 'crosshair'
       } else if (toolMode === 'draw') {
         canvas.style.cursor = 'crosshair'
@@ -1425,6 +1608,66 @@ export function MapView() {
       // Terrain not available
     }
   }, [terrainExaggeration, buildingExtrusion, mapLoadedVersion])
+
+  // Building info popup on 3D building click
+  useEffect(() => {
+    if (!map.current || !mapLoadedRef.current || !buildingExtrusion) return
+
+    const buildingLayerId = '3d-buildings'
+    if (!map.current.getLayer(buildingLayerId)) return
+
+    const handleClick = (e: maplibregl.MapMouseEvent) => {
+      if (toolMode !== 'navigate') return
+      const features = map.current!.queryRenderedFeatures(e.point, { layers: [buildingLayerId] })
+      if (features.length === 0) return
+
+      const feature = features[0]
+      const props = feature.properties || {}
+      const height = props.render_height || props.height || 'N/A'
+      const minHeight = props.render_min_height || props.min_height || 0
+      const name = props.name || ''
+      const buildingClass = props.class || props.building || 'building'
+
+      const html = `
+        <div style="font-family: system-ui, sans-serif; min-width: 160px;">
+          ${name ? `<div style="font-weight: 600; font-size: 13px; margin-bottom: 4px;">${name}</div>` : ''}
+          <div style="display: flex; flex-direction: column; gap: 2px;">
+            <div style="font-size: 11px; color: #888;">
+              Type: <span style="color: #333; font-weight: 500;">${String(buildingClass).replace(/_/g, ' ')}</span>
+            </div>
+            <div style="font-size: 11px; color: #888;">
+              Height: <span style="color: #333; font-weight: 500;">${height}m</span>
+            </div>
+            ${minHeight > 0 ? `<div style="font-size: 11px; color: #888;">
+              Base: <span style="color: #333; font-weight: 500;">${minHeight}m</span>
+            </div>` : ''}
+            ${Number(height) > 0 && Number(minHeight) > 0 ? `<div style="font-size: 11px; color: #888;">
+              Floors: <span style="color: #333; font-weight: 500;">~${Math.round((Number(height) - Number(minHeight)) / 3)}</span>
+            </div>` : ''}
+          </div>
+        </div>
+      `
+
+      new maplibregl.Popup({ offset: 15, closeButton: true, maxWidth: '240px' })
+        .setLngLat(e.lngLat)
+        .setHTML(html)
+        .addTo(map.current!)
+    }
+
+    map.current.on('click', buildingLayerId, handleClick)
+    const cursorEnter = () => { if (toolMode === 'navigate') map.current!.getCanvas().style.cursor = 'pointer' }
+    const cursorLeave = () => { if (toolMode === 'navigate') map.current!.getCanvas().style.cursor = '' }
+    map.current.on('mouseenter', buildingLayerId, cursorEnter)
+    map.current.on('mouseleave', buildingLayerId, cursorLeave)
+
+    return () => {
+      if (map.current) {
+        map.current.off('click', buildingLayerId, handleClick)
+        map.current.off('mouseenter', buildingLayerId, cursorEnter)
+        map.current.off('mouseleave', buildingLayerId, cursorLeave)
+      }
+    }
+  }, [buildingExtrusion, toolMode, mapLoadedVersion])
 
   // Weather overlay
   useEffect(() => {
@@ -1786,6 +2029,94 @@ export function MapView() {
       }
     }
   }, [poiMarkers, mapLoadedVersion])
+
+  // Heatmap visualization for markers and saved locations
+  useEffect(() => {
+    if (!map.current || !mapLoadedRef.current) return
+
+    const heatmapSourceId = 'heatmap-source'
+    const heatmapLayerId = 'heatmap-layer'
+
+    if (heatmapEnabled) {
+      const state = useMapStore.getState()
+      // Combine markers and saved locations into heatmap points
+      const points = [
+        ...state.markers.map((m) => [m.longitude, m.latitude]),
+        ...state.savedLocations.map((l) => [l.longitude, l.latitude]),
+      ]
+
+      if (points.length === 0) return
+
+      const geojson: GeoJSON.FeatureCollection = {
+        type: 'FeatureCollection',
+        features: points.map((p) => ({
+          type: 'Feature',
+          properties: { intensity: 1 },
+          geometry: { type: 'Point', coordinates: p as [number, number] },
+        })),
+      }
+
+      if (!map.current.getSource(heatmapSourceId)) {
+        map.current.addSource(heatmapSourceId, {
+          type: 'geojson',
+          data: geojson,
+        })
+      } else {
+        ;(map.current.getSource(heatmapSourceId) as maplibregl.GeoJSONSource).setData(geojson)
+      }
+
+      if (!map.current.getLayer(heatmapLayerId)) {
+        map.current.addLayer({
+          id: heatmapLayerId,
+          type: 'heatmap',
+          source: heatmapSourceId,
+          paint: {
+            'heatmap-weight': ['get', 'intensity'],
+            'heatmap-intensity': 1.5,
+            'heatmap-color': [
+              'interpolate',
+              ['linear'],
+              ['heatmap-density'],
+              0, 'rgba(0, 0, 0, 0)',
+              0.2, 'rgba(0, 255, 128, 0.3)',
+              0.4, 'rgba(16, 185, 129, 0.5)',
+              0.6, 'rgba(245, 158, 11, 0.6)',
+              0.8, 'rgba(239, 68, 68, 0.7)',
+              1, 'rgba(220, 38, 38, 0.9)',
+            ],
+            'heatmap-radius': [
+              'interpolate',
+              ['linear'],
+              ['zoom'],
+              0, 15,
+              10, 30,
+              15, 45,
+            ],
+            'heatmap-opacity': 0.8,
+          },
+        })
+      }
+    } else {
+      // Remove heatmap
+      if (map.current.getLayer(heatmapLayerId)) {
+        map.current.removeLayer(heatmapLayerId)
+      }
+      if (map.current.getSource(heatmapSourceId)) {
+        map.current.removeSource(heatmapSourceId)
+      }
+    }
+
+    return () => {
+      if (map.current) {
+        if (map.current.getLayer(heatmapLayerId)) {
+          try { map.current.removeLayer(heatmapLayerId) } catch { /* ignore */ }
+        }
+        if (map.current.getSource(heatmapSourceId)) {
+          try { map.current.removeSource(heatmapSourceId) } catch { /* ignore */ }
+        }
+      }
+    }
+  }, [heatmapEnabled, markers, savedLocations, mapLoadedVersion])
 
   const flyToLocation = useCallback(
     (longitude: number, latitude: number, zoom?: number) => {

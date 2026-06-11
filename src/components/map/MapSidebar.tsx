@@ -32,6 +32,9 @@ import {
   Footprints,
   Bike,
   Car,
+  Loader2,
+  FileUp,
+  Pentagon,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -181,6 +184,14 @@ const toolModes: {
     color: 'from-green-500 to-emerald-500',
     shortcut: '5',
   },
+  {
+    id: 'area',
+    label: 'Area',
+    icon: <Pentagon className="h-4 w-4" />,
+    description: 'Measure polygon area on the map',
+    color: 'from-violet-500 to-purple-500',
+    shortcut: '6',
+  },
 ]
 
 // Shared sidebar content component
@@ -202,6 +213,9 @@ function SidebarContent({ onCloseMobile }: { onCloseMobile?: () => void }) {
     clearMeasurePoints,
     selectedMarker,
     setSelectedMarker,
+    areaPoints,
+    areaResult,
+    clearAreaPoints,
   } = useMapStore()
 
   const [filterCategory, setFilterCategory] = useState<string>('all')
@@ -513,6 +527,9 @@ function SidebarContent({ onCloseMobile }: { onCloseMobile?: () => void }) {
                 clearMeasurePoints={clearMeasurePoints}
                 onExportGeoJSON={handleExportGeoJSON}
                 onGPXImportClick={() => gpxInputRef.current?.click()}
+                areaPoints={areaPoints}
+                areaResult={areaResult}
+                clearAreaPoints={clearAreaPoints}
               />
             )}
             {sidebarTab === 'routes' && (
@@ -832,7 +849,7 @@ function LocationsTab({
 }
 
 function LayersTab() {
-  const { layerVisibility, setLayerVisibility, clusteringEnabled, setClusteringEnabled, buildingExtrusion, setBuildingExtrusion, terrainExaggeration, setTerrainExaggeration, weatherEnabled, setWeatherEnabled, trafficEnabled, setTrafficEnabled, earthquakesEnabled, setEarthquakesEnabled } = useMapStore()
+  const { layerVisibility, setLayerVisibility, clusteringEnabled, setClusteringEnabled, buildingExtrusion, setBuildingExtrusion, terrainExaggeration, setTerrainExaggeration, weatherEnabled, setWeatherEnabled, trafficEnabled, setTrafficEnabled, earthquakesEnabled, setEarthquakesEnabled, heatmapEnabled, setHeatmapEnabled } = useMapStore()
 
   const layerConfig = [
     { id: 'water' as const, name: 'Water Bodies', icon: '🌊', color: '#06b6d4' },
@@ -1061,6 +1078,32 @@ function LayersTab() {
                 aria-label="Toggle earthquakes overlay"
               />
             </div>
+
+            {/* Heatmap overlay */}
+            <div
+              className={cn(
+                'flex items-center gap-3 px-3 py-2 rounded-xl border transition-all duration-200',
+                heatmapEnabled
+                  ? 'bg-background border-border/50 shadow-sm'
+                  : 'border-dashed text-muted-foreground hover:border-border'
+              )}
+            >
+              <span className="text-base">🔥</span>
+              <div className="flex-1">
+                <p className="text-sm">Heatmap</p>
+                <p className="text-[10px] text-muted-foreground/70">
+                  Marker density visualization
+                </p>
+              </div>
+              <Switch
+                checked={heatmapEnabled}
+                onCheckedChange={(checked) => {
+                  setHeatmapEnabled(checked)
+                  useMapStore.getState().pushNotification({ type: 'general', icon: 'fire', message: checked ? 'Heatmap enabled' : 'Heatmap disabled' })
+                }}
+                aria-label="Toggle heatmap overlay"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -1076,6 +1119,9 @@ function ToolsTab({
   clearMeasurePoints,
   onExportGeoJSON,
   onGPXImportClick,
+  areaPoints,
+  areaResult,
+  clearAreaPoints,
 }: {
   toolMode: ToolMode
   setToolMode: (mode: ToolMode) => void
@@ -1084,6 +1130,9 @@ function ToolsTab({
   clearMeasurePoints: () => void
   onExportGeoJSON: () => void
   onGPXImportClick: () => void
+  areaPoints: { longitude: number; latitude: number }[]
+  areaResult: number | null
+  clearAreaPoints: () => void
 }) {
   const center = useMapStore((s) => s.center)
   const drawings = useMapStore((s) => s.drawings)
@@ -1429,9 +1478,128 @@ function ToolsTab({
           </>
         )}
 
-        <Separator />
+        {/* Area measurement results */}
+        {toolMode === 'area' && (
+          <>
+            <Separator />
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wider flex items-center gap-2">
+                  <Pentagon className="h-3.5 w-3.5" />
+                  Area Measurement
+                </h4>
+                {areaPoints.length > 0 && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-6 text-[10px] px-2 text-muted-foreground hover:text-destructive"
+                    onClick={clearAreaPoints}
+                  >
+                    <Minus className="h-3 w-3 mr-1" />
+                    Clear All
+                  </Button>
+                )}
+              </div>
+              {areaPoints.length === 0 ? (
+                <div className="text-center py-6 text-muted-foreground">
+                  <div className="w-12 h-12 mx-auto mb-2 rounded-xl bg-violet-500/10 flex items-center justify-center">
+                    <Pentagon className="h-6 w-6 text-violet-500 opacity-60" />
+                  </div>
+                  <p className="text-xs">
+                    Click on the map to place polygon vertices
+                  </p>
+                  <p className="text-[10px] text-muted-foreground/60 mt-1">
+                    3+ points required to calculate area
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {areaResult !== null && (
+                    <div className="p-3 rounded-xl bg-gradient-to-br from-violet-500/10 via-purple-500/5 to-violet-500/10 border border-violet-500/20 shadow-sm">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-xs text-muted-foreground">
+                          Area
+                        </span>
+                        <span className="text-lg font-bold text-violet-600 dark:text-violet-400 tabular-nums">
+                          {formatArea(areaResult)}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-muted-foreground">
+                          Perimeter
+                        </span>
+                        <span className="text-sm font-semibold text-violet-500/80 tabular-nums">
+                          {formatDistance(calculatePerimeter(areaPoints))}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                  <div className="flex items-center justify-between p-2.5 bg-muted/50 rounded-xl">
+                    <span className="text-xs text-muted-foreground">
+                      Vertices
+                    </span>
+                    <Badge variant="secondary" className="font-mono tabular-nums">
+                      {areaPoints.length}
+                    </Badge>
+                  </div>
+                  {areaPoints.length < 3 && (
+                    <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-2.5">
+                      <p className="text-[10px] text-amber-600 dark:text-amber-400">
+                        Need {3 - areaPoints.length} more point{3 - areaPoints.length !== 1 ? 's' : ''} to calculate area
+                      </p>
+                    </div>
+                  )}
+                  <div className="space-y-1 max-h-32 overflow-y-auto">
+                    {areaPoints.map((p, i) => (
+                      <div
+                        key={i}
+                        className="text-xs text-muted-foreground flex items-center gap-2 px-2 py-1 rounded-lg hover:bg-accent/50 transition-colors"
+                      >
+                        <span className="w-5 h-5 rounded-full bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center text-[10px] font-bold">
+                          {i + 1}
+                        </span>
+                        <span className="font-mono tabular-nums">
+                          {p.latitude.toFixed(4)}, {p.longitude.toFixed(4)}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="flex-1 h-8 text-xs"
+                      onClick={clearAreaPoints}
+                    >
+                      <Trash2 className="h-3 w-3 mr-1.5" />
+                      Clear
+                    </Button>
+                    {areaResult !== null && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="flex-1 h-8 text-xs"
+                        onClick={() => {
+                          const text = `Area: ${formatArea(areaResult)}\nPerimeter: ${formatDistance(calculatePerimeter(areaPoints))}\nVertices: ${areaPoints.length}`
+                          navigator.clipboard.writeText(text).then(() => {
+                            toast.success('Area measurement copied!')
+                          }).catch(() => {
+                            toast.error('Failed to copy')
+                          })
+                        }}
+                      >
+                        <Copy className="h-3 w-3 mr-1.5" />
+                        Copy
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          </>
+        )}
 
-        {/* Export */}
+        <Separator />
         <div>
           <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 flex items-center gap-2">
             <Download className="h-3.5 w-3.5" />
@@ -1489,18 +1657,23 @@ function ToolsTab({
             <Upload className="h-3.5 w-3.5" />
             Import Data
           </h4>
-          <Button
-            variant="outline"
-            size="sm"
-            className="w-full h-9 text-xs justify-start rounded-xl"
+          <button
             onClick={onGPXImportClick}
+            className="w-full flex flex-col items-center gap-2 p-4 rounded-xl border-2 border-dashed border-muted-foreground/20 hover:border-primary/40 hover:bg-primary/5 transition-all duration-200 group"
+            aria-label="Import GPX file"
           >
-            <Upload className="h-3.5 w-3.5 mr-2" />
-            Import GPX File
-          </Button>
-          <p className="text-[10px] text-muted-foreground mt-1.5 px-1">
-            Import waypoints and tracks from GPX files
-          </p>
+            <div className="w-10 h-10 rounded-xl bg-muted/50 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+              <FileUp className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+            </div>
+            <div className="text-center">
+              <p className="text-xs font-medium text-muted-foreground group-hover:text-foreground transition-colors">
+                Drop GPX file or click to browse
+              </p>
+              <p className="text-[10px] text-muted-foreground/60 mt-0.5">
+                Waypoints & tracks will be imported
+              </p>
+            </div>
+          </button>
         </div>
 
         <Separator />
@@ -2184,4 +2357,44 @@ function formatDistance(km: number): string {
   return km < 1
     ? `${Math.round(km * 1000)} m`
     : `${km.toFixed(1)} km`
+}
+
+// Calculate polygon area using the Shoelace formula (spherical approximation)
+function calculatePolygonArea(points: { latitude: number; longitude: number }[]): number {
+  if (points.length < 3) return 0
+  const R = 6371000 // Earth radius in meters
+  // Convert to radians
+  const rad = points.map((p) => ({
+    lat: (p.latitude * Math.PI) / 180,
+    lng: (p.longitude * Math.PI) / 180,
+  }))
+  // Shoelace on unit sphere (spherical excess approximation)
+  let sum = 0
+  for (let i = 0; i < rad.length; i++) {
+    const j = (i + 1) % rad.length
+    sum += (rad[j].lng - rad[i].lng) * (2 + Math.sin(rad[i].lat) + Math.sin(rad[j].lat))
+  }
+  return Math.abs(sum * R * R / 2)
+}
+
+// Format area for display
+function formatArea(sqMeters: number): string {
+  if (sqMeters < 10000) {
+    return `${sqMeters.toFixed(0)} m²`
+  } else if (sqMeters < 1000000) {
+    return `${(sqMeters / 10000).toFixed(2)} ha`
+  } else {
+    return `${(sqMeters / 1000000).toFixed(2)} km²`
+  }
+}
+
+// Calculate perimeter of polygon
+function calculatePerimeter(points: { latitude: number; longitude: number }[]): number {
+  if (points.length < 2) return 0
+  let total = 0
+  for (let i = 0; i < points.length; i++) {
+    const j = (i + 1) % points.length
+    total += haversineDistance(points[i].latitude, points[i].longitude, points[j].latitude, points[j].longitude)
+  }
+  return total
 }

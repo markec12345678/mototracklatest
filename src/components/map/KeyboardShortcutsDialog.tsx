@@ -16,13 +16,13 @@ const shortcuts = [
     { keys: ['3'], description: 'Measure mode' },
     { keys: ['4'], description: 'Directions mode' },
     { keys: ['5'], description: 'Draw mode' },
-    { keys: ['Esc'], description: 'Clear selection' },
+    { keys: ['6'], description: 'Area measurement mode' },
+    { keys: ['Esc'], description: 'Clear selection / Reset tool' },
   ]},
   { category: 'Map Styles', items: [
     { keys: ['0'], description: 'Streets style' },
-    { keys: ['6'], description: 'Satellite style' },
-    { keys: ['7'], description: 'Dark style' },
-    { keys: ['8'], description: 'Terrain style' },
+    { keys: ['7'], description: 'Satellite style' },
+    { keys: ['8'], description: 'Dark style' },
     { keys: ['9'], description: 'Cycle all styles' },
   ]},
   { category: 'Navigation', items: [
@@ -30,13 +30,21 @@ const shortcuts = [
     { keys: ['F'], description: 'Toggle fullscreen' },
     { keys: ['L'], description: 'My location' },
     { keys: ['/'], description: 'Focus search' },
-    { keys: ['?'], description: 'Keyboard shortcuts' },
+    { keys: ['?'], description: 'Show this dialog' },
   ]},
   { category: 'Map', items: [
     { keys: ['Scroll'], description: 'Zoom in/out' },
     { keys: ['Drag'], description: 'Pan the map' },
     { keys: ['Right Drag'], description: 'Rotate map' },
     { keys: ['Shift+Drag'], description: 'Tilt map' },
+  ]},
+  { category: 'Tools Tips', items: [
+    { keys: ['Click'], description: 'Add point (in Pin/Measure/Area mode)' },
+    { keys: ['Click'], description: 'Add route waypoint (in Directions mode)' },
+    { keys: ['Drag+Draw'], description: 'Freehand drawing (in Draw mode)' },
+    { keys: ['Drag'], description: 'Move route points (in Directions mode)' },
+    { keys: ['Click'], description: 'Show building info (in Navigate + 3D mode)' },
+    { keys: ['Click'], description: 'Copy coordinates (in coordinate display)' },
   ]},
 ]
 

@@ -240,24 +240,22 @@ export default function Home() {
         case '5':
           setToolMode('draw')
           break
+        case '6':
+          setToolMode('area')
+          break
         case '0': {
           const streets = MAP_STYLES.find((s) => s.id === 'streets')
           if (streets) useMapStore.getState().setCurrentStyle(streets)
           break
         }
-        case '6': {
+        case '7': {
           const satellite = MAP_STYLES.find((s) => s.id === 'satellite')
           if (satellite) useMapStore.getState().setCurrentStyle(satellite)
           break
         }
-        case '7': {
+        case '8': {
           const dark = MAP_STYLES.find((s) => s.id === 'dark')
           if (dark) useMapStore.getState().setCurrentStyle(dark)
-          break
-        }
-        case '8': {
-          const terrain = MAP_STYLES.find((s) => s.id === 'terrain')
-          if (terrain) useMapStore.getState().setCurrentStyle(terrain)
           break
         }
         case '9': {
@@ -374,7 +372,7 @@ export default function Home() {
             style={{
               width: 60,
               height: 2,
-              background: toolMode === 'mark' ? 'rgba(239,68,68,0.6)' : toolMode === 'measure' ? 'rgba(245,158,11,0.6)' : toolMode === 'draw' ? 'rgba(34,197,94,0.6)' : 'rgba(6,182,212,0.6)',
+              background: toolMode === 'mark' ? 'rgba(239,68,68,0.6)' : toolMode === 'measure' ? 'rgba(245,158,11,0.6)' : toolMode === 'draw' ? 'rgba(34,197,94,0.6)' : toolMode === 'area' ? 'rgba(139,92,246,0.6)' : 'rgba(6,182,212,0.6)',
               borderRadius: 1,
             }}
           />
@@ -384,7 +382,7 @@ export default function Home() {
             style={{
               width: 2,
               height: 60,
-              background: toolMode === 'mark' ? 'rgba(239,68,68,0.6)' : toolMode === 'measure' ? 'rgba(245,158,11,0.6)' : toolMode === 'draw' ? 'rgba(34,197,94,0.6)' : 'rgba(6,182,212,0.6)',
+              background: toolMode === 'mark' ? 'rgba(239,68,68,0.6)' : toolMode === 'measure' ? 'rgba(245,158,11,0.6)' : toolMode === 'draw' ? 'rgba(34,197,94,0.6)' : toolMode === 'area' ? 'rgba(139,92,246,0.6)' : 'rgba(6,182,212,0.6)',
               borderRadius: 1,
             }}
           />
@@ -394,7 +392,7 @@ export default function Home() {
             style={{
               width: 8,
               height: 8,
-              background: toolMode === 'mark' ? 'rgba(239,68,68,0.7)' : toolMode === 'measure' ? 'rgba(245,158,11,0.7)' : toolMode === 'draw' ? 'rgba(34,197,94,0.7)' : 'rgba(6,182,212,0.7)',
+              background: toolMode === 'mark' ? 'rgba(239,68,68,0.7)' : toolMode === 'measure' ? 'rgba(245,158,11,0.7)' : toolMode === 'draw' ? 'rgba(34,197,94,0.7)' : toolMode === 'area' ? 'rgba(139,92,246,0.7)' : 'rgba(6,182,212,0.7)',
             }}
           />
         </div>
@@ -551,6 +549,7 @@ export default function Home() {
             { mode: 'measure' as ToolMode, icon: <Ruler className="h-4 w-4" />, label: 'Measure', activeClass: 'bg-amber-500 text-white' },
             { mode: 'directions' as ToolMode, icon: <Crosshair className="h-4 w-4" />, label: 'Route', activeClass: 'bg-cyan-500 text-white' },
             { mode: 'draw' as ToolMode, icon: <Pencil className="h-4 w-4" />, label: 'Draw', activeClass: 'bg-green-500 text-white' },
+            { mode: 'area' as ToolMode, icon: <Maximize2 className="h-4 w-4" />, label: 'Area', activeClass: 'bg-violet-500 text-white' },
           ]).map((tool) => (
             <button
               key={tool.mode}

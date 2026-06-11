@@ -1175,11 +1175,12 @@
 }
 
 /* ===== Section Divider in Tools ===== */
-@utility tools-section-divider {
-  @apply relative my-3;
+.tools-section-divider {
+  position: relative;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
 }
 
-/* Pseudo-element handled via the class itself with CSS */
 .tools-section-divider::after {
   content: '';
   position: absolute;
@@ -1193,4 +1194,257 @@
 /* ===== Empty State Illustration ===== */
 @utility empty-state-icon {
   @apply w-16 h-16 mx-auto mb-3 rounded-2xl bg-gradient-to-br from-muted/30 to-muted/60 flex items-center justify-center;
+}
+
+/* ===== Map Loading Bar ===== */
+@utility map-loading-bar {
+  height: 3px;
+  background: linear-gradient(90deg, oklch(0.6 0.2 160), oklch(0.55 0.18 180), oklch(0.5 0.15 200));
+  border-radius: 2px;
+  animation: loading-progress 2s ease-in-out infinite;
+}
+
+/* ===== POI Dot ===== */
+@utility poi-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 2px solid oklch(0.6 0.2 160);
+  background: oklch(1 0 0 / 80%);
+  box-shadow: 0 0 6px oklch(0.6 0.2 160 / 40%);
+  animation: poi-pulse 2.5s ease-in-out infinite;
+}
+
+/* ===== Sidebar Section Title ===== */
+@utility sidebar-section-title {
+  @apply text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 flex items-center gap-2;
+  border-left: 3px solid oklch(0.6 0.2 160);
+  padding-left: 8px;
+}
+
+/* ===== Drop Zone ===== */
+@utility drop-zone {
+  @apply border-2 border-dashed border-border/50 rounded-xl p-6 text-center transition-all duration-200;
+  background: oklch(0.6 0.2 160 / 3%);
+}
+
+/* ===== Drop Zone Active ===== */
+@utility drop-zone-active {
+  border-color: oklch(0.6 0.2 160);
+  background: oklch(0.6 0.2 160 / 8%);
+  box-shadow: 0 0 20px oklch(0.6 0.2 160 / 10%);
+}
+
+/* ===== Area Polygon Fill ===== */
+@utility area-polygon-fill {
+  fill: oklch(0.6 0.2 160 / 15%);
+  transition: fill 0.2s ease;
+}
+
+/* ===== Area Polygon Stroke ===== */
+@utility area-polygon-stroke {
+  stroke: oklch(0.6 0.2 160 / 80%);
+  stroke-width: 2;
+  stroke-dasharray: 6 3;
+  fill: none;
+  transition: stroke 0.2s ease;
+}
+
+/* ===== Loading Progress Keyframe ===== */
+@keyframes loading-progress {
+  0% {
+    width: 0%;
+    margin-left: 0%;
+  }
+  50% {
+    width: 60%;
+    margin-left: 15%;
+  }
+  90% {
+    width: 90%;
+    margin-left: 5%;
+  }
+  100% {
+    width: 100%;
+    margin-left: 0%;
+  }
+}
+
+/* ===== POI Pulse Keyframe ===== */
+@keyframes poi-pulse {
+  0%, 100% {
+    box-shadow: 0 0 4px oklch(0.6 0.2 160 / 30%);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 10px oklch(0.6 0.2 160 / 50%);
+    transform: scale(1.15);
+  }
+}
+
+/* ===== Slide Up Fade Keyframe ===== */
+@keyframes slide-up-fade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Slide Up Fade Utility ===== */
+@utility slide-up-fade {
+  animation: slide-up-fade 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ===== Enhanced Toolbar Glass Effect ===== */
+@utility toolbar-glass {
+  background: oklch(1 0 0 / 75%);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid oklch(1 0 0 / 25%);
+  box-shadow:
+    0 4px 16px -4px oklch(0 0 0 / 10%),
+    0 2px 4px -1px oklch(0 0 0 / 6%),
+    inset 0 1px 0 oklch(1 0 0 / 20%);
+}
+
+.dark .toolbar-glass {
+  background: oklch(0.18 0 0 / 80%);
+  border-color: oklch(1 0 0 / 10%);
+  box-shadow:
+    0 4px 16px -4px oklch(0 0 0 / 30%),
+    0 2px 4px -1px oklch(0 0 0 / 15%),
+    inset 0 1px 0 oklch(1 0 0 / 5%);
+}
+
+/* ===== Toolbar Button Hover Name ===== */
+@utility toolbar-btn-name {
+  @apply absolute -right-1 top-full mt-1.5 px-2 py-0.5 rounded-md text-[10px] font-medium whitespace-nowrap opacity-0 pointer-events-none transition-all duration-150;
+  background: oklch(0.2 0 0 / 90%);
+  color: oklch(0.95 0 0);
+  transform: translateY(-2px);
+  z-index: 50;
+}
+
+.dark .toolbar-btn-name {
+  background: oklch(0.95 0 0 / 95%);
+  color: oklch(0.15 0 0);
+}
+
+/* ===== Toolbar Active Glow Enhanced ===== */
+@utility toolbar-active-glow {
+  box-shadow: 0 0 12px oklch(0.6 0.2 160 / 30%), 0 0 24px oklch(0.6 0.2 160 / 15%);
+  transform: scale(1.08);
+}
+
+/* ===== Tool Group Divider ===== */
+@utility tool-group-divider {
+  height: 1px;
+  margin: 4px 6px;
+  background: linear-gradient(90deg, transparent, oklch(0.7 0 0 / 20%), transparent);
+}
+
+/* ===== Location Card Hover Scale ===== */
+@utility location-card {
+  @apply transition-all duration-200;
+}
+
+@utility location-card-hover {
+  transform: scale(1.01);
+  box-shadow: 0 4px 12px oklch(0 0 0 / 8%);
+}
+
+/* ===== Route Card Hover ===== */
+@utility route-card {
+  @apply transition-all duration-200;
+}
+
+@utility route-card-hover {
+  transform: translateX(3px);
+  box-shadow: 0 4px 16px oklch(0 0 0 / 10%);
+}
+
+/* ===== Empty State Pattern ===== */
+@utility empty-state-pattern {
+  background-image: radial-gradient(circle, oklch(0.7 0 0 / 8%) 1px, transparent 1px);
+  background-size: 12px 12px;
+}
+
+/* ===== Sidebar Header Gradient ===== */
+@utility sidebar-header-gradient {
+  background: linear-gradient(135deg, oklch(0.6 0.2 160 / 8%), oklch(0.55 0.18 180 / 4%), transparent);
+}
+
+/* ===== Tools Section Divider Enhanced ===== */
+@utility tools-divider {
+  position: relative;
+  height: 1px;
+  margin: 12px 16px;
+  background: linear-gradient(90deg, transparent, oklch(0.7 0 0 / 20%), transparent);
+}
+
+.dark .tools-divider {
+  background: linear-gradient(90deg, transparent, oklch(1 0 0 / 10%), transparent);
+}
+
+/* ===== Area Tool Gradient ===== */
+@utility area-gradient-card {
+  background: linear-gradient(135deg, oklch(0.55 0.2 300 / 10%), oklch(0.5 0.22 280 / 5%), transparent);
+  border-color: oklch(0.55 0.2 300 / 20%);
+}
+
+/* ===== Heatmap Legend Gradient ===== */
+@utility heatmap-legend {
+  background: linear-gradient(90deg, rgba(0, 255, 128, 0.3), rgba(16, 185, 129, 0.5), rgba(245, 158, 11, 0.6), rgba(239, 68, 68, 0.7), rgba(220, 38, 38, 0.9));
+}
+
+/* ===== Building Popup Style ===== */
+.maplibregl-popup-content {
+  border-radius: 12px !important;
+  box-shadow: 0 8px 24px -4px oklch(0 0 0 / 15%), 0 2px 8px -2px oklch(0 0 0 / 8%) !important;
+  padding: 10px 14px !important;
+}
+
+.dark .maplibregl-popup-content {
+  background: oklch(0.18 0 0 / 95%) !important;
+  color: oklch(0.9 0 0) !important;
+  box-shadow: 0 8px 24px -4px oklch(0 0 0 / 40%), 0 2px 8px -2px oklch(0 0 0 / 20%) !important;
+}
+
+/* ===== Enhanced Marker Bounce ===== */
+@keyframes marker-bounce-in {
+  0% {
+    transform: translateY(-20px) scale(0.5);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(4px) scale(1.1);
+    opacity: 1;
+  }
+  80% {
+    transform: translateY(-2px) scale(0.95);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ===== Shimmer for Loading Cards ===== */
+@utility shimmer-card {
+  background: linear-gradient(90deg, oklch(0.9 0 0 / 0%) 0%, oklch(0.9 0 0 / 30%) 50%, oklch(0.9 0 0 / 0%) 100%);
+  background-size: 200% 100%;
+  animation: shimmer-move 1.5s ease-in-out infinite;
+}
+
+.dark .shimmer-card {
+  background: linear-gradient(90deg, oklch(0.3 0 0 / 0%) 0%, oklch(0.3 0 0 / 20%) 50%, oklch(0.3 0 0 / 0%) 100%);
+  background-size: 200% 100%;
+}
+
+@keyframes shimmer-move {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }

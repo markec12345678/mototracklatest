@@ -1,0 +1,2002 @@
+     1→'use client'
+     2→
+     3→import { useState, useEffect, useCallback, useRef } from 'react'
+     4→import { AnimatePresence, motion } from 'framer-motion'
+     5→import {
+     6→  MapPin,
+     7→  Layers,
+     8→  Wrench,
+     9→  Route,
+    10→  Trash2,
+    11→  Navigation,
+    12→  Pencil,
+    13→  Ruler,
+    14→  ChevronLeft,
+    15→  ChevronRight,
+    16→  Eye,
+    17→  EyeOff,
+    18→  Download,
+    19→  Star,
+    20→  Share2,
+    21→  MapPinned,
+    22→  Globe2,
+    23→  Mountain,
+    24→  ArrowRight,
+    25→  PanelLeft,
+    26→  Keyboard,
+    27→  Circle,
+    28→  Minus,
+    29→  Copy,
+    30→  Compass,
+    31→  Upload,
+    32→  Footprints,
+    33→  Bike,
+    34→  Car,
+    35→} from 'lucide-react'
+    36→import { Button } from '@/components/ui/button'
+    37→import { Input } from '@/components/ui/input'
+    38→import { Badge } from '@/components/ui/badge'
+    39→import { ScrollArea } from '@/components/ui/scroll-area'
+    40→import { Separator } from '@/components/ui/separator'
+    41→import { Switch } from '@/components/ui/switch'
+    42→import {
+    43→  Sheet,
+    44→  SheetContent,
+    45→  SheetHeader,
+    46→  SheetTitle,
+    47→  SheetDescription,
+    48→} from '@/components/ui/sheet'
+    49→import {
+    50→  useMapStore,
+    51→  type SavedLocation,
+    52→  type ToolMode,
+    53→  type MapRoute,
+    54→  type RoutePoint,
+    55→} from '@/lib/map-store'
+    56→import { cn } from '@/lib/utils'
+    57→import { toast } from 'sonner'
+    58→import { LocationDetailDrawer } from '@/components/map/LocationDetailDrawer'
+    59→import { NearbyPanel } from '@/components/map/NearbyPanel'
+    60→
+    61→function mapSymbolToCategory(sym?: string): string {
+    62→  if (!sym) return 'general'
+    63→  const lower = sym.toLowerCase()
+    64→  if (lower.includes('restaurant') || lower.includes('food')) return 'restaurant'
+    65→  if (lower.includes('hotel') || lower.includes('lodging')) return 'hotel'
+    66→  if (lower.includes('park')) return 'park'
+    67→  if (lower.includes('star') || lower.includes('favorite')) return 'favorite'
+    68→  if (lower.includes('shop') || lower.includes('store')) return 'shop'
+    69→  if (lower.includes('landmark') || lower.includes('museum')) return 'landmark'
+    70→  return 'general'
+    71→}
+    72→
+    73→function getCategoryColor(category: string): string {
+    74→  const colors: Record<string, string> = {
+    75→    general: '#6b7280',
+    76→    favorite: '#f59e0b',
+    77→    restaurant: '#ef4444',
+    78→    hotel: '#8b5cf6',
+    79→    park: '#22c55e',
+    80→    shop: '#3b82f6',
+    81→    landmark: '#f97316',
+    82→    transport: '#06b6d4',
+    83→  }
+    84→  return colors[category] || '#6b7280'
+    85→}
+    86→
+    87→function getCategoryIcon(category: string): string {
+    88→  const icons: Record<string, string> = {
+    89→    general: '📌',
+    90→    favorite: '⭐',
+    91→    restaurant: '🍽️',
+    92→    hotel: '🏨',
+    93→    park: '🌳',
+    94→    shop: '🛍️',
+    95→    landmark: '🏛️',
+    96→    transport: '🚌',
+    97→  }
+    98→  return icons[category] || '📌'
+    99→}
+   100→
+   101→async function exportGPX(type: 'route' | 'markers' | 'all', data: Record<string, unknown>) {
+   102→  try {
+   103→    const res = await fetch('/api/export/gpx', {
+   104→      method: 'POST',
+   105→      headers: { 'Content-Type': 'application/json' },
+   106→      body: JSON.stringify({ type, data }),
+   107→    })
+   108→    if (!res.ok) throw new Error('Export failed')
+   109→    const blob = await res.blob()
+   110→    const url = URL.createObjectURL(blob)
+   111→    const a = document.createElement('a')
+   112→    a.href = url
+   113→    a.download = `maplibre-${type}-${Date.now()}.gpx`
+   114→    document.body.appendChild(a)
+   115→    a.click()
+   116→    document.body.removeChild(a)
+   117→    URL.revokeObjectURL(url)
+   118→    toast.success(`${type === 'route' ? 'Route' : type === 'markers' ? 'Markers' : 'All data'} exported as GPX`)
+   119→  } catch (err) {
+   120→    console.error('GPX export error:', err)
+   121→    toast.error('Failed to export GPX')
+   122→  }
+   123→}
+   124→
+   125→const categories = [
+   126→  { id: 'general', label: 'General', color: '#6b7280', icon: '📌' },
+   127→  { id: 'favorite', label: 'Favorite', color: '#f59e0b', icon: '⭐' },
+   128→  { id: 'restaurant', label: 'Restaurant', color: '#ef4444', icon: '🍽️' },
+   129→  { id: 'hotel', label: 'Hotel', color: '#8b5cf6', icon: '🏨' },
+   130→  { id: 'park', label: 'Park', color: '#22c55e', icon: '🌳' },
+   131→  { id: 'shop', label: 'Shop', color: '#3b82f6', icon: '🛍️' },
+   132→  { id: 'landmark', label: 'Landmark', color: '#f97316', icon: '🏛️' },
+   133→  { id: 'transport', label: 'Transport', color: '#06b6d4', icon: '🚌' },
+   134→]
+   135→
+   136→const toolModes: {
+   137→  id: ToolMode
+   138→  label: string
+   139→  icon: React.ReactNode
+   140→  description: string
+   141→  color: string
+   142→  shortcut: string
+   143→}[] = [
+   144→  {
+   145→    id: 'navigate',
+   146→    label: 'Navigate',
+   147→    icon: <Navigation className="h-4 w-4" />,
+   148→    description: 'Pan & zoom the map',
+   149→    color: 'from-emerald-500 to-teal-500',
+   150→    shortcut: '1',
+   151→  },
+   152→  {
+   153→    id: 'mark',
+   154→    label: 'Drop Pin',
+   155→    icon: <MapPin className="h-4 w-4" />,
+   156→    description: 'Click map to add markers',
+   157→    color: 'from-red-500 to-rose-500',
+   158→    shortcut: '2',
+   159→  },
+   160→  {
+   161→    id: 'measure',
+   162→    label: 'Measure',
+   163→    icon: <Ruler className="h-4 w-4" />,
+   164→    description: 'Click points to measure distance',
+   165→    color: 'from-amber-500 to-orange-500',
+   166→    shortcut: '3',
+   167→  },
+   168→  {
+   169→    id: 'directions',
+   170→    label: 'Directions',
+   171→    icon: <Route className="h-4 w-4" />,
+   172→    description: 'Draw routes between points',
+   173→    color: 'from-cyan-500 to-sky-500',
+   174→    shortcut: '4',
+   175→  },
+   176→  {
+   177→    id: 'draw',
+   178→    label: 'Draw',
+   179→    icon: <Pencil className="h-4 w-4" />,
+   180→    description: 'Freehand drawing on the map',
+   181→    color: 'from-green-500 to-emerald-500',
+   182→    shortcut: '5',
+   183→  },
+   184→]
+   185→
+   186→// Shared sidebar content component
+   187→function SidebarContent({ onCloseMobile }: { onCloseMobile?: () => void }) {
+   188→  const {
+   189→    sidebarTab,
+   190→    setSidebarTab,
+   191→    savedLocations,
+   192→    setSavedLocations,
+   193→    addSavedLocation,
+   194→    removeSavedLocation,
+   195→    markers,
+   196→    removeMarker,
+   197→    toolMode,
+   198→    setToolMode,
+   199→    measurePoints,
+   200→    measureDistance,
+   201→    setMeasureDistance,
+   202→    clearMeasurePoints,
+   203→    selectedMarker,
+   204→    setSelectedMarker,
+   205→  } = useMapStore()
+   206→
+   207→  const [filterCategory, setFilterCategory] = useState<string>('all')
+   208→  const [searchFilter, setSearchFilter] = useState('')
+   209→  const [detailLocation, setDetailLocation] = useState<SavedLocation | null>(null)
+   210→  const [detailOpen, setDetailOpen] = useState(false)
+   211→  const gpxInputRef = useRef<HTMLInputElement>(null)
+   212→  const gpxRouteInputRef = useRef<HTMLInputElement>(null)
+   213→
+   214→  // GPX Import handler
+   215→  const handleGPXImport = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+   216→    const file = e.target.files?.[0]
+   217→    if (!file) return
+   218→
+   219→    try {
+   220→      const formData = new FormData()
+   221→      formData.append('file', file)
+   222→
+   223→      const res = await fetch('/api/import/gpx', {
+   224→        method: 'POST',
+   225→        body: formData,
+   226→      })
+   227→
+   228→      if (!res.ok) throw new Error('Import failed')
+   229→
+   230→      const data = await res.json()
+   231→      const { waypoints, tracks } = data
+   232→
+   233→      // Import waypoints as markers/locations
+   234→      const { addMarker, addSavedLocation, pushNotification, setRoutes } = useMapStore.getState()
+   235→
+   236→      let importedWaypoints = 0
+   237→      for (const wp of waypoints) {
+   238→        const id = `import-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`
+   239→        const category = mapSymbolToCategory(wp.sym || wp.type)
+   240→        addMarker({
+   241→          id,
+   242→          longitude: wp.longitude,
+   243→          latitude: wp.latitude,
+   244→          name: wp.name,
+   245→          category,
+   246→          color: getCategoryColor(category),
+   247→        })
+   248→        addSavedLocation({
+   249→          id,
+   250→          name: wp.name,
+   251→          latitude: wp.latitude,
+   252→          longitude: wp.longitude,
+   253→          category,
+   254→          color: getCategoryColor(category),
+   255→          icon: getCategoryIcon(category),
+   256→          description: wp.description,
+   257→          createdAt: new Date().toISOString(),
+   258→          updatedAt: new Date().toISOString(),
+   259→        })
+   260→        importedWaypoints++
+   261→      }
+   262→
+   263→      // Import tracks as routes
+   264→      let importedTracks = 0
+   265→      const currentRoutes = useMapStore.getState().routes
+   266→      const newRoutes = [...currentRoutes]
+   267→      for (const track of tracks) {
+   268→        newRoutes.push({
+   269→          id: `route-import-${Date.now()}-${importedTracks}`,
+   270→          name: track.name,
+   271→          color: '#10b981',
+   272→          points: track.points.map((p: { latitude: number; longitude: number }) => ({ latitude: p.latitude, longitude: p.longitude })),
+   273→          distance: null,
+   274→          duration: null,
+   275→        })
+   276→        importedTracks++
+   277→      }
+   278→      setRoutes(newRoutes)
+   279→
+   280→      pushNotification({
+   281→        type: 'general',
+   282→        icon: '📥',
+   283→        message: `Imported ${importedWaypoints} waypoints and ${importedTracks} tracks`,
+   284→      })
+   285→      toast.success(`Imported ${importedWaypoints} waypoints and ${importedTracks} tracks from GPX`)
+   286→    } catch (err) {
+   287→      console.error('GPX import error:', err)
+   288→      toast.error('Failed to import GPX file')
+   289→    }
+   290→
+   291→    // Reset the input
+   292→    e.target.value = ''
+   293→  }, [])
+   294→
+   295→  // Load saved locations
+   296→  useEffect(() => {
+   297→    async function loadLocations() {
+   298→      try {
+   299→        const res = await fetch('/api/locations')
+   300→        if (res.ok) {
+   301→          const data = await res.json()
+   302→          setSavedLocations(data)
+   303→          useMapStore.getState().setMarkers(
+   304→            data.map((loc: SavedLocation) => ({
+   305→              id: loc.id,
+   306→              longitude: loc.longitude,
+   307→              latitude: loc.latitude,
+   308→              name: loc.name,
+   309→              description: loc.description || undefined,
+   310→              color: loc.color,
+   311→              category: loc.category,
+   312→            }))
+   313→          )
+   314→        }
+   315→      } catch (err) {
+   316→        console.error('Failed to load locations:', err)
+   317→      }
+   318→    }
+   319→    loadLocations()
+   320→  }, [setSavedLocations])
+   321→
+   322→  // Calculate measurement distance
+   323→  useEffect(() => {
+   324→    if (measurePoints.length < 2) {
+   325→      setMeasureDistance(null)
+   326→      return
+   327→    }
+   328→
+   329→    let total = 0
+   330→    for (let i = 1; i < measurePoints.length; i++) {
+   331→      total += haversineDistance(
+   332→        measurePoints[i - 1].latitude,
+   333→        measurePoints[i - 1].longitude,
+   334→        measurePoints[i].latitude,
+   335→        measurePoints[i].longitude
+   336→      )
+   337→    }
+   338→    setMeasureDistance(total)
+   339→    if (measurePoints.length === 2) {
+   340→      useMapStore.getState().pushNotification({ type: 'measurement', icon: 'ruler', message: `Measurement completed: ${total < 1 ? `${(total * 1000).toFixed(0)}m` : `${total.toFixed(2)}km`}` })
+   341→    }
+   342→  }, [measurePoints, setMeasureDistance])
+   343→
+   344→  const handleDeleteLocation = async (id: string) => {
+   345→    try {
+   346→      const res = await fetch(`/api/locations/${id}`, { method: 'DELETE' })
+   347→      if (res.ok) {
+   348→        const locName = savedLocations.find(l => l.id === id)?.name || 'Location'
+   349→        removeSavedLocation(id)
+   350→        removeMarker(id)
+   351→        if (selectedMarker === id) setSelectedMarker(null)
+   352→        useMapStore.getState().pushNotification({ type: 'location', icon: 'trash', message: `${locName} removed from saved locations` })
+   353→        toast.success('Location removed')
+   354→      }
+   355→    } catch (err) {
+   356→      console.error('Failed to delete location:', err)
+   357→      toast.error('Failed to delete location')
+   358→    }
+   359→  }
+   360→
+   361→  const handleFlyTo = useCallback((lng: number, lat: number) => {
+   362→    const flyTo = (window as unknown as Record<string, (lng: number, lat: number, z?: number) => void>).__mapFlyTo
+   363→    if (flyTo) flyTo(lng, lat, 14)
+   364→  }, [])
+   365→
+   366→  const handleExportGeoJSON = useCallback(() => {
+   367→    const geojson = {
+   368→      type: 'FeatureCollection' as const,
+   369→      features: savedLocations.map((loc) => ({
+   370→        type: 'Feature' as const,
+   371→        properties: {
+   372→          name: loc.name,
+   373→          description: loc.description,
+   374→          category: loc.category,
+   375→          color: loc.color,
+   376→        },
+   377→        geometry: {
+   378→          type: 'Point' as const,
+   379→          coordinates: [loc.longitude, loc.latitude],
+   380→        },
+   381→      })),
+   382→    }
+   383→
+   384→    const blob = new Blob([JSON.stringify(geojson, null, 2)], {
+   385→      type: 'application/geo+json',
+   386→    })
+   387→    const url = URL.createObjectURL(blob)
+   388→    const a = document.createElement('a')
+   389→    a.href = url
+   390→    a.download = 'maplibre-explorer-locations.geojson'
+   391→    a.click()
+   392→    URL.revokeObjectURL(url)
+   393→    toast.success('GeoJSON exported!')
+   394→  }, [savedLocations])
+   395→
+   396→  const filteredLocations = savedLocations.filter((loc) => {
+   397→    const matchesCategory =
+   398→      filterCategory === 'all' || loc.category === filterCategory
+   399→    const matchesSearch =
+   400→      !searchFilter ||
+   401→      loc.name.toLowerCase().includes(searchFilter.toLowerCase())
+   402→    return matchesCategory && matchesSearch
+   403→  })
+   404→
+   405→  const tabs = [
+   406→    {
+   407→      id: 'locations' as const,
+   408→      label: 'Places',
+   409→      icon: <MapPin className="h-4 w-4" />,
+   410→    },
+   411→    {
+   412→      id: 'layers' as const,
+   413→      label: 'Layers',
+   414→      icon: <Layers className="h-4 w-4" />,
+   415→    },
+   416→    {
+   417→      id: 'tools' as const,
+   418→      label: 'Tools',
+   419→      icon: <Wrench className="h-4 w-4" />,
+   420→    },
+   421→    {
+   422→      id: 'routes' as const,
+   423→      label: 'Routes',
+   424→      icon: <Route className="h-4 w-4" />,
+   425→    },
+   426→  ]
+   427→
+   428→  return (
+   429→    <div className="flex flex-col h-full">
+   430→      {/* Gradient top border - enhanced with animation */}
+   431→      <div className="h-1 bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 shrink-0 relative overflow-hidden">
+   432→        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
+   433→      </div>
+   434→
+   435→      {/* Header with gradient accent */}
+   436→      <div className="relative overflow-hidden shrink-0">
+   437→        <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-transparent" />
+   438→        <div className="relative px-4 py-3 border-b">
+   439→          <h1 className="font-bold text-lg flex items-center gap-2.5">
+   440→            <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-md shadow-emerald-500/20">
+   441→              <MapPin className="h-4 w-4 text-white" />
+   442→            </div>
+   443→            <div>
+   444→              <span className="gradient-text text-base font-bold">MapLibre Explorer</span>
+   445→              <p className="text-[10px] text-muted-foreground font-normal -mt-0.5">
+   446→                Interactive Map Application
+   447→              </p>
+   448→            </div>
+   449→          </h1>
+   450→        </div>
+   451→      </div>
+   452→
+   453→      {/* Tab navigation with pill-style indicator */}
+   454→      <div className="flex border-b bg-muted/30 shrink-0 px-2 py-1.5">
+   455→        {tabs.map((tab) => (
+   456→          <button
+   457→            key={tab.id}
+   458→            onClick={() => setSidebarTab(tab.id)}
+   459→            className={cn(
+   460→              'flex-1 py-2 px-1 text-xs font-medium transition-all duration-200 flex flex-col items-center gap-1 relative rounded-lg',
+   461→              sidebarTab === tab.id
+   462→                ? 'sidebar-tab-active bg-primary/5 text-primary scale-[1.02]'
+   463→                : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
+   464→            )}
+   465→          >
+   466→            <span className={cn(
+   467→              'transition-transform duration-200',
+   468→              sidebarTab === tab.id && 'scale-110'
+   469→            )}>
+   470→              {tab.icon}
+   471→            </span>
+   472→            {tab.label}
+   473→          </button>
+   474→        ))}
+   475→      </div>
+   476→
+   477→      {/* Tab content with AnimatePresence */}
+   478→      <div className="flex-1 overflow-hidden">
+   479→        <AnimatePresence mode="wait">
+   480→          <motion.div
+   481→            key={sidebarTab}
+   482→            initial={{ opacity: 0, x: 8 }}
+   483→            animate={{ opacity: 1, x: 0 }}
+   484→            exit={{ opacity: 0, x: -8 }}
+   485→            transition={{ duration: 0.15, ease: 'easeOut' }}
+   486→            className="h-full"
+   487→          >
+   488→            {sidebarTab === 'locations' && (
+   489→              <LocationsTab
+   490→                locations={filteredLocations}
+   491→                searchFilter={searchFilter}
+   492→                setSearchFilter={setSearchFilter}
+   493→                filterCategory={filterCategory}
+   494→                setFilterCategory={setFilterCategory}
+   495→                onFlyTo={handleFlyTo}
+   496→                onDelete={handleDeleteLocation}
+   497→                selectedMarker={selectedMarker}
+   498→                onSelectMarker={setSelectedMarker}
+   499→                totalCount={savedLocations.length}
+   500→                onOpenDetail={(loc) => {
+   501→                  setDetailLocation(loc)
+   502→                  setDetailOpen(true)
+   503→                }}
+   504→              />
+   505→            )}
+   506→            {sidebarTab === 'layers' && <LayersTab />}
+   507→            {sidebarTab === 'tools' && (
+   508→              <ToolsTab
+   509→                toolMode={toolMode}
+   510→                setToolMode={setToolMode}
+   511→                measurePoints={measurePoints}
+   512→                measureDistance={measureDistance}
+   513→                clearMeasurePoints={clearMeasurePoints}
+   514→                onExportGeoJSON={handleExportGeoJSON}
+   515→                onGPXImportClick={() => gpxInputRef.current?.click()}
+   516→              />
+   517→            )}
+   518→            {sidebarTab === 'routes' && (
+   519→              <RoutesTab
+   520→                onGPXImportClick={() => gpxRouteInputRef.current?.click()}
+   521→              />
+   522→            )}
+   523→          </motion.div>
+   524→        </AnimatePresence>
+   525→      </div>
+   526→
+   527→      {/* Hidden file inputs for GPX import */}
+   528→      <input
+   529→        ref={gpxInputRef}
+   530→        type="file"
+   531→        accept=".gpx"
+   532→        className="hidden"
+   533→        onChange={handleGPXImport}
+   534→        aria-label="Import GPX file"
+   535→      />
+   536→      <input
+   537→        ref={gpxRouteInputRef}
+   538→        type="file"
+   539→        accept=".gpx"
+   540→        className="hidden"
+   541→        onChange={handleGPXImport}
+   542→        aria-label="Import GPX file for routes"
+   543→      />
+   544→
+   545→      {/* Location Detail Drawer */}
+   546→      <LocationDetailDrawer
+   547→        location={detailLocation}
+   548→        open={detailOpen}
+   549→        onOpenChange={setDetailOpen}
+   550→        onDelete={handleDeleteLocation}
+   551→      />
+   552→    </div>
+   553→  )
+   554→}
+   555→
+   556→export function MapSidebar() {
+   557→  const { sidebarOpen, setSidebarOpen } = useMapStore()
+   558→
+   559→  // Mobile detection - only render Sheet on mobile viewports
+   560→  const [isMobile, setIsMobile] = useState(false)
+   561→  useEffect(() => {
+   562→    const check = () => setIsMobile(window.innerWidth < 768)
+   563→    check()
+   564→    window.addEventListener('resize', check)
+   565→    return () => window.removeEventListener('resize', check)
+   566→  }, [])
+   567→
+   568→  // Close sidebar on mobile by default on initial mount
+   569→  useEffect(() => {
+   570→    if (window.innerWidth < 768) {
+   571→      setSidebarOpen(false)
+   572→    }
+   573→  }, [setSidebarOpen])
+   574→
+   575→  return (
+   576→    <>
+   577→      {/* Desktop sidebar - hidden on mobile */}
+   578→      <div
+   579→        className={cn(
+   580→          'hidden md:flex absolute left-0 top-0 bottom-0 z-20 transition-all duration-300 ease-in-out',
+   581→          sidebarOpen ? 'w-80' : 'w-0 overflow-hidden'
+   582→        )}
+   583→      >
+   584→        {/* Toggle button */}
+   585→        <button
+   586→          onClick={() => setSidebarOpen(!sidebarOpen)}
+   587→          className={cn(
+   588→            'absolute z-30 bg-background/95 backdrop-blur-sm border rounded-full p-1.5 shadow-lg hover:bg-accent transition-all duration-200 hover:scale-110',
+   589→            sidebarOpen ? '-right-3 top-4' : 'right-3 top-4'
+   590→          )}
+   591→          aria-label={sidebarOpen ? 'Close sidebar' : 'Open sidebar'}
+   592→        >
+   593→          {sidebarOpen ? (
+   594→            <ChevronLeft className="h-3 w-3" />
+   595→          ) : (
+   596→            <ChevronRight className="h-3 w-3" />
+   597→          )}
+   598→        </button>
+   599→
+   600→        {/* Sidebar content */}
+   601→        <div
+   602→          className={cn(
+   603→            'w-80 bg-background/95 backdrop-blur-xl border-r flex flex-col sidebar-shadow sidebar-inner-glow relative transition-opacity duration-200',
+   604→            sidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+   605→          )}
+   606→        >
+   607→          <div className="relative z-10 h-full flex flex-col">
+   608→            <SidebarContent />
+   609→          </div>
+   610→        </div>
+   611→      </div>
+   612→
+   613→      {/* Mobile sidebar - Sheet/drawer (only renders on mobile) */}
+   614→      {isMobile && (
+   615→        <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
+   616→          <SheetContent side="left" className="w-80 p-0">
+   617→            <SheetHeader className="sr-only">
+   618→              <SheetTitle>MapLibre Explorer Sidebar</SheetTitle>
+   619→              <SheetDescription className="sr-only">
+   620→                Navigation sidebar for map locations, layers, and tools
+   621→              </SheetDescription>
+   622→            </SheetHeader>
+   623→            <SidebarContent onCloseMobile={() => setSidebarOpen(false)} />
+   624→          </SheetContent>
+   625→        </Sheet>
+   626→      )}
+   627→
+   628→      {/* Mobile toggle button - positioned below search bar to avoid overlap */}
+   629→      {!sidebarOpen && (
+   630→        <button
+   631→          onClick={() => setSidebarOpen(true)}
+   632→          className="md:hidden absolute left-3 top-[58px] z-20 bg-background/95 backdrop-blur-sm border rounded-xl p-2 shadow-lg hover:bg-accent transition-all duration-200 hover:scale-105"
+   633→          aria-label="Open sidebar"
+   634→        >
+   635→          <PanelLeft className="h-4 w-4" />
+   636→        </button>
+   637→      )}
+   638→    </>
+   639→  )
+   640→}
+   641→
+   642→function LocationsTab({
+   643→  locations,
+   644→  searchFilter,
+   645→  setSearchFilter,
+   646→  filterCategory,
+   647→  setFilterCategory,
+   648→  onFlyTo,
+   649→  onDelete,
+   650→  selectedMarker,
+   651→  onSelectMarker,
+   652→  totalCount,
+   653→  onOpenDetail,
+   654→}: {
+   655→  locations: SavedLocation[]
+   656→  searchFilter: string
+   657→  setSearchFilter: (v: string) => void
+   658→  filterCategory: string
+   659→  setFilterCategory: (v: string) => void
+   660→  onFlyTo: (lng: number, lat: number) => void
+   661→  onDelete: (id: string) => void
+   662→  selectedMarker: string | null
+   663→  onSelectMarker: (id: string | null) => void
+   664→  totalCount: number
+   665→  onOpenDetail: (loc: SavedLocation) => void
+   666→}) {
+   667→  return (
+   668→    <div className="flex flex-col h-full">
+   669→      {/* Search & filter */}
+   670→      <div className="p-3 space-y-2 border-b bg-muted/20 shrink-0">
+   671→        <Input
+   672→          placeholder="Filter locations..."
+   673→          value={searchFilter}
+   674→          onChange={(e) => setSearchFilter(e.target.value)}
+   675→          className="h-8 text-sm"
+   676→          aria-label="Filter locations"
+   677→        />
+   678→        <div className="flex flex-wrap gap-1">
+   679→          <button
+   680→            onClick={() => setFilterCategory('all')}
+   681→            className={cn(
+   682→              'text-[11px] px-2.5 py-1 rounded-full border transition-all duration-200',
+   683→              filterCategory === 'all'
+   684→                ? 'bg-primary text-primary-foreground shadow-sm'
+   685→                : 'hover:bg-accent bg-background'
+   686→            )}
+   687→          >
+   688→            All ({totalCount})
+   689→          </button>
+   690→          {categories.slice(0, 6).map((cat) => (
+   691→            <button
+   692→              key={cat.id}
+   693→              onClick={() => setFilterCategory(cat.id)}
+   694→              className={cn(
+   695→                'text-[11px] px-2 py-1 rounded-full border transition-all duration-200',
+   696→                filterCategory === cat.id
+   697→                  ? 'text-white shadow-sm'
+   698→                  : 'hover:bg-accent bg-background'
+   699→              )}
+   700→              style={
+   701→                filterCategory === cat.id
+   702→                  ? { backgroundColor: cat.color, borderColor: cat.color }
+   703→                  : undefined
+   704→              }
+   705→              aria-label={`Filter by ${cat.label}`}
+   706→            >
+   707→              {cat.icon} {cat.label}
+   708→            </button>
+   709→          ))}
+   710→        </div>
+   711→      </div>
+   712→
+   713→      {/* Export GPX button for locations */}
+   714→      {locations.length > 0 && (
+   715→        <div className="px-3 pt-2 pb-1 shrink-0">
+   716→          <Button
+   717→            variant="outline"
+   718→            size="sm"
+   719→            className="w-full h-8 text-[11px] justify-center rounded-xl gpx-export-btn"
+   720→            onClick={() => exportGPX('markers', { markers: locations as unknown as Record<string, unknown>[] })}
+   721→          >
+   722→            <Download className="h-3 w-3 mr-1.5" />
+   723→            Export All as GPX
+   724→          </Button>
+   725→        </div>
+   726→      )}
+   727→
+   728→      {/* Locations list */}
+   729→      <div className="relative flex-1 min-h-0">
+   730→        <ScrollArea className="h-full">
+   731→          <div className="p-2 space-y-1">
+   732→            {locations.length === 0 ? (
+   733→              <div className="text-center py-12 text-muted-foreground">
+   734→                <div className="w-16 h-16 mx-auto mb-3 rounded-2xl bg-gradient-to-br from-muted/30 to-muted/60 flex items-center justify-center">
+   735→                  <MapPinned className="h-8 w-8 opacity-40" />
+   736→                </div>
+   737→                <p className="text-sm font-medium">No saved locations yet</p>
+   738→                <p className="text-xs mt-1 max-w-[200px] mx-auto">
+   739→                  Click the &quot;+&quot; button on the map or use the Drop Pin
+   740→                  tool to save places
+   741→                </p>
+   742→                <div className="mt-4 flex flex-col items-center gap-1.5">
+   743→                  <span className="text-[10px] text-muted-foreground/60">or explore nearby places below</span>
+   744→                </div>
+   745→              </div>
+   746→          ) : (
+   747→            locations.map((loc) => {
+   748→              const cat = categories.find((c) => c.id === loc.category)
+   749→              const isSelected = selectedMarker === loc.id
+   750→              return (
+   751→                <div
+   752→                  key={loc.id}
+   753→                  className={cn(
+   754→                    'group flex items-start gap-3 p-2.5 rounded-xl border transition-all duration-200 cursor-pointer',
+   755→                    isSelected
+   756→                      ? 'bg-primary/5 border-primary/20 shadow-sm ring-1 ring-primary/10'
+   757→                      : 'hover:bg-accent/50 border-transparent hover:border-border hover:shadow-sm hover:translate-x-0.5'
+   758→                  )}
+   759→                  onClick={() => {
+   760→                    onSelectMarker(isSelected ? null : loc.id)
+   761→                    onFlyTo(loc.longitude, loc.latitude)
+   762→                  }}
+   763→                  onDoubleClick={() => onOpenDetail(loc)}
+   764→                >
+   765→                  <div
+   766→                    className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 mt-0.5 transition-transform group-hover:scale-110"
+   767→                    style={{
+   768→                      backgroundColor: loc.color + '15',
+   769→                      color: loc.color,
+   770→                    }}
+   771→                  >
+   772→                    <span className="text-sm">{cat?.icon || '📌'}</span>
+   773→                  </div>
+   774→                  <div className="flex-1 min-w-0">
+   775→                    <div className="flex items-center gap-2">
+   776→                      <span
+   777→                        className="w-2 h-2 rounded-full shrink-0"
+   778→                        style={{ backgroundColor: loc.color }}
+   779→                      />
+   780→                      <p className="text-sm font-medium truncate">{loc.name}</p>
+   781→                    </div>
+   782→                    {loc.description && (
+   783→                      <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">
+   784→                        {loc.description}
+   785→                      </p>
+   786→                    )}
+   787→                    <div className="flex items-center gap-2 mt-1.5">
+   788→                      {cat && (
+   789→                        <Badge
+   790→                          variant="secondary"
+   791→                          className="text-[10px] px-1.5 py-0 h-4 shrink-0"
+   792→                          style={{
+   793→                            backgroundColor: cat.color + '15',
+   794→                            color: cat.color,
+   795→                            border: 'none',
+   796→                          }}
+   797→                        >
+   798→                          {cat.label}
+   799→                        </Badge>
+   800→                      )}
+   801→                      <span className="text-[10px] text-muted-foreground font-mono">
+   802→                        {loc.latitude.toFixed(4)}, {loc.longitude.toFixed(4)}
+   803→                      </span>
+   804→                    </div>
+   805→                  </div>
+   806→                  <button
+   807→                    onClick={(e) => {
+   808→                      e.stopPropagation()
+   809→                      onDelete(loc.id)
+   810→                    }}
+   811→                    className="opacity-0 group-hover:opacity-100 p-1.5 hover:text-destructive hover:bg-destructive/10 rounded-lg transition-all shrink-0"
+   812→                    aria-label={`Delete ${loc.name}`}
+   813→                  >
+   814→                    <Trash2 className="h-3.5 w-3.5" />
+   815→                  </button>
+   816→                </div>
+   817→              )
+   818→            })
+   819→          )}
+   820→          </div>
+   821→        </ScrollArea>
+   822→        {/* Bottom fade gradient */}
+   823→        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-background to-transparent" />
+   824→      </div>
+   825→
+   826→      {/* Nearby POI Search */}
+   827→      <div className="mt-3 pt-3 border-t px-3 pb-3">
+   828→        <NearbyPanel />
+   829→      </div>
+   830→    </div>
+   831→  )
+   832→}
+   833→
+   834→function LayersTab() {
+   835→  const { layerVisibility, setLayerVisibility, clusteringEnabled, setClusteringEnabled, buildingExtrusion, setBuildingExtrusion, terrainExaggeration, setTerrainExaggeration, weatherEnabled, setWeatherEnabled, trafficEnabled, setTrafficEnabled, earthquakesEnabled, setEarthquakesEnabled } = useMapStore()
+   836→
+   837→  const layerConfig = [
+   838→    { id: 'water' as const, name: 'Water Bodies', icon: '🌊', color: '#06b6d4' },
+   839→    { id: 'roads' as const, name: 'Roads', icon: '🛣️', color: '#6b7280' },
+   840→    { id: 'buildings' as const, name: 'Buildings', icon: '🏗️', color: '#f59e0b' },
+   841→    { id: 'parks' as const, name: 'Parks & Land Use', icon: '🌳', color: '#22c55e' },
+   842→    { id: 'labels' as const, name: 'Labels & Places', icon: '🏷️', color: '#f97316' },
+   843→  ]
+   844→
+   845→  const visibleCount = Object.values(layerVisibility).filter(Boolean).length
+   846→
+   847→  return (
+   848→    <ScrollArea className="h-full">
+   849→      <div className="p-3 space-y-4">
+   850→        {/* Map Layers */}
+   851→        <div>
+   852→          <div className="flex items-center justify-between mb-2">
+   853→            <h3 className="text-sm font-semibold flex items-center gap-2">
+   854→              <Layers className="h-3.5 w-3.5 text-muted-foreground" />
+   855→              Map Layers
+   856→            </h3>
+   857→            <Badge variant="secondary" className="text-xs font-mono">
+   858→              {visibleCount}/{layerConfig.length}
+   859→            </Badge>
+   860→          </div>
+   861→          <div className="space-y-1">
+   862→            {layerConfig.map((layer) => (
+   863→              <button
+   864→                key={layer.id}
+   865→                onClick={() =>
+   866→                  setLayerVisibility({
+   867→                    [layer.id]: !layerVisibility[layer.id],
+   868→                  })
+   869→                }
+   870→                className={cn(
+   871→                  'w-full flex items-center gap-3 px-3 py-2 rounded-xl border transition-all duration-200 text-left group',
+   872→                  layerVisibility[layer.id]
+   873→                    ? 'bg-background border-border/50 shadow-sm'
+   874→                    : 'opacity-40 border-transparent hover:border-border'
+   875→                )}
+   876→              >
+   877→                <span className="text-base">{layer.icon}</span>
+   878→                <span className="text-sm flex-1">{layer.name}</span>
+   879→                <div
+   880→                  className="w-1.5 h-4 rounded-full transition-opacity"
+   881→                  style={{
+   882→                    backgroundColor: layer.color,
+   883→                    opacity: layerVisibility[layer.id] ? 1 : 0.3,
+   884→                  }}
+   885→                />
+   886→                {layerVisibility[layer.id] ? (
+   887→                  <Eye className="h-3.5 w-3.5 text-primary" />
+   888→                ) : (
+   889→                  <EyeOff className="h-3.5 w-3.5 text-muted-foreground" />
+   890→                )}
+   891→              </button>
+   892→            ))}
+   893→          </div>
+   894→        </div>
+   895→
+   896→        <Separator />
+   897→
+   898→        {/* 3D Options */}
+   899→        <div>
+   900→          <h3 className="text-sm font-semibold flex items-center gap-2 mb-2">
+   901→            <Mountain className="h-3.5 w-3.5 text-muted-foreground" />
+   902→            3D View
+   903→          </h3>
+   904→          <div className="space-y-3">
+   905→            <div className="px-3 py-2 rounded-xl border bg-background">
+   906→              <div className="flex items-center justify-between">
+   907→                <div className="flex items-center gap-2">
+   908→                  <Mountain className="h-4 w-4 text-muted-foreground" />
+   909→                  <div>
+   910→                    <p className="text-sm">3D Terrain &amp; Buildings</p>
+   911→                    <p className="text-[10px] text-muted-foreground">
+   912→                      Elevation + extruded buildings
+   913→                    </p>
+   914→                  </div>
+   915→                </div>
+   916→                <Switch
+   917→                  checked={buildingExtrusion}
+   918→                  onCheckedChange={(checked) => {
+   919→                    setBuildingExtrusion(checked)
+   920→                    useMapStore.getState().pushNotification({ type: 'terrain', icon: 'mountain', message: checked ? '3D terrain enabled' : '3D terrain disabled' })
+   921→                  }}
+   922→                  aria-label="Toggle 3D view"
+   923→                />
+   924→              </div>
+   925→              {buildingExtrusion && (
+   926→                <div className="mt-3 pt-2 border-t border-border/50">
+   927→                  <div className="flex items-center justify-between mb-1.5">
+   928→                    <span className="text-xs text-muted-foreground">Terrain exaggeration</span>
+   929→                    <span className="text-xs font-mono tabular-nums text-muted-foreground">
+   930→                      {terrainExaggeration.toFixed(1)}×
+   931→                    </span>
+   932→                  </div>
+   933→                  <input
+   934→                    type="range"
+   935→                    min={1}
+   936→                    max={3}
+   937→                    step={0.1}
+   938→                    value={terrainExaggeration}
+   939→                    onChange={(e) => setTerrainExaggeration(parseFloat(e.target.value))}
+   940→                    className="w-full h-1.5 rounded-full appearance-none cursor-pointer bg-accent accent-primary"
+   941→                    aria-label="Terrain exaggeration"
+   942→                  />
+   943→                  <div className="flex justify-between mt-0.5">
+   944→                    <span className="text-[9px] text-muted-foreground/60">1×</span>
+   945→                    <span className="text-[9px] text-muted-foreground/60">3×</span>
+   946→                  </div>
+   947→                </div>
+   948→              )}
+   949→            </div>
+   950→          </div>
+   951→        </div>
+   952→
+   953→        <Separator />
+   954→
+   955→        {/* Marker Clustering */}
+   956→        <div>
+   957→          <h3 className="text-sm font-semibold flex items-center gap-2 mb-2">
+   958→            <Circle className="h-3.5 w-3.5 text-muted-foreground" />
+   959→            Marker Clustering
+   960→          </h3>
+   961→          <div className="flex items-center justify-between px-3 py-2 rounded-xl border bg-background">
+   962→            <div className="flex items-center gap-2">
+   963→              <Circle className="h-4 w-4 text-muted-foreground" />
+   964→              <div>
+   965→                <p className="text-sm">Cluster Markers</p>
+   966→                <p className="text-[10px] text-muted-foreground">
+   967→                  Group nearby markers (&gt;5)
+   968→                </p>
+   969→              </div>
+   970→            </div>
+   971→            <Switch
+   972→              checked={clusteringEnabled}
+   973→              onCheckedChange={setClusteringEnabled}
+   974→              aria-label="Toggle marker clustering"
+   975→            />
+   976→          </div>
+   977→        </div>
+   978→
+   979→        <Separator />
+   980→
+   981→        {/* Overlay Data */}
+   982→        <div>
+   983→          <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2">
+   984→            Overlay Data
+   985→          </h3>
+   986→          <div className="space-y-1.5">
+   987→            {/* Weather overlay - real toggle */}
+   988→            <div
+   989→              className={cn(
+   990→                'flex items-center gap-3 px-3 py-2 rounded-xl border transition-all duration-200',
+   991→                weatherEnabled
+   992→                  ? 'bg-background border-border/50 shadow-sm'
+   993→                  : 'border-dashed text-muted-foreground hover:border-border'
+   994→              )}
+   995→            >
+   996→              <span className="text-base">🌤️</span>
+   997→              <div className="flex-1">
+   998→                <p className="text-sm">Weather</p>
+   999→                <p className="text-[10px] text-muted-foreground/70">
+  1000→                  Real-time weather
+  1001→                </p>
+  1002→              </div>
+  1003→              <Switch
+  1004→                checked={weatherEnabled}
+  1005→                onCheckedChange={(checked) => {
+  1006→                  setWeatherEnabled(checked)
+  1007→                  useMapStore.getState().pushNotification({ type: 'weather', icon: 'cloud', message: checked ? 'Weather data loaded' : 'Weather overlay disabled' })
+  1008→                }}
+  1009→                aria-label="Toggle weather overlay"
+  1010→              />
+  1011→            </div>
+  1012→
+  1013→            {/* Traffic overlay - real toggle */}
+  1014→            <div
+  1015→              className={cn(
+  1016→                'flex items-center gap-3 px-3 py-2 rounded-xl border transition-all duration-200',
+  1017→                trafficEnabled
+  1018→                  ? 'bg-background border-border/50 shadow-sm'
+  1019→                  : 'border-dashed text-muted-foreground hover:border-border'
+  1020→              )}
+  1021→            >
+  1022→              <Navigation className="h-4 w-4 text-red-500" />
+  1023→              <div className="flex-1">
+  1024→                <p className="text-sm">Traffic</p>
+  1025→                <p className="text-[10px] text-muted-foreground/70">
+  1026→                  Live traffic flow data
+  1027→                </p>
+  1028→              </div>
+  1029→              <Switch
+  1030→                checked={trafficEnabled}
+  1031→                onCheckedChange={(checked) => {
+  1032→                  setTrafficEnabled(checked)
+  1033→                  useMapStore.getState().pushNotification({ type: 'general', icon: 'car', message: checked ? 'Traffic overlay enabled' : 'Traffic overlay disabled' })
+  1034→                }}
+  1035→                aria-label="Toggle traffic overlay"
+  1036→              />
+  1037→            </div>
+  1038→
+  1039→            {/* Earthquakes overlay */}
+  1040→            <div
+  1041→              className={cn(
+  1042→                'flex items-center gap-3 px-3 py-2 rounded-xl border transition-all duration-200',
+  1043→                earthquakesEnabled
+  1044→                  ? 'bg-background border-border/50 shadow-sm'
+  1045→                  : 'border-dashed text-muted-foreground hover:border-border'
+  1046→              )}
+  1047→            >
+  1048→              <Globe2 className="h-4 w-4 text-orange-500" />
+  1049→              <div className="flex-1">
+  1050→                <p className="text-sm">Earthquakes</p>
+  1051→                <p className="text-[10px] text-muted-foreground/70">
+  1052→                  Real-time seismic activity (USGS)
+  1053→                </p>
+  1054→              </div>
+  1055→              <Switch
+  1056→                checked={earthquakesEnabled}
+  1057→                onCheckedChange={(checked) => {
+  1058→                  setEarthquakesEnabled(checked)
+  1059→                  useMapStore.getState().pushNotification({ type: 'general', icon: 'globe', message: checked ? 'Earthquake data loaded' : 'Earthquake overlay disabled' })
+  1060→                }}
+  1061→                aria-label="Toggle earthquakes overlay"
+  1062→              />
+  1063→            </div>
+  1064→          </div>
+  1065→        </div>
+  1066→      </div>
+  1067→    </ScrollArea>
+  1068→  )
+  1069→}
+  1070→
+  1071→function ToolsTab({
+  1072→  toolMode,
+  1073→  setToolMode,
+  1074→  measurePoints,
+  1075→  measureDistance,
+  1076→  clearMeasurePoints,
+  1077→  onExportGeoJSON,
+  1078→  onGPXImportClick,
+  1079→}: {
+  1080→  toolMode: ToolMode
+  1081→  setToolMode: (mode: ToolMode) => void
+  1082→  measurePoints: { longitude: number; latitude: number }[]
+  1083→  measureDistance: number | null
+  1084→  clearMeasurePoints: () => void
+  1085→  onExportGeoJSON: () => void
+  1086→  onGPXImportClick: () => void
+  1087→}) {
+  1088→  const center = useMapStore((s) => s.center)
+  1089→  const drawings = useMapStore((s) => s.drawings)
+  1090→  const currentDrawing = useMapStore((s) => s.currentDrawing)
+  1091→  const drawColor = useMapStore((s) => s.drawColor)
+  1092→  const drawWidth = useMapStore((s) => s.drawWidth)
+  1093→  const setDrawColor = useMapStore((s) => s.setDrawColor)
+  1094→  const setDrawWidth = useMapStore((s) => s.setDrawWidth)
+  1095→  const deleteDrawing = useMapStore((s) => s.deleteDrawing)
+  1096→
+  1097→  const drawColorOptions = [
+  1098→    { id: '#22c55e', label: 'Green', class: 'bg-green-500' },
+  1099→    { id: '#ef4444', label: 'Red', class: 'bg-red-500' },
+  1100→    { id: '#3b82f6', label: 'Blue', class: 'bg-blue-500' },
+  1101→    { id: '#f97316', label: 'Orange', class: 'bg-orange-500' },
+  1102→    { id: '#8b5cf6', label: 'Purple', class: 'bg-purple-500' },
+  1103→    { id: '#06b6d4', label: 'Cyan', class: 'bg-cyan-500' },
+  1104→  ]
+  1105→  return (
+  1106→    <ScrollArea className="h-full">
+  1107→      <div className="p-3 space-y-4">
+  1108→        {/* Active Tool */}
+  1109→        <div>
+  1110→          <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 flex items-center gap-2">
+  1111→            <Wrench className="h-3.5 w-3.5" />
+  1112→            Active Tool
+  1113→          </h3>
+  1114→          <div className="space-y-1.5">
+  1115→            {toolModes.map((tool) => (
+  1116→              <button
+  1117→                key={tool.id}
+  1118→                onClick={() => setToolMode(tool.id)}
+  1119→                className={cn(
+  1120→                  'w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border transition-all duration-200 text-left group',
+  1121→                  toolMode === tool.id
+  1122→                    ? 'bg-primary/5 border-primary/20 shadow-sm ring-1 ring-primary/10'
+  1123→                    : 'hover:bg-accent/50 border-transparent'
+  1124→                )}
+  1125→              >
+  1126→                <div
+  1127→                  className={cn(
+  1128→                    'w-9 h-9 rounded-xl flex items-center justify-center transition-all',
+  1129→                    toolMode === tool.id
+  1130→                      ? `bg-gradient-to-br ${tool.color} text-white shadow-md`
+  1131→                      : 'bg-muted text-muted-foreground group-hover:bg-accent'
+  1132→                  )}
+  1133→                >
+  1134→                  {tool.icon}
+  1135→                </div>
+  1136→                <div>
+  1137→                  <p className="text-sm font-medium">{tool.label}</p>
+  1138→                  <p className="text-[11px] text-muted-foreground">
+  1139→                    {tool.description}
+  1140→                  </p>
+  1141→                </div>
+  1142→                <div className="ml-auto flex items-center gap-2 shrink-0">
+  1143→                  <kbd className="text-[10px] px-1.5 py-0.5 rounded border bg-muted/50 font-mono">
+  1144→                    {tool.shortcut}
+  1145→                  </kbd>
+  1146→                  {toolMode === tool.id && (
+  1147→                    <ArrowRight className="h-4 w-4 text-primary" />
+  1148→                  )}
+  1149→                </div>
+  1150→              </button>
+  1151→            ))}
+  1152→          </div>
+  1153→        </div>
+  1154→
+  1155→        {/* Drawing section */}
+  1156→        {toolMode === 'draw' && (
+  1157→          <>
+  1158→            <Separator />
+  1159→            <div>
+  1160→              <div className="flex items-center justify-between mb-2">
+  1161→                <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wider flex items-center gap-2">
+  1162→                  <Pencil className="h-3.5 w-3.5" />
+  1163→                  Drawing
+  1164→                </h4>
+  1165→              </div>
+  1166→
+  1167→              {/* Drawing mode hint */}
+  1168→              {currentDrawing && currentDrawing.length > 0 ? (
+  1169→                <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-3 mb-3">
+  1170→                  <p className="text-xs font-medium text-green-700 dark:text-green-400 flex items-center gap-1.5">
+  1171→                    <Pencil className="h-3.5 w-3.5" />
+  1172→                    Drawing on map... {currentDrawing.length} points
+  1173→                  </p>
+  1174→                </div>
+  1175→              ) : (
+  1176→                <div className="bg-muted/50 rounded-xl p-3 mb-3">
+  1177→                  <p className="text-xs text-muted-foreground">
+  1178→                    Click and drag on the map to draw freehand annotations.
+  1179→                  </p>
+  1180→                </div>
+  1181→              )}
+  1182→
+  1183→              {/* Color picker */}
+  1184→              <div className="flex items-center gap-2 mb-3">
+  1185→                <span className="text-xs text-muted-foreground">Color:</span>
+  1186→                <div className="flex gap-1.5">
+  1187→                  {drawColorOptions.map((c) => (
+  1188→                    <button
+  1189→                      key={c.id}
+  1190→                      className={cn(
+  1191→                        'w-6 h-6 rounded-full transition-all',
+  1192→                        c.class,
+  1193→                        drawColor === c.id
+  1194→                          ? 'ring-2 ring-offset-2 ring-offset-background ring-foreground scale-110'
+  1195→                          : 'opacity-60 hover:opacity-100'
+  1196→                      )}
+  1197→                      onClick={() => setDrawColor(c.id)}
+  1198→                      title={c.label}
+  1199→                      aria-label={`Drawing color: ${c.label}`}
+  1200→                    />
+  1201→                  ))}
+  1202→                </div>
+  1203→              </div>
+  1204→
+  1205→              {/* Line width slider */}
+  1206→              <div className="mb-3">
+  1207→                <div className="flex items-center justify-between mb-1.5">
+  1208→                  <span className="text-xs text-muted-foreground">Line width</span>
+  1209→                  <span className="text-xs font-mono tabular-nums text-muted-foreground">
+  1210→                    {drawWidth}px
+  1211→                  </span>
+  1212→                </div>
+  1213→                <input
+  1214→                  type="range"
+  1215→                  min={1}
+  1216→                  max={8}
+  1217→                  step={1}
+  1218→                  value={drawWidth}
+  1219→                  onChange={(e) => setDrawWidth(parseInt(e.target.value))}
+  1220→                  className="w-full h-1.5 rounded-full appearance-none cursor-pointer bg-accent accent-green-500"
+  1221→                  aria-label="Drawing line width"
+  1222→                />
+  1223→                <div className="flex justify-between mt-0.5">
+  1224→                  <span className="text-[9px] text-muted-foreground/60">1</span>
+  1225→                  <span className="text-[9px] text-muted-foreground/60">8</span>
+  1226→                </div>
+  1227→              </div>
+  1228→
+  1229→              {/* Saved drawings list */}
+  1230→              {drawings.length > 0 && (
+  1231→                <div className="space-y-1.5">
+  1232→                  <div className="flex items-center justify-between">
+  1233→                    <h5 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+  1234→                      Saved Drawings
+  1235→                    </h5>
+  1236→                    <Button
+  1237→                      variant="ghost"
+  1238→                      size="sm"
+  1239→                      className="h-6 text-[10px] px-2 text-muted-foreground hover:text-destructive"
+  1240→                      onClick={() => {
+  1241→                        drawings.forEach((d) => deleteDrawing(d.id))
+  1242→                        toast.success('All drawings cleared')
+  1243→                      }}
+  1244→                    >
+  1245→                      <Minus className="h-3 w-3 mr-1" />
+  1246→                      Clear All
+  1247→                    </Button>
+  1248→                  </div>
+  1249→                  <div className="space-y-1 max-h-48 overflow-y-auto">
+  1250→                    {drawings.map((drawing) => (
+  1251→                      <div
+  1252→                        key={drawing.id}
+  1253→                        className="flex items-center gap-2 p-2 rounded-lg border bg-background/50 text-xs group"
+  1254→                      >
+  1255→                        <span
+  1256→                          className="w-3 h-3 rounded-full shrink-0"
+  1257→                          style={{ backgroundColor: drawing.color }}
+  1258→                        />
+  1259→                        <div className="flex-1 min-w-0">
+  1260→                          <span className="text-sm font-medium truncate block">
+  1261→                            {drawing.name}
+  1262→                          </span>
+  1263→                          <span className="text-muted-foreground text-[10px]">
+  1264→                            {drawing.points.length} points · {drawing.width}px
+  1265→                          </span>
+  1266→                        </div>
+  1267→                        <button
+  1268→                          className="p-1 opacity-0 group-hover:opacity-100 hover:text-red-500 transition-all"
+  1269→                          onClick={() => {
+  1270→                            deleteDrawing(drawing.id)
+  1271→                            toast.success(`"${drawing.name}" deleted`)
+  1272→                          }}
+  1273→                          aria-label={`Delete ${drawing.name}`}
+  1274→                        >
+  1275→                          <Trash2 className="h-3 w-3" />
+  1276→                        </button>
+  1277→                      </div>
+  1278→                    ))}
+  1279→                  </div>
+  1280→                </div>
+  1281→              )}
+  1282→            </div>
+  1283→          </>
+  1284→        )}
+  1285→
+  1286→        {/* Measurement results */}
+  1287→        {toolMode === 'measure' && (
+  1288→          <>
+  1289→            <Separator />
+  1290→            <div>
+  1291→              <div className="flex items-center justify-between mb-2">
+  1292→                <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wider flex items-center gap-2">
+  1293→                  <Ruler className="h-3.5 w-3.5" />
+  1294→                  Measurement
+  1295→                </h4>
+  1296→                {measurePoints.length > 0 && (
+  1297→                  <Button
+  1298→                    variant="ghost"
+  1299→                    size="sm"
+  1300→                    className="h-6 text-[10px] px-2 text-muted-foreground hover:text-destructive"
+  1301→                    onClick={clearMeasurePoints}
+  1302→                  >
+  1303→                    <Minus className="h-3 w-3 mr-1" />
+  1304→                    Clear All
+  1305→                  </Button>
+  1306→                )}
+  1307→              </div>
+  1308→              {measurePoints.length === 0 ? (
+  1309→                <div className="text-center py-6 text-muted-foreground">
+  1310→                  <div className="w-12 h-12 mx-auto mb-2 rounded-xl bg-muted/50 flex items-center justify-center">
+  1311→                    <Ruler className="h-6 w-6 opacity-40" />
+  1312→                  </div>
+  1313→                  <p className="text-xs">
+  1314→                    Click on the map to add measurement points
+  1315→                  </p>
+  1316→                </div>
+  1317→              ) : (
+  1318→                <div className="space-y-2">
+  1319→                  {measureDistance !== null && (
+  1320→                    <div className="p-3 rounded-xl bg-gradient-to-br from-amber-500/10 via-orange-500/5 to-amber-500/10 border border-amber-500/20 shadow-sm">
+  1321→                      <div className="flex items-center justify-between">
+  1322→                        <span className="text-xs text-muted-foreground">
+  1323→                          Total Distance
+  1324→                        </span>
+  1325→                        <span className="text-lg font-bold text-amber-600 tabular-nums">
+  1326→                          {formatDistance(measureDistance)}
+  1327→                        </span>
+  1328→                      </div>
+  1329→                    </div>
+  1330→                  )}
+  1331→                  <div className="flex items-center justify-between p-2.5 bg-muted/50 rounded-xl">
+  1332→                    <span className="text-xs text-muted-foreground">
+  1333→                      Points
+  1334→                    </span>
+  1335→                    <Badge variant="secondary" className="font-mono tabular-nums">
+  1336→                      {measurePoints.length}
+  1337→                    </Badge>
+  1338→                  </div>
+  1339→                  {/* Segment distances and bearings */}
+  1340→                  {measurePoints.length >= 2 && (
+  1341→                    <div className="space-y-1.5 max-h-48 overflow-y-auto">
+  1342→                      {measurePoints.slice(0, -1).map((p, i) => {
+  1343→                        const next = measurePoints[i + 1]
+  1344→                        const segDist = haversineDistance(p.latitude, p.longitude, next.latitude, next.longitude)
+  1345→                        const bearing = calculateBearing(p.latitude, p.longitude, next.latitude, next.longitude)
+  1346→                        return (
+  1347→                          <div
+  1348→                            key={`seg-${i}`}
+  1349→                            className="px-2.5 py-2 rounded-lg bg-muted/40 border border-border/30"
+  1350→                          >
+  1351→                            <div className="flex items-center justify-between mb-1">
+  1352→                              <span className="text-[10px] text-muted-foreground font-medium">
+  1353→                                Segment {i + 1} → {i + 2}
+  1354→                              </span>
+  1355→                              <span className="text-xs font-semibold text-amber-600 tabular-nums">
+  1356→                                {formatDistance(segDist)}
+  1357→                              </span>
+  1358→                            </div>
+  1359→                            <div className="flex items-center gap-1.5">
+  1360→                              <Compass className="h-3 w-3 text-muted-foreground" />
+  1361→                              <span className="text-[10px] text-muted-foreground tabular-nums">
+  1362→                                {formatBearing(bearing)}
+  1363→                              </span>
+  1364→                            </div>
+  1365→                          </div>
+  1366→                        )
+  1367→                      })}
+  1368→                    </div>
+  1369→                  )}
+  1370→                  <div className="space-y-1 max-h-32 overflow-y-auto">
+  1371→                    {measurePoints.map((p, i) => (
+  1372→                      <div
+  1373→                        key={i}
+  1374→                        className="text-xs text-muted-foreground flex items-center gap-2 px-2 py-1 rounded-lg hover:bg-accent/50 transition-colors"
+  1375→                      >
+  1376→                        <span className="w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center text-[10px] font-bold">
+  1377→                          {i + 1}
+  1378→                        </span>
+  1379→                        <span className="font-mono tabular-nums">
+  1380→                          {p.latitude.toFixed(4)}, {p.longitude.toFixed(4)}
+  1381→                        </span>
+  1382→                      </div>
+  1383→                    ))}
+  1384→                  </div>
+  1385→                  {/* Elevation summary */}
+  1386→                  <ElevationSummaryInline measurePoints={measurePoints} />
+  1387→                  <div className="flex gap-2">
+  1388→                    <Button
+  1389→                      variant="outline"
+  1390→                      size="sm"
+  1391→                      className="flex-1 h-8 text-xs"
+  1392→                      onClick={clearMeasurePoints}
+  1393→                    >
+  1394→                      <Trash2 className="h-3 w-3 mr-1.5" />
+  1395→                      Clear
+  1396→                    </Button>
+  1397→                    {measurePoints.length >= 2 && (
+  1398→                      <Button
+  1399→                        variant="outline"
+  1400→                        size="sm"
+  1401→                        className="flex-1 h-8 text-xs"
+  1402→                        onClick={() => {
+  1403→                          const lines: string[] = ['Measurement Results', '']
+  1404→                          measurePoints.slice(0, -1).forEach((p, i) => {
+  1405→                            const next = measurePoints[i + 1]
+  1406→                            const segDist = haversineDistance(p.latitude, p.longitude, next.latitude, next.longitude)
+  1407→                            const bearing = calculateBearing(p.latitude, p.longitude, next.latitude, next.longitude)
+  1408→                            lines.push(`Segment ${i + 1} → ${i + 2}: ${formatDistance(segDist)} (${formatBearing(bearing)})`)
+  1409→                          })
+  1410→                          if (measureDistance !== null) {
+  1411→                            lines.push('')
+  1412→                            lines.push(`Total Distance: ${formatDistance(measureDistance)}`)
+  1413→                          }
+  1414→                          navigator.clipboard.writeText(lines.join('\n')).then(() => {
+  1415→                            toast.success('Measurements copied to clipboard!')
+  1416→                          }).catch(() => {
+  1417→                            toast.error('Failed to copy measurements')
+  1418→                          })
+  1419→                        }}
+  1420→                      >
+  1421→                        <Copy className="h-3 w-3 mr-1.5" />
+  1422→                        Copy
+  1423→                      </Button>
+  1424→                    )}
+  1425→                  </div>
+  1426→                </div>
+  1427→              )}
+  1428→            </div>
+  1429→          </>
+  1430→        )}
+  1431→
+  1432→        <Separator />
+  1433→
+  1434→        {/* Export */}
+  1435→        <div>
+  1436→          <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 flex items-center gap-2">
+  1437→            <Download className="h-3.5 w-3.5" />
+  1438→            Export Data
+  1439→          </h4>
+  1440→          <div className="space-y-1.5">
+  1441→            <Button
+  1442→              variant="outline"
+  1443→              size="sm"
+  1444→              className="w-full h-9 text-xs justify-start rounded-xl"
+  1445→              onClick={onExportGeoJSON}
+  1446→            >
+  1447→              <Download className="h-3.5 w-3.5 mr-2" />
+  1448→              Export as GeoJSON
+  1449→            </Button>
+  1450→            <Button
+  1451→              variant="outline"
+  1452→              size="sm"
+  1453→              className="w-full h-9 text-xs justify-start rounded-xl"
+  1454→              onClick={() => {
+  1455→                const exportImage = (window as unknown as Record<string, () => void>).__mapExportImage
+  1456→                if (exportImage) {
+  1457→                  exportImage()
+  1458→                } else {
+  1459→                  toast.error('Map not ready for export')
+  1460→                }
+  1461→              }}
+  1462→            >
+  1463→              <Share2 className="h-3.5 w-3.5 mr-2" />
+  1464→              Export as Image
+  1465→            </Button>
+  1466→            <Button
+  1467→              variant="outline"
+  1468→              size="sm"
+  1469→              className="w-full h-9 text-xs justify-start rounded-xl gpx-export-btn"
+  1470→              onClick={() => {
+  1471→                const state = useMapStore.getState()
+  1472→                exportGPX('all', {
+  1473→                  markers: state.savedLocations as unknown as Record<string, unknown>[],
+  1474→                  routes: state.routes as unknown as Record<string, unknown>[],
+  1475→                })
+  1476→              }}
+  1477→            >
+  1478→              <Download className="h-3.5 w-3.5 mr-2" />
+  1479→              Export All as GPX
+  1480→            </Button>
+  1481→          </div>
+  1482→        </div>
+  1483→
+  1484→        <Separator />
+  1485→
+  1486→        {/* Import GPX */}
+  1487→        <div>
+  1488→          <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 flex items-center gap-2">
+  1489→            <Upload className="h-3.5 w-3.5" />
+  1490→            Import Data
+  1491→          </h4>
+  1492→          <Button
+  1493→            variant="outline"
+  1494→            size="sm"
+  1495→            className="w-full h-9 text-xs justify-start rounded-xl"
+  1496→            onClick={onGPXImportClick}
+  1497→          >
+  1498→            <Upload className="h-3.5 w-3.5 mr-2" />
+  1499→            Import GPX File
+  1500→          </Button>
+  1501→          <p className="text-[10px] text-muted-foreground mt-1.5 px-1">
+  1502→            Import waypoints and tracks from GPX files
+  1503→          </p>
+  1504→        </div>
+  1505→
+  1506→        <Separator />
+  1507→
+  1508→        {/* Isochrone Visualization */}
+  1509→        <IsochroneControls />
+  1510→
+  1511→        <Separator />
+  1512→
+  1513→        {/* Quick Bookmarks - European Cities */}
+  1514→        <div>
+  1515→          <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 flex items-center gap-2">
+  1516→            <Star className="h-3.5 w-3.5" />
+  1517→            Popular Destinations
+  1518→          </h4>
+  1519→          <div className="space-y-1">
+  1520→            {[
+  1521→              { name: 'Ljubljana', lat: 46.0569, lng: 14.5058, flag: '🇸🇮', color: '#22c55e' },
+  1522→              { name: 'Vienna', lat: 48.2082, lng: 16.3738, flag: '🇦🇹', color: '#ef4444' },
+  1523→              { name: 'Venice', lat: 45.4408, lng: 12.3155, flag: '🇮🇹', color: '#06b6d4' },
+  1524→              { name: 'Munich', lat: 48.1351, lng: 11.5820, flag: '🇩🇪', color: '#f59e0b' },
+  1525→              { name: 'Zagreb', lat: 45.8150, lng: 15.9819, flag: '🇭🇷', color: '#3b82f6' },
+  1526→              { name: 'Budapest', lat: 47.4979, lng: 19.0402, flag: '🇭🇺', color: '#8b5cf6' },
+  1527→              { name: 'Prague', lat: 50.0755, lng: 14.4378, flag: '🇨🇿', color: '#f97316' },
+  1528→              { name: 'Paris', lat: 48.8566, lng: 2.3522, flag: '🇫🇷', color: '#ec4899' },
+  1529→            ].map((city) => {
+  1530→              const distance = haversineDistance(city.lat, city.lng, center[1], center[0])
+  1531→              const isNearby = distance < 500
+  1532→              return (
+  1533→                <div
+  1534→                  key={city.name}
+  1535→                  className="group flex items-center gap-2.5 px-2.5 py-2 rounded-xl border transition-all duration-200 hover:shadow-sm hover:scale-[1.02] active:scale-[0.98]"
+  1536→                  style={{
+  1537→                    borderColor: city.color + '30',
+  1538→                    backgroundColor: city.color + '08',
+  1539→                  }}
+  1540→                >
+  1541→                  <span className="text-base leading-none">{city.flag}</span>
+  1542→                  <div className="flex-1 min-w-0">
+  1543→                    <div className="flex items-center gap-1.5">
+  1544→                      <span className="text-xs font-medium truncate">{city.name}</span>
+  1545→                      {isNearby && (
+  1546→                        <Badge
+  1547→                          variant="secondary"
+  1548→                          className="text-[8px] px-1 py-0 h-3.5 bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-0 shrink-0"
+  1549→                        >
+  1550→                          Nearby
+  1551→                        </Badge>
+  1552→                      )}
+  1553→                    </div>
+  1554→                    <span className="text-[10px] text-muted-foreground font-mono">
+  1555→                      {city.lat.toFixed(2)}°, {city.lng.toFixed(2)}°
+  1556→                    </span>
+  1557→                  </div>
+  1558→                  <button
+  1559→                    onClick={() => {
+  1560→                      const flyTo = (window as unknown as Record<string, (lng: number, lat: number, z?: number) => void>).__mapFlyTo
+  1561→                      if (flyTo) flyTo(city.lng, city.lat, 12)
+  1562→                    }}
+  1563→                    className="opacity-60 hover:opacity-100 p-1.5 rounded-lg hover:bg-background/80 transition-all shrink-0"
+  1564→                    aria-label={`Fly to ${city.name}`}
+  1565→                  >
+  1566→                    <Navigation className="h-3 w-3" style={{ color: city.color }} />
+  1567→                  </button>
+  1568→                </div>
+  1569→              )
+  1570→            })}
+  1571→          </div>
+  1572→        </div>
+  1573→
+  1574→        <Separator />
+  1575→
+  1576→        {/* Keyboard shortcuts reference */}
+  1577→        <div>
+  1578→          <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 flex items-center gap-2">
+  1579→            <Keyboard className="h-3.5 w-3.5" />
+  1580→            Keyboard Shortcuts
+  1581→          </h4>
+  1582→          <div className="space-y-1">
+  1583→            {[
+  1584→              { keys: ['1', '2', '3'], desc: 'Switch tools' },
+  1585→              { keys: ['/'], desc: 'Focus search' },
+  1586→              { keys: ['Esc'], desc: 'Clear selection' },
+  1587→              { keys: ['B'], desc: 'Toggle sidebar' },
+  1588→              { keys: ['F'], desc: 'Fullscreen' },
+  1589→              { keys: ['L'], desc: 'My location' },
+  1590→            ].map((shortcut) => (
+  1591→              <div key={shortcut.desc} className="flex items-center justify-between px-2 py-1">
+  1592→                <span className="text-xs text-muted-foreground">{shortcut.desc}</span>
+  1593→                <div className="flex gap-1">
+  1594→                  {shortcut.keys.map((key) => (
+  1595→                    <kbd key={key} className="text-[10px] px-1.5 py-0.5 rounded border bg-muted/50 font-mono">
+  1596→                      {key}
+  1597→                    </kbd>
+  1598→                  ))}
+  1599→                </div>
+  1600→              </div>
+  1601→            ))}
+  1602→          </div>
+  1603→        </div>
+  1604→      </div>
+  1605→    </ScrollArea>
+  1606→  )
+  1607→}
+  1608→
+  1609→// Isochrone visualization controls component
+  1610→function IsochroneControls() {
+  1611→  const isochroneEnabled = useMapStore((s) => s.isochroneEnabled)
+  1612→  const isochroneMinutes = useMapStore((s) => s.isochroneMinutes)
+  1613→  const isochroneMode = useMapStore((s) => s.isochroneMode)
+  1614→  const setIsochroneEnabled = useMapStore((s) => s.setIsochroneEnabled)
+  1615→  const setIsochroneMinutes = useMapStore((s) => s.setIsochroneMinutes)
+  1616→  const setIsochroneMode = useMapStore((s) => s.setIsochroneMode)
+  1617→
+  1618→  const modeOptions = [
+  1619→    { id: 'walking' as const, label: 'Walking', icon: <Footprints className="h-3.5 w-3.5" />, speed: '5 km/h' },
+  1620→    { id: 'cycling' as const, label: 'Cycling', icon: <Bike className="h-3.5 w-3.5" />, speed: '15 km/h' },
+  1621→    { id: 'driving' as const, label: 'Driving', icon: <Car className="h-3.5 w-3.5" />, speed: '40 km/h' },
+  1622→  ]
+  1623→
+  1624→  return (
+  1625→    <div>
+  1626→      <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 flex items-center gap-2">
+  1627→        <span className="text-sm">🎯</span>
+  1628→        Reachability (Isochrone)
+  1629→      </h4>
+  1630→      <div
+  1631→        className={cn(
+  1632→          'px-3 py-2.5 rounded-xl border transition-all duration-200',
+  1633→          isochroneEnabled
+  1634→            ? 'bg-background border-border/50 shadow-sm'
+  1635→            : 'border-dashed text-muted-foreground hover:border-border'
+  1636→        )}
+  1637→      >
+  1638→        <div className="flex items-center justify-between mb-2">
+  1639→          <div className="flex items-center gap-2">
+  1640→            <span className="text-sm">⏱️</span>
+  1641→            <div>
+  1642→              <p className="text-sm">Isochrone</p>
+  1643→              <p className="text-[10px] text-muted-foreground/70">
+  1644→                Show travel reachability area
+  1645→              </p>
+  1646→            </div>
+  1647→          </div>
+  1648→          <Switch
+  1649→            checked={isochroneEnabled}
+  1650→            onCheckedChange={(checked) => {
+  1651→              setIsochroneEnabled(checked)
+  1652→              useMapStore.getState().pushNotification({ type: 'general', icon: 'target', message: checked ? 'Isochrone visualization enabled' : 'Isochrone visualization disabled' })
+  1653→            }}
+  1654→            aria-label="Toggle isochrone visualization"
+  1655→          />
+  1656→        </div>
+  1657→
+  1658→        {isochroneEnabled && (
+  1659→          <div className="space-y-3 pt-2 border-t border-border/50">
+  1660→            {/* Minutes slider */}
+  1661→            <div>
+  1662→              <div className="flex items-center justify-between mb-1.5">
+  1663→                <span className="text-xs text-muted-foreground">Travel time</span>
+  1664→                <span className="text-xs font-mono tabular-nums text-muted-foreground">
+  1665→                  {isochroneMinutes} min
+  1666→                </span>
+  1667→              </div>
+  1668→              <input
+  1669→                type="range"
+  1670→                min={5}
+  1671→                max={60}
+  1672→                step={5}
+  1673→                value={isochroneMinutes}
+  1674→                onChange={(e) => setIsochroneMinutes(parseInt(e.target.value))}
+  1675→                className="w-full h-1.5 rounded-full appearance-none cursor-pointer bg-accent accent-emerald-500"
+  1676→                aria-label="Isochrone travel time in minutes"
+  1677→              />
+  1678→              <div className="flex justify-between mt-0.5">
+  1679→                <span className="text-[9px] text-muted-foreground/60">5 min</span>
+  1680→                <span className="text-[9px] text-muted-foreground/60">60 min</span>
+  1681→              </div>
+  1682→            </div>
+  1683→
+  1684→            {/* Mode buttons */}
+  1685→            <div>
+  1686→              <span className="text-xs text-muted-foreground block mb-1.5">Travel mode</span>
+  1687→              <div className="flex gap-1.5">
+  1688→                {modeOptions.map((mode) => (
+  1689→                  <button
+  1690→                    key={mode.id}
+  1691→                    onClick={() => setIsochroneMode(mode.id)}
+  1692→                    className={cn(
+  1693→                      'flex-1 flex flex-col items-center gap-1 px-2 py-2 rounded-lg border text-xs transition-all duration-200',
+  1694→                      isochroneMode === mode.id
+  1695→                        ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-700 dark:text-emerald-400 shadow-sm'
+  1696→                        : 'border-border/50 hover:border-border hover:bg-accent/50 text-muted-foreground'
+  1697→                    )}
+  1698→                    aria-label={`Isochrone mode: ${mode.label}`}
+  1699→                  >
+  1700→                    {mode.icon}
+  1701→                    <span className="text-[10px] font-medium">{mode.label}</span>
+  1702→                    <span className="text-[9px] text-muted-foreground/60">{mode.speed}</span>
+  1703→                  </button>
+  1704→                ))}
+  1705→              </div>
+  1706→            </div>
+  1707→          </div>
+  1708→        )}
+  1709→      </div>
+  1710→    </div>
+  1711→  )
+  1712→}
+  1713→
+  1714→function RoutesTab({ onGPXImportClick }: { onGPXImportClick: () => void }) {
+  1715→  const routePoints = useMapStore((s) => s.routePoints)
+  1716→  const currentRouteColor = useMapStore((s) => s.currentRouteColor)
+  1717→  const routes = useMapStore((s) => s.routes)
+  1718→  const toolMode = useMapStore((s) => s.toolMode)
+  1719→  const removeRoutePoint = useMapStore((s) => s.removeRoutePoint)
+  1720→  const clearRoutePoints = useMapStore((s) => s.clearRoutePoints)
+  1721→  const setCurrentRouteColor = useMapStore((s) => s.setCurrentRouteColor)
+  1722→  const saveRoute = useMapStore((s) => s.saveRoute)
+  1723→  const deleteRoute = useMapStore((s) => s.deleteRoute)
+  1724→  const setRoutes = useMapStore((s) => s.setRoutes)
+  1725→  const setToolMode = useMapStore((s) => s.setToolMode)
+  1726→  const osrmDistance = useMapStore((s) => s.osrmDistance)
+  1727→  const osrmDuration = useMapStore((s) => s.osrmDuration)
+  1728→
+  1729→  const [routeName, setRouteName] = useState('')
+  1730→  const [savedRouteIds, setSavedRouteIds] = useState<Set<string>>(new Set())
+  1731→
+  1732→  // Load routes from database on mount
+  1733→  useEffect(() => {
+  1734→    fetch('/api/routes')
+  1735→      .then((res) => {
+  1736→        if (!res.ok) throw new Error('Failed to fetch routes')
+  1737→        return res.json()
+  1738→      })
+  1739→      .then((dbRoutes) => {
+  1740→        if (Array.isArray(dbRoutes) && dbRoutes.length > 0) {
+  1741→          const mapRoutes: MapRoute[] = dbRoutes.map((r: Record<string, unknown>) => ({
+  1742→            id: r.id as string,
+  1743→            name: r.name as string,
+  1744→            color: r.color as string,
+  1745→            points: JSON.parse(r.waypoints as string || '[]') as RoutePoint[],
+  1746→            distance: r.distance as number | null,
+  1747→            duration: r.duration as number | null,
+  1748→          }))
+  1749→          setRoutes(mapRoutes)
+  1750→        }
+  1751→      })
+  1752→      .catch((err) => {
+  1753→        console.error('Failed to load routes from database:', err)
+  1754→      })
+  1755→  }, [setRoutes])
+  1756→
+  1757→  const colorOptions = [
+  1758→    { id: '#3b82f6', label: 'Blue', class: 'bg-blue-500' },
+  1759→    { id: '#ef4444', label: 'Red', class: 'bg-red-500' },
+  1760→    { id: '#22c55e', label: 'Green', class: 'bg-green-500' },
+  1761→    { id: '#f97316', label: 'Orange', class: 'bg-orange-500' },
+  1762→    { id: '#8b5cf6', label: 'Purple', class: 'bg-purple-500' },
+  1763→    { id: '#06b6d4', label: 'Cyan', class: 'bg-cyan-500' },
+  1764→  ]
+  1765→
+  1766→  // Calculate live distance for current route
+  1767→  const currentDistance = (() => {
+  1768→    if (routePoints.length < 2) return null
+  1769→    let total = 0
+  1770→    for (let i = 1; i < routePoints.length; i++) {
+  1771→      total += haversineDistance(
+  1772→        routePoints[i - 1].latitude,
+  1773→        routePoints[i - 1].longitude,
+  1774→        routePoints[i].latitude,
+  1775→        routePoints[i].longitude
+  1776→      )
+  1777→    }
+  1778→    return total
+  1779→  })()
+  1780→
+  1781→  const handleSaveRoute = async () => {
+  1782→    if (routePoints.length < 2) return
+  1783→    const name = routeName.trim() || `Route ${routes.length + 1}`
+  1784→    saveRoute(name)
+  1785→    setRouteName('')
+  1786→    useMapStore.getState().pushNotification({ type: 'route', icon: 'route', message: `Route "${name}" saved` })
+  1787→    toast.success(`Route "${name}" saved`)
+  1788→
+  1789→    // Persist to database - get the newly saved route from the store
+  1790→    const savedRoutes = useMapStore.getState().routes
+  1791→    const newRoute = savedRoutes.find((r) => r.name === name)
+  1792→    if (newRoute) {
+  1793→      try {
+  1794→        await fetch('/api/routes', {
+  1795→          method: 'POST',
+  1796→          headers: { 'Content-Type': 'application/json' },
+  1797→          body: JSON.stringify({
+  1798→            name: newRoute.name,
+  1799→            color: newRoute.color,
+  1800→            distance: newRoute.distance,
+  1801→            duration: newRoute.duration,
+  1802→            waypoints: JSON.stringify(newRoute.points),
+  1803→          }),
+  1804→        })
+  1805→      } catch (err) {
+  1806→        console.error('Failed to persist route to database:', err)
+  1807→      }
+  1808→    }
+  1809→  }
+  1810→
+  1811→  const handleDeleteRoute = async (id: string, name: string) => {
+  1812→    deleteRoute(id)
+  1813→    setSavedRouteIds((prev) => {
+  1814→      const next = new Set(prev)
+  1815→      next.delete(id)
+  1816→      return next
+  1817→    })
+  1818→    toast.success(`Route "${name}" deleted`)
+  1819→
+  1820→    // Delete from database
+  1821→    try {
+  1822→      await fetch(`/api/routes/${id}`, { method: 'DELETE' })
+  1823→    } catch (err) {
+  1824→      console.error('Failed to delete route from database:', err)
+  1825→    }
+  1826→  }
+  1827→
+  1828→  const toggleRouteVisibility = (id: string) => {
+  1829→    setSavedRouteIds((prev) => {
+  1830→      const next = new Set(prev)
+  1831→      if (next.has(id)) {
+  1832→        next.delete(id)
+  1833→      } else {
+  1834→        next.add(id)
+  1835→      }
+  1836→      return next
+  1837→    })
+  1838→  }
+  1839→
+  1840→  const formatDistanceLocal = (d: number | null) => {
+  1841→    if (d === null) return ''
+  1842→    return d < 1 ? `${Math.round(d * 1000)} m` : `${d.toFixed(1)} km`
+  1843→  }
+  1844→
+  1845→  const formatDurationLocal = (sec: number | null) => {
+  1846→    if (sec === null) return ''
+  1847→    if (sec < 60) return `${Math.round(sec)} sec`
+  1848→    if (sec < 3600) return `${Math.floor(sec / 60)} min ${Math.round(sec % 60)} sec`
+  1849→    return `${Math.floor(sec / 3600)} hr ${Math.floor((sec % 3600) / 60)} min`
+  1850→  }
+  1851→
+  1852→  return (
+  1853→    <ScrollArea className="h-full">
+  1854→      <div className="p-3 space-y-3">
+  1855→        <h3 className="text-sm font-semibold flex items-center gap-2">
+  1856→          <Route className="h-3.5 w-3.5 text-muted-foreground" />
+  1857→          Routes
+  1858→        </h3>
+  1859→        <Separator />
+  1860→
+  1861→        {/* Directions tool hint */}
+  1862→        {toolMode === 'directions' && (
+  1863→          <div className="bg-cyan-500/10 border border-cyan-500/20 rounded-xl p-3">
+  1864→            <p className="text-xs font-medium text-cyan-700 dark:text-cyan-400 flex items-center gap-1.5">
+  1865→              <Navigation className="h-3.5 w-3.5" />
+  1866→              Directions mode active — click on the map to add waypoints
+  1867→            </p>
+  1868→          </div>
+  1869→        )}
+  1870→
+  1871→        {/* Import GPX button */}
+  1872→        <Button
+  1873→          variant="outline"
+  1874→          size="sm"
+  1875→          className="w-full h-9 text-xs justify-center rounded-xl"
+  1876→          onClick={onGPXImportClick}
+  1877→        >
+  1878→          <Upload className="h-3.5 w-3.5 mr-2" />
+  1879→          Import GPX Route
+  1880→        </Button>
+  1881→
+  1882→        {toolMode !== 'directions' && routePoints.length === 0 && (
+  1883→          <div className="bg-muted/50 rounded-xl p-3">
+  1884→            <p className="text-xs text-muted-foreground">
+  1885→              Select the Directions tool to start drawing a route on the map.
+  1886→            </p>
+  1887→            <Button
+  1888→              variant="outline"
+  1889→              size="sm"
+  1890→              className="mt-2 h-7 text-xs w-full"
+  1891→              onClick={() => setToolMode('directions')}
+  1892→            >
+  1893→              <Navigation className="h-3 w-3 mr-1" />
+  1894→              Start Drawing
+  1895→            </Button>
+  1896→          </div>
+  1897→        )}
+  1898→
+  1899→        {/* Current route drawing */}
+  1900→        {routePoints.length > 0 && (
+  1901→          <div className="space-y-2">
+  1902→            <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+  1903→              Current Route
+  1904→            </h4>
+  1905→
+  1906→            {/* Color picker */}
+  1907→            <div className="flex items-center gap-2">
+  1908→              <span className="text-xs text-muted-foreground">Color:</span>
+  1909→              <div className="flex gap-1.5">
+  1910→                {colorOptions.map((c) => (
+  1911→                  <button
+  1912→                    key={c.id}
+  1913→                    className={cn(
+  1914→                      'w-6 h-6 rounded-full transition-all',
+  1915→                      c.class,
+  1916→                      currentRouteColor === c.id
+  1917→                        ? 'ring-2 ring-offset-2 ring-offset-background ring-foreground scale-110'
+  1918→                        : 'opacity-60 hover:opacity-100'
+  1919→                    )}
+  1920→                    onClick={() => setCurrentRouteColor(c.id)}
+  1921→                    title={c.label}
+  1922→                    aria-label={`Route color: ${c.label}`}
+  1923→                  />
+  1924→                ))}
+  1925→              </div>
+  1926→            </div>
+  1927→
+  1928→            {/* Waypoints list */}
+  1929→            <div className="space-y-1">
+  1930→              {routePoints.map((point, idx) => (
+  1931→                <div
+  1932→                  key={idx}
+  1933→                  className="flex items-center gap-2 p-2 rounded-lg border bg-background/50 text-xs"
+  1934→                >
+  1935→                  <div
+  1936→                    className="w-3 h-3 rounded-full shrink-0"
+  1937→                    style={{ backgroundColor: currentRouteColor }}
+  1938→                  />
+  1939→                  <span className="flex-1 text-muted-foreground truncate">
+  1940→                    {point.name || `${point.latitude.toFixed(4)}, ${point.longitude.toFixed(4)}`}
+  1941→                  </span>
+  1942→                  <span className="text-muted-foreground font-mono text-[10px]">
+  1943→                    {idx === 0 ? 'A' : idx === routePoints.length - 1 ? 'B' : String(idx + 1)}
+  1944→                  </span>
+  1945→                  <button
+  1946→                    className="p-0.5 hover:text-red-500 transition-colors"
+  1947→                    onClick={() => removeRoutePoint(idx)}
+  1948→                    aria-label={`Remove waypoint ${idx + 1}`}
+  1949→                  >
+  1950→                    <Trash2 className="h-3 w-3" />
+  1951→                  </button>
+  1952→                </div>
+  1953→              ))}
+  1954→            </div>
+  1955→
+  1956→            {/* Distance display */}
+  1957→            {(currentDistance !== null || osrmDistance !== null) && (
+  1958→              <div className="text-xs text-muted-foreground flex items-center gap-1.5 px-1">
+  1959→                <Ruler className="h-3 w-3" />
+  1960→                {osrmDistance !== null ? (
+  1961→                  <>
+  1962→                    Road: {formatDistanceLocal(osrmDistance)}{osrmDuration !== null ? ` · ${formatDurationLocal(osrmDuration)}` : ''}
+  1963→                  </>
+  1964→                ) : (
+  1965→                  <>Straight: {formatDistanceLocal(currentDistance)}</>
+  1966→                )}
+  1967→              </div>
+  1968→            )}
+  1969→
+  1970→            {/* Save / Clear buttons */}
+  1971→            <div className="flex gap-2">
+  1972→              {routePoints.length >= 2 && (
+  1973→                <div className="flex-1 flex gap-2">
+  1974→                  <Input
+  1975→                    placeholder="Route name..."
+  1976→                    value={routeName}
+  1977→                    onChange={(e) => setRouteName(e.target.value)}
+  1978→                    className="h-8 text-xs"
+  1979→                    onKeyDown={(e) => {
+  1980→                      if (e.key === 'Enter') handleSaveRoute()
+  1981→                    }}
+  1982→                  />
+  1983→                  <Button
+  1984→                    size="sm"
+  1985→                    className="h-8 text-xs bg-cyan-500 hover:bg-cyan-600 text-white"
+  1986→                    onClick={handleSaveRoute}
+  1987→                  >
+  1988→                    Save
+  1989→                  </Button>
+  1990→                </div>
+  1991→              )}
+  1992→              <Button
+  1993→                variant="outline"
+  1994→                size="sm"
+  1995→                className="h-8 text-xs"
+  1996→                onClick={clearRoutePoints}
+  1997→              >
+  1998→                Clear
+  1999→              </Button>
+  2000→            </div>
+
+[showing lines 1-2000 of 2188; use offset=2001 with limit to continue reading]
