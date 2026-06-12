@@ -168,6 +168,14 @@ import { VolcanoSeismicMonitor } from '@/components/map/VolcanoSeismicMonitor'
 import { WhaleMigrationTracker } from '@/components/map/WhaleMigrationTracker'
 import { AvalancheForecaster } from '@/components/map/AvalancheForecaster'
 import { AuroraForecaster } from '@/components/map/AuroraForecaster'
+import { OzoneLayerMonitor } from '@/components/map/OzoneLayerMonitor'
+import { DeforestationTracker } from '@/components/map/DeforestationTracker'
+import { MethaneEmissionsTracker } from '@/components/map/MethaneEmissionsTracker'
+import { OceanAcidificationMonitor } from '@/components/map/OceanAcidificationMonitor'
+import { SpaceDebrisTracker } from '@/components/map/SpaceDebrisTracker'
+import { TectonicStrainMonitor } from '@/components/map/TectonicStrainMonitor'
+import { PhytoBloomMonitor } from '@/components/map/PhytoBloomMonitor'
+import { SnowCoverMonitor } from '@/components/map/SnowCoverMonitor'
 import dynamic from 'next/dynamic'
 
 const GPSSimulator = dynamic(() => import('@/components/map/GPSSimulator').then((m) => m.GPSSimulator), { ssr: false })
@@ -2063,6 +2071,86 @@ export default function Home() {
           <Button
             variant="outline"
             size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setOzoneLayer({ open: true })}
+            title="Ozone Layer Monitor"
+            aria-label="Open ozone layer monitor"
+          >
+            <Sun className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setDeforestation({ open: true })}
+            title="Deforestation Tracker"
+            aria-label="Open deforestation tracker"
+          >
+            <TreePine className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setMethaneEmissions({ open: true })}
+            title="Methane Emissions Tracker"
+            aria-label="Open methane emissions tracker"
+          >
+            <Factory className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setOceanAcidification({ open: true })}
+            title="Ocean Acidification Monitor"
+            aria-label="Open ocean acidification monitor"
+          >
+            <DropletsIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setSpaceDebris({ open: true })}
+            title="Space Debris Tracker"
+            aria-label="Open space debris tracker"
+          >
+            <Radio className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setTectonicStrain({ open: true })}
+            title="Tectonic Strain Monitor"
+            aria-label="Open tectonic strain monitor"
+          >
+            <Activity className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setPhytoBloom({ open: true })}
+            title="Phytoplankton Bloom Monitor"
+            aria-label="Open phytoplankton bloom monitor"
+          >
+            <Fish className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setSnowCover({ open: true })}
+            title="Snow Cover Monitor"
+            aria-label="Open snow cover monitor"
+          >
+            <SnowflakeIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
             className="hidden sm:flex map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={() =>
               window.open('https://github.com/maplibre/maplibre-native', '_blank')
@@ -3026,6 +3114,30 @@ export default function Home() {
 
       {/* Aurora Forecaster */}
       <AuroraForecaster />
+
+      {/* Ozone Layer Monitor */}
+      <OzoneLayerMonitor />
+
+      {/* Deforestation Tracker */}
+      <DeforestationTracker />
+
+      {/* Methane Emissions Tracker */}
+      <MethaneEmissionsTracker />
+
+      {/* Ocean Acidification Monitor */}
+      <OceanAcidificationMonitor />
+
+      {/* Space Debris Tracker */}
+      <SpaceDebrisTracker />
+
+      {/* Tectonic Strain Monitor */}
+      <TectonicStrainMonitor />
+
+      {/* Phytoplankton Bloom Monitor */}
+      <PhytoBloomMonitor />
+
+      {/* Snow Cover Monitor */}
+      <SnowCoverMonitor />
 
       {/* Footer */}
       <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-2 sm:px-3 md:px-4 safe-area-bottom before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">

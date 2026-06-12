@@ -2523,6 +2523,204 @@ export interface AuroraForecasterState {
   visibilityFilter: 'all' | 'excellent' | 'good' | 'fair' | 'poor' | 'none'
 }
 
+// Task 51: Ozone Layer Monitor
+export interface OzoneZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  ozoneDobson: number
+  trend: 'increasing' | 'stable' | 'decreasing'
+  uvIndex: number
+  season: string
+  satelliteSource: string
+}
+
+export interface OzoneLayerState {
+  ozoneZones: OzoneZone[]
+  activeOzoneId: string | null
+  showDobson: boolean
+  showTrend: boolean
+  showUV: boolean
+  showSeason: boolean
+  open: boolean
+  trendFilter: 'all' | 'increasing' | 'stable' | 'decreasing'
+}
+
+// Task 51: Deforestation Tracker
+export interface DeforestationZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  treeCoverLoss: number
+  remainingForest: number
+  rate: number
+  driver: string
+  protectedArea: boolean
+  restorationPotential: number
+}
+
+export interface DeforestationState {
+  deforestationZones: DeforestationZone[]
+  activeZoneId: string | null
+  showLoss: boolean
+  showRemaining: boolean
+  showRate: boolean
+  showDrivers: boolean
+  open: boolean
+  driverFilter: 'all' | string
+}
+
+// Task 51: Methane Emissions Tracker
+export interface MethaneSource {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  emissionRate: number
+  sourceType: 'agriculture' | 'energy' | 'waste' | 'natural' | 'industrial'
+  concentration: number
+  trend: 'rising' | 'stable' | 'falling'
+  verified: boolean
+}
+
+export interface MethaneEmissionsState {
+  methaneSources: MethaneSource[]
+  activeSourceId: string | null
+  showEmissionRate: boolean
+  showConcentration: boolean
+  showTrend: boolean
+  showVerified: boolean
+  open: boolean
+  sourceTypeFilter: 'all' | 'agriculture' | 'energy' | 'waste' | 'natural' | 'industrial'
+}
+
+// Task 51: Ocean Acidification Monitor
+export interface OceanAcidSite {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  ph: number
+  pCO2: number
+  aragoniteSaturation: number
+  coralImpact: 'none' | 'low' | 'moderate' | 'high' | 'severe'
+  trend: 'improving' | 'stable' | 'declining'
+  samplingDepth: number
+}
+
+export interface OceanAcidificationState {
+  acidSites: OceanAcidSite[]
+  activeSiteId: string | null
+  showPH: boolean
+  showCO2: boolean
+  showAragonite: boolean
+  showImpact: boolean
+  open: boolean
+  impactFilter: 'all' | 'none' | 'low' | 'moderate' | 'high' | 'severe'
+}
+
+// Task 51: Space Debris Tracker
+export interface DebrisObject {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  altitude: number
+  objectType: 'satellite' | 'debris' | 'rocket_body' | 'unknown'
+  size: number
+  velocity: number
+  inclination: number
+  decayRate: number
+}
+
+export interface SpaceDebrisState {
+  debrisObjects: DebrisObject[]
+  activeDebrisId: string | null
+  showAltitude: boolean
+  showVelocity: boolean
+  showDecay: boolean
+  showType: boolean
+  open: boolean
+  typeFilter: 'all' | 'satellite' | 'debris' | 'rocket_body' | 'unknown'
+}
+
+// Task 51: Tectonic Strain Monitor
+export interface StrainStation {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  strainRate: number
+  stressAccumulation: number
+  faultType: string
+  lastEvent: string | null
+  riskLevel: 'low' | 'moderate' | 'high' | 'critical'
+  displacement: number
+}
+
+export interface TectonicStrainState {
+  strainStations: StrainStation[]
+  activeStationId: string | null
+  showStrain: boolean
+  showStress: boolean
+  showFaults: boolean
+  showRisk: boolean
+  open: boolean
+  riskFilter: 'all' | 'low' | 'moderate' | 'high' | 'critical'
+}
+
+// Task 51: Phytoplankton Bloom Monitor
+export interface PhytoBloomSite {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  chlorophyllConc: number
+  bloomArea: number
+  dominantSpecies: string
+  toxicityRisk: boolean
+  seaSurfaceTemp: number
+  nutrientLevel: number
+}
+
+export interface PhytoBloomState {
+  bloomSites: PhytoBloomSite[]
+  activeBloomId: string | null
+  showChlorophyll: boolean
+  showArea: boolean
+  showToxicity: boolean
+  showNutrients: boolean
+  open: boolean
+  toxicityFilter: 'all' | 'toxic' | 'nontoxic'
+}
+
+// Task 51: Snow Cover Monitor
+export interface SnowCoverZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  snowDepth: number
+  snowWaterEquiv: number
+  coverage: number
+  meltRate: number
+  snowLine: number
+  seasonOnset: string
+}
+
+export interface SnowCoverState {
+  snowZones: SnowCoverZone[]
+  activeSnowZoneId: string | null
+  showDepth: boolean
+  showWaterEquiv: boolean
+  showCoverage: boolean
+  showMeltRate: boolean
+  open: boolean
+  depthFilter: 'all' | 'shallow' | 'moderate' | 'deep' | 'very_deep'
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -3492,6 +3690,38 @@ interface MapState {
   // Aurora Forecaster
   auroraForecaster: AuroraForecasterState
   setAuroraForecaster: (state: Partial<AuroraForecasterState>) => void
+
+  // Ozone Layer Monitor
+  ozoneLayer: OzoneLayerState
+  setOzoneLayer: (state: Partial<OzoneLayerState>) => void
+
+  // Deforestation Tracker
+  deforestation: DeforestationState
+  setDeforestation: (state: Partial<DeforestationState>) => void
+
+  // Methane Emissions Tracker
+  methaneEmissions: MethaneEmissionsState
+  setMethaneEmissions: (state: Partial<MethaneEmissionsState>) => void
+
+  // Ocean Acidification Monitor
+  oceanAcidification: OceanAcidificationState
+  setOceanAcidification: (state: Partial<OceanAcidificationState>) => void
+
+  // Space Debris Tracker
+  spaceDebris: SpaceDebrisState
+  setSpaceDebris: (state: Partial<SpaceDebrisState>) => void
+
+  // Tectonic Strain Monitor
+  tectonicStrain: TectonicStrainState
+  setTectonicStrain: (state: Partial<TectonicStrainState>) => void
+
+  // Phytoplankton Bloom Monitor
+  phytoBloom: PhytoBloomState
+  setPhytoBloom: (state: Partial<PhytoBloomState>) => void
+
+  // Snow Cover Monitor
+  snowCover: SnowCoverState
+  setSnowCover: (state: Partial<SnowCoverState>) => void
 }
 
 // Coordinate Share Card types
@@ -6837,6 +7067,118 @@ export const useMapStore = create<MapState>()(
       setAuroraForecaster: (updates) => set((state) => ({
         auroraForecaster: { ...state.auroraForecaster, ...updates },
       })),
+
+      ozoneLayer: {
+        ozoneZones: [],
+        activeOzoneId: null,
+        showDobson: true,
+        showTrend: false,
+        showUV: false,
+        showSeason: false,
+        open: false,
+        trendFilter: 'all',
+      },
+      setOzoneLayer: (updates) => set((state) => ({
+        ozoneLayer: { ...state.ozoneLayer, ...updates },
+      })),
+
+      deforestation: {
+        deforestationZones: [],
+        activeZoneId: null,
+        showLoss: true,
+        showRemaining: false,
+        showRate: false,
+        showDrivers: false,
+        open: false,
+        driverFilter: 'all',
+      },
+      setDeforestation: (updates) => set((state) => ({
+        deforestation: { ...state.deforestation, ...updates },
+      })),
+
+      methaneEmissions: {
+        methaneSources: [],
+        activeSourceId: null,
+        showEmissionRate: true,
+        showConcentration: false,
+        showTrend: false,
+        showVerified: false,
+        open: false,
+        sourceTypeFilter: 'all',
+      },
+      setMethaneEmissions: (updates) => set((state) => ({
+        methaneEmissions: { ...state.methaneEmissions, ...updates },
+      })),
+
+      oceanAcidification: {
+        acidSites: [],
+        activeSiteId: null,
+        showPH: true,
+        showCO2: false,
+        showAragonite: false,
+        showImpact: false,
+        open: false,
+        impactFilter: 'all',
+      },
+      setOceanAcidification: (updates) => set((state) => ({
+        oceanAcidification: { ...state.oceanAcidification, ...updates },
+      })),
+
+      spaceDebris: {
+        debrisObjects: [],
+        activeDebrisId: null,
+        showAltitude: true,
+        showVelocity: false,
+        showDecay: false,
+        showType: false,
+        open: false,
+        typeFilter: 'all',
+      },
+      setSpaceDebris: (updates) => set((state) => ({
+        spaceDebris: { ...state.spaceDebris, ...updates },
+      })),
+
+      tectonicStrain: {
+        strainStations: [],
+        activeStationId: null,
+        showStrain: true,
+        showStress: false,
+        showFaults: false,
+        showRisk: false,
+        open: false,
+        riskFilter: 'all',
+      },
+      setTectonicStrain: (updates) => set((state) => ({
+        tectonicStrain: { ...state.tectonicStrain, ...updates },
+      })),
+
+      phytoBloom: {
+        bloomSites: [],
+        activeBloomId: null,
+        showChlorophyll: true,
+        showArea: false,
+        showToxicity: false,
+        showNutrients: false,
+        open: false,
+        toxicityFilter: 'all',
+      },
+      setPhytoBloom: (updates) => set((state) => ({
+        phytoBloom: { ...state.phytoBloom, ...updates },
+      })),
+
+      snowCover: {
+        snowZones: [],
+        activeSnowZoneId: null,
+        showDepth: true,
+        showWaterEquiv: false,
+        showCoverage: false,
+        showMeltRate: false,
+        open: false,
+        depthFilter: 'all',
+      },
+      setSnowCover: (updates) => set((state) => ({
+        snowCover: { ...state.snowCover, ...updates },
+      })),
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -7008,6 +7350,14 @@ export const useMapStore = create<MapState>()(
         whaleMigration: state.whaleMigration,
         avalancheForecaster: state.avalancheForecaster,
         auroraForecaster: state.auroraForecaster,
+        ozoneLayer: state.ozoneLayer,
+        deforestation: state.deforestation,
+        methaneEmissions: state.methaneEmissions,
+        oceanAcidification: state.oceanAcidification,
+        spaceDebris: state.spaceDebris,
+        tectonicStrain: state.tectonicStrain,
+        phytoBloom: state.phytoBloom,
+        snowCover: state.snowCover,
       }),
     }
   )
