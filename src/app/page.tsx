@@ -68,6 +68,10 @@ import { RoutePlayback } from '@/components/map/RoutePlayback'
 import { SpeedAlertSystem } from '@/components/map/SpeedAlertSystem'
 import { MapLabelsOverlay } from '@/components/map/MapLabelsOverlay'
 import { ContourGenerator } from '@/components/map/ContourGenerator'
+import { LocationClusterMap } from '@/components/map/LocationClusterMap'
+import { MapStoryCreator } from '@/components/map/MapStoryCreator'
+import { TerrainProfile3D } from '@/components/map/TerrainProfile3D'
+import { DataImportExport } from '@/components/map/DataImportExport'
 import dynamic from 'next/dynamic'
 
 const GPSSimulator = dynamic(() => import('@/components/map/GPSSimulator').then((m) => m.GPSSimulator), { ssr: false })
@@ -115,6 +119,10 @@ import {
   Mountain,
   Gauge,
   Play,
+  Boxes,
+  BookOpen,
+  MountainSnow,
+  Database,
 } from 'lucide-react'
 
 export default function Home() {
@@ -979,6 +987,46 @@ export default function Home() {
           <Button
             variant="outline"
             size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setClusteringOpen(true)}
+            title="Location Clustering"
+            aria-label="Open location clustering"
+          >
+            <Boxes className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setStoryCreatorOpen(true)}
+            title="Map Story Creator"
+            aria-label="Open map story creator"
+          >
+            <BookOpen className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setTerrainProfile3DOpen(true)}
+            title="3D Terrain Profile"
+            aria-label="Open 3D terrain profile"
+          >
+            <MountainSnow className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setImportExportOpen(true)}
+            title="Data Import/Export"
+            aria-label="Open data import/export"
+          >
+            <Database className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
             className="hidden sm:flex map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={() =>
               window.open('https://github.com/maplibre/maplibre-native', '_blank')
@@ -1397,6 +1445,18 @@ export default function Home() {
 
       {/* Contour Generator */}
       <ContourGenerator />
+
+      {/* Location Clustering */}
+      <LocationClusterMap />
+
+      {/* Map Story Creator */}
+      <MapStoryCreator />
+
+      {/* Terrain Profile 3D */}
+      <TerrainProfile3D />
+
+      {/* Data Import/Export */}
+      <DataImportExport />
 
       {/* Geofence Dialog */}
       <GeofenceDialog

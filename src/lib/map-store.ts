@@ -428,6 +428,22 @@ export interface ContourData {
   visible: boolean
 }
 
+// Terrain Profile 3D types
+export interface TerrainProfile3DState {
+  waterLevel: number // meters above sea level
+  rotationX: number
+  rotationY: number
+  zoom: number
+}
+
+// Data Import/Export types
+export interface ImportExportState {
+  lastImportAt: string | null
+  lastExportAt: string | null
+  importCount: number
+  exportCount: number
+}
+
 export interface WMSTileSource {
   id: string
   name: string
@@ -968,6 +984,75 @@ interface MapState {
   clearContourData: () => void
   contourGeneratorOpen: boolean
   setContourGeneratorOpen: (open: boolean) => void
+
+  // Location Clustering
+  clusteringState: ClusteringState
+  setClusteringState: (state: Partial<ClusteringState>) => void
+  clusteringOpen: boolean
+  setClusteringOpen: (open: boolean) => void
+
+  // Map Story Creator
+  mapStories: MapStory[]
+  addMapStory: (story: MapStory) => void
+  updateMapStory: (id: string, updates: Partial<Omit<MapStory, 'id'>>) => void
+  removeMapStory: (id: string) => void
+  activeStoryId: string | null
+  setActiveStoryId: (id: string | null) => void
+  storyPlayback: { isPlaying: boolean; currentStopIndex: number }
+  setStoryPlayback: (playback: Partial<{ isPlaying: boolean; currentStopIndex: number }>) => void
+  storyCreatorOpen: boolean
+  setStoryCreatorOpen: (open: boolean) => void
+
+  // Terrain Profile 3D
+  terrainProfile3D: TerrainProfile3DState
+  setTerrainProfile3D: (state: Partial<TerrainProfile3DState>) => void
+  terrainProfile3DOpen: boolean
+  setTerrainProfile3DOpen: (open: boolean) => void
+
+  // Data Import/Export
+  importExportState: ImportExportState
+  setImportExportState: (state: Partial<ImportExportState>) => void
+  importExportOpen: boolean
+  setImportExportOpen: (open: boolean) => void
+}
+
+// Location Clustering types
+export interface ClusterInfo {
+  id: number
+  center: [number, number]
+  pointCount: number
+  color: string
+  locationIds: string[]
+  radius: number
+}
+
+export interface ClusteringState {
+  algorithm: 'kmeans' | 'dbscan'
+  k: number
+  epsilon: number
+  minPoints: number
+  clusters: ClusterInfo[]
+  silhouetteScore: number | null
+}
+
+// Map Story types
+export interface StoryStop {
+  id: string
+  title: string
+  description: string
+  longitude: number
+  latitude: number
+  zoom: number
+  style?: string
+  duration: number
+  transition: 'flyTo' | 'jumpTo' | 'easeTo'
+}
+
+export interface MapStory {
+  id: string
+  name: string
+  stops: StoryStop[]
+  createdAt: string
 }
 
 // Route Playback types
@@ -2500,6 +2585,68 @@ export const useMapStore = create<MapState>()(
       clearContourData: () => set({ contourData: null }),
       contourGeneratorOpen: false,
       setContourGeneratorOpen: (open) => set({ contourGeneratorOpen: open }),
+
+      // Location Clustering defaults
+      clusteringState: {
+        algorithm: 'kmeans',
+        k: 3,
+        epsilon: 50,
+        minPoints: 2,
+        clusters: [],
+        silhouetteScore: null,
+      },
+      setClusteringState: (updates) => set((state) => ({
+        clusteringState: { ...state.clusteringState, ...updates },
+      })),
+      clusteringOpen: false,
+      setClusteringOpen: (open) => set({ clusteringOpen: open }),
+
+      // Map Story Creator defaults
+      mapStories: [],
+      addMapStory: (story) => set((state) => ({
+        mapStories: [...state.mapStories, story],
+      })),
+      updateMapStory: (id, updates) => set((state) => ({
+        mapStories: state.mapStories.map((s) => s.id === id ? { ...s, ...updates } : s),
+      })),
+      removeMapStory: (id) => set((state) => ({
+        mapStories: state.mapStories.filter((s) => s.id !== id),
+        activeStoryId: state.activeStoryId === id ? null : state.activeStoryId,
+      })),
+      activeStoryId: null,
+      setActiveStoryId: (id) => set({ activeStoryId: id }),
+      storyPlayback: { isPlaying: false, currentStopIndex: 0 },
+      setStoryPlayback: (playback) => set((state) => ({
+        storyPlayback: { ...state.storyPlayback, ...playback },
+      })),
+      storyCreatorOpen: false,
+      setStoryCreatorOpen: (open) => set({ storyCreatorOpen: open }),
+
+      // Terrain Profile 3D defaults
+      terrainProfile3D: {
+        waterLevel: 0,
+        rotationX: -30,
+        rotationY: 45,
+        zoom: 1,
+      },
+      setTerrainProfile3D: (updates) => set((state) => ({
+        terrainProfile3D: { ...state.terrainProfile3D, ...updates },
+      })),
+      terrainProfile3DOpen: false,
+      setTerrainProfile3DOpen: (open) => set({ terrainProfile3DOpen: open }),
+
+      // Data Import/Export defaults
+      importExportState: {
+        lastImportAt: null,
+        lastExportAt: null,
+        importCount: 0,
+        exportCount: 0,
+      },
+      setImportExportState: (updates) => set((state) => ({
+        importExportState: { ...state.importExportState, ...updates },
+      })),
+      importExportOpen: false,
+      setImportExportOpen: (open) => set({ importExportOpen: open }),
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -2572,6 +2719,10 @@ export const useMapStore = create<MapState>()(
         speedZones: state.speedZones,
         speedLimit: state.speedLimit,
         routePlayback: state.routePlayback,
+        mapStories: state.mapStories,
+        activeStoryId: state.activeStoryId,
+        terrainProfile3D: state.terrainProfile3D,
+        importExportState: state.importExportState,
       }),
     }
   )
