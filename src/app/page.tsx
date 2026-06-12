@@ -96,6 +96,14 @@ import { MapChatAssistant } from '@/components/map/MapChatAssistant'
 import { POIDensityHeatmap } from '@/components/map/POIDensityHeatmap'
 import { CoordinateShareCard } from '@/components/map/CoordinateShareCard'
 import { MapWallpaperGenerator } from '@/components/map/MapWallpaperGenerator'
+import { MapAnimationStudio } from '@/components/map/MapAnimationStudio'
+import { SmartRoutePlanner } from '@/components/map/SmartRoutePlanner'
+import { MapDataVisualizer } from '@/components/map/MapDataVisualizer'
+import { FieldSurveyTool } from '@/components/map/FieldSurveyTool'
+import { EmergencyRoutePlanner } from '@/components/map/EmergencyRoutePlanner'
+import { MapComparisonSlider } from '@/components/map/MapComparisonSlider'
+import { NoiseHeatmapOverlay } from '@/components/map/NoiseHeatmapOverlay'
+import { SolarExposureAnalyzer } from '@/components/map/SolarExposureAnalyzer'
 import dynamic from 'next/dynamic'
 
 const GPSSimulator = dynamic(() => import('@/components/map/GPSSimulator').then((m) => m.GPSSimulator), { ssr: false })
@@ -168,6 +176,14 @@ import {
   MessageCircle,
   QrCode,
   Monitor,
+  Clapperboard,
+  Route,
+  BarChart2,
+  ClipboardCheck,
+  ShieldAlert,
+  SplitSquareHorizontal,
+  Volume2,
+  Sun,
 } from 'lucide-react'
 
 export default function Home() {
@@ -1212,6 +1228,86 @@ export default function Home() {
           <Button
             variant="outline"
             size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setAnimationStudioOpen(true)}
+            title="Animation Studio"
+            aria-label="Open map animation studio"
+          >
+            <Clapperboard className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setSmartRoute({ open: true })}
+            title="Smart Route Planner"
+            aria-label="Open smart route planner"
+          >
+            <Route className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setDataVisualizer({ open: true })}
+            title="Data Visualizer"
+            aria-label="Open data visualizer"
+          >
+            <BarChart2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setFieldSurvey({ open: true })}
+            title="Field Survey Tool"
+            aria-label="Open field survey tool"
+          >
+            <ClipboardCheck className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setEmergencyRoute({ open: true })}
+            title="Emergency Route Planner"
+            aria-label="Open emergency route planner"
+          >
+            <ShieldAlert className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setComparisonSlider({ enabled: !useMapStore.getState().comparisonSlider.enabled })}
+            title="Map Comparison Slider"
+            aria-label="Toggle map comparison slider"
+          >
+            <SplitSquareHorizontal className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setNoiseHeatmap({ enabled: !useMapStore.getState().noiseHeatmap.enabled })}
+            title="Noise Heatmap"
+            aria-label="Toggle noise heatmap"
+          >
+            <Volume2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setSolarExposure({ open: true })}
+            title="Solar Exposure Analyzer"
+            aria-label="Open solar exposure analyzer"
+          >
+            <Sun className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
             className="hidden sm:flex map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={() =>
               window.open('https://github.com/maplibre/maplibre-native', '_blank')
@@ -1959,6 +2055,30 @@ export default function Home() {
 
       {/* POI Density Heatmap Layer */}
       <POIDensityHeatmap />
+
+      {/* Map Animation Studio */}
+      <MapAnimationStudio />
+
+      {/* Smart Route Planner */}
+      <SmartRoutePlanner />
+
+      {/* Map Data Visualizer */}
+      <MapDataVisualizer />
+
+      {/* Field Survey Tool */}
+      <FieldSurveyTool />
+
+      {/* Emergency Route Planner */}
+      <EmergencyRoutePlanner />
+
+      {/* Map Comparison Slider */}
+      <MapComparisonSlider />
+
+      {/* Noise Heatmap Overlay */}
+      <NoiseHeatmapOverlay />
+
+      {/* Solar Exposure Analyzer */}
+      <SolarExposureAnalyzer />
 
       {/* Footer */}
       <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-2 sm:px-3 md:px-4 safe-area-bottom before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">

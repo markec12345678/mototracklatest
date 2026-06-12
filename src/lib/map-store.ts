@@ -609,6 +609,199 @@ export interface WeatherData {
   lastUpdated: number | null
 }
 
+// Map Animation Studio types
+export interface AnimationKeyframe {
+  id: string
+  longitude: number
+  latitude: number
+  zoom: number
+  bearing: number
+  pitch: number
+  duration: number // ms
+  easing: 'linear' | 'ease-in' | 'ease-out' | 'ease-in-out' | 'fly'
+  label: string
+}
+
+export interface MapAnimation {
+  id: string
+  name: string
+  keyframes: AnimationKeyframe[]
+  loop: boolean
+  speed: number // 0.5x to 3x
+}
+
+export interface AnimationStudioState {
+  animations: MapAnimation[]
+  activeAnimationId: string | null
+  isPlaying: boolean
+  currentKeyframeIndex: number
+  playbackSpeed: number
+}
+
+// Smart Route Planner types
+export interface SmartRoutePreferences {
+  mode: 'scenic' | 'fastest' | 'safest' | 'eco' | 'balanced'
+  avoidHighways: boolean
+  avoidTolls: boolean
+  avoidFerries: boolean
+  preferBikeLanes: boolean
+  maxIncline: number // percent
+  minScenicScore: number // 1-10
+  departureTime: string
+  arrivalTime: string
+}
+
+export interface SmartRouteState {
+  preferences: SmartRoutePreferences
+  routeOptions: Array<{
+    id: string
+    name: string
+    distance: number
+    duration: number
+    scenicScore: number
+    safetyScore: number
+    ecoScore: number
+    color: string
+  }>
+  selectedRouteId: string | null
+  open: boolean
+}
+
+// Map Data Visualizer types
+export interface DataVisualization {
+  id: string
+  name: string
+  type: 'choropleth' | 'proportional' | 'heatmap' | 'graduated' | 'categorical'
+  dataSource: string
+  field: string
+  colorRamp: string[]
+  classBreaks: number[]
+  visible: boolean
+  opacity: number
+}
+
+export interface DataVisualizerState {
+  visualizations: DataVisualization[]
+  activeVizId: string | null
+  open: boolean
+  importFormat: 'geojson' | 'csv' | 'kml'
+  importedData: Record<string, unknown> | null
+}
+
+// Field Survey Tool types
+export interface SurveyField {
+  id: string
+  label: string
+  type: 'text' | 'number' | 'select' | 'checkbox' | 'photo' | 'date' | 'rating'
+  options?: string[]
+  required: boolean
+  defaultValue: string
+}
+
+export interface SurveyForm {
+  id: string
+  name: string
+  description: string
+  fields: SurveyField[]
+  color: string
+  icon: string
+}
+
+export interface SurveyResponse {
+  id: string
+  formId: string
+  latitude: number
+  longitude: number
+  values: Record<string, string>
+  timestamp: number
+}
+
+export interface FieldSurveyState {
+  forms: SurveyForm[]
+  responses: SurveyResponse[]
+  activeFormId: string | null
+  open: boolean
+  collectMode: boolean
+}
+
+// Emergency Route Planner types
+export interface EmergencyZone {
+  id: string
+  name: string
+  type: 'fire' | 'flood' | 'earthquake' | 'chemical' | 'storm' | 'general'
+  latitude: number
+  longitude: number
+  radius: number // meters
+  severity: 'low' | 'medium' | 'high' | 'critical'
+  color: string
+}
+
+export interface EvacuationPoint {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  capacity: number
+  type: 'shelter' | 'hospital' | 'assembly' | 'staging'
+}
+
+export interface EmergencyRouteState {
+  zones: EmergencyZone[]
+  evacuationPoints: EvacuationPoint[]
+  activeRouteId: string | null
+  open: boolean
+  showZones: boolean
+  showEvacuationPoints: boolean
+}
+
+// Map Comparison Slider types
+export interface ComparisonSliderState {
+  enabled: boolean
+  leftStyle: string
+  rightStyle: string
+  position: number // 0-100 percentage
+  orientation: 'horizontal' | 'vertical'
+  lockedZoom: boolean
+  lockedCenter: boolean
+  leftTimestamp: number | null
+  rightTimestamp: number | null
+}
+
+// Noise Heatmap Overlay types
+export interface NoiseHeatmapState {
+  enabled: boolean
+  opacity: number
+  showLabels: boolean
+  dataSource: 'estimated' | 'measured'
+  colorScheme: 'traffic' | 'industrial' | 'ambient'
+  threshold: number // dB level
+}
+
+// Solar Exposure Analyzer types
+export interface SolarData {
+  latitude: number
+  longitude: number
+  date: string
+  sunrise: string
+  sunset: string
+  solarNoon: string
+  dayLength: number // hours
+  maxElevation: number // degrees
+  totalRadiation: number // kWh/m2
+  monthlyAverages: number[] // 12 months
+  shadowLengths: Array<{ hour: number; length: number; direction: number }>
+}
+
+export interface SolarExposureState {
+  open: boolean
+  analyzerPoint: { latitude: number; longitude: number } | null
+  data: SolarData | null
+  date: string
+  buildingHeight: number
+  showShadowPath: boolean
+  showRadiationMap: boolean
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -1288,6 +1481,40 @@ interface MapState {
   // POI Density Heatmap
   poiHeatmap: POIHeatmapState
   setPOIHeatmap: (state: Partial<POIHeatmapState>) => void
+
+  // Map Animation Studio
+  animationStudio: AnimationStudioState
+  setAnimationStudio: (state: Partial<AnimationStudioState>) => void
+  animationStudioOpen: boolean
+  setAnimationStudioOpen: (open: boolean) => void
+
+  // Smart Route Planner
+  smartRoute: SmartRouteState
+  setSmartRoute: (state: Partial<SmartRouteState>) => void
+
+  // Map Data Visualizer
+  dataVisualizer: DataVisualizerState
+  setDataVisualizer: (state: Partial<DataVisualizerState>) => void
+
+  // Field Survey Tool
+  fieldSurvey: FieldSurveyState
+  setFieldSurvey: (state: Partial<FieldSurveyState>) => void
+
+  // Emergency Route Planner
+  emergencyRoute: EmergencyRouteState
+  setEmergencyRoute: (state: Partial<EmergencyRouteState>) => void
+
+  // Map Comparison Slider
+  comparisonSlider: ComparisonSliderState
+  setComparisonSlider: (state: Partial<ComparisonSliderState>) => void
+
+  // Noise Heatmap Overlay
+  noiseHeatmap: NoiseHeatmapState
+  setNoiseHeatmap: (state: Partial<NoiseHeatmapState>) => void
+
+  // Solar Exposure Analyzer
+  solarExposure: SolarExposureState
+  setSolarExposure: (state: Partial<SolarExposureState>) => void
 }
 
 // Coordinate Share Card types
@@ -3492,6 +3719,121 @@ export const useMapStore = create<MapState>()(
       setPOIHeatmap: (updates) => set((state) => ({
         poiHeatmap: { ...state.poiHeatmap, ...updates },
       })),
+
+      // Map Animation Studio
+      animationStudio: {
+        animations: [],
+        activeAnimationId: null,
+        isPlaying: false,
+        currentKeyframeIndex: 0,
+        playbackSpeed: 1,
+      },
+      setAnimationStudio: (updates) => set((state) => ({
+        animationStudio: { ...state.animationStudio, ...updates },
+      })),
+      animationStudioOpen: false,
+      setAnimationStudioOpen: (open) => set({ animationStudioOpen: open }),
+
+      // Smart Route Planner
+      smartRoute: {
+        preferences: {
+          mode: 'balanced',
+          avoidHighways: false,
+          avoidTolls: false,
+          avoidFerries: false,
+          preferBikeLanes: false,
+          maxIncline: 15,
+          minScenicScore: 5,
+          departureTime: '',
+          arrivalTime: '',
+        },
+        routeOptions: [],
+        selectedRouteId: null,
+        open: false,
+      },
+      setSmartRoute: (updates) => set((state) => ({
+        smartRoute: { ...state.smartRoute, ...updates },
+      })),
+
+      // Map Data Visualizer
+      dataVisualizer: {
+        visualizations: [],
+        activeVizId: null,
+        open: false,
+        importFormat: 'geojson',
+        importedData: null,
+      },
+      setDataVisualizer: (updates) => set((state) => ({
+        dataVisualizer: { ...state.dataVisualizer, ...updates },
+      })),
+
+      // Field Survey Tool
+      fieldSurvey: {
+        forms: [],
+        responses: [],
+        activeFormId: null,
+        open: false,
+        collectMode: false,
+      },
+      setFieldSurvey: (updates) => set((state) => ({
+        fieldSurvey: { ...state.fieldSurvey, ...updates },
+      })),
+
+      // Emergency Route Planner
+      emergencyRoute: {
+        zones: [],
+        evacuationPoints: [],
+        activeRouteId: null,
+        open: false,
+        showZones: true,
+        showEvacuationPoints: true,
+      },
+      setEmergencyRoute: (updates) => set((state) => ({
+        emergencyRoute: { ...state.emergencyRoute, ...updates },
+      })),
+
+      // Map Comparison Slider
+      comparisonSlider: {
+        enabled: false,
+        leftStyle: 'streets',
+        rightStyle: 'satellite',
+        position: 50,
+        orientation: 'horizontal',
+        lockedZoom: true,
+        lockedCenter: true,
+        leftTimestamp: null,
+        rightTimestamp: null,
+      },
+      setComparisonSlider: (updates) => set((state) => ({
+        comparisonSlider: { ...state.comparisonSlider, ...updates },
+      })),
+
+      // Noise Heatmap Overlay
+      noiseHeatmap: {
+        enabled: false,
+        opacity: 0.6,
+        showLabels: true,
+        dataSource: 'estimated',
+        colorScheme: 'traffic',
+        threshold: 55,
+      },
+      setNoiseHeatmap: (updates) => set((state) => ({
+        noiseHeatmap: { ...state.noiseHeatmap, ...updates },
+      })),
+
+      // Solar Exposure Analyzer
+      solarExposure: {
+        open: false,
+        analyzerPoint: null,
+        data: null,
+        date: new Date().toISOString().split('T')[0],
+        buildingHeight: 10,
+        showShadowPath: true,
+        showRadiationMap: false,
+      },
+      setSolarExposure: (updates) => set((state) => ({
+        solarExposure: { ...state.solarExposure, ...updates },
+      })),
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -3591,6 +3933,14 @@ export const useMapStore = create<MapState>()(
         wallpaperState: state.wallpaperState,
         chatMessages: state.chatMessages,
         poiHeatmap: state.poiHeatmap,
+        animationStudio: state.animationStudio,
+        smartRoute: state.smartRoute,
+        dataVisualizer: state.dataVisualizer,
+        fieldSurvey: state.fieldSurvey,
+        emergencyRoute: state.emergencyRoute,
+        comparisonSlider: state.comparisonSlider,
+        noiseHeatmap: state.noiseHeatmap,
+        solarExposure: state.solarExposure,
       }),
     }
   )
