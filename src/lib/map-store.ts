@@ -1555,6 +1555,193 @@ export interface WindFarmState {
   optimizationTarget: 'power' | 'cost' | 'lifetime'
 }
 
+export interface DesertificationState {
+  zones: DesertZone[]
+  activeZoneId: string | null
+  showDesertExpansion: boolean
+  showVegetationLoss: boolean
+  showSandDunes: boolean
+  showDroughtIndex: boolean
+  open: boolean
+  timelineYear: number
+  severityFilter: 'all' | 'low' | 'moderate' | 'high' | 'extreme'
+}
+
+export interface DesertZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  area: number
+  severity: 'low' | 'moderate' | 'high' | 'extreme'
+  expansionRate: number
+  vegetationIndex: number
+  droughtIndex: number
+}
+
+export interface MineralExplorationState {
+  deposits: MineralDeposit[]
+  activeDepositId: string | null
+  showDeposits: boolean
+  showGeologicalMap: boolean
+  showMiningClaims: boolean
+  showGeochemistry: boolean
+  open: boolean
+  mineralFilter: 'all' | 'gold' | 'copper' | 'iron' | 'rare_earth' | 'diamond'
+  surveyMode: 'surface' | 'subsurface' | 'geochemical' | 'geophysical'
+}
+
+export interface MineralDeposit {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  mineralType: string
+  estimatedTonnage: number
+  grade: number
+  depth: number
+  status: 'prospect' | 'exploration' | 'development' | 'production'
+}
+
+export interface OceanCurrentState {
+  currents: OceanCurrent[]
+  activeCurrentId: string | null
+  showCurrents: boolean
+  showSST: boolean
+  showThermohaline: boolean
+  showSalinity: boolean
+  open: boolean
+  depthLayer: 'surface' | '100m' | '500m' | '1000m' | 'deep'
+  season: 'winter' | 'spring' | 'summer' | 'autumn'
+}
+
+export interface OceanCurrent {
+  id: string
+  name: string
+  coordinates: [number, number][]
+  speed: number
+  temperature: number
+  direction: number
+  type: 'warm' | 'cold' | 'mixed'
+}
+
+export interface PermafrostState {
+  zones: PermafrostZone[]
+  activeZoneId: string | null
+  showPermafrostExtent: boolean
+  showActiveLayer: boolean
+  showThawRate: boolean
+  showGroundIce: boolean
+  open: boolean
+  yearFilter: number
+  temperatureScenario: 'rcp26' | 'rcp45' | 'rcp85'
+}
+
+export interface PermafrostZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  extent: number
+  activeLayerDepth: number
+  thawRate: number
+  groundIceContent: number
+  type: 'continuous' | 'discontinuous' | 'sporadic' | 'isolated'
+}
+
+export interface LightningState {
+  strikes: LightningStrike[]
+  showStrikes: boolean
+  showDensityMap: boolean
+  showStormTracks: boolean
+  showAlertZones: boolean
+  open: boolean
+  timeRange: '1h' | '6h' | '24h' | '7d'
+  intensityFilter: 'all' | 'cloud_to_ground' | 'cloud_to_cloud' | 'positive'
+}
+
+export interface LightningStrike {
+  id: string
+  latitude: number
+  longitude: number
+  timestamp: number
+  intensity: number
+  type: 'cloud_to_ground' | 'cloud_to_cloud' | 'positive'
+  peakCurrent: number
+}
+
+export interface BiomeState {
+  biomes: BiomeRegion[]
+  activeBiomeId: string | null
+  showBiomes: boolean
+  showBiodiversity: boolean
+  showTransitions: boolean
+  showEndangered: boolean
+  open: boolean
+  classification: 'whittaker' | 'holdridge' | 'olson'
+  focusRealm: 'all' | 'terrestrial' | 'aquatic' | 'transitional'
+}
+
+export interface BiomeRegion {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  type: string
+  biodiversityIndex: number
+  speciesCount: number
+  endangeredSpecies: number
+  area: number
+}
+
+export interface GroundwaterState {
+  aquifers: Aquifer[]
+  activeAquiferId: string | null
+  showAquifers: boolean
+  showWells: boolean
+  showRechargeZones: boolean
+  showFlowDirection: boolean
+  open: boolean
+  depthFilter: 'all' | 'shallow' | 'intermediate' | 'deep' | 'very_deep'
+  qualityFilter: 'all' | 'excellent' | 'good' | 'moderate' | 'poor'
+}
+
+export interface Aquifer {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  type: 'unconfined' | 'confined' | 'semi_confined' | 'karst'
+  depth: number
+  waterLevel: number
+  quality: 'excellent' | 'good' | 'moderate' | 'poor'
+  rechargeRate: number
+}
+
+export interface SolarPowerState {
+  sites: SolarSite[]
+  activeSiteId: string | null
+  showIrradiance: boolean
+  showOptimalZones: boolean
+  showExistingPlants: boolean
+  showGridConnection: boolean
+  open: boolean
+  panelType: 'monocrystalline' | 'polycrystalline' | 'thin_film' | 'bifacial'
+  calculationMode: 'annual' | 'monthly' | 'seasonal'
+}
+
+export interface SolarSite {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  irradiance: number
+  sunshineHours: number
+  optimalTilt: number
+  estimatedYield: number
+  area: number
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -2364,6 +2551,38 @@ interface MapState {
   // Wind Farm Optimizer
   windFarm: WindFarmState
   setWindFarm: (state: Partial<WindFarmState>) => void
+
+  // Desertification Monitor
+  desertification: DesertificationState
+  setDesertification: (state: Partial<DesertificationState>) => void
+
+  // Mineral Exploration
+  mineralExploration: MineralExplorationState
+  setMineralExploration: (state: Partial<MineralExplorationState>) => void
+
+  // Ocean Current Mapper
+  oceanCurrent: OceanCurrentState
+  setOceanCurrent: (state: Partial<OceanCurrentState>) => void
+
+  // Permafrost Thaw Tracker
+  permafrost: PermafrostState
+  setPermafrost: (state: Partial<PermafrostState>) => void
+
+  // Lightning Strike Map
+  lightning: LightningState
+  setLightning: (state: Partial<LightningState>) => void
+
+  // Biome Classifier
+  biome: BiomeState
+  setBiome: (state: Partial<BiomeState>) => void
+
+  // Groundwater Explorer
+  groundwater: GroundwaterState
+  setGroundwater: (state: Partial<GroundwaterState>) => void
+
+  // Solar Power Planner
+  solarPower: SolarPowerState
+  setSolarPower: (state: Partial<SolarPowerState>) => void
 }
 
 // Coordinate Share Card types
@@ -5102,6 +5321,133 @@ export const useMapStore = create<MapState>()(
       setWindFarm: (updates) => set((state) => ({
         windFarm: { ...state.windFarm, ...updates },
       })),
+
+      // Desertification Monitor defaults
+      desertification: {
+        zones: [],
+        activeZoneId: null,
+        showDesertExpansion: true,
+        showVegetationLoss: false,
+        showSandDunes: false,
+        showDroughtIndex: false,
+        open: false,
+        timelineYear: 2024,
+        severityFilter: 'all',
+      },
+      setDesertification: (updates) => set((state) => ({
+        desertification: { ...state.desertification, ...updates },
+      })),
+
+      // Mineral Exploration defaults
+      mineralExploration: {
+        deposits: [],
+        activeDepositId: null,
+        showDeposits: true,
+        showGeologicalMap: false,
+        showMiningClaims: false,
+        showGeochemistry: false,
+        open: false,
+        mineralFilter: 'all',
+        surveyMode: 'surface',
+      },
+      setMineralExploration: (updates) => set((state) => ({
+        mineralExploration: { ...state.mineralExploration, ...updates },
+      })),
+
+      // Ocean Current Mapper defaults
+      oceanCurrent: {
+        currents: [],
+        activeCurrentId: null,
+        showCurrents: true,
+        showSST: false,
+        showThermohaline: false,
+        showSalinity: false,
+        open: false,
+        depthLayer: 'surface',
+        season: 'summer',
+      },
+      setOceanCurrent: (updates) => set((state) => ({
+        oceanCurrent: { ...state.oceanCurrent, ...updates },
+      })),
+
+      // Permafrost Thaw Tracker defaults
+      permafrost: {
+        zones: [],
+        activeZoneId: null,
+        showPermafrostExtent: true,
+        showActiveLayer: false,
+        showThawRate: false,
+        showGroundIce: false,
+        open: false,
+        yearFilter: 2024,
+        temperatureScenario: 'rcp45',
+      },
+      setPermafrost: (updates) => set((state) => ({
+        permafrost: { ...state.permafrost, ...updates },
+      })),
+
+      // Lightning Strike Map defaults
+      lightning: {
+        strikes: [],
+        showStrikes: true,
+        showDensityMap: false,
+        showStormTracks: false,
+        showAlertZones: false,
+        open: false,
+        timeRange: '24h',
+        intensityFilter: 'all',
+      },
+      setLightning: (updates) => set((state) => ({
+        lightning: { ...state.lightning, ...updates },
+      })),
+
+      // Biome Classifier defaults
+      biome: {
+        biomes: [],
+        activeBiomeId: null,
+        showBiomes: true,
+        showBiodiversity: false,
+        showTransitions: false,
+        showEndangered: false,
+        open: false,
+        classification: 'olson',
+        focusRealm: 'all',
+      },
+      setBiome: (updates) => set((state) => ({
+        biome: { ...state.biome, ...updates },
+      })),
+
+      // Groundwater Explorer defaults
+      groundwater: {
+        aquifers: [],
+        activeAquiferId: null,
+        showAquifers: true,
+        showWells: false,
+        showRechargeZones: false,
+        showFlowDirection: false,
+        open: false,
+        depthFilter: 'all',
+        qualityFilter: 'all',
+      },
+      setGroundwater: (updates) => set((state) => ({
+        groundwater: { ...state.groundwater, ...updates },
+      })),
+
+      // Solar Power Planner defaults
+      solarPower: {
+        sites: [],
+        activeSiteId: null,
+        showIrradiance: true,
+        showOptimalZones: false,
+        showExistingPlants: false,
+        showGridConnection: false,
+        open: false,
+        panelType: 'monocrystalline',
+        calculationMode: 'annual',
+      },
+      setSolarPower: (updates) => set((state) => ({
+        solarPower: { ...state.solarPower, ...updates },
+      })),
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -5233,6 +5579,14 @@ export const useMapStore = create<MapState>()(
         pollutionTracker: state.pollutionTracker,
         tidalPredictor: state.tidalPredictor,
         windFarm: state.windFarm,
+        desertification: state.desertification,
+        mineralExploration: state.mineralExploration,
+        oceanCurrent: state.oceanCurrent,
+        permafrost: state.permafrost,
+        lightning: state.lightning,
+        biome: state.biome,
+        groundwater: state.groundwater,
+        solarPower: state.solarPower,
       }),
     }
   )

@@ -128,6 +128,14 @@ import { ArchaeologyMap } from '@/components/map/ArchaeologyMap'
 import { PollutionTracker } from '@/components/map/PollutionTracker'
 import { TidalPredictor } from '@/components/map/TidalPredictor'
 import { WindFarmOptimizer } from '@/components/map/WindFarmOptimizer'
+import { DesertificationMonitor } from '@/components/map/DesertificationMonitor'
+import { MineralExploration } from '@/components/map/MineralExploration'
+import { OceanCurrentMapper } from '@/components/map/OceanCurrentMapper'
+import { PermafrostThawTracker } from '@/components/map/PermafrostThawTracker'
+import { LightningStrikeMap } from '@/components/map/LightningStrikeMap'
+import { BiomeClassifier } from '@/components/map/BiomeClassifier'
+import { GroundwaterExplorer } from '@/components/map/GroundwaterExplorer'
+import { SolarPowerPlanner } from '@/components/map/SolarPowerPlanner'
 import dynamic from 'next/dynamic'
 
 const GPSSimulator = dynamic(() => import('@/components/map/GPSSimulator').then((m) => m.GPSSimulator), { ssr: false })
@@ -231,6 +239,14 @@ import {
   Factory,
   Ship,
   Zap,
+  Sun as SunIcon,
+  Gem,
+  Fish,
+  ThermometerSnowflake,
+  CloudLightning,
+  Leaf,
+  Droplet as DropletIcon,
+  SunMedium,
 } from 'lucide-react'
 
 export default function Home() {
@@ -1595,6 +1611,86 @@ export default function Home() {
           <Button
             variant="outline"
             size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setDesertification({ open: true })}
+            title="Desertification Monitor"
+            aria-label="Open desertification monitor"
+          >
+            <SunIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setMineralExploration({ open: true })}
+            title="Mineral Exploration"
+            aria-label="Open mineral exploration"
+          >
+            <Gem className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setOceanCurrent({ open: true })}
+            title="Ocean Current Mapper"
+            aria-label="Open ocean current mapper"
+          >
+            <Fish className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setPermafrost({ open: true })}
+            title="Permafrost Thaw Tracker"
+            aria-label="Open permafrost thaw tracker"
+          >
+            <ThermometerSnowflake className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setLightning({ open: true })}
+            title="Lightning Strike Map"
+            aria-label="Open lightning strike map"
+          >
+            <CloudLightning className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setBiome({ open: true })}
+            title="Biome Classifier"
+            aria-label="Open biome classifier"
+          >
+            <Leaf className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setGroundwater({ open: true })}
+            title="Groundwater Explorer"
+            aria-label="Open groundwater explorer"
+          >
+            <DropletIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setSolarPower({ open: true })}
+            title="Solar Power Planner"
+            aria-label="Open solar power planner"
+          >
+            <SunMedium className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
             className="hidden sm:flex map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={() =>
               window.open('https://github.com/maplibre/maplibre-native', '_blank')
@@ -2438,6 +2534,30 @@ export default function Home() {
 
       {/* Wind Farm Optimizer */}
       <WindFarmOptimizer />
+
+      {/* Desertification Monitor */}
+      <DesertificationMonitor />
+
+      {/* Mineral Exploration */}
+      <MineralExploration />
+
+      {/* Ocean Current Mapper */}
+      <OceanCurrentMapper />
+
+      {/* Permafrost Thaw Tracker */}
+      <PermafrostThawTracker />
+
+      {/* Lightning Strike Map */}
+      <LightningStrikeMap />
+
+      {/* Biome Classifier */}
+      <BiomeClassifier />
+
+      {/* Groundwater Explorer */}
+      <GroundwaterExplorer />
+
+      {/* Solar Power Planner */}
+      <SolarPowerPlanner />
 
       {/* Footer */}
       <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-2 sm:px-3 md:px-4 safe-area-bottom before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">
