@@ -1041,6 +1041,36 @@ interface MapState {
   removeMapOverlay: (id: string) => void
   overlayGalleryOpen: boolean
   setOverlayGalleryOpen: (open: boolean) => void
+
+  // Location Visit Timeline
+  timelineEvents: TimelineEvent[]
+  addTimelineEvent: (event: Omit<TimelineEvent, 'id'>) => void
+  visitTimelineOpen: boolean
+  setVisitTimelineOpen: (open: boolean) => void
+
+  // Weather Comparison
+  weatherCompareLocations: WeatherComparisonLocation[]
+  addWeatherCompareLocation: (location: WeatherComparisonLocation) => void
+  removeWeatherCompareLocation: (locationId: string) => void
+  clearWeatherCompareLocations: () => void
+  weatherCompareOpen: boolean
+  setWeatherCompareOpen: (open: boolean) => void
+
+  // Measurement Suite
+  measurementSuite: MeasurementSuiteState
+  setMeasurementSuite: (state: Partial<MeasurementSuiteState>) => void
+  addMeasurementResult: (result: MeasurementResult) => void
+  clearMeasurementResults: () => void
+  measurementSuiteOpen: boolean
+  setMeasurementSuiteOpen: (open: boolean) => void
+
+  // Trail Finder
+  foundTrails: TrailInfo[]
+  setFoundTrails: (trails: TrailInfo[]) => void
+  trailFinderOpen: boolean
+  setTrailFinderOpen: (open: boolean) => void
+  selectedTrailId: string | null
+  setSelectedTrailId: (id: string | null) => void
 }
 
 // Geofence Alert History types
@@ -1050,6 +1080,25 @@ export interface GeofenceEvent {
   geofenceName: string
   type: 'enter' | 'exit'
   timestamp: number
+  latitude: number
+  longitude: number
+}
+
+// Location Visit Timeline types
+export interface TimelineEvent {
+  id: string
+  type: 'added' | 'visited' | 'edited' | 'deleted'
+  locationId: string
+  locationName: string
+  timestamp: number
+  latitude: number
+  longitude: number
+}
+
+// Weather Comparison types
+export interface WeatherComparisonLocation {
+  locationId: string
+  name: string
   latitude: number
   longitude: number
 }
@@ -1126,6 +1175,35 @@ export interface SpeedAlertEntry {
   speed: number
   limit: number
   zoneName?: string
+}
+
+// Measurement Suite types
+export interface MeasurementResult {
+  id: string
+  type: 'distance' | 'area' | 'angle' | 'circle' | 'perimeter'
+  value: number
+  unit: string
+  points: [number, number][]
+  timestamp: number
+}
+
+export interface MeasurementSuiteState {
+  mode: 'distance' | 'area' | 'angle' | 'circle' | 'perimeter'
+  unitSystem: 'metric' | 'imperial'
+  results: MeasurementResult[]
+  activeMode: boolean
+}
+
+// Trail Finder types
+export interface TrailInfo {
+  id: string
+  name: string
+  type: 'hiking' | 'cycling' | 'horse' | 'walking'
+  difficulty: 'easy' | 'moderate' | 'hard'
+  distance: number // meters
+  elevationGain: number // meters
+  surface: string
+  coordinates: [number, number][]
 }
 
 // Coordinate Grid Overlay types
@@ -2765,6 +2843,55 @@ export const useMapStore = create<MapState>()(
       removeMapOverlay: (id) => set((state) => ({ mapOverlays: state.mapOverlays.filter((o) => o.id !== id) })),
       overlayGalleryOpen: false,
       setOverlayGalleryOpen: (open) => set({ overlayGalleryOpen: open }),
+
+      // Location Visit Timeline defaults
+      timelineEvents: [],
+      addTimelineEvent: (event) => set((state) => ({
+        timelineEvents: [...state.timelineEvents, { ...event, id: `tl-${Date.now()}-${Math.random().toString(36).slice(2, 8)}` }],
+      })),
+      visitTimelineOpen: false,
+      setVisitTimelineOpen: (open) => set({ visitTimelineOpen: open }),
+
+      // Weather Comparison defaults
+      weatherCompareLocations: [],
+      addWeatherCompareLocation: (location) => set((state) => {
+        if (state.weatherCompareLocations.length >= 5) return state
+        if (state.weatherCompareLocations.some((l) => l.locationId === location.locationId)) return state
+        return { weatherCompareLocations: [...state.weatherCompareLocations, location] }
+      }),
+      removeWeatherCompareLocation: (locationId) => set((state) => ({
+        weatherCompareLocations: state.weatherCompareLocations.filter((l) => l.locationId !== locationId),
+      })),
+      clearWeatherCompareLocations: () => set({ weatherCompareLocations: [] }),
+      weatherCompareOpen: false,
+      setWeatherCompareOpen: (open) => set({ weatherCompareOpen: open }),
+
+      // Measurement Suite
+      measurementSuite: {
+        mode: 'distance',
+        unitSystem: 'metric',
+        results: [],
+        activeMode: false,
+      },
+      setMeasurementSuite: (updates) => set((state) => ({
+        measurementSuite: { ...state.measurementSuite, ...updates },
+      })),
+      addMeasurementResult: (result) => set((state) => ({
+        measurementSuite: { ...state.measurementSuite, results: [...state.measurementSuite.results, result] },
+      })),
+      clearMeasurementResults: () => set((state) => ({
+        measurementSuite: { ...state.measurementSuite, results: [] },
+      })),
+      measurementSuiteOpen: false,
+      setMeasurementSuiteOpen: (open) => set({ measurementSuiteOpen: open }),
+
+      // Trail Finder
+      foundTrails: [],
+      setFoundTrails: (trails) => set({ foundTrails: trails }),
+      trailFinderOpen: false,
+      setTrailFinderOpen: (open) => set({ trailFinderOpen: open }),
+      selectedTrailId: null,
+      setSelectedTrailId: (id) => set({ selectedTrailId: id }),
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -2845,6 +2972,9 @@ export const useMapStore = create<MapState>()(
         geofenceAlertsEnabled: state.geofenceAlertsEnabled,
         coordinateGrid: state.coordinateGrid,
         mapOverlays: state.mapOverlays,
+        timelineEvents: state.timelineEvents,
+        weatherCompareLocations: state.weatherCompareLocations,
+        measurementSuite: state.measurementSuite,
       }),
     }
   )

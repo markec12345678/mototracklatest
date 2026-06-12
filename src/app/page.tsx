@@ -76,6 +76,10 @@ import { CoordinateGridOverlay } from '@/components/map/CoordinateGridOverlay'
 import { MapOverlayGallery } from '@/components/map/MapOverlayGallery'
 import { AdvancedMarkerManager } from '@/components/map/AdvancedMarkerManager'
 import { GeofenceAlertHistory } from '@/components/map/GeofenceAlertHistory'
+import { LocationVisitTimeline } from '@/components/map/LocationVisitTimeline'
+import { WeatherComparison } from '@/components/map/WeatherComparison'
+import { MeasurementSuite } from '@/components/map/MeasurementSuite'
+import { TrailFinder } from '@/components/map/TrailFinder'
 import dynamic from 'next/dynamic'
 
 const GPSSimulator = dynamic(() => import('@/components/map/GPSSimulator').then((m) => m.GPSSimulator), { ssr: false })
@@ -130,6 +134,10 @@ import {
   BellRing,
   Grid3x3,
   MapPinned,
+  Calendar,
+  Thermometer,
+  Triangle,
+  TreePine,
 } from 'lucide-react'
 
 export default function Home() {
@@ -1064,6 +1072,26 @@ export default function Home() {
           <Button
             variant="outline"
             size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setVisitTimelineOpen(true)}
+            title="Location Visit Timeline"
+            aria-label="Open location visit timeline"
+          >
+            <Calendar className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setWeatherCompareOpen(true)}
+            title="Weather Comparison"
+            aria-label="Open weather comparison"
+          >
+            <Thermometer className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
             className="hidden sm:flex map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={() =>
               window.open('https://github.com/maplibre/maplibre-native', '_blank')
@@ -1118,6 +1146,55 @@ export default function Home() {
               </TooltipTrigger>
               <TooltipContent side="right" className="text-xs">
                 GPS Track Recording
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+        {/* Measurement Suite & Trail Finder buttons */}
+        <div className="mt-2 flex flex-col items-center gap-2">
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    useMapStore((s) => s.measurementSuiteOpen)
+                      ? 'bg-amber-500 text-white shadow-md shadow-amber-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setMeasurementSuiteOpen(true)}
+                  aria-label="Measurement Suite"
+                >
+                  <Triangle className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Measurement Suite
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    useMapStore((s) => s.trailFinderOpen)
+                      ? 'bg-emerald-500 text-white shadow-md shadow-emerald-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setTrailFinderOpen(true)}
+                  aria-label="Trail Finder"
+                >
+                  <TreePine className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Trail Finder
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -1507,6 +1584,12 @@ export default function Home() {
       {/* Map Overlay Gallery */}
       <MapOverlayGallery />
 
+      {/* Location Visit Timeline */}
+      <LocationVisitTimeline />
+
+      {/* Weather Comparison */}
+      <WeatherComparison />
+
       {/* Geofence Dialog */}
       <GeofenceDialog
         open={geofenceDialogOpen}
@@ -1517,6 +1600,12 @@ export default function Home() {
 
       {/* Distance Matrix Dialog */}
       <DistanceMatrix open={distanceMatrixOpen} onOpenChange={setDistanceMatrixOpen} />
+
+      {/* Measurement Suite Dialog */}
+      <MeasurementSuite />
+
+      {/* Trail Finder Dialog */}
+      <TrailFinder />
 
       {/* Style Gallery Dialog */}
       <StyleGallery open={styleGalleryOpen} onOpenChange={setStyleGalleryOpen} />
