@@ -1742,6 +1742,190 @@ export interface SolarSite {
   area: number
 }
 
+export interface VolcanicAshState {
+  eruptions: VolcanicEruption[]
+  activeEruptionId: string | null
+  showAshClouds: boolean
+  showNoFlyZones: boolean
+  showDispersionModel: boolean
+  showHealthAdvisory: boolean
+  open: boolean
+  alertLevel: 'normal' | 'advisory' | 'watch' | 'warning'
+  dispersionModel: 'vaac' | 'hysplit' | 'fall3d'
+}
+
+export interface VolcanicEruption {
+  id: string
+  volcanoName: string
+  latitude: number
+  longitude: number
+  ashHeight: number
+  vei: number
+  startTime: string
+  status: 'ongoing' | 'declining' | 'ended'
+}
+
+export interface CoastalErosionState {
+  segments: CoastalSegment[]
+  activeSegmentId: string | null
+  showErosionZones: boolean
+  showShorelineChange: boolean
+  showSeaLevelRise: boolean
+  showProtection: boolean
+  open: boolean
+  timeHorizon: 'current' | '2050' | '2100'
+  scenario: 'rcp26' | 'rcp45' | 'rcp85'
+}
+
+export interface CoastalSegment {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  erosionRate: number
+  seaLevelEffect: number
+  vulnerability: 'very_low' | 'low' | 'moderate' | 'high' | 'very_high'
+  protectionType: string
+}
+
+export interface CarbonFootprintState {
+  sources: CarbonSource[]
+  activeSourceId: string | null
+  showEmissions: boolean
+  showHeatmap: boolean
+  showOffsetProjects: boolean
+  showTrends: boolean
+  open: boolean
+  gasType: 'co2' | 'methane' | 'n2o' | 'all'
+  sector: 'all' | 'energy' | 'transport' | 'industry' | 'agriculture'
+}
+
+export interface CarbonSource {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  emissions: number
+  sector: string
+  trend: 'increasing' | 'stable' | 'decreasing'
+  offsetAvailable: boolean
+}
+
+export interface WildlifeMigrationState {
+  routes: MigrationRoute[]
+  activeRouteId: string | null
+  showRoutes: boolean
+  showCorridors: boolean
+  showStopPoints: boolean
+  showBarriers: boolean
+  open: boolean
+  season: 'spring' | 'summer' | 'autumn' | 'winter'
+  species: 'all' | 'birds' | 'mammals' | 'fish' | 'insects'
+}
+
+export interface MigrationRoute {
+  id: string
+  species: string
+  name: string
+  coordinates: [number, number][]
+  distance: number
+  duration: number
+  status: 'active' | 'delayed' | 'blocked'
+}
+
+export interface IceSheetState {
+  sheets: IceSheet[]
+  activeSheetId: string | null
+  showIceExtent: boolean
+  showFlowVelocity: boolean
+  showMeltRate: boolean
+  showCalvingEvents: boolean
+  open: boolean
+  yearFilter: number
+  scenario: 'historical' | 'rcp26' | 'rcp45' | 'rcp85'
+}
+
+export interface IceSheet {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  area: number
+  volume: number
+  meltRate: number
+  flowVelocity: number
+  calvingRate: number
+}
+
+export interface DroughtMonitorState {
+  regions: DroughtRegion[]
+  activeRegionId: string | null
+  showDroughtZones: boolean
+  showSoilMoisture: boolean
+  showPrecipitationDeficit: boolean
+  showCropImpact: boolean
+  open: boolean
+  index: 'spi' | 'spei' | 'pdsi' | 'eddi'
+  timeScale: '1m' | '3m' | '6m' | '12m' | '24m'
+}
+
+export interface DroughtRegion {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  droughtLevel: 'none' | 'd0' | 'd1' | 'd2' | 'd3' | 'd4'
+  soilMoisture: number
+  precipitationDeficit: number
+  cropImpact: number
+}
+
+export interface LandSubsidenceState {
+  zones: SubsidenceZone[]
+  activeZoneId: string | null
+  showSubsidence: boolean
+  showGroundwaterDecline: boolean
+  showInfrastructure: boolean
+  showMonitoring: boolean
+  open: boolean
+  causeFilter: 'all' | 'groundwater' | 'mining' | 'oil_gas' | 'natural'
+  rateFilter: 'all' | 'minor' | 'moderate' | 'severe' | 'extreme'
+}
+
+export interface SubsidenceZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  subsidenceRate: number
+  totalSubsidence: number
+  cause: 'groundwater' | 'mining' | 'oil_gas' | 'natural'
+  severity: 'minor' | 'moderate' | 'severe' | 'extreme'
+}
+
+export interface CoralBleachingState {
+  sites: CoralSite[]
+  activeSiteId: string | null
+  showBleachingAlert: boolean
+  showSSTAnomaly: boolean
+  showReefExtent: boolean
+  showRecovery: boolean
+  open: boolean
+  alertLevel: 'all' | 'watch' | 'warning' | 'alert_level_1' | 'alert_level_2'
+  region: 'all' | 'pacific' | 'atlantic' | 'indian' | 'red_sea'
+}
+
+export interface CoralSite {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  bleachingLevel: 'none' | 'mild' | 'moderate' | 'severe' | 'extreme'
+  sstAnomaly: number
+  reefArea: number
+  recoveryPotential: number
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -2583,6 +2767,38 @@ interface MapState {
   // Solar Power Planner
   solarPower: SolarPowerState
   setSolarPower: (state: Partial<SolarPowerState>) => void
+
+  // Volcanic Ash Tracker
+  volcanicAsh: VolcanicAshState
+  setVolcanicAsh: (state: Partial<VolcanicAshState>) => void
+
+  // Coastal Erosion Monitor
+  coastalErosion: CoastalErosionState
+  setCoastalErosion: (state: Partial<CoastalErosionState>) => void
+
+  // Carbon Footprint Mapper
+  carbonFootprint: CarbonFootprintState
+  setCarbonFootprint: (state: Partial<CarbonFootprintState>) => void
+
+  // Wildlife Migration Tracker
+  wildlifeMigration: WildlifeMigrationState
+  setWildlifeMigration: (state: Partial<WildlifeMigrationState>) => void
+
+  // Ice Sheet Monitor
+  iceSheet: IceSheetState
+  setIceSheet: (state: Partial<IceSheetState>) => void
+
+  // Drought Monitor
+  droughtMonitor: DroughtMonitorState
+  setDroughtMonitor: (state: Partial<DroughtMonitorState>) => void
+
+  // Land Subsidence Tracker
+  landSubsidence: LandSubsidenceState
+  setLandSubsidence: (state: Partial<LandSubsidenceState>) => void
+
+  // Coral Bleaching Alert
+  coralBleaching: CoralBleachingState
+  setCoralBleaching: (state: Partial<CoralBleachingState>) => void
 }
 
 // Coordinate Share Card types
@@ -5448,6 +5664,134 @@ export const useMapStore = create<MapState>()(
       setSolarPower: (updates) => set((state) => ({
         solarPower: { ...state.solarPower, ...updates },
       })),
+
+      // Volcanic Ash Tracker defaults
+      volcanicAsh: {
+        eruptions: [],
+        activeEruptionId: null,
+        showAshClouds: true,
+        showNoFlyZones: false,
+        showDispersionModel: false,
+        showHealthAdvisory: false,
+        open: false,
+        alertLevel: 'normal',
+        dispersionModel: 'vaac',
+      },
+      setVolcanicAsh: (updates) => set((state) => ({
+        volcanicAsh: { ...state.volcanicAsh, ...updates },
+      })),
+
+      // Coastal Erosion Monitor defaults
+      coastalErosion: {
+        segments: [],
+        activeSegmentId: null,
+        showErosionZones: true,
+        showShorelineChange: false,
+        showSeaLevelRise: false,
+        showProtection: false,
+        open: false,
+        timeHorizon: 'current',
+        scenario: 'rcp45',
+      },
+      setCoastalErosion: (updates) => set((state) => ({
+        coastalErosion: { ...state.coastalErosion, ...updates },
+      })),
+
+      // Carbon Footprint Mapper defaults
+      carbonFootprint: {
+        sources: [],
+        activeSourceId: null,
+        showEmissions: true,
+        showHeatmap: false,
+        showOffsetProjects: false,
+        showTrends: false,
+        open: false,
+        gasType: 'all',
+        sector: 'all',
+      },
+      setCarbonFootprint: (updates) => set((state) => ({
+        carbonFootprint: { ...state.carbonFootprint, ...updates },
+      })),
+
+      // Wildlife Migration Tracker defaults
+      wildlifeMigration: {
+        routes: [],
+        activeRouteId: null,
+        showRoutes: true,
+        showCorridors: false,
+        showStopPoints: false,
+        showBarriers: false,
+        open: false,
+        season: 'spring',
+        species: 'all',
+      },
+      setWildlifeMigration: (updates) => set((state) => ({
+        wildlifeMigration: { ...state.wildlifeMigration, ...updates },
+      })),
+
+      // Ice Sheet Monitor defaults
+      iceSheet: {
+        sheets: [],
+        activeSheetId: null,
+        showIceExtent: true,
+        showFlowVelocity: false,
+        showMeltRate: false,
+        showCalvingEvents: false,
+        open: false,
+        yearFilter: 2024,
+        scenario: 'historical',
+      },
+      setIceSheet: (updates) => set((state) => ({
+        iceSheet: { ...state.iceSheet, ...updates },
+      })),
+
+      // Drought Monitor defaults
+      droughtMonitor: {
+        regions: [],
+        activeRegionId: null,
+        showDroughtZones: true,
+        showSoilMoisture: false,
+        showPrecipitationDeficit: false,
+        showCropImpact: false,
+        open: false,
+        index: 'pdsi',
+        timeScale: '6m',
+      },
+      setDroughtMonitor: (updates) => set((state) => ({
+        droughtMonitor: { ...state.droughtMonitor, ...updates },
+      })),
+
+      // Land Subsidence Tracker defaults
+      landSubsidence: {
+        zones: [],
+        activeZoneId: null,
+        showSubsidence: true,
+        showGroundwaterDecline: false,
+        showInfrastructure: false,
+        showMonitoring: false,
+        open: false,
+        causeFilter: 'all',
+        rateFilter: 'all',
+      },
+      setLandSubsidence: (updates) => set((state) => ({
+        landSubsidence: { ...state.landSubsidence, ...updates },
+      })),
+
+      // Coral Bleaching Alert defaults
+      coralBleaching: {
+        sites: [],
+        activeSiteId: null,
+        showBleachingAlert: true,
+        showSSTAnomaly: false,
+        showReefExtent: false,
+        showRecovery: false,
+        open: false,
+        alertLevel: 'all',
+        region: 'all',
+      },
+      setCoralBleaching: (updates) => set((state) => ({
+        coralBleaching: { ...state.coralBleaching, ...updates },
+      })),
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -5587,6 +5931,14 @@ export const useMapStore = create<MapState>()(
         biome: state.biome,
         groundwater: state.groundwater,
         solarPower: state.solarPower,
+        volcanicAsh: state.volcanicAsh,
+        coastalErosion: state.coastalErosion,
+        carbonFootprint: state.carbonFootprint,
+        wildlifeMigration: state.wildlifeMigration,
+        iceSheet: state.iceSheet,
+        droughtMonitor: state.droughtMonitor,
+        landSubsidence: state.landSubsidence,
+        coralBleaching: state.coralBleaching,
       }),
     }
   )

@@ -136,6 +136,14 @@ import { LightningStrikeMap } from '@/components/map/LightningStrikeMap'
 import { BiomeClassifier } from '@/components/map/BiomeClassifier'
 import { GroundwaterExplorer } from '@/components/map/GroundwaterExplorer'
 import { SolarPowerPlanner } from '@/components/map/SolarPowerPlanner'
+import { VolcanicAshTracker } from '@/components/map/VolcanicAshTracker'
+import { CoastalErosionMonitor } from '@/components/map/CoastalErosionMonitor'
+import { CarbonFootprintMapper } from '@/components/map/CarbonFootprintMapper'
+import { WildlifeMigrationTracker } from '@/components/map/WildlifeMigrationTracker'
+import { IceSheetMonitor } from '@/components/map/IceSheetMonitor'
+import { DroughtMonitorPanel } from '@/components/map/DroughtMonitorPanel'
+import { LandSubsidenceTracker } from '@/components/map/LandSubsidenceTracker'
+import { CoralBleachingAlert } from '@/components/map/CoralBleachingAlert'
 import dynamic from 'next/dynamic'
 
 const GPSSimulator = dynamic(() => import('@/components/map/GPSSimulator').then((m) => m.GPSSimulator), { ssr: false })
@@ -185,7 +193,6 @@ import {
   Play,
   Boxes,
   BookOpen,
-  MountainSnow,
   Database,
   BellRing,
   Grid3x3,
@@ -247,6 +254,14 @@ import {
   Leaf,
   Droplet as DropletIcon,
   SunMedium,
+  CloudHail,
+  Waves as WavesIcon,
+  CloudCog as CloudSmoke,
+  Bird as BirdIcon,
+  MountainSnow,
+  ThermometerSun,
+  ArrowDownFromLine,
+  Shell,
 } from 'lucide-react'
 
 export default function Home() {
@@ -1691,6 +1706,86 @@ export default function Home() {
           <Button
             variant="outline"
             size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setVolcanicAsh({ open: true })}
+            title="Volcanic Ash Tracker"
+            aria-label="Open volcanic ash tracker"
+          >
+            <CloudHail className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setCoastalErosion({ open: true })}
+            title="Coastal Erosion Monitor"
+            aria-label="Open coastal erosion monitor"
+          >
+            <WavesIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setCarbonFootprint({ open: true })}
+            title="Carbon Footprint Mapper"
+            aria-label="Open carbon footprint mapper"
+          >
+            <CloudSmoke className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setWildlifeMigration({ open: true })}
+            title="Wildlife Migration Tracker"
+            aria-label="Open wildlife migration tracker"
+          >
+            <BirdIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setIceSheet({ open: true })}
+            title="Ice Sheet Monitor"
+            aria-label="Open ice sheet monitor"
+          >
+            <MountainSnow className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setDroughtMonitor({ open: true })}
+            title="Drought Monitor"
+            aria-label="Open drought monitor"
+          >
+            <ThermometerSun className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setLandSubsidence({ open: true })}
+            title="Land Subsidence Tracker"
+            aria-label="Open land subsidence tracker"
+          >
+            <ArrowDownFromLine className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setCoralBleaching({ open: true })}
+            title="Coral Bleaching Alert"
+            aria-label="Open coral bleaching alert"
+          >
+            <Shell className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
             className="hidden sm:flex map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={() =>
               window.open('https://github.com/maplibre/maplibre-native', '_blank')
@@ -2558,6 +2653,30 @@ export default function Home() {
 
       {/* Solar Power Planner */}
       <SolarPowerPlanner />
+
+      {/* Volcanic Ash Tracker */}
+      <VolcanicAshTracker />
+
+      {/* Coastal Erosion Monitor */}
+      <CoastalErosionMonitor />
+
+      {/* Carbon Footprint Mapper */}
+      <CarbonFootprintMapper />
+
+      {/* Wildlife Migration Tracker */}
+      <WildlifeMigrationTracker />
+
+      {/* Ice Sheet Monitor */}
+      <IceSheetMonitor />
+
+      {/* Drought Monitor Panel */}
+      <DroughtMonitorPanel />
+
+      {/* Land Subsidence Tracker */}
+      <LandSubsidenceTracker />
+
+      {/* Coral Bleaching Alert */}
+      <CoralBleachingAlert />
 
       {/* Footer */}
       <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-2 sm:px-3 md:px-4 safe-area-bottom before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">
