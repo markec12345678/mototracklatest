@@ -24,6 +24,7 @@ import { UndoRedoBar } from '@/components/map/UndoRedoBar'
 import { MapComparison } from '@/components/map/MapComparison'
 import { CoordinateInputDialog } from '@/components/map/CoordinateInputDialog'
 import { MapExportDialog } from '@/components/map/MapExportDialog'
+import { EmbedMapDialog } from '@/components/map/EmbedMapDialog'
 import { BookmarkManager } from '@/components/map/BookmarkManager'
 import { SunPositionOverlay } from '@/components/map/SunPositionOverlay'
 import { SunInfoPanel } from '@/components/map/SunInfoPanel'
@@ -57,6 +58,7 @@ import { ImageOverlayManager } from '@/components/map/ImageOverlayManager'
 import { MapTimeline } from '@/components/map/MapTimeline'
 import { MapAnalyticsDashboard } from '@/components/map/MapAnalyticsDashboard'
 import { AirQualityPanel } from '@/components/map/AirQualityPanel'
+import { MapPrintDialog } from '@/components/map/MapPrintDialog'
 import dynamic from 'next/dynamic'
 
 const GPSSimulator = dynamic(() => import('@/components/map/GPSSimulator').then((m) => m.GPSSimulator), { ssr: false })
@@ -87,6 +89,7 @@ import {
   Minimize2,
   Keyboard,
   Share2,
+  Code2,
   Camera,
   GitCompare,
   Globe2,
@@ -96,6 +99,7 @@ import {
   Save,
   BarChart3,
   Wind,
+  Printer,
 } from 'lucide-react'
 
 export default function Home() {
@@ -117,6 +121,8 @@ export default function Home() {
   const [exportDialogOpen, setExportDialogOpen] = useState(false)
   const [bookmarkManagerOpen, setBookmarkManagerOpen] = useState(false)
   const [shareDialogOpen, setShareDialogOpen] = useState(false)
+  const embedDialogOpen = useMapStore((s) => s.embedDialogOpen)
+  const setEmbedDialogOpen = useMapStore((s) => s.setEmbedDialogOpen)
   const [geofenceDialogOpen, setGeofenceDialogOpen] = useState(false)
   const [aiSuggestionsOpen, setAiSuggestionsOpen] = useState(false)
   const [distanceMatrixOpen, setDistanceMatrixOpen] = useState(false)
@@ -819,11 +825,31 @@ export default function Home() {
             variant="outline"
             size="icon"
             className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setPrintDialogOpen(true)}
+            title="Print Map"
+            aria-label="Print map"
+          >
+            <Printer className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={handleShare}
             title="Share Map View"
             aria-label="Share map view"
           >
             <Share2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => setEmbedDialogOpen(true)}
+            title="Embed Map"
+            aria-label="Generate embed code"
+          >
+            <Code2 className="h-4 w-4" />
           </Button>
           <VoiceNavigationToggle />
           <CollaborationPanel />
@@ -1240,6 +1266,9 @@ export default function Home() {
       {/* Map Export Dialog */}
       <MapExportDialog open={exportDialogOpen} onOpenChange={setExportDialogOpen} />
 
+      {/* Map Print Dialog */}
+      <MapPrintDialog />
+
       {/* Bookmark Manager Dialog */}
       <BookmarkManager open={bookmarkManagerOpen} onOpenChange={setBookmarkManagerOpen} />
 
@@ -1248,6 +1277,9 @@ export default function Home() {
 
       {/* Share Dialog */}
       <ShareDialog open={shareDialogOpen} onOpenChange={setShareDialogOpen} />
+
+      {/* Embed Map Dialog */}
+      <EmbedMapDialog open={embedDialogOpen} onOpenChange={setEmbedDialogOpen} />
 
       {/* Geofence Dialog */}
       <GeofenceDialog

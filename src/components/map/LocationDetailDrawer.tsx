@@ -33,6 +33,7 @@ import {
   Compass,
 } from 'lucide-react'
 import { type SavedLocation, useMapStore } from '@/lib/map-store'
+import { LocationPhotoGallery } from '@/components/map/LocationPhotoGallery'
 import { toast } from 'sonner'
 
 const categories = [
@@ -399,6 +400,9 @@ export function LocationDetailDrawer({
               </div>
             </div>
           </div>
+
+          {/* Photos */}
+          <LocationPhotoGallery locationId={location.id} photos={location.photos || []} />
 
           {/* Metadata */}
           <div className="space-y-2">

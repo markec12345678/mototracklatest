@@ -13,6 +13,7 @@ export interface SavedLocation {
   icon: string
   createdAt: string
   updatedAt: string
+  photos?: string[]
 }
 
 export interface MapMarker {
@@ -801,6 +802,13 @@ interface MapState {
   aqiPanelOpen: boolean
   setAqiPanelOpen: (open: boolean) => void
 
+  // Print dialog
+  printDialogOpen: boolean
+  setPrintDialogOpen: (open: boolean) => void
+
+  // Location photos
+  updateLocationPhotos: (locationId: string, photos: string[]) => void
+
   // Tool usage history
   toolUsageHistory: { tool: string; timestamp: number }[]
   addToolUsage: (tool: string) => void
@@ -841,6 +849,16 @@ interface MapState {
   batchDeleteMarkers: () => void
   batchChangeCategory: (category: string, color: string) => void
   batchExportGeoJSON: () => string
+
+  // Embed Map Dialog
+  embedDialogOpen: boolean
+  setEmbedDialogOpen: (open: boolean) => void
+
+  // GeoJSON Editor
+  geoJsonEditorOpen: boolean
+  setGeoJsonEditorOpen: (open: boolean) => void
+  customGeoJson: string | null
+  setCustomGeoJson: (geojson: string | null) => void
 }
 
 export const useMapStore = create<MapState>()(
@@ -1006,6 +1024,9 @@ export const useMapStore = create<MapState>()(
 
       // AQI panel defaults
       aqiPanelOpen: false,
+
+      // Print dialog defaults
+      printDialogOpen: false,
 
       // Tool usage history defaults
       toolUsageHistory: [],
@@ -1962,6 +1983,16 @@ export const useMapStore = create<MapState>()(
       // AQI panel actions
       setAqiPanelOpen: (aqiPanelOpen) => set({ aqiPanelOpen }),
 
+      // Print dialog actions
+      setPrintDialogOpen: (printDialogOpen) => set({ printDialogOpen }),
+
+      // Location photos actions
+      updateLocationPhotos: (locationId, photos) => set((state) => ({
+        savedLocations: state.savedLocations.map((loc) =>
+          loc.id === locationId ? { ...loc, photos, updatedAt: new Date().toISOString() } : loc
+        ),
+      })),
+
       // Tool usage history actions
       addToolUsage: (tool) => set((state) => ({
         toolUsageHistory: [...state.toolUsageHistory, { tool, timestamp: Date.now() }].slice(-200),
@@ -2215,6 +2246,16 @@ export const useMapStore = create<MapState>()(
         }
         return JSON.stringify(geojson, null, 2)
       },
+
+      // Embed Map Dialog
+      embedDialogOpen: false,
+      setEmbedDialogOpen: (open) => set({ embedDialogOpen: open }),
+
+      // GeoJSON Editor
+      geoJsonEditorOpen: false,
+      setGeoJsonEditorOpen: (open) => set({ geoJsonEditorOpen: open }),
+      customGeoJson: null,
+      setCustomGeoJson: (geojson) => set({ customGeoJson: geojson }),
     }),
     {
       name: 'maplibre-explorer-prefs',

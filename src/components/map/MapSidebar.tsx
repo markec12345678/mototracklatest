@@ -101,6 +101,7 @@ import dynamic from 'next/dynamic'
 
 const MapNotes = dynamic(() => import('@/components/map/MapNotes').then((m) => m.MapNotes), { ssr: false })
 const BatchOperationsSidebar = dynamic(() => import('@/components/map/BatchOperations').then((m) => m.BatchOperations), { ssr: false })
+const GeoJSONEditorDialog = dynamic(() => import('@/components/map/GeoJSONEditor').then((m) => m.GeoJSONEditor), { ssr: false })
 
 // SectionHeader component for collapsible sidebar sections
 function SectionHeader({ title, sectionId, icon, count }: {
@@ -2206,6 +2207,41 @@ function ToolsTab({
             <BatchOperationsSidebar />
           </CollapsibleContent>
         </Collapsible>
+
+        <Separator />
+
+        {/* GeoJSON Editor - Collapsible */}
+        <Collapsible
+          open={!useMapStore.getState().collapsedSections['section-tools-geojson']}
+          onOpenChange={() => useMapStore.getState().toggleSection('section-tools-geojson')}
+        >
+          <SectionHeader
+            title="GeoJSON Editor"
+            sectionId="section-tools-geojson"
+            icon={<FileUp className="h-3.5 w-3.5 text-muted-foreground" />}
+          />
+          <CollapsibleContent>
+            <div className="space-y-2 py-1">
+              <p className="text-xs text-muted-foreground px-1">
+                Import, edit and visualize GeoJSON data on the map.
+              </p>
+              <Button
+                size="sm"
+                className="w-full h-8 text-xs bg-teal-600 hover:bg-teal-700 text-white"
+                onClick={() => useMapStore.getState().setGeoJsonEditorOpen(true)}
+              >
+                <FileUp className="h-3.5 w-3.5 mr-1.5" />
+                Open GeoJSON Editor
+              </Button>
+            </div>
+          </CollapsibleContent>
+        </Collapsible>
+
+        {/* GeoJSON Editor Dialog */}
+        <GeoJSONEditorDialog
+          open={useMapStore((s) => s.geoJsonEditorOpen)}
+          onOpenChange={useMapStore((s) => s.setGeoJsonEditorOpen)}
+        />
 
         <Separator />
 
