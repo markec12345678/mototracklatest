@@ -59,6 +59,9 @@ import { MapTimeline } from '@/components/map/MapTimeline'
 import { MapAnalyticsDashboard } from '@/components/map/MapAnalyticsDashboard'
 import { AirQualityPanel } from '@/components/map/AirQualityPanel'
 import { MapPrintDialog } from '@/components/map/MapPrintDialog'
+import { MarkerCategoriesManager } from '@/components/map/MarkerCategoriesManager'
+import { WaypointOptimizer } from '@/components/map/WaypointOptimizer'
+import { StylesMixer } from '@/components/map/StylesMixer'
 import dynamic from 'next/dynamic'
 
 const GPSSimulator = dynamic(() => import('@/components/map/GPSSimulator').then((m) => m.GPSSimulator), { ssr: false })
@@ -100,6 +103,8 @@ import {
   BarChart3,
   Wind,
   Printer,
+  Tag,
+  Palette,
 } from 'lucide-react'
 
 export default function Home() {
@@ -123,6 +128,12 @@ export default function Home() {
   const [shareDialogOpen, setShareDialogOpen] = useState(false)
   const embedDialogOpen = useMapStore((s) => s.embedDialogOpen)
   const setEmbedDialogOpen = useMapStore((s) => s.setEmbedDialogOpen)
+  const markerCategoriesOpen = useMapStore((s) => s.markerCategoriesOpen)
+  const setMarkerCategoriesOpen = useMapStore((s) => s.setMarkerCategoriesOpen)
+  const waypointOptimizerOpen = useMapStore((s) => s.waypointOptimizerOpen)
+  const setWaypointOptimizerOpen = useMapStore((s) => s.setWaypointOptimizerOpen)
+  const stylesMixerOpen = useMapStore((s) => s.stylesMixerOpen)
+  const setStylesMixerOpen = useMapStore((s) => s.setStylesMixerOpen)
   const [geofenceDialogOpen, setGeofenceDialogOpen] = useState(false)
   const [aiSuggestionsOpen, setAiSuggestionsOpen] = useState(false)
   const [distanceMatrixOpen, setDistanceMatrixOpen] = useState(false)
@@ -886,6 +897,26 @@ export default function Home() {
           <Button
             variant="outline"
             size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => setMarkerCategoriesOpen(true)}
+            title="Marker Categories"
+            aria-label="Manage marker categories"
+          >
+            <Tag className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => setStylesMixerOpen(true)}
+            title="Style Mixer"
+            aria-label="Open style mixer"
+          >
+            <Palette className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
             className="hidden sm:flex map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={() =>
               window.open('https://github.com/maplibre/maplibre-native', '_blank')
@@ -1280,6 +1311,15 @@ export default function Home() {
 
       {/* Embed Map Dialog */}
       <EmbedMapDialog open={embedDialogOpen} onOpenChange={setEmbedDialogOpen} />
+
+      {/* Marker Categories Manager */}
+      <MarkerCategoriesManager open={markerCategoriesOpen} onOpenChange={setMarkerCategoriesOpen} />
+
+      {/* Waypoint Optimizer */}
+      <WaypointOptimizer open={waypointOptimizerOpen} onOpenChange={setWaypointOptimizerOpen} />
+
+      {/* Styles Mixer */}
+      <StylesMixer open={stylesMixerOpen} onOpenChange={setStylesMixerOpen} />
 
       {/* Geofence Dialog */}
       <GeofenceDialog

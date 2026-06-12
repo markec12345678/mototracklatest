@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { MapPin, Navigation, Ruler, Crosshair, Pencil, Maximize2, Type, Building2, Sparkles, Volume2, Users, Eye, Clock, Route, StickyNote, CheckSquare, BarChart3, Server } from 'lucide-react'
+import { MapPin, Navigation, Ruler, Crosshair, Pencil, Maximize2, Type, Building2, Sparkles, Volume2, Users, Eye, Clock, Route, StickyNote, CheckSquare, BarChart3, Server, ArrowRightLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Separator } from '@/components/ui/separator'
@@ -443,6 +443,19 @@ export function MapToolbar({ aiSuggestionsOpen, setAiSuggestionsOpen }: { aiSugg
               }
             }}
             index={globalIndex + 10}
+          />
+          <ToolButton
+            tool={{
+              id: 'navigate' as any,
+              icon: <ArrowRightLeft className="h-4 w-4" />,
+              label: 'Optimize Route',
+              activeClass: 'bg-orange-600 text-white shadow-md shadow-orange-600/30',
+              shortcut: '',
+              description: 'Optimize waypoint order',
+            }}
+            isActive={useMapStore((s) => s.waypointOptimizerOpen)}
+            onClick={() => useMapStore.getState().setWaypointOptimizerOpen(true)}
+            index={globalIndex + 11}
           />
         </div>
       </div>

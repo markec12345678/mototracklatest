@@ -337,6 +337,25 @@ export interface BatchOperationState {
   selectedMarkerIds: string[]
 }
 
+// Marker Category types
+export interface MarkerCategory {
+  id: string
+  name: string
+  emoji: string
+  color: string
+  icon: string // lucide icon name
+  isDefault: boolean
+}
+
+// Map Styles Mixer types
+export interface StyleMixLayer {
+  id: string
+  sourceStyle: string // style ID to take layer from
+  layerId: string // the specific layer ID from that style
+  opacity: number
+  visible: boolean
+}
+
 // POI Filter types
 export interface POIFilters {
   categories: string[]
@@ -859,6 +878,30 @@ interface MapState {
   setGeoJsonEditorOpen: (open: boolean) => void
   customGeoJson: string | null
   setCustomGeoJson: (geojson: string | null) => void
+
+  // Marker Categories
+  markerCategories: MarkerCategory[]
+  markerCategoriesOpen: boolean
+  setMarkerCategoriesOpen: (open: boolean) => void
+  addMarkerCategory: (category: Omit<MarkerCategory, 'id' | 'isDefault'>) => void
+  updateMarkerCategory: (id: string, updates: Partial<Omit<MarkerCategory, 'id' | 'isDefault'>>) => void
+  deleteMarkerCategory: (id: string) => void
+
+  // Map Styles Mixer
+  stylesMixerOpen: boolean
+  setStylesMixerOpen: (open: boolean) => void
+  styleMixLayers: StyleMixLayer[]
+  addStyleMixLayer: (layer: StyleMixLayer) => void
+  removeStyleMixLayer: (id: string) => void
+  toggleStyleMixLayerVisibility: (id: string) => void
+  updateStyleMixLayerOpacity: (id: string, opacity: number) => void
+  clearStyleMixLayers: () => void
+
+  // Route Waypoint Optimizer
+  waypointOptimizerOpen: boolean
+  setWaypointOptimizerOpen: (open: boolean) => void
+  optimizedWaypointOrder: number[] | null
+  setOptimizedWaypointOrder: (order: number[] | null) => void
 }
 
 export const useMapStore = create<MapState>()(
@@ -2256,6 +2299,53 @@ export const useMapStore = create<MapState>()(
       setGeoJsonEditorOpen: (open) => set({ geoJsonEditorOpen: open }),
       customGeoJson: null,
       setCustomGeoJson: (geojson) => set({ customGeoJson: geojson }),
+
+      // Marker Categories
+      markerCategories: [
+        { id: 'general', name: 'General', emoji: '📌', color: '#6b7280', icon: 'MapPin', isDefault: true },
+        { id: 'favorite', name: 'Favorite', emoji: '⭐', color: '#f59e0b', icon: 'Star', isDefault: true },
+        { id: 'restaurant', name: 'Restaurant', emoji: '🍽️', color: '#ef4444', icon: 'UtensilsCrossed', isDefault: true },
+        { id: 'hotel', name: 'Hotel', emoji: '🏨', color: '#3b82f6', icon: 'Hotel', isDefault: true },
+        { id: 'park', name: 'Park', emoji: '🌳', color: '#22c55e', icon: 'TreePine', isDefault: true },
+        { id: 'shop', name: 'Shop', emoji: '🛍️', color: '#a855f7', icon: 'ShoppingBag', isDefault: true },
+        { id: 'gas', name: 'Gas Station', emoji: '⛽', color: '#f97316', icon: 'Fuel', isDefault: true },
+        { id: 'hospital', name: 'Hospital', emoji: '🏥', color: '#dc2626', icon: 'Cross', isDefault: true },
+      ],
+      markerCategoriesOpen: false,
+      setMarkerCategoriesOpen: (open) => set({ markerCategoriesOpen: open }),
+      addMarkerCategory: (category) => set((state) => ({
+        markerCategories: [...state.markerCategories, { ...category, id: `cat-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`, isDefault: false }],
+      })),
+      updateMarkerCategory: (id, updates) => set((state) => ({
+        markerCategories: state.markerCategories.map((c) => c.id === id ? { ...c, ...updates } : c),
+      })),
+      deleteMarkerCategory: (id) => set((state) => ({
+        markerCategories: state.markerCategories.filter((c) => c.id !== id || c.isDefault),
+      })),
+
+      // Map Styles Mixer
+      stylesMixerOpen: false,
+      setStylesMixerOpen: (open) => set({ stylesMixerOpen: open }),
+      styleMixLayers: [],
+      addStyleMixLayer: (layer) => set((state) => ({
+        styleMixLayers: [...state.styleMixLayers, layer],
+      })),
+      removeStyleMixLayer: (id) => set((state) => ({
+        styleMixLayers: state.styleMixLayers.filter((l) => l.id !== id),
+      })),
+      toggleStyleMixLayerVisibility: (id) => set((state) => ({
+        styleMixLayers: state.styleMixLayers.map((l) => l.id === id ? { ...l, visible: !l.visible } : l),
+      })),
+      updateStyleMixLayerOpacity: (id, opacity) => set((state) => ({
+        styleMixLayers: state.styleMixLayers.map((l) => l.id === id ? { ...l, opacity } : l),
+      })),
+      clearStyleMixLayers: () => set({ styleMixLayers: [] }),
+
+      // Route Waypoint Optimizer
+      waypointOptimizerOpen: false,
+      setWaypointOptimizerOpen: (open) => set({ waypointOptimizerOpen: open }),
+      optimizedWaypointOrder: null,
+      setOptimizedWaypointOrder: (order) => set({ optimizedWaypointOrder: order }),
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -2323,6 +2413,8 @@ export const useMapStore = create<MapState>()(
         mapNotes: state.mapNotes,
         poiFilters: state.poiFilters,
         poiFilterPresets: state.poiFilterPresets,
+        markerCategories: state.markerCategories,
+        styleMixLayers: state.styleMixLayers,
       }),
     }
   )
