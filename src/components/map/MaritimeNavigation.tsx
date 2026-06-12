@@ -32,7 +32,7 @@ import {
   Compass,
   Waves,
   AlertTriangle,
-  Lighthouse,
+  Lamp,
   MapPin,
   Clock,
   Gauge,
@@ -46,7 +46,7 @@ import { toast } from 'sonner'
 const WAYPOINT_TYPES: { value: MaritimeWaypoint['type']; label: string; color: string; icon: typeof Anchor }[] = [
   { value: 'port', label: 'Port', color: 'bg-green-500', icon: Anchor },
   { value: 'anchorage', label: 'Anchorage', color: 'bg-blue-500', icon: Anchor },
-  { value: 'lighthouse', label: 'Lighthouse', color: 'bg-yellow-500', icon: Lighthouse },
+  { value: 'lighthouse', label: 'Lamp', color: 'bg-yellow-500', icon: Lamp },
   { value: 'buoy', label: 'Buoy', color: 'bg-orange-500', icon: MapPin },
   { value: 'danger', label: 'Danger', color: 'bg-red-500', icon: AlertTriangle },
   { value: 'waypoint', label: 'Waypoint', color: 'bg-cyan-500', icon: Navigation },
@@ -404,7 +404,7 @@ export function MaritimeNavigation() {
                     />
                   </div>
                   <div className="flex items-center justify-between">
-                    <Label className="text-[10px] flex items-center gap-1.5"><Lighthouse className="h-3 w-3" /> Navigation Aids</Label>
+                    <Label className="text-[10px] flex items-center gap-1.5"><Lamp className="h-3 w-3" /> Navigation Aids</Label>
                     <Switch
                       checked={maritimeNav.showNavigationAids}
                       onCheckedChange={(v) => setMaritimeNav({ showNavigationAids: v })}
