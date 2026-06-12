@@ -112,6 +112,14 @@ import { AtmosphericDashboard } from '@/components/map/AtmosphericDashboard'
 import { WildlifeTracker } from '@/components/map/WildlifeTracker'
 import { CulturalHeritageMap } from '@/components/map/CulturalHeritageMap'
 import { HydrologyAnalyzer } from '@/components/map/HydrologyAnalyzer'
+import { GlacierMonitor } from '@/components/map/GlacierMonitor'
+import { SeismicActivityMap } from '@/components/map/SeismicActivityMap'
+import { SoilAnalysisPanel } from '@/components/map/SoilAnalysisPanel'
+import { UrbanGrowthSimulator } from '@/components/map/UrbanGrowthSimulator'
+import { AirspaceNavigator } from '@/components/map/AirspaceNavigator'
+import { ReefHealthMonitor } from '@/components/map/ReefHealthMonitor'
+import { MagneticFieldMapper } from '@/components/map/MagneticFieldMapper'
+import { FloodRiskAnalyzer } from '@/components/map/FloodRiskAnalyzer'
 import dynamic from 'next/dynamic'
 
 const GPSSimulator = dynamic(() => import('@/components/map/GPSSimulator').then((m) => m.GPSSimulator), { ssr: false })
@@ -200,6 +208,14 @@ import {
   Bird,
   Landmark,
   Droplets,
+  Snowflake,
+  Activity as ActivityIcon,
+  Sprout,
+  Building2,
+  Plane,
+  Waves,
+  Magnet,
+  Droplet,
 } from 'lucide-react'
 
 export default function Home() {
@@ -1404,6 +1420,86 @@ export default function Home() {
           <Button
             variant="outline"
             size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setGlacierMonitor({ open: true })}
+            title="Glacier Monitor"
+            aria-label="Open glacier monitor"
+          >
+            <Snowflake className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setSeismicActivity({ open: true })}
+            title="Seismic Activity"
+            aria-label="Open seismic activity map"
+          >
+            <ActivityIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setSoilAnalysis({ open: true })}
+            title="Soil Analysis"
+            aria-label="Open soil analysis panel"
+          >
+            <Sprout className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setUrbanGrowth({ open: true })}
+            title="Urban Growth Simulator"
+            aria-label="Open urban growth simulator"
+          >
+            <Building2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setAirspaceNav({ open: true })}
+            title="Airspace Navigator"
+            aria-label="Open airspace navigator"
+          >
+            <Plane className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setReefHealth({ open: true })}
+            title="Reef Health Monitor"
+            aria-label="Open reef health monitor"
+          >
+            <Waves className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setMagneticField({ open: true })}
+            title="Magnetic Field Mapper"
+            aria-label="Open magnetic field mapper"
+          >
+            <Magnet className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setFloodRisk({ open: true })}
+            title="Flood Risk Analyzer"
+            aria-label="Open flood risk analyzer"
+          >
+            <Droplet className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
             className="hidden sm:flex map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={() =>
               window.open('https://github.com/maplibre/maplibre-native', '_blank')
@@ -2199,6 +2295,30 @@ export default function Home() {
 
       {/* Hydrology Analyzer */}
       <HydrologyAnalyzer />
+
+      {/* Glacier Monitor */}
+      <GlacierMonitor />
+
+      {/* Seismic Activity Map */}
+      <SeismicActivityMap />
+
+      {/* Soil Analysis Panel */}
+      <SoilAnalysisPanel />
+
+      {/* Urban Growth Simulator */}
+      <UrbanGrowthSimulator />
+
+      {/* Airspace Navigator */}
+      <AirspaceNavigator />
+
+      {/* Reef Health Monitor */}
+      <ReefHealthMonitor />
+
+      {/* Magnetic Field Mapper */}
+      <MagneticFieldMapper />
+
+      {/* Flood Risk Analyzer */}
+      <FloodRiskAnalyzer />
 
       {/* Footer */}
       <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-2 sm:px-3 md:px-4 safe-area-bottom before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">

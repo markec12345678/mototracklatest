@@ -1020,6 +1020,263 @@ export interface HydrologyState {
 }
 
 
+// Glacier Monitor types
+export interface GlacierData {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  area: number // km2
+  length: number // km
+  elevation: number // meters
+  massBalance: number // meters water equivalent per year
+  velocity: number // meters per year
+  retreatRate: number // meters per year
+  type: 'valley' | 'icecap' | 'piedmont' | 'cirque' | 'tidewater'
+  status: 'advancing' | 'stable' | 'retreating' | 'surging'
+  lastSurvey: string
+}
+
+export interface GlacierMonitorState {
+  glaciers: GlacierData[]
+  activeGlacierId: string | null
+  showGlaciers: boolean
+  showRetreatOverlay: boolean
+  showMassBalance: boolean
+  showVelocityVectors: boolean
+  filterType: string[]
+  filterStatus: string[]
+  open: boolean
+  timelineYear: number
+  comparisonMode: boolean
+}
+
+// Seismic Activity types
+export interface SeismicEvent {
+  id: string
+  latitude: number
+  longitude: number
+  magnitude: number
+  depth: number // km
+  time: string
+  location: string
+  type: 'earthquake' | 'explosion' | 'quarry' | 'volcanic'
+  felt: boolean
+  tsunami: boolean
+  significance: number // 0-1000
+}
+
+export interface SeismicActivityState {
+  events: SeismicEvent[]
+  activeEventId: string | null
+  showEvents: boolean
+  showShakeMap: boolean
+  showFaultLines: boolean
+  showPlateBoundaries: boolean
+  filterMinMagnitude: number
+  filterTimeRange: 'hour' | 'day' | 'week' | 'month' | 'year'
+  filterType: string[]
+  open: boolean
+  autoRefresh: boolean
+  lastFetchTime: number | null
+}
+
+// Soil Analysis types
+export interface SoilSample {
+  id: string
+  latitude: number
+  longitude: number
+  soilType: 'clay' | 'sand' | 'silt' | 'loam' | 'peat' | 'chalk' | 'gravel'
+  ph: number
+  moisture: number // percentage
+  organicMatter: number // percentage
+  nitrogen: number // mg/kg
+  phosphorus: number // mg/kg
+  potassium: number // mg/kg
+  erosionRisk: 'none' | 'low' | 'medium' | 'high' | 'severe'
+  agriculturalSuitability: 'excellent' | 'good' | 'moderate' | 'poor' | 'unsuitable'
+  depth: number // cm
+  color: string
+  lastTested: string
+}
+
+export interface SoilAnalysisState {
+  samples: SoilSample[]
+  activeSampleId: string | null
+  showSamples: boolean
+  showTypeOverlay: boolean
+  showMoistureOverlay: boolean
+  showPHOverlay: boolean
+  showErosionRisk: boolean
+  showAgricultureSuitability: boolean
+  open: boolean
+  analysisMode: 'type' | 'moisture' | 'ph' | 'nutrients' | 'erosion'
+}
+
+// Urban Growth types
+export interface UrbanArea {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  currentArea: number // km2
+  population: number
+  density: number // per km2
+  growthRate: number // percentage per year
+  yearEstablished: number
+  historicalBoundaries: Array<{ year: number; area: number; boundary: [number, number][] }>
+  landUseBreakdown: { residential: number; commercial: number; industrial: number; green: number; other: number }
+  prediction2030: number
+  prediction2050: number
+}
+
+export interface UrbanGrowthState {
+  areas: UrbanArea[]
+  activeAreaId: string | null
+  showAreas: boolean
+  showHistoricalBoundaries: boolean
+  showPredictions: boolean
+  showDensityHeatmap: boolean
+  showLandUse: boolean
+  timelineYear: number
+  open: boolean
+  comparisonMode: boolean
+  animationSpeed: number
+}
+
+// Airspace Navigation types
+export interface AirspaceZone {
+  id: string
+  name: string
+  type: 'classA' | 'classB' | 'classC' | 'classD' | 'classE' | 'classG' | 'restricted' | 'prohibited' | 'military' | 'tma' | 'ctr'
+  ceiling: number // feet
+  floor: number // feet
+  coordinates: [number, number][]
+  activeTimes: string
+  controllingAuthority: string
+  frequency: string | null
+}
+
+export interface AirportData {
+  id: string
+  icao: string
+  name: string
+  latitude: number
+  longitude: number
+  elevation: number
+  runways: Array<{ name: string; length: number; surface: string; heading: number }>
+  frequencies: Array<{ type: string; freq: string }>
+  type: 'international' | 'regional' | 'private' | 'military' | 'heliport'
+}
+
+export interface AirspaceNavState {
+  airspaces: AirspaceZone[]
+  airports: AirportData[]
+  activeAirspaceId: string | null
+  showAirspaces: boolean
+  showAirports: boolean
+  showFlightPaths: boolean
+  showSIDs: boolean // Standard Instrument Departures
+  showSTARs: boolean // Standard Terminal Arrival Routes
+  altitudeFilter: [number, number] // feet range
+  open: boolean
+  flightPlan: Array<{ lat: number; lng: number; alt: number; speed: number }> | null
+}
+
+// Reef Health Monitor types
+export interface ReefSite {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  healthIndex: number // 0-100
+  bleachingLevel: 'none' | 'low' | 'moderate' | 'severe' | 'extreme'
+  waterTemp: number // Celsius
+  salinity: number // PSU
+  turbidity: number // NTU
+  dissolvedOxygen: number // mg/L
+  coralCover: number // percentage
+  fishSpecies: number
+  lastSurvey: string
+  depth: number // meters
+  type: 'fringing' | 'barrier' | 'atoll' | 'patch' | 'deep'
+}
+
+export interface ReefHealthState {
+  sites: ReefSite[]
+  activeSiteId: string | null
+  showSites: boolean
+  showHealthOverlay: boolean
+  showBleachingAlert: boolean
+  showTemperature: boolean
+  showWaterQuality: boolean
+  filterType: string[]
+  filterBleaching: string[]
+  open: boolean
+  timelineDate: string
+}
+
+// Magnetic Field types
+export interface MagneticStation {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  declination: number // degrees
+  inclination: number // degrees
+  totalField: number // nanoTesla
+  horizontalField: number
+  verticalField: number
+  annualChange: number // arc-minutes per year
+  lastMeasurement: string
+}
+
+export interface MagneticFieldState {
+  stations: MagneticStation[]
+  activeStationId: string | null
+  showStations: boolean
+  showDeclinationLines: boolean
+  showInclinationMap: boolean
+  showFieldIntensity: boolean
+  showAnomalies: boolean
+  showGridLines: boolean
+  open: boolean
+  fieldComponent: 'declination' | 'inclination' | 'total' | 'horizontal' | 'vertical'
+  modelYear: number
+}
+
+// Flood Risk types
+export interface FloodZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  riskLevel: 'minimal' | 'low' | 'moderate' | 'high' | 'very_high'
+  floodDepth100yr: number // meters for 100-year flood
+  floodDepth500yr: number // meters for 500-year flood
+  area: number // km2
+  population: number
+  infrastructure: number // count of critical infrastructure
+  elevation: number // meters
+  drainageClass: 'excellent' | 'good' | 'moderate' | 'poor' | 'very_poor'
+  historicalFloods: Array<{ year: number; depth: number; duration: number }>
+  coordinates: [number, number][]
+}
+
+export interface FloodRiskState {
+  zones: FloodZone[]
+  activeZoneId: string | null
+  showZones: boolean
+  showRiskOverlay: boolean
+  showDepthOverlay: boolean
+  showDrainageMap: boolean
+  showHistoricalFloods: boolean
+  showEvacuationRoutes: boolean
+  open: boolean
+  scenarioYear: 100 | 500
+  animationPlaying: boolean
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -1765,6 +2022,38 @@ interface MapState {
   // Hydrology Analyzer
   hydrology: HydrologyState
   setHydrology: (state: Partial<HydrologyState>) => void
+
+  // Glacier Monitor
+  glacierMonitor: GlacierMonitorState
+  setGlacierMonitor: (state: Partial<GlacierMonitorState>) => void
+
+  // Seismic Activity
+  seismicActivity: SeismicActivityState
+  setSeismicActivity: (state: Partial<SeismicActivityState>) => void
+
+  // Soil Analysis
+  soilAnalysis: SoilAnalysisState
+  setSoilAnalysis: (state: Partial<SoilAnalysisState>) => void
+
+  // Urban Growth
+  urbanGrowth: UrbanGrowthState
+  setUrbanGrowth: (state: Partial<UrbanGrowthState>) => void
+
+  // Airspace Navigation
+  airspaceNav: AirspaceNavState
+  setAirspaceNav: (state: Partial<AirspaceNavState>) => void
+
+  // Reef Health Monitor
+  reefHealth: ReefHealthState
+  setReefHealth: (state: Partial<ReefHealthState>) => void
+
+  // Magnetic Field Mapper
+  magneticField: MagneticFieldState
+  setMagneticField: (state: Partial<MagneticFieldState>) => void
+
+  // Flood Risk Analyzer
+  floodRisk: FloodRiskState
+  setFloodRisk: (state: Partial<FloodRiskState>) => void
 }
 
 // Coordinate Share Card types
@@ -4211,6 +4500,150 @@ export const useMapStore = create<MapState>()(
       setHydrology: (updates) => set((state) => ({
         hydrology: { ...state.hydrology, ...updates },
       })),
+
+      // Glacier Monitor defaults
+      glacierMonitor: {
+        glaciers: [],
+        activeGlacierId: null,
+        showGlaciers: true,
+        showRetreatOverlay: false,
+        showMassBalance: false,
+        showVelocityVectors: false,
+        filterType: [],
+        filterStatus: [],
+        open: false,
+        timelineYear: new Date().getFullYear(),
+        comparisonMode: false,
+      },
+      setGlacierMonitor: (updates) => set((state) => ({
+        glacierMonitor: { ...state.glacierMonitor, ...updates },
+      })),
+
+      // Seismic Activity defaults
+      seismicActivity: {
+        events: [],
+        activeEventId: null,
+        showEvents: true,
+        showShakeMap: false,
+        showFaultLines: false,
+        showPlateBoundaries: false,
+        filterMinMagnitude: 2.5,
+        filterTimeRange: 'week',
+        filterType: [],
+        open: false,
+        autoRefresh: false,
+        lastFetchTime: null,
+      },
+      setSeismicActivity: (updates) => set((state) => ({
+        seismicActivity: { ...state.seismicActivity, ...updates },
+      })),
+
+      // Soil Analysis defaults
+      soilAnalysis: {
+        samples: [],
+        activeSampleId: null,
+        showSamples: true,
+        showTypeOverlay: false,
+        showMoistureOverlay: false,
+        showPHOverlay: false,
+        showErosionRisk: false,
+        showAgricultureSuitability: false,
+        open: false,
+        analysisMode: 'type',
+      },
+      setSoilAnalysis: (updates) => set((state) => ({
+        soilAnalysis: { ...state.soilAnalysis, ...updates },
+      })),
+
+      // Urban Growth defaults
+      urbanGrowth: {
+        areas: [],
+        activeAreaId: null,
+        showAreas: true,
+        showHistoricalBoundaries: true,
+        showPredictions: false,
+        showDensityHeatmap: false,
+        showLandUse: false,
+        timelineYear: new Date().getFullYear(),
+        open: false,
+        comparisonMode: false,
+        animationSpeed: 1,
+      },
+      setUrbanGrowth: (updates) => set((state) => ({
+        urbanGrowth: { ...state.urbanGrowth, ...updates },
+      })),
+
+      // Airspace Navigation defaults
+      airspaceNav: {
+        airspaces: [],
+        airports: [],
+        activeAirspaceId: null,
+        showAirspaces: true,
+        showAirports: true,
+        showFlightPaths: false,
+        showSIDs: false,
+        showSTARs: false,
+        altitudeFilter: [0, 60000],
+        open: false,
+        flightPlan: null,
+      },
+      setAirspaceNav: (updates) => set((state) => ({
+        airspaceNav: { ...state.airspaceNav, ...updates },
+      })),
+
+      // Reef Health Monitor defaults
+      reefHealth: {
+        sites: [],
+        activeSiteId: null,
+        showSites: true,
+        showHealthOverlay: false,
+        showBleachingAlert: false,
+        showTemperature: false,
+        showWaterQuality: false,
+        filterType: [],
+        filterBleaching: [],
+        open: false,
+        timelineDate: new Date().toISOString().split('T')[0],
+      },
+      setReefHealth: (updates) => set((state) => ({
+        reefHealth: { ...state.reefHealth, ...updates },
+      })),
+
+      // Magnetic Field Mapper defaults
+      magneticField: {
+        stations: [],
+        activeStationId: null,
+        showStations: true,
+        showDeclinationLines: true,
+        showInclinationMap: false,
+        showFieldIntensity: false,
+        showAnomalies: false,
+        showGridLines: false,
+        open: false,
+        fieldComponent: 'declination',
+        modelYear: new Date().getFullYear(),
+      },
+      setMagneticField: (updates) => set((state) => ({
+        magneticField: { ...state.magneticField, ...updates },
+      })),
+
+      // Flood Risk Analyzer defaults
+      floodRisk: {
+        zones: [],
+        activeZoneId: null,
+        showZones: true,
+        showRiskOverlay: false,
+        showDepthOverlay: false,
+        showDrainageMap: false,
+        showHistoricalFloods: false,
+        showEvacuationRoutes: false,
+        open: false,
+        scenarioYear: 100,
+        animationPlaying: false,
+      },
+      setFloodRisk: (updates) => set((state) => ({
+        floodRisk: { ...state.floodRisk, ...updates },
+      })),
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -4326,6 +4759,14 @@ export const useMapStore = create<MapState>()(
         wildlifeTracker: state.wildlifeTracker,
         culturalHeritage: state.culturalHeritage,
         hydrology: state.hydrology,
+        glacierMonitor: state.glacierMonitor,
+        seismicActivity: state.seismicActivity,
+        soilAnalysis: state.soilAnalysis,
+        urbanGrowth: state.urbanGrowth,
+        airspaceNav: state.airspaceNav,
+        reefHealth: state.reefHealth,
+        magneticField: state.magneticField,
+        floodRisk: state.floodRisk,
       }),
     }
   )
