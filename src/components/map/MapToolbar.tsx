@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { MapPin, Navigation, Ruler, Crosshair, Pencil, Maximize2, Type, Building2, Sparkles, Volume2, Users } from 'lucide-react'
+import { MapPin, Navigation, Ruler, Crosshair, Pencil, Maximize2, Type, Building2, Sparkles, Volume2, Users, Eye } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Separator } from '@/components/ui/separator'
@@ -118,6 +118,8 @@ export function MapToolbar({ aiSuggestionsOpen, setAiSuggestionsOpen }: { aiSugg
   const setVoiceNavigationEnabled = useMapStore((s) => s.setVoiceNavigationEnabled)
   const routeSteps = useMapStore((s) => s.routeSteps)
   const isCollaborating = useCollaborationStore((s) => s.isCollaborating)
+  const accessibilityPanelOpen = useMapStore((s) => s.accessibilityPanelOpen)
+  const setAccessibilityPanelOpen = useMapStore((s) => s.setAccessibilityPanelOpen)
   const { t } = useTranslation()
 
   const isDrawModeActive = drawingTool !== 'none'
@@ -316,6 +318,24 @@ export function MapToolbar({ aiSuggestionsOpen, setAiSuggestionsOpen }: { aiSugg
               <span className="absolute -top-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-500 border border-background" />
             )}
           </div>
+        </div>
+
+        {/* Accessibility */}
+        <Separator className="my-1 opacity-50" />
+        <div className="flex flex-col gap-1">
+          <ToolButton
+            tool={{
+              id: 'navigate' as any,
+              icon: <Eye className="h-4 w-4" />,
+              label: 'Accessibility',
+              activeClass: 'bg-rose-500 text-white shadow-md shadow-rose-500/30',
+              shortcut: 'Q',
+              description: 'Accessibility settings and visual adjustments',
+            }}
+            isActive={accessibilityPanelOpen}
+            onClick={() => setAccessibilityPanelOpen(!accessibilityPanelOpen)}
+            index={globalIndex + 4}
+          />
         </div>
       </div>
     </TooltipProvider>

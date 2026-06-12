@@ -600,6 +600,38 @@ interface MapState {
   removeGeofence: (id: string) => void
   updateGeofence: (id: string, updates: Partial<Geofence>) => void
   toggleGeofence: (id: string) => void
+
+  // Multi-route comparison
+  comparedRoutes: string[]
+  addComparedRoute: (routeId: string) => void
+  removeComparedRoute: (routeId: string) => void
+  clearComparedRoutes: () => void
+
+  // Accessibility settings
+  highContrastMode: boolean
+  largeTextMode: boolean
+  reducedMotionMode: boolean
+  screenReaderMode: boolean
+  colorBlindMode: boolean
+  setHighContrastMode: (enabled: boolean) => void
+  setLargeTextMode: (enabled: boolean) => void
+  setReducedMotionMode: (enabled: boolean) => void
+  setScreenReaderMode: (enabled: boolean) => void
+  setColorBlindMode: (enabled: boolean) => void
+
+  // Map theme customization
+  mapThemeOverrides: { water?: string; land?: string; roads?: string; buildings?: string; parks?: string; labels?: string }
+  setMapThemeOverrides: (overrides: { water?: string; land?: string; roads?: string; buildings?: string; parks?: string; labels?: string }) => void
+  mapThemePreset: string
+  setMapThemePreset: (preset: string) => void
+
+  // Accessibility panel visibility
+  accessibilityPanelOpen: boolean
+  setAccessibilityPanelOpen: (open: boolean) => void
+
+  // Terrain analysis panel visibility
+  terrainAnalysisRouteId: string | null
+  setTerrainAnalysisRouteId: (id: string | null) => void
 }
 
 export const useMapStore = create<MapState>()(
@@ -707,6 +739,24 @@ export const useMapStore = create<MapState>()(
 
       // Snapshot defaults
       snapshots: [],
+
+      // Multi-route comparison defaults
+      comparedRoutes: [],
+
+      // Accessibility defaults
+      highContrastMode: false,
+      largeTextMode: false,
+      reducedMotionMode: false,
+      screenReaderMode: false,
+      colorBlindMode: false,
+
+      // Map theme customization defaults
+      mapThemeOverrides: {},
+      mapThemePreset: 'standard',
+
+      // Panel visibility defaults
+      accessibilityPanelOpen: false,
+      terrainAnalysisRouteId: null,
 
       setCenter: (center) => set({ center }),
       setZoom: (zoom) => set({ zoom }),
@@ -1461,6 +1511,34 @@ export const useMapStore = create<MapState>()(
         ),
       })),
 
+      // Multi-route comparison actions
+      addComparedRoute: (routeId) => set((state) => {
+        if (state.comparedRoutes.includes(routeId)) return state
+        if (state.comparedRoutes.length >= 3) return state
+        return { comparedRoutes: [...state.comparedRoutes, routeId] }
+      }),
+
+      removeComparedRoute: (routeId) => set((state) => ({
+        comparedRoutes: state.comparedRoutes.filter((id) => id !== routeId),
+      })),
+
+      clearComparedRoutes: () => set({ comparedRoutes: [] }),
+
+      // Accessibility actions
+      setHighContrastMode: (enabled) => set({ highContrastMode: enabled }),
+      setLargeTextMode: (enabled) => set({ largeTextMode: enabled }),
+      setReducedMotionMode: (enabled) => set({ reducedMotionMode: enabled }),
+      setScreenReaderMode: (enabled) => set({ screenReaderMode: enabled }),
+      setColorBlindMode: (enabled) => set({ colorBlindMode: enabled }),
+
+      // Map theme customization actions
+      setMapThemeOverrides: (overrides) => set({ mapThemeOverrides: overrides }),
+      setMapThemePreset: (preset) => set({ mapThemePreset: preset }),
+
+      // Panel visibility actions
+      setAccessibilityPanelOpen: (open) => set({ accessibilityPanelOpen: open }),
+      setTerrainAnalysisRouteId: (id) => set({ terrainAnalysisRouteId: id }),
+
       // Language actions
       setLanguage: (language) => set({ language }),
 
@@ -1569,6 +1647,14 @@ export const useMapStore = create<MapState>()(
         language: state.language,
         appNotifications: state.appNotifications,
         snapshots: state.snapshots,
+        comparedRoutes: state.comparedRoutes,
+        highContrastMode: state.highContrastMode,
+        largeTextMode: state.largeTextMode,
+        reducedMotionMode: state.reducedMotionMode,
+        screenReaderMode: state.screenReaderMode,
+        colorBlindMode: state.colorBlindMode,
+        mapThemeOverrides: state.mapThemeOverrides,
+        mapThemePreset: state.mapThemePreset,
       }),
     }
   )

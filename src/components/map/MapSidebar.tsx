@@ -37,6 +37,9 @@ import {
   Pentagon,
   Type,
   Shield,
+  GitCompare,
+  Activity,
+  X,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -66,6 +69,7 @@ import { useTranslation } from '@/lib/translations'
 import { LocationDetailDrawer } from '@/components/map/LocationDetailDrawer'
 import { NearbyPanel } from '@/components/map/NearbyPanel'
 import { CustomTileSourceList } from '@/components/map/CustomTileSourceList'
+import { MapThemeCustomizer } from '@/components/map/MapThemeCustomizer'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ElevationProfile } from '@/components/map/ElevationProfile'
 import { GeofenceManager } from '@/components/map/GeofenceManager'
@@ -1219,6 +1223,12 @@ function LayersTab() {
 
         <Separator />
 
+        {/* Map Theme Customizer */}
+        <Separator />
+        <MapThemeCustomizer />
+
+        <Separator />
+
         {/* Custom Tile Sources */}
         <div>
           <h3 className="text-sm font-semibold flex items-center gap-2 mb-2">
@@ -2053,6 +2063,11 @@ function RoutesTab({ onGPXImportClick }: { onGPXImportClick: () => void }) {
   const osrmDuration = useMapStore((s) => s.osrmDuration)
   const elevationRouteId = useMapStore((s) => s.elevationRouteId)
   const setElevationRouteId = useMapStore((s) => s.setElevationRouteId)
+  const comparedRoutes = useMapStore((s) => s.comparedRoutes)
+  const addComparedRoute = useMapStore((s) => s.addComparedRoute)
+  const removeComparedRoute = useMapStore((s) => s.removeComparedRoute)
+  const clearComparedRoutes = useMapStore((s) => s.clearComparedRoutes)
+  const setTerrainAnalysisRouteId = useMapStore((s) => s.setTerrainAnalysisRouteId)
 
   const [routeName, setRouteName] = useState('')
   const [savedRouteIds, setSavedRouteIds] = useState<Set<string>>(new Set())
@@ -2465,6 +2480,40 @@ function RoutesTab({ onGPXImportClick }: { onGPXImportClick: () => void }) {
                     <Mountain className="h-3.5 w-3.5" />
                   </button>
                   <button
+                    className={cn(
+                      'p-1 transition-colors',
+                      comparedRoutes.includes(route.id)
+                        ? 'text-primary hover:text-primary/80'
+                        : 'text-muted-foreground hover:text-primary'
+                    )}
+                    onClick={() => {
+                      if (comparedRoutes.includes(route.id)) {
+                        removeComparedRoute(route.id)
+                      } else {
+                        if (comparedRoutes.length >= 3) {
+                          toast.warning('Maximum 3 routes can be compared at once')
+                          return
+                        }
+                        addComparedRoute(route.id)
+                      }
+                    }}
+                    aria-label={`Compare route ${route.name}`}
+                    title={comparedRoutes.includes(route.id) ? 'Remove from comparison' : 'Add to comparison'}
+                  >
+                    <GitCompare className="h-3.5 w-3.5" />
+                  </button>
+                  <button
+                    className={cn(
+                      'p-1 transition-colors',
+                      'text-muted-foreground hover:text-primary'
+                    )}
+                    onClick={() => setTerrainAnalysisRouteId(route.id)}
+                    aria-label={`Terrain analysis for ${route.name}`}
+                    title="Terrain analysis"
+                  >
+                    <Activity className="h-3.5 w-3.5" />
+                  </button>
+                  <button
                     className="p-1 hover:text-primary transition-colors text-muted-foreground"
                     onClick={() => exportGPX('route', route as unknown as Record<string, unknown>)}
                     aria-label={`Export route ${route.name} as GPX`}
@@ -2488,6 +2537,50 @@ function RoutesTab({ onGPXImportClick }: { onGPXImportClick: () => void }) {
                 </div>
               ))}
             </div>
+          </div>
+        )}
+
+        {/* Route comparison indicator */}
+        {comparedRoutes.length > 0 && (
+          <div className="rounded-xl border border-primary/20 bg-primary/5 p-2.5 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-medium flex items-center gap-1.5">
+                <GitCompare className="h-3 w-3 text-primary" />
+                Comparing {comparedRoutes.length} route{comparedRoutes.length > 1 ? 's' : ''}
+              </span>
+              <button
+                onClick={clearComparedRoutes}
+                className="text-[10px] text-muted-foreground hover:text-foreground transition-colors"
+                aria-label="Clear route comparison"
+              >
+                Clear all
+              </button>
+            </div>
+            <div className="flex flex-wrap gap-1">
+              {comparedRoutes.map((id) => {
+                const r = routes.find((rt) => rt.id === id)
+                return r ? (
+                  <Badge
+                    key={id}
+                    variant="secondary"
+                    className="text-[10px] gap-1 pr-1"
+                    style={{ borderLeft: `3px solid ${r.color}` }}
+                  >
+                    {r.name}
+                    <button
+                      onClick={() => removeComparedRoute(id)}
+                      className="rounded-full p-0.5 hover:bg-destructive/20"
+                      aria-label={`Remove ${r.name} from comparison`}
+                    >
+                      <X className="h-2.5 w-2.5" />
+                    </button>
+                  </Badge>
+                ) : null
+              })}
+            </div>
+            <p className="text-[10px] text-muted-foreground">
+              See the comparison panel on the map for detailed analysis
+            </p>
           </div>
         )}
 

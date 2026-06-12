@@ -48,10 +48,14 @@ import { CollaboratorCursors } from '@/components/map/CollaboratorCursors'
 import { OfflineIndicator } from '@/components/map/OfflineIndicator'
 import { DrawingToolbar } from '@/components/map/DrawingToolbar'
 import { DrawingLayer } from '@/components/map/DrawingLayer'
+import { RouteComparisonPanel } from '@/components/map/RouteComparisonPanel'
+import { TerrainAnalysisPanel } from '@/components/map/TerrainAnalysisPanel'
+import { AccessibilityPanel } from '@/components/map/AccessibilityPanel'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { useMapStore, type ToolMode, MAP_STYLES } from '@/lib/map-store'
+import { cn } from '@/lib/utils'
 import { useUndoStore } from '@/lib/use-undo-store'
 import { useServiceWorker } from '@/hooks/use-service-worker'
 import { toast } from 'sonner'
@@ -81,6 +85,12 @@ import {
 
 export default function Home() {
   const { toolMode, sidebarOpen, center, zoom, currentStyle, weatherEnabled, comparisonEnabled, sunPositionEnabled, heatmapEnabled, elevationRouteId, setSidebarOpen, setToolMode, setCenter, setZoom, setCurrentStyle, setComparisonEnabled } = useMapStore()
+  const comparedRoutes = useMapStore((s) => s.comparedRoutes)
+  const terrainAnalysisRouteId = useMapStore((s) => s.terrainAnalysisRouteId)
+  const accessibilityPanelOpen = useMapStore((s) => s.accessibilityPanelOpen)
+  const highContrastMode = useMapStore((s) => s.highContrastMode)
+  const largeTextMode = useMapStore((s) => s.largeTextMode)
+  const reducedMotionMode = useMapStore((s) => s.reducedMotionMode)
   const pushNotification = useMapStore((s) => s.pushNotification)
   const drawingTool = useMapStore((s) => s.drawingTool)
 
@@ -464,7 +474,12 @@ export default function Home() {
   const currentTool = toolIndicator[toolMode]
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-background">
+    <div className={cn(
+      'relative w-screen h-screen overflow-hidden bg-background',
+      highContrastMode && 'accessibility-high-contrast',
+      largeTextMode && 'accessibility-large-text',
+      reducedMotionMode && 'accessibility-reduced-motion',
+    )}>
       {/* Map loading overlay - shows before map initializes */}
       <AnimatePresence>
         {!mapInitialized && (
@@ -761,6 +776,27 @@ export default function Home() {
       <div className="hidden md:block absolute z-10" style={{ left: aiSuggestionsOpen ? '400px' : '80px', top: '80px', transition: 'left 0.3s ease-in-out' }}>
         <RouteAnalyticsPanel />
       </div>
+
+      {/* Route Comparison Panel - right side below search bar (desktop only) */}
+      {comparedRoutes.length > 0 && (
+        <div className="hidden md:block absolute z-10" style={{ right: '20px', top: '80px' }}>
+          <RouteComparisonPanel />
+        </div>
+      )}
+
+      {/* Terrain Analysis Panel - right side below comparison (desktop only) */}
+      {terrainAnalysisRouteId && (
+        <div className="hidden md:block absolute z-10" style={{ right: comparedRoutes.length > 0 ? '560px' : '20px', top: '80px', transition: 'right 0.3s ease-in-out' }}>
+          <TerrainAnalysisPanel />
+        </div>
+      )}
+
+      {/* Accessibility Panel - right side (desktop only) */}
+      {accessibilityPanelOpen && (
+        <div className="hidden md:block absolute z-10" style={{ right: '20px', top: '80px' }}>
+          <AccessibilityPanel />
+        </div>
+      )}
 
       {/* Quick Jump Panel - left side below toolbar (desktop only) */}
       <div className="hidden md:block absolute z-10 transition-all duration-300" style={{ left: sidebarOpen ? '332px' : '16px', top: '140px' }}>
