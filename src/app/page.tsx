@@ -64,6 +64,10 @@ import { WaypointOptimizer } from '@/components/map/WaypointOptimizer'
 import { StylesMixer } from '@/components/map/StylesMixer'
 import { CoordinateConverter } from '@/components/map/CoordinateConverter'
 import { RouteSharingDialog } from '@/components/map/RouteSharingDialog'
+import { RoutePlayback } from '@/components/map/RoutePlayback'
+import { SpeedAlertSystem } from '@/components/map/SpeedAlertSystem'
+import { MapLabelsOverlay } from '@/components/map/MapLabelsOverlay'
+import { ContourGenerator } from '@/components/map/ContourGenerator'
 import dynamic from 'next/dynamic'
 
 const GPSSimulator = dynamic(() => import('@/components/map/GPSSimulator').then((m) => m.GPSSimulator), { ssr: false })
@@ -108,6 +112,9 @@ import {
   Tag,
   Palette,
   Share,
+  Mountain,
+  Gauge,
+  Play,
 } from 'lucide-react'
 
 export default function Home() {
@@ -878,6 +885,26 @@ export default function Home() {
             <Code2 className="h-4 w-4" />
           </Button>
           <VoiceNavigationToggle />
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setRoutePlaybackOpen(true)}
+            title="Route Playback"
+            aria-label="Open route playback"
+          >
+            <Play className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setSpeedAlertOpen(true)}
+            title="Speed Alerts"
+            aria-label="Open speed alert system"
+          >
+            <Gauge className="h-4 w-4" />
+          </Button>
           <CollaborationPanel />
           <Button
             variant="outline"
@@ -928,6 +955,26 @@ export default function Home() {
             aria-label="Open style mixer"
           >
             <Palette className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setMapLabelsOpen(true)}
+            title="Map Labels"
+            aria-label="Open map labels overlay"
+          >
+            <Type className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setContourGeneratorOpen(true)}
+            title="Contour Generator"
+            aria-label="Open contour generator"
+          >
+            <Mountain className="h-4 w-4" />
           </Button>
           <Button
             variant="outline"
@@ -1338,6 +1385,18 @@ export default function Home() {
 
       {/* Route Sharing Dialog */}
       <RouteSharingDialog open={routeSharingOpen} onOpenChange={setRouteSharingOpen} />
+
+      {/* Route Playback Dialog */}
+      <RoutePlayback />
+
+      {/* Speed Alert System Dialog */}
+      <SpeedAlertSystem />
+
+      {/* Map Labels Overlay */}
+      <MapLabelsOverlay />
+
+      {/* Contour Generator */}
+      <ContourGenerator />
 
       {/* Geofence Dialog */}
       <GeofenceDialog

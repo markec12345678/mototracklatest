@@ -402,6 +402,32 @@ export interface ImageOverlay {
   visible: boolean
 }
 
+// Map Label types
+export interface MapLabel {
+  id: string
+  text: string
+  longitude: number
+  latitude: number
+  fontSize: number
+  color: string
+  bold: boolean
+  italic: boolean
+  bgColor: string
+  bgOpacity: number
+}
+
+// Contour / Isoline types
+export interface ContourLine {
+  elevation: number
+  coordinates: [number, number][]
+}
+
+export interface ContourData {
+  center: [number, number]
+  lines: ContourLine[]
+  visible: boolean
+}
+
 export interface WMSTileSource {
   id: string
   name: string
@@ -906,6 +932,68 @@ interface MapState {
   // Route Sharing
   routeSharingOpen: boolean
   setRouteSharingOpen: (open: boolean) => void
+
+  // Route Playback
+  routePlayback: RoutePlaybackState
+  setRoutePlayback: (state: Partial<RoutePlaybackState>) => void
+  routePlaybackOpen: boolean
+  setRoutePlaybackOpen: (open: boolean) => void
+
+  // Speed Alert System
+  speedZones: SpeedZone[]
+  addSpeedZone: (zone: SpeedZone) => void
+  removeSpeedZone: (id: string) => void
+  clearSpeedZones: () => void
+  speedAlertLog: SpeedAlertEntry[]
+  addSpeedAlert: (entry: Omit<SpeedAlertEntry, 'timestamp'>) => void
+  speedAlertOpen: boolean
+  setSpeedAlertOpen: (open: boolean) => void
+  speedLimit: number
+  setSpeedLimit: (limit: number) => void
+  currentSpeed: number
+  setCurrentSpeed: (speed: number) => void
+
+  // Map Labels
+  mapLabels: MapLabel[]
+  addMapLabel: (label: MapLabel) => void
+  updateMapLabel: (id: string, updates: Partial<Omit<MapLabel, 'id'>>) => void
+  removeMapLabel: (id: string) => void
+  clearMapLabels: () => void
+  mapLabelsOpen: boolean
+  setMapLabelsOpen: (open: boolean) => void
+
+  // Contour Generator
+  contourData: ContourData | null
+  setContourData: (data: ContourData | null) => void
+  clearContourData: () => void
+  contourGeneratorOpen: boolean
+  setContourGeneratorOpen: (open: boolean) => void
+}
+
+// Route Playback types
+export interface RoutePlaybackState {
+  routeId: string | null
+  isPlaying: boolean
+  progress: number // 0-1
+  speed: number // multiplier
+  followCamera: boolean
+}
+
+// Speed Alert types
+export interface SpeedZone {
+  id: string
+  longitude: number
+  latitude: number
+  radius: number // meters
+  speedLimit: number // km/h
+  label: string
+}
+
+export interface SpeedAlertEntry {
+  timestamp: number
+  speed: number
+  limit: number
+  zoneName?: string
 }
 
 export const useMapStore = create<MapState>()(
@@ -2354,6 +2442,64 @@ export const useMapStore = create<MapState>()(
       // Route Sharing
       routeSharingOpen: false,
       setRouteSharingOpen: (open) => set({ routeSharingOpen: open }),
+
+      // Route Playback defaults
+      routePlayback: {
+        routeId: null,
+        isPlaying: false,
+        progress: 0,
+        speed: 1,
+        followCamera: true,
+      },
+      setRoutePlayback: (updates) => set((state) => ({
+        routePlayback: { ...state.routePlayback, ...updates },
+      })),
+      routePlaybackOpen: false,
+      setRoutePlaybackOpen: (open) => set({ routePlaybackOpen: open }),
+
+      // Speed Alert System defaults
+      speedZones: [],
+      addSpeedZone: (zone) => set((state) => ({
+        speedZones: [...state.speedZones, zone],
+      })),
+      removeSpeedZone: (id) => set((state) => ({
+        speedZones: state.speedZones.filter((z) => z.id !== id),
+      })),
+      clearSpeedZones: () => set({ speedZones: [] }),
+      speedAlertLog: [],
+      addSpeedAlert: (entry) => set((state) => ({
+        speedAlertLog: [{ ...entry, timestamp: Date.now() }, ...state.speedAlertLog].slice(0, 50),
+      })),
+      speedAlertOpen: false,
+      setSpeedAlertOpen: (open) => set({ speedAlertOpen: open }),
+      speedLimit: 50,
+      setSpeedLimit: (limit) => set({ speedLimit: limit }),
+      currentSpeed: 0,
+      setCurrentSpeed: (speed) => set({ currentSpeed: speed }),
+
+      // Map Labels
+      mapLabels: [],
+      addMapLabel: (label) => set((state) => ({
+        mapLabels: [...state.mapLabels, label],
+      })),
+      updateMapLabel: (id, updates) => set((state) => ({
+        mapLabels: state.mapLabels.map((l) =>
+          l.id === id ? { ...l, ...updates } : l
+        ),
+      })),
+      removeMapLabel: (id) => set((state) => ({
+        mapLabels: state.mapLabels.filter((l) => l.id !== id),
+      })),
+      clearMapLabels: () => set({ mapLabels: [] }),
+      mapLabelsOpen: false,
+      setMapLabelsOpen: (open) => set({ mapLabelsOpen: open }),
+
+      // Contour Generator
+      contourData: null,
+      setContourData: (data) => set({ contourData: data }),
+      clearContourData: () => set({ contourData: null }),
+      contourGeneratorOpen: false,
+      setContourGeneratorOpen: (open) => set({ contourGeneratorOpen: open }),
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -2423,6 +2569,9 @@ export const useMapStore = create<MapState>()(
         poiFilterPresets: state.poiFilterPresets,
         markerCategories: state.markerCategories,
         styleMixLayers: state.styleMixLayers,
+        speedZones: state.speedZones,
+        speedLimit: state.speedLimit,
+        routePlayback: state.routePlayback,
       }),
     }
   )
