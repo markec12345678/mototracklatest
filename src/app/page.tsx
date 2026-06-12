@@ -51,6 +51,9 @@ import { DrawingLayer } from '@/components/map/DrawingLayer'
 import { RouteComparisonPanel } from '@/components/map/RouteComparisonPanel'
 import { TerrainAnalysisPanel } from '@/components/map/TerrainAnalysisPanel'
 import { AccessibilityPanel } from '@/components/map/AccessibilityPanel'
+import { SpatialAnalysisPanel } from '@/components/map/SpatialAnalysisPanel'
+import { BufferZoneLayer } from '@/components/map/BufferZoneLayer'
+import { ImageOverlayManager } from '@/components/map/ImageOverlayManager'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
@@ -517,6 +520,9 @@ export default function Home() {
 
       {/* Drawing Layer - renders drawn features on the map */}
       <DrawingLayer />
+
+      {/* Buffer Zone Layer - renders spatial analysis buffers */}
+      <BufferZoneLayer />
 
       {/* Collaborator Cursors - shows other users' positions on the map */}
       <CollaboratorCursors />

@@ -300,6 +300,24 @@ export interface CustomTileSource {
   visible: boolean
 }
 
+export interface ImageOverlay {
+  id: string
+  name: string
+  url: string
+  bounds: [[number, number], [number, number]] // [[swLng, swLat], [neLng, neLat]]
+  opacity: number
+  visible: boolean
+}
+
+export interface SpatialAnalysisResult {
+  id: string
+  type: 'buffer' | 'intersection' | 'area' | 'centroid' | 'distance-from-line'
+  label: string
+  value: string
+  geometry?: GeoJSON.Geometry
+  color: string
+}
+
 export interface Geolocation {
   longitude: number
   latitude: number
@@ -632,6 +650,23 @@ interface MapState {
   // Terrain analysis panel visibility
   terrainAnalysisRouteId: string | null
   setTerrainAnalysisRouteId: (id: string | null) => void
+
+  // Image overlays
+  imageOverlays: ImageOverlay[]
+  addImageOverlay: (overlay: ImageOverlay) => void
+  removeImageOverlay: (id: string) => void
+  toggleImageOverlay: (id: string) => void
+  updateImageOverlayOpacity: (id: string, opacity: number) => void
+
+  // Spatial analysis
+  spatialResults: SpatialAnalysisResult[]
+  addSpatialResult: (result: SpatialAnalysisResult) => void
+  clearSpatialResults: () => void
+  removeSpatialResult: (id: string) => void
+
+  // Collapsed sidebar sections
+  collapsedSections: Record<string, boolean>
+  toggleSection: (sectionId: string) => void
 }
 
 export const useMapStore = create<MapState>()(
@@ -757,6 +792,15 @@ export const useMapStore = create<MapState>()(
       // Panel visibility defaults
       accessibilityPanelOpen: false,
       terrainAnalysisRouteId: null,
+
+      // Image overlay defaults
+      imageOverlays: [],
+
+      // Spatial analysis defaults
+      spatialResults: [],
+
+      // Collapsed sections defaults
+      collapsedSections: {},
 
       setCenter: (center) => set({ center }),
       setZoom: (zoom) => set({ zoom }),
@@ -1539,6 +1583,46 @@ export const useMapStore = create<MapState>()(
       setAccessibilityPanelOpen: (open) => set({ accessibilityPanelOpen: open }),
       setTerrainAnalysisRouteId: (id) => set({ terrainAnalysisRouteId: id }),
 
+      // Image overlay actions
+      addImageOverlay: (overlay) => set((state) => ({
+        imageOverlays: [...state.imageOverlays, overlay],
+      })),
+
+      removeImageOverlay: (id) => set((state) => ({
+        imageOverlays: state.imageOverlays.filter((o) => o.id !== id),
+      })),
+
+      toggleImageOverlay: (id) => set((state) => ({
+        imageOverlays: state.imageOverlays.map((o) =>
+          o.id === id ? { ...o, visible: !o.visible } : o
+        ),
+      })),
+
+      updateImageOverlayOpacity: (id, opacity) => set((state) => ({
+        imageOverlays: state.imageOverlays.map((o) =>
+          o.id === id ? { ...o, opacity } : o
+        ),
+      })),
+
+      // Spatial analysis actions
+      addSpatialResult: (result) => set((state) => ({
+        spatialResults: [...state.spatialResults, result],
+      })),
+
+      clearSpatialResults: () => set({ spatialResults: [] }),
+
+      removeSpatialResult: (id) => set((state) => ({
+        spatialResults: state.spatialResults.filter((r) => r.id !== id),
+      })),
+
+      // Collapsed sections actions
+      toggleSection: (sectionId) => set((state) => ({
+        collapsedSections: {
+          ...state.collapsedSections,
+          [sectionId]: !state.collapsedSections[sectionId],
+        },
+      })),
+
       // Language actions
       setLanguage: (language) => set({ language }),
 
@@ -1655,6 +1739,9 @@ export const useMapStore = create<MapState>()(
         colorBlindMode: state.colorBlindMode,
         mapThemeOverrides: state.mapThemeOverrides,
         mapThemePreset: state.mapThemePreset,
+        imageOverlays: state.imageOverlays,
+        spatialResults: state.spatialResults,
+        collapsedSections: state.collapsedSections,
       }),
     }
   )

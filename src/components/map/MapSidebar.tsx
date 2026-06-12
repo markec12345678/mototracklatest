@@ -40,6 +40,7 @@ import {
   GitCompare,
   Activity,
   X,
+  ImageIcon,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -75,6 +76,8 @@ import { ElevationProfile } from '@/components/map/ElevationProfile'
 import { GeofenceManager } from '@/components/map/GeofenceManager'
 import { RouteAnalyticsPanel } from '@/components/map/RouteAnalyticsPanel'
 import { SnapshotManager } from '@/components/map/SnapshotManager'
+import { ImageOverlayManager } from '@/components/map/ImageOverlayManager'
+import { SpatialAnalysisPanel } from '@/components/map/SpatialAnalysisPanel'
 
 function SidebarSkeleton() {
   return (
@@ -1237,6 +1240,17 @@ function LayersTab() {
           </h3>
           <CustomTileSourceList />
         </div>
+
+        <Separator />
+
+        {/* Image Overlays */}
+        <div>
+          <h3 className="text-sm font-semibold flex items-center gap-2 mb-2">
+            <ImageIcon className="h-3.5 w-3.5 text-muted-foreground" />
+            Image Overlays
+          </h3>
+          <ImageOverlayManager />
+        </div>
       </div>
     </ScrollArea>
   )
@@ -1938,6 +1952,11 @@ function GeofenceSection() {
           window.dispatchEvent(new CustomEvent('map-create-geofence', { detail: { lat: center[1], lng: center[0] } }))
         }}
       />
+
+      <Separator className="my-3" />
+
+      {/* Spatial Analysis */}
+      <SpatialAnalysisPanel />
     </div>
   )
 }

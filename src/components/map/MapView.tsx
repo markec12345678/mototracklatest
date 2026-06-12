@@ -2095,6 +2095,71 @@ export function MapView() {
     }
   }, [customTileSources, mapLoadedVersion])
 
+  // Image overlays
+  const imageOverlays = useMapStore((s) => s.imageOverlays)
+  useEffect(() => {
+    if (!map.current || !mapLoadedRef.current) return
+
+    const m = map.current
+    const currentIds = new Set(imageOverlays.map((o) => o.id))
+
+    // Remove overlays no longer in the list
+    const existingSources = m.getStyle().sources || {}
+    for (const sourceId of Object.keys(existingSources)) {
+      if (sourceId.startsWith('img-overlay-') && !currentIds.has(sourceId.replace('img-overlay-', ''))) {
+        const layerId = sourceId + '-layer'
+        try { m.removeLayer(layerId) } catch { /* ignore */ }
+        try { m.removeSource(sourceId) } catch { /* ignore */ }
+      }
+    }
+
+    // Add/update overlays
+    for (const overlay of imageOverlays) {
+      const sourceId = `img-overlay-${overlay.id}`
+      const layerId = sourceId + '-layer'
+
+      if (!m.getSource(sourceId)) {
+        m.addSource(sourceId, {
+          type: 'image',
+          url: overlay.url,
+          coordinates: [
+            [overlay.bounds[0][0], overlay.bounds[1][1]], // topLeft
+            [overlay.bounds[1][0], overlay.bounds[1][1]], // topRight
+            [overlay.bounds[1][0], overlay.bounds[0][1]], // bottomRight
+            [overlay.bounds[0][0], overlay.bounds[0][1]], // bottomLeft
+          ],
+        })
+        m.addLayer({
+          id: layerId,
+          type: 'raster',
+          source: sourceId,
+          paint: {
+            'raster-opacity': overlay.visible ? overlay.opacity : 0,
+          },
+        }, m.getStyle().layers?.[0]?.id) // Insert below first layer
+      } else {
+        try {
+          m.setPaintProperty(layerId, 'raster-opacity', overlay.visible ? overlay.opacity : 0)
+        } catch { /* ignore */ }
+        // Update image if URL changed - need to remove and re-add
+        try {
+          const source = m.getSource(sourceId) as maplibregl.ImageSource | undefined
+          if (source) {
+            source.updateImage({
+              url: overlay.url,
+              coordinates: [
+                [overlay.bounds[0][0], overlay.bounds[1][1]],
+                [overlay.bounds[1][0], overlay.bounds[1][1]],
+                [overlay.bounds[1][0], overlay.bounds[0][1]],
+                [overlay.bounds[0][0], overlay.bounds[0][1]],
+              ],
+            })
+          }
+        } catch { /* ignore */ }
+      }
+    }
+  }, [imageOverlays, mapLoadedVersion])
+
   // Earthquakes overlay
   useEffect(() => {
     if (!map.current || !mapLoadedRef.current) return
