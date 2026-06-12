@@ -120,6 +120,14 @@ import { AirspaceNavigator } from '@/components/map/AirspaceNavigator'
 import { ReefHealthMonitor } from '@/components/map/ReefHealthMonitor'
 import { MagneticFieldMapper } from '@/components/map/MagneticFieldMapper'
 import { FloodRiskAnalyzer } from '@/components/map/FloodRiskAnalyzer'
+import { VolcanoMonitor } from '@/components/map/VolcanoMonitor'
+import { AvalancheRiskMap } from '@/components/map/AvalancheRiskMap'
+import { CropHealthAnalyzer } from '@/components/map/CropHealthAnalyzer'
+import { SpaceTrackViewer } from '@/components/map/SpaceTrackViewer'
+import { ArchaeologyMap } from '@/components/map/ArchaeologyMap'
+import { PollutionTracker } from '@/components/map/PollutionTracker'
+import { TidalPredictor } from '@/components/map/TidalPredictor'
+import { WindFarmOptimizer } from '@/components/map/WindFarmOptimizer'
 import dynamic from 'next/dynamic'
 
 const GPSSimulator = dynamic(() => import('@/components/map/GPSSimulator').then((m) => m.GPSSimulator), { ssr: false })
@@ -208,7 +216,6 @@ import {
   Bird,
   Landmark,
   Droplets,
-  Snowflake,
   Activity as ActivityIcon,
   Sprout,
   Building2,
@@ -216,6 +223,14 @@ import {
   Waves,
   Magnet,
   Droplet,
+  Flame,
+  Snowflake as SnowflakeIcon,
+  Wheat,
+  Satellite,
+  Pyramid,
+  Factory,
+  Ship,
+  Zap,
 } from 'lucide-react'
 
 export default function Home() {
@@ -1425,7 +1440,7 @@ export default function Home() {
             title="Glacier Monitor"
             aria-label="Open glacier monitor"
           >
-            <Snowflake className="h-4 w-4" />
+            <SnowflakeIcon className="h-4 w-4" />
           </Button>
           <Button
             variant="outline"
@@ -1496,6 +1511,86 @@ export default function Home() {
             aria-label="Open flood risk analyzer"
           >
             <Droplet className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setVolcanoMonitor({ open: true })}
+            title="Volcano Monitor"
+            aria-label="Open volcano monitor"
+          >
+            <Flame className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setAvalancheRisk({ open: true })}
+            title="Avalanche Risk Map"
+            aria-label="Open avalanche risk map"
+          >
+            <SnowflakeIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setCropHealth({ open: true })}
+            title="Crop Health Analyzer"
+            aria-label="Open crop health analyzer"
+          >
+            <Wheat className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setSpaceTrack({ open: true })}
+            title="Space Track Viewer"
+            aria-label="Open space track viewer"
+          >
+            <Satellite className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setArchaeologyMap({ open: true })}
+            title="Archaeology Map"
+            aria-label="Open archaeology map"
+          >
+            <Pyramid className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setPollutionTracker({ open: true })}
+            title="Pollution Tracker"
+            aria-label="Open pollution tracker"
+          >
+            <Factory className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setTidalPredictor({ open: true })}
+            title="Tidal Predictor"
+            aria-label="Open tidal predictor"
+          >
+            <Ship className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setWindFarm({ open: true })}
+            title="Wind Farm Optimizer"
+            aria-label="Open wind farm optimizer"
+          >
+            <Zap className="h-4 w-4" />
           </Button>
           <Button
             variant="outline"
@@ -2319,6 +2414,30 @@ export default function Home() {
 
       {/* Flood Risk Analyzer */}
       <FloodRiskAnalyzer />
+
+      {/* Volcano Monitor */}
+      <VolcanoMonitor />
+
+      {/* Avalanche Risk Map */}
+      <AvalancheRiskMap />
+
+      {/* Crop Health Analyzer */}
+      <CropHealthAnalyzer />
+
+      {/* Space Track Viewer */}
+      <SpaceTrackViewer />
+
+      {/* Archaeology Map */}
+      <ArchaeologyMap />
+
+      {/* Pollution Tracker */}
+      <PollutionTracker />
+
+      {/* Tidal Predictor */}
+      <TidalPredictor />
+
+      {/* Wind Farm Optimizer */}
+      <WindFarmOptimizer />
 
       {/* Footer */}
       <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-2 sm:px-3 md:px-4 safe-area-bottom before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">

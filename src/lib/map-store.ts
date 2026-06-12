@@ -1277,6 +1277,284 @@ export interface FloodRiskState {
   animationPlaying: boolean
 }
 
+// Volcano Monitor types
+export interface VolcanoData {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  elevation: number // meters
+  type: 'stratovolcano' | 'shield' | 'caldera' | 'cinder_cone' | 'fissure' | 'submarine' | 'lava_dome'
+  status: 'extinct' | 'dormant' | 'active' | 'erupting'
+  lastEruption: string
+  vei: number // Volcanic Explosivity Index 0-8
+  alertLevel: 'normal' | 'advisory' | 'watch' | 'warning'
+  seismicActivity: number // events per day
+  gasEmission: number // tonnes/day SO2
+  deformation: number // mm/year
+  population5km: number
+  population10km: number
+  country: string
+}
+
+export interface VolcanoMonitorState {
+  volcanoes: VolcanoData[]
+  activeVolcanoId: string | null
+  showVolcanoes: boolean
+  showAlertZones: boolean
+  showSeismicOverlay: boolean
+  showGasPlumes: boolean
+  showDeformation: boolean
+  filterType: string[]
+  filterStatus: string[]
+  filterAlertLevel: string[]
+  open: boolean
+  autoRefresh: boolean
+  lastFetchTime: number | null
+}
+
+// Avalanche Risk types
+export interface AvalancheZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  riskLevel: 'low' | 'moderate' | 'considerable' | 'high' | 'extreme'
+  elevation: number
+  aspect: string // N, NE, E, SE, S, SW, W, NW
+  slopeAngle: number
+  snowDepth: number // cm
+  snowStability: 'good' | 'fair' | 'poor' | 'very_poor'
+  recentAvalanches: number
+  temperature: number
+  windSpeed: number
+  windDirection: number
+  lastAssessment: string
+  coordinates: [number, number][]
+}
+
+export interface AvalancheRiskState {
+  zones: AvalancheZone[]
+  activeZoneId: string | null
+  showZones: boolean
+  showRiskOverlay: boolean
+  showAspectMap: boolean
+  showSlopeAngles: boolean
+  showWindRose: boolean
+  open: boolean
+  forecastDate: string
+  comparisonMode: boolean
+}
+
+// Crop Health Analyzer types
+export interface CropField {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  cropType: 'wheat' | 'corn' | 'rice' | 'soybean' | 'cotton' | 'barley' | 'sugarcane' | 'potato' | 'tomato' | 'grape'
+  area: number // hectares
+  healthIndex: number // 0-100
+  ndvi: number // -1 to 1
+  growthStage: 'emergence' | 'vegetative' | 'flowering' | 'fruiting' | 'maturity' | 'harvest' | 'dormant'
+  moistureStress: 'none' | 'low' | 'moderate' | 'high' | 'severe'
+  pestRisk: 'none' | 'low' | 'moderate' | 'high'
+  diseaseRisk: 'none' | 'low' | 'moderate' | 'high'
+  yieldPrediction: number // tonnes/hectare
+  plantingDate: string
+  harvestDate: string
+  lastSatellitePass: string
+}
+
+export interface CropHealthState {
+  fields: CropField[]
+  activeFieldId: string | null
+  showFields: boolean
+  showHealthOverlay: boolean
+  showNDVI: boolean
+  showMoistureStress: boolean
+  showYieldPrediction: boolean
+  filterCropType: string[]
+  filterGrowthStage: string[]
+  open: boolean
+  timelineDate: string
+  comparisonMode: boolean
+}
+
+// Space Track Viewer types
+export interface SpaceObject {
+  id: string
+  name: string
+  noradId: string
+  type: 'satellite' | 'debris' | 'rocket_body' | 'space_station' | 'probe'
+  latitude: number
+  longitude: number
+  altitude: number // km
+  velocity: number // km/s
+  inclination: number
+  period: number // minutes
+  launchDate: string
+  country: string
+  status: 'operational' | 'non_operational' | 'decaying'
+  visibility: 'visible' | 'shadowed' | 'daylight'
+}
+
+export interface SpaceTrackState {
+  objects: SpaceObject[]
+  activeObjectId: string | null
+  showObjects: boolean
+  showOrbits: boolean
+  showGroundTracks: boolean
+  showFootprints: boolean
+  showDebris: boolean
+  filterType: string[]
+  filterCountry: string[]
+  altitudeRange: [number, number] // km
+  open: boolean
+  autoRefresh: boolean
+  selectedPassTime: string | null
+}
+
+// Archaeology Map types
+export interface ArchaeologicalSite {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  type: 'settlement' | 'burial' | 'temple' | 'fortification' | 'cave' | 'petroglyph' | 'megalith' | 'shipwreck' | 'industrial'
+  period: string
+  dating: string
+  culture: string
+  description: string
+  preservation: 'excellent' | 'good' | 'fair' | 'poor' | 'endangered'
+  excavationStatus: 'unexcavated' | 'partial' | 'ongoing' | 'completed'
+  significance: 'local' | 'regional' | 'national' | 'international'
+  area: number // hectares
+  depth: number | null // meters
+  artifacts: number
+  unescoListed: boolean
+  coordinates: [number, number][]
+}
+
+export interface ArchaeologyMapState {
+  sites: ArchaeologicalSite[]
+  activeSiteId: string | null
+  showSites: boolean
+  showPeriodOverlay: boolean
+  showSignificance: boolean
+  showExcavationStatus: boolean
+  showProtectionZones: boolean
+  filterType: string[]
+  filterPeriod: string[]
+  filterSignificance: string[]
+  open: boolean
+  timelinePeriod: string
+}
+
+// Pollution Tracker types
+export interface PollutionSource {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  type: 'industrial' | 'vehicle' | 'agricultural' | 'residential' | 'natural' | 'maritime' | 'energy'
+  pollutants: string[]
+  aqi: number // 0-500
+  aqiLevel: 'good' | 'moderate' | 'unhealthy_sensitive' | 'unhealthy' | 'very_unhealthy' | 'hazardous'
+  pm25: number // μg/m3
+  pm10: number
+  no2: number
+  so2: number
+  co: number
+  o3: number
+  emissionRate: number // tonnes/year
+  radius: number // meters - affected area
+  lastReading: string
+  trend: 'improving' | 'stable' | 'worsening'
+}
+
+export interface PollutionTrackerState {
+  sources: PollutionSource[]
+  activeSourceId: string | null
+  showSources: boolean
+  showAQIOverlay: boolean
+  showPM25: boolean
+  showDispersion: boolean
+  showTrends: boolean
+  filterType: string[]
+  filterAQILevel: string[]
+  open: boolean
+  autoRefresh: boolean
+  timelineDate: string
+}
+
+// Tidal Predictor types
+export interface TidalStation {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  type: 'primary' | 'secondary' | 'harmonic'
+  currentHeight: number // meters
+  nextHigh: string
+  nextLow: string
+  tidalRange: number
+  springRange: number
+  neapRange: number
+  harmonicConstants: Array<{ constituent: string; amplitude: number; phase: number }>
+  maxCurrent: number // knots
+  currentDirection: number
+  moonPhase: string
+  sunrise: string
+  sunset: string
+}
+
+export interface TidalPredictorState {
+  stations: TidalStation[]
+  activeStationId: string | null
+  showStations: boolean
+  showCurrentHeight: boolean
+  showTidalFlow: boolean
+  showMoonPhase: boolean
+  showCurrentVectors: boolean
+  open: boolean
+  predictionDate: string
+  predictionHours: number
+}
+
+// Wind Farm Optimizer types
+export interface WindTurbine {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  type: 'onshore' | 'offshore'
+  capacity: number // MW
+  hubHeight: number // meters
+  rotorDiameter: number // meters
+  windSpeed: number // m/s
+  windDirection: number
+  powerOutput: number // MW
+  capacityFactor: number // percentage
+  availability: number // percentage
+  wakeLoss: number // percentage
+  status: 'operational' | 'maintenance' | 'faulted' | 'curtailed'
+  commissioning: string
+}
+
+export interface WindFarmState {
+  turbines: WindTurbine[]
+  activeTurbineId: string | null
+  showTurbines: boolean
+  showWindRose: boolean
+  showWakeEffects: boolean
+  showPowerOutput: boolean
+  showOptimization: boolean
+  open: boolean
+  windScenario: 'current' | 'optimal' | 'conservative'
+  optimizationTarget: 'power' | 'cost' | 'lifetime'
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -2054,6 +2332,38 @@ interface MapState {
   // Flood Risk Analyzer
   floodRisk: FloodRiskState
   setFloodRisk: (state: Partial<FloodRiskState>) => void
+
+  // Volcano Monitor
+  volcanoMonitor: VolcanoMonitorState
+  setVolcanoMonitor: (state: Partial<VolcanoMonitorState>) => void
+
+  // Avalanche Risk
+  avalancheRisk: AvalancheRiskState
+  setAvalancheRisk: (state: Partial<AvalancheRiskState>) => void
+
+  // Crop Health
+  cropHealth: CropHealthState
+  setCropHealth: (state: Partial<CropHealthState>) => void
+
+  // Space Track
+  spaceTrack: SpaceTrackState
+  setSpaceTrack: (state: Partial<SpaceTrackState>) => void
+
+  // Archaeology Map
+  archaeologyMap: ArchaeologyMapState
+  setArchaeologyMap: (state: Partial<ArchaeologyMapState>) => void
+
+  // Pollution Tracker
+  pollutionTracker: PollutionTrackerState
+  setPollutionTracker: (state: Partial<PollutionTrackerState>) => void
+
+  // Tidal Predictor
+  tidalPredictor: TidalPredictorState
+  setTidalPredictor: (state: Partial<TidalPredictorState>) => void
+
+  // Wind Farm Optimizer
+  windFarm: WindFarmState
+  setWindFarm: (state: Partial<WindFarmState>) => void
 }
 
 // Coordinate Share Card types
@@ -4644,6 +4954,154 @@ export const useMapStore = create<MapState>()(
       setFloodRisk: (updates) => set((state) => ({
         floodRisk: { ...state.floodRisk, ...updates },
       })),
+
+      // Volcano Monitor defaults
+      volcanoMonitor: {
+        volcanoes: [],
+        activeVolcanoId: null,
+        showVolcanoes: true,
+        showAlertZones: false,
+        showSeismicOverlay: false,
+        showGasPlumes: false,
+        showDeformation: false,
+        filterType: [],
+        filterStatus: [],
+        filterAlertLevel: [],
+        open: false,
+        autoRefresh: false,
+        lastFetchTime: null,
+      },
+      setVolcanoMonitor: (updates) => set((state) => ({
+        volcanoMonitor: { ...state.volcanoMonitor, ...updates },
+      })),
+
+      // Avalanche Risk defaults
+      avalancheRisk: {
+        zones: [],
+        activeZoneId: null,
+        showZones: true,
+        showRiskOverlay: false,
+        showAspectMap: false,
+        showSlopeAngles: false,
+        showWindRose: false,
+        open: false,
+        forecastDate: new Date().toISOString().split('T')[0],
+        comparisonMode: false,
+      },
+      setAvalancheRisk: (updates) => set((state) => ({
+        avalancheRisk: { ...state.avalancheRisk, ...updates },
+      })),
+
+      // Crop Health defaults
+      cropHealth: {
+        fields: [],
+        activeFieldId: null,
+        showFields: true,
+        showHealthOverlay: false,
+        showNDVI: false,
+        showMoistureStress: false,
+        showYieldPrediction: false,
+        filterCropType: [],
+        filterGrowthStage: [],
+        open: false,
+        timelineDate: new Date().toISOString().split('T')[0],
+        comparisonMode: false,
+      },
+      setCropHealth: (updates) => set((state) => ({
+        cropHealth: { ...state.cropHealth, ...updates },
+      })),
+
+      // Space Track defaults
+      spaceTrack: {
+        objects: [],
+        activeObjectId: null,
+        showObjects: true,
+        showOrbits: false,
+        showGroundTracks: false,
+        showFootprints: false,
+        showDebris: false,
+        filterType: [],
+        filterCountry: [],
+        altitudeRange: [160, 36000],
+        open: false,
+        autoRefresh: false,
+        selectedPassTime: null,
+      },
+      setSpaceTrack: (updates) => set((state) => ({
+        spaceTrack: { ...state.spaceTrack, ...updates },
+      })),
+
+      // Archaeology Map defaults
+      archaeologyMap: {
+        sites: [],
+        activeSiteId: null,
+        showSites: true,
+        showPeriodOverlay: false,
+        showSignificance: false,
+        showExcavationStatus: false,
+        showProtectionZones: false,
+        filterType: [],
+        filterPeriod: [],
+        filterSignificance: [],
+        open: false,
+        timelinePeriod: 'all',
+      },
+      setArchaeologyMap: (updates) => set((state) => ({
+        archaeologyMap: { ...state.archaeologyMap, ...updates },
+      })),
+
+      // Pollution Tracker defaults
+      pollutionTracker: {
+        sources: [],
+        activeSourceId: null,
+        showSources: true,
+        showAQIOverlay: false,
+        showPM25: false,
+        showDispersion: false,
+        showTrends: false,
+        filterType: [],
+        filterAQILevel: [],
+        open: false,
+        autoRefresh: false,
+        timelineDate: new Date().toISOString().split('T')[0],
+      },
+      setPollutionTracker: (updates) => set((state) => ({
+        pollutionTracker: { ...state.pollutionTracker, ...updates },
+      })),
+
+      // Tidal Predictor defaults
+      tidalPredictor: {
+        stations: [],
+        activeStationId: null,
+        showStations: true,
+        showCurrentHeight: true,
+        showTidalFlow: false,
+        showMoonPhase: false,
+        showCurrentVectors: false,
+        open: false,
+        predictionDate: new Date().toISOString().split('T')[0],
+        predictionHours: 24,
+      },
+      setTidalPredictor: (updates) => set((state) => ({
+        tidalPredictor: { ...state.tidalPredictor, ...updates },
+      })),
+
+      // Wind Farm Optimizer defaults
+      windFarm: {
+        turbines: [],
+        activeTurbineId: null,
+        showTurbines: true,
+        showWindRose: false,
+        showWakeEffects: false,
+        showPowerOutput: false,
+        showOptimization: false,
+        open: false,
+        windScenario: 'current',
+        optimizationTarget: 'power',
+      },
+      setWindFarm: (updates) => set((state) => ({
+        windFarm: { ...state.windFarm, ...updates },
+      })),
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -4767,6 +5225,14 @@ export const useMapStore = create<MapState>()(
         reefHealth: state.reefHealth,
         magneticField: state.magneticField,
         floodRisk: state.floodRisk,
+        volcanoMonitor: state.volcanoMonitor,
+        avalancheRisk: state.avalancheRisk,
+        cropHealth: state.cropHealth,
+        spaceTrack: state.spaceTrack,
+        archaeologyMap: state.archaeologyMap,
+        pollutionTracker: state.pollutionTracker,
+        tidalPredictor: state.tidalPredictor,
+        windFarm: state.windFarm,
       }),
     }
   )
