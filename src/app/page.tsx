@@ -144,6 +144,14 @@ import { IceSheetMonitor } from '@/components/map/IceSheetMonitor'
 import { DroughtMonitorPanel } from '@/components/map/DroughtMonitorPanel'
 import { LandSubsidenceTracker } from '@/components/map/LandSubsidenceTracker'
 import { CoralBleachingAlert } from '@/components/map/CoralBleachingAlert'
+import { TsunamiAlertSystem } from '@/components/map/TsunamiAlertSystem'
+import { SoilErosionMonitor } from '@/components/map/SoilErosionMonitor'
+import { WatershedManagerPanel } from '@/components/map/WatershedManagerPanel'
+import { TectonicPlateViewer } from '@/components/map/TectonicPlateViewer'
+import { AirQualityForecaster } from '@/components/map/AirQualityForecaster'
+import { GlacialLakeMonitor } from '@/components/map/GlacialLakeMonitor'
+import { SpaceWeatherMonitor } from '@/components/map/SpaceWeatherMonitor'
+import { PeatlandMonitorPanel } from '@/components/map/PeatlandMonitorPanel'
 import dynamic from 'next/dynamic'
 
 const GPSSimulator = dynamic(() => import('@/components/map/GPSSimulator').then((m) => m.GPSSimulator), { ssr: false })
@@ -262,6 +270,14 @@ import {
   ThermometerSun,
   ArrowDownFromLine,
   Shell,
+  Siren,
+  CloudRain,
+  Droplets as DropletsIcon,
+  Globe as GlobeIcon,
+  Wind as WindIcon,
+  Snowflake as SnowflakeIcon2,
+  Radio,
+  TreeDeciduous,
 } from 'lucide-react'
 
 export default function Home() {
@@ -1786,6 +1802,86 @@ export default function Home() {
           <Button
             variant="outline"
             size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setTsunamiAlert({ open: true })}
+            title="Tsunami Alert System"
+            aria-label="Open tsunami alert system"
+          >
+            <Siren className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setSoilErosion({ open: true })}
+            title="Soil Erosion Monitor"
+            aria-label="Open soil erosion monitor"
+          >
+            <CloudRain className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setWatershedManager({ open: true })}
+            title="Watershed Manager"
+            aria-label="Open watershed manager"
+          >
+            <DropletsIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setTectonicPlate({ open: true })}
+            title="Tectonic Plate Viewer"
+            aria-label="Open tectonic plate viewer"
+          >
+            <GlobeIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setAirQualityForecaster({ open: true })}
+            title="Air Quality Forecaster"
+            aria-label="Open air quality forecaster"
+          >
+            <WindIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setGlacialLake({ open: true })}
+            title="Glacial Lake Monitor"
+            aria-label="Open glacial lake monitor"
+          >
+            <SnowflakeIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setSpaceWeather({ open: true })}
+            title="Space Weather Monitor"
+            aria-label="Open space weather monitor"
+          >
+            <Radio className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setPeatlandMonitor({ open: true })}
+            title="Peatland Monitor"
+            aria-label="Open peatland monitor"
+          >
+            <TreeDeciduous className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
             className="hidden sm:flex map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={() =>
               window.open('https://github.com/maplibre/maplibre-native', '_blank')
@@ -2677,6 +2773,30 @@ export default function Home() {
 
       {/* Coral Bleaching Alert */}
       <CoralBleachingAlert />
+
+      {/* Tsunami Alert System */}
+      <TsunamiAlertSystem />
+
+      {/* Soil Erosion Monitor */}
+      <SoilErosionMonitor />
+
+      {/* Watershed Manager Panel */}
+      <WatershedManagerPanel />
+
+      {/* Tectonic Plate Viewer */}
+      <TectonicPlateViewer />
+
+      {/* Air Quality Forecaster */}
+      <AirQualityForecaster />
+
+      {/* Glacial Lake Monitor */}
+      <GlacialLakeMonitor />
+
+      {/* Space Weather Monitor */}
+      <SpaceWeatherMonitor />
+
+      {/* Peatland Monitor Panel */}
+      <PeatlandMonitorPanel />
 
       {/* Footer */}
       <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-2 sm:px-3 md:px-4 safe-area-bottom before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">

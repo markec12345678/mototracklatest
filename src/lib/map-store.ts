@@ -1926,6 +1926,195 @@ export interface CoralSite {
   recoveryPotential: number
 }
 
+export interface TsunamiAlertState {
+  alerts: TsunamiAlert[]
+  activeAlertId: string | null
+  showWavePropagation: boolean
+  showEvacuationZones: boolean
+  showBuoyData: boolean
+  showHistoricalEvents: boolean
+  open: boolean
+  alertLevel: 'all' | 'information' | 'advisory' | 'watch' | 'warning'
+  basin: 'all' | 'pacific' | 'atlantic' | 'indian' | 'mediterranean'
+}
+
+export interface TsunamiAlert {
+  id: string
+  sourceName: string
+  latitude: number
+  longitude: number
+  magnitude: number
+  waveHeight: number
+  arrivalTime: string
+  alertLevel: 'information' | 'advisory' | 'watch' | 'warning'
+  status: 'active' | 'expired' | 'canceled'
+}
+
+export interface SoilErosionState {
+  zones: SoilErosionZone[]
+  activeZoneId: string | null
+  showErosionRisk: boolean
+  showSedimentYield: boolean
+  showConservation: boolean
+  showRainfallIntensity: boolean
+  open: boolean
+  erosionType: 'all' | 'water' | 'wind' | 'tillage'
+  severityFilter: 'all' | 'low' | 'moderate' | 'high' | 'severe'
+}
+
+export interface SoilErosionZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  erosionRate: number
+  sedimentYield: number
+  type: 'water' | 'wind' | 'tillage'
+  severity: 'low' | 'moderate' | 'high' | 'severe'
+  conservationPractice: string
+}
+
+export interface WatershedManagerState {
+  watersheds: Watershed[]
+  activeWatershedId: string | null
+  showBoundaries: boolean
+  showFlowAccumulation: boolean
+  showDrainageNetwork: boolean
+  showWaterQuality: boolean
+  open: boolean
+  sizeFilter: 'all' | 'small' | 'medium' | 'large' | 'major'
+  qualityFilter: 'all' | 'good' | 'moderate' | 'poor'
+}
+
+export interface Watershed {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  area: number
+  streamOrder: number
+  discharge: number
+  waterQuality: 'good' | 'moderate' | 'poor'
+  landUse: string
+}
+
+export interface TectonicPlateState {
+  plates: TectonicPlate[]
+  activePlateId: string | null
+  showPlateBoundaries: boolean
+  showFaultLines: boolean
+  showEpicenters: boolean
+  showMovementVectors: boolean
+  open: boolean
+  boundaryType: 'all' | 'convergent' | 'divergent' | 'transform'
+  timeRange: 'recent' | 'historical' | 'all'
+}
+
+export interface TectonicPlate {
+  id: string
+  name: string
+  centerLat: number
+  centerLng: number
+  movementRate: number
+  direction: number
+  boundaryType: 'convergent' | 'divergent' | 'transform'
+  earthquakeCount: number
+}
+
+export interface AirQualityForecasterState {
+  stations: AQStation[]
+  activeStationId: string | null
+  showAQI: boolean
+  showPM25: boolean
+  showPM10: boolean
+  showOzone: boolean
+  open: boolean
+  pollutant: 'aqi' | 'pm25' | 'pm10' | 'o3' | 'no2' | 'so2'
+  forecast: 'current' | '24h' | '48h' | '7d'
+}
+
+export interface AQStation {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  aqi: number
+  pm25: number
+  pm10: number
+  o3: number
+  category: 'good' | 'moderate' | 'unhealthy_sensitive' | 'unhealthy' | 'very_unhealthy' | 'hazardous'
+}
+
+export interface GlacialLakeState {
+  lakes: GlacialLake[]
+  activeLakeId: string | null
+  showLakeExtent: boolean
+  showGLOFRisk: boolean
+  showDamType: boolean
+  showMonitoring: boolean
+  open: boolean
+  riskLevel: 'all' | 'low' | 'medium' | 'high' | 'very_high'
+  region: 'all' | 'himalaya' | 'andes' | 'alps' | 'rockies' | 'iceland'
+}
+
+export interface GlacialLake {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  area: number
+  depth: number
+  damType: 'moraine' | 'ice' | 'bedrock'
+  glofRisk: 'low' | 'medium' | 'high' | 'very_high'
+  expansionRate: number
+}
+
+export interface SpaceWeatherState {
+  events: SpaceWeatherEvent[]
+  activeEventId: string | null
+  showSolarWind: boolean
+  showMagneticField: boolean
+  showAuroraForecast: boolean
+  showRadiationBelt: boolean
+  open: boolean
+  eventType: 'all' | 'cme' | 'flare' | 'geomagnetic_storm' | 'radiation'
+  alertLevel: 'all' | 'minor' | 'moderate' | 'strong' | 'severe' | 'extreme'
+}
+
+export interface SpaceWeatherEvent {
+  id: string
+  type: 'cme' | 'flare' | 'geomagnetic_storm' | 'radiation'
+  startTime: string
+  magnitude: number
+  kpIndex: number
+  alertLevel: 'minor' | 'moderate' | 'strong' | 'severe' | 'extreme'
+  description: string
+}
+
+export interface PeatlandMonitorState {
+  peatlands: Peatland[]
+  activePeatlandId: string | null
+  showPeatExtent: boolean
+  showCarbonStock: boolean
+  showDegradation: boolean
+  showRestoration: boolean
+  open: boolean
+  statusFilter: 'all' | 'intact' | 'degraded' | 'restoring'
+  depthFilter: 'all' | 'shallow' | 'medium' | 'deep'
+}
+
+export interface Peatland {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  area: number
+  carbonStock: number
+  depth: number
+  status: 'intact' | 'degraded' | 'restoring'
+  waterTable: number
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -2799,6 +2988,38 @@ interface MapState {
   // Coral Bleaching Alert
   coralBleaching: CoralBleachingState
   setCoralBleaching: (state: Partial<CoralBleachingState>) => void
+
+  // Tsunami Alert System
+  tsunamiAlert: TsunamiAlertState
+  setTsunamiAlert: (state: Partial<TsunamiAlertState>) => void
+
+  // Soil Erosion Monitor
+  soilErosion: SoilErosionState
+  setSoilErosion: (state: Partial<SoilErosionState>) => void
+
+  // Watershed Manager
+  watershedManager: WatershedManagerState
+  setWatershedManager: (state: Partial<WatershedManagerState>) => void
+
+  // Tectonic Plate Viewer
+  tectonicPlate: TectonicPlateState
+  setTectonicPlate: (state: Partial<TectonicPlateState>) => void
+
+  // Air Quality Forecaster
+  airQualityForecaster: AirQualityForecasterState
+  setAirQualityForecaster: (state: Partial<AirQualityForecasterState>) => void
+
+  // Glacial Lake Monitor
+  glacialLake: GlacialLakeState
+  setGlacialLake: (state: Partial<GlacialLakeState>) => void
+
+  // Space Weather Monitor
+  spaceWeather: SpaceWeatherState
+  setSpaceWeather: (state: Partial<SpaceWeatherState>) => void
+
+  // Peatland Monitor
+  peatlandMonitor: PeatlandMonitorState
+  setPeatlandMonitor: (state: Partial<PeatlandMonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -5792,6 +6013,134 @@ export const useMapStore = create<MapState>()(
       setCoralBleaching: (updates) => set((state) => ({
         coralBleaching: { ...state.coralBleaching, ...updates },
       })),
+
+      // Tsunami Alert System defaults
+      tsunamiAlert: {
+        alerts: [],
+        activeAlertId: null,
+        showWavePropagation: true,
+        showEvacuationZones: false,
+        showBuoyData: false,
+        showHistoricalEvents: false,
+        open: false,
+        alertLevel: 'all',
+        basin: 'all',
+      },
+      setTsunamiAlert: (updates) => set((state) => ({
+        tsunamiAlert: { ...state.tsunamiAlert, ...updates },
+      })),
+
+      // Soil Erosion Monitor defaults
+      soilErosion: {
+        zones: [],
+        activeZoneId: null,
+        showErosionRisk: true,
+        showSedimentYield: false,
+        showConservation: false,
+        showRainfallIntensity: false,
+        open: false,
+        erosionType: 'all',
+        severityFilter: 'all',
+      },
+      setSoilErosion: (updates) => set((state) => ({
+        soilErosion: { ...state.soilErosion, ...updates },
+      })),
+
+      // Watershed Manager defaults
+      watershedManager: {
+        watersheds: [],
+        activeWatershedId: null,
+        showBoundaries: true,
+        showFlowAccumulation: false,
+        showDrainageNetwork: false,
+        showWaterQuality: false,
+        open: false,
+        sizeFilter: 'all',
+        qualityFilter: 'all',
+      },
+      setWatershedManager: (updates) => set((state) => ({
+        watershedManager: { ...state.watershedManager, ...updates },
+      })),
+
+      // Tectonic Plate Viewer defaults
+      tectonicPlate: {
+        plates: [],
+        activePlateId: null,
+        showPlateBoundaries: true,
+        showFaultLines: false,
+        showEpicenters: false,
+        showMovementVectors: false,
+        open: false,
+        boundaryType: 'all',
+        timeRange: 'recent',
+      },
+      setTectonicPlate: (updates) => set((state) => ({
+        tectonicPlate: { ...state.tectonicPlate, ...updates },
+      })),
+
+      // Air Quality Forecaster defaults
+      airQualityForecaster: {
+        stations: [],
+        activeStationId: null,
+        showAQI: true,
+        showPM25: false,
+        showPM10: false,
+        showOzone: false,
+        open: false,
+        pollutant: 'aqi',
+        forecast: 'current',
+      },
+      setAirQualityForecaster: (updates) => set((state) => ({
+        airQualityForecaster: { ...state.airQualityForecaster, ...updates },
+      })),
+
+      // Glacial Lake Monitor defaults
+      glacialLake: {
+        lakes: [],
+        activeLakeId: null,
+        showLakeExtent: true,
+        showGLOFRisk: false,
+        showDamType: false,
+        showMonitoring: false,
+        open: false,
+        riskLevel: 'all',
+        region: 'all',
+      },
+      setGlacialLake: (updates) => set((state) => ({
+        glacialLake: { ...state.glacialLake, ...updates },
+      })),
+
+      // Space Weather Monitor defaults
+      spaceWeather: {
+        events: [],
+        activeEventId: null,
+        showSolarWind: true,
+        showMagneticField: false,
+        showAuroraForecast: false,
+        showRadiationBelt: false,
+        open: false,
+        eventType: 'all',
+        alertLevel: 'all',
+      },
+      setSpaceWeather: (updates) => set((state) => ({
+        spaceWeather: { ...state.spaceWeather, ...updates },
+      })),
+
+      // Peatland Monitor defaults
+      peatlandMonitor: {
+        peatlands: [],
+        activePeatlandId: null,
+        showPeatExtent: true,
+        showCarbonStock: false,
+        showDegradation: false,
+        showRestoration: false,
+        open: false,
+        statusFilter: 'all',
+        depthFilter: 'all',
+      },
+      setPeatlandMonitor: (updates) => set((state) => ({
+        peatlandMonitor: { ...state.peatlandMonitor, ...updates },
+      })),
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -5939,6 +6288,14 @@ export const useMapStore = create<MapState>()(
         droughtMonitor: state.droughtMonitor,
         landSubsidence: state.landSubsidence,
         coralBleaching: state.coralBleaching,
+        tsunamiAlert: state.tsunamiAlert,
+        soilErosion: state.soilErosion,
+        watershedManager: state.watershedManager,
+        tectonicPlate: state.tectonicPlate,
+        airQualityForecaster: state.airQualityForecaster,
+        glacialLake: state.glacialLake,
+        spaceWeather: state.spaceWeather,
+        peatlandMonitor: state.peatlandMonitor,
       }),
     }
   )
