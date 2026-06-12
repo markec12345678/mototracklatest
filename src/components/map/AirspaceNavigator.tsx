@@ -26,7 +26,7 @@ import {
   Radar,
   Radio,
   MapPin,
-  Altitude,
+  ArrowUp,
   Navigation,
   ArrowUpRight,
   Compass,
@@ -511,7 +511,7 @@ export function AirspaceNavigator() {
                                 </div>
                                 <div className="flex items-center gap-3 text-[10px] text-muted-foreground">
                                   <span className="flex items-center gap-0.5">
-                                    <Altitude className="h-2.5 w-2.5" />
+                                    <ArrowUp className="h-2.5 w-2.5" />
                                     {airport.elevation} ft
                                   </span>
                                   <span>{airport.runways.length} runway{airport.runways.length !== 1 ? 's' : ''}</span>
