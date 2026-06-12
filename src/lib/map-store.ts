@@ -1014,6 +1014,53 @@ interface MapState {
   setImportExportState: (state: Partial<ImportExportState>) => void
   importExportOpen: boolean
   setImportExportOpen: (open: boolean) => void
+
+  // Advanced Marker Manager
+  markerManagerState: MarkerManagerState
+  setMarkerManagerState: (state: Partial<MarkerManagerState>) => void
+  markerManagerOpen: boolean
+  setMarkerManagerOpen: (open: boolean) => void
+
+  // Geofence Alert History
+  geofenceEvents: GeofenceEvent[]
+  addGeofenceEvent: (event: Omit<GeofenceEvent, 'id'>) => void
+  clearGeofenceEvents: () => void
+  geofenceAlertOpen: boolean
+  setGeofenceAlertOpen: (open: boolean) => void
+  geofenceAlertsEnabled: boolean
+  setGeofenceAlertsEnabled: (enabled: boolean) => void
+
+  // Coordinate Grid Overlay
+  coordinateGrid: CoordinateGridState
+  setCoordinateGrid: (state: Partial<CoordinateGridState>) => void
+
+  // Map Overlay Gallery
+  mapOverlays: MapOverlay[]
+  setMapOverlay: (id: string, updates: Partial<MapOverlay>) => void
+  addMapOverlay: (overlay: MapOverlay) => void
+  removeMapOverlay: (id: string) => void
+  overlayGalleryOpen: boolean
+  setOverlayGalleryOpen: (open: boolean) => void
+}
+
+// Geofence Alert History types
+export interface GeofenceEvent {
+  id: string
+  geofenceId: string
+  geofenceName: string
+  type: 'enter' | 'exit'
+  timestamp: number
+  latitude: number
+  longitude: number
+}
+
+// Advanced Marker Manager types
+export interface MarkerManagerState {
+  selectedMarkerIds: string[]
+  searchQuery: string
+  filterCategory: string
+  sortBy: 'name' | 'date' | 'distance'
+  areaSelectMode: boolean
 }
 
 // Location Clustering types
@@ -1079,6 +1126,31 @@ export interface SpeedAlertEntry {
   speed: number
   limit: number
   zoneName?: string
+}
+
+// Coordinate Grid Overlay types
+export interface CoordinateGridState {
+  enabled: boolean
+  interval: number // degrees
+  showLabels: boolean
+  showMinorGrid: boolean
+  latColor: string
+  lngColor: string
+}
+
+// Map Overlay Gallery types
+export interface MapOverlay {
+  id: string
+  name: string
+  type: 'sea-level' | 'population' | 'light-pollution' | 'land-cover' | 'temperature' | 'wind' | 'precipitation' | 'custom'
+  enabled: boolean
+  opacity: number
+  tileUrl?: string
+  attribution?: string
+  minZoom?: number
+  maxZoom?: number
+  isTms?: boolean
+  description?: string
 }
 
 export const useMapStore = create<MapState>()(
@@ -2647,6 +2719,52 @@ export const useMapStore = create<MapState>()(
       })),
       importExportOpen: false,
       setImportExportOpen: (open) => set({ importExportOpen: open }),
+
+      // Advanced Marker Manager defaults
+      markerManagerState: {
+        selectedMarkerIds: [],
+        searchQuery: '',
+        filterCategory: '',
+        sortBy: 'name',
+        areaSelectMode: false,
+      },
+      setMarkerManagerState: (updates) => set((state) => ({
+        markerManagerState: { ...state.markerManagerState, ...updates },
+      })),
+      markerManagerOpen: false,
+      setMarkerManagerOpen: (open) => set({ markerManagerOpen: open }),
+
+      // Geofence Alert History defaults
+      geofenceEvents: [],
+      addGeofenceEvent: (event) => set((state) => ({
+        geofenceEvents: [...state.geofenceEvents, { ...event, id: `ge-${Date.now()}-${Math.random().toString(36).slice(2, 8)}` }],
+      })),
+      clearGeofenceEvents: () => set({ geofenceEvents: [] }),
+      geofenceAlertOpen: false,
+      setGeofenceAlertOpen: (open) => set({ geofenceAlertOpen: open }),
+      geofenceAlertsEnabled: true,
+      setGeofenceAlertsEnabled: (enabled) => set({ geofenceAlertsEnabled: enabled }),
+
+      // Coordinate Grid Overlay
+      coordinateGrid: {
+        enabled: false,
+        interval: 10,
+        showLabels: true,
+        showMinorGrid: true,
+        latColor: '#14b8a6',
+        lngColor: '#f59e0b',
+      },
+      setCoordinateGrid: (updates) => set((state) => ({ coordinateGrid: { ...state.coordinateGrid, ...updates } })),
+
+      // Map Overlay Gallery
+      mapOverlays: [],
+      setMapOverlay: (id, updates) => set((state) => ({
+        mapOverlays: state.mapOverlays.map((o) => o.id === id ? { ...o, ...updates } : o),
+      })),
+      addMapOverlay: (overlay) => set((state) => ({ mapOverlays: [...state.mapOverlays, overlay] })),
+      removeMapOverlay: (id) => set((state) => ({ mapOverlays: state.mapOverlays.filter((o) => o.id !== id) })),
+      overlayGalleryOpen: false,
+      setOverlayGalleryOpen: (open) => set({ overlayGalleryOpen: open }),
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -2723,6 +2841,10 @@ export const useMapStore = create<MapState>()(
         activeStoryId: state.activeStoryId,
         terrainProfile3D: state.terrainProfile3D,
         importExportState: state.importExportState,
+        geofenceEvents: state.geofenceEvents,
+        geofenceAlertsEnabled: state.geofenceAlertsEnabled,
+        coordinateGrid: state.coordinateGrid,
+        mapOverlays: state.mapOverlays,
       }),
     }
   )

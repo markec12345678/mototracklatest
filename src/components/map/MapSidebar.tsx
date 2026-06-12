@@ -86,6 +86,7 @@ import { LocationDetailDrawer } from '@/components/map/LocationDetailDrawer'
 import { NearbyPanel } from '@/components/map/NearbyPanel'
 import { CustomTileSourceList } from '@/components/map/CustomTileSourceList'
 import { MapThemeCustomizer } from '@/components/map/MapThemeCustomizer'
+import { CoordinateGridControls } from '@/components/map/CoordinateGridOverlay'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ElevationProfile } from '@/components/map/ElevationProfile'
 import { GeofenceManager } from '@/components/map/GeofenceManager'
@@ -1364,6 +1365,11 @@ function LayersTab() {
             </div>
           </div>
         </div>
+
+        <Separator />
+
+        {/* Coordinate Grid Overlay */}
+        <CoordinateGridControls />
 
         <Separator />
 

@@ -72,6 +72,10 @@ import { LocationClusterMap } from '@/components/map/LocationClusterMap'
 import { MapStoryCreator } from '@/components/map/MapStoryCreator'
 import { TerrainProfile3D } from '@/components/map/TerrainProfile3D'
 import { DataImportExport } from '@/components/map/DataImportExport'
+import { CoordinateGridOverlay } from '@/components/map/CoordinateGridOverlay'
+import { MapOverlayGallery } from '@/components/map/MapOverlayGallery'
+import { AdvancedMarkerManager } from '@/components/map/AdvancedMarkerManager'
+import { GeofenceAlertHistory } from '@/components/map/GeofenceAlertHistory'
 import dynamic from 'next/dynamic'
 
 const GPSSimulator = dynamic(() => import('@/components/map/GPSSimulator').then((m) => m.GPSSimulator), { ssr: false })
@@ -123,6 +127,9 @@ import {
   BookOpen,
   MountainSnow,
   Database,
+  BellRing,
+  Grid3x3,
+  MapPinned,
 } from 'lucide-react'
 
 export default function Home() {
@@ -948,6 +955,26 @@ export default function Home() {
             variant="outline"
             size="icon"
             className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setMarkerManagerOpen(true)}
+            title="Advanced Marker Manager"
+            aria-label="Open advanced marker manager"
+          >
+            <MapPin className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setGeofenceAlertOpen(true)}
+            title="Geofence Alert History"
+            aria-label="Open geofence alert history"
+          >
+            <BellRing className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={() => setMarkerCategoriesOpen(true)}
             title="Marker Categories"
             aria-label="Manage marker categories"
@@ -1023,6 +1050,16 @@ export default function Home() {
             aria-label="Open data import/export"
           >
             <Database className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setOverlayGalleryOpen(true)}
+            title="Map Overlay Gallery"
+            aria-label="Open map overlay gallery"
+          >
+            <MapPinned className="h-4 w-4" />
           </Button>
           <Button
             variant="outline"
@@ -1457,6 +1494,18 @@ export default function Home() {
 
       {/* Data Import/Export */}
       <DataImportExport />
+
+      {/* Advanced Marker Manager */}
+      <AdvancedMarkerManager />
+
+      {/* Geofence Alert History */}
+      <GeofenceAlertHistory />
+
+      {/* Coordinate Grid Overlay */}
+      <CoordinateGridOverlay />
+
+      {/* Map Overlay Gallery */}
+      <MapOverlayGallery />
 
       {/* Geofence Dialog */}
       <GeofenceDialog
