@@ -184,6 +184,14 @@ import { MarineHeatwaveTracker } from '@/components/map/MarineHeatwaveTracker'
 import { PrecipitationAnalyzer } from '@/components/map/PrecipitationAnalyzer'
 import { CosmicRayMonitor } from '@/components/map/CosmicRayMonitor'
 import { GreenlandIceTracker } from '@/components/map/GreenlandIceTracker'
+import { RadiationExposureMonitor } from '@/components/map/RadiationExposureMonitor'
+import { PeatFireTracker } from '@/components/map/PeatFireTracker'
+import { SeaLevelRiseProjector } from '@/components/map/SeaLevelRiseProjector'
+import { ThermoclineMapper } from '@/components/map/ThermoclineMapper'
+import { AcidRainTracker } from '@/components/map/AcidRainTracker'
+import { MethaneHydrateMonitor } from '@/components/map/MethaneHydrateMonitor'
+import { KelpForestMonitor } from '@/components/map/KelpForestMonitor'
+import { GlacierLakeOutburstTracker } from '@/components/map/GlacierLakeOutburstTracker'
 import dynamic from 'next/dynamic'
 
 const GPSSimulator = dynamic(() => import('@/components/map/GPSSimulator').then((m) => m.GPSSimulator), { ssr: false })
@@ -2240,6 +2248,86 @@ export default function Home() {
           <Button
             variant="outline"
             size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setRadiationExposure({ open: true })}
+            title="Radiation Exposure Monitor"
+            aria-label="Open radiation exposure monitor"
+          >
+            <ShieldAlert className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setPeatFire({ open: true })}
+            title="Peat Fire Tracker"
+            aria-label="Open peat fire tracker"
+          >
+            <FlameIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setSeaLevelRise({ open: true })}
+            title="Sea Level Rise Projector"
+            aria-label="Open sea level rise projector"
+          >
+            <WavesIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setThermocline({ open: true })}
+            title="Thermocline Mapper"
+            aria-label="Open thermocline mapper"
+          >
+            <Thermometer className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setAcidRain({ open: true })}
+            title="Acid Rain Tracker"
+            aria-label="Open acid rain tracker"
+          >
+            <CloudRain className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setMethaneHydrate({ open: true })}
+            title="Methane Hydrate Monitor"
+            aria-label="Open methane hydrate monitor"
+          >
+            <DropletsIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setKelpForest({ open: true })}
+            title="Kelp Forest Monitor"
+            aria-label="Open kelp forest monitor"
+          >
+            <Leaf className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setGLOF({ open: true })}
+            title="Glacier Lake Outburst Tracker"
+            aria-label="Open glacier lake outburst tracker"
+          >
+            <Mountain className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
             className="hidden sm:flex map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={() =>
               window.open('https://github.com/maplibre/maplibre-native', '_blank')
@@ -3251,6 +3339,30 @@ export default function Home() {
 
       {/* Greenland Ice Tracker */}
       <GreenlandIceTracker />
+
+      {/* Radiation Exposure Monitor */}
+      <RadiationExposureMonitor />
+
+      {/* Peat Fire Tracker */}
+      <PeatFireTracker />
+
+      {/* Sea Level Rise Projector */}
+      <SeaLevelRiseProjector />
+
+      {/* Thermocline Mapper */}
+      <ThermoclineMapper />
+
+      {/* Acid Rain Tracker */}
+      <AcidRainTracker />
+
+      {/* Methane Hydrate Monitor */}
+      <MethaneHydrateMonitor />
+
+      {/* Kelp Forest Monitor */}
+      <KelpForestMonitor />
+
+      {/* Glacier Lake Outburst Tracker */}
+      <GlacierLakeOutburstTracker />
 
       {/* Footer */}
       <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-2 sm:px-3 md:px-4 safe-area-bottom before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">

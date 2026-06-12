@@ -2922,6 +2922,207 @@ export interface GreenlandIceState {
   zoneFilter: 'all' | 'accumulation' | 'percolation' | 'wet_snow' | 'bare_ice' | 'outlet_glacier'
 }
 
+// Task 53: Radiation Exposure Monitor
+export interface RadiationStation {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  doseRate: number
+  gammaRate: number
+  betaRate: number
+  alertLevel: 'normal' | 'elevated' | 'high' | 'critical'
+  source: string
+  lastReading: string
+}
+
+export interface RadiationExposureState {
+  stations: RadiationStation[]
+  activeStationId: string | null
+  showDoseRate: boolean
+  showGamma: boolean
+  showBeta: boolean
+  showAlert: boolean
+  open: boolean
+  alertFilter: 'all' | 'normal' | 'elevated' | 'high' | 'critical'
+}
+
+// Task 53: Peat Fire Tracker
+export interface PeatFireZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  fireStatus: 'active' | 'smoldering' | 'extinguished' | 'at_risk'
+  area: number
+  depth: number
+  carbonEmission: number
+  peatType: string
+  containmentProgress: number
+}
+
+export interface PeatFireState {
+  peatFires: PeatFireZone[]
+  activeFireId: string | null
+  showStatus: boolean
+  showArea: boolean
+  showCarbon: boolean
+  showContainment: boolean
+  open: boolean
+  statusFilter: 'all' | 'active' | 'smoldering' | 'extinguished' | 'at_risk'
+}
+
+// Task 53: Sea Level Rise Projector
+export interface SeaLevelStation {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  currentRise: number
+  projected2050: number
+  projected2100: number
+  trend: number
+  coastalImpact: 'minimal' | 'moderate' | 'significant' | 'severe'
+  population: number
+}
+
+export interface SeaLevelRiseState {
+  stations: SeaLevelStation[]
+  activeStationId: string | null
+  showCurrent: boolean
+  showProjection: boolean
+  showImpact: boolean
+  showPopulation: boolean
+  open: boolean
+  impactFilter: 'all' | 'minimal' | 'moderate' | 'significant' | 'severe'
+}
+
+// Task 53: Thermocline Mapper
+export interface ThermoclineProfile {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  thermoclineDepth: number
+  gradientStrength: number
+  sstSurface: number
+  sstDeep: number
+  season: string
+  elNinoPhase: 'neutral' | 'el_nino' | 'la_nina'
+}
+
+export interface ThermoclineState {
+  profiles: ThermoclineProfile[]
+  activeProfileId: string | null
+  showDepth: boolean
+  showGradient: boolean
+  showSST: boolean
+  showENSO: boolean
+  open: boolean
+  ensoFilter: 'all' | 'neutral' | 'el_nino' | 'la_nina'
+}
+
+// Task 53: Acid Rain Tracker
+export interface AcidRainStation {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  precipPH: number
+  sulfateConc: number
+  nitrateConc: number
+  ammoniumConc: number
+  severity: 'normal' | 'mild' | 'moderate' | 'severe'
+  trend: 'improving' | 'stable' | 'worsening'
+}
+
+export interface AcidRainState {
+  stations: AcidRainStation[]
+  activeStationId: string | null
+  showPH: boolean
+  showSulfate: boolean
+  showSeverity: boolean
+  showTrend: boolean
+  open: boolean
+  severityFilter: 'all' | 'normal' | 'mild' | 'moderate' | 'severe'
+}
+
+// Task 53: Methane Hydrate Monitor
+export interface HydrateZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  stabilityZone: 'stable' | 'marginal' | 'unstable' | 'dissociating'
+  depth: number
+  temperature: number
+  pressure: number
+  methaneConcentration: number
+  seafloorType: string
+}
+
+export interface MethaneHydrateState {
+  hydrateZones: HydrateZone[]
+  activeZoneId: string | null
+  showStability: boolean
+  showDepth: boolean
+  showTemperature: boolean
+  showConcentration: boolean
+  open: boolean
+  stabilityFilter: 'all' | 'stable' | 'marginal' | 'unstable' | 'dissociating'
+}
+
+// Task 53: Kelp Forest Monitor
+export interface KelpForestSite {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  canopyCoverage: number
+  healthIndex: number
+  species: string
+  waterTemp: number
+  nutrientLevel: number
+  urchinDensity: number
+  restorationStatus: 'pristine' | 'healthy' | 'declining' | 'barren'
+}
+
+export interface KelpForestState {
+  kelpSites: KelpForestSite[]
+  activeSiteId: string | null
+  showCoverage: boolean
+  showHealth: boolean
+  showSpecies: boolean
+  showRestoration: boolean
+  open: boolean
+  statusFilter: 'all' | 'pristine' | 'healthy' | 'declining' | 'barren'
+}
+
+// Task 53: Glacier Lake Outburst Tracker
+export interface GLOFSite {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  lakeVolume: number
+  damType: 'moraine' | 'ice' | 'bedrock'
+  damStability: 'stable' | 'weakening' | 'critical' | 'breached'
+  downstreamPopulation: number
+  lastOutburst: string | null
+  riskLevel: 'low' | 'moderate' | 'high' | 'very_high'
+}
+
+export interface GLOFState {
+  glofSites: GLOFSite[]
+  activeSiteId: string | null
+  showVolume: boolean
+  showStability: boolean
+  showRisk: boolean
+  showPopulation: boolean
+  open: boolean
+  riskFilter: 'all' | 'low' | 'moderate' | 'high' | 'very_high'
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -3955,6 +4156,38 @@ interface MapState {
   // Greenland Ice Tracker
   greenlandIce: GreenlandIceState
   setGreenlandIce: (state: Partial<GreenlandIceState>) => void
+
+  // Radiation Exposure Monitor
+  radiationExposure: RadiationExposureState
+  setRadiationExposure: (state: Partial<RadiationExposureState>) => void
+
+  // Peat Fire Tracker
+  peatFire: PeatFireState
+  setPeatFire: (state: Partial<PeatFireState>) => void
+
+  // Sea Level Rise Projector
+  seaLevelRise: SeaLevelRiseState
+  setSeaLevelRise: (state: Partial<SeaLevelRiseState>) => void
+
+  // Thermocline Mapper
+  thermocline: ThermoclineState
+  setThermocline: (state: Partial<ThermoclineState>) => void
+
+  // Acid Rain Tracker
+  acidRain: AcidRainState
+  setAcidRain: (state: Partial<AcidRainState>) => void
+
+  // Methane Hydrate Monitor
+  methaneHydrate: MethaneHydrateState
+  setMethaneHydrate: (state: Partial<MethaneHydrateState>) => void
+
+  // Kelp Forest Monitor
+  kelpForest: KelpForestState
+  setKelpForest: (state: Partial<KelpForestState>) => void
+
+  // Glacier Lake Outburst Tracker
+  glof: GLOFState
+  setGLOF: (state: Partial<GLOFState>) => void
 }
 
 // Coordinate Share Card types
@@ -7524,6 +7757,118 @@ export const useMapStore = create<MapState>()(
       setGreenlandIce: (updates) => set((state) => ({
         greenlandIce: { ...state.greenlandIce, ...updates },
       })),
+
+      radiationExposure: {
+        stations: [],
+        activeStationId: null,
+        showDoseRate: true,
+        showGamma: false,
+        showBeta: false,
+        showAlert: false,
+        open: false,
+        alertFilter: 'all',
+      },
+      setRadiationExposure: (updates) => set((state) => ({
+        radiationExposure: { ...state.radiationExposure, ...updates },
+      })),
+
+      peatFire: {
+        peatFires: [],
+        activeFireId: null,
+        showStatus: true,
+        showArea: false,
+        showCarbon: false,
+        showContainment: false,
+        open: false,
+        statusFilter: 'all',
+      },
+      setPeatFire: (updates) => set((state) => ({
+        peatFire: { ...state.peatFire, ...updates },
+      })),
+
+      seaLevelRise: {
+        stations: [],
+        activeStationId: null,
+        showCurrent: true,
+        showProjection: false,
+        showImpact: false,
+        showPopulation: false,
+        open: false,
+        impactFilter: 'all',
+      },
+      setSeaLevelRise: (updates) => set((state) => ({
+        seaLevelRise: { ...state.seaLevelRise, ...updates },
+      })),
+
+      thermocline: {
+        profiles: [],
+        activeProfileId: null,
+        showDepth: true,
+        showGradient: false,
+        showSST: false,
+        showENSO: false,
+        open: false,
+        ensoFilter: 'all',
+      },
+      setThermocline: (updates) => set((state) => ({
+        thermocline: { ...state.thermocline, ...updates },
+      })),
+
+      acidRain: {
+        stations: [],
+        activeStationId: null,
+        showPH: true,
+        showSulfate: false,
+        showSeverity: false,
+        showTrend: false,
+        open: false,
+        severityFilter: 'all',
+      },
+      setAcidRain: (updates) => set((state) => ({
+        acidRain: { ...state.acidRain, ...updates },
+      })),
+
+      methaneHydrate: {
+        hydrateZones: [],
+        activeZoneId: null,
+        showStability: true,
+        showDepth: false,
+        showTemperature: false,
+        showConcentration: false,
+        open: false,
+        stabilityFilter: 'all',
+      },
+      setMethaneHydrate: (updates) => set((state) => ({
+        methaneHydrate: { ...state.methaneHydrate, ...updates },
+      })),
+
+      kelpForest: {
+        kelpSites: [],
+        activeSiteId: null,
+        showCoverage: true,
+        showHealth: false,
+        showSpecies: false,
+        showRestoration: false,
+        open: false,
+        statusFilter: 'all',
+      },
+      setKelpForest: (updates) => set((state) => ({
+        kelpForest: { ...state.kelpForest, ...updates },
+      })),
+
+      glof: {
+        glofSites: [],
+        activeSiteId: null,
+        showVolume: true,
+        showStability: false,
+        showRisk: false,
+        showPopulation: false,
+        open: false,
+        riskFilter: 'all',
+      },
+      setGLOF: (updates) => set((state) => ({
+        glof: { ...state.glof, ...updates },
+      })),
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -7711,6 +8056,14 @@ export const useMapStore = create<MapState>()(
         precipitation: state.precipitation,
         cosmicRay: state.cosmicRay,
         greenlandIce: state.greenlandIce,
+        radiationExposure: state.radiationExposure,
+        peatFire: state.peatFire,
+        seaLevelRise: state.seaLevelRise,
+        thermocline: state.thermocline,
+        acidRain: state.acidRain,
+        methaneHydrate: state.methaneHydrate,
+        kelpForest: state.kelpForest,
+        glof: state.glof,
       }),
     }
   )
