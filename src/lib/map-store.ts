@@ -126,6 +126,39 @@ export interface Geofence {
   createdAt: string
 }
 
+// Map Collage types
+export interface CollageTile {
+  id: string
+  dataUrl: string
+  title: string
+  style: string
+}
+
+export interface MapCollage {
+  id: string
+  name: string
+  layout: string
+  tiles: CollageTile[]
+  bgColor: string
+  spacing: number
+  borderRadius: number
+  title: string
+  subtitle: string
+}
+
+// Nearby Events types
+export interface NearbyEvent {
+  id: string
+  name: string
+  venue: string
+  category: string
+  date: string
+  description: string
+  latitude: number
+  longitude: number
+  distance: number
+}
+
 export type MapStyleOption = {
   id: string
   name: string
@@ -1126,6 +1159,30 @@ interface MapState {
   incrementStat: (key: keyof Pick<UsageStats, 'totalSearches' | 'totalLocationsAdded' | 'totalRoutesCreated' | 'totalMeasurements' | 'totalScreenshots' | 'totalStyleSwitches'>) => void
   usageStatsOpen: boolean
   setUsageStatsOpen: (open: boolean) => void
+
+  // Map Collage Creator
+  mapCollage: MapCollage | null
+  setMapCollage: (collage: MapCollage | null) => void
+  collageCreatorOpen: boolean
+  setCollageCreatorOpen: (open: boolean) => void
+
+  // Nearby Events Finder
+  nearbyEvents: NearbyEvent[]
+  setNearbyEvents: (events: NearbyEvent[]) => void
+  eventsFinderOpen: boolean
+  setEventsFinderOpen: (open: boolean) => void
+  eventSearchRadius: number
+  setEventSearchRadius: (radius: number) => void
+
+  // Altitude Alert System
+  altitudeState: AltitudeState
+  setAltitudeState: (state: Partial<AltitudeState>) => void
+  altitudeAlertOpen: boolean
+  setAltitudeAlertOpen: (open: boolean) => void
+
+  // Custom Compass Rose
+  compassRose: CompassRoseState
+  setCompassRose: (state: Partial<CompassRoseState>) => void
 }
 
 // Geofence Alert History types
@@ -1230,6 +1287,47 @@ export interface SpeedAlertEntry {
   speed: number
   limit: number
   zoneName?: string
+}
+
+// Altitude Alert System types
+export interface AltitudeZone {
+  id: string
+  name: string
+  minAlt: number
+  maxAlt: number
+  color: string
+}
+
+export interface AltitudeAlert {
+  id: string
+  type: 'target' | 'rate' | 'zone'
+  value: number
+  triggered: boolean
+  timestamp: number | null
+}
+
+export interface AltitudeState {
+  currentAltitude: number | null
+  minAltitude: number | null
+  maxAltitude: number | null
+  targetAltitude: number | null
+  zones: AltitudeZone[]
+  alerts: AltitudeAlert[]
+  history: { timestamp: number; altitude: number }[]
+}
+
+// Custom Compass Rose types
+export interface CompassRoseState {
+  style: 'classic' | 'modern' | 'nautical' | 'custom'
+  points: number
+  primaryColor: string
+  secondaryColor: string
+  size: 'small' | 'medium' | 'large'
+  opacity: number
+  showDegrees: boolean
+  showLabels: boolean
+  position: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'
+  visible: boolean
 }
 
 // Measurement Suite types
@@ -3044,6 +3142,58 @@ export const useMapStore = create<MapState>()(
       })),
       usageStatsOpen: false,
       setUsageStatsOpen: (open) => set({ usageStatsOpen: open }),
+
+      // Map Collage Creator defaults
+      mapCollage: null,
+      setMapCollage: (collage) => set({ mapCollage: collage }),
+      collageCreatorOpen: false,
+      setCollageCreatorOpen: (open) => set({ collageCreatorOpen: open }),
+
+      // Nearby Events Finder defaults
+      nearbyEvents: [],
+      setNearbyEvents: (events) => set({ nearbyEvents: events }),
+      eventsFinderOpen: false,
+      setEventsFinderOpen: (open) => set({ eventsFinderOpen: open }),
+      eventSearchRadius: 10,
+      setEventSearchRadius: (radius) => set({ eventSearchRadius: radius }),
+
+      // Altitude Alert System defaults
+      altitudeState: {
+        currentAltitude: null,
+        minAltitude: null,
+        maxAltitude: null,
+        targetAltitude: null,
+        zones: [
+          { id: 'lowland', name: 'Lowland', minAlt: 0, maxAlt: 500, color: '#22c55e' },
+          { id: 'highland', name: 'Highland', minAlt: 500, maxAlt: 1500, color: '#eab308' },
+          { id: 'alpine', name: 'Alpine', minAlt: 1500, maxAlt: 3000, color: '#f97316' },
+          { id: 'high-alpine', name: 'High Alpine', minAlt: 3000, maxAlt: 8849, color: '#ef4444' },
+        ],
+        alerts: [],
+        history: [],
+      },
+      setAltitudeState: (updates) => set((state) => ({
+        altitudeState: { ...state.altitudeState, ...updates },
+      })),
+      altitudeAlertOpen: false,
+      setAltitudeAlertOpen: (open) => set({ altitudeAlertOpen: open }),
+
+      // Custom Compass Rose defaults
+      compassRose: {
+        style: 'classic',
+        points: 8,
+        primaryColor: '#14b8a6',
+        secondaryColor: '#64748b',
+        size: 'medium',
+        opacity: 0.9,
+        showDegrees: true,
+        showLabels: true,
+        position: 'top-right',
+        visible: true,
+      },
+      setCompassRose: (updates) => set((state) => ({
+        compassRose: { ...state.compassRose, ...updates },
+      })),
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -3130,6 +3280,10 @@ export const useMapStore = create<MapState>()(
         savedScreenshots: state.savedScreenshots,
         pedometer: state.pedometer,
         usageStats: state.usageStats,
+        mapCollage: state.mapCollage,
+        eventSearchRadius: state.eventSearchRadius,
+        altitudeState: state.altitudeState,
+        compassRose: state.compassRose,
       }),
     }
   )

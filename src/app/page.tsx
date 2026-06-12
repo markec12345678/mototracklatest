@@ -84,6 +84,10 @@ import { PedometerWidget } from '@/components/map/PedometerWidget'
 import { MapUsageStats } from '@/components/map/MapUsageStats'
 import { ScreenshotManager } from '@/components/map/ScreenshotManager'
 import { RouteDifficultyAnalyzer } from '@/components/map/RouteDifficultyAnalyzer'
+import { MapCollageCreator } from '@/components/map/MapCollageCreator'
+import { NearbyEventsFinder } from '@/components/map/NearbyEventsFinder'
+import { AltitudeAlertSystem } from '@/components/map/AltitudeAlertSystem'
+import { CustomCompassRose } from '@/components/map/CustomCompassRose'
 import dynamic from 'next/dynamic'
 
 const GPSSimulator = dynamic(() => import('@/components/map/GPSSimulator').then((m) => m.GPSSimulator), { ssr: false })
@@ -146,6 +150,10 @@ import {
   PieChart,
   Image as ImageIcon,
   TrendingUp,
+  LayoutGrid,
+  CalendarDays,
+  ArrowUpFromLine,
+  Compass,
 } from 'lucide-react'
 
 export default function Home() {
@@ -1120,6 +1128,26 @@ export default function Home() {
           <Button
             variant="outline"
             size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setAltitudeAlertOpen(true)}
+            title="Altitude Alerts"
+            aria-label="Open altitude alert system"
+          >
+            <ArrowUpFromLine className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setCompassRose({ visible: !useMapStore.getState().compassRose.visible })}
+            title="Compass Rose"
+            aria-label="Toggle compass rose"
+          >
+            <Compass className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
             className="hidden sm:flex map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={() =>
               window.open('https://github.com/maplibre/maplibre-native', '_blank')
@@ -1269,6 +1297,52 @@ export default function Home() {
               </TooltipTrigger>
               <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
                 Usage Statistics
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    useMapStore((s) => s.collageCreatorOpen)
+                      ? 'bg-violet-500 text-white shadow-md shadow-violet-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setCollageCreatorOpen(true)}
+                  aria-label="Map Collage Creator"
+                >
+                  <LayoutGrid className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Map Collage Creator
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    useMapStore((s) => s.eventsFinderOpen)
+                      ? 'bg-amber-500 text-white shadow-md shadow-amber-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setEventsFinderOpen(true)}
+                  aria-label="Nearby Events Finder"
+                >
+                  <CalendarDays className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Nearby Events Finder
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -1628,6 +1702,12 @@ export default function Home() {
       {/* Speed Alert System Dialog */}
       <SpeedAlertSystem />
 
+      {/* Altitude Alert System Dialog */}
+      <AltitudeAlertSystem />
+
+      {/* Custom Compass Rose Overlay */}
+      <CustomCompassRose />
+
       {/* Map Labels Overlay */}
       <MapLabelsOverlay />
 
@@ -1785,6 +1865,12 @@ export default function Home() {
 
       {/* Route Difficulty Analyzer */}
       <RouteDifficultyAnalyzer />
+
+      {/* Map Collage Creator */}
+      <MapCollageCreator />
+
+      {/* Nearby Events Finder */}
+      <NearbyEventsFinder />
 
       {/* Footer */}
       <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-2 sm:px-3 md:px-4 safe-area-bottom before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">
