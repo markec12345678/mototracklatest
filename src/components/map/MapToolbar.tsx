@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { MapPin, Navigation, Ruler, Crosshair, Pencil, Maximize2, Type, Building2, Sparkles, Volume2, Users, Eye, Clock, Route, StickyNote, CheckSquare, BarChart3, Server, ArrowRightLeft } from 'lucide-react'
+import { MapPin, Navigation, Ruler, Crosshair, Pencil, Maximize2, Type, Building2, Sparkles, Volume2, Users, Eye, Clock, Route, StickyNote, CheckSquare, BarChart3, Server, ArrowRightLeft, SunDim, PenTool } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Separator } from '@/components/ui/separator'
@@ -456,6 +456,37 @@ export function MapToolbar({ aiSuggestionsOpen, setAiSuggestionsOpen }: { aiSugg
             isActive={useMapStore((s) => s.waypointOptimizerOpen)}
             onClick={() => useMapStore.getState().setWaypointOptimizerOpen(true)}
             index={globalIndex + 11}
+          />
+        </div>
+
+        {/* Sun Shadow & SVG Marker Designer */}
+        <Separator className="my-1 opacity-50" />
+        <div className="flex flex-col gap-1">
+          <ToolButton
+            tool={{
+              id: 'navigate' as any,
+              icon: <SunDim className="h-4 w-4" />,
+              label: 'Sun Shadow',
+              activeClass: 'bg-amber-600 text-white shadow-md shadow-amber-600/30',
+              shortcut: '',
+              description: 'Calculate and visualize sun shadows',
+            }}
+            isActive={useMapStore((s) => s.sunShadowOpen)}
+            onClick={() => useMapStore.getState().setSunShadowOpen(true)}
+            index={globalIndex + 12}
+          />
+          <ToolButton
+            tool={{
+              id: 'navigate' as any,
+              icon: <PenTool className="h-4 w-4" />,
+              label: 'SVG Marker',
+              activeClass: 'bg-violet-600 text-white shadow-md shadow-violet-600/30',
+              shortcut: '',
+              description: 'Design custom SVG map markers',
+            }}
+            isActive={useMapStore((s) => s.markerDesignerOpen)}
+            onClick={() => useMapStore.getState().setMarkerDesignerOpen(true)}
+            index={globalIndex + 13}
           />
         </div>
       </div>

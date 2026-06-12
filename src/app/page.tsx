@@ -88,6 +88,10 @@ import { MapCollageCreator } from '@/components/map/MapCollageCreator'
 import { NearbyEventsFinder } from '@/components/map/NearbyEventsFinder'
 import { AltitudeAlertSystem } from '@/components/map/AltitudeAlertSystem'
 import { CustomCompassRose } from '@/components/map/CustomCompassRose'
+import { MultiStopRoutePlanner } from '@/components/map/MultiStopRoutePlanner'
+import { EnhancedWeatherDashboard } from '@/components/map/EnhancedWeatherDashboard'
+import { SunShadowCalculator } from '@/components/map/SunShadowCalculator'
+import { SVGMarkerDesigner } from '@/components/map/SVGMarkerDesigner'
 import dynamic from 'next/dynamic'
 
 const GPSSimulator = dynamic(() => import('@/components/map/GPSSimulator').then((m) => m.GPSSimulator), { ssr: false })
@@ -154,6 +158,10 @@ import {
   CalendarDays,
   ArrowUpFromLine,
   Compass,
+  SunDim,
+  PenTool,
+  Waypoints,
+  CloudSun,
 } from 'lucide-react'
 
 export default function Home() {
@@ -1148,6 +1156,26 @@ export default function Home() {
           <Button
             variant="outline"
             size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setMultiStopPlannerOpen(true)}
+            title="Multi-Stop Route Planner"
+            aria-label="Open multi-stop route planner"
+          >
+            <Waypoints className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setEnhancedWeatherOpen(true)}
+            title="Enhanced Weather Dashboard"
+            aria-label="Open enhanced weather dashboard"
+          >
+            <CloudSun className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
             className="hidden sm:flex map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={() =>
               window.open('https://github.com/maplibre/maplibre-native', '_blank')
@@ -1707,6 +1735,18 @@ export default function Home() {
 
       {/* Custom Compass Rose Overlay */}
       <CustomCompassRose />
+
+      {/* Multi-Stop Route Planner */}
+      <MultiStopRoutePlanner />
+
+      {/* Enhanced Weather Dashboard */}
+      <EnhancedWeatherDashboard />
+
+      {/* Sun Shadow Calculator */}
+      <SunShadowCalculator />
+
+      {/* SVG Marker Designer */}
+      <SVGMarkerDesigner />
 
       {/* Map Labels Overlay */}
       <MapLabelsOverlay />

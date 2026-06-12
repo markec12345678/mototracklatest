@@ -557,6 +557,40 @@ const DEFAULT_LAYER_VISIBILITY: LayerVisibility = {
   labels: true,
 }
 
+// Multi-Stop Route Planner types
+export interface MultiStop {
+  id: string
+  name: string
+  longitude: number
+  latitude: number
+  type: 'start' | 'waypoint' | 'end' | 'fuel' | 'food' | 'rest' | 'scenic'
+  duration: number // minutes to spend
+}
+
+export interface MultiStopRoute {
+  id: string
+  name: string
+  stops: MultiStop[]
+  mode: 'driving' | 'cycling' | 'walking'
+  optimized: boolean
+}
+
+// Enhanced Weather Dashboard types
+export interface WeatherData {
+  temperature: number | null
+  feelsLike: number | null
+  humidity: number | null
+  windSpeed: number | null
+  windDirection: number | null
+  pressure: number | null
+  uvIndex: number | null
+  visibility: number | null
+  cloudCover: number | null
+  precipitation: number | null
+  weatherCode: number | null
+  lastUpdated: number | null
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -1183,6 +1217,36 @@ interface MapState {
   // Custom Compass Rose
   compassRose: CompassRoseState
   setCompassRose: (state: Partial<CompassRoseState>) => void
+
+  // Multi-Stop Route Planner
+  multiStopRoute: MultiStopRoute | null
+  setMultiStopRoute: (route: MultiStopRoute | null) => void
+  multiStopPlannerOpen: boolean
+  setMultiStopPlannerOpen: (open: boolean) => void
+
+  // Enhanced Weather Dashboard
+  enhancedWeather: WeatherData
+  setEnhancedWeather: (data: Partial<WeatherData>) => void
+  enhancedWeatherOpen: boolean
+  setEnhancedWeatherOpen: (open: boolean) => void
+  temperatureUnit: 'celsius' | 'fahrenheit'
+  setTemperatureUnit: (unit: 'celsius' | 'fahrenheit') => void
+
+  // Sun Shadow Calculator
+  sunShadowState: SunShadowState
+  setSunShadowState: (state: Partial<SunShadowState>) => void
+  sunShadowOpen: boolean
+  setSunShadowOpen: (open: boolean) => void
+
+  // SVG Marker Designer
+  svgMarkerDesigns: SVGMarkerDesign[]
+  addSVGMarkerDesign: (design: SVGMarkerDesign) => void
+  updateSVGMarkerDesign: (id: string, updates: Partial<Omit<SVGMarkerDesign, 'id'>>) => void
+  removeSVGMarkerDesign: (id: string) => void
+  activeMarkerDesign: string | null
+  setActiveMarkerDesign: (id: string | null) => void
+  markerDesignerOpen: boolean
+  setMarkerDesignerOpen: (open: boolean) => void
 }
 
 // Geofence Alert History types
@@ -1314,6 +1378,40 @@ export interface AltitudeState {
   zones: AltitudeZone[]
   alerts: AltitudeAlert[]
   history: { timestamp: number; altitude: number }[]
+}
+
+// Sun Shadow Calculator types
+export interface ShadowBuilding {
+  id: string
+  longitude: number
+  latitude: number
+  height: number // meters
+  name: string
+}
+
+export interface SunShadowState {
+  buildings: ShadowBuilding[]
+  selectedTime: number // hours (0-24)
+  selectedDate: string // YYYY-MM-DD
+  isAnimating: boolean
+  animationSpeed: number
+}
+
+// SVG Marker Designer types
+export interface SVGMarkerDesign {
+  id: string
+  name: string
+  template: string
+  fillColor: string
+  strokeColor: string
+  strokeWidth: number
+  size: string
+  opacity: number
+  rotation: number
+  innerIcon: string
+  iconColor: string
+  labelText: string
+  labelFontSize: number
 }
 
 // Custom Compass Rose types
@@ -3194,6 +3292,68 @@ export const useMapStore = create<MapState>()(
       setCompassRose: (updates) => set((state) => ({
         compassRose: { ...state.compassRose, ...updates },
       })),
+
+      // Multi-Stop Route Planner defaults
+      multiStopRoute: null,
+      setMultiStopRoute: (route) => set({ multiStopRoute: route }),
+      multiStopPlannerOpen: false,
+      setMultiStopPlannerOpen: (open) => set({ multiStopPlannerOpen: open }),
+
+      // Enhanced Weather Dashboard defaults
+      enhancedWeather: {
+        temperature: null,
+        feelsLike: null,
+        humidity: null,
+        windSpeed: null,
+        windDirection: null,
+        pressure: null,
+        uvIndex: null,
+        visibility: null,
+        cloudCover: null,
+        precipitation: null,
+        weatherCode: null,
+        lastUpdated: null,
+      },
+      setEnhancedWeather: (data) => set((state) => ({
+        enhancedWeather: { ...state.enhancedWeather, ...data },
+      })),
+      enhancedWeatherOpen: false,
+      setEnhancedWeatherOpen: (open) => set({ enhancedWeatherOpen: open }),
+      temperatureUnit: 'celsius',
+      setTemperatureUnit: (unit) => set({ temperatureUnit: unit }),
+
+      // Sun Shadow Calculator defaults
+      sunShadowState: {
+        buildings: [],
+        selectedTime: 12,
+        selectedDate: typeof Date !== 'undefined' ? new Date().toISOString().split('T')[0] : '2024-01-01',
+        isAnimating: false,
+        animationSpeed: 1,
+      },
+      setSunShadowState: (updates) => set((state) => ({
+        sunShadowState: { ...state.sunShadowState, ...updates },
+      })),
+      sunShadowOpen: false,
+      setSunShadowOpen: (open) => set({ sunShadowOpen: open }),
+
+      // SVG Marker Designer defaults
+      svgMarkerDesigns: [],
+      addSVGMarkerDesign: (design) => set((state) => ({
+        svgMarkerDesigns: [...state.svgMarkerDesigns, design],
+      })),
+      updateSVGMarkerDesign: (id, updates) => set((state) => ({
+        svgMarkerDesigns: state.svgMarkerDesigns.map((d) =>
+          d.id === id ? { ...d, ...updates } : d
+        ),
+      })),
+      removeSVGMarkerDesign: (id) => set((state) => ({
+        svgMarkerDesigns: state.svgMarkerDesigns.filter((d) => d.id !== id),
+        activeMarkerDesign: state.activeMarkerDesign === id ? null : state.activeMarkerDesign,
+      })),
+      activeMarkerDesign: null,
+      setActiveMarkerDesign: (id) => set({ activeMarkerDesign: id }),
+      markerDesignerOpen: false,
+      setMarkerDesignerOpen: (open) => set({ markerDesignerOpen: open }),
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -3284,6 +3444,11 @@ export const useMapStore = create<MapState>()(
         eventSearchRadius: state.eventSearchRadius,
         altitudeState: state.altitudeState,
         compassRose: state.compassRose,
+        multiStopRoute: state.multiStopRoute,
+        temperatureUnit: state.temperatureUnit,
+        sunShadowState: state.sunShadowState,
+        svgMarkerDesigns: state.svgMarkerDesigns,
+        activeMarkerDesign: state.activeMarkerDesign,
       }),
     }
   )
