@@ -2095,6 +2095,108 @@ export function MapView() {
     }
   }, [customTileSources, mapLoadedVersion])
 
+  // WMS Tile Sources
+  const wmsTileSources = useMapStore((s) => s.wmsTileSources)
+  useEffect(() => {
+    if (!map.current || !mapLoadedRef.current) return
+
+    const m = map.current
+    const sourcePrefix = 'wms-src-'
+    const layerPrefix = 'wms-layer-'
+
+    const currentIds = new Set(wmsTileSources.map((s) => s.id))
+
+    // Remove WMS sources/layers that no longer exist
+    const style = m.getStyle()
+    if (style) {
+      const existingLayerIds = style.layers?.map((l) => l.id) || []
+      const existingSourceIds = Object.keys(style.sources || {})
+
+      for (const layerId of existingLayerIds) {
+        if (layerId.startsWith(layerPrefix)) {
+          const id = layerId.slice(layerPrefix.length)
+          if (!currentIds.has(id)) {
+            try { m.removeLayer(layerId) } catch { /* ignore */ }
+          }
+        }
+      }
+      for (const srcId of existingSourceIds) {
+        if (srcId.startsWith(sourcePrefix)) {
+          const id = srcId.slice(sourcePrefix.length)
+          if (!currentIds.has(id)) {
+            try { m.removeSource(srcId) } catch { /* ignore */ }
+          }
+        }
+      }
+    }
+
+    // Add or update WMS tile sources
+    for (const source of wmsTileSources) {
+      const sourceId = sourcePrefix + source.id
+      const layerId = layerPrefix + source.id
+
+      // Build tile URL based on service type
+      let tileUrl = source.url
+      if (source.serviceType === 'wms') {
+        const params = new URLSearchParams({
+          service: 'WMS',
+          version: '1.1.1',
+          request: 'GetMap',
+          layers: source.layerName,
+          styles: '',
+          srs: 'EPSG:3857',
+          format: source.format || 'image/png',
+          width: String(source.tileSize || 256),
+          height: String(source.tileSize || 256),
+          bbox: '{bbox-epsg-3857}',
+          ...source.customParams,
+        })
+        const separator = source.url.includes('?') ? '&' : '?'
+        tileUrl = source.url + separator + params.toString()
+      } else if (source.serviceType === 'tms') {
+        // TMS format: url/{z}/{x}/{y}.png
+        if (!source.url.includes('{z}')) {
+          tileUrl = source.url + (source.url.endsWith('/') ? '' : '/') + '{z}/{x}/{y}.png'
+        }
+      }
+      // WMTS uses similar tile URL pattern
+
+      // Add raster source
+      if (!m.getSource(sourceId)) {
+        try {
+          m.addSource(sourceId, {
+            type: 'raster',
+            tiles: [tileUrl],
+            tileSize: source.tileSize || 256,
+          } as maplibregl.RasterSourceSpecification)
+        } catch (e) {
+          console.warn(`Failed to add WMS source "${source.name}":`, e)
+          continue
+        }
+      }
+
+      // Add raster layer
+      if (!m.getLayer(layerId)) {
+        try {
+          m.addLayer({
+            id: layerId,
+            type: 'raster',
+            source: sourceId,
+            paint: {
+              'raster-opacity': source.isVisible ? source.opacity : 0,
+            },
+          } as maplibregl.LayerSpecification)
+        } catch (e) {
+          console.warn(`Failed to add WMS layer "${source.name}":`, e)
+        }
+      } else {
+        try {
+          m.setPaintProperty(layerId, 'raster-opacity', source.isVisible ? source.opacity : 0)
+        } catch { /* ignore */ }
+      }
+    }
+  }, [wmsTileSources, mapLoadedVersion])
+
   // Image overlays
   const imageOverlays = useMapStore((s) => s.imageOverlays)
   useEffect(() => {

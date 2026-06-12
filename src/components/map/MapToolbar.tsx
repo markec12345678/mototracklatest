@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { MapPin, Navigation, Ruler, Crosshair, Pencil, Maximize2, Type, Building2, Sparkles, Volume2, Users, Eye, Clock, Route, StickyNote, CheckSquare } from 'lucide-react'
+import { MapPin, Navigation, Ruler, Crosshair, Pencil, Maximize2, Type, Building2, Sparkles, Volume2, Users, Eye, Clock, Route, StickyNote, CheckSquare, BarChart3, Server } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Separator } from '@/components/ui/separator'
@@ -404,6 +404,45 @@ export function MapToolbar({ aiSuggestionsOpen, setAiSuggestionsOpen }: { aiSugg
             isActive={useMapStore((s) => s.batchOperation.isSelectMode)}
             onClick={() => useMapStore.getState().setBatchSelectMode(!useMapStore.getState().batchOperation.isSelectMode)}
             index={globalIndex + 8}
+          />
+        </div>
+
+        {/* Track Stats & WMS */}
+        <Separator className="my-1 opacity-50" />
+        <div className="flex flex-col gap-1">
+          <ToolButton
+            tool={{
+              id: 'navigate' as any,
+              icon: <BarChart3 className="h-4 w-4" />,
+              label: 'Track Stats',
+              activeClass: 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30',
+              shortcut: '',
+              description: 'View track statistics dashboard',
+            }}
+            isActive={useMapStore((s) => s.trackStatsPanelOpen)}
+            onClick={() => useMapStore.getState().setTrackStatsPanelOpen(!useMapStore.getState().trackStatsPanelOpen)}
+            index={globalIndex + 9}
+          />
+          <ToolButton
+            tool={{
+              id: 'navigate' as any,
+              icon: <Server className="h-4 w-4" />,
+              label: 'WMS Layers',
+              activeClass: 'bg-teal-600 text-white shadow-md shadow-teal-600/30',
+              shortcut: '',
+              description: 'Add WMS/WMTS/TMS tile layers',
+            }}
+            isActive={useMapStore((s) => s.wmsTileSources.length > 0)}
+            onClick={() => {
+              const store = useMapStore.getState()
+              store.setSidebarTab('layers')
+              if (!store.sidebarOpen) store.setSidebarOpen(true)
+              // Expand the WMS section
+              if (store.collapsedSections['section-layers-wms']) {
+                store.toggleSection('section-layers-wms')
+              }
+            }}
+            index={globalIndex + 10}
           />
         </div>
       </div>

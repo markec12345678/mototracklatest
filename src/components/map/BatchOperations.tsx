@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useMemo } from 'react'
+import { useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   CheckSquare,
@@ -8,7 +8,6 @@ import {
   Trash2,
   Palette,
   Download,
-  FolderInput,
   CheckCircle2,
   XCircle,
   Layers,
@@ -47,12 +46,11 @@ const CATEGORY_OPTIONS = [
   { name: 'General', color: '#6b7280' },
 ]
 
-export function BatchOperations() {
+// Floating action bar for batch operations (rendered in page.tsx)
+export function BatchActionBar() {
   const markers = useMapStore((s) => s.markers)
   const batchOperation = useMapStore((s) => s.batchOperation)
   const setBatchSelectMode = useMapStore((s) => s.setBatchSelectMode)
-  const toggleMarkerSelection = useMapStore((s) => s.toggleMarkerSelection)
-  const selectAllMarkers = useMapStore((s) => s.selectAllMarkers)
   const deselectAllMarkers = useMapStore((s) => s.deselectAllMarkers)
   const batchDeleteMarkers = useMapStore((s) => s.batchDeleteMarkers)
   const batchChangeCategory = useMapStore((s) => s.batchChangeCategory)
@@ -62,7 +60,6 @@ export function BatchOperations() {
   const [batchCategory, setBatchCategory] = useState('')
 
   const selectedCount = batchOperation.selectedMarkerIds.length
-  const hasMarkers = markers.length > 0
 
   const handleBatchDelete = useCallback(() => {
     batchDeleteMarkers()
@@ -200,98 +197,111 @@ export function BatchOperations() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-
-      {/* Sidebar section */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
-            <Layers className="h-3.5 w-3.5" />
-            Batch Operations
-          </h3>
-          <Button
-            size="sm"
-            variant={batchOperation.isSelectMode ? 'default' : 'outline'}
-            className={cn(
-              'h-7 text-xs gap-1',
-              batchOperation.isSelectMode && 'bg-orange-500 hover:bg-orange-600 text-white'
-            )}
-            onClick={() => setBatchSelectMode(!batchOperation.isSelectMode)}
-          >
-            <CheckSquare className="h-3 w-3" />
-            {batchOperation.isSelectMode ? 'Exit Select' : 'Multi-Select'}
-          </Button>
-        </div>
-
-        {batchOperation.isSelectMode && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="space-y-2"
-          >
-            {/* Select All / Deselect All */}
-            <div className="flex gap-2">
-              <Button
-                size="sm"
-                variant="outline"
-                className="h-7 text-xs flex-1 gap-1"
-                onClick={selectAllMarkers}
-              >
-                <CheckCircle2 className="h-3 w-3" />
-                Select All
-              </Button>
-              <Button
-                size="sm"
-                variant="outline"
-                className="h-7 text-xs flex-1 gap-1"
-                onClick={deselectAllMarkers}
-              >
-                <XCircle className="h-3 w-3" />
-                Deselect All
-              </Button>
-            </div>
-
-            {/* Marker selection list */}
-            {markers.length === 0 ? (
-              <p className="text-xs text-muted-foreground text-center py-4">No markers to select</p>
-            ) : (
-              <div className="max-h-48 overflow-y-auto space-y-1 pr-1 custom-scrollbar">
-                {markers.map((marker) => {
-                  const isSelected = batchOperation.selectedMarkerIds.includes(marker.id)
-                  return (
-                    <button
-                      key={marker.id}
-                      className={cn(
-                        'w-full flex items-center gap-2 p-2 rounded-md text-left transition-colors text-xs',
-                        isSelected ? 'bg-orange-500/10 border border-orange-500/30' : 'hover:bg-accent/30 border border-transparent'
-                      )}
-                      onClick={() => toggleMarkerSelection(marker.id)}
-                    >
-                      {isSelected ? (
-                        <CheckSquare className="h-3.5 w-3.5 text-orange-500 shrink-0" />
-                      ) : (
-                        <Square className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                      )}
-                      <div
-                        className="h-2.5 w-2.5 rounded-full shrink-0"
-                        style={{ backgroundColor: marker.color }}
-                      />
-                      <span className="truncate flex-1">{marker.name}</span>
-                      <span className="text-[9px] text-muted-foreground">{marker.category}</span>
-                    </button>
-                  )
-                })}
-              </div>
-            )}
-
-            {selectedCount > 0 && (
-              <div className="text-xs text-muted-foreground text-center">
-                {selectedCount} of {markers.length} selected
-              </div>
-            )}
-          </motion.div>
-        )}
-      </div>
     </>
+  )
+}
+
+// Sidebar section for batch operations (rendered in MapSidebar)
+export function BatchOperations() {
+  const markers = useMapStore((s) => s.markers)
+  const batchOperation = useMapStore((s) => s.batchOperation)
+  const setBatchSelectMode = useMapStore((s) => s.setBatchSelectMode)
+  const toggleMarkerSelection = useMapStore((s) => s.toggleMarkerSelection)
+  const selectAllMarkers = useMapStore((s) => s.selectAllMarkers)
+  const deselectAllMarkers = useMapStore((s) => s.deselectAllMarkers)
+
+  const selectedCount = batchOperation.selectedMarkerIds.length
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
+          <Layers className="h-3.5 w-3.5" />
+          Batch Operations
+        </h3>
+        <Button
+          size="sm"
+          variant={batchOperation.isSelectMode ? 'default' : 'outline'}
+          className={cn(
+            'h-7 text-xs gap-1',
+            batchOperation.isSelectMode && 'bg-orange-500 hover:bg-orange-600 text-white'
+          )}
+          onClick={() => setBatchSelectMode(!batchOperation.isSelectMode)}
+        >
+          <CheckSquare className="h-3 w-3" />
+          {batchOperation.isSelectMode ? 'Exit Select' : 'Multi-Select'}
+        </Button>
+      </div>
+
+      {batchOperation.isSelectMode && (
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          exit={{ opacity: 0, height: 0 }}
+          className="space-y-2"
+        >
+          {/* Select All / Deselect All */}
+          <div className="flex gap-2">
+            <Button
+              size="sm"
+              variant="outline"
+              className="h-7 text-xs flex-1 gap-1"
+              onClick={selectAllMarkers}
+            >
+              <CheckCircle2 className="h-3 w-3" />
+              Select All
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              className="h-7 text-xs flex-1 gap-1"
+              onClick={deselectAllMarkers}
+            >
+              <XCircle className="h-3 w-3" />
+              Deselect All
+            </Button>
+          </div>
+
+          {/* Marker selection list */}
+          {markers.length === 0 ? (
+            <p className="text-xs text-muted-foreground text-center py-4">No markers to select</p>
+          ) : (
+            <div className="max-h-48 overflow-y-auto space-y-1 pr-1 custom-scrollbar">
+              {markers.map((marker) => {
+                const isSelected = batchOperation.selectedMarkerIds.includes(marker.id)
+                return (
+                  <button
+                    key={marker.id}
+                    className={cn(
+                      'w-full flex items-center gap-2 p-2 rounded-md text-left transition-colors text-xs',
+                      isSelected ? 'bg-orange-500/10 border border-orange-500/30' : 'hover:bg-accent/30 border border-transparent'
+                    )}
+                    onClick={() => toggleMarkerSelection(marker.id)}
+                  >
+                    {isSelected ? (
+                      <CheckSquare className="h-3.5 w-3.5 text-orange-500 shrink-0" />
+                    ) : (
+                      <Square className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                    )}
+                    <div
+                      className="h-2.5 w-2.5 rounded-full shrink-0"
+                      style={{ backgroundColor: marker.color }}
+                    />
+                    <span className="truncate flex-1">{marker.name}</span>
+                    <span className="text-[9px] text-muted-foreground">{marker.category}</span>
+                  </button>
+                )
+              })}
+            </div>
+          )}
+
+          {selectedCount > 0 && (
+            <div className="text-xs text-muted-foreground text-center">
+              {selectedCount} of {markers.length} selected
+            </div>
+          )}
+        </motion.div>
+      )}
+    </div>
   )
 }

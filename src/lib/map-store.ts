@@ -336,6 +336,21 @@ export interface BatchOperationState {
   selectedMarkerIds: string[]
 }
 
+// POI Filter types
+export interface POIFilters {
+  categories: string[]
+  radiusKm: number
+  openNowOnly: boolean
+  keyword: string
+  minRating: number
+}
+
+export interface POIFilterPreset {
+  id: string
+  name: string
+  filters: POIFilters
+}
+
 export type AppLanguage = 'en' | 'sl' | 'de' | 'hr' | 'it' | 'fr' | 'es'
 
 export interface AppNotification {
@@ -365,6 +380,19 @@ export interface ImageOverlay {
   bounds: [[number, number], [number, number]] // [[swLng, swLat], [neLng, neLat]]
   opacity: number
   visible: boolean
+}
+
+export interface WMSTileSource {
+  id: string
+  name: string
+  url: string
+  serviceType: 'wms' | 'wmts' | 'tms'
+  layerName: string
+  opacity: number
+  format: string
+  tileSize: number
+  customParams: Record<string, string>
+  isVisible: boolean
 }
 
 export interface SpatialAnalysisResult {
@@ -496,6 +524,10 @@ interface MapState {
   // POI Markers (temporary, for nearby search)
   poiMarkers: POIMarker[]
 
+  // POI Filters
+  poiFilters: POIFilters
+  poiFilterPresets: POIFilterPreset[]
+
   // Heatmap visualization
   heatmapEnabled: boolean
   heatmapIntensity: number
@@ -560,6 +592,17 @@ interface MapState {
   addCustomTileSource: (source: CustomTileSource) => void
   removeCustomTileSource: (id: string) => void
   toggleCustomTileSource: (id: string) => void
+
+  // WMS/WMTS tile sources
+  wmsTileSources: WMSTileSource[]
+  addWMSTileSource: (source: WMSTileSource) => void
+  removeWMSTileSource: (id: string) => void
+  toggleWMSTileSourceVisibility: (id: string) => void
+  updateWMSTileSourceOpacity: (id: string, opacity: number) => void
+
+  // Track stats panel
+  trackStatsPanelOpen: boolean
+  setTrackStatsPanelOpen: (open: boolean) => void
 
   // Notifications
   notifications: MapNotification[]
@@ -643,6 +686,11 @@ interface MapState {
   dismissNotification: (id: string) => void
   setPoiMarkers: (poiMarkers: POIMarker[]) => void
   clearPoiMarkers: () => void
+  setPOIFilters: (filters: Partial<POIFilters>) => void
+  resetPOIFilters: () => void
+  addPOIFilterPreset: (preset: POIFilterPreset) => void
+  deletePOIFilterPreset: (id: string) => void
+  loadPOIFilterPreset: (id: string) => void
   setHeatmapEnabled: (enabled: boolean) => void
   setHeatmapIntensity: (intensity: number) => void
   setHeatmapRadius: (radius: number) => void
@@ -852,6 +900,14 @@ export const useMapStore = create<MapState>()(
       isochroneMinutes: 15,
       isochroneMode: 'walking',
       poiMarkers: [],
+      poiFilters: {
+        categories: [],
+        radiusKm: 5,
+        openNowOnly: false,
+        keyword: '',
+        minRating: 0,
+      },
+      poiFilterPresets: [],
       heatmapEnabled: false,
       heatmapIntensity: 0.5,
       heatmapRadius: 30,
@@ -863,6 +919,12 @@ export const useMapStore = create<MapState>()(
       elevationRouteId: null,
       offlineModeEnabled: false,
       customTileSources: [],
+
+      // WMS/WMTS tile source defaults
+      wmsTileSources: [],
+
+      // Track stats panel defaults
+      trackStatsPanelOpen: false,
 
       // Voice navigation defaults
       voiceNavigationEnabled: false,
@@ -1502,6 +1564,31 @@ export const useMapStore = create<MapState>()(
         })),
       setPoiMarkers: (poiMarkers) => set({ poiMarkers }),
       clearPoiMarkers: () => set({ poiMarkers: [] }),
+      setPOIFilters: (filters) => set((state) => ({
+        poiFilters: { ...state.poiFilters, ...filters },
+      })),
+      resetPOIFilters: () => set({
+        poiFilters: {
+          categories: [],
+          radiusKm: 5,
+          openNowOnly: false,
+          keyword: '',
+          minRating: 0,
+        },
+      }),
+      addPOIFilterPreset: (preset) => set((state) => ({
+        poiFilterPresets: [...state.poiFilterPresets, preset],
+      })),
+      deletePOIFilterPreset: (id) => set((state) => ({
+        poiFilterPresets: state.poiFilterPresets.filter((p) => p.id !== id),
+      })),
+      loadPOIFilterPreset: (id) => set((state) => {
+        const preset = state.poiFilterPresets.find((p) => p.id === id)
+        if (preset) {
+          return { poiFilters: { ...preset.filters } }
+        }
+        return {}
+      }),
       setHeatmapEnabled: (heatmapEnabled) => set({ heatmapEnabled }),
       setHeatmapIntensity: (heatmapIntensity) => set({ heatmapIntensity }),
       setHeatmapRadius: (heatmapRadius) => set({ heatmapRadius }),
@@ -1576,6 +1663,30 @@ export const useMapStore = create<MapState>()(
           s.id === id ? { ...s, visible: !s.visible } : s
         ),
       })),
+
+      // WMS/WMTS tile source actions
+      addWMSTileSource: (source) => set((state) => ({
+        wmsTileSources: [...state.wmsTileSources, source],
+      })),
+
+      removeWMSTileSource: (id) => set((state) => ({
+        wmsTileSources: state.wmsTileSources.filter((s) => s.id !== id),
+      })),
+
+      toggleWMSTileSourceVisibility: (id) => set((state) => ({
+        wmsTileSources: state.wmsTileSources.map((s) =>
+          s.id === id ? { ...s, isVisible: !s.isVisible } : s
+        ),
+      })),
+
+      updateWMSTileSourceOpacity: (id, opacity) => set((state) => ({
+        wmsTileSources: state.wmsTileSources.map((s) =>
+          s.id === id ? { ...s, opacity } : s
+        ),
+      })),
+
+      // Track stats panel actions
+      setTrackStatsPanelOpen: (trackStatsPanelOpen) => set({ trackStatsPanelOpen }),
 
       addAnnotation: (annotation) => set((state) => ({
         annotations: [...state.annotations, annotation],
@@ -2134,6 +2245,8 @@ export const useMapStore = create<MapState>()(
         annotations: state.annotations,
         offlineModeEnabled: state.offlineModeEnabled,
         customTileSources: state.customTileSources,
+        wmsTileSources: state.wmsTileSources,
+        trackStatsPanelOpen: state.trackStatsPanelOpen,
         voiceNavigationEnabled: state.voiceNavigationEnabled,
         voiceLanguage: state.voiceLanguage,
         drawingTool: state.drawingTool,
@@ -2167,6 +2280,8 @@ export const useMapStore = create<MapState>()(
         tripPlans: state.tripPlans,
         gpsSimulation: state.gpsSimulation,
         mapNotes: state.mapNotes,
+        poiFilters: state.poiFilters,
+        poiFilterPresets: state.poiFilterPresets,
       }),
     }
   )

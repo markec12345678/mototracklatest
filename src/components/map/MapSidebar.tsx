@@ -51,6 +51,9 @@ import {
   CalendarDays,
   StickyNote,
   CheckSquare,
+  Server,
+  Plus,
+  SlidersHorizontal,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -58,6 +61,7 @@ import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
 import { Switch } from '@/components/ui/switch'
+import { Slider } from '@/components/ui/slider'
 import {
   Sheet,
   SheetContent,
@@ -73,6 +77,7 @@ import {
   type RoutePoint,
   type RouteStep,
   type RouteProfile,
+  type WMSTileSource,
 } from '@/lib/map-store'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
@@ -92,6 +97,10 @@ import { RouteOptimizer } from '@/components/map/RouteOptimizer'
 import { LocationHistoryTimeline } from '@/components/map/LocationHistoryTimeline'
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible'
 import { TripPlanner } from '@/components/map/TripPlanner'
+import dynamic from 'next/dynamic'
+
+const MapNotes = dynamic(() => import('@/components/map/MapNotes').then((m) => m.MapNotes), { ssr: false })
+const BatchOperationsSidebar = dynamic(() => import('@/components/map/BatchOperations').then((m) => m.BatchOperations), { ssr: false })
 
 // SectionHeader component for collapsible sidebar sections
 function SectionHeader({ title, sectionId, icon, count }: {
@@ -1405,6 +1414,24 @@ function LayersTab() {
             <ImageOverlayManager />
           </CollapsibleContent>
         </Collapsible>
+
+        <Separator />
+
+        {/* WMS / WMTS Layers - Collapsible */}
+        <Collapsible
+          open={!useMapStore.getState().collapsedSections['section-layers-wms']}
+          onOpenChange={() => useMapStore.getState().toggleSection('section-layers-wms')}
+        >
+          <SectionHeader
+            title="WMS / WMTS Layers"
+            sectionId="section-layers-wms"
+            icon={<Globe2 className="h-3.5 w-3.5 text-muted-foreground" />}
+            count={useMapStore.getState().wmsTileSources.length}
+          />
+          <CollapsibleContent>
+            <WMSLayerSectionInline />
+          </CollapsibleContent>
+        </Collapsible>
       </div>
     </ScrollArea>
   )
@@ -2146,6 +2173,42 @@ function ToolsTab({
 
         <Separator />
 
+        {/* Map Notes - Collapsible */}
+        <Collapsible
+          open={!useMapStore.getState().collapsedSections['section-tools-notes']}
+          onOpenChange={() => useMapStore.getState().toggleSection('section-tools-notes')}
+        >
+          <SectionHeader
+            title="Map Notes"
+            sectionId="section-tools-notes"
+            icon={<StickyNote className="h-3.5 w-3.5 text-muted-foreground" />}
+            count={useMapStore((s) => s.mapNotes.length)}
+          />
+          <CollapsibleContent>
+            <MapNotes />
+          </CollapsibleContent>
+        </Collapsible>
+
+        <Separator />
+
+        {/* Batch Operations - Collapsible */}
+        <Collapsible
+          open={!useMapStore.getState().collapsedSections['section-tools-batch']}
+          onOpenChange={() => useMapStore.getState().toggleSection('section-tools-batch')}
+        >
+          <SectionHeader
+            title="Batch Operations"
+            sectionId="section-tools-batch"
+            icon={<CheckSquare className="h-3.5 w-3.5 text-muted-foreground" />}
+            count={useMapStore((s) => s.markers.length)}
+          />
+          <CollapsibleContent>
+            <BatchOperationsSidebar />
+          </CollapsibleContent>
+        </Collapsible>
+
+        <Separator />
+
         {/* Keyboard shortcuts reference */}
         <div>
           <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 flex items-center gap-2">
@@ -2236,6 +2299,44 @@ function GeofenceSection() {
           window.dispatchEvent(new CustomEvent('map-create-geofence', { detail: { lat: center[1], lng: center[0] } }))
         }}
       />
+    </div>
+  )
+}
+
+function WMSLayerSectionInline() {
+  const wmsTileSources = useMapStore((s) => s.wmsTileSources)
+  const removeWMSTileSource = useMapStore((s) => s.removeWMSTileSource)
+  const toggleWMSTileSourceVisibility = useMapStore((s) => s.toggleWMSTileSourceVisibility)
+
+  return (
+    <div className="space-y-1.5">
+      {wmsTileSources.length === 0 ? (
+        <p className="text-[10px] text-muted-foreground/50 text-center py-3">
+          No WMS/WMTS layers added
+        </p>
+      ) : (
+        wmsTileSources.map((source) => (
+          <div
+            key={source.id}
+            className="flex items-center gap-2 px-2.5 py-2 rounded-lg bg-muted/30 hover:bg-accent/50 transition-colors"
+          >
+            <Globe2 className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+            <span className="text-xs truncate flex-1">{source.name}</span>
+            <Switch
+              checked={source.isVisible}
+              onCheckedChange={() => toggleWMSTileSourceVisibility(source.id)}
+              className="scale-75"
+            />
+            <button
+              onClick={() => removeWMSTileSource(source.id)}
+              className="p-1 hover:bg-destructive/10 rounded transition-colors"
+              aria-label="Remove WMS layer"
+            >
+              <Trash2 className="h-3 w-3 text-muted-foreground hover:text-destructive" />
+            </button>
+          </div>
+        ))
+      )}
     </div>
   )
 }
@@ -2973,6 +3074,20 @@ function RoutesTab({ onGPXImportClick }: { onGPXImportClick: () => void }) {
           </CollapsibleContent>
         </Collapsible>
 
+        {/* Track Stats section */}
+        <Separator className="my-4" />
+        <div>
+          <Button
+            variant="outline"
+            size="sm"
+            className="w-full h-8 text-xs gap-1.5 justify-start"
+            onClick={() => useMapStore.getState().setTrackStatsPanelOpen(true)}
+          >
+            <BarChart3 className="h-3.5 w-3.5" />
+            Track Statistics
+          </Button>
+        </div>
+
         </> )} {/* End directions sub-tab */}
       </div>
     </ScrollArea>
@@ -3285,4 +3400,174 @@ function getManeuverLabel(type: string, modifier?: string): string {
   if (type === 'roundabout' || type === 'rotary') return 'Enter roundabout'
   if (type === 'end of road') return 'End of road'
   return type.charAt(0).toUpperCase() + type.slice(1).replace(/_/g, ' ')
+}
+
+// WMS Layer section for the Layers tab
+function WMSLayerSection() {
+  const wmsTileSources = useMapStore((s) => s.wmsTileSources)
+  const addWMSTileSource = useMapStore((s) => s.addWMSTileSource)
+  const removeWMSTileSource = useMapStore((s) => s.removeWMSTileSource)
+  const toggleWMSTileSourceVisibility = useMapStore((s) => s.toggleWMSTileSourceVisibility)
+  const updateWMSTileSourceOpacity = useMapStore((s) => s.updateWMSTileSourceOpacity)
+  const [addFormOpen, setAddFormOpen] = useState(false)
+  const [serviceUrl, setServiceUrl] = useState('')
+  const [layerName, setLayerName] = useState('')
+  const [sourceName, setSourceName] = useState('')
+  const [serviceType, setServiceType] = useState<'wms' | 'wmts' | 'tms'>('wms')
+  const [format, setFormat] = useState('image/png')
+
+  const handleAdd = useCallback(() => {
+    if (!serviceUrl.trim()) {
+      toast.error('Service URL is required')
+      return
+    }
+    if (!layerName.trim() && serviceType !== 'tms') {
+      toast.error('Layer name is required')
+      return
+    }
+    const id = `wms-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
+    const source: WMSTileSource = {
+      id,
+      name: sourceName.trim() || `WMS Layer ${wmsTileSources.length + 1}`,
+      url: serviceUrl.trim(),
+      serviceType,
+      layerName: layerName.trim() || 'default',
+      opacity: 1,
+      format,
+      tileSize: 256,
+      customParams: {},
+      isVisible: true,
+    }
+    addWMSTileSource(source)
+    toast.success(`Added: ${source.name}`)
+    setServiceUrl('')
+    setLayerName('')
+    setSourceName('')
+    setServiceType('wms')
+    setFormat('image/png')
+    setAddFormOpen(false)
+  }, [serviceUrl, layerName, sourceName, serviceType, format, wmsTileSources.length, addWMSTileSource])
+
+  return (
+    <div className="space-y-2">
+      {wmsTileSources.length === 0 && !addFormOpen && (
+        <div className="text-center py-3 text-muted-foreground">
+          <p className="text-xs">No WMS layers added</p>
+          <p className="text-[10px] mt-1">Add a WMS/WMTS/TMS tile source</p>
+        </div>
+      )}
+
+      {wmsTileSources.map((source) => (
+        <div key={source.id} className="group rounded-xl border border-border/50 p-2.5 hover:bg-accent/30 transition-colors">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => toggleWMSTileSourceVisibility(source.id)}
+              className="shrink-0"
+              title={source.isVisible ? 'Hide layer' : 'Show layer'}
+            >
+              {source.isVisible ? (
+                <Eye className="h-3.5 w-3.5 text-emerald-500" />
+              ) : (
+                <EyeOff className="h-3.5 w-3.5 text-muted-foreground" />
+              )}
+            </button>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-medium truncate">{source.name}</p>
+              <p className="text-[10px] text-muted-foreground truncate">
+                {source.serviceType.toUpperCase()} · {source.layerName}
+              </p>
+            </div>
+            <Badge variant="secondary" className="text-[9px] shrink-0">
+              {Math.round(source.opacity * 100)}%
+            </Badge>
+            <button
+              onClick={() => {
+                removeWMSTileSource(source.id)
+                toast.success(`Removed: ${source.name}`)
+              }}
+              className="shrink-0 text-red-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+              title="Remove layer"
+            >
+              <Trash2 className="h-3.5 w-3.5" />
+            </button>
+          </div>
+          <div className="flex items-center gap-2 mt-1.5">
+            <span className="text-[10px] text-muted-foreground w-10 shrink-0">Opacity</span>
+            <Slider
+              value={[source.opacity * 100]}
+              min={0}
+              max={100}
+              step={5}
+              className="flex-1"
+              onValueChange={([v]) => updateWMSTileSourceOpacity(source.id, v / 100)}
+            />
+          </div>
+        </div>
+      ))}
+
+      <Button
+        variant="outline"
+        size="sm"
+        className="w-full h-7 text-[11px] gap-1"
+        onClick={() => setAddFormOpen(!addFormOpen)}
+      >
+        <Plus className="h-3 w-3" />
+        {addFormOpen ? 'Cancel' : 'Add WMS Layer'}
+      </Button>
+
+      <AnimatePresence>
+        {addFormOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden"
+          >
+            <div className="space-y-2 p-2 rounded-xl border border-border/50 bg-muted/20">
+              <Input
+                placeholder="Layer name"
+                value={sourceName}
+                onChange={(e) => setSourceName(e.target.value)}
+                className="h-7 text-xs"
+              />
+              <Input
+                placeholder="Service URL"
+                value={serviceUrl}
+                onChange={(e) => setServiceUrl(e.target.value)}
+                className="h-7 text-xs"
+              />
+              <div className="grid grid-cols-2 gap-1.5">
+                <div>
+                  <select
+                    value={serviceType}
+                    onChange={(e) => setServiceType(e.target.value as 'wms' | 'wmts' | 'tms')}
+                    className="w-full h-7 text-xs rounded-md border bg-background px-2"
+                  >
+                    <option value="wms">WMS</option>
+                    <option value="wmts">WMTS</option>
+                    <option value="tms">TMS</option>
+                  </select>
+                </div>
+                <Input
+                  placeholder="Layer ID"
+                  value={layerName}
+                  onChange={(e) => setLayerName(e.target.value)}
+                  className="h-7 text-xs"
+                />
+              </div>
+              <Button
+                size="sm"
+                className="w-full h-7 text-xs bg-teal-600 hover:bg-teal-700 text-white"
+                onClick={handleAdd}
+              >
+                <Plus className="h-3 w-3 mr-1" />
+                Add Layer
+              </Button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
 }

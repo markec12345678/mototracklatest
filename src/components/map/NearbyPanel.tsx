@@ -8,7 +8,8 @@ import {
   GraduationCap, Drama, Bus, Dumbbell, Droplets, Toilet,
   Search, ArrowUpDown, ExternalLink, ChevronDown, X
 } from 'lucide-react'
-import { useMapStore } from '@/lib/map-store'
+import { useMapStore, type POIFilters } from '@/lib/map-store'
+import { POIFilterManager } from '@/components/map/POIFilterManager'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
 
@@ -64,7 +65,7 @@ function openInMaps(lat: number, lng: number, name: string) {
 }
 
 export function NearbyPanel() {
-  const { center, sidebarOpen } = useMapStore()
+  const { center, sidebarOpen, poiFilters } = useMapStore()
   const [pois, setPois] = useState<POI[]>([])
   const [loading, setLoading] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState('eating_out')
@@ -76,13 +77,27 @@ export function NearbyPanel() {
   // Show first 6 categories by default, expand for more
   const visibleCategories = showAllCategories ? POI_CATEGORIES : POI_CATEGORIES.slice(0, 8)
 
-  const fetchPOIs = useCallback(async (lat: number, lng: number, category: string) => {
-    const fetchKey = `${lat.toFixed(3)},${lng.toFixed(3)},${category}`
+  const fetchPOIs = useCallback(async (lat: number, lng: number, category: string, filters?: POIFilters) => {
+    const filterKey = filters ? JSON.stringify(filters) : ''
+    const fetchKey = `${lat.toFixed(3)},${lng.toFixed(3)},${category},${filterKey}`
     if (fetchKey === lastFetchRef.current && pois.length > 0) return
 
     setLoading(true)
     try {
-      const res = await fetch(`/api/poi?lat=${lat.toFixed(4)}&lng=${lng.toFixed(4)}&category=${category}&limit=30`)
+      const params = new URLSearchParams({
+        lat: lat.toFixed(4),
+        lng: lng.toFixed(4),
+        category,
+        limit: '30',
+      })
+      if (filters) {
+        if (filters.categories.length > 0) params.set('filterCats', filters.categories.join(','))
+        if (filters.radiusKm < 5) params.set('radius', String(filters.radiusKm))
+        if (filters.openNowOnly) params.set('openNow', 'true')
+        if (filters.keyword.trim()) params.set('keyword', filters.keyword.trim())
+        if (filters.minRating > 0) params.set('minRating', String(filters.minRating))
+      }
+      const res = await fetch(`/api/poi?${params.toString()}`)
       if (res.ok) {
         const data = await res.json()
         setPois(data.pois || [])
@@ -121,9 +136,9 @@ export function NearbyPanel() {
   useEffect(() => {
     if (sidebarOpen) {
       const [lng, lat] = center
-      fetchPOIs(lat, lng, selectedCategory)
+      fetchPOIs(lat, lng, selectedCategory, poiFilters)
     }
-  }, [center, selectedCategory, sidebarOpen, fetchPOIs])
+  }, [center, selectedCategory, sidebarOpen, poiFilters])
 
   const handlePOIClick = (poi: POI) => {
     const flyTo = (window as unknown as Record<string, (lng: number, lat: number, z?: number) => void>).__mapFlyTo
@@ -216,17 +231,20 @@ export function NearbyPanel() {
             </span>
           )}
         </div>
-        <button
-          onClick={() => {
-            const [lng, lat] = center
-            lastFetchRef.current = ''
-            fetchPOIs(lat, lng, selectedCategory)
-          }}
-          className="p-1.5 hover:bg-accent rounded-lg transition-colors"
-          aria-label="Refresh POIs"
-        >
-          <RefreshCw className={cn('h-3.5 w-3.5 text-muted-foreground', loading && 'animate-spin')} />
-        </button>
+        <div className="flex items-center gap-1">
+          <POIFilterManager />
+          <button
+            onClick={() => {
+              const [lng, lat] = center
+              lastFetchRef.current = ''
+              fetchPOIs(lat, lng, selectedCategory, poiFilters)
+            }}
+            className="p-1.5 hover:bg-accent rounded-lg transition-colors"
+            aria-label="Refresh POIs"
+          >
+            <RefreshCw className={cn('h-3.5 w-3.5 text-muted-foreground', loading && 'animate-spin')} />
+          </button>
+        </div>
       </div>
 
       {/* Category pills */}

@@ -61,7 +61,9 @@ import dynamic from 'next/dynamic'
 
 const GPSSimulator = dynamic(() => import('@/components/map/GPSSimulator').then((m) => m.GPSSimulator), { ssr: false })
 const MapNotesLayer = dynamic(() => import('@/components/map/MapNotes').then((m) => m.MapNotesLayer), { ssr: false })
-const BatchOperations = dynamic(() => import('@/components/map/BatchOperations').then((m) => m.BatchOperations), { ssr: false })
+const BatchActionBar = dynamic(() => import('@/components/map/BatchOperations').then((m) => m.BatchActionBar), { ssr: false })
+const MapAnnotationsLayer = dynamic(() => import('@/components/map/MapAnnotationsLayer').then((m) => m.MapAnnotationsLayer), { ssr: false })
+import { TrackStatsPanel } from '@/components/map/TrackStatsPanel'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
@@ -650,6 +652,9 @@ export default function Home() {
       {/* Heatmap Layer - renders density heatmap from markers */}
       <HeatmapLayer />
 
+      {/* Map Annotations Layer - renders annotations as GeoJSON on the map */}
+      <MapAnnotationsLayer />
+
       {/* Map Comparison / Swipe View */}
       <MapComparison />
 
@@ -841,6 +846,16 @@ export default function Home() {
             aria-label="Open air quality panel"
           >
             <Wind className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setTrackStatsPanelOpen(true)}
+            title="Track Statistics"
+            aria-label="Open track statistics"
+          >
+            <Activity className="h-4 w-4" />
           </Button>
           <Button
             variant="outline"
@@ -1333,7 +1348,10 @@ export default function Home() {
       <MapNotesLayer />
 
       {/* Batch Operations Action Bar */}
-      <BatchOperations />
+      <BatchActionBar />
+
+      {/* Track Statistics Panel */}
+      <TrackStatsPanel />
 
       {/* Footer */}
       <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-2 sm:px-3 md:px-4 safe-area-bottom before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">
