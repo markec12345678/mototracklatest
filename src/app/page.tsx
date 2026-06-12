@@ -62,6 +62,8 @@ import { MapPrintDialog } from '@/components/map/MapPrintDialog'
 import { MarkerCategoriesManager } from '@/components/map/MarkerCategoriesManager'
 import { WaypointOptimizer } from '@/components/map/WaypointOptimizer'
 import { StylesMixer } from '@/components/map/StylesMixer'
+import { CoordinateConverter } from '@/components/map/CoordinateConverter'
+import { RouteSharingDialog } from '@/components/map/RouteSharingDialog'
 import dynamic from 'next/dynamic'
 
 const GPSSimulator = dynamic(() => import('@/components/map/GPSSimulator').then((m) => m.GPSSimulator), { ssr: false })
@@ -105,6 +107,7 @@ import {
   Printer,
   Tag,
   Palette,
+  Share,
 } from 'lucide-react'
 
 export default function Home() {
@@ -134,6 +137,8 @@ export default function Home() {
   const setWaypointOptimizerOpen = useMapStore((s) => s.setWaypointOptimizerOpen)
   const stylesMixerOpen = useMapStore((s) => s.stylesMixerOpen)
   const setStylesMixerOpen = useMapStore((s) => s.setStylesMixerOpen)
+  const routeSharingOpen = useMapStore((s) => s.routeSharingOpen)
+  const setRouteSharingOpen = useMapStore((s) => s.setRouteSharingOpen)
   const [geofenceDialogOpen, setGeofenceDialogOpen] = useState(false)
   const [aiSuggestionsOpen, setAiSuggestionsOpen] = useState(false)
   const [distanceMatrixOpen, setDistanceMatrixOpen] = useState(false)
@@ -856,6 +861,16 @@ export default function Home() {
             variant="outline"
             size="icon"
             className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => setRouteSharingOpen(true)}
+            title="Share Route"
+            aria-label="Share route"
+          >
+            <Share className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={() => setEmbedDialogOpen(true)}
             title="Embed Map"
             aria-label="Generate embed code"
@@ -1320,6 +1335,9 @@ export default function Home() {
 
       {/* Styles Mixer */}
       <StylesMixer open={stylesMixerOpen} onOpenChange={setStylesMixerOpen} />
+
+      {/* Route Sharing Dialog */}
+      <RouteSharingDialog open={routeSharingOpen} onOpenChange={setRouteSharingOpen} />
 
       {/* Geofence Dialog */}
       <GeofenceDialog

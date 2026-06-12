@@ -902,6 +902,10 @@ interface MapState {
   setWaypointOptimizerOpen: (open: boolean) => void
   optimizedWaypointOrder: number[] | null
   setOptimizedWaypointOrder: (order: number[] | null) => void
+
+  // Route Sharing
+  routeSharingOpen: boolean
+  setRouteSharingOpen: (open: boolean) => void
 }
 
 export const useMapStore = create<MapState>()(
@@ -2346,6 +2350,10 @@ export const useMapStore = create<MapState>()(
       setWaypointOptimizerOpen: (open) => set({ waypointOptimizerOpen: open }),
       optimizedWaypointOrder: null,
       setOptimizedWaypointOrder: (order) => set({ optimizedWaypointOrder: order }),
+
+      // Route Sharing
+      routeSharingOpen: false,
+      setRouteSharingOpen: (open) => set({ routeSharingOpen: open }),
     }),
     {
       name: 'maplibre-explorer-prefs',

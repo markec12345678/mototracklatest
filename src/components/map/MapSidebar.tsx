@@ -102,6 +102,7 @@ import dynamic from 'next/dynamic'
 const MapNotes = dynamic(() => import('@/components/map/MapNotes').then((m) => m.MapNotes), { ssr: false })
 const BatchOperationsSidebar = dynamic(() => import('@/components/map/BatchOperations').then((m) => m.BatchOperations), { ssr: false })
 const GeoJSONEditorDialog = dynamic(() => import('@/components/map/GeoJSONEditor').then((m) => m.GeoJSONEditor), { ssr: false })
+const CoordinateConverter = dynamic(() => import('@/components/map/CoordinateConverter').then((m) => m.CoordinateConverter), { ssr: false })
 
 // SectionHeader component for collapsible sidebar sections
 function SectionHeader({ title, sectionId, icon, count }: {
@@ -2242,6 +2243,11 @@ function ToolsTab({
           open={useMapStore((s) => s.geoJsonEditorOpen)}
           onOpenChange={useMapStore((s) => s.setGeoJsonEditorOpen)}
         />
+
+        <Separator />
+
+        {/* Coordinate Converter */}
+        <CoordinateConverter />
 
         <Separator />
 
