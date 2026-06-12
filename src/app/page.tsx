@@ -104,6 +104,14 @@ import { EmergencyRoutePlanner } from '@/components/map/EmergencyRoutePlanner'
 import { MapComparisonSlider } from '@/components/map/MapComparisonSlider'
 import { NoiseHeatmapOverlay } from '@/components/map/NoiseHeatmapOverlay'
 import { SolarExposureAnalyzer } from '@/components/map/SolarExposureAnalyzer'
+import { MapStyleForge } from '@/components/map/MapStyleForge'
+import { TopographicProfiler } from '@/components/map/TopographicProfiler'
+import { MaritimeNavigation } from '@/components/map/MaritimeNavigation'
+import { GeocachingToolkit } from '@/components/map/GeocachingToolkit'
+import { AtmosphericDashboard } from '@/components/map/AtmosphericDashboard'
+import { WildlifeTracker } from '@/components/map/WildlifeTracker'
+import { CulturalHeritageMap } from '@/components/map/CulturalHeritageMap'
+import { HydrologyAnalyzer } from '@/components/map/HydrologyAnalyzer'
 import dynamic from 'next/dynamic'
 
 const GPSSimulator = dynamic(() => import('@/components/map/GPSSimulator').then((m) => m.GPSSimulator), { ssr: false })
@@ -184,6 +192,14 @@ import {
   SplitSquareHorizontal,
   Volume2,
   Sun,
+  Hammer,
+  Mountain as MountainIcon,
+  Anchor,
+  Map,
+  CloudCog,
+  Bird,
+  Landmark,
+  Droplets,
 } from 'lucide-react'
 
 export default function Home() {
@@ -1308,6 +1324,86 @@ export default function Home() {
           <Button
             variant="outline"
             size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setStyleForge({ open: true })}
+            title="Style Forge"
+            aria-label="Open style forge"
+          >
+            <Hammer className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setTopoProfiler({ open: true })}
+            title="Topographic Profiler"
+            aria-label="Open topographic profiler"
+          >
+            <MountainIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setMaritimeNav({ open: true })}
+            title="Maritime Navigation"
+            aria-label="Open maritime navigation"
+          >
+            <Anchor className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setGeocaching({ open: true })}
+            title="Geocaching Toolkit"
+            aria-label="Open geocaching toolkit"
+          >
+            <Map className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setAtmospheric({ open: true })}
+            title="Atmospheric Dashboard"
+            aria-label="Open atmospheric dashboard"
+          >
+            <CloudCog className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setWildlifeTracker({ open: true })}
+            title="Wildlife Tracker"
+            aria-label="Open wildlife tracker"
+          >
+            <Bird className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setCulturalHeritage({ open: true })}
+            title="Cultural Heritage Map"
+            aria-label="Open cultural heritage map"
+          >
+            <Landmark className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setHydrology({ open: true })}
+            title="Hydrology Analyzer"
+            aria-label="Open hydrology analyzer"
+          >
+            <Droplets className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
             className="hidden sm:flex map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={() =>
               window.open('https://github.com/maplibre/maplibre-native', '_blank')
@@ -2079,6 +2175,30 @@ export default function Home() {
 
       {/* Solar Exposure Analyzer */}
       <SolarExposureAnalyzer />
+
+      {/* Map Style Forge */}
+      <MapStyleForge />
+
+      {/* Topographic Profiler */}
+      <TopographicProfiler />
+
+      {/* Maritime Navigation */}
+      <MaritimeNavigation />
+
+      {/* Geocaching Toolkit */}
+      <GeocachingToolkit />
+
+      {/* Atmospheric Dashboard */}
+      <AtmosphericDashboard />
+
+      {/* Wildlife Tracker */}
+      <WildlifeTracker />
+
+      {/* Cultural Heritage Map */}
+      <CulturalHeritageMap />
+
+      {/* Hydrology Analyzer */}
+      <HydrologyAnalyzer />
 
       {/* Footer */}
       <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-2 sm:px-3 md:px-4 safe-area-bottom before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">

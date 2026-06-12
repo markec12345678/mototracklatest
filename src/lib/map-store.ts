@@ -802,6 +802,224 @@ export interface SolarExposureState {
   showRadiationMap: boolean
 }
 
+// Map Style Forge types
+export interface StyleLayer {
+  id: string
+  type: 'background' | 'fill' | 'line' | 'symbol' | 'raster' | 'circle' | 'fill-extrusion' | 'heatmap'
+  source: string
+  paint: Record<string, unknown>
+  layout: Record<string, unknown>
+  visible: boolean
+  opacity: number
+}
+
+export interface StyleForgeState {
+  customLayers: StyleLayer[]
+  activeLayerId: string | null
+  baseStyle: string
+  open: boolean
+  exportFormat: 'maplibre-style' | 'tilejson' | 'pmtiles'
+}
+
+// Topographic Profiler types
+export interface TopoProfilePoint {
+  distance: number
+  elevation: number
+  lat: number
+  lng: number
+}
+
+export interface TopoProfilerState {
+  profilePoints: TopoProfilePoint[]
+  isDrawing: boolean
+  showGrid: boolean
+  showLabels: boolean
+  verticalExaggeration: number
+  open: boolean
+  totalDistance: number
+  totalAscent: number
+  totalDescent: number
+  maxElevation: number
+  minElevation: number
+}
+
+// Maritime Navigation types
+export interface MaritimeWaypoint {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  type: 'port' | 'anchorage' | 'lighthouse' | 'buoy' | 'danger' | 'waypoint'
+  depth: number | null
+  notes: string
+}
+
+export interface MaritimeRoute {
+  id: string
+  name: string
+  waypoints: MaritimeWaypoint[]
+  totalDistance: number
+  estimatedTime: number
+}
+
+export interface MaritimeNavState {
+  waypoints: MaritimeWaypoint[]
+  routes: MaritimeRoute[]
+  activeRouteId: string | null
+  showDepthContours: boolean
+  showNavigationAids: boolean
+  showShippingLanes: boolean
+  depthUnit: 'meters' | 'feet' | 'fathoms'
+  open: boolean
+}
+
+// Geocaching Toolkit types
+export interface Geocache {
+  id: string
+  name: string
+  code: string
+  latitude: number
+  longitude: number
+  type: 'traditional' | 'multi' | 'mystery' | 'earthcache' | 'letterbox' | 'event'
+  difficulty: number // 1-5
+  terrain: number // 1-5
+  size: 'micro' | 'small' | 'regular' | 'large' | 'other'
+  status: 'active' | 'found' | 'dnf' | 'archived'
+  hint: string
+  description: string
+  foundDate: string | null
+}
+
+export interface GeocachingState {
+  caches: Geocache[]
+  activeCacheId: string | null
+  showCaches: boolean
+  filterType: string[]
+  filterDifficulty: [number, number]
+  filterTerrain: [number, number]
+  open: boolean
+  foundCount: number
+  totalSearched: number
+}
+
+// Atmospheric Dashboard types
+export interface AtmosphericData {
+  temperature: number | null
+  humidity: number | null
+  pressure: number | null
+  windSpeed: number | null
+  windDirection: number | null
+  windGust: number | null
+  visibility: number | null
+  cloudCover: number | null
+  precipitation: number | null
+  dewPoint: number | null
+  frostPoint: number | null
+  heatIndex: number | null
+  windChill: number | null
+  uvIndex: number | null
+  airDensity: number | null
+  lastUpdated: number | null
+}
+
+export interface AtmosphericState {
+  data: AtmosphericData
+  open: boolean
+  showWindBarb: boolean
+  showPressureIsobars: boolean
+  showCloudCover: boolean
+  showTemperatureGradient: boolean
+  unitSystem: 'metric' | 'imperial'
+  historyData: Array<{ time: number; temperature: number | null; humidity: number | null; pressure: number | null }>
+}
+
+// Wildlife Tracker types
+export interface WildlifeObservation {
+  id: string
+  species: string
+  commonName: string
+  latitude: number
+  longitude: number
+  count: number
+  date: string
+  time: string
+  habitat: string
+  behavior: string
+  notes: string
+  photo: string | null
+}
+
+export interface WildlifeTrackerState {
+  observations: WildlifeObservation[]
+  activeObservationId: string | null
+  showObservations: boolean
+  showHeatmap: boolean
+  showMigrationPaths: boolean
+  filterSpecies: string[]
+  open: boolean
+  totalSpecies: number
+  totalObservations: number
+}
+
+// Cultural Heritage Map types
+export interface HeritageSite {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  type: 'unesco' | 'national' | 'local' | 'archaeological' | 'monument' | 'museum' | 'religious'
+  era: string
+  description: string
+  protectionLevel: 'high' | 'medium' | 'low'
+  visitInfo: string
+  rating: number
+  photos: string[]
+}
+
+export interface CulturalHeritageState {
+  sites: HeritageSite[]
+  activeSiteId: string | null
+  showSites: boolean
+  filterType: string[]
+  filterEra: string[]
+  open: boolean
+  showProtectionZones: boolean
+}
+
+// Hydrology Analyzer types
+export interface HydrologyPoint {
+  id: string
+  latitude: number
+  longitude: number
+  type: 'spring' | 'well' | 'river' | 'lake' | 'dam' | 'gauge' | 'outlet'
+  name: string
+  flowRate: number | null
+  waterLevel: number | null
+  quality: 'excellent' | 'good' | 'moderate' | 'poor' | 'bad'
+  lastReading: string | null
+}
+
+export interface WatershedData {
+  area: number
+  perimeter: number
+  outletPoint: { latitude: number; longitude: number } | null
+  flowDirection: number[][] // grid of flow directions
+  accumulation: number[][] // flow accumulation grid
+}
+
+export interface HydrologyState {
+  points: HydrologyPoint[]
+  watershed: WatershedData | null
+  activePointId: string | null
+  showFlowPaths: boolean
+  showWatersheds: boolean
+  showWaterBodies: boolean
+  showQualityOverlay: boolean
+  open: boolean
+  analysisMode: 'flow' | 'watershed' | 'quality' | 'flood'
+}
+
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -1515,6 +1733,38 @@ interface MapState {
   // Solar Exposure Analyzer
   solarExposure: SolarExposureState
   setSolarExposure: (state: Partial<SolarExposureState>) => void
+
+  // Map Style Forge
+  styleForge: StyleForgeState
+  setStyleForge: (state: Partial<StyleForgeState>) => void
+
+  // Topographic Profiler
+  topoProfiler: TopoProfilerState
+  setTopoProfiler: (state: Partial<TopoProfilerState>) => void
+
+  // Maritime Navigation
+  maritimeNav: MaritimeNavState
+  setMaritimeNav: (state: Partial<MaritimeNavState>) => void
+
+  // Geocaching Toolkit
+  geocaching: GeocachingState
+  setGeocaching: (state: Partial<GeocachingState>) => void
+
+  // Atmospheric Dashboard
+  atmospheric: AtmosphericState
+  setAtmospheric: (state: Partial<AtmosphericState>) => void
+
+  // Wildlife Tracker
+  wildlifeTracker: WildlifeTrackerState
+  setWildlifeTracker: (state: Partial<WildlifeTrackerState>) => void
+
+  // Cultural Heritage Map
+  culturalHeritage: CulturalHeritageState
+  setCulturalHeritage: (state: Partial<CulturalHeritageState>) => void
+
+  // Hydrology Analyzer
+  hydrology: HydrologyState
+  setHydrology: (state: Partial<HydrologyState>) => void
 }
 
 // Coordinate Share Card types
@@ -3834,6 +4084,133 @@ export const useMapStore = create<MapState>()(
       setSolarExposure: (updates) => set((state) => ({
         solarExposure: { ...state.solarExposure, ...updates },
       })),
+
+      // Map Style Forge
+      styleForge: {
+        customLayers: [],
+        activeLayerId: null,
+        baseStyle: 'streets',
+        open: false,
+        exportFormat: 'maplibre-style',
+      },
+      setStyleForge: (updates) => set((state) => ({
+        styleForge: { ...state.styleForge, ...updates },
+      })),
+
+      // Topographic Profiler
+      topoProfiler: {
+        profilePoints: [],
+        isDrawing: false,
+        showGrid: true,
+        showLabels: true,
+        verticalExaggeration: 3,
+        open: false,
+        totalDistance: 0,
+        totalAscent: 0,
+        totalDescent: 0,
+        maxElevation: 0,
+        minElevation: 0,
+      },
+      setTopoProfiler: (updates) => set((state) => ({
+        topoProfiler: { ...state.topoProfiler, ...updates },
+      })),
+
+      // Maritime Navigation
+      maritimeNav: {
+        waypoints: [],
+        routes: [],
+        activeRouteId: null,
+        showDepthContours: true,
+        showNavigationAids: true,
+        showShippingLanes: false,
+        depthUnit: 'meters',
+        open: false,
+      },
+      setMaritimeNav: (updates) => set((state) => ({
+        maritimeNav: { ...state.maritimeNav, ...updates },
+      })),
+
+      // Geocaching Toolkit
+      geocaching: {
+        caches: [],
+        activeCacheId: null,
+        showCaches: true,
+        filterType: [],
+        filterDifficulty: [1, 5],
+        filterTerrain: [1, 5],
+        open: false,
+        foundCount: 0,
+        totalSearched: 0,
+      },
+      setGeocaching: (updates) => set((state) => ({
+        geocaching: { ...state.geocaching, ...updates },
+      })),
+
+      // Atmospheric Dashboard
+      atmospheric: {
+        data: {
+          temperature: null, humidity: null, pressure: null, windSpeed: null,
+          windDirection: null, windGust: null, visibility: null, cloudCover: null,
+          precipitation: null, dewPoint: null, frostPoint: null, heatIndex: null,
+          windChill: null, uvIndex: null, airDensity: null, lastUpdated: null,
+        },
+        open: false,
+        showWindBarb: false,
+        showPressureIsobars: false,
+        showCloudCover: false,
+        showTemperatureGradient: false,
+        unitSystem: 'metric',
+        historyData: [],
+      },
+      setAtmospheric: (updates) => set((state) => ({
+        atmospheric: { ...state.atmospheric, ...updates },
+      })),
+
+      // Wildlife Tracker
+      wildlifeTracker: {
+        observations: [],
+        activeObservationId: null,
+        showObservations: true,
+        showHeatmap: false,
+        showMigrationPaths: false,
+        filterSpecies: [],
+        open: false,
+        totalSpecies: 0,
+        totalObservations: 0,
+      },
+      setWildlifeTracker: (updates) => set((state) => ({
+        wildlifeTracker: { ...state.wildlifeTracker, ...updates },
+      })),
+
+      // Cultural Heritage Map
+      culturalHeritage: {
+        sites: [],
+        activeSiteId: null,
+        showSites: true,
+        filterType: [],
+        filterEra: [],
+        open: false,
+        showProtectionZones: false,
+      },
+      setCulturalHeritage: (updates) => set((state) => ({
+        culturalHeritage: { ...state.culturalHeritage, ...updates },
+      })),
+
+      // Hydrology Analyzer
+      hydrology: {
+        points: [],
+        watershed: null,
+        activePointId: null,
+        showFlowPaths: false,
+        showWatersheds: false,
+        showWaterBodies: true,
+        showQualityOverlay: false,
+        open: false,
+        analysisMode: 'flow',
+      },
+      setHydrology: (updates) => set((state) => ({
+        hydrology: { ...state.hydrology, ...updates },
+      })),
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -3941,6 +4318,14 @@ export const useMapStore = create<MapState>()(
         comparisonSlider: state.comparisonSlider,
         noiseHeatmap: state.noiseHeatmap,
         solarExposure: state.solarExposure,
+        styleForge: state.styleForge,
+        topoProfiler: state.topoProfiler,
+        maritimeNav: state.maritimeNav,
+        geocaching: state.geocaching,
+        atmospheric: state.atmospheric,
+        wildlifeTracker: state.wildlifeTracker,
+        culturalHeritage: state.culturalHeritage,
+        hydrology: state.hydrology,
       }),
     }
   )
