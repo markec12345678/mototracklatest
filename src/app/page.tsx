@@ -41,11 +41,19 @@ import { AISuggestionsPanel } from '@/components/map/AISuggestionsPanel'
 import { RouteAnalyticsPanel } from '@/components/map/RouteAnalyticsPanel'
 import { DistanceMatrix } from '@/components/map/DistanceMatrix'
 import { StyleGallery } from '@/components/map/StyleGallery'
+import { VoiceNavigator } from '@/components/map/VoiceNavigator'
+import { VoiceNavigationToggle } from '@/components/map/VoiceNavigationToggle'
+import { CollaborationPanel } from '@/components/map/CollaborationPanel'
+import { CollaboratorCursors } from '@/components/map/CollaboratorCursors'
+import { OfflineIndicator } from '@/components/map/OfflineIndicator'
+import { DrawingToolbar } from '@/components/map/DrawingToolbar'
+import { DrawingLayer } from '@/components/map/DrawingLayer'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { useMapStore, type ToolMode, MAP_STYLES } from '@/lib/map-store'
 import { useUndoStore } from '@/lib/use-undo-store'
+import { useServiceWorker } from '@/hooks/use-service-worker'
 import { toast } from 'sonner'
 import {
   Navigation,
@@ -74,6 +82,10 @@ import {
 export default function Home() {
   const { toolMode, sidebarOpen, center, zoom, currentStyle, weatherEnabled, comparisonEnabled, sunPositionEnabled, heatmapEnabled, elevationRouteId, setSidebarOpen, setToolMode, setCenter, setZoom, setCurrentStyle, setComparisonEnabled } = useMapStore()
   const pushNotification = useMapStore((s) => s.pushNotification)
+  const drawingTool = useMapStore((s) => s.drawingTool)
+
+  // Register service worker for offline tile caching
+  useServiceWorker()
   const [addDialogOpen, setAddDialogOpen] = useState(false)
   const [shortcutsOpen, setShortcutsOpen] = useState(false)
   const [coordDialogOpen, setCoordDialogOpen] = useState(false)
@@ -488,6 +500,12 @@ export default function Home() {
       {/* Map */}
       <MapView />
 
+      {/* Drawing Layer - renders drawn features on the map */}
+      <DrawingLayer />
+
+      {/* Collaborator Cursors - shows other users' positions on the map */}
+      <CollaboratorCursors />
+
       {/* Sun Position Overlay - renders terminator and subsolar point on the map */}
       <SunPositionOverlay />
 
@@ -537,6 +555,12 @@ export default function Home() {
 
       {/* Map Notifications - top right below top bar */}
       <MapNotifications />
+
+      {/* Voice Navigation Indicator */}
+      <VoiceNavigator />
+
+      {/* Offline Indicator */}
+      <OfflineIndicator />
 
       {/* Compass indicator (visible when map is rotated) */}
       <CompassIndicator />
@@ -658,6 +682,8 @@ export default function Home() {
           >
             <Share2 className="h-4 w-4" />
           </Button>
+          <VoiceNavigationToggle />
+          <CollaborationPanel />
           <Button
             variant="outline"
             size="icon"
@@ -683,11 +709,8 @@ export default function Home() {
               <TooltipTrigger asChild>
                 <TrackRecordButton
                   onClick={() => {
-                    const { isRecording, startRecording, stopRecording, currentTrack, clearCurrentTrack } = useMapStore.getState()
+                    const { isRecording, startRecording, stopRecording } = useMapStore.getState()
                     if (isRecording) {
-                      if (navigator.geolocation && typeof navigator !== 'undefined') {
-                        // handled by TrackRecorder component
-                      }
                       stopRecording()
                     } else {
                       if (typeof navigator !== 'undefined' && navigator.geolocation) {
@@ -723,6 +746,9 @@ export default function Home() {
           </TooltipProvider>
         </div>
       </div>
+
+      {/* Drawing Toolbar - appears when draw tool is active */}
+      <DrawingToolbar />
 
       {/* AI Suggestions Panel - left side below toolbar (desktop only) */}
       {aiSuggestionsOpen && (

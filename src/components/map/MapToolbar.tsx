@@ -1,16 +1,26 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { MapPin, Navigation, Ruler, Crosshair, Pencil, Maximize2, Type, Building2, Sparkles } from 'lucide-react'
+import { MapPin, Navigation, Ruler, Crosshair, Pencil, Maximize2, Type, Building2, Sparkles, Volume2, Users } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 import { useMapStore, type ToolMode } from '@/lib/map-store'
 import { useTranslation } from '@/lib/translations'
+import { useCollaborationStore } from '@/lib/collaboration-store'
 
 interface ToolDef {
   id: ToolMode
+  icon: React.ReactNode
+  label: string
+  activeClass: string
+  shortcut: string
+  description: string
+}
+
+interface ToggleToolDef {
+  id: string
   icon: React.ReactNode
   label: string
   activeClass: string
@@ -102,7 +112,16 @@ export function MapToolbar({ aiSuggestionsOpen, setAiSuggestionsOpen }: { aiSugg
   const { toolMode, setToolMode } = useMapStore()
   const buildings3DEnabled = useMapStore((s) => s.buildings3DEnabled)
   const setBuildings3DEnabled = useMapStore((s) => s.setBuildings3DEnabled)
+  const drawingTool = useMapStore((s) => s.drawingTool)
+  const setDrawingTool = useMapStore((s) => s.setDrawingTool)
+  const voiceNavigationEnabled = useMapStore((s) => s.voiceNavigationEnabled)
+  const setVoiceNavigationEnabled = useMapStore((s) => s.setVoiceNavigationEnabled)
+  const routeSteps = useMapStore((s) => s.routeSteps)
+  const isCollaborating = useCollaborationStore((s) => s.isCollaborating)
   const { t } = useTranslation()
+
+  const isDrawModeActive = drawingTool !== 'none'
+  const isVoiceActive = voiceNavigationEnabled && routeSteps.length > 0
 
   const toolGroups: {
     separatorAfter?: boolean
@@ -197,8 +216,19 @@ export function MapToolbar({ aiSuggestionsOpen, setAiSuggestionsOpen }: { aiSugg
                   <ToolButton
                     key={tool.id}
                     tool={tool}
-                    isActive={toolMode === tool.id}
-                    onClick={() => setToolMode(tool.id)}
+                    isActive={tool.id === 'draw' ? isDrawModeActive : toolMode === tool.id}
+                    onClick={() => {
+                      if (tool.id === 'draw') {
+                        // Toggle enhanced drawing tools
+                        setDrawingTool(drawingTool === 'none' ? 'line' : 'none')
+                        setToolMode('draw')
+                      } else {
+                        setToolMode(tool.id)
+                        if (drawingTool !== 'none') {
+                          setDrawingTool('none')
+                        }
+                      }
+                    }}
                     index={idx}
                   />
                 )
@@ -235,6 +265,57 @@ export function MapToolbar({ aiSuggestionsOpen, setAiSuggestionsOpen }: { aiSugg
             onClick={() => setAiSuggestionsOpen(!aiSuggestionsOpen)}
             index={globalIndex + 1}
           />
+        </div>
+
+        {/* Voice & Collaboration */}
+        <Separator className="my-1 opacity-50" />
+        <div className="flex flex-col gap-1">
+          <ToolButton
+            tool={{
+              id: 'navigate' as any,
+              icon: <Volume2 className="h-4 w-4" />,
+              label: 'Voice Nav',
+              activeClass: 'bg-teal-500 text-white shadow-md shadow-teal-500/30',
+              shortcut: 'V',
+              description: 'Turn-by-turn voice navigation',
+            }}
+            isActive={isVoiceActive}
+            onClick={() => {
+              if (typeof window !== 'undefined' && window.speechSynthesis) {
+                if (voiceNavigationEnabled) {
+                  window.speechSynthesis.cancel()
+                } else {
+                  const u = new SpeechSynthesisUtterance('')
+                  u.volume = 0
+                  window.speechSynthesis.speak(u)
+                }
+              }
+              setVoiceNavigationEnabled(!voiceNavigationEnabled)
+            }}
+            index={globalIndex + 2}
+          />
+          <div className="relative">
+            <ToolButton
+              tool={{
+                id: 'navigate' as any,
+                icon: <Users className="h-4 w-4" />,
+                label: 'Collaborate',
+                activeClass: 'bg-sky-500 text-white shadow-md shadow-sky-500/30',
+                shortcut: 'C',
+                description: 'Share and collaborate on the map',
+              }}
+              isActive={isCollaborating}
+              onClick={() => {
+                // This is handled by CollaborationPanel dialog trigger
+                const btn = document.querySelector('[aria-label="Collaboration"]') as HTMLButtonElement | null
+                btn?.click()
+              }}
+              index={globalIndex + 3}
+            />
+            {isCollaborating && (
+              <span className="absolute -top-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-500 border border-background" />
+            )}
+          </div>
         </div>
       </div>
     </TooltipProvider>

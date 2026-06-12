@@ -459,6 +459,26 @@ interface MapState {
   offlineModeEnabled: boolean
   setOfflineModeEnabled: (enabled: boolean) => void
 
+  // Voice navigation
+  voiceNavigationEnabled: boolean
+  setVoiceNavigationEnabled: (enabled: boolean) => void
+  voiceLanguage: string
+  setVoiceLanguage: (lang: string) => void
+  voiceCurrentStepIndex: number
+  setVoiceCurrentStepIndex: (index: number) => void
+
+  // Enhanced drawing tools
+  drawingTool: 'none' | 'point' | 'line' | 'polygon' | 'circle' | 'rectangle' | 'freehand'
+  setDrawingTool: (tool: 'none' | 'point' | 'line' | 'polygon' | 'circle' | 'rectangle' | 'freehand') => void
+  drawingColor: string
+  setDrawingColor: (color: string) => void
+  drawingLineWidth: number
+  setDrawingLineWidth: (width: number) => void
+  drawnFeatures: { id: string; type: string; coordinates: number[][] | number[][][]; color: string; lineWidth: number; name?: string }[]
+  addDrawnFeature: (feature: { id: string; type: string; coordinates: number[][] | number[][][]; color: string; lineWidth: number; name?: string }) => void
+  removeDrawnFeature: (id: string) => void
+  clearDrawnFeatures: () => void
+
   // Custom tile sources
   customTileSources: CustomTileSource[]
   addCustomTileSource: (source: CustomTileSource) => void
@@ -650,6 +670,17 @@ export const useMapStore = create<MapState>()(
       elevationRouteId: null,
       offlineModeEnabled: false,
       customTileSources: [],
+
+      // Voice navigation defaults
+      voiceNavigationEnabled: false,
+      voiceLanguage: 'en',
+      voiceCurrentStepIndex: 0,
+
+      // Enhanced drawing tool defaults
+      drawingTool: 'none',
+      drawingColor: '#ef4444',
+      drawingLineWidth: 3,
+      drawnFeatures: [],
 
       // Track recording defaults
       isRecording: false,
@@ -1249,6 +1280,23 @@ export const useMapStore = create<MapState>()(
 
       setOfflineModeEnabled: (offlineModeEnabled) => set({ offlineModeEnabled }),
 
+      // Voice navigation actions
+      setVoiceNavigationEnabled: (voiceNavigationEnabled) => set({ voiceNavigationEnabled, voiceCurrentStepIndex: 0 }),
+      setVoiceLanguage: (voiceLanguage) => set({ voiceLanguage }),
+      setVoiceCurrentStepIndex: (voiceCurrentStepIndex) => set({ voiceCurrentStepIndex }),
+
+      // Enhanced drawing tool actions
+      setDrawingTool: (drawingTool) => set({ drawingTool }),
+      setDrawingColor: (drawingColor) => set({ drawingColor }),
+      setDrawingLineWidth: (drawingLineWidth) => set({ drawingLineWidth }),
+      addDrawnFeature: (feature) => set((state) => ({
+        drawnFeatures: [...state.drawnFeatures, feature],
+      })),
+      removeDrawnFeature: (id) => set((state) => ({
+        drawnFeatures: state.drawnFeatures.filter((f) => f.id !== id),
+      })),
+      clearDrawnFeatures: () => set({ drawnFeatures: [] }),
+
       addCustomTileSource: (source) => set((state) => ({
         customTileSources: [...state.customTileSources, source],
       })),
@@ -1509,6 +1557,12 @@ export const useMapStore = create<MapState>()(
         annotations: state.annotations,
         offlineModeEnabled: state.offlineModeEnabled,
         customTileSources: state.customTileSources,
+        voiceNavigationEnabled: state.voiceNavigationEnabled,
+        voiceLanguage: state.voiceLanguage,
+        drawingTool: state.drawingTool,
+        drawingColor: state.drawingColor,
+        drawingLineWidth: state.drawingLineWidth,
+        drawnFeatures: state.drawnFeatures,
         routeProfile: state.routeProfile,
         savedTracks: state.savedTracks,
         geofences: state.geofences,
