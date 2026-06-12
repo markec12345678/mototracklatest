@@ -192,6 +192,14 @@ import { AcidRainTracker } from '@/components/map/AcidRainTracker'
 import { MethaneHydrateMonitor } from '@/components/map/MethaneHydrateMonitor'
 import { KelpForestMonitor } from '@/components/map/KelpForestMonitor'
 import { GlacierLakeOutburstTracker } from '@/components/map/GlacierLakeOutburstTracker'
+import { DustStormTracker } from '@/components/map/DustStormTracker'
+import { BioluminescenceTracker } from '@/components/map/BioluminescenceTracker'
+import { UrbanSprawlMonitor } from '@/components/map/UrbanSprawlMonitor'
+import { ViralOutbreakMapper } from '@/components/map/ViralOutbreakMapper'
+import { MagnetosphereMonitor } from '@/components/map/MagnetosphereMonitor'
+import { FogDensityMapper } from '@/components/map/FogDensityMapper'
+import { CarbonCaptureTracker } from '@/components/map/CarbonCaptureTracker'
+import { HailStormTracker } from '@/components/map/HailStormTracker'
 import dynamic from 'next/dynamic'
 
 const GPSSimulator = dynamic(() => import('@/components/map/GPSSimulator').then((m) => m.GPSSimulator), { ssr: false })
@@ -324,6 +332,14 @@ import {
   Moon as MoonIcon,
   Sparkles as SparklesIcon,
   Globe2 as Globe2Icon2,
+  Wind as WindIcon2,
+  Sparkles as SparklesIcon2,
+  Building2 as Building2Icon,
+  Bug,
+  Magnet as MagnetIcon2,
+  CloudFog,
+  Factory as FactoryIcon2,
+  CloudHail as CloudHailIcon,
 } from 'lucide-react'
 
 export default function Home() {
@@ -2328,6 +2344,86 @@ export default function Home() {
           <Button
             variant="outline"
             size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setDustStorm({ open: true })}
+            title="Dust Storm Tracker"
+            aria-label="Open dust storm tracker"
+          >
+            <WindIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setBioluminescence({ open: true })}
+            title="Bioluminescence Tracker"
+            aria-label="Open bioluminescence tracker"
+          >
+            <SparklesIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setUrbanSprawl({ open: true })}
+            title="Urban Sprawl Monitor"
+            aria-label="Open urban sprawl monitor"
+          >
+            <Building2Icon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setViralOutbreak({ open: true })}
+            title="Viral Outbreak Mapper"
+            aria-label="Open viral outbreak mapper"
+          >
+            <Bug className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setMagnetosphere({ open: true })}
+            title="Magnetosphere Monitor"
+            aria-label="Open magnetosphere monitor"
+          >
+            <MagnetIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setFogDensity({ open: true })}
+            title="Fog Density Mapper"
+            aria-label="Open fog density mapper"
+          >
+            <CloudFog className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setCarbonCapture({ open: true })}
+            title="Carbon Capture Tracker"
+            aria-label="Open carbon capture tracker"
+          >
+            <FactoryIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setHailStorm({ open: true })}
+            title="Hail Storm Tracker"
+            aria-label="Open hail storm tracker"
+          >
+            <CloudHailIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
             className="hidden sm:flex map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={() =>
               window.open('https://github.com/maplibre/maplibre-native', '_blank')
@@ -3363,6 +3459,30 @@ export default function Home() {
 
       {/* Glacier Lake Outburst Tracker */}
       <GlacierLakeOutburstTracker />
+
+      {/* Dust Storm Tracker */}
+      <DustStormTracker />
+
+      {/* Bioluminescence Tracker */}
+      <BioluminescenceTracker />
+
+      {/* Urban Sprawl Monitor */}
+      <UrbanSprawlMonitor />
+
+      {/* Viral Outbreak Mapper */}
+      <ViralOutbreakMapper />
+
+      {/* Magnetosphere Monitor */}
+      <MagnetosphereMonitor />
+
+      {/* Fog Density Mapper */}
+      <FogDensityMapper />
+
+      {/* Carbon Capture Tracker */}
+      <CarbonCaptureTracker />
+
+      {/* Hail Storm Tracker */}
+      <HailStormTracker />
 
       {/* Footer */}
       <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-2 sm:px-3 md:px-4 safe-area-bottom before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">

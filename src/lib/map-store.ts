@@ -3123,6 +3123,210 @@ export interface GLOFState {
   riskFilter: 'all' | 'low' | 'moderate' | 'high' | 'very_high'
 }
 
+// Task 54: Dust Storm Tracker
+export interface DustStormEvent {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  severity: 'minor' | 'moderate' | 'major' | 'extreme'
+  windSpeed: number
+  visibility: number
+  dustConcentration: number
+  direction: number
+  area: number
+  origin: string
+  duration: string
+}
+
+export interface DustStormState {
+  storms: DustStormEvent[]
+  activeStormId: string | null
+  showSeverity: boolean
+  showWindSpeed: boolean
+  showVisibility: boolean
+  showConcentration: boolean
+  open: boolean
+  severityFilter: 'all' | 'minor' | 'moderate' | 'major' | 'extreme'
+}
+
+// Task 54: Bioluminescence Tracker
+export interface BioluminescenceSite {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  intensity: 'dim' | 'moderate' | 'bright' | 'spectacular'
+  organismType: string
+  waterTemp: number
+  lastObserved: string
+  area: number
+  seasonalPeak: string
+}
+
+export interface BioluminescenceState {
+  sites: BioluminescenceSite[]
+  activeSiteId: string | null
+  showIntensity: boolean
+  showOrganismType: boolean
+  showWaterTemp: boolean
+  showSeasonalPeak: boolean
+  open: boolean
+  intensityFilter: 'all' | 'dim' | 'moderate' | 'bright' | 'spectacular'
+}
+
+// Task 54: Urban Sprawl Monitor
+export interface UrbanSprawlZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  growthRate: number
+  populationDensity: number
+  landUseChange: number
+  greenSpaceLoss: number
+  infraStrain: 'low' | 'moderate' | 'high' | 'critical'
+  yearEstablished: number
+  sprawlArea: number
+}
+
+export interface UrbanSprawlState {
+  zones: UrbanSprawlZone[]
+  activeZoneId: string | null
+  showGrowthRate: boolean
+  showDensity: boolean
+  showGreenSpace: boolean
+  showInfraStrain: boolean
+  open: boolean
+  strainFilter: 'all' | 'low' | 'moderate' | 'high' | 'critical'
+}
+
+// Task 54: Viral Outbreak Mapper
+export interface ViralOutbreakZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  pathogen: string
+  caseCount: number
+  r0Value: number
+  severity: 'contained' | 'spreading' | 'epidemic' | 'pandemic'
+  vaccinationRate: number
+  mortalityRate: number
+  lastUpdated: string
+}
+
+export interface ViralOutbreakState {
+  outbreaks: ViralOutbreakZone[]
+  activeOutbreakId: string | null
+  showCaseCount: boolean
+  showR0: boolean
+  showVaccination: boolean
+  showMortality: boolean
+  open: boolean
+  severityFilter: 'all' | 'contained' | 'spreading' | 'epidemic' | 'pandemic'
+}
+
+// Task 54: Magnetosphere Monitor
+export interface MagnetosphereReading {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  bzComponent: number
+  solarWindSpeed: number
+  kpIndex: number
+  dstIndex: number
+  auroraProbability: number
+  status: 'quiet' | 'unsettled' | 'active' | 'storm' | 'severe_storm'
+}
+
+export interface MagnetosphereState {
+  readings: MagnetosphereReading[]
+  activeReadingId: string | null
+  showBz: boolean
+  showSolarWind: boolean
+  showKp: boolean
+  showAurora: boolean
+  open: boolean
+  statusFilter: 'all' | 'quiet' | 'unsettled' | 'active' | 'storm' | 'severe_storm'
+}
+
+// Task 54: Fog Density Mapper
+export interface FogDensityZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  density: 'light' | 'moderate' | 'dense' | 'super_dense'
+  visibility: number
+  humidity: number
+  duration: string
+  fogType: string
+  aviationImpact: 'none' | 'minor' | 'moderate' | 'severe'
+}
+
+export interface FogDensityState {
+  zones: FogDensityZone[]
+  activeZoneId: string | null
+  showDensity: boolean
+  showVisibility: boolean
+  showHumidity: boolean
+  showAviationImpact: boolean
+  open: boolean
+  densityFilter: 'all' | 'light' | 'moderate' | 'dense' | 'super_dense'
+}
+
+// Task 54: Carbon Capture Tracker
+export interface CarbonCaptureFacility {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  captureCapacity: number
+  currentCapture: number
+  technology: string
+  status: 'planned' | 'construction' | 'operational' | 'paused'
+  storageType: string
+  co2Stored: number
+}
+
+export interface CarbonCaptureState {
+  facilities: CarbonCaptureFacility[]
+  activeFacilityId: string | null
+  showCapacity: boolean
+  showTechnology: boolean
+  showStatus: boolean
+  showStorage: boolean
+  open: boolean
+  statusFilter: 'all' | 'planned' | 'construction' | 'operational' | 'paused'
+}
+
+// Task 54: Hail Storm Tracker
+export interface HailStormEvent {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  maxHailSize: number
+  windSpeed: number
+  duration: string
+  damage: 'none' | 'minor' | 'moderate' | 'severe' | 'catastrophic'
+  area: number
+  supercellType: string
+}
+
+export interface HailStormState {
+  events: HailStormEvent[]
+  activeEventId: string | null
+  showHailSize: boolean
+  showWindSpeed: boolean
+  showDamage: boolean
+  showArea: boolean
+  open: boolean
+  damageFilter: 'all' | 'none' | 'minor' | 'moderate' | 'severe' | 'catastrophic'
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -4188,6 +4392,38 @@ interface MapState {
   // Glacier Lake Outburst Tracker
   glof: GLOFState
   setGLOF: (state: Partial<GLOFState>) => void
+
+  // Dust Storm Tracker
+  dustStorm: DustStormState
+  setDustStorm: (state: Partial<DustStormState>) => void
+
+  // Bioluminescence Tracker
+  bioluminescence: BioluminescenceState
+  setBioluminescence: (state: Partial<BioluminescenceState>) => void
+
+  // Urban Sprawl Monitor
+  urbanSprawl: UrbanSprawlState
+  setUrbanSprawl: (state: Partial<UrbanSprawlState>) => void
+
+  // Viral Outbreak Mapper
+  viralOutbreak: ViralOutbreakState
+  setViralOutbreak: (state: Partial<ViralOutbreakState>) => void
+
+  // Magnetosphere Monitor
+  magnetosphere: MagnetosphereState
+  setMagnetosphere: (state: Partial<MagnetosphereState>) => void
+
+  // Fog Density Mapper
+  fogDensity: FogDensityState
+  setFogDensity: (state: Partial<FogDensityState>) => void
+
+  // Carbon Capture Tracker
+  carbonCapture: CarbonCaptureState
+  setCarbonCapture: (state: Partial<CarbonCaptureState>) => void
+
+  // Hail Storm Tracker
+  hailStorm: HailStormState
+  setHailStorm: (state: Partial<HailStormState>) => void
 }
 
 // Coordinate Share Card types
@@ -7869,6 +8105,118 @@ export const useMapStore = create<MapState>()(
       setGLOF: (updates) => set((state) => ({
         glof: { ...state.glof, ...updates },
       })),
+
+      dustStorm: {
+        storms: [],
+        activeStormId: null,
+        showSeverity: true,
+        showWindSpeed: false,
+        showVisibility: false,
+        showConcentration: false,
+        open: false,
+        severityFilter: 'all',
+      },
+      setDustStorm: (updates) => set((state) => ({
+        dustStorm: { ...state.dustStorm, ...updates },
+      })),
+
+      bioluminescence: {
+        sites: [],
+        activeSiteId: null,
+        showIntensity: true,
+        showOrganismType: false,
+        showWaterTemp: false,
+        showSeasonalPeak: false,
+        open: false,
+        intensityFilter: 'all',
+      },
+      setBioluminescence: (updates) => set((state) => ({
+        bioluminescence: { ...state.bioluminescence, ...updates },
+      })),
+
+      urbanSprawl: {
+        zones: [],
+        activeZoneId: null,
+        showGrowthRate: true,
+        showDensity: false,
+        showGreenSpace: false,
+        showInfraStrain: false,
+        open: false,
+        strainFilter: 'all',
+      },
+      setUrbanSprawl: (updates) => set((state) => ({
+        urbanSprawl: { ...state.urbanSprawl, ...updates },
+      })),
+
+      viralOutbreak: {
+        outbreaks: [],
+        activeOutbreakId: null,
+        showCaseCount: true,
+        showR0: false,
+        showVaccination: false,
+        showMortality: false,
+        open: false,
+        severityFilter: 'all',
+      },
+      setViralOutbreak: (updates) => set((state) => ({
+        viralOutbreak: { ...state.viralOutbreak, ...updates },
+      })),
+
+      magnetosphere: {
+        readings: [],
+        activeReadingId: null,
+        showBz: true,
+        showSolarWind: false,
+        showKp: false,
+        showAurora: false,
+        open: false,
+        statusFilter: 'all',
+      },
+      setMagnetosphere: (updates) => set((state) => ({
+        magnetosphere: { ...state.magnetosphere, ...updates },
+      })),
+
+      fogDensity: {
+        zones: [],
+        activeZoneId: null,
+        showDensity: true,
+        showVisibility: false,
+        showHumidity: false,
+        showAviationImpact: false,
+        open: false,
+        densityFilter: 'all',
+      },
+      setFogDensity: (updates) => set((state) => ({
+        fogDensity: { ...state.fogDensity, ...updates },
+      })),
+
+      carbonCapture: {
+        facilities: [],
+        activeFacilityId: null,
+        showCapacity: true,
+        showTechnology: false,
+        showStatus: false,
+        showStorage: false,
+        open: false,
+        statusFilter: 'all',
+      },
+      setCarbonCapture: (updates) => set((state) => ({
+        carbonCapture: { ...state.carbonCapture, ...updates },
+      })),
+
+      hailStorm: {
+        events: [],
+        activeEventId: null,
+        showHailSize: true,
+        showWindSpeed: false,
+        showDamage: false,
+        showArea: false,
+        open: false,
+        damageFilter: 'all',
+      },
+      setHailStorm: (updates) => set((state) => ({
+        hailStorm: { ...state.hailStorm, ...updates },
+      })),
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -8064,6 +8412,14 @@ export const useMapStore = create<MapState>()(
         methaneHydrate: state.methaneHydrate,
         kelpForest: state.kelpForest,
         glof: state.glof,
+        dustStorm: state.dustStorm,
+        bioluminescence: state.bioluminescence,
+        urbanSprawl: state.urbanSprawl,
+        viralOutbreak: state.viralOutbreak,
+        magnetosphere: state.magnetosphere,
+        fogDensity: state.fogDensity,
+        carbonCapture: state.carbonCapture,
+        hailStorm: state.hailStorm,
       }),
     }
   )
