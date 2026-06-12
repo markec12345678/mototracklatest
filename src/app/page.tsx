@@ -160,6 +160,14 @@ import { WildfireRiskAssessor } from '@/components/map/WildfireRiskAssessor'
 import { AlgalBloomTracker } from '@/components/map/AlgalBloomTracker'
 import { LandslidePredictor } from '@/components/map/LandslidePredictor'
 import { SeaIceNavigator } from '@/components/map/SeaIceNavigator'
+import { CloudCoverAnalyzer } from '@/components/map/CloudCoverAnalyzer'
+import { SoilMoistureMonitor } from '@/components/map/SoilMoistureMonitor'
+import { LightPollutionMap } from '@/components/map/LightPollutionMap'
+import { RiverFlowMonitor } from '@/components/map/RiverFlowMonitor'
+import { VolcanoSeismicMonitor } from '@/components/map/VolcanoSeismicMonitor'
+import { WhaleMigrationTracker } from '@/components/map/WhaleMigrationTracker'
+import { AvalancheForecaster } from '@/components/map/AvalancheForecaster'
+import { AuroraForecaster } from '@/components/map/AuroraForecaster'
 import dynamic from 'next/dynamic'
 
 const GPSSimulator = dynamic(() => import('@/components/map/GPSSimulator').then((m) => m.GPSSimulator), { ssr: false })
@@ -280,6 +288,7 @@ import {
   Shell,
   Siren,
   CloudRain,
+  Cloud as CloudIcon,
   Droplets as DropletsIcon,
   Globe as GlobeIcon,
   Wind as WindIcon,
@@ -288,6 +297,8 @@ import {
   TreeDeciduous,
   Flame as FlameIcon,
   Ship as ShipIcon,
+  Moon as MoonIcon,
+  Sparkles as SparklesIcon,
 } from 'lucide-react'
 
 export default function Home() {
@@ -1972,6 +1983,86 @@ export default function Home() {
           <Button
             variant="outline"
             size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setCloudCover({ open: true })}
+            title="Cloud Cover Analyzer"
+            aria-label="Open cloud cover analyzer"
+          >
+            <CloudIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setSoilMoisture({ open: true })}
+            title="Soil Moisture Monitor"
+            aria-label="Open soil moisture monitor"
+          >
+            <DropletsIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setLightPollution({ open: true })}
+            title="Light Pollution Map"
+            aria-label="Open light pollution map"
+          >
+            <MoonIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setRiverFlow({ open: true })}
+            title="River Flow Monitor"
+            aria-label="Open river flow monitor"
+          >
+            <WavesIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setVolcanoSeismic({ open: true })}
+            title="Volcano Seismic Monitor"
+            aria-label="Open volcano seismic monitor"
+          >
+            <Triangle className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setWhaleMigration({ open: true })}
+            title="Whale Migration Tracker"
+            aria-label="Open whale migration tracker"
+          >
+            <Fish className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setAvalancheForecaster({ open: true })}
+            title="Avalanche Forecaster"
+            aria-label="Open avalanche forecaster"
+          >
+            <SnowflakeIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setAuroraForecaster({ open: true })}
+            title="Aurora Forecaster"
+            aria-label="Open aurora forecaster"
+          >
+            <SparklesIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
             className="hidden sm:flex map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={() =>
               window.open('https://github.com/maplibre/maplibre-native', '_blank')
@@ -2911,6 +3002,30 @@ export default function Home() {
 
       {/* Sea Ice Navigator */}
       <SeaIceNavigator />
+
+      {/* Cloud Cover Analyzer */}
+      <CloudCoverAnalyzer />
+
+      {/* Soil Moisture Monitor */}
+      <SoilMoistureMonitor />
+
+      {/* Light Pollution Map */}
+      <LightPollutionMap />
+
+      {/* River Flow Monitor */}
+      <RiverFlowMonitor />
+
+      {/* Volcano Seismic Monitor */}
+      <VolcanoSeismicMonitor />
+
+      {/* Whale Migration Tracker */}
+      <WhaleMigrationTracker />
+
+      {/* Avalanche Forecaster */}
+      <AvalancheForecaster />
+
+      {/* Aurora Forecaster */}
+      <AuroraForecaster />
 
       {/* Footer */}
       <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-2 sm:px-3 md:px-4 safe-area-bottom before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">

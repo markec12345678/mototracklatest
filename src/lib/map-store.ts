@@ -2321,6 +2321,208 @@ export interface SeaIceNavigatorState {
   iceTypeFilter: 'all' | 'new' | 'first_year' | 'multi_year' | 'fast_ice'
 }
 
+// Task 50: Cloud Cover Analyzer
+export interface CloudLayer {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  coverage: number
+  cloudType: 'cirrus' | 'cumulus' | 'stratus' | 'nimbus' | 'cumulonimbus'
+  altitude: number
+  temperature: number
+  precipitation: boolean
+}
+
+export interface CloudCoverState {
+  cloudLayers: CloudLayer[]
+  activeCloudId: string | null
+  showCoverage: boolean
+  showAltitude: boolean
+  showPrecipitation: boolean
+  showTemperature: boolean
+  open: boolean
+  cloudTypeFilter: 'all' | 'cirrus' | 'cumulus' | 'stratus' | 'nimbus' | 'cumulonimbus'
+}
+
+// Task 50: Soil Moisture Monitor
+export interface SoilMoistureZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  moistureLevel: number
+  fieldCapacity: number
+  wiltingPoint: number
+  soilType: string
+  depth: number
+  irrigationNeeded: boolean
+}
+
+export interface SoilMoistureState {
+  soilZones: SoilMoistureZone[]
+  activeSoilZoneId: string | null
+  showMoisture: boolean
+  showDepth: boolean
+  showIrrigation: boolean
+  showSoilType: boolean
+  open: boolean
+  moistureFilter: 'all' | 'dry' | 'moderate' | 'wet' | 'saturated'
+}
+
+// Task 50: Night Sky Light Pollution
+export interface LightPollutionZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  brightness: number
+  bortleClass: number
+  limitingMagnitude: number
+  lightSource: string
+  visibleStars: number
+  milkyWayVisible: boolean
+}
+
+export interface LightPollutionState {
+  lightZones: LightPollutionZone[]
+  activeLightZoneId: string | null
+  showBrightness: boolean
+  showBortle: boolean
+  showStars: boolean
+  showMilkyWay: boolean
+  open: boolean
+  bortleFilter: 'all' | 'excellent' | 'good' | 'moderate' | 'poor' | 'very_poor'
+}
+
+// Task 50: River Flow Monitor
+export interface RiverStation {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  flowRate: number
+  waterLevel: number
+  floodStage: number
+  floodStatus: 'normal' | 'watch' | 'warning' | 'flood'
+  temperature: number
+  dissolvedOxygen: number
+}
+
+export interface RiverFlowState {
+  stations: RiverStation[]
+  activeStationId: string | null
+  showFlowRate: boolean
+  showWaterLevel: boolean
+  showFloodStatus: boolean
+  showQuality: boolean
+  open: boolean
+  floodFilter: 'all' | 'normal' | 'watch' | 'warning' | 'flood'
+}
+
+// Task 50: Volcano Seismic Monitor
+export interface VolcanoSeismicStation {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  volcano: string
+  alertLevel: 'normal' | 'advisory' | 'watch' | 'warning'
+  seismicActivity: number
+  deformation: number
+  gasEmission: number
+  lastEruption: string | null
+  proximity: number
+}
+
+export interface VolcanoSeismicState {
+  seismicStations: VolcanoSeismicStation[]
+  activeStationId: string | null
+  showAlertLevel: boolean
+  showSeismic: boolean
+  showDeformation: boolean
+  showGas: boolean
+  open: boolean
+  alertFilter: 'all' | 'normal' | 'advisory' | 'watch' | 'warning'
+}
+
+// Task 50: Whale Migration Tracker
+export interface WhalePod {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  species: string
+  podSize: number
+  heading: number
+  speed: number
+  depth: number
+  vocalizing: boolean
+  lastSighting: string
+}
+
+export interface WhaleMigrationState {
+  whalePods: WhalePod[]
+  activePodId: string | null
+  showTracks: boolean
+  showDepth: boolean
+  showVocalization: boolean
+  showSpeed: boolean
+  open: boolean
+  speciesFilter: 'all' | string
+}
+
+// Task 50: Avalanche Forecaster
+export interface AvalancheZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  dangerLevel: 'low' | 'moderate' | 'considerable' | 'high' | 'extreme'
+  snowStability: number
+  recentSnowfall: number
+  windLoading: boolean
+  temperature: number
+  aspect: string
+  elevation: number
+}
+
+export interface AvalancheForecasterState {
+  avalancheZones: AvalancheZone[]
+  activeZoneId: string | null
+  showDanger: boolean
+  showStability: boolean
+  showSnowfall: boolean
+  showAspect: boolean
+  open: boolean
+  dangerFilter: 'all' | 'low' | 'moderate' | 'considerable' | 'high' | 'extreme'
+}
+
+// Task 50: Aurora Forecaster
+export interface AuroraViewingSite {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  kpIndex: number
+  cloudCover: number
+  lightPollution: number
+  visibility: 'excellent' | 'good' | 'fair' | 'poor' | 'none'
+  predictedIntensity: number
+  bestViewingTime: string
+}
+
+export interface AuroraForecasterState {
+  auroraSites: AuroraViewingSite[]
+  activeSiteId: string | null
+  showKpIndex: boolean
+  showCloudCover: boolean
+  showIntensity: boolean
+  showViewingTime: boolean
+  open: boolean
+  visibilityFilter: 'all' | 'excellent' | 'good' | 'fair' | 'poor' | 'none'
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -3258,6 +3460,38 @@ interface MapState {
   // Sea Ice Navigator
   seaIceNavigator: SeaIceNavigatorState
   setSeaIceNavigator: (state: Partial<SeaIceNavigatorState>) => void
+
+  // Cloud Cover Analyzer
+  cloudCover: CloudCoverState
+  setCloudCover: (state: Partial<CloudCoverState>) => void
+
+  // Soil Moisture Monitor
+  soilMoisture: SoilMoistureState
+  setSoilMoisture: (state: Partial<SoilMoistureState>) => void
+
+  // Light Pollution Monitor
+  lightPollution: LightPollutionState
+  setLightPollution: (state: Partial<LightPollutionState>) => void
+
+  // River Flow Monitor
+  riverFlow: RiverFlowState
+  setRiverFlow: (state: Partial<RiverFlowState>) => void
+
+  // Volcano Seismic Monitor
+  volcanoSeismic: VolcanoSeismicState
+  setVolcanoSeismic: (state: Partial<VolcanoSeismicState>) => void
+
+  // Whale Migration Tracker
+  whaleMigration: WhaleMigrationState
+  setWhaleMigration: (state: Partial<WhaleMigrationState>) => void
+
+  // Avalanche Forecaster
+  avalancheForecaster: AvalancheForecasterState
+  setAvalancheForecaster: (state: Partial<AvalancheForecasterState>) => void
+
+  // Aurora Forecaster
+  auroraForecaster: AuroraForecasterState
+  setAuroraForecaster: (state: Partial<AuroraForecasterState>) => void
 }
 
 // Coordinate Share Card types
@@ -6491,6 +6725,118 @@ export const useMapStore = create<MapState>()(
       setSeaIceNavigator: (updates) => set((state) => ({
         seaIceNavigator: { ...state.seaIceNavigator, ...updates },
       })),
+
+      cloudCover: {
+        cloudLayers: [],
+        activeCloudId: null,
+        showCoverage: true,
+        showAltitude: false,
+        showPrecipitation: false,
+        showTemperature: false,
+        open: false,
+        cloudTypeFilter: 'all',
+      },
+      setCloudCover: (updates) => set((state) => ({
+        cloudCover: { ...state.cloudCover, ...updates },
+      })),
+
+      soilMoisture: {
+        soilZones: [],
+        activeSoilZoneId: null,
+        showMoisture: true,
+        showDepth: false,
+        showIrrigation: false,
+        showSoilType: false,
+        open: false,
+        moistureFilter: 'all',
+      },
+      setSoilMoisture: (updates) => set((state) => ({
+        soilMoisture: { ...state.soilMoisture, ...updates },
+      })),
+
+      lightPollution: {
+        lightZones: [],
+        activeLightZoneId: null,
+        showBrightness: true,
+        showBortle: false,
+        showStars: false,
+        showMilkyWay: false,
+        open: false,
+        bortleFilter: 'all',
+      },
+      setLightPollution: (updates) => set((state) => ({
+        lightPollution: { ...state.lightPollution, ...updates },
+      })),
+
+      riverFlow: {
+        stations: [],
+        activeStationId: null,
+        showFlowRate: true,
+        showWaterLevel: false,
+        showFloodStatus: false,
+        showQuality: false,
+        open: false,
+        floodFilter: 'all',
+      },
+      setRiverFlow: (updates) => set((state) => ({
+        riverFlow: { ...state.riverFlow, ...updates },
+      })),
+
+      volcanoSeismic: {
+        seismicStations: [],
+        activeStationId: null,
+        showAlertLevel: true,
+        showSeismic: false,
+        showDeformation: false,
+        showGas: false,
+        open: false,
+        alertFilter: 'all',
+      },
+      setVolcanoSeismic: (updates) => set((state) => ({
+        volcanoSeismic: { ...state.volcanoSeismic, ...updates },
+      })),
+
+      whaleMigration: {
+        whalePods: [],
+        activePodId: null,
+        showTracks: true,
+        showDepth: false,
+        showVocalization: false,
+        showSpeed: false,
+        open: false,
+        speciesFilter: 'all',
+      },
+      setWhaleMigration: (updates) => set((state) => ({
+        whaleMigration: { ...state.whaleMigration, ...updates },
+      })),
+
+      avalancheForecaster: {
+        avalancheZones: [],
+        activeZoneId: null,
+        showDanger: true,
+        showStability: false,
+        showSnowfall: false,
+        showAspect: false,
+        open: false,
+        dangerFilter: 'all',
+      },
+      setAvalancheForecaster: (updates) => set((state) => ({
+        avalancheForecaster: { ...state.avalancheForecaster, ...updates },
+      })),
+
+      auroraForecaster: {
+        auroraSites: [],
+        activeSiteId: null,
+        showKpIndex: true,
+        showCloudCover: false,
+        showIntensity: false,
+        showViewingTime: false,
+        open: false,
+        visibilityFilter: 'all',
+      },
+      setAuroraForecaster: (updates) => set((state) => ({
+        auroraForecaster: { ...state.auroraForecaster, ...updates },
+      })),
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -6654,6 +7000,14 @@ export const useMapStore = create<MapState>()(
         algalBloom: state.algalBloom,
         landslidePredictor: state.landslidePredictor,
         seaIceNavigator: state.seaIceNavigator,
+        cloudCover: state.cloudCover,
+        soilMoisture: state.soilMoisture,
+        lightPollution: state.lightPollution,
+        riverFlow: state.riverFlow,
+        volcanoSeismic: state.volcanoSeismic,
+        whaleMigration: state.whaleMigration,
+        avalancheForecaster: state.avalancheForecaster,
+        auroraForecaster: state.auroraForecaster,
       }),
     }
   )
