@@ -3730,6 +3730,205 @@ export interface MangroveRestorationState {
   stageFilter: 'all' | 'planned' | 'nursery' | 'planting' | 'established' | 'mature'
 }
 
+// Task 57: Coral Bleaching Monitor
+export interface CoralBleachingEvent {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  bleachingPercent: number
+  seaSurfaceTemp: number
+  heatStress: number
+  recoveryPotential: 'high' | 'moderate' | 'low' | 'none'
+  reefType: 'fringing' | 'barrier' | 'atoll' | 'patch'
+  lastSurveyed: string
+}
+
+export interface CoralBleachingMonitorState {
+  events: CoralBleachingEvent[]
+  activeEventId: string | null
+  showBleachingPercent: boolean
+  showHeatStress: boolean
+  showSeaTemp: boolean
+  showRecoveryPotential: boolean
+  open: boolean
+  reefFilter: 'all' | 'fringing' | 'barrier' | 'atoll' | 'patch'
+}
+
+// Task 57: Arctic Sea Ice Monitor
+export interface ArcticSeaIceZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  iceExtent: number
+  iceThickness: number
+  iceConcentration: number
+  trend: 'growing' | 'stable' | 'declining' | 'rapid_decline'
+  iceType: 'multiyear' | 'firstyear' | 'newice' | 'mixed'
+}
+
+export interface ArcticSeaIceState {
+  zones: ArcticSeaIceZone[]
+  activeZoneId: string | null
+  showExtent: boolean
+  showThickness: boolean
+  showConcentration: boolean
+  showTrend: boolean
+  open: boolean
+  iceFilter: 'all' | 'multiyear' | 'firstyear' | 'newice' | 'mixed'
+}
+
+// Task 57: Landslide Predictor
+export interface LandslideRiskZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  riskLevel: 'very_low' | 'low' | 'moderate' | 'high' | 'very_high'
+  slopeAngle: number
+  soilMoisture: number
+  rainfallRate: number
+  vegetationCover: number
+  triggerType: 'rainfall' | 'earthquake' | 'erosion' | 'human_activity'
+}
+
+export interface LandslideRiskState {
+  zones: LandslideRiskZone[]
+  activeZoneId: string | null
+  showRiskLevel: boolean
+  showSlope: boolean
+  showMoisture: boolean
+  showVegetation: boolean
+  open: boolean
+  riskFilter: 'all' | 'very_low' | 'low' | 'moderate' | 'high' | 'very_high'
+}
+
+// Task 57: Air Quality Monitor
+export interface AirQualityStation {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  aqi: number
+  pm25: number
+  pm10: number
+  o3: number
+  no2: number
+  category: 'good' | 'moderate' | 'unhealthy_sensitive' | 'unhealthy' | 'very_unhealthy' | 'hazardous'
+  dominantPollutant: string
+}
+
+export interface AirQualityState {
+  stations: AirQualityStation[]
+  activeStationId: string | null
+  showAQI: boolean
+  showPM25: boolean
+  showO3: boolean
+  showDominantPollutant: boolean
+  open: boolean
+  categoryFilter: 'all' | 'good' | 'moderate' | 'unhealthy_sensitive' | 'unhealthy' | 'very_unhealthy' | 'hazardous'
+}
+
+// Task 57: Soil Moisture Mapper (Agricultural)
+export interface SoilMoistureAgZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  moisturePercent: number
+  soilType: 'clay' | 'silt' | 'sand' | 'loam' | 'peat'
+  temperature: number
+  precipitation: number
+  droughtIndex: number
+  landUse: 'agriculture' | 'forest' | 'urban' | 'grassland' | 'wetland'
+}
+
+export interface SoilMoistureAgState {
+  zones: SoilMoistureAgZone[]
+  activeZoneId: string | null
+  showMoisture: boolean
+  showTemperature: boolean
+  showDroughtIndex: boolean
+  showSoilType: boolean
+  open: boolean
+  landUseFilter: 'all' | 'agriculture' | 'forest' | 'urban' | 'grassland' | 'wetland'
+}
+
+// Task 57: Noise Pollution Mapper
+export interface NoisePollutionZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  decibels: number
+  noiseType: 'traffic' | 'industrial' | 'construction' | 'aircraft' | 'entertainment' | 'mixed'
+  timeOfDay: 'day' | 'evening' | 'night'
+  affectedPopulation: number
+  compliance: 'compliant' | 'marginal' | 'non_compliant'
+}
+
+export interface NoisePollutionState {
+  zones: NoisePollutionZone[]
+  activeZoneId: string | null
+  showDecibels: boolean
+  showNoiseType: boolean
+  showAffectedPopulation: boolean
+  showCompliance: boolean
+  open: boolean
+  typeFilter: 'all' | 'traffic' | 'industrial' | 'construction' | 'aircraft' | 'entertainment' | 'mixed'
+}
+
+// Task 57: Light Pollution Mapper (Sky Quality)
+export interface LightPollutionSkyZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  skyBrightness: number
+  bortleScale: number
+  lightSourceType: 'urban' | 'industrial' | 'commercial' | 'residential' | 'mixed'
+  visibleStars: number
+  impactRadius: number
+  energyWaste: number
+}
+
+export interface LightPollutionSkyState {
+  zones: LightPollutionSkyZone[]
+  activeZoneId: string | null
+  showBortleScale: boolean
+  showSkyBrightness: boolean
+  showVisibleStars: boolean
+  showEnergyWaste: boolean
+  open: boolean
+  sourceFilter: 'all' | 'urban' | 'industrial' | 'commercial' | 'residential' | 'mixed'
+}
+
+// Task 57: Groundwater Recharge Tracker
+export interface GroundwaterRechargeZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  rechargeRate: number
+  waterTableDepth: number
+  aquiferType: 'unconfined' | 'confined' | 'semi_confined' | 'karst'
+  extractionRate: number
+  sustainability: 'sustainable' | 'marginal' | 'overexploited' | 'critical'
+  qualityIndex: number
+}
+
+export interface GroundwaterRechargeState {
+  zones: GroundwaterRechargeZone[]
+  activeZoneId: string | null
+  showRechargeRate: boolean
+  showWaterTable: boolean
+  showSustainability: boolean
+  showQuality: boolean
+  open: boolean
+  aquiferFilter: 'all' | 'unconfined' | 'confined' | 'semi_confined' | 'karst'
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -4891,6 +5090,38 @@ interface MapState {
   // Mangrove Restoration Tracker
   mangroveRestoration: MangroveRestorationState
   setMangroveRestoration: (state: Partial<MangroveRestorationState>) => void
+
+  // Task 57: Coral Bleaching Monitor
+  coralBleachingMonitor: CoralBleachingMonitorState
+  setCoralBleachingMonitor: (state: Partial<CoralBleachingMonitorState>) => void
+
+  // Task 57: Arctic Sea Ice Monitor
+  arcticSeaIce: ArcticSeaIceState
+  setArcticSeaIce: (state: Partial<ArcticSeaIceState>) => void
+
+  // Task 57: Landslide Risk Monitor
+  landslideRisk: LandslideRiskState
+  setLandslideRisk: (state: Partial<LandslideRiskState>) => void
+
+  // Task 57: Air Quality Monitor
+  airQuality: AirQualityState
+  setAirQuality: (state: Partial<AirQualityState>) => void
+
+  // Task 57: Soil Moisture Ag Mapper
+  soilMoistureAg: SoilMoistureAgState
+  setSoilMoistureAg: (state: Partial<SoilMoistureAgState>) => void
+
+  // Task 57: Noise Pollution Mapper
+  noisePollution: NoisePollutionState
+  setNoisePollution: (state: Partial<NoisePollutionState>) => void
+
+  // Task 57: Light Pollution Sky Mapper
+  lightPollutionSky: LightPollutionSkyState
+  setLightPollutionSky: (state: Partial<LightPollutionSkyState>) => void
+
+  // Task 57: Groundwater Recharge Tracker
+  groundwaterRecharge: GroundwaterRechargeState
+  setGroundwaterRecharge: (state: Partial<GroundwaterRechargeState>) => void
 }
 
 // Coordinate Share Card types
@@ -8908,6 +9139,118 @@ export const useMapStore = create<MapState>()(
       setMangroveRestoration: (updates) => set((state) => ({
         mangroveRestoration: { ...state.mangroveRestoration, ...updates },
       })),
+
+      coralBleachingMonitor: {
+        events: [],
+        activeEventId: null,
+        showBleachingPercent: true,
+        showHeatStress: false,
+        showSeaTemp: false,
+        showRecoveryPotential: false,
+        open: false,
+        reefFilter: 'all',
+      },
+      setCoralBleachingMonitor: (updates) => set((state) => ({
+        coralBleachingMonitor: { ...state.coralBleachingMonitor, ...updates },
+      })),
+
+      arcticSeaIce: {
+        zones: [],
+        activeZoneId: null,
+        showExtent: true,
+        showThickness: false,
+        showConcentration: false,
+        showTrend: false,
+        open: false,
+        iceFilter: 'all',
+      },
+      setArcticSeaIce: (updates) => set((state) => ({
+        arcticSeaIce: { ...state.arcticSeaIce, ...updates },
+      })),
+
+      landslideRisk: {
+        zones: [],
+        activeZoneId: null,
+        showRiskLevel: true,
+        showSlope: false,
+        showMoisture: false,
+        showVegetation: false,
+        open: false,
+        riskFilter: 'all',
+      },
+      setLandslideRisk: (updates) => set((state) => ({
+        landslideRisk: { ...state.landslideRisk, ...updates },
+      })),
+
+      airQuality: {
+        stations: [],
+        activeStationId: null,
+        showAQI: true,
+        showPM25: false,
+        showO3: false,
+        showDominantPollutant: false,
+        open: false,
+        categoryFilter: 'all',
+      },
+      setAirQuality: (updates) => set((state) => ({
+        airQuality: { ...state.airQuality, ...updates },
+      })),
+
+      soilMoistureAg: {
+        zones: [],
+        activeZoneId: null,
+        showMoisture: true,
+        showTemperature: false,
+        showDroughtIndex: false,
+        showSoilType: false,
+        open: false,
+        landUseFilter: 'all',
+      },
+      setSoilMoistureAg: (updates) => set((state) => ({
+        soilMoistureAg: { ...state.soilMoistureAg, ...updates },
+      })),
+
+      noisePollution: {
+        zones: [],
+        activeZoneId: null,
+        showDecibels: true,
+        showNoiseType: false,
+        showAffectedPopulation: false,
+        showCompliance: false,
+        open: false,
+        typeFilter: 'all',
+      },
+      setNoisePollution: (updates) => set((state) => ({
+        noisePollution: { ...state.noisePollution, ...updates },
+      })),
+
+      lightPollutionSky: {
+        zones: [],
+        activeZoneId: null,
+        showBortleScale: true,
+        showSkyBrightness: false,
+        showVisibleStars: false,
+        showEnergyWaste: false,
+        open: false,
+        sourceFilter: 'all',
+      },
+      setLightPollutionSky: (updates) => set((state) => ({
+        lightPollutionSky: { ...state.lightPollutionSky, ...updates },
+      })),
+
+      groundwaterRecharge: {
+        zones: [],
+        activeZoneId: null,
+        showRechargeRate: true,
+        showWaterTable: false,
+        showSustainability: false,
+        showQuality: false,
+        open: false,
+        aquiferFilter: 'all',
+      },
+      setGroundwaterRecharge: (updates) => set((state) => ({
+        groundwaterRecharge: { ...state.groundwaterRecharge, ...updates },
+      })),
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -9054,7 +9397,7 @@ export const useMapStore = create<MapState>()(
         iceSheet: state.iceSheet,
         droughtMonitor: state.droughtMonitor,
         landSubsidence: state.landSubsidence,
-        coralBleaching: state.coralBleaching,
+        coralBleachingMonitor: state.coralBleachingMonitor,
         tsunamiAlert: state.tsunamiAlert,
         soilErosion: state.soilErosion,
         watershedManager: state.watershedManager,
@@ -9069,7 +9412,7 @@ export const useMapStore = create<MapState>()(
         urbanHeatIsland: state.urbanHeatIsland,
         wildfireRisk: state.wildfireRisk,
         algalBloom: state.algalBloom,
-        landslidePredictor: state.landslidePredictor,
+        landslideRisk: state.landslideRisk,
         seaIceNavigator: state.seaIceNavigator,
         cloudCover: state.cloudCover,
         soilMoisture: state.soilMoisture,
@@ -9127,6 +9470,14 @@ export const useMapStore = create<MapState>()(
         glacierVelocity: state.glacierVelocity,
         earthquakeSwarm: state.earthquakeSwarm,
         mangroveRestoration: state.mangroveRestoration,
+        coralBleachingMonitor: state.coralBleachingMonitor,
+        arcticSeaIce: state.arcticSeaIce,
+        landslideRisk: state.landslideRisk,
+        airQuality: state.airQuality,
+        soilMoistureAg: state.soilMoistureAg,
+        noisePollution: state.noisePollution,
+        lightPollutionSky: state.lightPollutionSky,
+        groundwaterRecharge: state.groundwaterRecharge,
       }),
     }
   )

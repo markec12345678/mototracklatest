@@ -216,6 +216,13 @@ import { TsunamiBuoyTracker } from '@/components/map/TsunamiBuoyTracker'
 import { GlacierVelocityTracker } from '@/components/map/GlacierVelocityTracker'
 import { EarthquakeSwarmMonitor } from '@/components/map/EarthquakeSwarmMonitor'
 import { MangroveRestorationTracker } from '@/components/map/MangroveRestorationTracker'
+import { CoralBleachingMonitor } from '@/components/map/CoralBleachingMonitor'
+import { ArcticSeaIceMonitor } from '@/components/map/ArcticSeaIceMonitor'
+import { SoilMoistureMapper } from '@/components/map/SoilMoistureMapper'
+import { NoisePollutionMapper } from '@/components/map/NoisePollutionMapper'
+import { LightPollutionMapper } from '@/components/map/LightPollutionMapper'
+import { GroundwaterRechargeTracker } from '@/components/map/GroundwaterRechargeTracker'
+import { AirQualityMonitor } from '@/components/map/AirQualityMonitor'
 import dynamic from 'next/dynamic'
 
 const GPSSimulator = dynamic(() => import('@/components/map/GPSSimulator').then((m) => m.GPSSimulator), { ssr: false })
@@ -366,9 +373,13 @@ import {
   Mountain as MountainIcon2,
   Waves as WavesIcon3,
   Sun as SunIcon2,
-  Anchor,
   Activity as ActivityIcon2,
   TreeDeciduous as TreeDeciduousIcon2,
+  Eye as EyeIcon2,
+  Drill as DrillIcon,
+  Volume2 as Volume2Icon,
+  Wind as WindIcon3,
+  Fish as FishIcon2,
 } from 'lucide-react'
 
 export default function Home() {
@@ -2034,7 +2045,7 @@ export default function Home() {
             variant="outline"
             size="icon"
             className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
-            onClick={() => useMapStore.getState().setLandslidePredictor({ open: true })}
+            onClick={() => useMapStore.getState().setLandslideRisk({ open: true })}
             title="Landslide Predictor"
             aria-label="Open landslide predictor"
           >
@@ -2609,6 +2620,76 @@ export default function Home() {
             aria-label="Open mangrove restoration tracker"
           >
             <TreeDeciduousIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setCoralBleachingMonitor({ open: true })}
+            title="Coral Bleaching Monitor"
+            aria-label="Open coral bleaching monitor"
+          >
+            <FishIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setArcticSeaIce({ open: true })}
+            title="Arctic Sea Ice Monitor"
+            aria-label="Open arctic sea ice monitor"
+          >
+            <SnowflakeIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setSoilMoistureAg({ open: true })}
+            title="Soil Moisture Ag Mapper"
+            aria-label="Open soil moisture mapper"
+          >
+            <DropletsIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setNoisePollution({ open: true })}
+            title="Noise Pollution Mapper"
+            aria-label="Open noise pollution mapper"
+          >
+            <Volume2Icon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setLightPollutionSky({ open: true })}
+            title="Light Pollution Sky Mapper"
+            aria-label="Open light pollution mapper"
+          >
+            <EyeIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setGroundwaterRecharge({ open: true })}
+            title="Groundwater Recharge Tracker"
+            aria-label="Open groundwater recharge tracker"
+          >
+            <DrillIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setAirQuality({ open: true })}
+            title="Air Quality Monitor"
+            aria-label="Open air quality monitor"
+          >
+            <WindIcon3 className="h-4 w-4" />
           </Button>
           <Button
             variant="outline"
@@ -3720,6 +3801,27 @@ export default function Home() {
 
       {/* Mangrove Restoration Tracker */}
       <MangroveRestorationTracker />
+
+      {/* Coral Bleaching Monitor */}
+      <CoralBleachingMonitor />
+
+      {/* Arctic Sea Ice Monitor */}
+      <ArcticSeaIceMonitor />
+
+      {/* Soil Moisture Mapper */}
+      <SoilMoistureMapper />
+
+      {/* Noise Pollution Mapper */}
+      <NoisePollutionMapper />
+
+      {/* Light Pollution Mapper */}
+      <LightPollutionMapper />
+
+      {/* Groundwater Recharge Tracker */}
+      <GroundwaterRechargeTracker />
+
+      {/* Air Quality Monitor */}
+      <AirQualityMonitor />
 
       {/* Footer */}
       <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-2 sm:px-3 md:px-4 safe-area-bottom before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">
