@@ -102,7 +102,7 @@ const OBJECT_TYPE_COLORS: Record<DebrisObject['objectType'], { bg: string; text:
   unknown: { bg: 'bg-purple-100 dark:bg-purple-900/40', text: 'text-purple-700 dark:text-purple-300', border: 'border-purple-300 dark:border-purple-700', label: 'Unknown' },
 }
 
-export default function SpaceDebrisTracker() {
+export function SpaceDebrisTracker() {
   const spaceDebris = useMapStore((s) => s.spaceDebris)
   const setSpaceDebris = useMapStore((s) => s.setSpaceDebris)
 

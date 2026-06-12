@@ -30,7 +30,7 @@ const VISIBILITY_LABELS: Record<AuroraViewingSite['visibility'], string> = {
   none: 'None',
 }
 
-export default function AuroraForecaster() {
+export function AuroraForecaster() {
   const auroraForecaster = useMapStore((s) => s.auroraForecaster)
   const setAuroraForecaster = useMapStore((s) => s.setAuroraForecaster)
 

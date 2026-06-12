@@ -143,7 +143,7 @@ const TREND_CONFIG: Record<
   },
 }
 
-export default function AcidRainTracker() {
+export function AcidRainTracker() {
   const acidRain = useMapStore((s) => s.acidRain)
   const setAcidRain = useMapStore((s) => s.setAcidRain)
 

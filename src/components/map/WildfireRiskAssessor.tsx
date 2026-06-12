@@ -30,7 +30,7 @@ const DANGER_LABELS: Record<FireRiskZone['fireDangerRating'], string> = {
   extreme: 'Extreme',
 }
 
-export default function WildfireRiskAssessor() {
+export function WildfireRiskAssessor() {
   const wildfireRisk = useMapStore((s) => s.wildfireRisk)
   const setWildfireRisk = useMapStore((s) => s.setWildfireRisk)
 

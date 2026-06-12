@@ -153,7 +153,7 @@ function formatArea(km2: number): string {
   return km2.toString()
 }
 
-export default function MarineHeatwaveTracker() {
+export function MarineHeatwaveTracker() {
   const marineHeatwave = useMapStore((s) => s.marineHeatwave)
   const setMarineHeatwave = useMapStore((s) => s.setMarineHeatwave)
 

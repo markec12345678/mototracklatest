@@ -132,7 +132,7 @@ function getTrendBadge(trend: OceanAcidSite['trend']) {
   )
 }
 
-export default function OceanAcidificationMonitor() {
+export function OceanAcidificationMonitor() {
   const oceanAcidification = useMapStore((s) => s.oceanAcidification)
   const setOceanAcidification = useMapStore((s) => s.setOceanAcidification)
 

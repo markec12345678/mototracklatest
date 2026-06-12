@@ -122,7 +122,7 @@ const STABILITY_CONFIG: Record<
   },
 }
 
-export default function MethaneHydrateMonitor() {
+export function MethaneHydrateMonitor() {
   const methaneHydrate = useMapStore((s) => s.methaneHydrate)
   const setMethaneHydrate = useMapStore((s) => s.setMethaneHydrate)
 

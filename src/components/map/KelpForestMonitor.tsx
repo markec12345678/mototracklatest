@@ -128,7 +128,7 @@ const STATUS_CONFIG: Record<
   },
 }
 
-export default function KelpForestMonitor() {
+export function KelpForestMonitor() {
   const kelpForest = useMapStore((s) => s.kelpForest)
   const setKelpForest = useMapStore((s) => s.setKelpForest)
 

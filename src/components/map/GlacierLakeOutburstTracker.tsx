@@ -166,7 +166,7 @@ const STABILITY_CONFIG: Record<
   },
 }
 
-export default function GlacierLakeOutburstTracker() {
+export function GlacierLakeOutburstTracker() {
   const glof = useMapStore((s) => s.glof)
   const setGLOF = useMapStore((s) => s.setGLOF)
 
