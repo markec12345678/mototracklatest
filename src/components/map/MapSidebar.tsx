@@ -54,6 +54,7 @@ import {
   Server,
   Plus,
   SlidersHorizontal,
+  Flame,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -98,6 +99,7 @@ import { RouteOptimizer } from '@/components/map/RouteOptimizer'
 import { LocationHistoryTimeline } from '@/components/map/LocationHistoryTimeline'
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible'
 import { TripPlanner } from '@/components/map/TripPlanner'
+import { POIDensityHeatmapSidebar } from '@/components/map/POIDensityHeatmap'
 import dynamic from 'next/dynamic'
 
 const MapNotes = dynamic(() => import('@/components/map/MapNotes').then((m) => m.MapNotes), { ssr: false })
@@ -1438,6 +1440,23 @@ function LayersTab() {
           />
           <CollapsibleContent>
             <WMSLayerSectionInline />
+          </CollapsibleContent>
+        </Collapsible>
+
+        <Separator />
+
+        {/* POI Density Heatmap - Collapsible */}
+        <Collapsible
+          open={!useMapStore.getState().collapsedSections['section-layers-poi-heatmap']}
+          onOpenChange={() => useMapStore.getState().toggleSection('section-layers-poi-heatmap')}
+        >
+          <SectionHeader
+            title="POI Density Heatmap"
+            sectionId="section-layers-poi-heatmap"
+            icon={<Flame className="h-3.5 w-3.5 text-orange-500" />}
+          />
+          <CollapsibleContent>
+            <POIDensityHeatmapSidebar />
           </CollapsibleContent>
         </Collapsible>
       </div>

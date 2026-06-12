@@ -92,6 +92,10 @@ import { MultiStopRoutePlanner } from '@/components/map/MultiStopRoutePlanner'
 import { EnhancedWeatherDashboard } from '@/components/map/EnhancedWeatherDashboard'
 import { SunShadowCalculator } from '@/components/map/SunShadowCalculator'
 import { SVGMarkerDesigner } from '@/components/map/SVGMarkerDesigner'
+import { MapChatAssistant } from '@/components/map/MapChatAssistant'
+import { POIDensityHeatmap } from '@/components/map/POIDensityHeatmap'
+import { CoordinateShareCard } from '@/components/map/CoordinateShareCard'
+import { MapWallpaperGenerator } from '@/components/map/MapWallpaperGenerator'
 import dynamic from 'next/dynamic'
 
 const GPSSimulator = dynamic(() => import('@/components/map/GPSSimulator').then((m) => m.GPSSimulator), { ssr: false })
@@ -161,6 +165,9 @@ import {
   PenTool,
   Waypoints,
   CloudSun,
+  MessageCircle,
+  QrCode,
+  Monitor,
 } from 'lucide-react'
 
 export default function Home() {
@@ -1175,6 +1182,36 @@ export default function Home() {
           <Button
             variant="outline"
             size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setChatOpen(!useMapStore.getState().chatOpen)}
+            title="Map Chat Assistant"
+            aria-label="Open map chat assistant"
+          >
+            <MessageCircle className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setShareCardOpen(true)}
+            title="Coordinate Share Card"
+            aria-label="Open coordinate share card"
+          >
+            <QrCode className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setWallpaperOpen(true)}
+            title="Map Wallpaper Generator"
+            aria-label="Open map wallpaper generator"
+          >
+            <Monitor className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
             className="hidden sm:flex map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={() =>
               window.open('https://github.com/maplibre/maplibre-native', '_blank')
@@ -1910,6 +1947,18 @@ export default function Home() {
 
       {/* Nearby Events Finder */}
       <NearbyEventsFinder />
+
+      {/* Coordinate Share Card */}
+      <CoordinateShareCard />
+
+      {/* Map Wallpaper Generator */}
+      <MapWallpaperGenerator />
+
+      {/* Chat Assistant */}
+      <MapChatAssistant />
+
+      {/* POI Density Heatmap Layer */}
+      <POIDensityHeatmap />
 
       {/* Footer */}
       <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-2 sm:px-3 md:px-4 safe-area-bottom before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">

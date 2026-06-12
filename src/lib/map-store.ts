@@ -505,6 +505,24 @@ export interface ImportExportState {
   exportCount: number
 }
 
+// Chat Assistant types
+export interface ChatMessage {
+  id: string
+  role: 'user' | 'assistant'
+  content: string
+  timestamp: number
+  actions?: { label: string; command: string }[]
+}
+
+// POI Density Heatmap types
+export interface POIHeatmapState {
+  enabled: boolean
+  radius: number
+  intensity: number
+  colorScheme: 'thermal' | 'ocean' | 'forest' | 'purple'
+  categoryFilter: string | null
+}
+
 export interface WMSTileSource {
   id: string
   name: string
@@ -1247,6 +1265,60 @@ interface MapState {
   setActiveMarkerDesign: (id: string | null) => void
   markerDesignerOpen: boolean
   setMarkerDesignerOpen: (open: boolean) => void
+
+  // Coordinate Share Card
+  shareCardState: ShareCardState
+  setShareCardState: (state: Partial<ShareCardState>) => void
+  shareCardOpen: boolean
+  setShareCardOpen: (open: boolean) => void
+
+  // Map Wallpaper Generator
+  wallpaperState: WallpaperState
+  setWallpaperState: (state: Partial<WallpaperState>) => void
+  wallpaperOpen: boolean
+  setWallpaperOpen: (open: boolean) => void
+
+  // Chat Assistant
+  chatMessages: ChatMessage[]
+  addChatMessage: (message: Omit<ChatMessage, 'id' | 'timestamp'>) => void
+  clearChatMessages: () => void
+  chatOpen: boolean
+  setChatOpen: (open: boolean) => void
+
+  // POI Density Heatmap
+  poiHeatmap: POIHeatmapState
+  setPOIHeatmap: (state: Partial<POIHeatmapState>) => void
+}
+
+// Coordinate Share Card types
+export interface ShareCardState {
+  style: 'modern' | 'minimalist' | 'dark' | 'vintage'
+  size: 'square' | 'landscape' | 'portrait'
+  showQR: boolean
+  showCoords: boolean
+  showMap: boolean
+  accentColor: string
+  message: string
+}
+
+// Map Wallpaper Generator types
+export interface WallpaperState {
+  filter: 'vintage' | 'noir' | 'vibrant' | 'dreamy' | 'minimal' | 'custom'
+  customFilter: { brightness: number; contrast: number; saturation: number; hue: number }
+  resolution: string
+  customWidth: number
+  customHeight: number
+  showClock: boolean
+  showWeather: boolean
+  showText: boolean
+  textContent: string
+  textPosition: string
+  textFont: string
+  textSize: string
+  textColor: string
+  textShadow: boolean
+  vignette: boolean
+  darkGradient: boolean
 }
 
 // Geofence Alert History types
@@ -3354,6 +3426,72 @@ export const useMapStore = create<MapState>()(
       setActiveMarkerDesign: (id) => set({ activeMarkerDesign: id }),
       markerDesignerOpen: false,
       setMarkerDesignerOpen: (open) => set({ markerDesignerOpen: open }),
+
+      // Coordinate Share Card defaults
+      shareCardState: {
+        style: 'modern',
+        size: 'landscape',
+        showQR: true,
+        showCoords: true,
+        showMap: true,
+        accentColor: '#14b8a6',
+        message: '',
+      },
+      setShareCardState: (updates) => set((state) => ({
+        shareCardState: { ...state.shareCardState, ...updates },
+      })),
+      shareCardOpen: false,
+      setShareCardOpen: (open) => set({ shareCardOpen: open }),
+
+      // Map Wallpaper Generator defaults
+      wallpaperState: {
+        filter: 'vibrant',
+        customFilter: { brightness: 100, contrast: 100, saturation: 100, hue: 0 },
+        resolution: '1920x1080',
+        customWidth: 1920,
+        customHeight: 1080,
+        showClock: false,
+        showWeather: false,
+        showText: false,
+        textContent: '',
+        textPosition: 'bottom-left',
+        textFont: 'modern',
+        textSize: 'medium',
+        textColor: '#ffffff',
+        textShadow: true,
+        vignette: false,
+        darkGradient: false,
+      },
+      setWallpaperState: (updates) => set((state) => ({
+        wallpaperState: { ...state.wallpaperState, ...updates },
+      })),
+      wallpaperOpen: false,
+      setWallpaperOpen: (open) => set({ wallpaperOpen: open }),
+
+      // Chat Assistant defaults
+      chatMessages: [],
+      addChatMessage: (message) => set((state) => ({
+        chatMessages: [...state.chatMessages, {
+          ...message,
+          id: `msg-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+          timestamp: Date.now(),
+        }],
+      })),
+      clearChatMessages: () => set({ chatMessages: [] }),
+      chatOpen: false,
+      setChatOpen: (open) => set({ chatOpen: open }),
+
+      // POI Density Heatmap defaults
+      poiHeatmap: {
+        enabled: false,
+        radius: 25,
+        intensity: 0.5,
+        colorScheme: 'thermal',
+        categoryFilter: null,
+      },
+      setPOIHeatmap: (updates) => set((state) => ({
+        poiHeatmap: { ...state.poiHeatmap, ...updates },
+      })),
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -3449,6 +3587,10 @@ export const useMapStore = create<MapState>()(
         sunShadowState: state.sunShadowState,
         svgMarkerDesigns: state.svgMarkerDesigns,
         activeMarkerDesign: state.activeMarkerDesign,
+        shareCardState: state.shareCardState,
+        wallpaperState: state.wallpaperState,
+        chatMessages: state.chatMessages,
+        poiHeatmap: state.poiHeatmap,
       }),
     }
   )
