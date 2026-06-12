@@ -2115,6 +2115,212 @@ export interface Peatland {
   waterTable: number
 }
 
+// Task 49: Mangrove Monitor
+export interface MangroveForest {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  area: number
+  carbonSequestration: number
+  species: string[]
+  healthIndex: number
+  restorationStatus: 'pristine' | 'degraded' | 'restoring' | 'lost'
+  tidalRange: number
+}
+
+export interface MangroveMonitorState {
+  mangroves: MangroveForest[]
+  activeMangroveId: string | null
+  showExtent: boolean
+  showCarbon: boolean
+  showRestoration: boolean
+  showSpecies: boolean
+  open: boolean
+  healthFilter: 'all' | 'pristine' | 'degraded' | 'restoring' | 'lost'
+}
+
+// Task 49: Sandstorm Tracker
+export interface SandstormEvent {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  intensity: 'minor' | 'moderate' | 'severe' | 'extreme'
+  pm10: number
+  pm25: number
+  visibility: number
+  windSpeed: number
+  direction: number
+  startTime: string
+  affectedArea: number
+}
+
+export interface SandstormTrackerState {
+  storms: SandstormEvent[]
+  activeStormId: string | null
+  showPlumes: boolean
+  showPM: boolean
+  showVisibility: boolean
+  showWind: boolean
+  open: boolean
+  intensityFilter: 'all' | 'minor' | 'moderate' | 'severe' | 'extreme'
+}
+
+// Task 49: Wetland Mapper
+export interface WetlandZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  area: number
+  type: 'marsh' | 'swamp' | 'bog' | 'fen' | 'estuary'
+  waterLevel: number
+  biodiversityIndex: number
+  plantSpecies: number
+  animalSpecies: number
+  protectionStatus: 'protected' | 'unprotected' | 'partial'
+}
+
+export interface WetlandMapperState {
+  wetlands: WetlandZone[]
+  activeWetlandId: string | null
+  showBoundaries: boolean
+  showWaterLevel: boolean
+  showBiodiversity: boolean
+  showProtection: boolean
+  open: boolean
+  typeFilter: 'all' | 'marsh' | 'swamp' | 'bog' | 'fen' | 'estuary'
+}
+
+// Task 49: Urban Heat Island
+export interface HeatZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  temperature: number
+  heatIndex: number
+  vegetationCover: number
+  albedo: number
+  population: number
+  coolZoneNearby: boolean
+}
+
+export interface UrbanHeatIslandState {
+  heatZones: HeatZone[]
+  activeHeatZoneId: string | null
+  showTemperature: boolean
+  showVegetation: boolean
+  showCoolZones: boolean
+  showPopulation: boolean
+  open: boolean
+  tempUnit: 'celsius' | 'fahrenheit'
+}
+
+// Task 49: Wildfire Risk Assessor
+export interface FireRiskZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  fireDangerRating: 'low' | 'moderate' | 'high' | 'very_high' | 'extreme'
+  fuelMoisture: number
+  windSpeed: number
+  temperature: number
+  humidity: number
+  vegetationType: string
+  lastFireDate: string | null
+}
+
+export interface WildfireRiskState {
+  fireZones: FireRiskZone[]
+  activeFireZoneId: string | null
+  showDangerRating: boolean
+  showFuelMoisture: boolean
+  showWind: boolean
+  showHistory: boolean
+  open: boolean
+  dangerFilter: 'all' | 'low' | 'moderate' | 'high' | 'very_high' | 'extreme'
+}
+
+// Task 49: Algal Bloom Tracker
+export interface AlgalBloomSite {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  bloomIntensity: 'none' | 'low' | 'moderate' | 'high' | 'severe'
+  chlorophyllA: number
+  waterTemperature: number
+  dissolvedOxygen: number
+  toxicity: boolean
+  species: string
+  detectedDate: string
+}
+
+export interface AlgalBloomState {
+  blooms: AlgalBloomSite[]
+  activeBloomId: string | null
+  showBloomExtent: boolean
+  showChlorophyll: boolean
+  showToxicity: boolean
+  showTemperature: boolean
+  open: boolean
+  intensityFilter: 'all' | 'none' | 'low' | 'moderate' | 'high' | 'severe'
+}
+
+// Task 49: Landslide Predictor
+export interface LandslideZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  susceptibility: 'very_low' | 'low' | 'moderate' | 'high' | 'very_high'
+  slope: number
+  rainfallThreshold: number
+  currentRainfall: number
+  soilType: string
+  vegetationCover: number
+  recentActivity: boolean
+}
+
+export interface LandslidePredictorState {
+  landslideZones: LandslideZone[]
+  activeLandslideId: string | null
+  showSusceptibility: boolean
+  showSlope: boolean
+  showRainfall: boolean
+  showActivity: boolean
+  open: boolean
+  susceptibilityFilter: 'all' | 'very_low' | 'low' | 'moderate' | 'high' | 'very_high'
+}
+
+// Task 49: Sea Ice Navigator
+export interface SeaIceZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  iceConcentration: number
+  iceThickness: number
+  iceType: 'new' | 'first_year' | 'multi_year' | 'fast_ice'
+  driftSpeed: number
+  driftDirection: number
+  navigable: boolean
+}
+
+export interface SeaIceNavigatorState {
+  iceZones: SeaIceZone[]
+  activeIceZoneId: string | null
+  showConcentration: boolean
+  showThickness: boolean
+  showDrift: boolean
+  showRoutes: boolean
+  open: boolean
+  iceTypeFilter: 'all' | 'new' | 'first_year' | 'multi_year' | 'fast_ice'
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -3020,6 +3226,38 @@ interface MapState {
   // Peatland Monitor
   peatlandMonitor: PeatlandMonitorState
   setPeatlandMonitor: (state: Partial<PeatlandMonitorState>) => void
+
+  // Mangrove Monitor
+  mangroveMonitor: MangroveMonitorState
+  setMangroveMonitor: (state: Partial<MangroveMonitorState>) => void
+
+  // Sandstorm Tracker
+  sandstormTracker: SandstormTrackerState
+  setSandstormTracker: (state: Partial<SandstormTrackerState>) => void
+
+  // Wetland Mapper
+  wetlandMapper: WetlandMapperState
+  setWetlandMapper: (state: Partial<WetlandMapperState>) => void
+
+  // Urban Heat Island
+  urbanHeatIsland: UrbanHeatIslandState
+  setUrbanHeatIsland: (state: Partial<UrbanHeatIslandState>) => void
+
+  // Wildfire Risk Assessor
+  wildfireRisk: WildfireRiskState
+  setWildfireRisk: (state: Partial<WildfireRiskState>) => void
+
+  // Algal Bloom Tracker
+  algalBloom: AlgalBloomState
+  setAlgalBloom: (state: Partial<AlgalBloomState>) => void
+
+  // Landslide Predictor
+  landslidePredictor: LandslidePredictorState
+  setLandslidePredictor: (state: Partial<LandslidePredictorState>) => void
+
+  // Sea Ice Navigator
+  seaIceNavigator: SeaIceNavigatorState
+  setSeaIceNavigator: (state: Partial<SeaIceNavigatorState>) => void
 }
 
 // Coordinate Share Card types
@@ -6141,6 +6379,118 @@ export const useMapStore = create<MapState>()(
       setPeatlandMonitor: (updates) => set((state) => ({
         peatlandMonitor: { ...state.peatlandMonitor, ...updates },
       })),
+
+      mangroveMonitor: {
+        mangroves: [],
+        activeMangroveId: null,
+        showExtent: true,
+        showCarbon: false,
+        showRestoration: false,
+        showSpecies: false,
+        open: false,
+        healthFilter: 'all',
+      },
+      setMangroveMonitor: (updates) => set((state) => ({
+        mangroveMonitor: { ...state.mangroveMonitor, ...updates },
+      })),
+
+      sandstormTracker: {
+        storms: [],
+        activeStormId: null,
+        showPlumes: true,
+        showPM: false,
+        showVisibility: false,
+        showWind: false,
+        open: false,
+        intensityFilter: 'all',
+      },
+      setSandstormTracker: (updates) => set((state) => ({
+        sandstormTracker: { ...state.sandstormTracker, ...updates },
+      })),
+
+      wetlandMapper: {
+        wetlands: [],
+        activeWetlandId: null,
+        showBoundaries: true,
+        showWaterLevel: false,
+        showBiodiversity: false,
+        showProtection: false,
+        open: false,
+        typeFilter: 'all',
+      },
+      setWetlandMapper: (updates) => set((state) => ({
+        wetlandMapper: { ...state.wetlandMapper, ...updates },
+      })),
+
+      urbanHeatIsland: {
+        heatZones: [],
+        activeHeatZoneId: null,
+        showTemperature: true,
+        showVegetation: false,
+        showCoolZones: false,
+        showPopulation: false,
+        open: false,
+        tempUnit: 'celsius',
+      },
+      setUrbanHeatIsland: (updates) => set((state) => ({
+        urbanHeatIsland: { ...state.urbanHeatIsland, ...updates },
+      })),
+
+      wildfireRisk: {
+        fireZones: [],
+        activeFireZoneId: null,
+        showDangerRating: true,
+        showFuelMoisture: false,
+        showWind: false,
+        showHistory: false,
+        open: false,
+        dangerFilter: 'all',
+      },
+      setWildfireRisk: (updates) => set((state) => ({
+        wildfireRisk: { ...state.wildfireRisk, ...updates },
+      })),
+
+      algalBloom: {
+        blooms: [],
+        activeBloomId: null,
+        showBloomExtent: true,
+        showChlorophyll: false,
+        showToxicity: false,
+        showTemperature: false,
+        open: false,
+        intensityFilter: 'all',
+      },
+      setAlgalBloom: (updates) => set((state) => ({
+        algalBloom: { ...state.algalBloom, ...updates },
+      })),
+
+      landslidePredictor: {
+        landslideZones: [],
+        activeLandslideId: null,
+        showSusceptibility: true,
+        showSlope: false,
+        showRainfall: false,
+        showActivity: false,
+        open: false,
+        susceptibilityFilter: 'all',
+      },
+      setLandslidePredictor: (updates) => set((state) => ({
+        landslidePredictor: { ...state.landslidePredictor, ...updates },
+      })),
+
+      seaIceNavigator: {
+        iceZones: [],
+        activeIceZoneId: null,
+        showConcentration: true,
+        showThickness: false,
+        showDrift: false,
+        showRoutes: false,
+        open: false,
+        iceTypeFilter: 'all',
+      },
+      setSeaIceNavigator: (updates) => set((state) => ({
+        seaIceNavigator: { ...state.seaIceNavigator, ...updates },
+      })),
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -6296,6 +6646,14 @@ export const useMapStore = create<MapState>()(
         glacialLake: state.glacialLake,
         spaceWeather: state.spaceWeather,
         peatlandMonitor: state.peatlandMonitor,
+        mangroveMonitor: state.mangroveMonitor,
+        sandstormTracker: state.sandstormTracker,
+        wetlandMapper: state.wetlandMapper,
+        urbanHeatIsland: state.urbanHeatIsland,
+        wildfireRisk: state.wildfireRisk,
+        algalBloom: state.algalBloom,
+        landslidePredictor: state.landslidePredictor,
+        seaIceNavigator: state.seaIceNavigator,
       }),
     }
   )

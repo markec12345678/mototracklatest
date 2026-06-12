@@ -152,6 +152,14 @@ import { AirQualityForecaster } from '@/components/map/AirQualityForecaster'
 import { GlacialLakeMonitor } from '@/components/map/GlacialLakeMonitor'
 import { SpaceWeatherMonitor } from '@/components/map/SpaceWeatherMonitor'
 import { PeatlandMonitorPanel } from '@/components/map/PeatlandMonitorPanel'
+import { MangroveMonitor } from '@/components/map/MangroveMonitor'
+import { SandstormTracker } from '@/components/map/SandstormTracker'
+import { WetlandMapper } from '@/components/map/WetlandMapper'
+import { UrbanHeatIsland } from '@/components/map/UrbanHeatIsland'
+import { WildfireRiskAssessor } from '@/components/map/WildfireRiskAssessor'
+import { AlgalBloomTracker } from '@/components/map/AlgalBloomTracker'
+import { LandslidePredictor } from '@/components/map/LandslidePredictor'
+import { SeaIceNavigator } from '@/components/map/SeaIceNavigator'
 import dynamic from 'next/dynamic'
 
 const GPSSimulator = dynamic(() => import('@/components/map/GPSSimulator').then((m) => m.GPSSimulator), { ssr: false })
@@ -278,6 +286,8 @@ import {
   Snowflake as SnowflakeIcon2,
   Radio,
   TreeDeciduous,
+  Flame as FlameIcon,
+  Ship as ShipIcon,
 } from 'lucide-react'
 
 export default function Home() {
@@ -1882,6 +1892,86 @@ export default function Home() {
           <Button
             variant="outline"
             size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setMangroveMonitor({ open: true })}
+            title="Mangrove Monitor"
+            aria-label="Open mangrove monitor"
+          >
+            <Leaf className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setSandstormTracker({ open: true })}
+            title="Sandstorm Tracker"
+            aria-label="Open sandstorm tracker"
+          >
+            <WindIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setWetlandMapper({ open: true })}
+            title="Wetland Mapper"
+            aria-label="Open wetland mapper"
+          >
+            <DropletsIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setUrbanHeatIsland({ open: true })}
+            title="Urban Heat Island"
+            aria-label="Open urban heat island"
+          >
+            <Thermometer className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setWildfireRisk({ open: true })}
+            title="Wildfire Risk Assessor"
+            aria-label="Open wildfire risk assessor"
+          >
+            <FlameIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setAlgalBloom({ open: true })}
+            title="Algal Bloom Tracker"
+            aria-label="Open algal bloom tracker"
+          >
+            <Fish className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setLandslidePredictor({ open: true })}
+            title="Landslide Predictor"
+            aria-label="Open landslide predictor"
+          >
+            <Mountain className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setSeaIceNavigator({ open: true })}
+            title="Sea Ice Navigator"
+            aria-label="Open sea ice navigator"
+          >
+            <ShipIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
             className="hidden sm:flex map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={() =>
               window.open('https://github.com/maplibre/maplibre-native', '_blank')
@@ -2797,6 +2887,30 @@ export default function Home() {
 
       {/* Peatland Monitor Panel */}
       <PeatlandMonitorPanel />
+
+      {/* Mangrove Monitor */}
+      <MangroveMonitor />
+
+      {/* Sandstorm Tracker */}
+      <SandstormTracker />
+
+      {/* Wetland Mapper */}
+      <WetlandMapper />
+
+      {/* Urban Heat Island */}
+      <UrbanHeatIsland />
+
+      {/* Wildfire Risk Assessor */}
+      <WildfireRiskAssessor />
+
+      {/* Algal Bloom Tracker */}
+      <AlgalBloomTracker />
+
+      {/* Landslide Predictor */}
+      <LandslidePredictor />
+
+      {/* Sea Ice Navigator */}
+      <SeaIceNavigator />
 
       {/* Footer */}
       <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-2 sm:px-3 md:px-4 safe-area-bottom before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">
