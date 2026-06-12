@@ -150,7 +150,6 @@ import {
   Thermometer,
   Triangle,
   TreePine,
-  Activity,
   PieChart,
   Image as ImageIcon,
   TrendingUp,

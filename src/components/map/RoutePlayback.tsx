@@ -364,7 +364,9 @@ export function RoutePlayback() {
     const { distances, total } = getSegmentData(selectedRoute)
     if (total === 0) return
     const pos = interpolatePosition(selectedRoute, distances, total, routePlayback.progress)
-    setCurrentPos(pos)
+    // Defer setState to avoid calling setState synchronously within an effect
+    const timer = setTimeout(() => setCurrentPos(pos), 0)
+    return () => clearTimeout(timer)
   }, [routePlayback.progress, routePlayback.isPlaying, selectedRoute, getSegmentData])
 
   const handlePlay = useCallback(() => {

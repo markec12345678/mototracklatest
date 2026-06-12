@@ -363,7 +363,7 @@ function NauticalCompassRose({ state, bearing }: { state: CompassRoseState; bear
 }
 
 // Custom compass rose - uses selected number of points
-function CustomCompassRose({ state, bearing }: { state: CompassRoseState; bearing: number }) {
+function CustomCompassRoseSVG({ state, bearing }: { state: CompassRoseState; bearing: number }) {
   const size = SIZE_MAP[state.size]
   const cx = size / 2
   const cy = size / 2
@@ -457,7 +457,7 @@ function CompassRoseSVG({ state, bearing }: { state: CompassRoseState; bearing: 
     case 'classic': return <ClassicCompassRose state={state} bearing={bearing} />
     case 'modern': return <ModernCompassRose state={state} bearing={bearing} />
     case 'nautical': return <NauticalCompassRose state={state} bearing={bearing} />
-    case 'custom': return <CustomCompassRose state={state} bearing={bearing} />
+    case 'custom': return <CustomCompassRoseSVG state={state} bearing={bearing} />
     default: return <ClassicCompassRose state={state} bearing={bearing} />
   }
 }

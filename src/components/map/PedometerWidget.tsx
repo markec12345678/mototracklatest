@@ -110,10 +110,12 @@ export function PedometerWidget() {
 
   // Reset speed when tracking stops
   const prevTrackingRef = useRef(pedometer.isTracking)
-  if (prevTrackingRef.current !== pedometer.isTracking && !pedometer.isTracking) {
-    setCurrentSpeed(0)
-  }
-  prevTrackingRef.current = pedometer.isTracking
+  useEffect(() => {
+    if (prevTrackingRef.current !== pedometer.isTracking && !pedometer.isTracking) {
+      setCurrentSpeed(0)
+    }
+    prevTrackingRef.current = pedometer.isTracking
+  }, [pedometer.isTracking])
 
   const handleStart = useCallback(() => {
     setPedometer({
@@ -196,7 +198,7 @@ export function PedometerWidget() {
   const circumference = 2 * Math.PI * radius
   const progressOffset = circumference - (stepProgress / 100) * circumference
 
-  if (!pededometerVisible) return null
+  if (!pedometerVisible) return null
 
   return (
     <div className="hidden md:block absolute bottom-12 left-5 z-10">

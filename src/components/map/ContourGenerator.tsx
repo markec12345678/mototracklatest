@@ -174,7 +174,7 @@ export function ContourGenerator() {
   const center = useMapStore((s) => s.center)
 
   const [levels, setLevels] = useState(10)
-  const [interval, setInterval] = useState(100)
+  const [interval, setIntervalValue] = useState(100)
   const [useCurrentCenter, setUseCurrentCenter] = useState(true)
   const [customLat, setCustomLat] = useState('')
   const [customLng, setCustomLng] = useState('')
@@ -499,7 +499,7 @@ export function ContourGenerator() {
             <Label className="text-xs font-medium">Interval: {interval}m</Label>
             <Slider
               value={[interval]}
-              onValueChange={(v) => setInterval(v[0])}
+              onValueChange={(v) => setIntervalValue(v[0])}
               min={10}
               max={500}
               step={10}

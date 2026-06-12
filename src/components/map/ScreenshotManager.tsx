@@ -146,7 +146,7 @@ export function ScreenshotManager() {
         <div className="flex gap-1 px-6 border-b pb-2">
           {[
             { mode: 'capture' as ViewMode, label: 'Capture', icon: Camera },
-            { mode: 'gallery' as ViewMode, label: 'Gallery', icon: Image },
+            { mode: 'gallery' as ViewMode, label: 'Gallery', icon: ImageIcon },
             { mode: 'compare' as ViewMode, label: 'Compare', icon: Columns },
           ].map((tab) => (
             <Button

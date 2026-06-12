@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import {
   Camera,
   Download,
-  Image,
+  Image as ImageIcon,
   FileText,
   Type,
   Compass,
@@ -67,8 +67,8 @@ const SIZE_PRESETS: Record<string, { label: string; width: number; height: numbe
 }
 
 const FORMAT_OPTIONS: { id: ExportFormat; label: string; icon: React.ReactNode; description: string }[] = [
-  { id: 'png', label: 'PNG', icon: <Image className="h-4 w-4" alt="" />, description: 'Lossless quality, larger file' },
-  { id: 'jpeg', label: 'JPEG', icon: <Image className="h-4 w-4" alt="" />, description: 'Compressed, adjustable quality' },
+  { id: 'png', label: 'PNG', icon: <ImageIcon className="h-4 w-4" alt="" />, description: 'Lossless quality, larger file' },
+  { id: 'jpeg', label: 'JPEG', icon: <ImageIcon className="h-4 w-4" alt="" />, description: 'Compressed, adjustable quality' },
   { id: 'pdf', label: 'PDF', icon: <FileText className="h-4 w-4" />, description: 'Document format with metadata' },
 ]
 
