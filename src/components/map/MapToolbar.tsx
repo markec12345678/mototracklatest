@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { MapPin, Navigation, Ruler, Crosshair, Pencil, Maximize2, Type, Building2, Sparkles, Volume2, Users, Eye } from 'lucide-react'
+import { MapPin, Navigation, Ruler, Crosshair, Pencil, Maximize2, Type, Building2, Sparkles, Volume2, Users, Eye, Clock } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Separator } from '@/components/ui/separator'
@@ -335,6 +335,24 @@ export function MapToolbar({ aiSuggestionsOpen, setAiSuggestionsOpen }: { aiSugg
             isActive={accessibilityPanelOpen}
             onClick={() => setAccessibilityPanelOpen(!accessibilityPanelOpen)}
             index={globalIndex + 4}
+          />
+        </div>
+
+        {/* Timeline */}
+        <Separator className="my-1 opacity-50" />
+        <div className="flex flex-col gap-1">
+          <ToolButton
+            tool={{
+              id: 'navigate' as any,
+              icon: <Clock className="h-4 w-4" />,
+              label: 'Timeline',
+              activeClass: 'bg-orange-500 text-white shadow-md shadow-orange-500/30',
+              shortcut: '',
+              description: 'Map history timeline & playback',
+            }}
+            isActive={useMapStore((s) => s.timelineOpen)}
+            onClick={() => useMapStore.getState().setTimelineOpen(!useMapStore.getState().timelineOpen)}
+            index={globalIndex + 5}
           />
         </div>
       </div>

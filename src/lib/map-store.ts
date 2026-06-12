@@ -667,6 +667,40 @@ interface MapState {
   // Collapsed sidebar sections
   collapsedSections: Record<string, boolean>
   toggleSection: (sectionId: string) => void
+
+  // Map history / timeline
+  mapHistory: { center: [number, number]; zoom: number; timestamp: number; style: string }[]
+  addToHistory: () => void
+  goToHistory: (index: number) => void
+  clearHistory: () => void
+  timelineOpen: boolean
+  setTimelineOpen: (open: boolean) => void
+
+  // Search history
+  searchHistory: string[]
+  addSearchHistory: (query: string) => void
+  clearSearchHistory: () => void
+
+  // Route optimization
+  routeOptimized: boolean
+  setRouteOptimized: (optimized: boolean) => void
+  originalRoutePoints: RoutePoint[]
+  setOriginalRoutePoints: (points: RoutePoint[]) => void
+
+  // Analytics panel
+  analyticsPanelOpen: boolean
+  setAnalyticsPanelOpen: (open: boolean) => void
+
+  // AQI panel
+  aqiPanelOpen: boolean
+  setAqiPanelOpen: (open: boolean) => void
+
+  // Tool usage history
+  toolUsageHistory: { tool: string; timestamp: number }[]
+  addToolUsage: (tool: string) => void
+
+  // Session start time
+  sessionStartTime: number
 }
 
 export const useMapStore = create<MapState>()(
@@ -802,6 +836,29 @@ export const useMapStore = create<MapState>()(
       // Collapsed sections defaults
       collapsedSections: {},
 
+      // Map history / timeline defaults
+      mapHistory: [],
+      timelineOpen: false,
+
+      // Search history defaults
+      searchHistory: [],
+
+      // Route optimization defaults
+      routeOptimized: false,
+      originalRoutePoints: [],
+
+      // Analytics panel defaults
+      analyticsPanelOpen: false,
+
+      // AQI panel defaults
+      aqiPanelOpen: false,
+
+      // Tool usage history defaults
+      toolUsageHistory: [],
+
+      // Session start time
+      sessionStartTime: typeof Date !== 'undefined' ? Date.now() : 0,
+
       setCenter: (center) => set({ center }),
       setZoom: (zoom) => set({ zoom }),
       setCurrentStyle: (currentStyle) => set({ currentStyle }),
@@ -903,7 +960,7 @@ export const useMapStore = create<MapState>()(
         })),
 
       setToolMode: (toolMode) =>
-        set({ toolMode, measurePoints: [], measureDistance: null, areaPoints: [], areaResult: null }),
+        set((state) => ({ toolMode, measurePoints: [], measureDistance: null, areaPoints: [], areaResult: null, toolUsageHistory: [...state.toolUsageHistory, { tool: toolMode, timestamp: Date.now() }].slice(-200) })),
 
       addMeasurePoint: (point) => {
         set((state) => ({ measurePoints: [...state.measurePoints, point] }))
@@ -1623,6 +1680,67 @@ export const useMapStore = create<MapState>()(
         },
       })),
 
+      // Map history / timeline actions
+      addToHistory: () => set((state) => {
+        const entry = {
+          center: [...state.center] as [number, number],
+          zoom: state.zoom,
+          timestamp: Date.now(),
+          style: state.currentStyle.id,
+        }
+        const history = [...state.mapHistory, entry].slice(-100)
+        return { mapHistory: history }
+      }),
+
+      goToHistory: (index) => {
+        const entry = useMapStore.getState().mapHistory[index]
+        if (!entry) return
+
+        const style = MAP_STYLES.find((s) => s.id === entry.style) || MAP_STYLES[0]
+
+        if (typeof window !== 'undefined') {
+          const flyTo = (window as unknown as Record<string, (lng: number, lat: number, z?: number) => void>).__mapFlyTo
+          if (flyTo) {
+            flyTo(entry.center[0], entry.center[1], entry.zoom)
+          }
+        }
+
+        set({
+          center: [...entry.center] as [number, number],
+          zoom: entry.zoom,
+          currentStyle: style,
+        })
+      },
+
+      clearHistory: () => set({ mapHistory: [] }),
+
+      setTimelineOpen: (timelineOpen) => set({ timelineOpen }),
+
+      // Search history actions
+      addSearchHistory: (query) => set((state) => {
+        const trimmed = query.trim()
+        if (!trimmed) return state
+        const filtered = state.searchHistory.filter((s) => s !== trimmed)
+        return { searchHistory: [trimmed, ...filtered].slice(0, 10) }
+      }),
+
+      clearSearchHistory: () => set({ searchHistory: [] }),
+
+      // Route optimization actions
+      setRouteOptimized: (routeOptimized) => set({ routeOptimized }),
+      setOriginalRoutePoints: (originalRoutePoints) => set({ originalRoutePoints }),
+
+      // Analytics panel actions
+      setAnalyticsPanelOpen: (analyticsPanelOpen) => set({ analyticsPanelOpen }),
+
+      // AQI panel actions
+      setAqiPanelOpen: (aqiPanelOpen) => set({ aqiPanelOpen }),
+
+      // Tool usage history actions
+      addToolUsage: (tool) => set((state) => ({
+        toolUsageHistory: [...state.toolUsageHistory, { tool, timestamp: Date.now() }].slice(-200),
+      })),
+
       // Language actions
       setLanguage: (language) => set({ language }),
 
@@ -1742,6 +1860,13 @@ export const useMapStore = create<MapState>()(
         imageOverlays: state.imageOverlays,
         spatialResults: state.spatialResults,
         collapsedSections: state.collapsedSections,
+        mapHistory: state.mapHistory,
+        timelineOpen: state.timelineOpen,
+        searchHistory: state.searchHistory,
+        routeOptimized: state.routeOptimized,
+        originalRoutePoints: state.originalRoutePoints,
+        toolUsageHistory: state.toolUsageHistory,
+        sessionStartTime: state.sessionStartTime,
       }),
     }
   )

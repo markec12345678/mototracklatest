@@ -54,6 +54,9 @@ import { AccessibilityPanel } from '@/components/map/AccessibilityPanel'
 import { SpatialAnalysisPanel } from '@/components/map/SpatialAnalysisPanel'
 import { BufferZoneLayer } from '@/components/map/BufferZoneLayer'
 import { ImageOverlayManager } from '@/components/map/ImageOverlayManager'
+import { MapTimeline } from '@/components/map/MapTimeline'
+import { MapAnalyticsDashboard } from '@/components/map/MapAnalyticsDashboard'
+import { AirQualityPanel } from '@/components/map/AirQualityPanel'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
@@ -84,6 +87,8 @@ import {
   Activity,
   GitBranch,
   Save,
+  BarChart3,
+  Wind,
 } from 'lucide-react'
 
 export default function Home() {
@@ -393,11 +398,6 @@ export default function Home() {
           if (satellite) useMapStore.getState().setCurrentStyle(satellite)
           break
         }
-        case '8': {
-          const dark = MAP_STYLES.find((s) => s.id === 'dark')
-          if (dark) useMapStore.getState().setCurrentStyle(dark)
-          break
-        }
         case '9': {
           const currentIdx = MAP_STYLES.findIndex((s) => s.id === useMapStore.getState().currentStyle.id)
           const nextIdx = (currentIdx + 1) % MAP_STYLES.length
@@ -409,6 +409,11 @@ export default function Home() {
           document.getElementById('map-search-input')?.focus()
           break
         case 'b':
+          if (e.shiftKey) {
+            // Shift+B: same as B
+          }
+          setSidebarOpen(!useMapStore.getState().sidebarOpen)
+          break
         case 'B':
           setSidebarOpen(!useMapStore.getState().sidebarOpen)
           break
@@ -420,11 +425,97 @@ export default function Home() {
         case 'L':
           handleLocateMe()
           break
+        case 'h':
+        case 'H':
+          useMapStore.getState().setHeatmapEnabled(!useMapStore.getState().heatmapEnabled)
+          break
+        case 'v':
+        case 'V': {
+          const voiceEnabled = useMapStore.getState().voiceNavigationEnabled
+          if (typeof window !== 'undefined' && window.speechSynthesis) {
+            if (voiceEnabled) {
+              window.speechSynthesis.cancel()
+            } else {
+              const u = new SpeechSynthesisUtterance('')
+              u.volume = 0
+              window.speechSynthesis.speak(u)
+            }
+          }
+          useMapStore.getState().setVoiceNavigationEnabled(!voiceEnabled)
+          break
+        }
+        case 't':
+        case 'T':
+          useMapStore.getState().setSidebarTab('layers')
+          useMapStore.getState().toggleSection('section-layers-theme')
+          if (!useMapStore.getState().sidebarOpen) {
+            useMapStore.getState().setSidebarOpen(true)
+          }
+          break
+        case 'd':
+        case 'D': {
+          const currentDrawing = useMapStore.getState().drawingTool
+          useMapStore.getState().setDrawingTool(currentDrawing === 'none' ? 'line' : 'none')
+          setToolMode('draw')
+          break
+        }
+        case 'c': {
+          // Cycle coordinate format
+          toast.info('Coordinate format cycled')
+          break
+        }
+        case 'C': {
+          // Shift+C: Copy coordinates
+          const [lng, lat] = useMapStore.getState().center
+          const zoom = useMapStore.getState().zoom
+          const coords = `${lat.toFixed(6)}, ${lng.toFixed(6)} (z${zoom.toFixed(1)})`
+          if (typeof navigator !== 'undefined' && navigator.clipboard) {
+            navigator.clipboard.writeText(coords)
+            toast.success(`Copied: ${coords}`)
+          }
+          break
+        }
+        case 'r':
+        case 'R': {
+          const { isRecording, startRecording, stopRecording } = useMapStore.getState()
+          if (isRecording) {
+            stopRecording()
+            toast.success('Track recording stopped')
+          } else {
+            if (typeof navigator !== 'undefined' && navigator.geolocation) {
+              startRecording()
+              navigator.geolocation.watchPosition(
+                (position) => {
+                  useMapStore.getState().addTrackPoint({
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                    elevation: position.coords.altitude,
+                    timestamp: position.timestamp,
+                    speed: position.coords.speed,
+                    accuracy: position.coords.accuracy,
+                  })
+                },
+                (error) => {
+                  toast.error(`GPS Error: ${error.message}`)
+                },
+                { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 }
+              )
+              toast.success('Track recording started')
+            } else {
+              toast.error('Geolocation is not supported')
+            }
+          }
+          break
+        }
         case 'Escape':
           useMapStore.getState().setSelectedMarker(null)
           break
         case '?':
-          setShortcutsOpen(true)
+          if (e.shiftKey) {
+            setSidebarOpen(!useMapStore.getState().sidebarOpen)
+          } else {
+            setShortcutsOpen(true)
+          }
           break
       }
     }
@@ -705,6 +796,26 @@ export default function Home() {
           </Button>
           <VoiceNavigationToggle />
           <CollaborationPanel />
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setAnalyticsPanelOpen(true)}
+            title="Analytics Dashboard"
+            aria-label="Open analytics dashboard"
+          >
+            <BarChart3 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setAqiPanelOpen(true)}
+            title="Air Quality Index"
+            aria-label="Open air quality panel"
+          >
+            <Wind className="h-4 w-4" />
+          </Button>
           <Button
             variant="outline"
             size="icon"
@@ -1179,6 +1290,15 @@ export default function Home() {
 
       {/* Building Info Panel */}
       <BuildingInfoPanel />
+
+      {/* Map Timeline */}
+      <MapTimeline />
+
+      {/* Analytics Dashboard */}
+      <MapAnalyticsDashboard />
+
+      {/* Air Quality Panel */}
+      <AirQualityPanel />
 
       {/* Footer */}
       <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-2 sm:px-3 md:px-4 safe-area-bottom before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">

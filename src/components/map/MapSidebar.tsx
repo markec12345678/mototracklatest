@@ -41,6 +41,13 @@ import {
   Activity,
   X,
   ImageIcon,
+  ChevronDown,
+  Palette,
+  Camera,
+  Zap,
+  Clock,
+  BarChart3,
+  Wind,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -78,6 +85,47 @@ import { RouteAnalyticsPanel } from '@/components/map/RouteAnalyticsPanel'
 import { SnapshotManager } from '@/components/map/SnapshotManager'
 import { ImageOverlayManager } from '@/components/map/ImageOverlayManager'
 import { SpatialAnalysisPanel } from '@/components/map/SpatialAnalysisPanel'
+import { RouteOptimizer } from '@/components/map/RouteOptimizer'
+import { LocationHistoryTimeline } from '@/components/map/LocationHistoryTimeline'
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible'
+
+// SectionHeader component for collapsible sidebar sections
+function SectionHeader({ title, sectionId, icon, count }: {
+  title: string
+  sectionId: string
+  icon?: React.ReactNode
+  count?: number
+}) {
+  const collapsedSections = useMapStore((s) => s.collapsedSections)
+  const toggleSection = useMapStore((s) => s.toggleSection)
+  const isCollapsed = collapsedSections[sectionId] || false
+
+  return (
+    <CollapsibleTrigger asChild>
+      <button
+        onClick={() => toggleSection(sectionId)}
+        className="w-full flex items-center justify-between py-1.5 group cursor-pointer"
+        aria-label={`${isCollapsed ? 'Expand' : 'Collapse'} ${title}`}
+      >
+        <h3 className="text-sm font-semibold flex items-center gap-2">
+          {icon}
+          {title}
+          {count !== undefined && count > 0 && (
+            <Badge variant="secondary" className="text-xs font-mono h-5 min-w-[20px] px-1.5">
+              {count}
+            </Badge>
+          )}
+        </h3>
+        <ChevronDown
+          className={cn(
+            'h-4 w-4 text-muted-foreground transition-transform duration-200',
+            isCollapsed && '-rotate-90'
+          )}
+        />
+      </button>
+    </CollapsibleTrigger>
+  )
+}
 
 function SidebarSkeleton() {
   return (
@@ -762,56 +810,72 @@ function LocationsTab({
   totalCount: number
   onOpenDetail: (loc: SavedLocation) => void
 }) {
+  const collapsedSections = useMapStore((s) => s.collapsedSections)
+
   return (
     <div className="flex flex-col h-full">
-      {/* Search & filter */}
-      <div className="p-3 space-y-2 border-b bg-muted/20 shrink-0">
-        <Input
-          placeholder="Filter locations..."
-          value={searchFilter}
-          onChange={(e) => setSearchFilter(e.target.value)}
-          className="h-8 text-sm"
-          aria-label="Filter locations"
-        />
-        <div className="flex flex-wrap gap-1">
-          <button
-            onClick={() => setFilterCategory('all')}
-            className={cn(
-              'text-[11px] px-2.5 py-1 rounded-full border transition-all duration-200',
-              filterCategory === 'all'
-                ? 'bg-primary text-primary-foreground shadow-sm'
-                : 'hover:bg-accent bg-background'
-            )}
-          >
-            All ({totalCount})
-          </button>
-          {categories.slice(0, 6).map((cat) => (
+      {/* Saved Locations Section - Collapsible */}
+      <Collapsible
+        open={!collapsedSections['section-places-saved']}
+        onOpenChange={() => useMapStore.getState().toggleSection('section-places-saved')}
+        className="flex flex-col flex-1 min-h-0"
+      >
+        {/* Search & filter */}
+        <div className="p-3 space-y-2 border-b bg-muted/20 shrink-0">
+          <SectionHeader
+            title="Saved Locations"
+            sectionId="section-places-saved"
+            icon={<MapPin className="h-3.5 w-3.5 text-muted-foreground" />}
+            count={totalCount}
+          />
+          <CollapsibleContent>
+          <Input
+            placeholder="Filter locations..."
+            value={searchFilter}
+            onChange={(e) => setSearchFilter(e.target.value)}
+            className="h-8 text-sm"
+            aria-label="Filter locations"
+          />
+          <div className="flex flex-wrap gap-1">
             <button
-              key={cat.id}
-              onClick={() => setFilterCategory(cat.id)}
+              onClick={() => setFilterCategory('all')}
               className={cn(
-                'text-[11px] px-2 py-1 rounded-full border transition-all duration-200',
-                filterCategory === cat.id
-                  ? 'text-white shadow-sm'
+                'text-[11px] px-2.5 py-1 rounded-full border transition-all duration-200',
+                filterCategory === 'all'
+                  ? 'bg-primary text-primary-foreground shadow-sm'
                   : 'hover:bg-accent bg-background'
               )}
-              style={
-                filterCategory === cat.id
-                  ? { backgroundColor: cat.color, borderColor: cat.color }
-                  : undefined
-              }
-              aria-label={`Filter by ${cat.label}`}
             >
-              {cat.icon} {cat.label}
+              All ({totalCount})
             </button>
-          ))}
+            {categories.slice(0, 6).map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setFilterCategory(cat.id)}
+                className={cn(
+                  'text-[11px] px-2 py-1 rounded-full border transition-all duration-200',
+                  filterCategory === cat.id
+                    ? 'text-white shadow-sm'
+                    : 'hover:bg-accent bg-background'
+                )}
+                style={
+                  filterCategory === cat.id
+                    ? { backgroundColor: cat.color, borderColor: cat.color }
+                    : undefined
+                }
+                aria-label={`Filter by ${cat.label}`}
+              >
+                {cat.icon} {cat.label}
+              </button>
+            ))}
+          </div>
+          </CollapsibleContent>
         </div>
-      </div>
 
-      {/* Export GPX button for locations */}
-      {locations.length > 0 && (
-        <div className="px-3 pt-2 pb-1 shrink-0">
-          <Button
+        {/* Export GPX button for locations */}
+        {locations.length > 0 && !collapsedSections['section-places-saved'] && (
+          <div className="px-3 pt-2 pb-1 shrink-0">
+            <Button
             variant="outline"
             size="sm"
             className="w-full h-8 text-[11px] justify-center rounded-xl gpx-export-btn"
@@ -824,6 +888,7 @@ function LocationsTab({
       )}
 
       {/* Locations list */}
+      <CollapsibleContent>
       <div className="relative flex-1 min-h-0">
         <ScrollArea className="h-full">
           <div className="p-2 space-y-1">
@@ -930,11 +995,42 @@ function LocationsTab({
         {/* Bottom fade gradient */}
         <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-background to-transparent" />
       </div>
+      </CollapsibleContent>
+      </Collapsible>
 
-      {/* Nearby POI Search */}
-      <div className="mt-3 pt-3 border-t px-3 pb-3">
-        <NearbyPanel />
-      </div>
+      {/* Nearby POI Search - Collapsible */}
+      <Collapsible
+        open={!collapsedSections['section-places-nearby']}
+        onOpenChange={() => useMapStore.getState().toggleSection('section-places-nearby')}
+      >
+        <div className="mt-3 pt-3 border-t px-3 pb-3">
+          <SectionHeader
+            title="Nearby Places"
+            sectionId="section-places-nearby"
+            icon={<MapPinned className="h-3.5 w-3.5 text-muted-foreground" />}
+          />
+          <CollapsibleContent>
+            <NearbyPanel />
+          </CollapsibleContent>
+        </div>
+      </Collapsible>
+
+      {/* Location History Timeline - Collapsible */}
+      <Collapsible
+        open={!collapsedSections['section-places-history']}
+        onOpenChange={() => useMapStore.getState().toggleSection('section-places-history')}
+      >
+        <div className="mt-3 pt-3 border-t px-3 pb-3">
+          <SectionHeader
+            title="Location History"
+            sectionId="section-places-history"
+            icon={<Clock className="h-3.5 w-3.5 text-muted-foreground" />}
+          />
+          <CollapsibleContent>
+            <LocationHistoryTimeline />
+          </CollapsibleContent>
+        </div>
+      </Collapsible>
     </div>
   )
 }
@@ -955,17 +1051,18 @@ function LayersTab() {
   return (
     <ScrollArea className="h-full">
       <div className="p-3 space-y-4">
-        {/* Map Layers */}
-        <div>
-          <div className="flex items-center justify-between mb-2">
-            <h3 className="text-sm font-semibold flex items-center gap-2">
-              <Layers className="h-3.5 w-3.5 text-muted-foreground" />
-              Map Layers
-            </h3>
-            <Badge variant="secondary" className="text-xs font-mono">
-              {visibleCount}/{layerConfig.length}
-            </Badge>
-          </div>
+        {/* Map Layers - Collapsible */}
+        <Collapsible
+          open={!useMapStore.getState().collapsedSections['section-layers-map']}
+          onOpenChange={() => useMapStore.getState().toggleSection('section-layers-map')}
+        >
+          <SectionHeader
+            title="Map Layers"
+            sectionId="section-layers-map"
+            icon={<Layers className="h-3.5 w-3.5 text-muted-foreground" />}
+            count={visibleCount}
+          />
+          <CollapsibleContent>
           <div className="space-y-1">
             {layerConfig.map((layer) => (
               <button
@@ -999,7 +1096,8 @@ function LayersTab() {
               </button>
             ))}
           </div>
-        </div>
+          </CollapsibleContent>
+        </Collapsible>
 
         <Separator />
 
@@ -1221,36 +1319,80 @@ function LayersTab() {
                 aria-label="Toggle sun position overlay"
               />
             </div>
+
+            {/* Air Quality overlay */}
+            <div
+              className={cn(
+                'flex items-center gap-3 px-3 py-2 rounded-xl border transition-all duration-200 cursor-pointer',
+                useMapStore.getState().aqiPanelOpen
+                  ? 'bg-background border-border/50 shadow-sm'
+                  : 'border-dashed text-muted-foreground hover:border-border'
+              )}
+              onClick={() => useMapStore.getState().setAqiPanelOpen(true)}
+            >
+              <Wind className="h-4 w-4 text-emerald-500" />
+              <div className="flex-1">
+                <p className="text-sm">Air Quality</p>
+                <p className="text-[10px] text-muted-foreground/70">
+                  AQI & pollutant monitoring
+                </p>
+              </div>
+              <Badge variant="secondary" className="text-[9px] px-1.5">Open</Badge>
+            </div>
           </div>
         </div>
 
         <Separator />
 
-        {/* Map Theme Customizer */}
+        {/* Map Theme Customizer - Collapsible */}
         <Separator />
-        <MapThemeCustomizer />
+        <Collapsible
+          open={!useMapStore.getState().collapsedSections['section-layers-theme']}
+          onOpenChange={() => useMapStore.getState().toggleSection('section-layers-theme')}
+        >
+          <SectionHeader
+            title="Theme Customizer"
+            sectionId="section-layers-theme"
+            icon={<Palette className="h-3.5 w-3.5 text-muted-foreground" />}
+          />
+          <CollapsibleContent>
+            <MapThemeCustomizer />
+          </CollapsibleContent>
+        </Collapsible>
 
         <Separator />
 
-        {/* Custom Tile Sources */}
-        <div>
-          <h3 className="text-sm font-semibold flex items-center gap-2 mb-2">
-            <Globe2 className="h-3.5 w-3.5 text-muted-foreground" />
-            Custom Tile Sources
-          </h3>
-          <CustomTileSourceList />
-        </div>
+        {/* Custom Tile Sources - Collapsible */}
+        <Collapsible
+          open={!useMapStore.getState().collapsedSections['section-layers-tiles']}
+          onOpenChange={() => useMapStore.getState().toggleSection('section-layers-tiles')}
+        >
+          <SectionHeader
+            title="Custom Tile Sources"
+            sectionId="section-layers-tiles"
+            icon={<Globe2 className="h-3.5 w-3.5 text-muted-foreground" />}
+          />
+          <CollapsibleContent>
+            <CustomTileSourceList />
+          </CollapsibleContent>
+        </Collapsible>
 
         <Separator />
 
-        {/* Image Overlays */}
-        <div>
-          <h3 className="text-sm font-semibold flex items-center gap-2 mb-2">
-            <ImageIcon className="h-3.5 w-3.5 text-muted-foreground" />
-            Image Overlays
-          </h3>
-          <ImageOverlayManager />
-        </div>
+        {/* Image Overlays - Collapsible */}
+        <Collapsible
+          open={!useMapStore.getState().collapsedSections['section-layers-overlays']}
+          onOpenChange={() => useMapStore.getState().toggleSection('section-layers-overlays')}
+        >
+          <SectionHeader
+            title="Image Overlays"
+            sectionId="section-layers-overlays"
+            icon={<ImageIcon className="h-3.5 w-3.5 text-muted-foreground" />}
+          />
+          <CollapsibleContent>
+            <ImageOverlayManager />
+          </CollapsibleContent>
+        </Collapsible>
       </div>
     </ScrollArea>
   )
@@ -1893,13 +2035,101 @@ function ToolsTab({
 
         <Separator />
 
-        {/* Geofences */}
-        <GeofenceSection />
+        {/* Geofences - Collapsible */}
+        <Collapsible
+          open={!useMapStore.getState().collapsedSections['section-tools-geofences']}
+          onOpenChange={() => useMapStore.getState().toggleSection('section-tools-geofences')}
+        >
+          <SectionHeader
+            title="Geofences"
+            sectionId="section-tools-geofences"
+            icon={<Shield className="h-3.5 w-3.5 text-muted-foreground" />}
+          />
+          <CollapsibleContent>
+            <GeofenceSection />
+          </CollapsibleContent>
+        </Collapsible>
 
         <Separator />
 
-        {/* Map Snapshots */}
-        <SnapshotManager />
+        {/* Map Snapshots - Collapsible */}
+        <Collapsible
+          open={!useMapStore.getState().collapsedSections['section-tools-snapshots']}
+          onOpenChange={() => useMapStore.getState().toggleSection('section-tools-snapshots')}
+        >
+          <SectionHeader
+            title="Map Snapshots"
+            sectionId="section-tools-snapshots"
+            icon={<Camera className="h-3.5 w-3.5 text-muted-foreground" />}
+          />
+          <CollapsibleContent>
+            <SnapshotManager />
+          </CollapsibleContent>
+        </Collapsible>
+
+        <Separator />
+
+        {/* Spatial Analysis - Collapsible */}
+        <Collapsible
+          open={!useMapStore.getState().collapsedSections['section-tools-spatial']}
+          onOpenChange={() => useMapStore.getState().toggleSection('section-tools-spatial')}
+        >
+          <SectionHeader
+            title="Spatial Analysis"
+            sectionId="section-tools-spatial"
+            icon={<Activity className="h-3.5 w-3.5 text-muted-foreground" />}
+          />
+          <CollapsibleContent>
+            <SpatialAnalysisPanel />
+          </CollapsibleContent>
+        </Collapsible>
+
+        <Separator />
+
+        {/* Analytics Dashboard - Collapsible */}
+        <Collapsible
+          open={!useMapStore.getState().collapsedSections['section-tools-analytics']}
+          onOpenChange={() => useMapStore.getState().toggleSection('section-tools-analytics')}
+        >
+          <SectionHeader
+            title="Analytics Dashboard"
+            sectionId="section-tools-analytics"
+            icon={<BarChart3 className="h-3.5 w-3.5 text-muted-foreground" />}
+          />
+          <CollapsibleContent>
+            <div className="px-2 py-2">
+              <p className="text-xs text-muted-foreground mb-3">
+                View your map activity stats, session time, and usage charts.
+              </p>
+              <Button
+                size="sm"
+                className="w-full h-9 text-xs bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white border-0"
+                onClick={() => useMapStore.getState().setAnalyticsPanelOpen(true)}
+              >
+                <BarChart3 className="h-3.5 w-3.5 mr-1.5" />
+                Open Analytics Dashboard
+              </Button>
+            </div>
+          </CollapsibleContent>
+        </Collapsible>
+
+        <Separator />
+
+        {/* Accessibility - Collapsible */}
+        <Collapsible
+          open={!useMapStore.getState().collapsedSections['section-tools-accessibility']}
+          onOpenChange={() => useMapStore.getState().toggleSection('section-tools-accessibility')}
+        >
+          <SectionHeader
+            title="Accessibility"
+            sectionId="section-tools-accessibility"
+            icon={<Eye className="h-3.5 w-3.5 text-muted-foreground" />}
+          />
+          <CollapsibleContent>
+            {/* Accessibility settings inline */}
+            <AccessibilitySection />
+          </CollapsibleContent>
+        </Collapsible>
 
         <Separator />
 
@@ -1936,27 +2166,63 @@ function ToolsTab({
   )
 }
 
+// Accessibility section component for the Tools tab
+function AccessibilitySection() {
+  const highContrastMode = useMapStore((s) => s.highContrastMode)
+  const setHighContrastMode = useMapStore((s) => s.setHighContrastMode)
+  const largeTextMode = useMapStore((s) => s.largeTextMode)
+  const setLargeTextMode = useMapStore((s) => s.setLargeTextMode)
+  const reducedMotionMode = useMapStore((s) => s.reducedMotionMode)
+  const setReducedMotionMode = useMapStore((s) => s.setReducedMotionMode)
+  const colorBlindMode = useMapStore((s) => s.colorBlindMode)
+  const setColorBlindMode = useMapStore((s) => s.setColorBlindMode)
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center justify-between px-2 py-1.5 rounded-lg hover:bg-accent/50 transition-colors">
+        <div className="flex items-center gap-2">
+          <Eye className="h-3.5 w-3.5 text-muted-foreground" />
+          <span className="text-sm">High Contrast</span>
+        </div>
+        <Switch checked={highContrastMode} onCheckedChange={setHighContrastMode} />
+      </div>
+      <div className="flex items-center justify-between px-2 py-1.5 rounded-lg hover:bg-accent/50 transition-colors">
+        <div className="flex items-center gap-2">
+          <Type className="h-3.5 w-3.5 text-muted-foreground" />
+          <span className="text-sm">Large Text</span>
+        </div>
+        <Switch checked={largeTextMode} onCheckedChange={setLargeTextMode} />
+      </div>
+      <div className="flex items-center justify-between px-2 py-1.5 rounded-lg hover:bg-accent/50 transition-colors">
+        <div className="flex items-center gap-2">
+          <Activity className="h-3.5 w-3.5 text-muted-foreground" />
+          <span className="text-sm">Reduced Motion</span>
+        </div>
+        <Switch checked={reducedMotionMode} onCheckedChange={setReducedMotionMode} />
+      </div>
+      <div className="flex items-center justify-between px-2 py-1.5 rounded-lg hover:bg-accent/50 transition-colors">
+        <div className="flex items-center gap-2">
+          <Layers className="h-3.5 w-3.5 text-muted-foreground" />
+          <span className="text-sm">Color Blind Mode</span>
+        </div>
+        <Switch checked={colorBlindMode} onCheckedChange={setColorBlindMode} />
+      </div>
+    </div>
+  )
+}
+
 // Geofence section component for the Tools tab
 function GeofenceSection() {
   const geofences = useMapStore((s) => s.geofences)
 
   return (
     <div>
-      <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 flex items-center gap-2">
-        <Shield className="h-3.5 w-3.5" />
-        Geofences
-      </h4>
       <GeofenceManager
         onCreateGeofence={() => {
           const center = useMapStore.getState().center
           window.dispatchEvent(new CustomEvent('map-create-geofence', { detail: { lat: center[1], lng: center[0] } }))
         }}
       />
-
-      <Separator className="my-3" />
-
-      {/* Spatial Analysis */}
-      <SpatialAnalysisPanel />
     </div>
   )
 }
@@ -2454,15 +2720,36 @@ function RoutesTab({ onGPXImportClick }: { onGPXImportClick: () => void }) {
                 Clear
               </Button>
             </div>
+
+            {/* Route Optimizer - shows when 3+ waypoints */}
+            {routePoints.length >= 3 && (
+              <div className="mt-2">
+                <Separator className="mb-2" />
+                <div className="flex items-center gap-1.5 mb-2">
+                  <Zap className="h-3 w-3 text-amber-500" />
+                  <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+                    Route Optimization
+                  </span>
+                </div>
+                <RouteOptimizer />
+              </div>
+            )}
           </div>
         )}
 
-        {/* Saved routes */}
+        {/* Saved routes - Collapsible */}
         {routes.length > 0 && (
-          <div className="space-y-2">
-            <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-              Saved Routes
-            </h4>
+          <Collapsible
+            open={!useMapStore.getState().collapsedSections['section-routes-saved']}
+            onOpenChange={() => useMapStore.getState().toggleSection('section-routes-saved')}
+          >
+            <SectionHeader
+              title="Saved Routes"
+              sectionId="section-routes-saved"
+              icon={<Route className="h-3.5 w-3.5 text-muted-foreground" />}
+              count={routes.length}
+            />
+            <CollapsibleContent>
             <div className="space-y-1.5">
               {routes.map((route) => (
                 <div
@@ -2556,11 +2843,23 @@ function RoutesTab({ onGPXImportClick }: { onGPXImportClick: () => void }) {
                 </div>
               ))}
             </div>
-          </div>
+            </CollapsibleContent>
+          </Collapsible>
         )}
 
-        {/* Route comparison indicator */}
+        {/* Route comparison indicator - Collapsible */}
         {comparedRoutes.length > 0 && (
+          <Collapsible
+            open={!useMapStore.getState().collapsedSections['section-routes-comparison']}
+            onOpenChange={() => useMapStore.getState().toggleSection('section-routes-comparison')}
+          >
+            <SectionHeader
+              title="Route Comparison"
+              sectionId="section-routes-comparison"
+              icon={<GitCompare className="h-3.5 w-3.5 text-muted-foreground" />}
+              count={comparedRoutes.length}
+            />
+            <CollapsibleContent>
           <div className="rounded-xl border border-primary/20 bg-primary/5 p-2.5 space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium flex items-center gap-1.5">
@@ -2601,6 +2900,8 @@ function RoutesTab({ onGPXImportClick }: { onGPXImportClick: () => void }) {
               See the comparison panel on the map for detailed analysis
             </p>
           </div>
+            </CollapsibleContent>
+          </Collapsible>
         )}
 
         {/* Empty state */}
@@ -2625,9 +2926,22 @@ function RoutesTab({ onGPXImportClick }: { onGPXImportClick: () => void }) {
           </div>
         )}
 
-        {/* Saved Tracks section */}
+        {/* Saved Tracks section - Collapsible */}
         <Separator className="my-4" />
-        <SavedTracksSection />
+        <Collapsible
+          open={!useMapStore.getState().collapsedSections['section-routes-tracks']}
+          onOpenChange={() => useMapStore.getState().toggleSection('section-routes-tracks')}
+        >
+          <SectionHeader
+            title="Saved Tracks"
+            sectionId="section-routes-tracks"
+            icon={<Footprints className="h-3.5 w-3.5 text-muted-foreground" />}
+            count={useMapStore.getState().savedTracks.length}
+          />
+          <CollapsibleContent>
+            <SavedTracksSection />
+          </CollapsibleContent>
+        </Collapsible>
         </> )} {/* End directions sub-tab */}
       </div>
     </ScrollArea>

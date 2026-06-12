@@ -60,6 +60,14 @@ A feature-rich, interactive mapping application built with **Next.js 16**, **Map
 - **Golden & Blue Hour** indicators for photography planning
 - **Sun Info Panel** — Sunrise, sunset, solar noon, and day length
 
+### 🌬️ Air Quality
+- **Air Quality Index** — Real-time US AQI from Open-Meteo Air Quality API
+- **Pollutant Levels** — PM2.5, PM10, CO, NO₂, SO₂, O₃ with progress bars
+- **Color-Coded AQI Badge** — Good/Moderate/Unhealthy/Hazardous levels
+- **24-Hour AQI Forecast** — Hourly bar chart showing predicted air quality
+- **Health Recommendations** — Context-aware advice based on current AQI
+- **AQI Scale Reference** — Visual scale with current position indicator
+
 ### 📦 Import & Export
 - **GPX Import** — Load GPX 1.1 tracks and waypoints onto the map
 - **GPX Export** — Save routes and tracks as GPX files
@@ -96,6 +104,8 @@ A feature-rich, interactive mapping application built with **Next.js 16**, **Map
 - **Distance Matrix** — Calculate distances between multiple points (haversine + OSRM)
 - **Map Snapshots** — Save and restore map views with markers
 - **Style Gallery** — Visual style browser with categories and search
+- **Analytics Dashboard** — Session stats, tool usage charts, activity heatmap, and key metrics
+- **Tool Usage Tracking** — Frequency of tool mode switches and action counts
 
 ### 🏃 GPS & Tracking
 - **Track Recording** — Record GPS tracks in real-time with speed, distance, elevation
@@ -365,7 +375,11 @@ The app is fully responsive with three breakpoints:
 - [x] ~~Style Gallery~~ — Visual style browser ✅
 - [x] ~~Map Snapshots~~ — Save/restore map views ✅
 - [x] ~~Notification Center~~ — Centralized notification history ✅
-- [ ] **Multi-route Comparison** — Compare multiple routes side by side
+- [x] ~~Route Optimizer~~ — Nearest-neighbor TSP heuristic for route optimization with before/after comparison ✅
+- [x] ~~Location History Timeline~~ — Browse saved locations by date with category filtering and search ✅
+- [x] ~~Multi-route Comparison~~ — Compare multiple routes side by side ✅
+- [x] ~~Map Analytics Dashboard~~ — Session stats, activity charts, tool usage, and heatmap ✅
+- [x] ~~Air Quality Index~~ — Real-time AQI with pollutant levels, 24h forecast, and health recommendations ✅
 - [ ] **Collaborative Maps** — Share and edit maps with others in real-time
 - [ ] **Offline Map Caching** — Service worker for tile caching
 - [ ] **Real-time Chat** — Discuss locations with other users

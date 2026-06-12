@@ -1,9 +1,11 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
-import { Search, X, MapPin, Loader2, Navigation2, Clock } from 'lucide-react'
+import { useState, useRef, useEffect, useCallback } from 'react'
+import { Search, X, MapPin, Loader2, Navigation2, Clock, LocateFixed, Building2, TreePine, Home } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
+import { Badge } from '@/components/ui/badge'
+import { Switch } from '@/components/ui/switch'
 import { useMapStore } from '@/lib/map-store'
 import { useTranslation } from '@/lib/translations'
 import { cn } from '@/lib/utils'
@@ -15,6 +17,13 @@ interface SearchResult {
   type: string
   category: string
 }
+
+const filterChips = [
+  { id: 'places', label: 'Places', emoji: '🏠', icon: Home },
+  { id: 'addresses', label: 'Addresses', emoji: '📍', icon: MapPin },
+  { id: 'natural', label: 'Natural', emoji: '🏔️', icon: TreePine },
+  { id: 'businesses', label: 'Businesses', emoji: '🏢', icon: Building2 },
+] as const
 
 function SearchSkeleton() {
   return (
@@ -47,62 +56,23 @@ export function SearchBar() {
   const [showResults, setShowResults] = useState(false)
   const [selectedIndex, setSelectedIndex] = useState(-1)
   const [isFocused, setIsFocused] = useState(false)
-  const [recentSearches, setRecentSearches] = useState<string[]>([])
+  const [activeFilter, setActiveFilter] = useState<string | null>(null)
+  const [nearMe, setNearMe] = useState(false)
+
+  // Use zustand store for search history
+  const searchHistory = useMapStore((s) => s.searchHistory)
+  const addSearchHistory = useMapStore((s) => s.addSearchHistory)
+  const clearSearchHistory = useMapStore((s) => s.clearSearchHistory)
+  const geolocation = useMapStore((s) => s.geolocation)
+
   const inputRef = useRef<HTMLInputElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const { t } = useTranslation()
 
-  const STORAGE_KEY = 'maplibre-recent-searches'
-
-  // Load recent searches from localStorage on mount
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY)
-      if (stored) {
-        setRecentSearches(JSON.parse(stored))
-      }
-    } catch {
-      // Ignore localStorage errors
-    }
-  }, [])
-
-  const saveRecentSearches = (searches: string[]) => {
-    setRecentSearches(searches)
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(searches))
-    } catch {
-      // Ignore localStorage errors
-    }
-  }
-
-  const addRecentSearch = (searchTerm: string) => {
-    const trimmed = searchTerm.trim()
-    if (!trimmed) return
-    const filtered = recentSearches.filter((s) => s !== trimmed)
-    const updated = [trimmed, ...filtered].slice(0, 5)
-    saveRecentSearches(updated)
-  }
-
-  const removeRecentSearch = (searchTerm: string, e: React.MouseEvent) => {
-    e.stopPropagation()
-    const updated = recentSearches.filter((s) => s !== searchTerm)
-    saveRecentSearches(updated)
-  }
-
-  const clearAllRecentSearches = () => {
-    saveRecentSearches([])
-  }
-
-  const handleRecentSearchClick = (searchTerm: string) => {
-    setQuery(searchTerm)
-    handleSearch(searchTerm)
-    inputRef.current?.focus()
-  }
-
   const showRecentSearches =
     isFocused &&
-    recentSearches.length > 0 &&
+    searchHistory.length > 0 &&
     (query.trim() === '' || (!isSearching && results.length === 0))
 
   useEffect(() => {
@@ -112,13 +82,14 @@ export function SearchBar() {
         !containerRef.current.contains(event.target as Node)
       ) {
         setShowResults(false)
+        setIsFocused(false)
       }
     }
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  const handleSearch = async (searchQuery: string) => {
+  const handleSearch = useCallback(async (searchQuery: string) => {
     setQuery(searchQuery)
     setSelectedIndex(-1)
     if (debounceRef.current) clearTimeout(debounceRef.current)
@@ -132,9 +103,16 @@ export function SearchBar() {
     debounceRef.current = setTimeout(async () => {
       setIsSearching(true)
       try {
-        const res = await fetch(
-          `/api/search?q=${encodeURIComponent(searchQuery)}`
-        )
+        // Build search URL with optional category filter and near-me bias
+        let searchUrl = `/api/search?q=${encodeURIComponent(searchQuery)}`
+        if (activeFilter) {
+          searchUrl += `&category=${encodeURIComponent(activeFilter)}`
+        }
+        if (nearMe && geolocation) {
+          searchUrl += `&lat=${geolocation.latitude}&lng=${geolocation.longitude}`
+        }
+
+        const res = await fetch(searchUrl)
         if (res.ok) {
           const data = await res.json()
           if (Array.isArray(data) && data.length > 0) {
@@ -159,9 +137,16 @@ export function SearchBar() {
         setIsSearching(false)
       }
     }, 400)
-  }
+  }, [activeFilter, nearMe, geolocation])
 
-  const handleSelect = (result: SearchResult) => {
+  // Re-search when filter changes
+  useEffect(() => {
+    if (query.trim()) {
+      handleSearch(query)
+    }
+  }, [activeFilter, nearMe, handleSearch, query])
+
+  const handleSelect = useCallback((result: SearchResult) => {
     const flyTo = (window as unknown as Record<
       string,
       (lng: number, lat: number, z?: number) => void
@@ -173,8 +158,8 @@ export function SearchBar() {
     setQuery(searchTerm)
     setShowResults(false)
     setSelectedIndex(-1)
-    addRecentSearch(searchTerm)
-  }
+    addSearchHistory(searchTerm)
+  }, [addSearchHistory])
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'ArrowDown') {
@@ -190,6 +175,22 @@ export function SearchBar() {
       inputRef.current?.blur()
     }
   }
+
+  const handleRecentSearchClick = useCallback((searchTerm: string) => {
+    setQuery(searchTerm)
+    handleSearch(searchTerm)
+    inputRef.current?.focus()
+  }, [handleSearch])
+
+  const removeRecentSearch = useCallback((searchTerm: string, e: React.MouseEvent) => {
+    e.stopPropagation()
+    // We can't remove individual items from zustand store easily, so we'll use a workaround
+    // by filtering the current store history
+    const current = useMapStore.getState().searchHistory
+    const updated = current.filter((s) => s !== searchTerm)
+    // Manually set the state
+    useMapStore.setState({ searchHistory: updated })
+  }, [])
 
   const getTypeIcon = (type: string | undefined | null, category: string | undefined | null) => {
     const t = (type || '').toLowerCase()
@@ -255,6 +256,38 @@ export function SearchBar() {
         )}
       </div>
 
+      {/* Filter chips and Near Me toggle - shown when focused or has results */}
+      {isFocused && (
+        <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+          {filterChips.map((chip) => (
+            <button
+              key={chip.id}
+              onClick={() => setActiveFilter(activeFilter === chip.id ? null : chip.id)}
+              className={cn(
+                'text-[11px] px-2.5 py-1 rounded-full border transition-all duration-200 flex items-center gap-1',
+                activeFilter === chip.id
+                  ? 'bg-primary text-primary-foreground shadow-sm border-primary'
+                  : 'hover:bg-accent bg-background border-border/50 text-muted-foreground hover:text-foreground'
+              )}
+              aria-label={`Filter by ${chip.label}`}
+            >
+              <span>{chip.emoji}</span>
+              <span>{chip.label}</span>
+            </button>
+          ))}
+          <div className="flex items-center gap-1.5 ml-auto">
+            <LocateFixed className={cn('h-3.5 w-3.5', nearMe ? 'text-emerald-500' : 'text-muted-foreground')} />
+            <span className={cn('text-[11px]', nearMe ? 'text-emerald-600 dark:text-emerald-400 font-medium' : 'text-muted-foreground')}>Near me</span>
+            <Switch
+              checked={nearMe}
+              onCheckedChange={setNearMe}
+              className="scale-75"
+              aria-label="Prioritize nearby results"
+            />
+          </div>
+        </div>
+      )}
+
       {/* Loading skeleton */}
       {isSearching && <SearchSkeleton />}
 
@@ -263,17 +296,22 @@ export function SearchBar() {
           <div className="px-4 py-6 text-center">
             <Search className="h-8 w-8 text-muted-foreground/30 mx-auto mb-2" />
             <p className="text-sm text-muted-foreground">No results found</p>
-            <p className="text-xs text-muted-foreground/60 mt-1">Try a different search term</p>
+            <p className="text-xs text-muted-foreground/60 mt-1">Try a different search term or filter</p>
           </div>
         </div>
       )}
 
       {showResults && !isSearching && results.length > 0 && (
         <div className="map-tooltip absolute top-full mt-1.5 w-full overflow-hidden z-50 max-h-80 overflow-y-auto">
-          <div className="px-3 py-2 border-b bg-muted/30">
+          <div className="px-3 py-2 border-b bg-muted/30 flex items-center justify-between">
             <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">
               Search Results ({results.length})
             </p>
+            {activeFilter && (
+              <Badge variant="secondary" className="text-[9px] h-4 px-1.5">
+                {filterChips.find((c) => c.id === activeFilter)?.emoji} {filterChips.find((c) => c.id === activeFilter)?.label}
+              </Badge>
+            )}
           </div>
           {results.map((result, i) => (
             <button
@@ -312,12 +350,18 @@ export function SearchBar() {
 
       {showRecentSearches && (
         <div className="map-tooltip absolute top-full mt-1.5 w-full overflow-hidden z-50 max-h-80 overflow-y-auto">
-          <div className="px-3 py-2 border-b bg-muted/30">
+          <div className="px-3 py-2 border-b bg-muted/30 flex items-center justify-between">
             <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">
               Recent Searches
             </p>
+            <button
+              onClick={clearSearchHistory}
+              className="text-[10px] text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Clear all
+            </button>
           </div>
-          {recentSearches.map((searchTerm) => (
+          {searchHistory.map((searchTerm) => (
             <div
               key={searchTerm}
               onClick={() => handleRecentSearchClick(searchTerm)}
@@ -338,14 +382,6 @@ export function SearchBar() {
               </button>
             </div>
           ))}
-          <div className="px-3 py-2">
-            <button
-              onClick={clearAllRecentSearches}
-              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Clear all
-            </button>
-          </div>
         </div>
       )}
     </div>
