@@ -208,6 +208,14 @@ import { SalinityGradientMapper } from '@/components/map/SalinityGradientMapper'
 import { MicroplasticsTracker } from '@/components/map/MicroplasticsTracker'
 import { RadioSignalMapper } from '@/components/map/RadioSignalMapper'
 import { VolcanicIslandMonitor } from '@/components/map/VolcanicIslandMonitor'
+import { PermafrostThawMonitor } from '@/components/map/PermafrostThawMonitor'
+import { OceanCurrentTrackerPanel } from '@/components/map/OceanCurrentTrackerPanel'
+import { SpaceWeatherAlertPanel } from '@/components/map/SpaceWeatherAlertPanel'
+import { DesertMonitorPanel } from '@/components/map/DesertMonitorPanel'
+import { TsunamiBuoyTracker } from '@/components/map/TsunamiBuoyTracker'
+import { GlacierVelocityTracker } from '@/components/map/GlacierVelocityTracker'
+import { EarthquakeSwarmMonitor } from '@/components/map/EarthquakeSwarmMonitor'
+import { MangroveRestorationTracker } from '@/components/map/MangroveRestorationTracker'
 import dynamic from 'next/dynamic'
 
 const GPSSimulator = dynamic(() => import('@/components/map/GPSSimulator').then((m) => m.GPSSimulator), { ssr: false })
@@ -356,6 +364,11 @@ import {
   Search as SearchIcon2,
   Radio as RadioIcon2,
   Mountain as MountainIcon2,
+  Waves as WavesIcon3,
+  Sun as SunIcon2,
+  Anchor,
+  Activity as ActivityIcon2,
+  TreeDeciduous as TreeDeciduousIcon2,
 } from 'lucide-react'
 
 export default function Home() {
@@ -2520,6 +2533,86 @@ export default function Home() {
           <Button
             variant="outline"
             size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setPermafrostThaw({ open: true })}
+            title="Permafrost Thaw Monitor"
+            aria-label="Open permafrost thaw monitor"
+          >
+            <ThermometerSnowflake className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setOceanCurrentTracker({ open: true })}
+            title="Ocean Current Tracker"
+            aria-label="Open ocean current tracker"
+          >
+            <WavesIcon3 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setSpaceWeatherAlert({ open: true })}
+            title="Space Weather Alert"
+            aria-label="Open space weather alert"
+          >
+            <SunIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setDesertMonitor({ open: true })}
+            title="Desert Monitor"
+            aria-label="Open desert monitor"
+          >
+            <SunDim className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setTsunamiBuoy({ open: true })}
+            title="Tsunami Buoy Tracker"
+            aria-label="Open tsunami buoy tracker"
+          >
+            <Anchor className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setGlacierVelocity({ open: true })}
+            title="Glacier Velocity Tracker"
+            aria-label="Open glacier velocity tracker"
+          >
+            <MountainSnow className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setEarthquakeSwarm({ open: true })}
+            title="Earthquake Swarm Monitor"
+            aria-label="Open earthquake swarm monitor"
+          >
+            <ActivityIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setMangroveRestoration({ open: true })}
+            title="Mangrove Restoration Tracker"
+            aria-label="Open mangrove restoration tracker"
+          >
+            <TreeDeciduousIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
             className="hidden sm:flex map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={() =>
               window.open('https://github.com/maplibre/maplibre-native', '_blank')
@@ -3603,6 +3696,30 @@ export default function Home() {
 
       {/* Volcanic Island Monitor */}
       <VolcanicIslandMonitor />
+
+      {/* Permafrost Thaw Monitor */}
+      <PermafrostThawMonitor />
+
+      {/* Ocean Current Tracker */}
+      <OceanCurrentTrackerPanel />
+
+      {/* Space Weather Alert */}
+      <SpaceWeatherAlertPanel />
+
+      {/* Desert Monitor */}
+      <DesertMonitorPanel />
+
+      {/* Tsunami Buoy Tracker */}
+      <TsunamiBuoyTracker />
+
+      {/* Glacier Velocity Tracker */}
+      <GlacierVelocityTracker />
+
+      {/* Earthquake Swarm Monitor */}
+      <EarthquakeSwarmMonitor />
+
+      {/* Mangrove Restoration Tracker */}
+      <MangroveRestorationTracker />
 
       {/* Footer */}
       <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-2 sm:px-3 md:px-4 safe-area-bottom before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">

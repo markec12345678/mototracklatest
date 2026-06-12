@@ -3530,6 +3530,206 @@ export interface VolcanicIslandState {
   activityFilter: 'all' | 'dormant' | 'fumarolic' | 'unrest' | 'erupting'
 }
 
+// Task 56: Permafrost Thaw Monitor
+export interface PermafrostThawZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  thawRate: number
+  activeLayerDepth: number
+  groundTemp: number
+  carbonRelease: number
+  infrastructure: 'none' | 'minor' | 'moderate' | 'severe'
+  permafrostType: string
+}
+
+export interface PermafrostThawState {
+  zones: PermafrostThawZone[]
+  activeZoneId: string | null
+  showThawRate: boolean
+  showActiveLayer: boolean
+  showGroundTemp: boolean
+  showInfrastructure: boolean
+  open: boolean
+  infrastructureFilter: 'all' | 'none' | 'minor' | 'moderate' | 'severe'
+}
+
+// Task 56: Ocean Current Tracker
+export interface OceanCurrentZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  speed: number
+  direction: number
+  temperature: number
+  salinity: number
+  currentType: 'surface' | 'deep' | 'thermohaline' | 'coastal'
+  ecosystemImpact: 'minimal' | 'moderate' | 'significant' | 'severe'
+}
+
+export interface OceanCurrentTrackerState {
+  currents: OceanCurrentZone[]
+  activeCurrentId: string | null
+  showSpeed: boolean
+  showTemperature: boolean
+  showSalinity: boolean
+  showImpact: boolean
+  open: boolean
+  impactFilter: 'all' | 'minimal' | 'moderate' | 'significant' | 'severe'
+}
+
+// Task 56: Space Weather Alert
+export interface SpaceWeatherAlert {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  alertType: 'solar_flare' | 'cme' | 'radiation_storm' | 'geomagnetic'
+  severity: 'minor' | 'moderate' | 'strong' | 'severe' | 'extreme'
+  kpIndex: number
+  hfAbsorption: number
+  gnssImpact: 'none' | 'minor' | 'moderate' | 'severe'
+  startTime: string
+}
+
+export interface SpaceWeatherAlertState {
+  alerts: SpaceWeatherAlert[]
+  activeAlertId: string | null
+  showSeverity: boolean
+  showKpIndex: boolean
+  showHfImpact: boolean
+  showGnssImpact: boolean
+  open: boolean
+  severityFilter: 'all' | 'minor' | 'moderate' | 'strong' | 'severe' | 'extreme'
+}
+
+// Task 56: Desert Monitor
+export interface DesertZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  area: number
+  expansionRate: number
+  avgTemperature: number
+  rainfall: number
+  vegetationIndex: number
+  status: 'stable' | 'expanding' | 'recovering' | 'critical'
+}
+
+export interface DesertMonitorState {
+  zones: DesertZone[]
+  activeZoneId: string | null
+  showExpansion: boolean
+  showTemperature: boolean
+  showRainfall: boolean
+  showVegetation: boolean
+  open: boolean
+  statusFilter: 'all' | 'stable' | 'expanding' | 'recovering' | 'critical'
+}
+
+// Task 56: Tsunami Buoy Tracker
+export interface TsunamiBuoy {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  waterHeight: number
+  pressure: number
+  wavePeriod: number
+  status: 'normal' | 'watch' | 'advisory' | 'warning'
+  detectionType: 'dart' | 'coastal' | 'tide_gauge'
+  lastReading: string
+}
+
+export interface TsunamiBuoyState {
+  buoys: TsunamiBuoy[]
+  activeBuoyId: string | null
+  showWaterHeight: boolean
+  showPressure: boolean
+  showWavePeriod: boolean
+  showStatus: boolean
+  open: boolean
+  statusFilter: 'all' | 'normal' | 'watch' | 'advisory' | 'warning'
+}
+
+// Task 56: Glacier Velocity Tracker
+export interface GlacierVelocityZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  velocity: number
+  thickness: number
+  massBalance: number
+  calvingRate: number
+  flowDirection: number
+  status: 'stable' | 'accelerating' | 'surging' | 'retreating'
+}
+
+export interface GlacierVelocityState {
+  zones: GlacierVelocityZone[]
+  activeZoneId: string | null
+  showVelocity: boolean
+  showThickness: boolean
+  showMassBalance: boolean
+  showCalving: boolean
+  open: boolean
+  statusFilter: 'all' | 'stable' | 'accelerating' | 'surging' | 'retreating'
+}
+
+// Task 56: Earthquake Swarm Monitor
+export interface EarthquakeSwarmEvent {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  magnitude: number
+  depth: number
+  frequency: number
+  swarmSize: number
+  faultType: string
+  alertLevel: 'background' | 'advisory' | 'watch' | 'warning'
+}
+
+export interface EarthquakeSwarmState {
+  events: EarthquakeSwarmEvent[]
+  activeEventId: string | null
+  showMagnitude: boolean
+  showDepth: boolean
+  showFrequency: boolean
+  showAlertLevel: boolean
+  open: boolean
+  alertFilter: 'all' | 'background' | 'advisory' | 'watch' | 'warning'
+}
+
+// Task 56: Mangrove Restoration Tracker
+export interface MangroveRestorationSite {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  area: number
+  speciesCount: number
+  carbonSequestration: number
+  coastalProtection: number
+  fisheryBoost: number
+  restorationStage: 'planned' | 'nursery' | 'planting' | 'established' | 'mature'
+}
+
+export interface MangroveRestorationState {
+  sites: MangroveRestorationSite[]
+  activeSiteId: string | null
+  showArea: boolean
+  showCarbon: boolean
+  showCoastalProtection: boolean
+  showFishery: boolean
+  open: boolean
+  stageFilter: 'all' | 'planned' | 'nursery' | 'planting' | 'established' | 'mature'
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -4659,6 +4859,38 @@ interface MapState {
   // Volcanic Island Monitor
   volcanicIsland: VolcanicIslandState
   setVolcanicIsland: (state: Partial<VolcanicIslandState>) => void
+
+  // Permafrost Thaw Monitor
+  permafrostThaw: PermafrostThawState
+  setPermafrostThaw: (state: Partial<PermafrostThawState>) => void
+
+  // Ocean Current Tracker
+  oceanCurrentTracker: OceanCurrentTrackerState
+  setOceanCurrentTracker: (state: Partial<OceanCurrentTrackerState>) => void
+
+  // Space Weather Alert
+  spaceWeatherAlert: SpaceWeatherAlertState
+  setSpaceWeatherAlert: (state: Partial<SpaceWeatherAlertState>) => void
+
+  // Desert Monitor
+  desertMonitor: DesertMonitorState
+  setDesertMonitor: (state: Partial<DesertMonitorState>) => void
+
+  // Tsunami Buoy Tracker
+  tsunamiBuoy: TsunamiBuoyState
+  setTsunamiBuoy: (state: Partial<TsunamiBuoyState>) => void
+
+  // Glacier Velocity Tracker
+  glacierVelocity: GlacierVelocityState
+  setGlacierVelocity: (state: Partial<GlacierVelocityState>) => void
+
+  // Earthquake Swarm Monitor
+  earthquakeSwarm: EarthquakeSwarmState
+  setEarthquakeSwarm: (state: Partial<EarthquakeSwarmState>) => void
+
+  // Mangrove Restoration Tracker
+  mangroveRestoration: MangroveRestorationState
+  setMangroveRestoration: (state: Partial<MangroveRestorationState>) => void
 }
 
 // Coordinate Share Card types
@@ -8564,6 +8796,118 @@ export const useMapStore = create<MapState>()(
       setVolcanicIsland: (updates) => set((state) => ({
         volcanicIsland: { ...state.volcanicIsland, ...updates },
       })),
+
+      permafrostThaw: {
+        zones: [],
+        activeZoneId: null,
+        showThawRate: true,
+        showActiveLayer: false,
+        showGroundTemp: false,
+        showInfrastructure: false,
+        open: false,
+        infrastructureFilter: 'all',
+      },
+      setPermafrostThaw: (updates) => set((state) => ({
+        permafrostThaw: { ...state.permafrostThaw, ...updates },
+      })),
+
+      oceanCurrentTracker: {
+        currents: [],
+        activeCurrentId: null,
+        showSpeed: true,
+        showTemperature: false,
+        showSalinity: false,
+        showImpact: false,
+        open: false,
+        impactFilter: 'all',
+      },
+      setOceanCurrentTracker: (updates) => set((state) => ({
+        oceanCurrentTracker: { ...state.oceanCurrentTracker, ...updates },
+      })),
+
+      spaceWeatherAlert: {
+        alerts: [],
+        activeAlertId: null,
+        showSeverity: true,
+        showKpIndex: false,
+        showHfImpact: false,
+        showGnssImpact: false,
+        open: false,
+        severityFilter: 'all',
+      },
+      setSpaceWeatherAlert: (updates) => set((state) => ({
+        spaceWeatherAlert: { ...state.spaceWeatherAlert, ...updates },
+      })),
+
+      desertMonitor: {
+        zones: [],
+        activeZoneId: null,
+        showExpansion: true,
+        showTemperature: false,
+        showRainfall: false,
+        showVegetation: false,
+        open: false,
+        statusFilter: 'all',
+      },
+      setDesertMonitor: (updates) => set((state) => ({
+        desertMonitor: { ...state.desertMonitor, ...updates },
+      })),
+
+      tsunamiBuoy: {
+        buoys: [],
+        activeBuoyId: null,
+        showWaterHeight: true,
+        showPressure: false,
+        showWavePeriod: false,
+        showStatus: false,
+        open: false,
+        statusFilter: 'all',
+      },
+      setTsunamiBuoy: (updates) => set((state) => ({
+        tsunamiBuoy: { ...state.tsunamiBuoy, ...updates },
+      })),
+
+      glacierVelocity: {
+        zones: [],
+        activeZoneId: null,
+        showVelocity: true,
+        showThickness: false,
+        showMassBalance: false,
+        showCalving: false,
+        open: false,
+        statusFilter: 'all',
+      },
+      setGlacierVelocity: (updates) => set((state) => ({
+        glacierVelocity: { ...state.glacierVelocity, ...updates },
+      })),
+
+      earthquakeSwarm: {
+        events: [],
+        activeEventId: null,
+        showMagnitude: true,
+        showDepth: false,
+        showFrequency: false,
+        showAlertLevel: false,
+        open: false,
+        alertFilter: 'all',
+      },
+      setEarthquakeSwarm: (updates) => set((state) => ({
+        earthquakeSwarm: { ...state.earthquakeSwarm, ...updates },
+      })),
+
+      mangroveRestoration: {
+        sites: [],
+        activeSiteId: null,
+        showArea: true,
+        showCarbon: false,
+        showCoastalProtection: false,
+        showFishery: false,
+        open: false,
+        stageFilter: 'all',
+      },
+      setMangroveRestoration: (updates) => set((state) => ({
+        mangroveRestoration: { ...state.mangroveRestoration, ...updates },
+      })),
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -8775,6 +9119,14 @@ export const useMapStore = create<MapState>()(
         microplastics: state.microplastics,
         radioSignal: state.radioSignal,
         volcanicIsland: state.volcanicIsland,
+        permafrostThaw: state.permafrostThaw,
+        oceanCurrentTracker: state.oceanCurrentTracker,
+        spaceWeatherAlert: state.spaceWeatherAlert,
+        desertMonitor: state.desertMonitor,
+        tsunamiBuoy: state.tsunamiBuoy,
+        glacierVelocity: state.glacierVelocity,
+        earthquakeSwarm: state.earthquakeSwarm,
+        mangroveRestoration: state.mangroveRestoration,
       }),
     }
   )
