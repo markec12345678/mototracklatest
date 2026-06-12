@@ -3327,6 +3327,209 @@ export interface HailStormState {
   damageFilter: 'all' | 'none' | 'minor' | 'moderate' | 'severe' | 'catastrophic'
 }
 
+// Task 55: Sahara Reforestation Tracker
+export interface SaharaReforestationProject {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  areaRestored: number
+  treeCount: number
+  speciesDiversity: number
+  waterUsage: number
+  survivalRate: number
+  status: 'planned' | 'planting' | 'growing' | 'established' | 'threatened'
+  yearStarted: number
+}
+
+export interface SaharaReforestationState {
+  projects: SaharaReforestationProject[]
+  activeProjectId: string | null
+  showArea: boolean
+  showTreeCount: boolean
+  showSurvivalRate: boolean
+  showStatus: boolean
+  open: boolean
+  statusFilter: 'all' | 'planned' | 'planting' | 'growing' | 'established' | 'threatened'
+}
+
+// Task 55: Deep Sea Vents Monitor
+export interface DeepSeaVent {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  depth: number
+  temperature: number
+  ventType: 'black_smoker' | 'white_smoker' | 'diffuse_flow'
+  mineralType: string
+  biologicalActivity: 'low' | 'moderate' | 'high' | 'extreme'
+  discoveryYear: number
+}
+
+export interface DeepSeaVentState {
+  vents: DeepSeaVent[]
+  activeVentId: string | null
+  showTemperature: boolean
+  showDepth: boolean
+  showVentType: boolean
+  showBiology: boolean
+  open: boolean
+  biologyFilter: 'all' | 'low' | 'moderate' | 'high' | 'extreme'
+}
+
+// Task 55: Storm Surge Predictor
+export interface StormSurgeZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  surgeHeight: number
+  windSpeed: number
+  pressureDrop: number
+  coastalPopulation: number
+  evacuationLevel: 'none' | 'advisory' | 'watch' | 'warning' | 'emergency'
+  historicalMax: number
+}
+
+export interface StormSurgeState {
+  zones: StormSurgeZone[]
+  activeZoneId: string | null
+  showSurgeHeight: boolean
+  showWindSpeed: boolean
+  showPopulation: boolean
+  showEvacuation: boolean
+  open: boolean
+  evacuationFilter: 'all' | 'none' | 'advisory' | 'watch' | 'warning' | 'emergency'
+}
+
+// Task 55: Landfill Monitor
+export interface LandfillSite {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  capacity: number
+  currentFill: number
+  methaneOutput: number
+  leachateRisk: 'low' | 'moderate' | 'high' | 'critical'
+  wasteType: string
+  yearsRemaining: number
+  recyclingRate: number
+}
+
+export interface LandfillMonitorState {
+  sites: LandfillSite[]
+  activeSiteId: string | null
+  showFill: boolean
+  showMethane: boolean
+  showLeachate: boolean
+  showRecycling: boolean
+  open: boolean
+  leachateFilter: 'all' | 'low' | 'moderate' | 'high' | 'critical'
+}
+
+// Task 55: Salinity Gradient Mapper
+export interface SalinityGradientZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  salinity: number
+  depth: number
+  temperature: number
+  gradientType: 'estuary' | 'halocline' | 'salt_wedge' | 'hypersaline'
+  marineImpact: 'minimal' | 'moderate' | 'significant' | 'severe'
+  oxygenLevel: number
+}
+
+export interface SalinityGradientState {
+  zones: SalinityGradientZone[]
+  activeZoneId: string | null
+  showSalinity: boolean
+  showDepth: boolean
+  showGradientType: boolean
+  showOxygen: boolean
+  open: boolean
+  impactFilter: 'all' | 'minimal' | 'moderate' | 'significant' | 'severe'
+}
+
+// Task 55: Microplastics Tracker
+export interface MicroplasticsSample {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  concentration: number
+  particleSize: string
+  polymerType: string
+  source: string
+  severity: 'low' | 'moderate' | 'high' | 'extreme'
+  waterDepth: number
+}
+
+export interface MicroplasticsState {
+  samples: MicroplasticsSample[]
+  activeSampleId: string | null
+  showConcentration: boolean
+  showPolymerType: boolean
+  showSource: boolean
+  showSeverity: boolean
+  open: boolean
+  severityFilter: 'all' | 'low' | 'moderate' | 'high' | 'extreme'
+}
+
+// Task 55: Radio Signal Mapper
+export interface RadioSignalStation {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  frequency: number
+  signalStrength: number
+  modulationType: string
+  coverageRadius: number
+  interferenceLevel: 'none' | 'low' | 'moderate' | 'high'
+  bandType: string
+}
+
+export interface RadioSignalState {
+  stations: RadioSignalStation[]
+  activeStationId: string | null
+  showStrength: boolean
+  showFrequency: boolean
+  showCoverage: boolean
+  showInterference: boolean
+  open: boolean
+  interferenceFilter: 'all' | 'none' | 'low' | 'moderate' | 'high'
+}
+
+// Task 55: Volcanic Island Monitor
+export interface VolcanicIsland {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  islandAge: number
+  lastEruption: string
+  eruptionType: 'effusive' | 'explosive' | 'phreatomagmatic' | 'strombolian'
+  area: number
+  elevation: number
+  activityLevel: 'dormant' | 'fumarolic' | 'unrest' | 'erupting'
+  population: number
+}
+
+export interface VolcanicIslandState {
+  islands: VolcanicIsland[]
+  activeIslandId: string | null
+  showActivity: boolean
+  showEruptionType: boolean
+  showElevation: boolean
+  showPopulation: boolean
+  open: boolean
+  activityFilter: 'all' | 'dormant' | 'fumarolic' | 'unrest' | 'erupting'
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -4424,6 +4627,38 @@ interface MapState {
   // Hail Storm Tracker
   hailStorm: HailStormState
   setHailStorm: (state: Partial<HailStormState>) => void
+
+  // Sahara Reforestation Tracker
+  saharaReforestation: SaharaReforestationState
+  setSaharaReforestation: (state: Partial<SaharaReforestationState>) => void
+
+  // Deep Sea Vents Monitor
+  deepSeaVent: DeepSeaVentState
+  setDeepSeaVent: (state: Partial<DeepSeaVentState>) => void
+
+  // Storm Surge Predictor
+  stormSurge: StormSurgeState
+  setStormSurge: (state: Partial<StormSurgeState>) => void
+
+  // Landfill Monitor
+  landfillMonitor: LandfillMonitorState
+  setLandfillMonitor: (state: Partial<LandfillMonitorState>) => void
+
+  // Salinity Gradient Mapper
+  salinityGradient: SalinityGradientState
+  setSalinityGradient: (state: Partial<SalinityGradientState>) => void
+
+  // Microplastics Tracker
+  microplastics: MicroplasticsState
+  setMicroplastics: (state: Partial<MicroplasticsState>) => void
+
+  // Radio Signal Mapper
+  radioSignal: RadioSignalState
+  setRadioSignal: (state: Partial<RadioSignalState>) => void
+
+  // Volcanic Island Monitor
+  volcanicIsland: VolcanicIslandState
+  setVolcanicIsland: (state: Partial<VolcanicIslandState>) => void
 }
 
 // Coordinate Share Card types
@@ -8217,6 +8452,118 @@ export const useMapStore = create<MapState>()(
       setHailStorm: (updates) => set((state) => ({
         hailStorm: { ...state.hailStorm, ...updates },
       })),
+
+      saharaReforestation: {
+        projects: [],
+        activeProjectId: null,
+        showArea: true,
+        showTreeCount: false,
+        showSurvivalRate: false,
+        showStatus: false,
+        open: false,
+        statusFilter: 'all',
+      },
+      setSaharaReforestation: (updates) => set((state) => ({
+        saharaReforestation: { ...state.saharaReforestation, ...updates },
+      })),
+
+      deepSeaVent: {
+        vents: [],
+        activeVentId: null,
+        showTemperature: true,
+        showDepth: false,
+        showVentType: false,
+        showBiology: false,
+        open: false,
+        biologyFilter: 'all',
+      },
+      setDeepSeaVent: (updates) => set((state) => ({
+        deepSeaVent: { ...state.deepSeaVent, ...updates },
+      })),
+
+      stormSurge: {
+        zones: [],
+        activeZoneId: null,
+        showSurgeHeight: true,
+        showWindSpeed: false,
+        showPopulation: false,
+        showEvacuation: false,
+        open: false,
+        evacuationFilter: 'all',
+      },
+      setStormSurge: (updates) => set((state) => ({
+        stormSurge: { ...state.stormSurge, ...updates },
+      })),
+
+      landfillMonitor: {
+        sites: [],
+        activeSiteId: null,
+        showFill: true,
+        showMethane: false,
+        showLeachate: false,
+        showRecycling: false,
+        open: false,
+        leachateFilter: 'all',
+      },
+      setLandfillMonitor: (updates) => set((state) => ({
+        landfillMonitor: { ...state.landfillMonitor, ...updates },
+      })),
+
+      salinityGradient: {
+        zones: [],
+        activeZoneId: null,
+        showSalinity: true,
+        showDepth: false,
+        showGradientType: false,
+        showOxygen: false,
+        open: false,
+        impactFilter: 'all',
+      },
+      setSalinityGradient: (updates) => set((state) => ({
+        salinityGradient: { ...state.salinityGradient, ...updates },
+      })),
+
+      microplastics: {
+        samples: [],
+        activeSampleId: null,
+        showConcentration: true,
+        showPolymerType: false,
+        showSource: false,
+        showSeverity: false,
+        open: false,
+        severityFilter: 'all',
+      },
+      setMicroplastics: (updates) => set((state) => ({
+        microplastics: { ...state.microplastics, ...updates },
+      })),
+
+      radioSignal: {
+        stations: [],
+        activeStationId: null,
+        showStrength: true,
+        showFrequency: false,
+        showCoverage: false,
+        showInterference: false,
+        open: false,
+        interferenceFilter: 'all',
+      },
+      setRadioSignal: (updates) => set((state) => ({
+        radioSignal: { ...state.radioSignal, ...updates },
+      })),
+
+      volcanicIsland: {
+        islands: [],
+        activeIslandId: null,
+        showActivity: true,
+        showEruptionType: false,
+        showElevation: false,
+        showPopulation: false,
+        open: false,
+        activityFilter: 'all',
+      },
+      setVolcanicIsland: (updates) => set((state) => ({
+        volcanicIsland: { ...state.volcanicIsland, ...updates },
+      })),
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -8420,6 +8767,14 @@ export const useMapStore = create<MapState>()(
         fogDensity: state.fogDensity,
         carbonCapture: state.carbonCapture,
         hailStorm: state.hailStorm,
+        saharaReforestation: state.saharaReforestation,
+        deepSeaVent: state.deepSeaVent,
+        stormSurge: state.stormSurge,
+        landfillMonitor: state.landfillMonitor,
+        salinityGradient: state.salinityGradient,
+        microplastics: state.microplastics,
+        radioSignal: state.radioSignal,
+        volcanicIsland: state.volcanicIsland,
       }),
     }
   )

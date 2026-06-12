@@ -200,6 +200,14 @@ import { MagnetosphereMonitor } from '@/components/map/MagnetosphereMonitor'
 import { FogDensityMapper } from '@/components/map/FogDensityMapper'
 import { CarbonCaptureTracker } from '@/components/map/CarbonCaptureTracker'
 import { HailStormTracker } from '@/components/map/HailStormTracker'
+import { SaharaReforestationTracker } from '@/components/map/SaharaReforestationTracker'
+import { DeepSeaVentMonitor } from '@/components/map/DeepSeaVentMonitor'
+import { StormSurgePredictor } from '@/components/map/StormSurgePredictor'
+import { LandfillMonitor } from '@/components/map/LandfillMonitor'
+import { SalinityGradientMapper } from '@/components/map/SalinityGradientMapper'
+import { MicroplasticsTracker } from '@/components/map/MicroplasticsTracker'
+import { RadioSignalMapper } from '@/components/map/RadioSignalMapper'
+import { VolcanicIslandMonitor } from '@/components/map/VolcanicIslandMonitor'
 import dynamic from 'next/dynamic'
 
 const GPSSimulator = dynamic(() => import('@/components/map/GPSSimulator').then((m) => m.GPSSimulator), { ssr: false })
@@ -340,6 +348,14 @@ import {
   CloudFog,
   Factory as FactoryIcon2,
   CloudHail as CloudHailIcon,
+  TreePine as TreePineIcon2,
+  Flame as FlameIcon2,
+  Waves as WavesIcon2,
+  Trash2,
+  Droplets as DropletsIcon2,
+  Search as SearchIcon2,
+  Radio as RadioIcon2,
+  Mountain as MountainIcon2,
 } from 'lucide-react'
 
 export default function Home() {
@@ -2424,6 +2440,86 @@ export default function Home() {
           <Button
             variant="outline"
             size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setSaharaReforestation({ open: true })}
+            title="Sahara Reforestation Tracker"
+            aria-label="Open sahara reforestation tracker"
+          >
+            <TreePineIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setDeepSeaVent({ open: true })}
+            title="Deep Sea Vent Monitor"
+            aria-label="Open deep sea vent monitor"
+          >
+            <FlameIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setStormSurge({ open: true })}
+            title="Storm Surge Predictor"
+            aria-label="Open storm surge predictor"
+          >
+            <WavesIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setLandfillMonitor({ open: true })}
+            title="Landfill Monitor"
+            aria-label="Open landfill monitor"
+          >
+            <Trash2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setSalinityGradient({ open: true })}
+            title="Salinity Gradient Mapper"
+            aria-label="Open salinity gradient mapper"
+          >
+            <DropletsIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setMicroplastics({ open: true })}
+            title="Microplastics Tracker"
+            aria-label="Open microplastics tracker"
+          >
+            <SearchIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setRadioSignal({ open: true })}
+            title="Radio Signal Mapper"
+            aria-label="Open radio signal mapper"
+          >
+            <RadioIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setVolcanicIsland({ open: true })}
+            title="Volcanic Island Monitor"
+            aria-label="Open volcanic island monitor"
+          >
+            <MountainIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
             className="hidden sm:flex map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={() =>
               window.open('https://github.com/maplibre/maplibre-native', '_blank')
@@ -3483,6 +3579,30 @@ export default function Home() {
 
       {/* Hail Storm Tracker */}
       <HailStormTracker />
+
+      {/* Sahara Reforestation Tracker */}
+      <SaharaReforestationTracker />
+
+      {/* Deep Sea Vent Monitor */}
+      <DeepSeaVentMonitor />
+
+      {/* Storm Surge Predictor */}
+      <StormSurgePredictor />
+
+      {/* Landfill Monitor */}
+      <LandfillMonitor />
+
+      {/* Salinity Gradient Mapper */}
+      <SalinityGradientMapper />
+
+      {/* Microplastics Tracker */}
+      <MicroplasticsTracker />
+
+      {/* Radio Signal Mapper */}
+      <RadioSignalMapper />
+
+      {/* Volcanic Island Monitor */}
+      <VolcanicIslandMonitor />
 
       {/* Footer */}
       <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-2 sm:px-3 md:px-4 safe-area-bottom before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">
