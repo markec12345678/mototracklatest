@@ -57,6 +57,11 @@ import { ImageOverlayManager } from '@/components/map/ImageOverlayManager'
 import { MapTimeline } from '@/components/map/MapTimeline'
 import { MapAnalyticsDashboard } from '@/components/map/MapAnalyticsDashboard'
 import { AirQualityPanel } from '@/components/map/AirQualityPanel'
+import dynamic from 'next/dynamic'
+
+const GPSSimulator = dynamic(() => import('@/components/map/GPSSimulator').then((m) => m.GPSSimulator), { ssr: false })
+const MapNotesLayer = dynamic(() => import('@/components/map/MapNotes').then((m) => m.MapNotesLayer), { ssr: false })
+const BatchOperations = dynamic(() => import('@/components/map/BatchOperations').then((m) => m.BatchOperations), { ssr: false })
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
@@ -509,7 +514,28 @@ export default function Home() {
         }
         case 'Escape':
           useMapStore.getState().setSelectedMarker(null)
+          useMapStore.getState().setBatchSelectMode(false)
           break
+        case 'g':
+        case 'G': {
+          const sim = useMapStore.getState().gpsSimulation
+          if (sim.isPlaying) {
+            useMapStore.getState().setGpsSimulation({ isPlaying: false })
+          } else {
+            useMapStore.getState().setGpsSimulation({ isPlaying: true, progress: 0 })
+          }
+          break
+        }
+        case 'n':
+        case 'N':
+          setToolMode('notes')
+          break
+        case 'x':
+        case 'X': {
+          const batch = useMapStore.getState().batchOperation
+          useMapStore.getState().setBatchSelectMode(!batch.isSelectMode)
+          break
+        }
         case '?':
           if (e.shiftKey) {
             setSidebarOpen(!useMapStore.getState().sidebarOpen)
@@ -1299,6 +1325,15 @@ export default function Home() {
 
       {/* Air Quality Panel */}
       <AirQualityPanel />
+
+      {/* GPS Simulator */}
+      <GPSSimulator />
+
+      {/* Map Notes Layer */}
+      <MapNotesLayer />
+
+      {/* Batch Operations Action Bar */}
+      <BatchOperations />
 
       {/* Footer */}
       <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-2 sm:px-3 md:px-4 safe-area-bottom before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">

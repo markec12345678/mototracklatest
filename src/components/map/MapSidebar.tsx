@@ -48,6 +48,9 @@ import {
   Clock,
   BarChart3,
   Wind,
+  CalendarDays,
+  StickyNote,
+  CheckSquare,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -88,6 +91,7 @@ import { SpatialAnalysisPanel } from '@/components/map/SpatialAnalysisPanel'
 import { RouteOptimizer } from '@/components/map/RouteOptimizer'
 import { LocationHistoryTimeline } from '@/components/map/LocationHistoryTimeline'
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible'
+import { TripPlanner } from '@/components/map/TripPlanner'
 
 // SectionHeader component for collapsible sidebar sections
 function SectionHeader({ title, sectionId, icon, count }: {
@@ -284,6 +288,14 @@ const toolModes: {
     description: 'Add text labels on the map',
     color: 'from-pink-500 to-rose-500',
     shortcut: '8',
+  },
+  {
+    id: 'notes',
+    label: 'Notes',
+    icon: <StickyNote className="h-4 w-4" />,
+    description: 'Add notes with priorities on the map',
+    color: 'from-amber-500 to-yellow-500',
+    shortcut: 'N',
   },
 ]
 
@@ -1428,6 +1440,7 @@ function ToolsTab({
   const drawWidth = useMapStore((s) => s.drawWidth)
   const setDrawColor = useMapStore((s) => s.setDrawColor)
   const setDrawWidth = useMapStore((s) => s.setDrawWidth)
+  const mapNotesCount = useMapStore((s) => s.mapNotes.length)
   const deleteDrawing = useMapStore((s) => s.deleteDrawing)
 
   const drawColorOptions = [
@@ -2942,6 +2955,24 @@ function RoutesTab({ onGPXImportClick }: { onGPXImportClick: () => void }) {
             <SavedTracksSection />
           </CollapsibleContent>
         </Collapsible>
+
+        {/* Trip Planner section - Collapsible */}
+        <Separator className="my-4" />
+        <Collapsible
+          open={!useMapStore.getState().collapsedSections['section-routes-trip-planner']}
+          onOpenChange={() => useMapStore.getState().toggleSection('section-routes-trip-planner')}
+        >
+          <SectionHeader
+            title="Trip Planner"
+            sectionId="section-routes-trip-planner"
+            icon={<CalendarDays className="h-3.5 w-3.5 text-muted-foreground" />}
+            count={useMapStore.getState().tripPlans.length}
+          />
+          <CollapsibleContent>
+            <TripPlanner />
+          </CollapsibleContent>
+        </Collapsible>
+
         </> )} {/* End directions sub-tab */}
       </div>
     </ScrollArea>

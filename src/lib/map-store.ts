@@ -276,7 +276,65 @@ export interface MapSnapshot {
   thumbnail?: string
 }
 
-export type ToolMode = 'navigate' | 'mark' | 'measure' | 'directions' | 'draw' | 'area' | 'annotate'
+export type ToolMode = 'navigate' | 'mark' | 'measure' | 'directions' | 'draw' | 'area' | 'annotate' | 'notes'
+
+// Trip Planner types
+export interface TripStop {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  arrivalTime: string | null // HH:mm format
+  departureTime: string | null // HH:mm format
+  notes: string
+  order: number
+}
+
+export interface TripDay {
+  id: string
+  date: string // YYYY-MM-DD
+  stops: TripStop[]
+}
+
+export interface TripPlan {
+  id: string
+  name: string
+  days: TripDay[]
+  createdAt: string
+}
+
+// GPS Simulation types
+export interface GPSSimulationState {
+  isPlaying: boolean
+  speedMultiplier: number // 1, 2, 5, 10
+  progress: number // 0-1
+  currentPosition: { longitude: number; latitude: number; heading: number } | null
+  distanceRemaining: number
+  eta: number // seconds
+  routeId: string | null
+}
+
+// Map Notes types
+export type NotePriority = 'low' | 'medium' | 'high'
+
+export interface MapNote {
+  id: string
+  title: string
+  content: string
+  latitude: number
+  longitude: number
+  color: string
+  icon: string
+  priority: NotePriority
+  createdAt: string
+  updatedAt: string
+}
+
+// Batch Operations types
+export interface BatchOperationState {
+  isSelectMode: boolean
+  selectedMarkerIds: string[]
+}
 
 export type AppLanguage = 'en' | 'sl' | 'de' | 'hr' | 'it' | 'fr' | 'es'
 
@@ -701,6 +759,40 @@ interface MapState {
 
   // Session start time
   sessionStartTime: number
+
+  // Trip Planner
+  tripPlans: TripPlan[]
+  addTripPlan: (plan: TripPlan) => void
+  deleteTripPlan: (id: string) => void
+  updateTripPlan: (id: string, updates: Partial<Omit<TripPlan, 'id'>>) => void
+  addTripStop: (planId: string, dayId: string, stop: TripStop) => void
+  removeTripStop: (planId: string, dayId: string, stopId: string) => void
+  reorderTripStops: (planId: string, dayId: string, stops: TripStop[]) => void
+  updateTripStop: (planId: string, dayId: string, stopId: string, updates: Partial<Omit<TripStop, 'id'>>) => void
+  addTripDay: (planId: string, day: TripDay) => void
+  removeTripDay: (planId: string, dayId: string) => void
+
+  // GPS Simulation
+  gpsSimulation: GPSSimulationState
+  setGpsSimulation: (state: Partial<GPSSimulationState>) => void
+  resetGpsSimulation: () => void
+
+  // Map Notes
+  mapNotes: MapNote[]
+  addMapNote: (note: MapNote) => void
+  updateMapNote: (id: string, updates: Partial<Omit<MapNote, 'id' | 'createdAt'>>) => void
+  deleteMapNote: (id: string) => void
+  setMapNotes: (notes: MapNote[]) => void
+
+  // Batch Operations
+  batchOperation: BatchOperationState
+  setBatchSelectMode: (enabled: boolean) => void
+  toggleMarkerSelection: (id: string) => void
+  selectAllMarkers: () => void
+  deselectAllMarkers: () => void
+  batchDeleteMarkers: () => void
+  batchChangeCategory: (category: string, color: string) => void
+  batchExportGeoJSON: () => string
 }
 
 export const useMapStore = create<MapState>()(
@@ -858,6 +950,29 @@ export const useMapStore = create<MapState>()(
 
       // Session start time
       sessionStartTime: typeof Date !== 'undefined' ? Date.now() : 0,
+
+      // Trip Planner defaults
+      tripPlans: [],
+
+      // GPS Simulation defaults
+      gpsSimulation: {
+        isPlaying: false,
+        speedMultiplier: 1,
+        progress: 0,
+        currentPosition: null,
+        distanceRemaining: 0,
+        eta: 0,
+        routeId: null,
+      },
+
+      // Map Notes defaults
+      mapNotes: [],
+
+      // Batch Operations defaults
+      batchOperation: {
+        isSelectMode: false,
+        selectedMarkerIds: [],
+      },
 
       setCenter: (center) => set({ center }),
       setZoom: (zoom) => set({ zoom }),
@@ -1807,6 +1922,188 @@ export const useMapStore = create<MapState>()(
       deleteSnapshot: (id) => set((state) => ({
         snapshots: state.snapshots.filter((s) => s.id !== id),
       })),
+
+      // Trip Planner actions
+      addTripPlan: (plan) => set((state) => ({
+        tripPlans: [...state.tripPlans, plan],
+      })),
+
+      deleteTripPlan: (id) => set((state) => ({
+        tripPlans: state.tripPlans.filter((p) => p.id !== id),
+      })),
+
+      updateTripPlan: (id, updates) => set((state) => ({
+        tripPlans: state.tripPlans.map((p) => p.id === id ? { ...p, ...updates } : p),
+      })),
+
+      addTripStop: (planId, dayId, stop) => set((state) => ({
+        tripPlans: state.tripPlans.map((p) =>
+          p.id === planId
+            ? {
+                ...p,
+                days: p.days.map((d) =>
+                  d.id === dayId
+                    ? { ...d, stops: [...d.stops, stop] }
+                    : d
+                ),
+              }
+            : p
+        ),
+      })),
+
+      removeTripStop: (planId, dayId, stopId) => set((state) => ({
+        tripPlans: state.tripPlans.map((p) =>
+          p.id === planId
+            ? {
+                ...p,
+                days: p.days.map((d) =>
+                  d.id === dayId
+                    ? { ...d, stops: d.stops.filter((s) => s.id !== stopId) }
+                    : d
+                ),
+              }
+            : p
+        ),
+      })),
+
+      reorderTripStops: (planId, dayId, stops) => set((state) => ({
+        tripPlans: state.tripPlans.map((p) =>
+          p.id === planId
+            ? {
+                ...p,
+                days: p.days.map((d) =>
+                  d.id === dayId ? { ...d, stops } : d
+                ),
+              }
+            : p
+        ),
+      })),
+
+      updateTripStop: (planId, dayId, stopId, updates) => set((state) => ({
+        tripPlans: state.tripPlans.map((p) =>
+          p.id === planId
+            ? {
+                ...p,
+                days: p.days.map((d) =>
+                  d.id === dayId
+                    ? { ...d, stops: d.stops.map((s) => s.id === stopId ? { ...s, ...updates } : s) }
+                    : d
+                ),
+              }
+            : p
+        ),
+      })),
+
+      addTripDay: (planId, day) => set((state) => ({
+        tripPlans: state.tripPlans.map((p) =>
+          p.id === planId ? { ...p, days: [...p.days, day] } : p
+        ),
+      })),
+
+      removeTripDay: (planId, dayId) => set((state) => ({
+        tripPlans: state.tripPlans.map((p) =>
+          p.id === planId
+            ? { ...p, days: p.days.filter((d) => d.id !== dayId) }
+            : p
+        ),
+      })),
+
+      // GPS Simulation actions
+      setGpsSimulation: (updates) => set((state) => ({
+        gpsSimulation: { ...state.gpsSimulation, ...updates },
+      })),
+
+      resetGpsSimulation: () => set({
+        gpsSimulation: {
+          isPlaying: false,
+          speedMultiplier: 1,
+          progress: 0,
+          currentPosition: null,
+          distanceRemaining: 0,
+          eta: 0,
+          routeId: null,
+        },
+      }),
+
+      // Map Notes actions
+      addMapNote: (note) => set((state) => ({
+        mapNotes: [...state.mapNotes, note],
+      })),
+
+      updateMapNote: (id, updates) => set((state) => ({
+        mapNotes: state.mapNotes.map((n) =>
+          n.id === id ? { ...n, ...updates, updatedAt: new Date().toISOString() } : n
+        ),
+      })),
+
+      deleteMapNote: (id) => set((state) => ({
+        mapNotes: state.mapNotes.filter((n) => n.id !== id),
+      })),
+
+      setMapNotes: (notes) => set({ mapNotes: notes }),
+
+      // Batch Operations actions
+      setBatchSelectMode: (enabled) => set((state) => ({
+        batchOperation: {
+          ...state.batchOperation,
+          isSelectMode: enabled,
+          selectedMarkerIds: enabled ? state.batchOperation.selectedMarkerIds : [],
+        },
+      })),
+
+      toggleMarkerSelection: (id) => set((state) => {
+        const ids = state.batchOperation.selectedMarkerIds
+        const newIds = ids.includes(id) ? ids.filter((i) => i !== id) : [...ids, id]
+        return { batchOperation: { ...state.batchOperation, selectedMarkerIds: newIds } }
+      }),
+
+      selectAllMarkers: () => set((state) => ({
+        batchOperation: {
+          ...state.batchOperation,
+          selectedMarkerIds: state.markers.map((m) => m.id),
+        },
+      })),
+
+      deselectAllMarkers: () => set((state) => ({
+        batchOperation: { ...state.batchOperation, selectedMarkerIds: [] },
+      })),
+
+      batchDeleteMarkers: () => set((state) => ({
+        markers: state.markers.filter((m) => !state.batchOperation.selectedMarkerIds.includes(m.id)),
+        batchOperation: { ...state.batchOperation, selectedMarkerIds: [], isSelectMode: false },
+      })),
+
+      batchChangeCategory: (category, color) => set((state) => ({
+        markers: state.markers.map((m) =>
+          state.batchOperation.selectedMarkerIds.includes(m.id)
+            ? { ...m, category, color }
+            : m
+        ),
+      })),
+
+      batchExportGeoJSON: () => {
+        const state = useMapStore.getState()
+        const selected = state.markers.filter((m) =>
+          state.batchOperation.selectedMarkerIds.includes(m.id)
+        )
+        const geojson = {
+          type: 'FeatureCollection' as const,
+          features: selected.map((m) => ({
+            type: 'Feature' as const,
+            geometry: {
+              type: 'Point' as const,
+              coordinates: [m.longitude, m.latitude] as [number, number],
+            },
+            properties: {
+              name: m.name,
+              category: m.category,
+              color: m.color,
+              description: m.description || '',
+            },
+          })),
+        }
+        return JSON.stringify(geojson, null, 2)
+      },
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -1867,6 +2164,9 @@ export const useMapStore = create<MapState>()(
         originalRoutePoints: state.originalRoutePoints,
         toolUsageHistory: state.toolUsageHistory,
         sessionStartTime: state.sessionStartTime,
+        tripPlans: state.tripPlans,
+        gpsSimulation: state.gpsSimulation,
+        mapNotes: state.mapNotes,
       }),
     }
   )

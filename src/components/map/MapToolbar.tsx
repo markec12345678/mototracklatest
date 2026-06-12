@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { MapPin, Navigation, Ruler, Crosshair, Pencil, Maximize2, Type, Building2, Sparkles, Volume2, Users, Eye, Clock } from 'lucide-react'
+import { MapPin, Navigation, Ruler, Crosshair, Pencil, Maximize2, Type, Building2, Sparkles, Volume2, Users, Eye, Clock, Route, StickyNote, CheckSquare } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Separator } from '@/components/ui/separator'
@@ -353,6 +353,57 @@ export function MapToolbar({ aiSuggestionsOpen, setAiSuggestionsOpen }: { aiSugg
             isActive={useMapStore((s) => s.timelineOpen)}
             onClick={() => useMapStore.getState().setTimelineOpen(!useMapStore.getState().timelineOpen)}
             index={globalIndex + 5}
+          />
+        </div>
+
+        {/* GPS Sim, Notes, Batch */}
+        <Separator className="my-1 opacity-50" />
+        <div className="flex flex-col gap-1">
+          <ToolButton
+            tool={{
+              id: 'navigate' as any,
+              icon: <Route className="h-4 w-4" />,
+              label: 'GPS Sim',
+              activeClass: 'bg-cyan-600 text-white shadow-md shadow-cyan-600/30',
+              shortcut: 'G',
+              description: 'Simulate GPS movement along a route',
+            }}
+            isActive={useMapStore((s) => s.gpsSimulation.isPlaying)}
+            onClick={() => {
+              const sim = useMapStore.getState().gpsSimulation
+              if (sim.isPlaying) {
+                useMapStore.getState().setGpsSimulation({ isPlaying: false })
+              } else {
+                useMapStore.getState().setGpsSimulation({ isPlaying: true, progress: 0 })
+              }
+            }}
+            index={globalIndex + 6}
+          />
+          <ToolButton
+            tool={{
+              id: 'navigate' as any,
+              icon: <StickyNote className="h-4 w-4" />,
+              label: 'Notes',
+              activeClass: 'bg-amber-500 text-white shadow-md shadow-amber-500/30',
+              shortcut: 'N',
+              description: 'Add notes to map locations',
+            }}
+            isActive={toolMode === 'notes'}
+            onClick={() => setToolMode('notes')}
+            index={globalIndex + 7}
+          />
+          <ToolButton
+            tool={{
+              id: 'navigate' as any,
+              icon: <CheckSquare className="h-4 w-4" />,
+              label: 'Batch Select',
+              activeClass: 'bg-indigo-500 text-white shadow-md shadow-indigo-500/30',
+              shortcut: 'X',
+              description: 'Multi-select markers for batch operations',
+            }}
+            isActive={useMapStore((s) => s.batchOperation.isSelectMode)}
+            onClick={() => useMapStore.getState().setBatchSelectMode(!useMapStore.getState().batchOperation.isSelectMode)}
+            index={globalIndex + 8}
           />
         </div>
       </div>
