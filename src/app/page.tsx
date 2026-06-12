@@ -176,6 +176,14 @@ import { SpaceDebrisTracker } from '@/components/map/SpaceDebrisTracker'
 import { TectonicStrainMonitor } from '@/components/map/TectonicStrainMonitor'
 import { PhytoBloomMonitor } from '@/components/map/PhytoBloomMonitor'
 import { SnowCoverMonitor } from '@/components/map/SnowCoverMonitor'
+import { GeomagneticStormTracker } from '@/components/map/GeomagneticStormTracker'
+import { VolcanicGasMonitor } from '@/components/map/VolcanicGasMonitor'
+import { AquiferDepletionMonitor } from '@/components/map/AquiferDepletionMonitor'
+import { StratosphericWindMonitor } from '@/components/map/StratosphericWindMonitor'
+import { MarineHeatwaveTracker } from '@/components/map/MarineHeatwaveTracker'
+import { PrecipitationAnalyzer } from '@/components/map/PrecipitationAnalyzer'
+import { CosmicRayMonitor } from '@/components/map/CosmicRayMonitor'
+import { GreenlandIceTracker } from '@/components/map/GreenlandIceTracker'
 import dynamic from 'next/dynamic'
 
 const GPSSimulator = dynamic(() => import('@/components/map/GPSSimulator').then((m) => m.GPSSimulator), { ssr: false })
@@ -307,6 +315,7 @@ import {
   Ship as ShipIcon,
   Moon as MoonIcon,
   Sparkles as SparklesIcon,
+  Globe2 as Globe2Icon2,
 } from 'lucide-react'
 
 export default function Home() {
@@ -2151,6 +2160,86 @@ export default function Home() {
           <Button
             variant="outline"
             size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setGeomagneticStorm({ open: true })}
+            title="Geomagnetic Storm Tracker"
+            aria-label="Open geomagnetic storm tracker"
+          >
+            <Zap className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setVolcanicGas({ open: true })}
+            title="Volcanic Gas Monitor"
+            aria-label="Open volcanic gas monitor"
+          >
+            <CloudIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setAquiferDepletion({ open: true })}
+            title="Aquifer Depletion Monitor"
+            aria-label="Open aquifer depletion monitor"
+          >
+            <DropletsIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setStratosphericWind({ open: true })}
+            title="Stratospheric Wind Monitor"
+            aria-label="Open stratospheric wind monitor"
+          >
+            <WindIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setMarineHeatwave({ open: true })}
+            title="Marine Heatwave Tracker"
+            aria-label="Open marine heatwave tracker"
+          >
+            <WavesIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setPrecipitation({ open: true })}
+            title="Precipitation Analyzer"
+            aria-label="Open precipitation analyzer"
+          >
+            <CloudRain className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setCosmicRay({ open: true })}
+            title="Cosmic Ray Monitor"
+            aria-label="Open cosmic ray monitor"
+          >
+            <Activity className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setGreenlandIce({ open: true })}
+            title="Greenland Ice Tracker"
+            aria-label="Open greenland ice tracker"
+          >
+            <Globe2Icon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
             className="hidden sm:flex map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={() =>
               window.open('https://github.com/maplibre/maplibre-native', '_blank')
@@ -3138,6 +3227,30 @@ export default function Home() {
 
       {/* Snow Cover Monitor */}
       <SnowCoverMonitor />
+
+      {/* Geomagnetic Storm Tracker */}
+      <GeomagneticStormTracker />
+
+      {/* Volcanic Gas Monitor */}
+      <VolcanicGasMonitor />
+
+      {/* Aquifer Depletion Monitor */}
+      <AquiferDepletionMonitor />
+
+      {/* Stratospheric Wind Monitor */}
+      <StratosphericWindMonitor />
+
+      {/* Marine Heatwave Tracker */}
+      <MarineHeatwaveTracker />
+
+      {/* Precipitation Analyzer */}
+      <PrecipitationAnalyzer />
+
+      {/* Cosmic Ray Monitor */}
+      <CosmicRayMonitor />
+
+      {/* Greenland Ice Tracker */}
+      <GreenlandIceTracker />
 
       {/* Footer */}
       <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-2 sm:px-3 md:px-4 safe-area-bottom before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">

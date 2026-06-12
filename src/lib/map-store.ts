@@ -2721,6 +2721,207 @@ export interface SnowCoverState {
   depthFilter: 'all' | 'shallow' | 'moderate' | 'deep' | 'very_deep'
 }
 
+// Task 52: Geomagnetic Storm Tracker
+export interface GeomagneticStorm {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  kpIndex: number
+  gScale: 'G1' | 'G2' | 'G3' | 'G4' | 'G5'
+  powerGridImpact: 'none' | 'minor' | 'moderate' | 'severe' | 'extreme'
+  auroraVisibility: number
+  startTime: string
+  duration: number
+}
+
+export interface GeomagneticStormState {
+  storms: GeomagneticStorm[]
+  activeStormId: string | null
+  showKpIndex: boolean
+  showGScale: boolean
+  showGridImpact: boolean
+  showAurora: boolean
+  open: boolean
+  gScaleFilter: 'all' | 'G1' | 'G2' | 'G3' | 'G4' | 'G5'
+}
+
+// Task 52: Volcanic Gas Monitor
+export interface VolcanicGasSite {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  volcano: string
+  so2Emission: number
+  co2Emission: number
+  h2sEmission: number
+  hazardLevel: 'normal' | 'elevated' | 'high' | 'critical'
+  windDirection: number
+  affectedPopulation: number
+}
+
+export interface VolcanicGasState {
+  gasSites: VolcanicGasSite[]
+  activeSiteId: string | null
+  showSO2: boolean
+  showCO2: boolean
+  showHazard: boolean
+  showPopulation: boolean
+  open: boolean
+  hazardFilter: 'all' | 'normal' | 'elevated' | 'high' | 'critical'
+}
+
+// Task 52: Aquifer Depletion Monitor
+export interface AquiferSite {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  waterLevel: number
+  depletionRate: number
+  rechargeRate: number
+  storageVolume: number
+  wellDepth: number
+  status: 'stable' | 'declining' | 'critical' | 'recovering'
+}
+
+export interface AquiferDepletionState {
+  aquiferSites: AquiferSite[]
+  activeAquiferId: string | null
+  showWaterLevel: boolean
+  showDepletion: boolean
+  showRecharge: boolean
+  showStatus: boolean
+  open: boolean
+  statusFilter: 'all' | 'stable' | 'declining' | 'critical' | 'recovering'
+}
+
+// Task 52: Stratospheric Wind Monitor
+export interface StratosphericWindZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  windSpeed: number
+  windDirection: number
+  altitude: number
+  qboPhase: 'easterly' | 'westerly' | 'transition'
+  polarVortexStatus: 'strong' | 'normal' | 'weak' | 'disrupted'
+  temperature: number
+}
+
+export interface StratosphericWindState {
+  windZones: StratosphericWindZone[]
+  activeZoneId: string | null
+  showWindSpeed: boolean
+  showQBO: boolean
+  showPolarVortex: boolean
+  showTemperature: boolean
+  open: boolean
+  vortexFilter: 'all' | 'strong' | 'normal' | 'weak' | 'disrupted'
+}
+
+// Task 52: Marine Heatwave Tracker
+export interface MarineHeatwaveZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  sstAnomaly: number
+  intensity: 'moderate' | 'strong' | 'severe' | 'extreme'
+  duration: number
+  area: number
+  ecosystemImpact: 'low' | 'moderate' | 'high' | 'severe'
+  coralBleachingRisk: boolean
+}
+
+export interface MarineHeatwaveState {
+  heatwaveZones: MarineHeatwaveZone[]
+  activeZoneId: string | null
+  showSSTAnomaly: boolean
+  showIntensity: boolean
+  showEcosystem: boolean
+  showBleaching: boolean
+  open: boolean
+  intensityFilter: 'all' | 'moderate' | 'strong' | 'severe' | 'extreme'
+}
+
+// Task 52: Precipitation Analyzer
+export interface PrecipZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  annualPrecip: number
+  monthlyAverage: number
+  extremeEvents: number
+  droughtIndex: number
+  floodRisk: 'low' | 'moderate' | 'high' | 'very_high'
+  trend: 'increasing' | 'stable' | 'decreasing'
+}
+
+export interface PrecipitationState {
+  precipZones: PrecipZone[]
+  activeZoneId: string | null
+  showAnnual: boolean
+  showExtremes: boolean
+  showDrought: boolean
+  showFloodRisk: boolean
+  open: boolean
+  floodFilter: 'all' | 'low' | 'moderate' | 'high' | 'very_high'
+}
+
+// Task 52: Cosmic Ray Monitor
+export interface CosmicRayStation {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  neutronCount: number
+  fluxVariation: number
+  solarModulation: number
+  cutoffRigidity: number
+  altitude: number
+  status: 'normal' | 'forbush_decrease' | 'ground_level_enhancement'
+}
+
+export interface CosmicRayState {
+  stations: CosmicRayStation[]
+  activeStationId: string | null
+  showNeutronCount: boolean
+  showFluxVariation: boolean
+  showSolarModulation: boolean
+  showStatus: boolean
+  open: boolean
+  statusFilter: 'all' | 'normal' | 'forbush_decrease' | 'ground_level_enhancement'
+}
+
+// Task 52: Greenland Ice Tracker
+export interface GreenlandIceZone {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  iceThickness: number
+  massBalance: number
+  meltRate: number
+  surfaceVelocity: number
+  elevationChange: number
+  zone: 'accumulation' | 'percolation' | 'wet_snow' | 'bare_ice' | 'outlet_glacier'
+}
+
+export interface GreenlandIceState {
+  iceZones: GreenlandIceZone[]
+  activeZoneId: string | null
+  showThickness: boolean
+  showMassBalance: boolean
+  showMeltRate: boolean
+  showVelocity: boolean
+  open: boolean
+  zoneFilter: 'all' | 'accumulation' | 'percolation' | 'wet_snow' | 'bare_ice' | 'outlet_glacier'
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -3722,6 +3923,38 @@ interface MapState {
   // Snow Cover Monitor
   snowCover: SnowCoverState
   setSnowCover: (state: Partial<SnowCoverState>) => void
+
+  // Geomagnetic Storm Tracker
+  geomagneticStorm: GeomagneticStormState
+  setGeomagneticStorm: (state: Partial<GeomagneticStormState>) => void
+
+  // Volcanic Gas Monitor
+  volcanicGas: VolcanicGasState
+  setVolcanicGas: (state: Partial<VolcanicGasState>) => void
+
+  // Aquifer Depletion Monitor
+  aquiferDepletion: AquiferDepletionState
+  setAquiferDepletion: (state: Partial<AquiferDepletionState>) => void
+
+  // Stratospheric Wind Monitor
+  stratosphericWind: StratosphericWindState
+  setStratosphericWind: (state: Partial<StratosphericWindState>) => void
+
+  // Marine Heatwave Tracker
+  marineHeatwave: MarineHeatwaveState
+  setMarineHeatwave: (state: Partial<MarineHeatwaveState>) => void
+
+  // Precipitation Analyzer
+  precipitation: PrecipitationState
+  setPrecipitation: (state: Partial<PrecipitationState>) => void
+
+  // Cosmic Ray Monitor
+  cosmicRay: CosmicRayState
+  setCosmicRay: (state: Partial<CosmicRayState>) => void
+
+  // Greenland Ice Tracker
+  greenlandIce: GreenlandIceState
+  setGreenlandIce: (state: Partial<GreenlandIceState>) => void
 }
 
 // Coordinate Share Card types
@@ -7179,6 +7412,118 @@ export const useMapStore = create<MapState>()(
       setSnowCover: (updates) => set((state) => ({
         snowCover: { ...state.snowCover, ...updates },
       })),
+
+      geomagneticStorm: {
+        storms: [],
+        activeStormId: null,
+        showKpIndex: true,
+        showGScale: false,
+        showGridImpact: false,
+        showAurora: false,
+        open: false,
+        gScaleFilter: 'all',
+      },
+      setGeomagneticStorm: (updates) => set((state) => ({
+        geomagneticStorm: { ...state.geomagneticStorm, ...updates },
+      })),
+
+      volcanicGas: {
+        gasSites: [],
+        activeSiteId: null,
+        showSO2: true,
+        showCO2: false,
+        showHazard: false,
+        showPopulation: false,
+        open: false,
+        hazardFilter: 'all',
+      },
+      setVolcanicGas: (updates) => set((state) => ({
+        volcanicGas: { ...state.volcanicGas, ...updates },
+      })),
+
+      aquiferDepletion: {
+        aquiferSites: [],
+        activeAquiferId: null,
+        showWaterLevel: true,
+        showDepletion: false,
+        showRecharge: false,
+        showStatus: false,
+        open: false,
+        statusFilter: 'all',
+      },
+      setAquiferDepletion: (updates) => set((state) => ({
+        aquiferDepletion: { ...state.aquiferDepletion, ...updates },
+      })),
+
+      stratosphericWind: {
+        windZones: [],
+        activeZoneId: null,
+        showWindSpeed: true,
+        showQBO: false,
+        showPolarVortex: false,
+        showTemperature: false,
+        open: false,
+        vortexFilter: 'all',
+      },
+      setStratosphericWind: (updates) => set((state) => ({
+        stratosphericWind: { ...state.stratosphericWind, ...updates },
+      })),
+
+      marineHeatwave: {
+        heatwaveZones: [],
+        activeZoneId: null,
+        showSSTAnomaly: true,
+        showIntensity: false,
+        showEcosystem: false,
+        showBleaching: false,
+        open: false,
+        intensityFilter: 'all',
+      },
+      setMarineHeatwave: (updates) => set((state) => ({
+        marineHeatwave: { ...state.marineHeatwave, ...updates },
+      })),
+
+      precipitation: {
+        precipZones: [],
+        activeZoneId: null,
+        showAnnual: true,
+        showExtremes: false,
+        showDrought: false,
+        showFloodRisk: false,
+        open: false,
+        floodFilter: 'all',
+      },
+      setPrecipitation: (updates) => set((state) => ({
+        precipitation: { ...state.precipitation, ...updates },
+      })),
+
+      cosmicRay: {
+        stations: [],
+        activeStationId: null,
+        showNeutronCount: true,
+        showFluxVariation: false,
+        showSolarModulation: false,
+        showStatus: false,
+        open: false,
+        statusFilter: 'all',
+      },
+      setCosmicRay: (updates) => set((state) => ({
+        cosmicRay: { ...state.cosmicRay, ...updates },
+      })),
+
+      greenlandIce: {
+        iceZones: [],
+        activeZoneId: null,
+        showThickness: true,
+        showMassBalance: false,
+        showMeltRate: false,
+        showVelocity: false,
+        open: false,
+        zoneFilter: 'all',
+      },
+      setGreenlandIce: (updates) => set((state) => ({
+        greenlandIce: { ...state.greenlandIce, ...updates },
+      })),
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -7358,6 +7703,14 @@ export const useMapStore = create<MapState>()(
         tectonicStrain: state.tectonicStrain,
         phytoBloom: state.phytoBloom,
         snowCover: state.snowCover,
+        geomagneticStorm: state.geomagneticStorm,
+        volcanicGas: state.volcanicGas,
+        aquiferDepletion: state.aquiferDepletion,
+        stratosphericWind: state.stratosphericWind,
+        marineHeatwave: state.marineHeatwave,
+        precipitation: state.precipitation,
+        cosmicRay: state.cosmicRay,
+        greenlandIce: state.greenlandIce,
       }),
     }
   )
