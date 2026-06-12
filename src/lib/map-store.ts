@@ -436,6 +436,34 @@ export interface TerrainProfile3DState {
   zoom: number
 }
 
+// Pedometer types
+export interface PedometerState {
+  isTracking: boolean
+  steps: number
+  distance: number // meters
+  startTime: number | null
+  lastPosition: [number, number] | null
+  dailyGoal: number // steps
+  distanceGoal: number // meters
+  history: { date: string; steps: number; distance: number }[]
+}
+
+// Usage Stats types
+export interface UsageStats {
+  sessionCount: number
+  totalSessionTime: number // ms
+  totalSearches: number
+  totalLocationsAdded: number
+  totalRoutesCreated: number
+  totalMeasurements: number
+  totalScreenshots: number
+  totalStyleSwitches: number
+  searchTerms: Record<string, number>
+  dailyUsage: Record<string, number> // date -> minutes
+  toolUsage: Record<string, number>
+  achievementsUnlocked: string[]
+}
+
 // Data Import/Export types
 export interface ImportExportState {
   lastImportAt: string | null
@@ -1071,6 +1099,33 @@ interface MapState {
   setTrailFinderOpen: (open: boolean) => void
   selectedTrailId: string | null
   setSelectedTrailId: (id: string | null) => void
+
+  // Screenshot Manager
+  savedScreenshots: ScreenshotEntry[]
+  addScreenshot: (screenshot: ScreenshotEntry) => void
+  removeScreenshot: (id: string) => void
+  clearScreenshots: () => void
+  screenshotManagerOpen: boolean
+  setScreenshotManagerOpen: (open: boolean) => void
+
+  // Route Difficulty Analyzer
+  difficultyAnalysis: DifficultyAnalysis | null
+  setDifficultyAnalysis: (analysis: DifficultyAnalysis | null) => void
+  difficultyAnalyzerOpen: boolean
+  setDifficultyAnalyzerOpen: (open: boolean) => void
+
+  // Pedometer
+  pedometer: PedometerState
+  setPedometer: (state: Partial<PedometerState>) => void
+  pedometerVisible: boolean
+  setPedometerVisible: (visible: boolean) => void
+
+  // Usage Stats
+  usageStats: UsageStats
+  setUsageStats: (stats: Partial<UsageStats>) => void
+  incrementStat: (key: keyof Pick<UsageStats, 'totalSearches' | 'totalLocationsAdded' | 'totalRoutesCreated' | 'totalMeasurements' | 'totalScreenshots' | 'totalStyleSwitches'>) => void
+  usageStatsOpen: boolean
+  setUsageStatsOpen: (open: boolean) => void
 }
 
 // Geofence Alert History types
@@ -1204,6 +1259,42 @@ export interface TrailInfo {
   elevationGain: number // meters
   surface: string
   coordinates: [number, number][]
+}
+
+// Screenshot Manager types
+export interface ScreenshotEntry {
+  id: string
+  title: string
+  description: string
+  dataUrl: string
+  format: 'png' | 'jpeg'
+  quality: number
+  timestamp: number
+  center: [number, number]
+  zoom: number
+  style: string
+}
+
+// Route Difficulty Analyzer types
+export interface RouteSegment {
+  startIndex: number
+  endIndex: number
+  distance: number
+  elevationChange: number
+  grade: number
+  difficulty: string
+}
+
+export interface DifficultyAnalysis {
+  routeId: string
+  difficulty: 'easy' | 'moderate' | 'hard' | 'very-hard' | 'expert'
+  score: number // 1-100
+  totalGain: number
+  totalLoss: number
+  maxGrade: number
+  avgGrade: number
+  estimatedTime: number // minutes
+  segments: RouteSegment[]
 }
 
 // Coordinate Grid Overlay types
@@ -2892,6 +2983,67 @@ export const useMapStore = create<MapState>()(
       setTrailFinderOpen: (open) => set({ trailFinderOpen: open }),
       selectedTrailId: null,
       setSelectedTrailId: (id) => set({ selectedTrailId: id }),
+
+      // Screenshot Manager
+      savedScreenshots: [],
+      addScreenshot: (screenshot) => set((state) => {
+        const updated = [screenshot, ...state.savedScreenshots]
+        // Limit to last 10 to prevent localStorage overflow
+        return { savedScreenshots: updated.slice(0, 10) }
+      }),
+      removeScreenshot: (id) => set((state) => ({
+        savedScreenshots: state.savedScreenshots.filter((s) => s.id !== id),
+      })),
+      clearScreenshots: () => set({ savedScreenshots: [] }),
+      screenshotManagerOpen: false,
+      setScreenshotManagerOpen: (open) => set({ screenshotManagerOpen: open }),
+
+      // Route Difficulty Analyzer
+      difficultyAnalysis: null,
+      setDifficultyAnalysis: (analysis) => set({ difficultyAnalysis: analysis }),
+      difficultyAnalyzerOpen: false,
+      setDifficultyAnalyzerOpen: (open) => set({ difficultyAnalyzerOpen: open }),
+
+      // Pedometer defaults
+      pedometer: {
+        isTracking: false,
+        steps: 0,
+        distance: 0,
+        startTime: null,
+        lastPosition: null,
+        dailyGoal: 10000,
+        distanceGoal: 8000,
+        history: [],
+      },
+      setPedometer: (updates) => set((state) => ({
+        pedometer: { ...state.pedometer, ...updates },
+      })),
+      pedometerVisible: false,
+      setPedometerVisible: (visible) => set({ pedometerVisible: visible }),
+
+      // Usage Stats defaults
+      usageStats: {
+        sessionCount: 1,
+        totalSessionTime: 0,
+        totalSearches: 0,
+        totalLocationsAdded: 0,
+        totalRoutesCreated: 0,
+        totalMeasurements: 0,
+        totalScreenshots: 0,
+        totalStyleSwitches: 0,
+        searchTerms: {},
+        dailyUsage: {},
+        toolUsage: {},
+        achievementsUnlocked: [],
+      },
+      setUsageStats: (updates) => set((state) => ({
+        usageStats: { ...state.usageStats, ...updates },
+      })),
+      incrementStat: (key) => set((state) => ({
+        usageStats: { ...state.usageStats, [key]: state.usageStats[key] + 1 },
+      })),
+      usageStatsOpen: false,
+      setUsageStatsOpen: (open) => set({ usageStatsOpen: open }),
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -2975,6 +3127,9 @@ export const useMapStore = create<MapState>()(
         timelineEvents: state.timelineEvents,
         weatherCompareLocations: state.weatherCompareLocations,
         measurementSuite: state.measurementSuite,
+        savedScreenshots: state.savedScreenshots,
+        pedometer: state.pedometer,
+        usageStats: state.usageStats,
       }),
     }
   )

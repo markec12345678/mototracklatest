@@ -80,6 +80,10 @@ import { LocationVisitTimeline } from '@/components/map/LocationVisitTimeline'
 import { WeatherComparison } from '@/components/map/WeatherComparison'
 import { MeasurementSuite } from '@/components/map/MeasurementSuite'
 import { TrailFinder } from '@/components/map/TrailFinder'
+import { PedometerWidget } from '@/components/map/PedometerWidget'
+import { MapUsageStats } from '@/components/map/MapUsageStats'
+import { ScreenshotManager } from '@/components/map/ScreenshotManager'
+import { RouteDifficultyAnalyzer } from '@/components/map/RouteDifficultyAnalyzer'
 import dynamic from 'next/dynamic'
 
 const GPSSimulator = dynamic(() => import('@/components/map/GPSSimulator').then((m) => m.GPSSimulator), { ssr: false })
@@ -138,6 +142,10 @@ import {
   Thermometer,
   Triangle,
   TreePine,
+  Activity,
+  PieChart,
+  Image as ImageIcon,
+  TrendingUp,
 } from 'lucide-react'
 
 export default function Home() {
@@ -1092,6 +1100,26 @@ export default function Home() {
           <Button
             variant="outline"
             size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setScreenshotManagerOpen(true)}
+            title="Screenshot Manager"
+            aria-label="Open screenshot manager"
+          >
+            <ImageIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setDifficultyAnalyzerOpen(true)}
+            title="Route Difficulty Analyzer"
+            aria-label="Open route difficulty analyzer"
+          >
+            <TrendingUp className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
             className="hidden sm:flex map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={() =>
               window.open('https://github.com/maplibre/maplibre-native', '_blank')
@@ -1195,6 +1223,52 @@ export default function Home() {
               </TooltipTrigger>
               <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
                 Trail Finder
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    useMapStore((s) => s.pedometerVisible)
+                      ? 'bg-emerald-500 text-white shadow-md shadow-emerald-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setPedometerVisible(!useMapStore.getState().pedometerVisible)}
+                  aria-label="Pedometer"
+                >
+                  <Activity className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Pedometer
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    useMapStore((s) => s.usageStatsOpen)
+                      ? 'bg-teal-500 text-white shadow-md shadow-teal-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setUsageStatsOpen(true)}
+                  aria-label="Usage Statistics"
+                >
+                  <PieChart className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Usage Statistics
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -1699,6 +1773,18 @@ export default function Home() {
 
       {/* Track Statistics Panel */}
       <TrackStatsPanel />
+
+      {/* Pedometer Widget */}
+      <PedometerWidget />
+
+      {/* Map Usage Stats Dialog */}
+      <MapUsageStats />
+
+      {/* Screenshot Manager */}
+      <ScreenshotManager />
+
+      {/* Route Difficulty Analyzer */}
+      <RouteDifficultyAnalyzer />
 
       {/* Footer */}
       <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-2 sm:px-3 md:px-4 safe-area-bottom before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">
