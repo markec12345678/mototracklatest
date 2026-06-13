@@ -2,10 +2,6 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { MapView } from '@/components/map/MapView'
-import { SearchBar } from '@/components/map/SearchBar'
-import { CoordinatesDisplay } from '@/components/map/CoordinatesDisplay'
-import { TrackRecorder, TrackRecordButton } from '@/components/map/TrackRecorder'
 
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -160,15 +156,8 @@ import {
   Clock,
 } from 'lucide-react'
 
-// ALL panel groups loaded dynamically with ssr:false
-// Heavy groups only load when user interacts (heavyPanelsReady)
-import dynamic from 'next/dynamic'
-const MobileBottomPanels = dynamic(() => import('@/components/map/panel-groups/MobileBottomPanels').then(m => ({ default: m.MobileBottomPanels })), { ssr: false, loading: () => null })
-const TopBarPanels = dynamic(() => import('@/components/map/panel-groups/TopBarPanels').then(m => ({ default: m.TopBarPanels })), { ssr: false, loading: () => null })
-const ToolbarPanels = dynamic(() => import('@/components/map/panel-groups/ToolbarPanels').then(m => ({ default: m.ToolbarPanels })), { ssr: false, loading: () => null })
-const DialogPanels = dynamic(() => import('@/components/map/panel-groups/DialogPanels').then(m => ({ default: m.DialogPanels })), { ssr: false, loading: () => null })
-const MapOverlayPanels = dynamic(() => import('@/components/map/panel-groups/MapOverlayPanels').then(m => ({ default: m.MapOverlayPanels })), { ssr: false, loading: () => null })
-const MonitorPanelRegistry = dynamic(() => import('@/components/map/panel-groups/MonitorPanelRegistry').then(m => ({ default: m.MonitorPanelRegistry })), { ssr: false, loading: () => null })
+// Lazy loading for heavy components and panel groups to prevent OOM
+import { LazyPanel } from '@/components/LazyPanel'
 
 
 export default function Home() {
@@ -203,14 +192,26 @@ export default function Home() {
   const [showWelcome, setShowWelcome] = useState(true)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [mapInitialized, setMapInitialized] = useState(false)
-  const [heavyPanelsReady, setHeavyPanelsReady] = useState(false)
+  const [loadedPanels, setLoadedPanels] = useState<Set<string>>(new Set())
   const compassAnimatingRef = useRef(false)
   const savedLocations = useMapStore((s) => s.savedLocations)
 
-  // Delay heavy panel loading to give webpack time to compile the main chunk first
+  // Sequential panel loading - loads panel groups one at a time with delays
+  // to prevent OOM by avoiding all chunks being compiled simultaneously
   useEffect(() => {
-    const timer = setTimeout(() => setHeavyPanelsReady(true), 3000)
-    return () => clearTimeout(timer)
+    const panelOrder = ['core', 'topbar', 'toolbar', 'mobile', 'overlay', 'dialog']
+    let cancelled = false
+
+    async function loadPanelsSequentially() {
+      for (const panel of panelOrder) {
+        if (cancelled) break
+        await new Promise(resolve => setTimeout(resolve, 2000))
+        setLoadedPanels(prev => new Set([...prev, panel]))
+      }
+    }
+
+    loadPanelsSequentially()
+    return () => { cancelled = true }
   }, [])
 
   // Restore map state from URL params on page load
@@ -722,11 +723,19 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* Map */}
-      <MapView />
+      {/* Map - loaded lazily to reduce initial compilation memory */}
+      <LazyPanel
+        importFn={() => import('@/components/map/MapView')}
+        exportName="MapView"
+        shouldLoad={true}
+      />
 
-      {/* Map overlay panels (layers, indicators, overlays) - loaded after 3s delay */}
-      {heavyPanelsReady && <MapOverlayPanels />}
+      {/* Map overlay panels (layers, indicators, overlays) - loaded sequentially */}
+      <LazyPanel
+        importFn={() => import('@/components/map/panel-groups/MapOverlayPanels')}
+        exportName="MapOverlayPanels"
+        shouldLoad={loadedPanels.has('overlay')}
+      />
 
       {/* Crosshair overlay for measure/mark/directions mode */}
       {toolMode !== 'navigate' && (
@@ -771,12 +780,20 @@ export default function Home() {
         <div className="flex-1 md:flex-1 md:max-w-lg md:ml-0" style={{ marginLeft: sidebarOpen ? '0px' : undefined }}>
           <div className={sidebarOpen ? 'md:pl-[332px]' : ''} style={{ transition: 'padding-left 0.3s ease-in-out' }}>
             <div className="w-full md:min-w-[280px]">
-              <SearchBar />
+              <LazyPanel
+                importFn={() => import('@/components/map/SearchBar')}
+                exportName="SearchBar"
+                shouldLoad={true}
+              />
             </div>
           </div>
         </div>
         <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
-          <TopBarPanels />
+          <LazyPanel
+            importFn={() => import('@/components/map/panel-groups/TopBarPanels')}
+            exportName="TopBarPanels"
+            shouldLoad={loadedPanels.has('topbar')}
+          />
           <Button
             variant="outline"
             size="icon"
@@ -2543,38 +2560,43 @@ export default function Home() {
 
       {/* Tool toolbar - left side (desktop only) */}
       <div className="hidden md:block absolute left-4 z-10 transition-all duration-300" style={{ top: '80px' }}>
-        {/* Track Record Button */}
+        {/* Track Record Button - lazy loaded */}
         <div className="mt-2 flex justify-center">
           <TooltipProvider delayDuration={200}>
             <Tooltip>
               <TooltipTrigger asChild>
-                <TrackRecordButton
-                  onClick={() => {
-                    const { isRecording, startRecording, stopRecording } = useMapStore.getState()
-                    if (isRecording) {
-                      stopRecording()
-                    } else {
-                      if (typeof navigator !== 'undefined' && navigator.geolocation) {
-                        startRecording()
-                        navigator.geolocation.watchPosition(
-                          (position) => {
-                            useMapStore.getState().addTrackPoint({
-                              latitude: position.coords.latitude,
-                              longitude: position.coords.longitude,
-                              elevation: position.coords.altitude,
-                              timestamp: position.timestamp,
-                              speed: position.coords.speed,
-                              accuracy: position.coords.accuracy,
-                            })
-                          },
-                          (error) => {
-                            toast.error(`GPS Error: ${error.message}`)
-                          },
-                          { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 }
-                        )
-                        toast.success('GPS recording started')
+                <LazyPanel
+                  importFn={() => import('@/components/map/TrackRecorder')}
+                  exportName="TrackRecordButton"
+                  shouldLoad={loadedPanels.has('topbar')}
+                  props={{
+                    onClick: () => {
+                      const { isRecording, startRecording, stopRecording } = useMapStore.getState()
+                      if (isRecording) {
+                        stopRecording()
                       } else {
-                        toast.error('Geolocation is not supported')
+                        if (typeof navigator !== 'undefined' && navigator.geolocation) {
+                          startRecording()
+                          navigator.geolocation.watchPosition(
+                            (position) => {
+                              useMapStore.getState().addTrackPoint({
+                                latitude: position.coords.latitude,
+                                longitude: position.coords.longitude,
+                                elevation: position.coords.altitude,
+                                timestamp: position.timestamp,
+                                speed: position.coords.speed,
+                                accuracy: position.coords.accuracy,
+                              })
+                            },
+                            (error) => {
+                              toast.error(`GPS Error: ${error.message}`)
+                            },
+                            { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 }
+                          )
+                          toast.success('GPS recording started')
+                        } else {
+                          toast.error('Geolocation is not supported')
+                        }
                       }
                     }
                   }}
@@ -2802,7 +2824,11 @@ export default function Home() {
 
       {/* Coordinates display - bottom center (desktop only) */}
       <div className="hidden md:block absolute bottom-12 left-1/2 -translate-x-1/2 z-10">
-        <CoordinatesDisplay />
+        <LazyPanel
+          importFn={() => import('@/components/map/CoordinatesDisplay')}
+          exportName="CoordinatesDisplay"
+          shouldLoad={true}
+        />
       </div>
 
       {/* Add Location FAB */}
@@ -3004,19 +3030,40 @@ export default function Home() {
       )}
 
       {/* Track Recorder Panel */}
-      <TrackRecorder />
+      <LazyPanel
+        importFn={() => import('@/components/map/TrackRecorder')}
+        exportName="TrackRecorder"
+        shouldLoad={loadedPanels.has('toolbar')}
+      />
 
-      {/* Toolbar panels (positioned panels, weather, elevation, etc.) - loaded after 3s delay */}
-      {heavyPanelsReady && <ToolbarPanels />}
+      {/* Toolbar panels (positioned panels, weather, elevation, etc.) - loaded sequentially */}
+      <LazyPanel
+        importFn={() => import('@/components/map/panel-groups/ToolbarPanels')}
+        exportName="ToolbarPanels"
+        shouldLoad={loadedPanels.has('toolbar')}
+      />
 
-      {/* Mobile bottom panels */}
-      <MobileBottomPanels />
+      {/* Mobile bottom panels - loaded sequentially */}
+      <LazyPanel
+        importFn={() => import('@/components/map/panel-groups/MobileBottomPanels')}
+        exportName="MobileBottomPanels"
+        shouldLoad={loadedPanels.has('mobile')}
+      />
 
-      {/* Dialog panels (modals, dialogs, managers) - loaded after 3s delay */}
-      {heavyPanelsReady && <DialogPanels geofenceCoords={geofenceCoords} />}
+      {/* Dialog panels (modals, dialogs, managers) - loaded sequentially */}
+      <LazyPanel
+        importFn={() => import('@/components/map/panel-groups/DialogPanels')}
+        exportName="DialogPanels"
+        shouldLoad={loadedPanels.has('dialog')}
+        props={{ geofenceCoords }}
+      />
 
-      {/* Monitor panels (environmental/geospatial monitoring) */}
-      <MonitorPanelRegistry />
+      {/* Monitor panels (environmental/geospatial monitoring) - always loaded since it returns null */}
+      <LazyPanel
+        importFn={() => import('@/components/map/panel-groups/MonitorPanelRegistry')}
+        exportName="MonitorPanelRegistry"
+        shouldLoad={loadedPanels.has('core')}
+      />
 
       {/* Footer */}
       <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-2 sm:px-3 md:px-4 safe-area-bottom before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">

@@ -19,6 +19,14 @@ const nextConfig: NextConfig = {
     }
     return config
   },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '10mb',
+    },
+  },
+  httpAgentOptions: {
+    keepAlive: false,
+  },
 };
 
 export default nextConfig;

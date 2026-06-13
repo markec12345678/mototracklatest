@@ -1,23 +1,45 @@
 'use client'
 
-import { UndoRedoBar } from '@/components/map/UndoRedoBar'
-import { StyleSwitcher } from '@/components/map/StyleSwitcher'
-import { ThemeToggle } from '@/components/map/ThemeToggle'
-import { LanguageSelector } from '@/components/map/LanguageSelector'
-import { NotificationCenter } from '@/components/map/NotificationCenter'
-import { VoiceNavigationToggle } from '@/components/map/VoiceNavigationToggle'
-import { CollaborationPanel } from '@/components/map/CollaborationPanel'
+import { LazyPanel } from '@/components/LazyPanel'
 
 export function TopBarPanels() {
   return (
     <>
-      <UndoRedoBar />
-      <StyleSwitcher />
-      <ThemeToggle />
-      <LanguageSelector />
-      <NotificationCenter />
-      <VoiceNavigationToggle />
-      <CollaborationPanel />
+      <LazyPanel
+        importFn={() => import('@/components/map/UndoRedoBar')}
+        exportName="UndoRedoBar"
+        shouldLoad={true}
+      />
+      <LazyPanel
+        importFn={() => import('@/components/map/StyleSwitcher')}
+        exportName="StyleSwitcher"
+        shouldLoad={true}
+      />
+      <LazyPanel
+        importFn={() => import('@/components/map/ThemeToggle')}
+        exportName="ThemeToggle"
+        shouldLoad={true}
+      />
+      <LazyPanel
+        importFn={() => import('@/components/map/LanguageSelector')}
+        exportName="LanguageSelector"
+        shouldLoad={true}
+      />
+      <LazyPanel
+        importFn={() => import('@/components/map/NotificationCenter')}
+        exportName="NotificationCenter"
+        shouldLoad={true}
+      />
+      <LazyPanel
+        importFn={() => import('@/components/map/VoiceNavigationToggle')}
+        exportName="VoiceNavigationToggle"
+        shouldLoad={true}
+      />
+      <LazyPanel
+        importFn={() => import('@/components/map/CollaborationPanel')}
+        exportName="CollaborationPanel"
+        shouldLoad={true}
+      />
     </>
   )
 }

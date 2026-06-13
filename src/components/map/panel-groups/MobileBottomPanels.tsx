@@ -1,11 +1,15 @@
 'use client'
 
-import { MobileWeatherBar } from '@/components/map/MobileWeatherBar'
+import { LazyPanel } from '@/components/LazyPanel'
 
 export function MobileBottomPanels() {
   return (
     <>
-      <MobileWeatherBar />
+      <LazyPanel
+        importFn={() => import('@/components/map/MobileWeatherBar')}
+        exportName="MobileWeatherBar"
+        shouldLoad={true}
+      />
     </>
   )
 }

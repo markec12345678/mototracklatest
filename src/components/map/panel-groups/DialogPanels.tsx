@@ -1,24 +1,7 @@
 'use client'
 
 import { useMapStore } from '@/lib/map-store'
-import { AddLocationDialog } from '@/components/map/AddLocationDialog'
-import { CoordinateInputDialog } from '@/components/map/CoordinateInputDialog'
-import { MapExportDialog } from '@/components/map/MapExportDialog'
-import { MapPrintDialog } from '@/components/map/MapPrintDialog'
-import { BookmarkManager } from '@/components/map/BookmarkManager'
-import { KeyboardShortcutsDialog } from '@/components/map/KeyboardShortcutsDialog'
-import { ShareDialog } from '@/components/map/ShareDialog'
-import { EmbedMapDialog } from '@/components/map/EmbedMapDialog'
-import { MarkerCategoriesManager } from '@/components/map/MarkerCategoriesManager'
-import { WaypointOptimizer } from '@/components/map/WaypointOptimizer'
-import { StylesMixer } from '@/components/map/StylesMixer'
-import { RouteSharingDialog } from '@/components/map/RouteSharingDialog'
-import { RoutePlayback } from '@/components/map/RoutePlayback'
-import { SpeedAlertSystem } from '@/components/map/SpeedAlertSystem'
-import { AltitudeAlertSystem } from '@/components/map/AltitudeAlertSystem'
-import { GeofenceDialog } from '@/components/map/GeofenceDialog'
-import { DistanceMatrix } from '@/components/map/DistanceMatrix'
-import { StyleGallery } from '@/components/map/StyleGallery'
+import { LazyPanel } from '@/components/LazyPanel'
 
 interface DialogPanelsProps {
   geofenceCoords: { lat: number; lng: number } | null
@@ -56,24 +39,111 @@ export function DialogPanels({ geofenceCoords }: DialogPanelsProps) {
 
   return (
     <>
-      <AddLocationDialog open={addDialogOpen} onOpenChange={setAddDialogOpen} />
-      <CoordinateInputDialog open={coordDialogOpen} onOpenChange={setCoordDialogOpen} />
-      <MapExportDialog open={exportDialogOpen} onOpenChange={setExportDialogOpen} />
-      <MapPrintDialog />
-      <BookmarkManager open={bookmarkManagerOpen} onOpenChange={setBookmarkManagerOpen} />
-      <KeyboardShortcutsDialog open={shortcutsOpen} onOpenChange={setShortcutsOpen} />
-      <ShareDialog open={shareDialogOpen} onOpenChange={setShareDialogOpen} />
-      <EmbedMapDialog open={embedDialogOpen} onOpenChange={setEmbedDialogOpen} />
-      <MarkerCategoriesManager open={markerCategoriesOpen} onOpenChange={setMarkerCategoriesOpen} />
-      <WaypointOptimizer open={waypointOptimizerOpen} onOpenChange={setWaypointOptimizerOpen} />
-      <StylesMixer open={stylesMixerOpen} onOpenChange={setStylesMixerOpen} />
-      <RouteSharingDialog open={routeSharingOpen} onOpenChange={setRouteSharingOpen} />
-      <RoutePlayback />
-      <SpeedAlertSystem />
-      <AltitudeAlertSystem />
-      <GeofenceDialog open={geofenceDialogOpen} onOpenChange={setGeofenceDialogOpen} latitude={geofenceCoords?.lat} longitude={geofenceCoords?.lng} />
-      <DistanceMatrix open={distanceMatrixOpen} onOpenChange={setDistanceMatrixOpen} />
-      <StyleGallery open={styleGalleryOpen} onOpenChange={setStyleGalleryOpen} />
+      {/* Each dialog is lazy-loaded only when opened */}
+      <LazyPanel
+        importFn={() => import('@/components/map/AddLocationDialog')}
+        exportName="AddLocationDialog"
+        shouldLoad={addDialogOpen}
+        props={{ open: addDialogOpen, onOpenChange: setAddDialogOpen }}
+      />
+      <LazyPanel
+        importFn={() => import('@/components/map/CoordinateInputDialog')}
+        exportName="CoordinateInputDialog"
+        shouldLoad={coordDialogOpen}
+        props={{ open: coordDialogOpen, onOpenChange: setCoordDialogOpen }}
+      />
+      <LazyPanel
+        importFn={() => import('@/components/map/MapExportDialog')}
+        exportName="MapExportDialog"
+        shouldLoad={exportDialogOpen}
+        props={{ open: exportDialogOpen, onOpenChange: setExportDialogOpen }}
+      />
+      <LazyPanel
+        importFn={() => import('@/components/map/MapPrintDialog')}
+        exportName="MapPrintDialog"
+        shouldLoad={true}
+      />
+      <LazyPanel
+        importFn={() => import('@/components/map/BookmarkManager')}
+        exportName="BookmarkManager"
+        shouldLoad={bookmarkManagerOpen}
+        props={{ open: bookmarkManagerOpen, onOpenChange: setBookmarkManagerOpen }}
+      />
+      <LazyPanel
+        importFn={() => import('@/components/map/KeyboardShortcutsDialog')}
+        exportName="KeyboardShortcutsDialog"
+        shouldLoad={shortcutsOpen}
+        props={{ open: shortcutsOpen, onOpenChange: setShortcutsOpen }}
+      />
+      <LazyPanel
+        importFn={() => import('@/components/map/ShareDialog')}
+        exportName="ShareDialog"
+        shouldLoad={shareDialogOpen}
+        props={{ open: shareDialogOpen, onOpenChange: setShareDialogOpen }}
+      />
+      <LazyPanel
+        importFn={() => import('@/components/map/EmbedMapDialog')}
+        exportName="EmbedMapDialog"
+        shouldLoad={embedDialogOpen}
+        props={{ open: embedDialogOpen, onOpenChange: setEmbedDialogOpen }}
+      />
+      <LazyPanel
+        importFn={() => import('@/components/map/MarkerCategoriesManager')}
+        exportName="MarkerCategoriesManager"
+        shouldLoad={markerCategoriesOpen}
+        props={{ open: markerCategoriesOpen, onOpenChange: setMarkerCategoriesOpen }}
+      />
+      <LazyPanel
+        importFn={() => import('@/components/map/WaypointOptimizer')}
+        exportName="WaypointOptimizer"
+        shouldLoad={waypointOptimizerOpen}
+        props={{ open: waypointOptimizerOpen, onOpenChange: setWaypointOptimizerOpen }}
+      />
+      <LazyPanel
+        importFn={() => import('@/components/map/StylesMixer')}
+        exportName="StylesMixer"
+        shouldLoad={stylesMixerOpen}
+        props={{ open: stylesMixerOpen, onOpenChange: setStylesMixerOpen }}
+      />
+      <LazyPanel
+        importFn={() => import('@/components/map/RouteSharingDialog')}
+        exportName="RouteSharingDialog"
+        shouldLoad={routeSharingOpen}
+        props={{ open: routeSharingOpen, onOpenChange: setRouteSharingOpen }}
+      />
+      <LazyPanel
+        importFn={() => import('@/components/map/RoutePlayback')}
+        exportName="RoutePlayback"
+        shouldLoad={true}
+      />
+      <LazyPanel
+        importFn={() => import('@/components/map/SpeedAlertSystem')}
+        exportName="SpeedAlertSystem"
+        shouldLoad={true}
+      />
+      <LazyPanel
+        importFn={() => import('@/components/map/AltitudeAlertSystem')}
+        exportName="AltitudeAlertSystem"
+        shouldLoad={true}
+      />
+      <LazyPanel
+        importFn={() => import('@/components/map/GeofenceDialog')}
+        exportName="GeofenceDialog"
+        shouldLoad={geofenceDialogOpen}
+        props={{ open: geofenceDialogOpen, onOpenChange: setGeofenceDialogOpen, latitude: geofenceCoords?.lat, longitude: geofenceCoords?.lng }}
+      />
+      <LazyPanel
+        importFn={() => import('@/components/map/DistanceMatrix')}
+        exportName="DistanceMatrix"
+        shouldLoad={distanceMatrixOpen}
+        props={{ open: distanceMatrixOpen, onOpenChange: setDistanceMatrixOpen }}
+      />
+      <LazyPanel
+        importFn={() => import('@/components/map/StyleGallery')}
+        exportName="StyleGallery"
+        shouldLoad={styleGalleryOpen}
+        props={{ open: styleGalleryOpen, onOpenChange: setStyleGalleryOpen }}
+      />
     </>
   )
 }
