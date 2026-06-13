@@ -160,16 +160,15 @@ import {
   Clock,
 } from 'lucide-react'
 
+// ALL panel groups loaded dynamically with ssr:false
+// Heavy groups only load when user interacts (heavyPanelsReady)
 import dynamic from 'next/dynamic'
-
-// Panel groups loaded with next/dynamic + ssr:false
-// These create separate webpack chunks that are compiled on demand
-const MobileBottomPanels = dynamic(() => import('@/components/map/panel-groups/MobileBottomPanels').then(m => ({ default: m.MobileBottomPanels })), { ssr: false })
-const TopBarPanels = dynamic(() => import('@/components/map/panel-groups/TopBarPanels').then(m => ({ default: m.TopBarPanels })), { ssr: false })
-const ToolbarPanels = dynamic(() => import('@/components/map/panel-groups/ToolbarPanels').then(m => ({ default: m.ToolbarPanels })), { ssr: false })
-const DialogPanels = dynamic(() => import('@/components/map/panel-groups/DialogPanels').then(m => ({ default: m.DialogPanels })), { ssr: false })
-const MapOverlayPanels = dynamic(() => import('@/components/map/panel-groups/MapOverlayPanels').then(m => ({ default: m.MapOverlayPanels })), { ssr: false })
-const MonitorPanelRegistry = dynamic(() => import('@/components/map/panel-groups/MonitorPanelRegistry').then(m => ({ default: m.MonitorPanelRegistry })), { ssr: false })
+const MobileBottomPanels = dynamic(() => import('@/components/map/panel-groups/MobileBottomPanels').then(m => ({ default: m.MobileBottomPanels })), { ssr: false, loading: () => null })
+const TopBarPanels = dynamic(() => import('@/components/map/panel-groups/TopBarPanels').then(m => ({ default: m.TopBarPanels })), { ssr: false, loading: () => null })
+const ToolbarPanels = dynamic(() => import('@/components/map/panel-groups/ToolbarPanels').then(m => ({ default: m.ToolbarPanels })), { ssr: false, loading: () => null })
+const DialogPanels = dynamic(() => import('@/components/map/panel-groups/DialogPanels').then(m => ({ default: m.DialogPanels })), { ssr: false, loading: () => null })
+const MapOverlayPanels = dynamic(() => import('@/components/map/panel-groups/MapOverlayPanels').then(m => ({ default: m.MapOverlayPanels })), { ssr: false, loading: () => null })
+const MonitorPanelRegistry = dynamic(() => import('@/components/map/panel-groups/MonitorPanelRegistry').then(m => ({ default: m.MonitorPanelRegistry })), { ssr: false, loading: () => null })
 
 
 export default function Home() {
@@ -204,15 +203,14 @@ export default function Home() {
   const [showWelcome, setShowWelcome] = useState(true)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [mapInitialized, setMapInitialized] = useState(false)
-  const [panelPhase, setPanelPhase] = useState(0) // 0=core only, 1=panels, 2=all
+  const [heavyPanelsReady, setHeavyPanelsReady] = useState(false)
   const compassAnimatingRef = useRef(false)
   const savedLocations = useMapStore((s) => s.savedLocations)
 
-  // Stagger panel loading to prevent OOM during webpack chunk compilation
+  // Delay heavy panel loading to give webpack time to compile the main chunk first
   useEffect(() => {
-    const timer1 = setTimeout(() => setPanelPhase(1), 2000)
-    const timer2 = setTimeout(() => setPanelPhase(2), 5000)
-    return () => { clearTimeout(timer1); clearTimeout(timer2) }
+    const timer = setTimeout(() => setHeavyPanelsReady(true), 3000)
+    return () => clearTimeout(timer)
   }, [])
 
   // Restore map state from URL params on page load
@@ -727,8 +725,8 @@ export default function Home() {
       {/* Map */}
       <MapView />
 
-      {/* Map overlay panels (layers, indicators, overlays) - phase 1+ */}
-      {panelPhase >= 1 && <MapOverlayPanels />}
+      {/* Map overlay panels (layers, indicators, overlays) - loaded after 3s delay */}
+      {heavyPanelsReady && <MapOverlayPanels />}
 
       {/* Crosshair overlay for measure/mark/directions mode */}
       {toolMode !== 'navigate' && (
@@ -778,7 +776,7 @@ export default function Home() {
           </div>
         </div>
         <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
-          {panelPhase >= 1 && <TopBarPanels />}
+          <TopBarPanels />
           <Button
             variant="outline"
             size="icon"
@@ -3008,17 +3006,17 @@ export default function Home() {
       {/* Track Recorder Panel */}
       <TrackRecorder />
 
-      {/* Toolbar panels (positioned panels, weather, elevation, etc.) - phase 2+ */}
-      {panelPhase >= 2 && <ToolbarPanels />}
+      {/* Toolbar panels (positioned panels, weather, elevation, etc.) - loaded after 3s delay */}
+      {heavyPanelsReady && <ToolbarPanels />}
 
-      {/* Mobile bottom panels - phase 1+ */}
-      {panelPhase >= 1 && <MobileBottomPanels />}
+      {/* Mobile bottom panels */}
+      <MobileBottomPanels />
 
-      {/* Dialog panels (modals, dialogs, managers) - phase 2+ */}
-      {panelPhase >= 2 && <DialogPanels geofenceCoords={geofenceCoords} />}
+      {/* Dialog panels (modals, dialogs, managers) - loaded after 3s delay */}
+      {heavyPanelsReady && <DialogPanels geofenceCoords={geofenceCoords} />}
 
-      {/* Monitor panels (environmental/geospatial monitoring) - phase 2+ */}
-      {panelPhase >= 2 && <MonitorPanelRegistry />}
+      {/* Monitor panels (environmental/geospatial monitoring) */}
+      <MonitorPanelRegistry />
 
       {/* Footer */}
       <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-2 sm:px-3 md:px-4 safe-area-bottom before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">
