@@ -5336,6 +5336,73 @@ interface MapState {
   // Task 65: Fjord Ecosystem Monitor
   fjordEcosystem: FjordEcosystemState
   setFjordEcosystem: (state: Partial<FjordEcosystemState>) => void
+
+  // Dialog states (moved from local useState in page.tsx for lazy loading)
+  addLocationDialogOpen: boolean
+  setAddLocationDialogOpen: (open: boolean) => void
+  shortcutsDialogOpen: boolean
+  setShortcutsDialogOpen: (open: boolean) => void
+  coordInputDialogOpen: boolean
+  setCoordInputDialogOpen: (open: boolean) => void
+  exportDialogOpen: boolean
+  setExportDialogOpen: (open: boolean) => void
+  bookmarkManagerOpen: boolean
+  setBookmarkManagerOpen: (open: boolean) => void
+  shareDialogOpen: boolean
+  setShareDialogOpen: (open: boolean) => void
+  geofenceDialogOpen: boolean
+  setGeofenceDialogOpen: (open: boolean) => void
+  aiSuggestionsOpen: boolean
+  setAiSuggestionsOpen: (open: boolean) => void
+  distanceMatrixOpen: boolean
+  setDistanceMatrixOpen: (open: boolean) => void
+  styleGalleryOpen: boolean
+  setStyleGalleryOpen: (open: boolean) => void
+
+  // Style Switcher open state
+  styleSwitcherOpen: boolean
+  setStyleSwitcherOpen: (open: boolean) => void
+
+  // Language Selector open state
+  languageSelectorOpen: boolean
+  setLanguageSelectorOpen: (open: boolean) => void
+
+  // Notification Center open state
+  notificationCenterOpen: boolean
+  setNotificationCenterOpen: (open: boolean) => void
+
+  // Route Analytics open state
+  routeAnalyticsOpen: boolean
+  setRouteAnalyticsOpen: (open: boolean) => void
+
+  // Collaboration open state
+  collaborationOpen: boolean
+  setCollaborationOpen: (open: boolean) => void
+
+  // Coordinate Converter open state
+  coordinateConverterOpen: boolean
+  setCoordinateConverterOpen: (open: boolean) => void
+
+  // Map Overlay Gallery dialog state (already has overlayGalleryOpen)
+  // Spatial Analysis panel state
+  spatialAnalysisOpen: boolean
+  setSpatialAnalysisOpen: (open: boolean) => void
+
+  // Map Stats Panel open state
+  statsPanelOpen: boolean
+  setStatsPanelOpen: (open: boolean) => void
+
+  // Map Legend open state
+  legendOpen: boolean
+  setLegendOpen: (open: boolean) => void
+
+  // Mini Map enabled state
+  miniMapEnabled: boolean
+  setMiniMapEnabled: (enabled: boolean) => void
+
+  // Geofence Alert History open state (already has geofenceAlertOpen)
+  // Contour Generator open state (already has contourGeneratorOpen)
+  // MapLabels open state (already has mapLabelsOpen)
 }
 
 // Coordinate Share Card types
@@ -9576,6 +9643,68 @@ export const useMapStore = create<MapState>()(
       setFjordEcosystem: (updates) => set((state) => ({
         fjordEcosystem: { ...state.fjordEcosystem, ...updates },
       })),
+
+      // Dialog states (moved from local useState in page.tsx for lazy loading)
+      addLocationDialogOpen: false,
+      setAddLocationDialogOpen: (open) => set({ addLocationDialogOpen: open }),
+      shortcutsDialogOpen: false,
+      setShortcutsDialogOpen: (open) => set({ shortcutsDialogOpen: open }),
+      coordInputDialogOpen: false,
+      setCoordInputDialogOpen: (open) => set({ coordInputDialogOpen: open }),
+      exportDialogOpen: false,
+      setExportDialogOpen: (open) => set({ exportDialogOpen: open }),
+      bookmarkManagerOpen: false,
+      setBookmarkManagerOpen: (open) => set({ bookmarkManagerOpen: open }),
+      shareDialogOpen: false,
+      setShareDialogOpen: (open) => set({ shareDialogOpen: open }),
+      geofenceDialogOpen: false,
+      setGeofenceDialogOpen: (open) => set({ geofenceDialogOpen: open }),
+      aiSuggestionsOpen: false,
+      setAiSuggestionsOpen: (open) => set({ aiSuggestionsOpen: open }),
+      distanceMatrixOpen: false,
+      setDistanceMatrixOpen: (open) => set({ distanceMatrixOpen: open }),
+      styleGalleryOpen: false,
+      setStyleGalleryOpen: (open) => set({ styleGalleryOpen: open }),
+
+      // Style Switcher open state
+      styleSwitcherOpen: false,
+      setStyleSwitcherOpen: (open) => set({ styleSwitcherOpen: open }),
+
+      // Language Selector open state
+      languageSelectorOpen: false,
+      setLanguageSelectorOpen: (open) => set({ languageSelectorOpen: open }),
+
+      // Notification Center open state
+      notificationCenterOpen: false,
+      setNotificationCenterOpen: (open) => set({ notificationCenterOpen: open }),
+
+      // Route Analytics open state
+      routeAnalyticsOpen: false,
+      setRouteAnalyticsOpen: (open) => set({ routeAnalyticsOpen: open }),
+
+      // Collaboration open state
+      collaborationOpen: false,
+      setCollaborationOpen: (open) => set({ collaborationOpen: open }),
+
+      // Coordinate Converter open state
+      coordinateConverterOpen: false,
+      setCoordinateConverterOpen: (open) => set({ coordinateConverterOpen: open }),
+
+      // Spatial Analysis panel state
+      spatialAnalysisOpen: false,
+      setSpatialAnalysisOpen: (open) => set({ spatialAnalysisOpen: open }),
+
+      // Map Stats Panel open state
+      statsPanelOpen: false,
+      setStatsPanelOpen: (open) => set({ statsPanelOpen: open }),
+
+      // Map Legend open state
+      legendOpen: false,
+      setLegendOpen: (open) => set({ legendOpen: open }),
+
+      // Mini Map enabled state
+      miniMapEnabled: true,
+      setMiniMapEnabled: (enabled) => set({ miniMapEnabled: enabled }),
     }),
     {
       name: 'maplibre-explorer-prefs',

@@ -3,83 +3,10 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MapView } from '@/components/map/MapView'
-import { MapSidebar } from '@/components/map/MapSidebar'
 import { SearchBar } from '@/components/map/SearchBar'
-import { StyleSwitcher } from '@/components/map/StyleSwitcher'
 import { CoordinatesDisplay } from '@/components/map/CoordinatesDisplay'
-import { MapToolbar } from '@/components/map/MapToolbar'
-import { AddLocationDialog } from '@/components/map/AddLocationDialog'
-import { ThemeToggle } from '@/components/map/ThemeToggle'
-import { MapStatsPanel } from '@/components/map/MapStatsPanel'
-import { CompassIndicator } from '@/components/map/CompassIndicator'
-import { KeyboardShortcutsDialog } from '@/components/map/KeyboardShortcutsDialog'
-import { MiniMap } from '@/components/map/MiniMap'
-import { MapLegend } from '@/components/map/MapLegend'
-import { MapNotifications } from '@/components/map/MapNotifications'
-import { WeatherPanel } from '@/components/map/WeatherPanel'
-import { MobileWeatherBar } from '@/components/map/MobileWeatherBar'
-import { ElevationProfile } from '@/components/map/ElevationProfile'
-import { QuickJumpPanel } from '@/components/map/QuickJumpPanel'
-import { UndoRedoBar } from '@/components/map/UndoRedoBar'
-import { MapComparison } from '@/components/map/MapComparison'
-import { CoordinateInputDialog } from '@/components/map/CoordinateInputDialog'
-import { MapExportDialog } from '@/components/map/MapExportDialog'
-import { EmbedMapDialog } from '@/components/map/EmbedMapDialog'
-import { BookmarkManager } from '@/components/map/BookmarkManager'
-import { SunPositionOverlay } from '@/components/map/SunPositionOverlay'
-import { SunInfoPanel } from '@/components/map/SunInfoPanel'
-import { HeatmapLayer } from '@/components/map/HeatmapLayer'
-import { HeatmapControls } from '@/components/map/HeatmapControls'
 import { TrackRecorder, TrackRecordButton } from '@/components/map/TrackRecorder'
-import { PWAInstallBanner } from '@/components/map/PWAInstallBanner'
-import { Buildings3DLayer } from '@/components/map/Buildings3DLayer'
-import { BuildingInfoPanel } from '@/components/map/BuildingInfoPanel'
-import { GeofenceDialog } from '@/components/map/GeofenceDialog'
-import { ShareDialog } from '@/components/map/ShareDialog'
-import { LanguageSelector } from '@/components/map/LanguageSelector'
-import { NotificationCenter } from '@/components/map/NotificationCenter'
-import { AISuggestionsPanel } from '@/components/map/AISuggestionsPanel'
-import { RouteAnalyticsPanel } from '@/components/map/RouteAnalyticsPanel'
-import { DistanceMatrix } from '@/components/map/DistanceMatrix'
-import { StyleGallery } from '@/components/map/StyleGallery'
-import { VoiceNavigator } from '@/components/map/VoiceNavigator'
-import { VoiceNavigationToggle } from '@/components/map/VoiceNavigationToggle'
-import { CollaborationPanel } from '@/components/map/CollaborationPanel'
-import { CollaboratorCursors } from '@/components/map/CollaboratorCursors'
-import { OfflineIndicator } from '@/components/map/OfflineIndicator'
-import { DrawingToolbar } from '@/components/map/DrawingToolbar'
-import { DrawingLayer } from '@/components/map/DrawingLayer'
-import { RouteComparisonPanel } from '@/components/map/RouteComparisonPanel'
-import { TerrainAnalysisPanel } from '@/components/map/TerrainAnalysisPanel'
-import { AccessibilityPanel } from '@/components/map/AccessibilityPanel'
-import { SpatialAnalysisPanel } from '@/components/map/SpatialAnalysisPanel'
-import { BufferZoneLayer } from '@/components/map/BufferZoneLayer'
-import { ImageOverlayManager } from '@/components/map/ImageOverlayManager'
-import { MapTimeline } from '@/components/map/MapTimeline'
-import { MapAnalyticsDashboard } from '@/components/map/MapAnalyticsDashboard'
-import { AirQualityPanel } from '@/components/map/AirQualityPanel'
-import { MapPrintDialog } from '@/components/map/MapPrintDialog'
-import { MarkerCategoriesManager } from '@/components/map/MarkerCategoriesManager'
-import { WaypointOptimizer } from '@/components/map/WaypointOptimizer'
-import { StylesMixer } from '@/components/map/StylesMixer'
-import { CoordinateConverter } from '@/components/map/CoordinateConverter'
-import { RouteSharingDialog } from '@/components/map/RouteSharingDialog'
-import { RoutePlayback } from '@/components/map/RoutePlayback'
-import { SpeedAlertSystem } from '@/components/map/SpeedAlertSystem'
-import { MapLabelsOverlay } from '@/components/map/MapLabelsOverlay'
-import { ContourGenerator } from '@/components/map/ContourGenerator'
-import { LocationClusterMap } from '@/components/map/LocationClusterMap'
-import { MapStoryCreator } from '@/components/map/MapStoryCreator'
-import { TerrainProfile3D } from '@/components/map/TerrainProfile3D'
-import { DataImportExport } from '@/components/map/DataImportExport'
-import { CoordinateGridOverlay } from '@/components/map/CoordinateGridOverlay'
-import { MapOverlayGallery } from '@/components/map/MapOverlayGallery'
-import { AdvancedMarkerManager } from '@/components/map/AdvancedMarkerManager'
-import { GeofenceAlertHistory } from '@/components/map/GeofenceAlertHistory'
-import { LocationVisitTimeline } from '@/components/map/LocationVisitTimeline'
-import { WeatherComparison } from '@/components/map/WeatherComparison'
 
-import { TrackStatsPanel } from '@/components/map/TrackStatsPanel'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
@@ -182,7 +109,7 @@ import {
   CloudLightning,
   Leaf,
   Droplet as DropletIcon,
-  SunMedium,
+  Sun as SunIcon3,
   CloudHail,
   Waves as WavesIcon,
   CloudCog as CloudSmoke,
@@ -235,163 +162,15 @@ import {
 
 import dynamic from 'next/dynamic'
 
-const GPSSimulator = dynamic(() => import('@/components/map/GPSSimulator').then((m) => m.GPSSimulator), { ssr: false })
-const MapNotesLayer = dynamic(() => import('@/components/map/MapNotes').then((m) => m.MapNotesLayer), { ssr: false })
-const BatchActionBar = dynamic(() => import('@/components/map/BatchOperations').then((m) => m.BatchActionBar), { ssr: false })
-const MapAnnotationsLayer = dynamic(() => import('@/components/map/MapAnnotationsLayer').then((m) => m.MapAnnotationsLayer), { ssr: false })
-const MeasurementSuite = dynamic(() => import('@/components/map/MeasurementSuite').then((m) => m.MeasurementSuite), { ssr: false })
-const TrailFinder = dynamic(() => import('@/components/map/TrailFinder').then((m) => m.TrailFinder), { ssr: false })
-const PedometerWidget = dynamic(() => import('@/components/map/PedometerWidget').then((m) => m.PedometerWidget), { ssr: false })
-const MapUsageStats = dynamic(() => import('@/components/map/MapUsageStats').then((m) => m.MapUsageStats), { ssr: false })
-const ScreenshotManager = dynamic(() => import('@/components/map/ScreenshotManager').then((m) => m.ScreenshotManager), { ssr: false })
-const RouteDifficultyAnalyzer = dynamic(() => import('@/components/map/RouteDifficultyAnalyzer').then((m) => m.RouteDifficultyAnalyzer), { ssr: false })
-const MapCollageCreator = dynamic(() => import('@/components/map/MapCollageCreator').then((m) => m.MapCollageCreator), { ssr: false })
-const NearbyEventsFinder = dynamic(() => import('@/components/map/NearbyEventsFinder').then((m) => m.NearbyEventsFinder), { ssr: false })
-const AltitudeAlertSystem = dynamic(() => import('@/components/map/AltitudeAlertSystem').then((m) => m.AltitudeAlertSystem), { ssr: false })
-const CustomCompassRose = dynamic(() => import('@/components/map/CustomCompassRose').then((m) => m.CustomCompassRose), { ssr: false })
-const MultiStopRoutePlanner = dynamic(() => import('@/components/map/MultiStopRoutePlanner').then((m) => m.MultiStopRoutePlanner), { ssr: false })
-const EnhancedWeatherDashboard = dynamic(() => import('@/components/map/EnhancedWeatherDashboard').then((m) => m.EnhancedWeatherDashboard), { ssr: false })
-const SunShadowCalculator = dynamic(() => import('@/components/map/SunShadowCalculator').then((m) => m.SunShadowCalculator), { ssr: false })
-const SVGMarkerDesigner = dynamic(() => import('@/components/map/SVGMarkerDesigner').then((m) => m.SVGMarkerDesigner), { ssr: false })
-const MapChatAssistant = dynamic(() => import('@/components/map/MapChatAssistant').then((m) => m.MapChatAssistant), { ssr: false })
-const POIDensityHeatmap = dynamic(() => import('@/components/map/POIDensityHeatmap').then((m) => m.POIDensityHeatmap), { ssr: false })
-const CoordinateShareCard = dynamic(() => import('@/components/map/CoordinateShareCard').then((m) => m.CoordinateShareCard), { ssr: false })
-const MapWallpaperGenerator = dynamic(() => import('@/components/map/MapWallpaperGenerator').then((m) => m.MapWallpaperGenerator), { ssr: false })
-const MapAnimationStudio = dynamic(() => import('@/components/map/MapAnimationStudio').then((m) => m.MapAnimationStudio), { ssr: false })
-const SmartRoutePlanner = dynamic(() => import('@/components/map/SmartRoutePlanner').then((m) => m.SmartRoutePlanner), { ssr: false })
-const MapDataVisualizer = dynamic(() => import('@/components/map/MapDataVisualizer').then((m) => m.MapDataVisualizer), { ssr: false })
-const FieldSurveyTool = dynamic(() => import('@/components/map/FieldSurveyTool').then((m) => m.FieldSurveyTool), { ssr: false })
-const EmergencyRoutePlanner = dynamic(() => import('@/components/map/EmergencyRoutePlanner').then((m) => m.EmergencyRoutePlanner), { ssr: false })
-const MapComparisonSlider = dynamic(() => import('@/components/map/MapComparisonSlider').then((m) => m.MapComparisonSlider), { ssr: false })
-const NoiseHeatmapOverlay = dynamic(() => import('@/components/map/NoiseHeatmapOverlay').then((m) => m.NoiseHeatmapOverlay), { ssr: false })
-const SolarExposureAnalyzer = dynamic(() => import('@/components/map/SolarExposureAnalyzer').then((m) => m.SolarExposureAnalyzer), { ssr: false })
-const MapStyleForge = dynamic(() => import('@/components/map/MapStyleForge').then((m) => m.MapStyleForge), { ssr: false })
-const TopographicProfiler = dynamic(() => import('@/components/map/TopographicProfiler').then((m) => m.TopographicProfiler), { ssr: false })
-const MaritimeNavigation = dynamic(() => import('@/components/map/MaritimeNavigation').then((m) => m.MaritimeNavigation), { ssr: false })
-const GeocachingToolkit = dynamic(() => import('@/components/map/GeocachingToolkit').then((m) => m.GeocachingToolkit), { ssr: false })
-const AtmosphericDashboard = dynamic(() => import('@/components/map/AtmosphericDashboard').then((m) => m.AtmosphericDashboard), { ssr: false })
-const WildlifeTracker = dynamic(() => import('@/components/map/WildlifeTracker').then((m) => m.WildlifeTracker), { ssr: false })
-const CulturalHeritageMap = dynamic(() => import('@/components/map/CulturalHeritageMap').then((m) => m.CulturalHeritageMap), { ssr: false })
-const HydrologyAnalyzer = dynamic(() => import('@/components/map/HydrologyAnalyzer').then((m) => m.HydrologyAnalyzer), { ssr: false })
-const GlacierMonitor = dynamic(() => import('@/components/map/GlacierMonitor').then((m) => m.GlacierMonitor), { ssr: false })
-const SeismicActivityMap = dynamic(() => import('@/components/map/SeismicActivityMap').then((m) => m.SeismicActivityMap), { ssr: false })
-const SoilAnalysisPanel = dynamic(() => import('@/components/map/SoilAnalysisPanel').then((m) => m.SoilAnalysisPanel), { ssr: false })
-const UrbanGrowthSimulator = dynamic(() => import('@/components/map/UrbanGrowthSimulator').then((m) => m.UrbanGrowthSimulator), { ssr: false })
-const AirspaceNavigator = dynamic(() => import('@/components/map/AirspaceNavigator').then((m) => m.AirspaceNavigator), { ssr: false })
-const ReefHealthMonitor = dynamic(() => import('@/components/map/ReefHealthMonitor').then((m) => m.ReefHealthMonitor), { ssr: false })
-const MagneticFieldMapper = dynamic(() => import('@/components/map/MagneticFieldMapper').then((m) => m.MagneticFieldMapper), { ssr: false })
-const FloodRiskAnalyzer = dynamic(() => import('@/components/map/FloodRiskAnalyzer').then((m) => m.FloodRiskAnalyzer), { ssr: false })
-const VolcanoMonitor = dynamic(() => import('@/components/map/VolcanoMonitor').then((m) => m.VolcanoMonitor), { ssr: false })
-const AvalancheRiskMap = dynamic(() => import('@/components/map/AvalancheRiskMap').then((m) => m.AvalancheRiskMap), { ssr: false })
-const CropHealthAnalyzer = dynamic(() => import('@/components/map/CropHealthAnalyzer').then((m) => m.CropHealthAnalyzer), { ssr: false })
-const SpaceTrackViewer = dynamic(() => import('@/components/map/SpaceTrackViewer').then((m) => m.SpaceTrackViewer), { ssr: false })
-const ArchaeologyMap = dynamic(() => import('@/components/map/ArchaeologyMap').then((m) => m.ArchaeologyMap), { ssr: false })
-const PollutionTracker = dynamic(() => import('@/components/map/PollutionTracker').then((m) => m.PollutionTracker), { ssr: false })
-const TidalPredictor = dynamic(() => import('@/components/map/TidalPredictor').then((m) => m.TidalPredictor), { ssr: false })
-const WindFarmOptimizer = dynamic(() => import('@/components/map/WindFarmOptimizer').then((m) => m.WindFarmOptimizer), { ssr: false })
-const DesertificationMonitor = dynamic(() => import('@/components/map/DesertificationMonitor').then((m) => m.DesertificationMonitor), { ssr: false })
-const MineralExploration = dynamic(() => import('@/components/map/MineralExploration').then((m) => m.MineralExploration), { ssr: false })
-const OceanCurrentMapper = dynamic(() => import('@/components/map/OceanCurrentMapper').then((m) => m.OceanCurrentMapper), { ssr: false })
-const PermafrostThawTracker = dynamic(() => import('@/components/map/PermafrostThawTracker').then((m) => m.PermafrostThawTracker), { ssr: false })
-const LightningStrikeMap = dynamic(() => import('@/components/map/LightningStrikeMap').then((m) => m.LightningStrikeMap), { ssr: false })
-const BiomeClassifier = dynamic(() => import('@/components/map/BiomeClassifier').then((m) => m.BiomeClassifier), { ssr: false })
-const GroundwaterExplorer = dynamic(() => import('@/components/map/GroundwaterExplorer').then((m) => m.GroundwaterExplorer), { ssr: false })
-const SolarPowerPlanner = dynamic(() => import('@/components/map/SolarPowerPlanner').then((m) => m.SolarPowerPlanner), { ssr: false })
-const VolcanicAshTracker = dynamic(() => import('@/components/map/VolcanicAshTracker').then((m) => m.VolcanicAshTracker), { ssr: false })
-const CoastalErosionMonitor = dynamic(() => import('@/components/map/CoastalErosionMonitor').then((m) => m.CoastalErosionMonitor), { ssr: false })
-const CarbonFootprintMapper = dynamic(() => import('@/components/map/CarbonFootprintMapper').then((m) => m.CarbonFootprintMapper), { ssr: false })
-const WildlifeMigrationTracker = dynamic(() => import('@/components/map/WildlifeMigrationTracker').then((m) => m.WildlifeMigrationTracker), { ssr: false })
-const IceSheetMonitor = dynamic(() => import('@/components/map/IceSheetMonitor').then((m) => m.IceSheetMonitor), { ssr: false })
-const DroughtMonitorPanel = dynamic(() => import('@/components/map/DroughtMonitorPanel').then((m) => m.DroughtMonitorPanel), { ssr: false })
-const LandSubsidenceTracker = dynamic(() => import('@/components/map/LandSubsidenceTracker').then((m) => m.LandSubsidenceTracker), { ssr: false })
-const CoralBleachingAlert = dynamic(() => import('@/components/map/CoralBleachingAlert').then((m) => m.CoralBleachingAlert), { ssr: false })
-const TsunamiAlertSystem = dynamic(() => import('@/components/map/TsunamiAlertSystem').then((m) => m.TsunamiAlertSystem), { ssr: false })
-const SoilErosionMonitor = dynamic(() => import('@/components/map/SoilErosionMonitor').then((m) => m.SoilErosionMonitor), { ssr: false })
-const WatershedManagerPanel = dynamic(() => import('@/components/map/WatershedManagerPanel').then((m) => m.WatershedManagerPanel), { ssr: false })
-const TectonicPlateViewer = dynamic(() => import('@/components/map/TectonicPlateViewer').then((m) => m.TectonicPlateViewer), { ssr: false })
-const AirQualityForecaster = dynamic(() => import('@/components/map/AirQualityForecaster').then((m) => m.AirQualityForecaster), { ssr: false })
-const GlacialLakeMonitor = dynamic(() => import('@/components/map/GlacialLakeMonitor').then((m) => m.GlacialLakeMonitor), { ssr: false })
-const SpaceWeatherMonitor = dynamic(() => import('@/components/map/SpaceWeatherMonitor').then((m) => m.SpaceWeatherMonitor), { ssr: false })
-const PeatlandMonitorPanel = dynamic(() => import('@/components/map/PeatlandMonitorPanel').then((m) => m.PeatlandMonitorPanel), { ssr: false })
-const MangroveMonitor = dynamic(() => import('@/components/map/MangroveMonitor').then((m) => m.MangroveMonitor), { ssr: false })
-const SandstormTracker = dynamic(() => import('@/components/map/SandstormTracker').then((m) => m.SandstormTracker), { ssr: false })
-const WetlandMapper = dynamic(() => import('@/components/map/WetlandMapper').then((m) => m.WetlandMapper), { ssr: false })
-const UrbanHeatIsland = dynamic(() => import('@/components/map/UrbanHeatIsland').then((m) => m.UrbanHeatIsland), { ssr: false })
-const WildfireRiskAssessor = dynamic(() => import('@/components/map/WildfireRiskAssessor').then((m) => m.WildfireRiskAssessor), { ssr: false })
-const AlgalBloomTracker = dynamic(() => import('@/components/map/AlgalBloomTracker').then((m) => m.AlgalBloomTracker), { ssr: false })
-const LandslidePredictor = dynamic(() => import('@/components/map/LandslidePredictor').then((m) => m.LandslidePredictor), { ssr: false })
-const SeaIceNavigator = dynamic(() => import('@/components/map/SeaIceNavigator').then((m) => m.SeaIceNavigator), { ssr: false })
-const CloudCoverAnalyzer = dynamic(() => import('@/components/map/CloudCoverAnalyzer').then((m) => m.CloudCoverAnalyzer), { ssr: false })
-const SoilMoistureMonitor = dynamic(() => import('@/components/map/SoilMoistureMonitor').then((m) => m.SoilMoistureMonitor), { ssr: false })
-const LightPollutionMap = dynamic(() => import('@/components/map/LightPollutionMap').then((m) => m.LightPollutionMap), { ssr: false })
-const RiverFlowMonitor = dynamic(() => import('@/components/map/RiverFlowMonitor').then((m) => m.RiverFlowMonitor), { ssr: false })
-const VolcanoSeismicMonitor = dynamic(() => import('@/components/map/VolcanoSeismicMonitor').then((m) => m.VolcanoSeismicMonitor), { ssr: false })
-const WhaleMigrationTracker = dynamic(() => import('@/components/map/WhaleMigrationTracker').then((m) => m.WhaleMigrationTracker), { ssr: false })
-const AvalancheForecaster = dynamic(() => import('@/components/map/AvalancheForecaster').then((m) => m.AvalancheForecaster), { ssr: false })
-const AuroraForecaster = dynamic(() => import('@/components/map/AuroraForecaster').then((m) => m.AuroraForecaster), { ssr: false })
-const OzoneLayerMonitor = dynamic(() => import('@/components/map/OzoneLayerMonitor').then((m) => m.OzoneLayerMonitor), { ssr: false })
-const DeforestationTracker = dynamic(() => import('@/components/map/DeforestationTracker').then((m) => m.DeforestationTracker), { ssr: false })
-const MethaneEmissionsTracker = dynamic(() => import('@/components/map/MethaneEmissionsTracker').then((m) => m.MethaneEmissionsTracker), { ssr: false })
-const OceanAcidificationMonitor = dynamic(() => import('@/components/map/OceanAcidificationMonitor').then((m) => m.OceanAcidificationMonitor), { ssr: false })
-const SpaceDebrisTracker = dynamic(() => import('@/components/map/SpaceDebrisTracker').then((m) => m.SpaceDebrisTracker), { ssr: false })
-const TectonicStrainMonitor = dynamic(() => import('@/components/map/TectonicStrainMonitor').then((m) => m.TectonicStrainMonitor), { ssr: false })
-const PhytoBloomMonitor = dynamic(() => import('@/components/map/PhytoBloomMonitor').then((m) => m.PhytoBloomMonitor), { ssr: false })
-const SnowCoverMonitor = dynamic(() => import('@/components/map/SnowCoverMonitor').then((m) => m.SnowCoverMonitor), { ssr: false })
-const GeomagneticStormTracker = dynamic(() => import('@/components/map/GeomagneticStormTracker').then((m) => m.GeomagneticStormTracker), { ssr: false })
-const VolcanicGasMonitor = dynamic(() => import('@/components/map/VolcanicGasMonitor').then((m) => m.VolcanicGasMonitor), { ssr: false })
-const AquiferDepletionMonitor = dynamic(() => import('@/components/map/AquiferDepletionMonitor').then((m) => m.AquiferDepletionMonitor), { ssr: false })
-const StratosphericWindMonitor = dynamic(() => import('@/components/map/StratosphericWindMonitor').then((m) => m.StratosphericWindMonitor), { ssr: false })
-const MarineHeatwaveTracker = dynamic(() => import('@/components/map/MarineHeatwaveTracker').then((m) => m.MarineHeatwaveTracker), { ssr: false })
-const PrecipitationAnalyzer = dynamic(() => import('@/components/map/PrecipitationAnalyzer').then((m) => m.PrecipitationAnalyzer), { ssr: false })
-const CosmicRayMonitor = dynamic(() => import('@/components/map/CosmicRayMonitor').then((m) => m.CosmicRayMonitor), { ssr: false })
-const GreenlandIceTracker = dynamic(() => import('@/components/map/GreenlandIceTracker').then((m) => m.GreenlandIceTracker), { ssr: false })
-const RadiationExposureMonitor = dynamic(() => import('@/components/map/RadiationExposureMonitor').then((m) => m.RadiationExposureMonitor), { ssr: false })
-const PeatFireTracker = dynamic(() => import('@/components/map/PeatFireTracker').then((m) => m.PeatFireTracker), { ssr: false })
-const SeaLevelRiseProjector = dynamic(() => import('@/components/map/SeaLevelRiseProjector').then((m) => m.SeaLevelRiseProjector), { ssr: false })
-const ThermoclineMapper = dynamic(() => import('@/components/map/ThermoclineMapper').then((m) => m.ThermoclineMapper), { ssr: false })
-const AcidRainTracker = dynamic(() => import('@/components/map/AcidRainTracker').then((m) => m.AcidRainTracker), { ssr: false })
-const MethaneHydrateMonitor = dynamic(() => import('@/components/map/MethaneHydrateMonitor').then((m) => m.MethaneHydrateMonitor), { ssr: false })
-const KelpForestMonitor = dynamic(() => import('@/components/map/KelpForestMonitor').then((m) => m.KelpForestMonitor), { ssr: false })
-const GlacierLakeOutburstTracker = dynamic(() => import('@/components/map/GlacierLakeOutburstTracker').then((m) => m.GlacierLakeOutburstTracker), { ssr: false })
-const DustStormTracker = dynamic(() => import('@/components/map/DustStormTracker').then((m) => m.DustStormTracker), { ssr: false })
-const BioluminescenceTracker = dynamic(() => import('@/components/map/BioluminescenceTracker').then((m) => m.BioluminescenceTracker), { ssr: false })
-const UrbanSprawlMonitor = dynamic(() => import('@/components/map/UrbanSprawlMonitor').then((m) => m.UrbanSprawlMonitor), { ssr: false })
-const ViralOutbreakMapper = dynamic(() => import('@/components/map/ViralOutbreakMapper').then((m) => m.ViralOutbreakMapper), { ssr: false })
-const MagnetosphereMonitor = dynamic(() => import('@/components/map/MagnetosphereMonitor').then((m) => m.MagnetosphereMonitor), { ssr: false })
-const FogDensityMapper = dynamic(() => import('@/components/map/FogDensityMapper').then((m) => m.FogDensityMapper), { ssr: false })
-const CarbonCaptureTracker = dynamic(() => import('@/components/map/CarbonCaptureTracker').then((m) => m.CarbonCaptureTracker), { ssr: false })
-const HailStormTracker = dynamic(() => import('@/components/map/HailStormTracker').then((m) => m.HailStormTracker), { ssr: false })
-const SaharaReforestationTracker = dynamic(() => import('@/components/map/SaharaReforestationTracker').then((m) => m.SaharaReforestationTracker), { ssr: false })
-const DeepSeaVentMonitor = dynamic(() => import('@/components/map/DeepSeaVentMonitor').then((m) => m.DeepSeaVentMonitor), { ssr: false })
-const StormSurgePredictor = dynamic(() => import('@/components/map/StormSurgePredictor').then((m) => m.StormSurgePredictor), { ssr: false })
-const LandfillMonitor = dynamic(() => import('@/components/map/LandfillMonitor').then((m) => m.LandfillMonitor), { ssr: false })
-const SalinityGradientMapper = dynamic(() => import('@/components/map/SalinityGradientMapper').then((m) => m.SalinityGradientMapper), { ssr: false })
-const MicroplasticsTracker = dynamic(() => import('@/components/map/MicroplasticsTracker').then((m) => m.MicroplasticsTracker), { ssr: false })
-const RadioSignalMapper = dynamic(() => import('@/components/map/RadioSignalMapper').then((m) => m.RadioSignalMapper), { ssr: false })
-const VolcanicIslandMonitor = dynamic(() => import('@/components/map/VolcanicIslandMonitor').then((m) => m.VolcanicIslandMonitor), { ssr: false })
-const PermafrostThawMonitor = dynamic(() => import('@/components/map/PermafrostThawMonitor').then((m) => m.PermafrostThawMonitor), { ssr: false })
-const OceanCurrentTrackerPanel = dynamic(() => import('@/components/map/OceanCurrentTrackerPanel').then((m) => m.OceanCurrentTrackerPanel), { ssr: false })
-const SpaceWeatherAlertPanel = dynamic(() => import('@/components/map/SpaceWeatherAlertPanel').then((m) => m.SpaceWeatherAlertPanel), { ssr: false })
-const DesertMonitorPanel = dynamic(() => import('@/components/map/DesertMonitorPanel').then((m) => m.DesertMonitorPanel), { ssr: false })
-const TsunamiBuoyTracker = dynamic(() => import('@/components/map/TsunamiBuoyTracker').then((m) => m.TsunamiBuoyTracker), { ssr: false })
-const GlacierVelocityTracker = dynamic(() => import('@/components/map/GlacierVelocityTracker').then((m) => m.GlacierVelocityTracker), { ssr: false })
-const EarthquakeSwarmMonitor = dynamic(() => import('@/components/map/EarthquakeSwarmMonitor').then((m) => m.EarthquakeSwarmMonitor), { ssr: false })
-const MangroveRestorationTracker = dynamic(() => import('@/components/map/MangroveRestorationTracker').then((m) => m.MangroveRestorationTracker), { ssr: false })
-const CoralBleachingMonitor = dynamic(() => import('@/components/map/CoralBleachingMonitor').then((m) => m.CoralBleachingMonitor), { ssr: false })
-const ArcticSeaIceMonitor = dynamic(() => import('@/components/map/ArcticSeaIceMonitor').then((m) => m.ArcticSeaIceMonitor), { ssr: false })
-const SoilMoistureMapper = dynamic(() => import('@/components/map/SoilMoistureMapper').then((m) => m.SoilMoistureMapper), { ssr: false })
-const NoisePollutionMapper = dynamic(() => import('@/components/map/NoisePollutionMapper').then((m) => m.NoisePollutionMapper), { ssr: false })
-const LightPollutionMapper = dynamic(() => import('@/components/map/LightPollutionMapper').then((m) => m.LightPollutionMapper), { ssr: false })
-const GroundwaterRechargeTracker = dynamic(() => import('@/components/map/GroundwaterRechargeTracker').then((m) => m.GroundwaterRechargeTracker), { ssr: false })
-const AirQualityMonitor = dynamic(() => import('@/components/map/AirQualityMonitor').then((m) => m.AirQualityMonitor), { ssr: false })
-const SubglacialLakeExplorer = dynamic(() => import('@/components/map/SubglacialLakeExplorer').then((m) => m.SubglacialLakeExplorer), { ssr: false })
-const ThermokarstLakeMonitor = dynamic(() => import('@/components/map/ThermokarstLakeMonitor').then((m) => m.ThermokarstLakeMonitor), { ssr: false })
-const PaleoclimateProxyExplorer = dynamic(() => import('@/components/map/PaleoclimateProxyExplorer').then((m) => m.PaleoclimateProxyExplorer), { ssr: false })
-const GeomagneticallyInducedCurrentMonitor = dynamic(() => import('@/components/map/GeomagneticallyInducedCurrentMonitor').then((m) => m.GeomagneticallyInducedCurrentMonitor), { ssr: false })
-const SabkhaEnvironmentMonitor = dynamic(() => import('@/components/map/SabkhaEnvironmentMonitor').then((m) => m.SabkhaEnvironmentMonitor), { ssr: false })
-const CryosphereChangeTracker = dynamic(() => import('@/components/map/CryosphereChangeTracker').then((m) => m.CryosphereChangeTracker), { ssr: false })
-const AbyssalPlainMapper = dynamic(() => import('@/components/map/AbyssalPlainMapper').then((m) => m.AbyssalPlainMapper), { ssr: false })
-const FjordEcosystemMonitor = dynamic(() => import('@/components/map/FjordEcosystemMonitor').then((m) => m.FjordEcosystemMonitor), { ssr: false })
+// Panel groups loaded with next/dynamic + ssr:false
+// These create separate webpack chunks that are compiled on demand
+const MobileBottomPanels = dynamic(() => import('@/components/map/panel-groups/MobileBottomPanels').then(m => ({ default: m.MobileBottomPanels })), { ssr: false })
+const TopBarPanels = dynamic(() => import('@/components/map/panel-groups/TopBarPanels').then(m => ({ default: m.TopBarPanels })), { ssr: false })
+const ToolbarPanels = dynamic(() => import('@/components/map/panel-groups/ToolbarPanels').then(m => ({ default: m.ToolbarPanels })), { ssr: false })
+const DialogPanels = dynamic(() => import('@/components/map/panel-groups/DialogPanels').then(m => ({ default: m.DialogPanels })), { ssr: false })
+const MapOverlayPanels = dynamic(() => import('@/components/map/panel-groups/MapOverlayPanels').then(m => ({ default: m.MapOverlayPanels })), { ssr: false })
+const MonitorPanelRegistry = dynamic(() => import('@/components/map/panel-groups/MonitorPanelRegistry').then(m => ({ default: m.MonitorPanelRegistry })), { ssr: false })
+
 
 export default function Home() {
   const { toolMode, sidebarOpen, center, zoom, currentStyle, weatherEnabled, comparisonEnabled, sunPositionEnabled, heatmapEnabled, elevationRouteId, setSidebarOpen, setToolMode, setCenter, setZoom, setCurrentStyle, setComparisonEnabled } = useMapStore()
@@ -406,12 +185,6 @@ export default function Home() {
 
   // Register service worker for offline tile caching
   useServiceWorker()
-  const [addDialogOpen, setAddDialogOpen] = useState(false)
-  const [shortcutsOpen, setShortcutsOpen] = useState(false)
-  const [coordDialogOpen, setCoordDialogOpen] = useState(false)
-  const [exportDialogOpen, setExportDialogOpen] = useState(false)
-  const [bookmarkManagerOpen, setBookmarkManagerOpen] = useState(false)
-  const [shareDialogOpen, setShareDialogOpen] = useState(false)
   const embedDialogOpen = useMapStore((s) => s.embedDialogOpen)
   const setEmbedDialogOpen = useMapStore((s) => s.setEmbedDialogOpen)
   const markerCategoriesOpen = useMapStore((s) => s.markerCategoriesOpen)
@@ -422,18 +195,25 @@ export default function Home() {
   const setStylesMixerOpen = useMapStore((s) => s.setStylesMixerOpen)
   const routeSharingOpen = useMapStore((s) => s.routeSharingOpen)
   const setRouteSharingOpen = useMapStore((s) => s.setRouteSharingOpen)
-  const [geofenceDialogOpen, setGeofenceDialogOpen] = useState(false)
+  const shortcutsOpen = useMapStore((s) => s.shortcutsDialogOpen)
+  const setShortcutsOpen = useMapStore((s) => s.setShortcutsDialogOpen)
   const [aiSuggestionsOpen, setAiSuggestionsOpen] = useState(false)
-  const [distanceMatrixOpen, setDistanceMatrixOpen] = useState(false)
-  const [styleGalleryOpen, setStyleGalleryOpen] = useState(false)
   const [snapshotName, setSnapshotName] = useState('')
   const [snapshotSaveOpen, setSnapshotSaveOpen] = useState(false)
   const [geofenceCoords, setGeofenceCoords] = useState<{ lat: number; lng: number } | null>(null)
   const [showWelcome, setShowWelcome] = useState(true)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [mapInitialized, setMapInitialized] = useState(false)
+  const [panelPhase, setPanelPhase] = useState(0) // 0=core only, 1=panels, 2=all
   const compassAnimatingRef = useRef(false)
   const savedLocations = useMapStore((s) => s.savedLocations)
+
+  // Stagger panel loading to prevent OOM during webpack chunk compilation
+  useEffect(() => {
+    const timer1 = setTimeout(() => setPanelPhase(1), 2000)
+    const timer2 = setTimeout(() => setPanelPhase(2), 5000)
+    return () => { clearTimeout(timer1); clearTimeout(timer2) }
+  }, [])
 
   // Restore map state from URL params on page load
   useEffect(() => {
@@ -896,6 +676,11 @@ export default function Home() {
       color: 'from-pink-500 to-rose-500',
       icon: <Type className="h-3 w-3" />,
     },
+    notes: {
+      label: 'Notes',
+      color: 'from-yellow-500 to-amber-500',
+      icon: <PenTool className="h-3 w-3" />,
+    },
   }
 
   const currentTool = toolIndicator[toolMode]
@@ -942,26 +727,8 @@ export default function Home() {
       {/* Map */}
       <MapView />
 
-      {/* Drawing Layer - renders drawn features on the map */}
-      <DrawingLayer />
-
-      {/* Buffer Zone Layer - renders spatial analysis buffers */}
-      <BufferZoneLayer />
-
-      {/* Collaborator Cursors - shows other users' positions on the map */}
-      <CollaboratorCursors />
-
-      {/* Sun Position Overlay - renders terminator and subsolar point on the map */}
-      <SunPositionOverlay />
-
-      {/* Heatmap Layer - renders density heatmap from markers */}
-      <HeatmapLayer />
-
-      {/* Map Annotations Layer - renders annotations as GeoJSON on the map */}
-      <MapAnnotationsLayer />
-
-      {/* Map Comparison / Swipe View */}
-      <MapComparison />
+      {/* Map overlay panels (layers, indicators, overlays) - phase 1+ */}
+      {panelPhase >= 1 && <MapOverlayPanels />}
 
       {/* Crosshair overlay for measure/mark/directions mode */}
       {toolMode !== 'navigate' && (
@@ -998,21 +765,6 @@ export default function Home() {
         </div>
       )}
 
-      {/* Sidebar - responsive */}
-      <MapSidebar />
-
-      {/* Map Notifications - top right below top bar */}
-      <MapNotifications />
-
-      {/* Voice Navigation Indicator */}
-      <VoiceNavigator />
-
-      {/* Offline Indicator */}
-      <OfflineIndicator />
-
-      {/* Compass indicator (visible when map is rotated) */}
-      <CompassIndicator />
-
       {/* Top bar - Search and controls */}
       <div
         className="absolute top-2 right-2 left-2 sm:top-3 sm:right-3 sm:left-3 z-10 flex items-start gap-1.5 sm:gap-2 transition-all duration-300 md:pl-0"
@@ -1026,8 +778,7 @@ export default function Home() {
           </div>
         </div>
         <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
-          <UndoRedoBar />
-          <StyleSwitcher onBrowseAll={() => setStyleGalleryOpen(true)} />
+          {panelPhase >= 1 && <TopBarPanels />}
           <Button
             variant="outline"
             size="icon"
@@ -1063,9 +814,6 @@ export default function Home() {
           >
             <Save className="h-4 w-4" />
           </Button>
-          <ThemeToggle />
-          <LanguageSelector />
-          <NotificationCenter />
           <Button
             variant="outline"
             size="icon"
@@ -1160,7 +908,6 @@ export default function Home() {
           >
             <Code2 className="h-4 w-4" />
           </Button>
-          <VoiceNavigationToggle />
           <Button
             variant="outline"
             size="icon"
@@ -1181,7 +928,6 @@ export default function Home() {
           >
             <Gauge className="h-4 w-4" />
           </Button>
-          <CollaborationPanel />
           <Button
             variant="outline"
             size="icon"
@@ -1830,7 +1576,7 @@ export default function Home() {
             title="Solar Power Planner"
             aria-label="Open solar power planner"
           >
-            <SunMedium className="h-4 w-4" />
+            <SunIcon3 className="h-4 w-4" />
           </Button>
           <Button
             variant="outline"
@@ -2799,7 +2545,6 @@ export default function Home() {
 
       {/* Tool toolbar - left side (desktop only) */}
       <div className="hidden md:block absolute left-4 z-10 transition-all duration-300" style={{ top: '80px' }}>
-        <MapToolbar aiSuggestionsOpen={aiSuggestionsOpen} setAiSuggestionsOpen={setAiSuggestionsOpen} />
         {/* Track Record Button */}
         <div className="mt-2 flex justify-center">
           <TooltipProvider delayDuration={200}>
@@ -2986,47 +2731,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Drawing Toolbar - appears when draw tool is active */}
-      <DrawingToolbar />
-
-      {/* AI Suggestions Panel - left side below toolbar (desktop only) */}
-      {aiSuggestionsOpen && (
-        <div className="hidden md:block absolute z-10" style={{ left: '80px', top: '80px' }}>
-          <AISuggestionsPanel />
-        </div>
-      )}
-
-      {/* Route Analytics Panel - left side below AI suggestions (desktop only) */}
-      <div className="hidden md:block absolute z-10" style={{ left: aiSuggestionsOpen ? '400px' : '80px', top: '80px', transition: 'left 0.3s ease-in-out' }}>
-        <RouteAnalyticsPanel />
-      </div>
-
-      {/* Route Comparison Panel - right side below search bar (desktop only) */}
-      {comparedRoutes.length > 0 && (
-        <div className="hidden md:block absolute z-10" style={{ right: '20px', top: '80px' }}>
-          <RouteComparisonPanel />
-        </div>
-      )}
-
-      {/* Terrain Analysis Panel - right side below comparison (desktop only) */}
-      {terrainAnalysisRouteId && (
-        <div className="hidden md:block absolute z-10" style={{ right: comparedRoutes.length > 0 ? '560px' : '20px', top: '80px', transition: 'right 0.3s ease-in-out' }}>
-          <TerrainAnalysisPanel />
-        </div>
-      )}
-
-      {/* Accessibility Panel - right side (desktop only) */}
-      {accessibilityPanelOpen && (
-        <div className="hidden md:block absolute z-10" style={{ right: '20px', top: '80px' }}>
-          <AccessibilityPanel />
-        </div>
-      )}
-
-      {/* Quick Jump Panel - left side below toolbar (desktop only) */}
-      <div className="hidden md:block absolute z-10 transition-all duration-300" style={{ left: sidebarOpen ? '332px' : '16px', top: '140px' }}>
-        <QuickJumpPanel onOpenBookmarkManager={() => setBookmarkManagerOpen(true)} />
-      </div>
-
       {/* Current tool indicator */}
       <AnimatePresence mode="wait">
         <motion.div
@@ -3050,11 +2754,6 @@ export default function Home() {
           </Badge>
         </motion.div>
       </AnimatePresence>
-
-      {/* Mobile weather bar - below search on mobile only */}
-      <div className="md:hidden absolute top-[52px] sm:top-[58px] left-2 right-2 sm:left-3 sm:right-3 z-10">
-        <MobileWeatherBar />
-      </div>
 
       {/* Mobile tool indicator - shows on mobile below search/weather */}
       <div className="md:hidden absolute top-[88px] sm:top-24 left-2 sm:left-3 z-10">
@@ -3102,62 +2801,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Map Stats Panel - right side above footer (desktop only) */}
-      <div className="hidden md:block absolute bottom-12 right-5 z-10">
-        <MapStatsPanel />
-      </div>
-
-      {/* Weather Panel - left side above footer (desktop only) */}
-      <div className="hidden md:block absolute bottom-12 z-10" style={{ left: sidebarOpen ? '332px' : '20px', transition: 'left 0.3s ease-in-out' }}>
-        <WeatherPanel />
-      </div>
-
-      {/* Elevation Profile Panel - above weather panel when measuring, routing, or viewing route elevation (desktop only) */}
-      <div
-        className="hidden md:block absolute z-10"
-        style={{
-          left: sidebarOpen ? '332px' : '20px',
-          bottom: (toolMode === 'measure' || toolMode === 'directions' || elevationRouteId !== null) && weatherEnabled ? '260px' : '12px',
-          transition: 'left 0.3s ease-in-out, bottom 0.3s ease-in-out',
-        }}
-      >
-        <ElevationProfile />
-      </div>
-
-      {/* Heatmap Controls - bottom-left above coordinates (desktop only) */}
-      <div
-        className="hidden md:block absolute z-10"
-        style={{
-          left: sidebarOpen ? '332px' : '20px',
-          bottom: (toolMode === 'measure' || toolMode === 'directions' || elevationRouteId !== null) ? (weatherEnabled ? '360px' : '120px') : (weatherEnabled ? '260px' : '12px'),
-          transition: 'left 0.3s ease-in-out, bottom 0.3s ease-in-out',
-        }}
-      >
-        <HeatmapControls />
-      </div>
-
-      {/* Sun Info Panel - right side above map stats (desktop only) */}
-      <div
-        className="hidden md:block absolute z-10"
-        style={{
-          right: '20px',
-          bottom: sunPositionEnabled ? '100px' : '12px',
-          transition: 'bottom 0.3s ease-in-out',
-        }}
-      >
-        <SunInfoPanel />
-      </div>
-
-      {/* Sun Info Panel - mobile version, bottom-left */}
-      <div className="md:hidden absolute bottom-20 left-3 z-10">
-        <SunInfoPanel />
-      </div>
-
-      {/* Minimap - bottom right above MapStatsPanel (desktop only) */}
-      <MiniMap />
-
-      {/* Map Legend - right side below minimap (desktop only) */}
-      <MapLegend />
 
       {/* Coordinates display - bottom center (desktop only) */}
       <div className="hidden md:block absolute bottom-12 left-1/2 -translate-x-1/2 z-10">
@@ -3204,21 +2847,28 @@ export default function Home() {
               </div>
               {/* Floating particles background */}
               <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
-                {[...Array(6)].map((_, i) => (
+                {[
+                  { x: 50, y: 80, dur: 3.5 },
+                  { x: 120, y: 40, dur: 4.2 },
+                  { x: 200, y: 110, dur: 3.8 },
+                  { x: 280, y: 60, dur: 4.5 },
+                  { x: 160, y: 130, dur: 3.2 },
+                  { x: 90, y: 20, dur: 4.0 },
+                ].map((p, i) => (
                   <motion.div
                     key={i}
                     className="absolute w-1 h-1 rounded-full bg-emerald-400"
                     initial={{
-                      x: Math.random() * 300,
-                      y: Math.random() * 150,
+                      x: p.x,
+                      y: p.y,
                       opacity: 0,
                     }}
                     animate={{
-                      y: [Math.random() * 150, Math.random() * 50, Math.random() * 150],
+                      y: [p.y, p.y - 30, p.y + 10],
                       opacity: [0, 0.6, 0],
                     }}
                     transition={{
-                      duration: 3 + Math.random() * 2,
+                      duration: p.dur,
                       repeat: Infinity,
                       delay: i * 0.5,
                       ease: 'easeInOut',
@@ -3297,121 +2947,6 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* Add Location Dialog */}
-      <AddLocationDialog open={addDialogOpen} onOpenChange={setAddDialogOpen} />
-
-      {/* Coordinate Input Dialog */}
-      <CoordinateInputDialog open={coordDialogOpen} onOpenChange={setCoordDialogOpen} />
-
-      {/* Map Export Dialog */}
-      <MapExportDialog open={exportDialogOpen} onOpenChange={setExportDialogOpen} />
-
-      {/* Map Print Dialog */}
-      <MapPrintDialog />
-
-      {/* Bookmark Manager Dialog */}
-      <BookmarkManager open={bookmarkManagerOpen} onOpenChange={setBookmarkManagerOpen} />
-
-      {/* Keyboard Shortcuts Dialog */}
-      <KeyboardShortcutsDialog open={shortcutsOpen} onOpenChange={setShortcutsOpen} />
-
-      {/* Share Dialog */}
-      <ShareDialog open={shareDialogOpen} onOpenChange={setShareDialogOpen} />
-
-      {/* Embed Map Dialog */}
-      <EmbedMapDialog open={embedDialogOpen} onOpenChange={setEmbedDialogOpen} />
-
-      {/* Marker Categories Manager */}
-      <MarkerCategoriesManager open={markerCategoriesOpen} onOpenChange={setMarkerCategoriesOpen} />
-
-      {/* Waypoint Optimizer */}
-      <WaypointOptimizer open={waypointOptimizerOpen} onOpenChange={setWaypointOptimizerOpen} />
-
-      {/* Styles Mixer */}
-      <StylesMixer open={stylesMixerOpen} onOpenChange={setStylesMixerOpen} />
-
-      {/* Route Sharing Dialog */}
-      <RouteSharingDialog open={routeSharingOpen} onOpenChange={setRouteSharingOpen} />
-
-      {/* Route Playback Dialog */}
-      <RoutePlayback />
-
-      {/* Speed Alert System Dialog */}
-      <SpeedAlertSystem />
-
-      {/* Altitude Alert System Dialog */}
-      <AltitudeAlertSystem />
-
-      {/* Custom Compass Rose Overlay */}
-      <CustomCompassRose />
-
-      {/* Multi-Stop Route Planner */}
-      <MultiStopRoutePlanner />
-
-      {/* Enhanced Weather Dashboard */}
-      <EnhancedWeatherDashboard />
-
-      {/* Sun Shadow Calculator */}
-      <SunShadowCalculator />
-
-      {/* SVG Marker Designer */}
-      <SVGMarkerDesigner />
-
-      {/* Map Labels Overlay */}
-      <MapLabelsOverlay />
-
-      {/* Contour Generator */}
-      <ContourGenerator />
-
-      {/* Location Clustering */}
-      <LocationClusterMap />
-
-      {/* Map Story Creator */}
-      <MapStoryCreator />
-
-      {/* Terrain Profile 3D */}
-      <TerrainProfile3D />
-
-      {/* Data Import/Export */}
-      <DataImportExport />
-
-      {/* Advanced Marker Manager */}
-      <AdvancedMarkerManager />
-
-      {/* Geofence Alert History */}
-      <GeofenceAlertHistory />
-
-      {/* Coordinate Grid Overlay */}
-      <CoordinateGridOverlay />
-
-      {/* Map Overlay Gallery */}
-      <MapOverlayGallery />
-
-      {/* Location Visit Timeline */}
-      <LocationVisitTimeline />
-
-      {/* Weather Comparison */}
-      <WeatherComparison />
-
-      {/* Geofence Dialog */}
-      <GeofenceDialog
-        open={geofenceDialogOpen}
-        onOpenChange={setGeofenceDialogOpen}
-        latitude={geofenceCoords?.lat}
-        longitude={geofenceCoords?.lng}
-      />
-
-      {/* Distance Matrix Dialog */}
-      <DistanceMatrix open={distanceMatrixOpen} onOpenChange={setDistanceMatrixOpen} />
-
-      {/* Measurement Suite Dialog */}
-      <MeasurementSuite />
-
-      {/* Trail Finder Dialog */}
-      <TrailFinder />
-
-      {/* Style Gallery Dialog */}
-      <StyleGallery open={styleGalleryOpen} onOpenChange={setStyleGalleryOpen} />
 
       {/* Snapshot Save Dialog */}
       {snapshotSaveOpen && (
@@ -3473,470 +3008,17 @@ export default function Home() {
       {/* Track Recorder Panel */}
       <TrackRecorder />
 
-      {/* PWA Install Banner */}
-      <PWAInstallBanner />
+      {/* Toolbar panels (positioned panels, weather, elevation, etc.) - phase 2+ */}
+      {panelPhase >= 2 && <ToolbarPanels />}
 
-      {/* 3D Buildings Layer */}
-      <Buildings3DLayer />
+      {/* Mobile bottom panels - phase 1+ */}
+      {panelPhase >= 1 && <MobileBottomPanels />}
 
-      {/* Building Info Panel */}
-      <BuildingInfoPanel />
+      {/* Dialog panels (modals, dialogs, managers) - phase 2+ */}
+      {panelPhase >= 2 && <DialogPanels geofenceCoords={geofenceCoords} />}
 
-      {/* Map Timeline */}
-      <MapTimeline />
-
-      {/* Analytics Dashboard */}
-      <MapAnalyticsDashboard />
-
-      {/* Air Quality Panel */}
-      <AirQualityPanel />
-
-      {/* GPS Simulator */}
-      <GPSSimulator />
-
-      {/* Map Notes Layer */}
-      <MapNotesLayer />
-
-      {/* Batch Operations Action Bar */}
-      <BatchActionBar />
-
-      {/* Track Statistics Panel */}
-      <TrackStatsPanel />
-
-      {/* Pedometer Widget */}
-      <PedometerWidget />
-
-      {/* Map Usage Stats Dialog */}
-      <MapUsageStats />
-
-      {/* Screenshot Manager */}
-      <ScreenshotManager />
-
-      {/* Route Difficulty Analyzer */}
-      <RouteDifficultyAnalyzer />
-
-      {/* Map Collage Creator */}
-      <MapCollageCreator />
-
-      {/* Nearby Events Finder */}
-      <NearbyEventsFinder />
-
-      {/* Coordinate Share Card */}
-      <CoordinateShareCard />
-
-      {/* Map Wallpaper Generator */}
-      <MapWallpaperGenerator />
-
-      {/* Chat Assistant */}
-      <MapChatAssistant />
-
-      {/* POI Density Heatmap Layer */}
-      <POIDensityHeatmap />
-
-      {/* Map Animation Studio */}
-      <MapAnimationStudio />
-
-      {/* Smart Route Planner */}
-      <SmartRoutePlanner />
-
-      {/* Map Data Visualizer */}
-      <MapDataVisualizer />
-
-      {/* Field Survey Tool */}
-      <FieldSurveyTool />
-
-      {/* Emergency Route Planner */}
-      <EmergencyRoutePlanner />
-
-      {/* Map Comparison Slider */}
-      <MapComparisonSlider />
-
-      {/* Noise Heatmap Overlay */}
-      <NoiseHeatmapOverlay />
-
-      {/* Solar Exposure Analyzer */}
-      <SolarExposureAnalyzer />
-
-      {/* Map Style Forge */}
-      <MapStyleForge />
-
-      {/* Topographic Profiler */}
-      <TopographicProfiler />
-
-      {/* Maritime Navigation */}
-      <MaritimeNavigation />
-
-      {/* Geocaching Toolkit */}
-      <GeocachingToolkit />
-
-      {/* Atmospheric Dashboard */}
-      <AtmosphericDashboard />
-
-      {/* Wildlife Tracker */}
-      <WildlifeTracker />
-
-      {/* Cultural Heritage Map */}
-      <CulturalHeritageMap />
-
-      {/* Hydrology Analyzer */}
-      <HydrologyAnalyzer />
-
-      {/* Glacier Monitor */}
-      <GlacierMonitor />
-
-      {/* Seismic Activity Map */}
-      <SeismicActivityMap />
-
-      {/* Soil Analysis Panel */}
-      <SoilAnalysisPanel />
-
-      {/* Urban Growth Simulator */}
-      <UrbanGrowthSimulator />
-
-      {/* Airspace Navigator */}
-      <AirspaceNavigator />
-
-      {/* Reef Health Monitor */}
-      <ReefHealthMonitor />
-
-      {/* Magnetic Field Mapper */}
-      <MagneticFieldMapper />
-
-      {/* Flood Risk Analyzer */}
-      <FloodRiskAnalyzer />
-
-      {/* Volcano Monitor */}
-      <VolcanoMonitor />
-
-      {/* Avalanche Risk Map */}
-      <AvalancheRiskMap />
-
-      {/* Crop Health Analyzer */}
-      <CropHealthAnalyzer />
-
-      {/* Space Track Viewer */}
-      <SpaceTrackViewer />
-
-      {/* Archaeology Map */}
-      <ArchaeologyMap />
-
-      {/* Pollution Tracker */}
-      <PollutionTracker />
-
-      {/* Tidal Predictor */}
-      <TidalPredictor />
-
-      {/* Wind Farm Optimizer */}
-      <WindFarmOptimizer />
-
-      {/* Desertification Monitor */}
-      <DesertificationMonitor />
-
-      {/* Mineral Exploration */}
-      <MineralExploration />
-
-      {/* Ocean Current Mapper */}
-      <OceanCurrentMapper />
-
-      {/* Permafrost Thaw Tracker */}
-      <PermafrostThawTracker />
-
-      {/* Lightning Strike Map */}
-      <LightningStrikeMap />
-
-      {/* Biome Classifier */}
-      <BiomeClassifier />
-
-      {/* Groundwater Explorer */}
-      <GroundwaterExplorer />
-
-      {/* Solar Power Planner */}
-      <SolarPowerPlanner />
-
-      {/* Volcanic Ash Tracker */}
-      <VolcanicAshTracker />
-
-      {/* Coastal Erosion Monitor */}
-      <CoastalErosionMonitor />
-
-      {/* Carbon Footprint Mapper */}
-      <CarbonFootprintMapper />
-
-      {/* Wildlife Migration Tracker */}
-      <WildlifeMigrationTracker />
-
-      {/* Ice Sheet Monitor */}
-      <IceSheetMonitor />
-
-      {/* Drought Monitor Panel */}
-      <DroughtMonitorPanel />
-
-      {/* Land Subsidence Tracker */}
-      <LandSubsidenceTracker />
-
-      {/* Coral Bleaching Alert */}
-      <CoralBleachingAlert />
-
-      {/* Tsunami Alert System */}
-      <TsunamiAlertSystem />
-
-      {/* Soil Erosion Monitor */}
-      <SoilErosionMonitor />
-
-      {/* Watershed Manager Panel */}
-      <WatershedManagerPanel />
-
-      {/* Tectonic Plate Viewer */}
-      <TectonicPlateViewer />
-
-      {/* Air Quality Forecaster */}
-      <AirQualityForecaster />
-
-      {/* Glacial Lake Monitor */}
-      <GlacialLakeMonitor />
-
-      {/* Space Weather Monitor */}
-      <SpaceWeatherMonitor />
-
-      {/* Peatland Monitor Panel */}
-      <PeatlandMonitorPanel />
-
-      {/* Mangrove Monitor */}
-      <MangroveMonitor />
-
-      {/* Sandstorm Tracker */}
-      <SandstormTracker />
-
-      {/* Wetland Mapper */}
-      <WetlandMapper />
-
-      {/* Urban Heat Island */}
-      <UrbanHeatIsland />
-
-      {/* Wildfire Risk Assessor */}
-      <WildfireRiskAssessor />
-
-      {/* Algal Bloom Tracker */}
-      <AlgalBloomTracker />
-
-      {/* Landslide Predictor */}
-      <LandslidePredictor />
-
-      {/* Sea Ice Navigator */}
-      <SeaIceNavigator />
-
-      {/* Cloud Cover Analyzer */}
-      <CloudCoverAnalyzer />
-
-      {/* Soil Moisture Monitor */}
-      <SoilMoistureMonitor />
-
-      {/* Light Pollution Map */}
-      <LightPollutionMap />
-
-      {/* River Flow Monitor */}
-      <RiverFlowMonitor />
-
-      {/* Volcano Seismic Monitor */}
-      <VolcanoSeismicMonitor />
-
-      {/* Whale Migration Tracker */}
-      <WhaleMigrationTracker />
-
-      {/* Avalanche Forecaster */}
-      <AvalancheForecaster />
-
-      {/* Aurora Forecaster */}
-      <AuroraForecaster />
-
-      {/* Ozone Layer Monitor */}
-      <OzoneLayerMonitor />
-
-      {/* Deforestation Tracker */}
-      <DeforestationTracker />
-
-      {/* Methane Emissions Tracker */}
-      <MethaneEmissionsTracker />
-
-      {/* Ocean Acidification Monitor */}
-      <OceanAcidificationMonitor />
-
-      {/* Space Debris Tracker */}
-      <SpaceDebrisTracker />
-
-      {/* Tectonic Strain Monitor */}
-      <TectonicStrainMonitor />
-
-      {/* Phytoplankton Bloom Monitor */}
-      <PhytoBloomMonitor />
-
-      {/* Snow Cover Monitor */}
-      <SnowCoverMonitor />
-
-      {/* Geomagnetic Storm Tracker */}
-      <GeomagneticStormTracker />
-
-      {/* Volcanic Gas Monitor */}
-      <VolcanicGasMonitor />
-
-      {/* Aquifer Depletion Monitor */}
-      <AquiferDepletionMonitor />
-
-      {/* Stratospheric Wind Monitor */}
-      <StratosphericWindMonitor />
-
-      {/* Marine Heatwave Tracker */}
-      <MarineHeatwaveTracker />
-
-      {/* Precipitation Analyzer */}
-      <PrecipitationAnalyzer />
-
-      {/* Cosmic Ray Monitor */}
-      <CosmicRayMonitor />
-
-      {/* Greenland Ice Tracker */}
-      <GreenlandIceTracker />
-
-      {/* Radiation Exposure Monitor */}
-      <RadiationExposureMonitor />
-
-      {/* Peat Fire Tracker */}
-      <PeatFireTracker />
-
-      {/* Sea Level Rise Projector */}
-      <SeaLevelRiseProjector />
-
-      {/* Thermocline Mapper */}
-      <ThermoclineMapper />
-
-      {/* Acid Rain Tracker */}
-      <AcidRainTracker />
-
-      {/* Methane Hydrate Monitor */}
-      <MethaneHydrateMonitor />
-
-      {/* Kelp Forest Monitor */}
-      <KelpForestMonitor />
-
-      {/* Glacier Lake Outburst Tracker */}
-      <GlacierLakeOutburstTracker />
-
-      {/* Dust Storm Tracker */}
-      <DustStormTracker />
-
-      {/* Bioluminescence Tracker */}
-      <BioluminescenceTracker />
-
-      {/* Urban Sprawl Monitor */}
-      <UrbanSprawlMonitor />
-
-      {/* Viral Outbreak Mapper */}
-      <ViralOutbreakMapper />
-
-      {/* Magnetosphere Monitor */}
-      <MagnetosphereMonitor />
-
-      {/* Fog Density Mapper */}
-      <FogDensityMapper />
-
-      {/* Carbon Capture Tracker */}
-      <CarbonCaptureTracker />
-
-      {/* Hail Storm Tracker */}
-      <HailStormTracker />
-
-      {/* Sahara Reforestation Tracker */}
-      <SaharaReforestationTracker />
-
-      {/* Deep Sea Vent Monitor */}
-      <DeepSeaVentMonitor />
-
-      {/* Storm Surge Predictor */}
-      <StormSurgePredictor />
-
-      {/* Landfill Monitor */}
-      <LandfillMonitor />
-
-      {/* Salinity Gradient Mapper */}
-      <SalinityGradientMapper />
-
-      {/* Microplastics Tracker */}
-      <MicroplasticsTracker />
-
-      {/* Radio Signal Mapper */}
-      <RadioSignalMapper />
-
-      {/* Volcanic Island Monitor */}
-      <VolcanicIslandMonitor />
-
-      {/* Permafrost Thaw Monitor */}
-      <PermafrostThawMonitor />
-
-      {/* Ocean Current Tracker */}
-      <OceanCurrentTrackerPanel />
-
-      {/* Space Weather Alert */}
-      <SpaceWeatherAlertPanel />
-
-      {/* Desert Monitor */}
-      <DesertMonitorPanel />
-
-      {/* Tsunami Buoy Tracker */}
-      <TsunamiBuoyTracker />
-
-      {/* Glacier Velocity Tracker */}
-      <GlacierVelocityTracker />
-
-      {/* Earthquake Swarm Monitor */}
-      <EarthquakeSwarmMonitor />
-
-      {/* Mangrove Restoration Tracker */}
-      <MangroveRestorationTracker />
-
-      {/* Coral Bleaching Monitor */}
-      <CoralBleachingMonitor />
-
-      {/* Arctic Sea Ice Monitor */}
-      <ArcticSeaIceMonitor />
-
-      {/* Soil Moisture Mapper */}
-      <SoilMoistureMapper />
-
-      {/* Noise Pollution Mapper */}
-      <NoisePollutionMapper />
-
-      {/* Light Pollution Mapper */}
-      <LightPollutionMapper />
-
-      {/* Groundwater Recharge Tracker */}
-      <GroundwaterRechargeTracker />
-
-      {/* Air Quality Monitor */}
-      <AirQualityMonitor />
-
-      {/* Subglacial Lake Explorer */}
-      <SubglacialLakeExplorer />
-
-      {/* Thermokarst Lake Monitor */}
-      <ThermokarstLakeMonitor />
-
-      {/* Paleoclimate Proxy Explorer */}
-      <PaleoclimateProxyExplorer />
-
-      {/* Geomagnetically Induced Current Monitor */}
-      <GeomagneticallyInducedCurrentMonitor />
-
-      {/* Sabkha Environment Monitor */}
-      <SabkhaEnvironmentMonitor />
-
-      {/* Cryosphere Change Tracker */}
-      <CryosphereChangeTracker />
-
-      {/* Abyssal Plain Mapper */}
-      <AbyssalPlainMapper />
-
-      {/* Fjord Ecosystem Monitor */}
-      <FjordEcosystemMonitor />
+      {/* Monitor panels (environmental/geospatial monitoring) - phase 2+ */}
+      {panelPhase >= 2 && <MonitorPanelRegistry />}
 
       {/* Footer */}
       <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-2 sm:px-3 md:px-4 safe-area-bottom before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">
