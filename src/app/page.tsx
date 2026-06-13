@@ -78,157 +78,7 @@ import { AdvancedMarkerManager } from '@/components/map/AdvancedMarkerManager'
 import { GeofenceAlertHistory } from '@/components/map/GeofenceAlertHistory'
 import { LocationVisitTimeline } from '@/components/map/LocationVisitTimeline'
 import { WeatherComparison } from '@/components/map/WeatherComparison'
-import { MeasurementSuite } from '@/components/map/MeasurementSuite'
-import { TrailFinder } from '@/components/map/TrailFinder'
-import { PedometerWidget } from '@/components/map/PedometerWidget'
-import { MapUsageStats } from '@/components/map/MapUsageStats'
-import { ScreenshotManager } from '@/components/map/ScreenshotManager'
-import { RouteDifficultyAnalyzer } from '@/components/map/RouteDifficultyAnalyzer'
-import { MapCollageCreator } from '@/components/map/MapCollageCreator'
-import { NearbyEventsFinder } from '@/components/map/NearbyEventsFinder'
-import { AltitudeAlertSystem } from '@/components/map/AltitudeAlertSystem'
-import { CustomCompassRose } from '@/components/map/CustomCompassRose'
-import { MultiStopRoutePlanner } from '@/components/map/MultiStopRoutePlanner'
-import { EnhancedWeatherDashboard } from '@/components/map/EnhancedWeatherDashboard'
-import { SunShadowCalculator } from '@/components/map/SunShadowCalculator'
-import { SVGMarkerDesigner } from '@/components/map/SVGMarkerDesigner'
-import { MapChatAssistant } from '@/components/map/MapChatAssistant'
-import { POIDensityHeatmap } from '@/components/map/POIDensityHeatmap'
-import { CoordinateShareCard } from '@/components/map/CoordinateShareCard'
-import { MapWallpaperGenerator } from '@/components/map/MapWallpaperGenerator'
-import { MapAnimationStudio } from '@/components/map/MapAnimationStudio'
-import { SmartRoutePlanner } from '@/components/map/SmartRoutePlanner'
-import { MapDataVisualizer } from '@/components/map/MapDataVisualizer'
-import { FieldSurveyTool } from '@/components/map/FieldSurveyTool'
-import { EmergencyRoutePlanner } from '@/components/map/EmergencyRoutePlanner'
-import { MapComparisonSlider } from '@/components/map/MapComparisonSlider'
-import { NoiseHeatmapOverlay } from '@/components/map/NoiseHeatmapOverlay'
-import { SolarExposureAnalyzer } from '@/components/map/SolarExposureAnalyzer'
-import { MapStyleForge } from '@/components/map/MapStyleForge'
-import { TopographicProfiler } from '@/components/map/TopographicProfiler'
-import { MaritimeNavigation } from '@/components/map/MaritimeNavigation'
-import { GeocachingToolkit } from '@/components/map/GeocachingToolkit'
-import { AtmosphericDashboard } from '@/components/map/AtmosphericDashboard'
-import { WildlifeTracker } from '@/components/map/WildlifeTracker'
-import { CulturalHeritageMap } from '@/components/map/CulturalHeritageMap'
-import { HydrologyAnalyzer } from '@/components/map/HydrologyAnalyzer'
-import { GlacierMonitor } from '@/components/map/GlacierMonitor'
-import { SeismicActivityMap } from '@/components/map/SeismicActivityMap'
-import { SoilAnalysisPanel } from '@/components/map/SoilAnalysisPanel'
-import { UrbanGrowthSimulator } from '@/components/map/UrbanGrowthSimulator'
-import { AirspaceNavigator } from '@/components/map/AirspaceNavigator'
-import { ReefHealthMonitor } from '@/components/map/ReefHealthMonitor'
-import { MagneticFieldMapper } from '@/components/map/MagneticFieldMapper'
-import { FloodRiskAnalyzer } from '@/components/map/FloodRiskAnalyzer'
-import { VolcanoMonitor } from '@/components/map/VolcanoMonitor'
-import { AvalancheRiskMap } from '@/components/map/AvalancheRiskMap'
-import { CropHealthAnalyzer } from '@/components/map/CropHealthAnalyzer'
-import { SpaceTrackViewer } from '@/components/map/SpaceTrackViewer'
-import { ArchaeologyMap } from '@/components/map/ArchaeologyMap'
-import { PollutionTracker } from '@/components/map/PollutionTracker'
-import { TidalPredictor } from '@/components/map/TidalPredictor'
-import { WindFarmOptimizer } from '@/components/map/WindFarmOptimizer'
-import { DesertificationMonitor } from '@/components/map/DesertificationMonitor'
-import { MineralExploration } from '@/components/map/MineralExploration'
-import { OceanCurrentMapper } from '@/components/map/OceanCurrentMapper'
-import { PermafrostThawTracker } from '@/components/map/PermafrostThawTracker'
-import { LightningStrikeMap } from '@/components/map/LightningStrikeMap'
-import { BiomeClassifier } from '@/components/map/BiomeClassifier'
-import { GroundwaterExplorer } from '@/components/map/GroundwaterExplorer'
-import { SolarPowerPlanner } from '@/components/map/SolarPowerPlanner'
-import { VolcanicAshTracker } from '@/components/map/VolcanicAshTracker'
-import { CoastalErosionMonitor } from '@/components/map/CoastalErosionMonitor'
-import { CarbonFootprintMapper } from '@/components/map/CarbonFootprintMapper'
-import { WildlifeMigrationTracker } from '@/components/map/WildlifeMigrationTracker'
-import { IceSheetMonitor } from '@/components/map/IceSheetMonitor'
-import { DroughtMonitorPanel } from '@/components/map/DroughtMonitorPanel'
-import { LandSubsidenceTracker } from '@/components/map/LandSubsidenceTracker'
-import { CoralBleachingAlert } from '@/components/map/CoralBleachingAlert'
-import { TsunamiAlertSystem } from '@/components/map/TsunamiAlertSystem'
-import { SoilErosionMonitor } from '@/components/map/SoilErosionMonitor'
-import { WatershedManagerPanel } from '@/components/map/WatershedManagerPanel'
-import { TectonicPlateViewer } from '@/components/map/TectonicPlateViewer'
-import { AirQualityForecaster } from '@/components/map/AirQualityForecaster'
-import { GlacialLakeMonitor } from '@/components/map/GlacialLakeMonitor'
-import { SpaceWeatherMonitor } from '@/components/map/SpaceWeatherMonitor'
-import { PeatlandMonitorPanel } from '@/components/map/PeatlandMonitorPanel'
-import { MangroveMonitor } from '@/components/map/MangroveMonitor'
-import { SandstormTracker } from '@/components/map/SandstormTracker'
-import { WetlandMapper } from '@/components/map/WetlandMapper'
-import { UrbanHeatIsland } from '@/components/map/UrbanHeatIsland'
-import { WildfireRiskAssessor } from '@/components/map/WildfireRiskAssessor'
-import { AlgalBloomTracker } from '@/components/map/AlgalBloomTracker'
-import { LandslidePredictor } from '@/components/map/LandslidePredictor'
-import { SeaIceNavigator } from '@/components/map/SeaIceNavigator'
-import { CloudCoverAnalyzer } from '@/components/map/CloudCoverAnalyzer'
-import { SoilMoistureMonitor } from '@/components/map/SoilMoistureMonitor'
-import { LightPollutionMap } from '@/components/map/LightPollutionMap'
-import { RiverFlowMonitor } from '@/components/map/RiverFlowMonitor'
-import { VolcanoSeismicMonitor } from '@/components/map/VolcanoSeismicMonitor'
-import { WhaleMigrationTracker } from '@/components/map/WhaleMigrationTracker'
-import { AvalancheForecaster } from '@/components/map/AvalancheForecaster'
-import { AuroraForecaster } from '@/components/map/AuroraForecaster'
-import { OzoneLayerMonitor } from '@/components/map/OzoneLayerMonitor'
-import { DeforestationTracker } from '@/components/map/DeforestationTracker'
-import { MethaneEmissionsTracker } from '@/components/map/MethaneEmissionsTracker'
-import { OceanAcidificationMonitor } from '@/components/map/OceanAcidificationMonitor'
-import { SpaceDebrisTracker } from '@/components/map/SpaceDebrisTracker'
-import { TectonicStrainMonitor } from '@/components/map/TectonicStrainMonitor'
-import { PhytoBloomMonitor } from '@/components/map/PhytoBloomMonitor'
-import { SnowCoverMonitor } from '@/components/map/SnowCoverMonitor'
-import { GeomagneticStormTracker } from '@/components/map/GeomagneticStormTracker'
-import { VolcanicGasMonitor } from '@/components/map/VolcanicGasMonitor'
-import { AquiferDepletionMonitor } from '@/components/map/AquiferDepletionMonitor'
-import { StratosphericWindMonitor } from '@/components/map/StratosphericWindMonitor'
-import { MarineHeatwaveTracker } from '@/components/map/MarineHeatwaveTracker'
-import { PrecipitationAnalyzer } from '@/components/map/PrecipitationAnalyzer'
-import { CosmicRayMonitor } from '@/components/map/CosmicRayMonitor'
-import { GreenlandIceTracker } from '@/components/map/GreenlandIceTracker'
-import { RadiationExposureMonitor } from '@/components/map/RadiationExposureMonitor'
-import { PeatFireTracker } from '@/components/map/PeatFireTracker'
-import { SeaLevelRiseProjector } from '@/components/map/SeaLevelRiseProjector'
-import { ThermoclineMapper } from '@/components/map/ThermoclineMapper'
-import { AcidRainTracker } from '@/components/map/AcidRainTracker'
-import { MethaneHydrateMonitor } from '@/components/map/MethaneHydrateMonitor'
-import { KelpForestMonitor } from '@/components/map/KelpForestMonitor'
-import { GlacierLakeOutburstTracker } from '@/components/map/GlacierLakeOutburstTracker'
-import { DustStormTracker } from '@/components/map/DustStormTracker'
-import { BioluminescenceTracker } from '@/components/map/BioluminescenceTracker'
-import { UrbanSprawlMonitor } from '@/components/map/UrbanSprawlMonitor'
-import { ViralOutbreakMapper } from '@/components/map/ViralOutbreakMapper'
-import { MagnetosphereMonitor } from '@/components/map/MagnetosphereMonitor'
-import { FogDensityMapper } from '@/components/map/FogDensityMapper'
-import { CarbonCaptureTracker } from '@/components/map/CarbonCaptureTracker'
-import { HailStormTracker } from '@/components/map/HailStormTracker'
-import { SaharaReforestationTracker } from '@/components/map/SaharaReforestationTracker'
-import { DeepSeaVentMonitor } from '@/components/map/DeepSeaVentMonitor'
-import { StormSurgePredictor } from '@/components/map/StormSurgePredictor'
-import { LandfillMonitor } from '@/components/map/LandfillMonitor'
-import { SalinityGradientMapper } from '@/components/map/SalinityGradientMapper'
-import { MicroplasticsTracker } from '@/components/map/MicroplasticsTracker'
-import { RadioSignalMapper } from '@/components/map/RadioSignalMapper'
-import { VolcanicIslandMonitor } from '@/components/map/VolcanicIslandMonitor'
-import { PermafrostThawMonitor } from '@/components/map/PermafrostThawMonitor'
-import { OceanCurrentTrackerPanel } from '@/components/map/OceanCurrentTrackerPanel'
-import { SpaceWeatherAlertPanel } from '@/components/map/SpaceWeatherAlertPanel'
-import { DesertMonitorPanel } from '@/components/map/DesertMonitorPanel'
-import { TsunamiBuoyTracker } from '@/components/map/TsunamiBuoyTracker'
-import { GlacierVelocityTracker } from '@/components/map/GlacierVelocityTracker'
-import { EarthquakeSwarmMonitor } from '@/components/map/EarthquakeSwarmMonitor'
-import { MangroveRestorationTracker } from '@/components/map/MangroveRestorationTracker'
-import { CoralBleachingMonitor } from '@/components/map/CoralBleachingMonitor'
-import { ArcticSeaIceMonitor } from '@/components/map/ArcticSeaIceMonitor'
-import { SoilMoistureMapper } from '@/components/map/SoilMoistureMapper'
-import { NoisePollutionMapper } from '@/components/map/NoisePollutionMapper'
-import { LightPollutionMapper } from '@/components/map/LightPollutionMapper'
-import { GroundwaterRechargeTracker } from '@/components/map/GroundwaterRechargeTracker'
-import { AirQualityMonitor } from '@/components/map/AirQualityMonitor'
-import dynamic from 'next/dynamic'
 
-const GPSSimulator = dynamic(() => import('@/components/map/GPSSimulator').then((m) => m.GPSSimulator), { ssr: false })
-const MapNotesLayer = dynamic(() => import('@/components/map/MapNotes').then((m) => m.MapNotesLayer), { ssr: false })
-const BatchActionBar = dynamic(() => import('@/components/map/BatchOperations').then((m) => m.BatchActionBar), { ssr: false })
-const MapAnnotationsLayer = dynamic(() => import('@/components/map/MapAnnotationsLayer').then((m) => m.MapAnnotationsLayer), { ssr: false })
 import { TrackStatsPanel } from '@/components/map/TrackStatsPanel'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -380,7 +230,168 @@ import {
   Volume2 as Volume2Icon,
   Wind as WindIcon3,
   Fish as FishIcon2,
+  Clock,
 } from 'lucide-react'
+
+import dynamic from 'next/dynamic'
+
+const GPSSimulator = dynamic(() => import('@/components/map/GPSSimulator').then((m) => m.GPSSimulator), { ssr: false })
+const MapNotesLayer = dynamic(() => import('@/components/map/MapNotes').then((m) => m.MapNotesLayer), { ssr: false })
+const BatchActionBar = dynamic(() => import('@/components/map/BatchOperations').then((m) => m.BatchActionBar), { ssr: false })
+const MapAnnotationsLayer = dynamic(() => import('@/components/map/MapAnnotationsLayer').then((m) => m.MapAnnotationsLayer), { ssr: false })
+const MeasurementSuite = dynamic(() => import('@/components/map/MeasurementSuite').then((m) => m.MeasurementSuite), { ssr: false })
+const TrailFinder = dynamic(() => import('@/components/map/TrailFinder').then((m) => m.TrailFinder), { ssr: false })
+const PedometerWidget = dynamic(() => import('@/components/map/PedometerWidget').then((m) => m.PedometerWidget), { ssr: false })
+const MapUsageStats = dynamic(() => import('@/components/map/MapUsageStats').then((m) => m.MapUsageStats), { ssr: false })
+const ScreenshotManager = dynamic(() => import('@/components/map/ScreenshotManager').then((m) => m.ScreenshotManager), { ssr: false })
+const RouteDifficultyAnalyzer = dynamic(() => import('@/components/map/RouteDifficultyAnalyzer').then((m) => m.RouteDifficultyAnalyzer), { ssr: false })
+const MapCollageCreator = dynamic(() => import('@/components/map/MapCollageCreator').then((m) => m.MapCollageCreator), { ssr: false })
+const NearbyEventsFinder = dynamic(() => import('@/components/map/NearbyEventsFinder').then((m) => m.NearbyEventsFinder), { ssr: false })
+const AltitudeAlertSystem = dynamic(() => import('@/components/map/AltitudeAlertSystem').then((m) => m.AltitudeAlertSystem), { ssr: false })
+const CustomCompassRose = dynamic(() => import('@/components/map/CustomCompassRose').then((m) => m.CustomCompassRose), { ssr: false })
+const MultiStopRoutePlanner = dynamic(() => import('@/components/map/MultiStopRoutePlanner').then((m) => m.MultiStopRoutePlanner), { ssr: false })
+const EnhancedWeatherDashboard = dynamic(() => import('@/components/map/EnhancedWeatherDashboard').then((m) => m.EnhancedWeatherDashboard), { ssr: false })
+const SunShadowCalculator = dynamic(() => import('@/components/map/SunShadowCalculator').then((m) => m.SunShadowCalculator), { ssr: false })
+const SVGMarkerDesigner = dynamic(() => import('@/components/map/SVGMarkerDesigner').then((m) => m.SVGMarkerDesigner), { ssr: false })
+const MapChatAssistant = dynamic(() => import('@/components/map/MapChatAssistant').then((m) => m.MapChatAssistant), { ssr: false })
+const POIDensityHeatmap = dynamic(() => import('@/components/map/POIDensityHeatmap').then((m) => m.POIDensityHeatmap), { ssr: false })
+const CoordinateShareCard = dynamic(() => import('@/components/map/CoordinateShareCard').then((m) => m.CoordinateShareCard), { ssr: false })
+const MapWallpaperGenerator = dynamic(() => import('@/components/map/MapWallpaperGenerator').then((m) => m.MapWallpaperGenerator), { ssr: false })
+const MapAnimationStudio = dynamic(() => import('@/components/map/MapAnimationStudio').then((m) => m.MapAnimationStudio), { ssr: false })
+const SmartRoutePlanner = dynamic(() => import('@/components/map/SmartRoutePlanner').then((m) => m.SmartRoutePlanner), { ssr: false })
+const MapDataVisualizer = dynamic(() => import('@/components/map/MapDataVisualizer').then((m) => m.MapDataVisualizer), { ssr: false })
+const FieldSurveyTool = dynamic(() => import('@/components/map/FieldSurveyTool').then((m) => m.FieldSurveyTool), { ssr: false })
+const EmergencyRoutePlanner = dynamic(() => import('@/components/map/EmergencyRoutePlanner').then((m) => m.EmergencyRoutePlanner), { ssr: false })
+const MapComparisonSlider = dynamic(() => import('@/components/map/MapComparisonSlider').then((m) => m.MapComparisonSlider), { ssr: false })
+const NoiseHeatmapOverlay = dynamic(() => import('@/components/map/NoiseHeatmapOverlay').then((m) => m.NoiseHeatmapOverlay), { ssr: false })
+const SolarExposureAnalyzer = dynamic(() => import('@/components/map/SolarExposureAnalyzer').then((m) => m.SolarExposureAnalyzer), { ssr: false })
+const MapStyleForge = dynamic(() => import('@/components/map/MapStyleForge').then((m) => m.MapStyleForge), { ssr: false })
+const TopographicProfiler = dynamic(() => import('@/components/map/TopographicProfiler').then((m) => m.TopographicProfiler), { ssr: false })
+const MaritimeNavigation = dynamic(() => import('@/components/map/MaritimeNavigation').then((m) => m.MaritimeNavigation), { ssr: false })
+const GeocachingToolkit = dynamic(() => import('@/components/map/GeocachingToolkit').then((m) => m.GeocachingToolkit), { ssr: false })
+const AtmosphericDashboard = dynamic(() => import('@/components/map/AtmosphericDashboard').then((m) => m.AtmosphericDashboard), { ssr: false })
+const WildlifeTracker = dynamic(() => import('@/components/map/WildlifeTracker').then((m) => m.WildlifeTracker), { ssr: false })
+const CulturalHeritageMap = dynamic(() => import('@/components/map/CulturalHeritageMap').then((m) => m.CulturalHeritageMap), { ssr: false })
+const HydrologyAnalyzer = dynamic(() => import('@/components/map/HydrologyAnalyzer').then((m) => m.HydrologyAnalyzer), { ssr: false })
+const GlacierMonitor = dynamic(() => import('@/components/map/GlacierMonitor').then((m) => m.GlacierMonitor), { ssr: false })
+const SeismicActivityMap = dynamic(() => import('@/components/map/SeismicActivityMap').then((m) => m.SeismicActivityMap), { ssr: false })
+const SoilAnalysisPanel = dynamic(() => import('@/components/map/SoilAnalysisPanel').then((m) => m.SoilAnalysisPanel), { ssr: false })
+const UrbanGrowthSimulator = dynamic(() => import('@/components/map/UrbanGrowthSimulator').then((m) => m.UrbanGrowthSimulator), { ssr: false })
+const AirspaceNavigator = dynamic(() => import('@/components/map/AirspaceNavigator').then((m) => m.AirspaceNavigator), { ssr: false })
+const ReefHealthMonitor = dynamic(() => import('@/components/map/ReefHealthMonitor').then((m) => m.ReefHealthMonitor), { ssr: false })
+const MagneticFieldMapper = dynamic(() => import('@/components/map/MagneticFieldMapper').then((m) => m.MagneticFieldMapper), { ssr: false })
+const FloodRiskAnalyzer = dynamic(() => import('@/components/map/FloodRiskAnalyzer').then((m) => m.FloodRiskAnalyzer), { ssr: false })
+const VolcanoMonitor = dynamic(() => import('@/components/map/VolcanoMonitor').then((m) => m.VolcanoMonitor), { ssr: false })
+const AvalancheRiskMap = dynamic(() => import('@/components/map/AvalancheRiskMap').then((m) => m.AvalancheRiskMap), { ssr: false })
+const CropHealthAnalyzer = dynamic(() => import('@/components/map/CropHealthAnalyzer').then((m) => m.CropHealthAnalyzer), { ssr: false })
+const SpaceTrackViewer = dynamic(() => import('@/components/map/SpaceTrackViewer').then((m) => m.SpaceTrackViewer), { ssr: false })
+const ArchaeologyMap = dynamic(() => import('@/components/map/ArchaeologyMap').then((m) => m.ArchaeologyMap), { ssr: false })
+const PollutionTracker = dynamic(() => import('@/components/map/PollutionTracker').then((m) => m.PollutionTracker), { ssr: false })
+const TidalPredictor = dynamic(() => import('@/components/map/TidalPredictor').then((m) => m.TidalPredictor), { ssr: false })
+const WindFarmOptimizer = dynamic(() => import('@/components/map/WindFarmOptimizer').then((m) => m.WindFarmOptimizer), { ssr: false })
+const DesertificationMonitor = dynamic(() => import('@/components/map/DesertificationMonitor').then((m) => m.DesertificationMonitor), { ssr: false })
+const MineralExploration = dynamic(() => import('@/components/map/MineralExploration').then((m) => m.MineralExploration), { ssr: false })
+const OceanCurrentMapper = dynamic(() => import('@/components/map/OceanCurrentMapper').then((m) => m.OceanCurrentMapper), { ssr: false })
+const PermafrostThawTracker = dynamic(() => import('@/components/map/PermafrostThawTracker').then((m) => m.PermafrostThawTracker), { ssr: false })
+const LightningStrikeMap = dynamic(() => import('@/components/map/LightningStrikeMap').then((m) => m.LightningStrikeMap), { ssr: false })
+const BiomeClassifier = dynamic(() => import('@/components/map/BiomeClassifier').then((m) => m.BiomeClassifier), { ssr: false })
+const GroundwaterExplorer = dynamic(() => import('@/components/map/GroundwaterExplorer').then((m) => m.GroundwaterExplorer), { ssr: false })
+const SolarPowerPlanner = dynamic(() => import('@/components/map/SolarPowerPlanner').then((m) => m.SolarPowerPlanner), { ssr: false })
+const VolcanicAshTracker = dynamic(() => import('@/components/map/VolcanicAshTracker').then((m) => m.VolcanicAshTracker), { ssr: false })
+const CoastalErosionMonitor = dynamic(() => import('@/components/map/CoastalErosionMonitor').then((m) => m.CoastalErosionMonitor), { ssr: false })
+const CarbonFootprintMapper = dynamic(() => import('@/components/map/CarbonFootprintMapper').then((m) => m.CarbonFootprintMapper), { ssr: false })
+const WildlifeMigrationTracker = dynamic(() => import('@/components/map/WildlifeMigrationTracker').then((m) => m.WildlifeMigrationTracker), { ssr: false })
+const IceSheetMonitor = dynamic(() => import('@/components/map/IceSheetMonitor').then((m) => m.IceSheetMonitor), { ssr: false })
+const DroughtMonitorPanel = dynamic(() => import('@/components/map/DroughtMonitorPanel').then((m) => m.DroughtMonitorPanel), { ssr: false })
+const LandSubsidenceTracker = dynamic(() => import('@/components/map/LandSubsidenceTracker').then((m) => m.LandSubsidenceTracker), { ssr: false })
+const CoralBleachingAlert = dynamic(() => import('@/components/map/CoralBleachingAlert').then((m) => m.CoralBleachingAlert), { ssr: false })
+const TsunamiAlertSystem = dynamic(() => import('@/components/map/TsunamiAlertSystem').then((m) => m.TsunamiAlertSystem), { ssr: false })
+const SoilErosionMonitor = dynamic(() => import('@/components/map/SoilErosionMonitor').then((m) => m.SoilErosionMonitor), { ssr: false })
+const WatershedManagerPanel = dynamic(() => import('@/components/map/WatershedManagerPanel').then((m) => m.WatershedManagerPanel), { ssr: false })
+const TectonicPlateViewer = dynamic(() => import('@/components/map/TectonicPlateViewer').then((m) => m.TectonicPlateViewer), { ssr: false })
+const AirQualityForecaster = dynamic(() => import('@/components/map/AirQualityForecaster').then((m) => m.AirQualityForecaster), { ssr: false })
+const GlacialLakeMonitor = dynamic(() => import('@/components/map/GlacialLakeMonitor').then((m) => m.GlacialLakeMonitor), { ssr: false })
+const SpaceWeatherMonitor = dynamic(() => import('@/components/map/SpaceWeatherMonitor').then((m) => m.SpaceWeatherMonitor), { ssr: false })
+const PeatlandMonitorPanel = dynamic(() => import('@/components/map/PeatlandMonitorPanel').then((m) => m.PeatlandMonitorPanel), { ssr: false })
+const MangroveMonitor = dynamic(() => import('@/components/map/MangroveMonitor').then((m) => m.MangroveMonitor), { ssr: false })
+const SandstormTracker = dynamic(() => import('@/components/map/SandstormTracker').then((m) => m.SandstormTracker), { ssr: false })
+const WetlandMapper = dynamic(() => import('@/components/map/WetlandMapper').then((m) => m.WetlandMapper), { ssr: false })
+const UrbanHeatIsland = dynamic(() => import('@/components/map/UrbanHeatIsland').then((m) => m.UrbanHeatIsland), { ssr: false })
+const WildfireRiskAssessor = dynamic(() => import('@/components/map/WildfireRiskAssessor').then((m) => m.WildfireRiskAssessor), { ssr: false })
+const AlgalBloomTracker = dynamic(() => import('@/components/map/AlgalBloomTracker').then((m) => m.AlgalBloomTracker), { ssr: false })
+const LandslidePredictor = dynamic(() => import('@/components/map/LandslidePredictor').then((m) => m.LandslidePredictor), { ssr: false })
+const SeaIceNavigator = dynamic(() => import('@/components/map/SeaIceNavigator').then((m) => m.SeaIceNavigator), { ssr: false })
+const CloudCoverAnalyzer = dynamic(() => import('@/components/map/CloudCoverAnalyzer').then((m) => m.CloudCoverAnalyzer), { ssr: false })
+const SoilMoistureMonitor = dynamic(() => import('@/components/map/SoilMoistureMonitor').then((m) => m.SoilMoistureMonitor), { ssr: false })
+const LightPollutionMap = dynamic(() => import('@/components/map/LightPollutionMap').then((m) => m.LightPollutionMap), { ssr: false })
+const RiverFlowMonitor = dynamic(() => import('@/components/map/RiverFlowMonitor').then((m) => m.RiverFlowMonitor), { ssr: false })
+const VolcanoSeismicMonitor = dynamic(() => import('@/components/map/VolcanoSeismicMonitor').then((m) => m.VolcanoSeismicMonitor), { ssr: false })
+const WhaleMigrationTracker = dynamic(() => import('@/components/map/WhaleMigrationTracker').then((m) => m.WhaleMigrationTracker), { ssr: false })
+const AvalancheForecaster = dynamic(() => import('@/components/map/AvalancheForecaster').then((m) => m.AvalancheForecaster), { ssr: false })
+const AuroraForecaster = dynamic(() => import('@/components/map/AuroraForecaster').then((m) => m.AuroraForecaster), { ssr: false })
+const OzoneLayerMonitor = dynamic(() => import('@/components/map/OzoneLayerMonitor').then((m) => m.OzoneLayerMonitor), { ssr: false })
+const DeforestationTracker = dynamic(() => import('@/components/map/DeforestationTracker').then((m) => m.DeforestationTracker), { ssr: false })
+const MethaneEmissionsTracker = dynamic(() => import('@/components/map/MethaneEmissionsTracker').then((m) => m.MethaneEmissionsTracker), { ssr: false })
+const OceanAcidificationMonitor = dynamic(() => import('@/components/map/OceanAcidificationMonitor').then((m) => m.OceanAcidificationMonitor), { ssr: false })
+const SpaceDebrisTracker = dynamic(() => import('@/components/map/SpaceDebrisTracker').then((m) => m.SpaceDebrisTracker), { ssr: false })
+const TectonicStrainMonitor = dynamic(() => import('@/components/map/TectonicStrainMonitor').then((m) => m.TectonicStrainMonitor), { ssr: false })
+const PhytoBloomMonitor = dynamic(() => import('@/components/map/PhytoBloomMonitor').then((m) => m.PhytoBloomMonitor), { ssr: false })
+const SnowCoverMonitor = dynamic(() => import('@/components/map/SnowCoverMonitor').then((m) => m.SnowCoverMonitor), { ssr: false })
+const GeomagneticStormTracker = dynamic(() => import('@/components/map/GeomagneticStormTracker').then((m) => m.GeomagneticStormTracker), { ssr: false })
+const VolcanicGasMonitor = dynamic(() => import('@/components/map/VolcanicGasMonitor').then((m) => m.VolcanicGasMonitor), { ssr: false })
+const AquiferDepletionMonitor = dynamic(() => import('@/components/map/AquiferDepletionMonitor').then((m) => m.AquiferDepletionMonitor), { ssr: false })
+const StratosphericWindMonitor = dynamic(() => import('@/components/map/StratosphericWindMonitor').then((m) => m.StratosphericWindMonitor), { ssr: false })
+const MarineHeatwaveTracker = dynamic(() => import('@/components/map/MarineHeatwaveTracker').then((m) => m.MarineHeatwaveTracker), { ssr: false })
+const PrecipitationAnalyzer = dynamic(() => import('@/components/map/PrecipitationAnalyzer').then((m) => m.PrecipitationAnalyzer), { ssr: false })
+const CosmicRayMonitor = dynamic(() => import('@/components/map/CosmicRayMonitor').then((m) => m.CosmicRayMonitor), { ssr: false })
+const GreenlandIceTracker = dynamic(() => import('@/components/map/GreenlandIceTracker').then((m) => m.GreenlandIceTracker), { ssr: false })
+const RadiationExposureMonitor = dynamic(() => import('@/components/map/RadiationExposureMonitor').then((m) => m.RadiationExposureMonitor), { ssr: false })
+const PeatFireTracker = dynamic(() => import('@/components/map/PeatFireTracker').then((m) => m.PeatFireTracker), { ssr: false })
+const SeaLevelRiseProjector = dynamic(() => import('@/components/map/SeaLevelRiseProjector').then((m) => m.SeaLevelRiseProjector), { ssr: false })
+const ThermoclineMapper = dynamic(() => import('@/components/map/ThermoclineMapper').then((m) => m.ThermoclineMapper), { ssr: false })
+const AcidRainTracker = dynamic(() => import('@/components/map/AcidRainTracker').then((m) => m.AcidRainTracker), { ssr: false })
+const MethaneHydrateMonitor = dynamic(() => import('@/components/map/MethaneHydrateMonitor').then((m) => m.MethaneHydrateMonitor), { ssr: false })
+const KelpForestMonitor = dynamic(() => import('@/components/map/KelpForestMonitor').then((m) => m.KelpForestMonitor), { ssr: false })
+const GlacierLakeOutburstTracker = dynamic(() => import('@/components/map/GlacierLakeOutburstTracker').then((m) => m.GlacierLakeOutburstTracker), { ssr: false })
+const DustStormTracker = dynamic(() => import('@/components/map/DustStormTracker').then((m) => m.DustStormTracker), { ssr: false })
+const BioluminescenceTracker = dynamic(() => import('@/components/map/BioluminescenceTracker').then((m) => m.BioluminescenceTracker), { ssr: false })
+const UrbanSprawlMonitor = dynamic(() => import('@/components/map/UrbanSprawlMonitor').then((m) => m.UrbanSprawlMonitor), { ssr: false })
+const ViralOutbreakMapper = dynamic(() => import('@/components/map/ViralOutbreakMapper').then((m) => m.ViralOutbreakMapper), { ssr: false })
+const MagnetosphereMonitor = dynamic(() => import('@/components/map/MagnetosphereMonitor').then((m) => m.MagnetosphereMonitor), { ssr: false })
+const FogDensityMapper = dynamic(() => import('@/components/map/FogDensityMapper').then((m) => m.FogDensityMapper), { ssr: false })
+const CarbonCaptureTracker = dynamic(() => import('@/components/map/CarbonCaptureTracker').then((m) => m.CarbonCaptureTracker), { ssr: false })
+const HailStormTracker = dynamic(() => import('@/components/map/HailStormTracker').then((m) => m.HailStormTracker), { ssr: false })
+const SaharaReforestationTracker = dynamic(() => import('@/components/map/SaharaReforestationTracker').then((m) => m.SaharaReforestationTracker), { ssr: false })
+const DeepSeaVentMonitor = dynamic(() => import('@/components/map/DeepSeaVentMonitor').then((m) => m.DeepSeaVentMonitor), { ssr: false })
+const StormSurgePredictor = dynamic(() => import('@/components/map/StormSurgePredictor').then((m) => m.StormSurgePredictor), { ssr: false })
+const LandfillMonitor = dynamic(() => import('@/components/map/LandfillMonitor').then((m) => m.LandfillMonitor), { ssr: false })
+const SalinityGradientMapper = dynamic(() => import('@/components/map/SalinityGradientMapper').then((m) => m.SalinityGradientMapper), { ssr: false })
+const MicroplasticsTracker = dynamic(() => import('@/components/map/MicroplasticsTracker').then((m) => m.MicroplasticsTracker), { ssr: false })
+const RadioSignalMapper = dynamic(() => import('@/components/map/RadioSignalMapper').then((m) => m.RadioSignalMapper), { ssr: false })
+const VolcanicIslandMonitor = dynamic(() => import('@/components/map/VolcanicIslandMonitor').then((m) => m.VolcanicIslandMonitor), { ssr: false })
+const PermafrostThawMonitor = dynamic(() => import('@/components/map/PermafrostThawMonitor').then((m) => m.PermafrostThawMonitor), { ssr: false })
+const OceanCurrentTrackerPanel = dynamic(() => import('@/components/map/OceanCurrentTrackerPanel').then((m) => m.OceanCurrentTrackerPanel), { ssr: false })
+const SpaceWeatherAlertPanel = dynamic(() => import('@/components/map/SpaceWeatherAlertPanel').then((m) => m.SpaceWeatherAlertPanel), { ssr: false })
+const DesertMonitorPanel = dynamic(() => import('@/components/map/DesertMonitorPanel').then((m) => m.DesertMonitorPanel), { ssr: false })
+const TsunamiBuoyTracker = dynamic(() => import('@/components/map/TsunamiBuoyTracker').then((m) => m.TsunamiBuoyTracker), { ssr: false })
+const GlacierVelocityTracker = dynamic(() => import('@/components/map/GlacierVelocityTracker').then((m) => m.GlacierVelocityTracker), { ssr: false })
+const EarthquakeSwarmMonitor = dynamic(() => import('@/components/map/EarthquakeSwarmMonitor').then((m) => m.EarthquakeSwarmMonitor), { ssr: false })
+const MangroveRestorationTracker = dynamic(() => import('@/components/map/MangroveRestorationTracker').then((m) => m.MangroveRestorationTracker), { ssr: false })
+const CoralBleachingMonitor = dynamic(() => import('@/components/map/CoralBleachingMonitor').then((m) => m.CoralBleachingMonitor), { ssr: false })
+const ArcticSeaIceMonitor = dynamic(() => import('@/components/map/ArcticSeaIceMonitor').then((m) => m.ArcticSeaIceMonitor), { ssr: false })
+const SoilMoistureMapper = dynamic(() => import('@/components/map/SoilMoistureMapper').then((m) => m.SoilMoistureMapper), { ssr: false })
+const NoisePollutionMapper = dynamic(() => import('@/components/map/NoisePollutionMapper').then((m) => m.NoisePollutionMapper), { ssr: false })
+const LightPollutionMapper = dynamic(() => import('@/components/map/LightPollutionMapper').then((m) => m.LightPollutionMapper), { ssr: false })
+const GroundwaterRechargeTracker = dynamic(() => import('@/components/map/GroundwaterRechargeTracker').then((m) => m.GroundwaterRechargeTracker), { ssr: false })
+const AirQualityMonitor = dynamic(() => import('@/components/map/AirQualityMonitor').then((m) => m.AirQualityMonitor), { ssr: false })
+const SubglacialLakeExplorer = dynamic(() => import('@/components/map/SubglacialLakeExplorer').then((m) => m.SubglacialLakeExplorer), { ssr: false })
+const ThermokarstLakeMonitor = dynamic(() => import('@/components/map/ThermokarstLakeMonitor').then((m) => m.ThermokarstLakeMonitor), { ssr: false })
+const PaleoclimateProxyExplorer = dynamic(() => import('@/components/map/PaleoclimateProxyExplorer').then((m) => m.PaleoclimateProxyExplorer), { ssr: false })
+const GeomagneticallyInducedCurrentMonitor = dynamic(() => import('@/components/map/GeomagneticallyInducedCurrentMonitor').then((m) => m.GeomagneticallyInducedCurrentMonitor), { ssr: false })
+const SabkhaEnvironmentMonitor = dynamic(() => import('@/components/map/SabkhaEnvironmentMonitor').then((m) => m.SabkhaEnvironmentMonitor), { ssr: false })
+const CryosphereChangeTracker = dynamic(() => import('@/components/map/CryosphereChangeTracker').then((m) => m.CryosphereChangeTracker), { ssr: false })
+const AbyssalPlainMapper = dynamic(() => import('@/components/map/AbyssalPlainMapper').then((m) => m.AbyssalPlainMapper), { ssr: false })
+const FjordEcosystemMonitor = dynamic(() => import('@/components/map/FjordEcosystemMonitor').then((m) => m.FjordEcosystemMonitor), { ssr: false })
 
 export default function Home() {
   const { toolMode, sidebarOpen, center, zoom, currentStyle, weatherEnabled, comparisonEnabled, sunPositionEnabled, heatmapEnabled, elevationRouteId, setSidebarOpen, setToolMode, setCenter, setZoom, setCurrentStyle, setComparisonEnabled } = useMapStore()
@@ -2694,6 +2705,86 @@ export default function Home() {
           <Button
             variant="outline"
             size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setSubglacialLake({ open: true })}
+            title="Subglacial Lake Explorer"
+            aria-label="Open subglacial lake explorer"
+          >
+            <WavesIcon3 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setThermokarstLake({ open: true })}
+            title="Thermokarst Lake Monitor"
+            aria-label="Open thermokarst lake monitor"
+          >
+            <DropletsIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setPaleoclimateProxy({ open: true })}
+            title="Paleoclimate Proxy Explorer"
+            aria-label="Open paleoclimate proxy explorer"
+          >
+            <Clock className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setGicMonitor({ open: true })}
+            title="GIC Monitor"
+            aria-label="Open geomagnetically induced current monitor"
+          >
+            <Zap className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setSabkhaEnvironment({ open: true })}
+            title="Sabkha Environment"
+            aria-label="Open sabkha environment monitor"
+          >
+            <SunIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setCryosphereChange({ open: true })}
+            title="Cryosphere Change Tracker"
+            aria-label="Open cryosphere change tracker"
+          >
+            <SnowflakeIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setAbyssalPlain({ open: true })}
+            title="Abyssal Plain Mapper"
+            aria-label="Open abyssal plain mapper"
+          >
+            <FishIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setFjordEcosystem({ open: true })}
+            title="Fjord Ecosystem Monitor"
+            aria-label="Open fjord ecosystem monitor"
+          >
+            <MountainIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
             className="hidden sm:flex map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={() =>
               window.open('https://github.com/maplibre/maplibre-native', '_blank')
@@ -3822,6 +3913,30 @@ export default function Home() {
 
       {/* Air Quality Monitor */}
       <AirQualityMonitor />
+
+      {/* Subglacial Lake Explorer */}
+      <SubglacialLakeExplorer />
+
+      {/* Thermokarst Lake Monitor */}
+      <ThermokarstLakeMonitor />
+
+      {/* Paleoclimate Proxy Explorer */}
+      <PaleoclimateProxyExplorer />
+
+      {/* Geomagnetically Induced Current Monitor */}
+      <GeomagneticallyInducedCurrentMonitor />
+
+      {/* Sabkha Environment Monitor */}
+      <SabkhaEnvironmentMonitor />
+
+      {/* Cryosphere Change Tracker */}
+      <CryosphereChangeTracker />
+
+      {/* Abyssal Plain Mapper */}
+      <AbyssalPlainMapper />
+
+      {/* Fjord Ecosystem Monitor */}
+      <FjordEcosystemMonitor />
 
       {/* Footer */}
       <footer className="absolute bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t py-1 px-2 sm:px-3 md:px-4 safe-area-bottom before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-border before:to-transparent">

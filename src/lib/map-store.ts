@@ -3929,6 +3929,188 @@ export interface GroundwaterRechargeState {
   aquiferFilter: 'all' | 'unconfined' | 'confined' | 'semi_confined' | 'karst'
 }
 
+// Task 65: Subglacial Lake Explorer
+export interface SubglacialLake {
+  id: string
+  name: string
+  depth: number
+  waterTemp: number
+  iceThickness: number
+  dissolvedOxygen: number
+  status: 'active_research' | 'dormant' | 'unexplored'
+  latitude: number
+  longitude: number
+}
+
+export interface SubglacialLakeState {
+  lakes: SubglacialLake[]
+  activeLakeId: string | null
+  showDepth: boolean
+  showWaterTemp: boolean
+  showIceThickness: boolean
+  showDissolvedOxygen: boolean
+  open: boolean
+  statusFilter: 'all' | 'active_research' | 'dormant' | 'unexplored'
+}
+
+// Task 65: Thermokarst Lake Monitor
+export interface ThermokarstLake {
+  id: string
+  name: string
+  expansionRate: number
+  methaneEmission: number
+  shorelineErosion: number
+  area: number
+  riskLevel: 'low' | 'medium' | 'high' | 'critical'
+  latitude: number
+  longitude: number
+}
+
+export interface ThermokarstLakeState {
+  lakes: ThermokarstLake[]
+  activeLakeId: string | null
+  showExpansionRate: boolean
+  showMethaneEmission: boolean
+  showShorelineErosion: boolean
+  showArea: boolean
+  open: boolean
+  riskFilter: 'all' | 'low' | 'medium' | 'high' | 'critical'
+}
+
+// Task 65: Paleoclimate Proxy Explorer
+export interface PaleoclimateProxy {
+  id: string
+  type: 'ice_core' | 'tree_ring' | 'sediment' | 'coral' | 'speleothem'
+  ageRange: string
+  resolution: string
+  tempReconstruction: number
+  latitude: number
+  longitude: number
+}
+
+export interface PaleoclimateProxyState {
+  proxies: PaleoclimateProxy[]
+  activeProxyId: string | null
+  showAgeRange: boolean
+  showResolution: boolean
+  showTempReconstruction: boolean
+  open: boolean
+  typeFilter: 'all' | 'ice_core' | 'tree_ring' | 'sediment' | 'coral' | 'speleothem'
+}
+
+// Task 65: Geomagnetically Induced Current Monitor
+export interface GICReading {
+  id: string
+  transformer: string
+  intensity: number
+  voltage: number
+  riskLevel: 'normal' | 'elevated' | 'high' | 'critical'
+  timestamp: string
+}
+
+export interface GICMonitorState {
+  readings: GICReading[]
+  activeReadingId: string | null
+  showIntensity: boolean
+  showVoltage: boolean
+  showRiskLevel: boolean
+  open: boolean
+  riskFilter: 'all' | 'normal' | 'elevated' | 'high' | 'critical'
+}
+
+// Task 65: Sabkha Environment Monitor
+export interface SabkhaZone {
+  id: string
+  name: string
+  salinity: number
+  evaporationRate: number
+  crustThickness: number
+  mineralType: string
+  latitude: number
+  longitude: number
+}
+
+export interface SabkhaEnvironmentState {
+  zones: SabkhaZone[]
+  activeZoneId: string | null
+  showSalinity: boolean
+  showEvaporationRate: boolean
+  showCrustThickness: boolean
+  showMineralType: boolean
+  open: boolean
+  mineralFilter: 'all' | 'halite' | 'gypsum' | 'anhydrite' | 'dolomite'
+}
+
+// Task 65: Cryosphere Change Tracker
+export interface CryosphereRegion {
+  id: string
+  name: string
+  type: 'ice_sheet' | 'glacier' | 'sea_ice' | 'permafrost' | 'snow'
+  massBalance: number
+  extentChange: number
+  albedoShift: number
+  seaLevelContribution: number
+}
+
+export interface CryosphereChangeState {
+  regions: CryosphereRegion[]
+  activeRegionId: string | null
+  showMassBalance: boolean
+  showExtentChange: boolean
+  showAlbedoShift: boolean
+  showSeaLevelContribution: boolean
+  open: boolean
+  typeFilter: 'all' | 'ice_sheet' | 'glacier' | 'sea_ice' | 'permafrost' | 'snow'
+}
+
+// Task 65: Abyssal Plain Mapper
+export interface AbyssalFeature {
+  id: string
+  name: string
+  depth: number
+  sedimentType: string
+  noduleDensity: number
+  biodiversityIndex: number
+  latitude: number
+  longitude: number
+}
+
+export interface AbyssalPlainState {
+  features: AbyssalFeature[]
+  activeFeatureId: string | null
+  showDepth: boolean
+  showSedimentType: boolean
+  showNoduleDensity: boolean
+  showBiodiversityIndex: boolean
+  open: boolean
+  sedimentFilter: 'all' | 'clay' | 'ooze' | 'turbidite' | 'diatomaceous'
+}
+
+// Task 65: Fjord Ecosystem Monitor
+export interface FjordSystem {
+  id: string
+  name: string
+  stratification: number
+  oxygenLevel: number
+  biodiversity: number
+  glacialInput: number
+  healthScore: number
+  latitude: number
+  longitude: number
+}
+
+export interface FjordEcosystemState {
+  fjords: FjordSystem[]
+  activeFjordId: string | null
+  showStratification: boolean
+  showOxygenLevel: boolean
+  showBiodiversity: boolean
+  showGlacialInput: boolean
+  showHealthScore: boolean
+  open: boolean
+  healthFilter: 'all' | 'excellent' | 'good' | 'moderate' | 'poor'
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -5122,6 +5304,38 @@ interface MapState {
   // Task 57: Groundwater Recharge Tracker
   groundwaterRecharge: GroundwaterRechargeState
   setGroundwaterRecharge: (state: Partial<GroundwaterRechargeState>) => void
+
+  // Task 65: Subglacial Lake Explorer
+  subglacialLake: SubglacialLakeState
+  setSubglacialLake: (state: Partial<SubglacialLakeState>) => void
+
+  // Task 65: Thermokarst Lake Monitor
+  thermokarstLake: ThermokarstLakeState
+  setThermokarstLake: (state: Partial<ThermokarstLakeState>) => void
+
+  // Task 65: Paleoclimate Proxy Explorer
+  paleoclimateProxy: PaleoclimateProxyState
+  setPaleoclimateProxy: (state: Partial<PaleoclimateProxyState>) => void
+
+  // Task 65: Geomagnetically Induced Current Monitor
+  gicMonitor: GICMonitorState
+  setGicMonitor: (state: Partial<GICMonitorState>) => void
+
+  // Task 65: Sabkha Environment Monitor
+  sabkhaEnvironment: SabkhaEnvironmentState
+  setSabkhaEnvironment: (state: Partial<SabkhaEnvironmentState>) => void
+
+  // Task 65: Cryosphere Change Tracker
+  cryosphereChange: CryosphereChangeState
+  setCryosphereChange: (state: Partial<CryosphereChangeState>) => void
+
+  // Task 65: Abyssal Plain Mapper
+  abyssalPlain: AbyssalPlainState
+  setAbyssalPlain: (state: Partial<AbyssalPlainState>) => void
+
+  // Task 65: Fjord Ecosystem Monitor
+  fjordEcosystem: FjordEcosystemState
+  setFjordEcosystem: (state: Partial<FjordEcosystemState>) => void
 }
 
 // Coordinate Share Card types
@@ -9251,6 +9465,117 @@ export const useMapStore = create<MapState>()(
       setGroundwaterRecharge: (updates) => set((state) => ({
         groundwaterRecharge: { ...state.groundwaterRecharge, ...updates },
       })),
+
+      subglacialLake: {
+        lakes: [],
+        activeLakeId: null,
+        showDepth: true,
+        showWaterTemp: true,
+        showIceThickness: true,
+        showDissolvedOxygen: false,
+        open: false,
+        statusFilter: 'all',
+      },
+      setSubglacialLake: (updates) => set((state) => ({
+        subglacialLake: { ...state.subglacialLake, ...updates },
+      })),
+
+      thermokarstLake: {
+        lakes: [],
+        activeLakeId: null,
+        showExpansionRate: true,
+        showMethaneEmission: true,
+        showShorelineErosion: false,
+        showArea: false,
+        open: false,
+        riskFilter: 'all',
+      },
+      setThermokarstLake: (updates) => set((state) => ({
+        thermokarstLake: { ...state.thermokarstLake, ...updates },
+      })),
+
+      paleoclimateProxy: {
+        proxies: [],
+        activeProxyId: null,
+        showAgeRange: true,
+        showResolution: true,
+        showTempReconstruction: true,
+        open: false,
+        typeFilter: 'all',
+      },
+      setPaleoclimateProxy: (updates) => set((state) => ({
+        paleoclimateProxy: { ...state.paleoclimateProxy, ...updates },
+      })),
+
+      gicMonitor: {
+        readings: [],
+        activeReadingId: null,
+        showIntensity: true,
+        showVoltage: true,
+        showRiskLevel: true,
+        open: false,
+        riskFilter: 'all',
+      },
+      setGicMonitor: (updates) => set((state) => ({
+        gicMonitor: { ...state.gicMonitor, ...updates },
+      })),
+
+      sabkhaEnvironment: {
+        zones: [],
+        activeZoneId: null,
+        showSalinity: true,
+        showEvaporationRate: true,
+        showCrustThickness: false,
+        showMineralType: false,
+        open: false,
+        mineralFilter: 'all',
+      },
+      setSabkhaEnvironment: (updates) => set((state) => ({
+        sabkhaEnvironment: { ...state.sabkhaEnvironment, ...updates },
+      })),
+
+      cryosphereChange: {
+        regions: [],
+        activeRegionId: null,
+        showMassBalance: true,
+        showExtentChange: true,
+        showAlbedoShift: false,
+        showSeaLevelContribution: true,
+        open: false,
+        typeFilter: 'all',
+      },
+      setCryosphereChange: (updates) => set((state) => ({
+        cryosphereChange: { ...state.cryosphereChange, ...updates },
+      })),
+
+      abyssalPlain: {
+        features: [],
+        activeFeatureId: null,
+        showDepth: true,
+        showSedimentType: true,
+        showNoduleDensity: true,
+        showBiodiversityIndex: false,
+        open: false,
+        sedimentFilter: 'all',
+      },
+      setAbyssalPlain: (updates) => set((state) => ({
+        abyssalPlain: { ...state.abyssalPlain, ...updates },
+      })),
+
+      fjordEcosystem: {
+        fjords: [],
+        activeFjordId: null,
+        showStratification: true,
+        showOxygenLevel: true,
+        showBiodiversity: true,
+        showGlacialInput: false,
+        showHealthScore: true,
+        open: false,
+        healthFilter: 'all',
+      },
+      setFjordEcosystem: (updates) => set((state) => ({
+        fjordEcosystem: { ...state.fjordEcosystem, ...updates },
+      })),
     }),
     {
       name: 'maplibre-explorer-prefs',
@@ -9478,6 +9803,14 @@ export const useMapStore = create<MapState>()(
         noisePollution: state.noisePollution,
         lightPollutionSky: state.lightPollutionSky,
         groundwaterRecharge: state.groundwaterRecharge,
+        subglacialLake: state.subglacialLake,
+        thermokarstLake: state.thermokarstLake,
+        paleoclimateProxy: state.paleoclimateProxy,
+        gicMonitor: state.gicMonitor,
+        sabkhaEnvironment: state.sabkhaEnvironment,
+        cryosphereChange: state.cryosphereChange,
+        abyssalPlain: state.abyssalPlain,
+        fjordEcosystem: state.fjordEcosystem,
       }),
     }
   )
