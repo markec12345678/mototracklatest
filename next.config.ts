@@ -12,9 +12,9 @@ const nextConfig: NextConfig = {
     'localhost',
     '127.0.0.1',
   ],
+  turbopack: {},
   webpack: (config, { dev }) => {
     if (dev) {
-      // Limit parallel compilation to prevent OOM on memory-constrained machines
       config.parallelism = 1
     }
     return config
