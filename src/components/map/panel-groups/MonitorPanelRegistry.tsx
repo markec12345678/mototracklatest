@@ -101,6 +101,15 @@ export function MonitorPanelRegistry() {
   const bioluminescentBay = useMapStore((s) => s.bioluminescentBay)
   const orographicRainfall = useMapStore((s) => s.orographicRainfall)
   const hydrothermalPlume = useMapStore((s) => s.hydrothermalPlume)
+  // Task 77
+  const seamountEcosystem = useMapStore((s) => s.seamountEcosystem)
+  const groundSubsidence = useMapStore((s) => s.groundSubsidence)
+  const oceanStratification = useMapStore((s) => s.oceanStratification)
+  const snowCoverExtent = useMapStore((s) => s.snowCoverExtent)
+  const coastalErosionDetail = useMapStore((s) => s.coastalErosionDetail)
+  const ecosystemServiceValue = useMapStore((s) => s.ecosystemServiceValue)
+  const tidalFlatMonitor = useMapStore((s) => s.tidalFlatMonitor)
+  const wildfireRiskAssessment = useMapStore((s) => s.wildfireRiskAssessment)
 
   return (
     <>
@@ -173,6 +182,16 @@ export function MonitorPanelRegistry() {
       {bioluminescentBay.open && (<LazyPanel importFn={() => import('@/components/map/BioluminescentBayMonitor')} exportName="BioluminescentBayMonitor" shouldLoad={true} />)}
       {orographicRainfall.open && (<LazyPanel importFn={() => import('@/components/map/OrographicRainfallMonitor')} exportName="OrographicRainfallMonitor" shouldLoad={true} />)}
       {hydrothermalPlume.open && (<LazyPanel importFn={() => import('@/components/map/HydrothermalPlumeMonitor')} exportName="HydrothermalPlumeMonitor" shouldLoad={true} />)}
+
+      {/* Task 77: New Monitoring Panels */}
+      {seamountEcosystem.open && (<LazyPanel importFn={() => import('@/components/map/SeamountEcosystemMonitor')} exportName="SeamountEcosystemMonitor" shouldLoad={true} />)}
+      {groundSubsidence.open && (<LazyPanel importFn={() => import('@/components/map/GroundSubsidenceMonitor')} exportName="GroundSubsidenceMonitor" shouldLoad={true} />)}
+      {oceanStratification.open && (<LazyPanel importFn={() => import('@/components/map/OceanStratificationMonitor')} exportName="OceanStratificationMonitor" shouldLoad={true} />)}
+      {snowCoverExtent.open && (<LazyPanel importFn={() => import('@/components/map/SnowCoverExtentMonitor')} exportName="SnowCoverExtentMonitor" shouldLoad={true} />)}
+      {coastalErosionDetail.open && (<LazyPanel importFn={() => import('@/components/map/CoastalErosionDetailMonitor')} exportName="CoastalErosionDetailMonitor" shouldLoad={true} />)}
+      {ecosystemServiceValue.open && (<LazyPanel importFn={() => import('@/components/map/EcosystemServiceValueMonitor')} exportName="EcosystemServiceValueMonitor" shouldLoad={true} />)}
+      {tidalFlatMonitor.open && (<LazyPanel importFn={() => import('@/components/map/TidalFlatMonitor')} exportName="TidalFlatMonitor" shouldLoad={true} />)}
+      {wildfireRiskAssessment.open && (<LazyPanel importFn={() => import('@/components/map/WildfireRiskAssessmentMonitor')} exportName="WildfireRiskAssessmentMonitor" shouldLoad={true} />)}
 
       {/* Task 69: New Monitoring Panels */}
       {lavaFlow.open && (

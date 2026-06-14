@@ -6121,6 +6121,208 @@ export interface HydrothermalPlumeData {
   description: string
 }
 
+// Task 77: New monitoring interfaces
+
+export interface SeamountEcosystemState {
+  seamounts: SeamountEcosystemData[]
+  activeSeamountId: string | null
+  showElevation: boolean
+  showBiodiversity: boolean
+  showCurrentSpeed: boolean
+  showFishingPressure: boolean
+  open: boolean
+  typeFilter: 'all' | 'guyot' | 'conical' | 'rift_zone' | 'caldera'
+}
+
+export interface SeamountEcosystemData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  elevation: number
+  biodiversity: number
+  currentSpeed: number
+  fishingPressure: number
+  depth: number
+  status: 'pristine' | 'good' | 'moderate' | 'degraded' | 'heavily_fished'
+  description: string
+}
+
+export interface GroundSubsidenceState {
+  zones: GroundSubsidenceData[]
+  activeZoneId: string | null
+  showSubsidenceRate: boolean
+  showGroundwater: boolean
+  showInfrastructure: boolean
+  showRisk: boolean
+  open: boolean
+  causeFilter: 'all' | 'groundwater_extraction' | 'mining' | 'oil_gas' | 'natural'
+}
+
+export interface GroundSubsidenceData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  subsidenceRate: number
+  groundwater: number
+  infrastructure: number
+  risk: number
+  totalSubsidence: number
+  status: 'stable' | 'slow' | 'moderate' | 'rapid' | 'catastrophic'
+  description: string
+}
+
+export interface OceanStratificationState {
+  basins: OceanStratificationData[]
+  activeBasinId: string | null
+  showPycnocline: boolean
+  showTemperature: boolean
+  showSalinity: boolean
+  showMixing: boolean
+  open: boolean
+  regionFilter: 'all' | 'tropical' | 'subtropical' | 'temperate' | 'high_latitude'
+}
+
+export interface OceanStratificationData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  pycnocline: number
+  temperature: number
+  salinity: number
+  mixing: number
+  oxygen: number
+  status: 'weak' | 'moderate' | 'strong' | 'very_strong' | 'extreme'
+  description: string
+}
+
+export interface SnowCoverExtentState {
+  regions: SnowCoverExtentData[]
+  activeRegionId: string | null
+  showExtent: boolean
+  showDepth: boolean
+  showWaterEquivalent: boolean
+  showMeltRate: boolean
+  open: boolean
+  seasonFilter: 'all' | 'early_winter' | 'mid_winter' | 'late_winter' | 'spring_melt'
+}
+
+export interface SnowCoverExtentData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  extent: number
+  depth: number
+  waterEquivalent: number
+  meltRate: number
+  albedo: number
+  status: 'expanding' | 'stable' | 'declining' | 'rapid_decline' | 'minimal'
+  description: string
+}
+
+export interface CoastalErosionDetailState {
+  segments: CoastalErosionDetailData[]
+  activeSegmentId: string | null
+  showErosionRate: boolean
+  showSeaLevel: boolean
+  showSediment: boolean
+  showProtection: boolean
+  open: boolean
+  severityFilter: 'all' | 'accretion' | 'stable' | 'slow_erosion' | 'rapid_erosion' | 'critical'
+}
+
+export interface CoastalErosionDetailData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  erosionRate: number
+  seaLevel: number
+  sediment: number
+  protection: number
+  population: number
+  status: 'accretion' | 'stable' | 'slow_erosion' | 'rapid_erosion' | 'critical'
+  description: string
+}
+
+export interface EcosystemServiceValueState {
+  ecosystems: EcosystemServiceValueData[]
+  activeEcosystemId: string | null
+  showCarbonValue: boolean
+  showWaterValue: boolean
+  showBiodiversityValue: boolean
+  showRecreationValue: boolean
+  open: boolean
+  typeFilter: 'all' | 'forest' | 'wetland' | 'coral_reef' | 'grassland'
+}
+
+export interface EcosystemServiceValueData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  carbonValue: number
+  waterValue: number
+  biodiversityValue: number
+  recreationValue: number
+  totalValue: number
+  status: 'intact' | 'good' | 'degraded' | 'heavily_degraded' | 'lost'
+  description: string
+}
+
+export interface TidalFlatMonitorState {
+  flats: TidalFlatMonitorData[]
+  activeFlatId: string | null
+  showArea: boolean
+  showBiodiversity: boolean
+  showSedimentQuality: boolean
+  showBirdPopulation: boolean
+  open: boolean
+  typeFilter: 'all' | 'mudflat' | 'sandflat' | 'salt_marsh' | 'seagrass'
+}
+
+export interface TidalFlatMonitorData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  area: number
+  biodiversity: number
+  sedimentQuality: number
+  birdPopulation: number
+  tidalRange: number
+  status: 'expanding' | 'stable' | 'shrinking' | 'rapid_loss' | 'critical'
+  description: string
+}
+
+export interface WildfireRiskAssessmentState {
+  zones: WildfireRiskAssessmentData[]
+  activeZoneId: string | null
+  showFireWeather: boolean
+  showFuelLoad: boolean
+  showTerrain: boolean
+  showExposure: boolean
+  open: boolean
+  riskFilter: 'all' | 'low' | 'moderate' | 'high' | 'very_high' | 'extreme'
+}
+
+export interface WildfireRiskAssessmentData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  fireWeather: number
+  fuelLoad: number
+  terrain: number
+  exposure: number
+  population: number
+  status: 'low' | 'moderate' | 'high' | 'very_high' | 'extreme'
+  description: string
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -7538,6 +7740,23 @@ interface MapState {
   setOrographicRainfall: (state: Partial<OrographicRainfallState>) => void
   hydrothermalPlume: HydrothermalPlumeState
   setHydrothermalPlume: (state: Partial<HydrothermalPlumeState>) => void
+  // Task 77: New monitoring states
+  seamountEcosystem: SeamountEcosystemState
+  setSeamountEcosystem: (state: Partial<SeamountEcosystemState>) => void
+  groundSubsidence: GroundSubsidenceState
+  setGroundSubsidence: (state: Partial<GroundSubsidenceState>) => void
+  oceanStratification: OceanStratificationState
+  setOceanStratification: (state: Partial<OceanStratificationState>) => void
+  snowCoverExtent: SnowCoverExtentState
+  setSnowCoverExtent: (state: Partial<SnowCoverExtentState>) => void
+  coastalErosionDetail: CoastalErosionDetailState
+  setCoastalErosionDetail: (state: Partial<CoastalErosionDetailState>) => void
+  ecosystemServiceValue: EcosystemServiceValueState
+  setEcosystemServiceValue: (state: Partial<EcosystemServiceValueState>) => void
+  tidalFlatMonitor: TidalFlatMonitorState
+  setTidalFlatMonitor: (state: Partial<TidalFlatMonitorState>) => void
+  wildfireRiskAssessment: WildfireRiskAssessmentState
+  setWildfireRiskAssessment: (state: Partial<WildfireRiskAssessmentState>) => void
 
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
@@ -12394,6 +12613,38 @@ export const useMapStore = create<MapState>()(
         vents: [], activeVentId: null, showPlumeHeight: true, showTemperature: true, showChemical: true, showDispersion: false, open: false, typeFilter: 'all',
       },
       setHydrothermalPlume: (updates) => set((state) => ({ hydrothermalPlume: { ...state.hydrothermalPlume, ...updates } })),
+      seamountEcosystem: {
+        seamounts: [], activeSeamountId: null, showElevation: true, showBiodiversity: true, showCurrentSpeed: true, showFishingPressure: false, open: false, typeFilter: 'all',
+      },
+      setSeamountEcosystem: (updates) => set((state) => ({ seamountEcosystem: { ...state.seamountEcosystem, ...updates } })),
+      groundSubsidence: {
+        zones: [], activeZoneId: null, showSubsidenceRate: true, showGroundwater: true, showInfrastructure: true, showRisk: false, open: false, causeFilter: 'all',
+      },
+      setGroundSubsidence: (updates) => set((state) => ({ groundSubsidence: { ...state.groundSubsidence, ...updates } })),
+      oceanStratification: {
+        basins: [], activeBasinId: null, showPycnocline: true, showTemperature: true, showSalinity: true, showMixing: false, open: false, regionFilter: 'all',
+      },
+      setOceanStratification: (updates) => set((state) => ({ oceanStratification: { ...state.oceanStratification, ...updates } })),
+      snowCoverExtent: {
+        regions: [], activeRegionId: null, showExtent: true, showDepth: true, showWaterEquivalent: true, showMeltRate: false, open: false, seasonFilter: 'all',
+      },
+      setSnowCoverExtent: (updates) => set((state) => ({ snowCoverExtent: { ...state.snowCoverExtent, ...updates } })),
+      coastalErosionDetail: {
+        segments: [], activeSegmentId: null, showErosionRate: true, showSeaLevel: true, showSediment: true, showProtection: false, open: false, severityFilter: 'all',
+      },
+      setCoastalErosionDetail: (updates) => set((state) => ({ coastalErosionDetail: { ...state.coastalErosionDetail, ...updates } })),
+      ecosystemServiceValue: {
+        ecosystems: [], activeEcosystemId: null, showCarbonValue: true, showWaterValue: true, showBiodiversityValue: true, showRecreationValue: false, open: false, typeFilter: 'all',
+      },
+      setEcosystemServiceValue: (updates) => set((state) => ({ ecosystemServiceValue: { ...state.ecosystemServiceValue, ...updates } })),
+      tidalFlatMonitor: {
+        flats: [], activeFlatId: null, showArea: true, showBiodiversity: true, showSedimentQuality: true, showBirdPopulation: false, open: false, typeFilter: 'all',
+      },
+      setTidalFlatMonitor: (updates) => set((state) => ({ tidalFlatMonitor: { ...state.tidalFlatMonitor, ...updates } })),
+      wildfireRiskAssessment: {
+        zones: [], activeZoneId: null, showFireWeather: true, showFuelLoad: true, showTerrain: true, showExposure: false, open: false, riskFilter: 'all',
+      },
+      setWildfireRiskAssessment: (updates) => set((state) => ({ wildfireRiskAssessment: { ...state.wildfireRiskAssessment, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
@@ -12771,6 +13022,14 @@ export const useMapStore = create<MapState>()(
         bioluminescentBay: state.bioluminescentBay,
         orographicRainfall: state.orographicRainfall,
         hydrothermalPlume: state.hydrothermalPlume,
+        seamountEcosystem: state.seamountEcosystem,
+        groundSubsidence: state.groundSubsidence,
+        oceanStratification: state.oceanStratification,
+        snowCoverExtent: state.snowCoverExtent,
+        coastalErosionDetail: state.coastalErosionDetail,
+        ecosystemServiceValue: state.ecosystemServiceValue,
+        tidalFlatMonitor: state.tidalFlatMonitor,
+        wildfireRiskAssessment: state.wildfireRiskAssessment,
       }),
     }
   )
