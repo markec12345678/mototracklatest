@@ -140,6 +140,15 @@ import {
   Clock,
   Github,
   SunDim,
+  // Task 68 icons
+  Flame as FlameIcon3,
+  Wind as WindIcon4,
+  Droplets as DropletsIcon3,
+  Layers as LayersIcon2,
+  ArrowUpFromLine as ArrowUpIcon2,
+  Bug as BugIcon2,
+  TreeDeciduous as TreeDeciduousIcon3,
+  CloudRain as CloudRainIcon2,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -2029,6 +2038,87 @@ export function MapToolbarButtons(props: MapToolbarButtonsProps) {
             aria-label="Open ocean mesoscale eddy tracker"
           >
             <WavesIcon3 className="h-4 w-4" />
+          </Button>
+          {/* Task 68: New monitoring buttons */}
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setSupervolcano({ open: true })}
+            title="Supervolcano Monitor"
+            aria-label="Open supervolcano monitor"
+          >
+            <FlameIcon3 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setPolarVortex({ open: true })}
+            title="Polar Vortex Monitor"
+            aria-label="Open polar vortex monitor"
+          >
+            <WindIcon4 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setKarstAquifer({ open: true })}
+            title="Karst Aquifer Monitor"
+            aria-label="Open karst aquifer monitor"
+          >
+            <DropletsIcon3 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setSubductionZone({ open: true })}
+            title="Subduction Zone Monitor"
+            aria-label="Open subduction zone monitor"
+          >
+            <LayersIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setTropopause({ open: true })}
+            title="Tropopause Monitor"
+            aria-label="Open tropopause monitor"
+          >
+            <ArrowUpIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setInvasiveSpecies({ open: true })}
+            title="Invasive Species Tracker"
+            aria-label="Open invasive species tracker"
+          >
+            <BugIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setTundraCarbon({ open: true })}
+            title="Tundra Carbon Monitor"
+            aria-label="Open tundra carbon monitor"
+          >
+            <TreeDeciduousIcon3 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setMonsoon({ open: true })}
+            title="Monsoon Tracker"
+            aria-label="Open monsoon tracker"
+          >
+            <CloudRainIcon2 className="h-4 w-4" />
           </Button>
           <Button
             variant="outline"

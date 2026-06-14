@@ -4303,6 +4303,210 @@ export interface OceanEddyState {
   typeFilter: 'all' | 'cyclonic' | 'anticyclonic'
 }
 
+// Task 68: New monitoring interfaces
+export interface SupervolcanoState {
+  volcanoes: SupervolcanoData[]
+  activeVolcanoId: string | null
+  showCaldera: boolean
+  showMagmaChamber: boolean
+  showGroundDeformation: boolean
+  showThermalAnomaly: boolean
+  open: boolean
+  statusFilter: 'all' | 'dormant' | 'unrest' | 'elevated' | 'critical'
+}
+
+export interface SupervolcanoData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  calderaDiameter: number
+  magmaChamberDepth: number
+  groundDeformation: number
+  thermalAnomaly: number
+  lastEruption: string
+  vei: number
+  status: 'dormant' | 'unrest' | 'elevated' | 'critical'
+  description: string
+}
+
+export interface PolarVortexState {
+  vortices: PolarVortexData[]
+  activeVortexId: string | null
+  showWindSpeed: boolean
+  showTemperature: boolean
+  showOzoneLevel: boolean
+  showJetStream: boolean
+  open: boolean
+  hemisphereFilter: 'all' | 'arctic' | 'antarctic'
+}
+
+export interface PolarVortexData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  windSpeed: number
+  temperature: number
+  ozoneLevel: number
+  jetStreamSpeed: number
+  vortexStrength: number
+  displacement: number
+  status: 'stable' | 'weakening' | 'displaced' | 'split' | 'collapsed'
+  description: string
+}
+
+export interface KarstAquiferState {
+  aquifers: KarstAquiferData[]
+  activeAquiferId: string | null
+  showWaterTable: boolean
+  showConduitFlow: boolean
+  showRechargeZone: boolean
+  showWaterQuality: boolean
+  open: boolean
+  typeFilter: 'all' | 'carbonate' | 'evaporite' | 'volcanic' | 'silicate'
+}
+
+export interface KarstAquiferData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  waterTableDepth: number
+  conduitFlowRate: number
+  rechargeRate: number
+  waterQualityIndex: number
+  saturationIndex: number
+  status: 'pristine' | 'good' | 'moderate' | 'degraded' | 'critical'
+  description: string
+}
+
+export interface SubductionZoneState {
+  zones: SubductionZoneData[]
+  activeZoneId: string | null
+  showSeismicity: boolean
+  showSlipRate: boolean
+  showCoupling: boolean
+  showTremorActivity: boolean
+  open: boolean
+  typeFilter: 'all' | 'oceanic_oceanic' | 'oceanic_continental' | 'continental_continental'
+}
+
+export interface SubductionZoneData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  seismicity: number
+  slipRate: number
+  couplingRatio: number
+  tremorCount: number
+  maxDepth: number
+  convergenceRate: number
+  status: 'locked' | 'creeping' | 'partial_lock' | 'tremor_swarm' | 'megathrust'
+  description: string
+}
+
+export interface TropopauseState {
+  stations: TropopauseData[]
+  activeStationId: string | null
+  showHeight: boolean
+  showTemperature: boolean
+  showOzoneConcentration: boolean
+  showPressure: boolean
+  open: boolean
+  regionFilter: 'all' | 'tropical' | 'midlatitude' | 'polar'
+}
+
+export interface TropopauseData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  height: number
+  temperature: number
+  ozoneConcentration: number
+  pressure: number
+  lapseRateTropopause: number
+  status: 'normal' | 'elevated' | 'depressed' | 'fold' | 'double'
+  description: string
+}
+
+export interface InvasiveSpeciesState {
+  species: InvasiveSpeciesData[]
+  activeSpeciesId: string | null
+  showSpread: boolean
+  showImpact: boolean
+  showControlEffort: boolean
+  showNativeDecline: boolean
+  open: boolean
+  categoryFilter: 'all' | 'plant' | 'animal' | 'aquatic' | 'insect' | 'pathogen'
+}
+
+export interface InvasiveSpeciesData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  spreadRate: number
+  impactScore: number
+  controlEffort: number
+  nativeDecline: number
+  introductionYear: number
+  status: 'contained' | 'spreading' | 'established' | 'widespread' | 'intractable'
+  description: string
+}
+
+export interface TundraCarbonState {
+  sites: TundraCarbonData[]
+  activeSiteId: string | null
+  showCarbonFlux: boolean
+  showPermafrostDepth: boolean
+  showVegetationIndex: boolean
+  showMethaneRelease: boolean
+  open: boolean
+  regionFilter: 'all' | 'arctic' | 'alpine' | 'antarctic'
+}
+
+export interface TundraCarbonData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  carbonFlux: number
+  permafrostDepth: number
+  vegetationIndex: number
+  methaneRelease: number
+  soilTemperature: number
+  status: 'sink' | 'neutral' | 'source' | 'accelerating' | 'runaway'
+  description: string
+}
+
+export interface MonsoonState {
+  systems: MonsoonData[]
+  activeSystemId: string | null
+  showPrecipitation: boolean
+  showWindPattern: boolean
+  showHumidity: boolean
+  showCloudCover: boolean
+  open: boolean
+  regionFilter: 'all' | 'asian' | 'african' | 'american' | 'australian'
+}
+
+export interface MonsoonData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  precipitation: number
+  windSpeed: number
+  humidity: number
+  cloudCover: number
+  onsetDate: string
+  status: 'pre_onset' | 'onset' | 'active' | 'break' | 'withdrawal'
+  description: string
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -5560,6 +5764,24 @@ interface MapState {
   // Task 67: Ocean Mesoscale Eddy Tracker
   oceanEddy: OceanEddyState
   setOceanEddy: (state: Partial<OceanEddyState>) => void
+
+  // Task 68: New monitoring states
+  supervolcano: SupervolcanoState
+  setSupervolcano: (state: Partial<SupervolcanoState>) => void
+  polarVortex: PolarVortexState
+  setPolarVortex: (state: Partial<PolarVortexState>) => void
+  karstAquifer: KarstAquiferState
+  setKarstAquifer: (state: Partial<KarstAquiferState>) => void
+  subductionZone: SubductionZoneState
+  setSubductionZone: (state: Partial<SubductionZoneState>) => void
+  tropopause: TropopauseState
+  setTropopause: (state: Partial<TropopauseState>) => void
+  invasiveSpecies: InvasiveSpeciesState
+  setInvasiveSpecies: (state: Partial<InvasiveSpeciesState>) => void
+  tundraCarbon: TundraCarbonState
+  setTundraCarbon: (state: Partial<TundraCarbonState>) => void
+  monsoon: MonsoonState
+  setMonsoon: (state: Partial<MonsoonState>) => void
 
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
@@ -9979,6 +10201,112 @@ export const useMapStore = create<MapState>()(
         oceanEddy: { ...state.oceanEddy, ...updates },
       })),
 
+      // Task 68: New monitoring defaults and setters
+      supervolcano: {
+        volcanoes: [],
+        activeVolcanoId: null,
+        showCaldera: true,
+        showMagmaChamber: true,
+        showGroundDeformation: true,
+        showThermalAnomaly: false,
+        open: false,
+        statusFilter: 'all',
+      },
+      setSupervolcano: (updates) => set((state) => ({
+        supervolcano: { ...state.supervolcano, ...updates },
+      })),
+      polarVortex: {
+        vortices: [],
+        activeVortexId: null,
+        showWindSpeed: true,
+        showTemperature: true,
+        showOzoneLevel: true,
+        showJetStream: false,
+        open: false,
+        hemisphereFilter: 'all',
+      },
+      setPolarVortex: (updates) => set((state) => ({
+        polarVortex: { ...state.polarVortex, ...updates },
+      })),
+      karstAquifer: {
+        aquifers: [],
+        activeAquiferId: null,
+        showWaterTable: true,
+        showConduitFlow: true,
+        showRechargeZone: true,
+        showWaterQuality: false,
+        open: false,
+        typeFilter: 'all',
+      },
+      setKarstAquifer: (updates) => set((state) => ({
+        karstAquifer: { ...state.karstAquifer, ...updates },
+      })),
+      subductionZone: {
+        zones: [],
+        activeZoneId: null,
+        showSeismicity: true,
+        showSlipRate: true,
+        showCoupling: true,
+        showTremorActivity: false,
+        open: false,
+        typeFilter: 'all',
+      },
+      setSubductionZone: (updates) => set((state) => ({
+        subductionZone: { ...state.subductionZone, ...updates },
+      })),
+      tropopause: {
+        stations: [],
+        activeStationId: null,
+        showHeight: true,
+        showTemperature: true,
+        showOzoneConcentration: true,
+        showPressure: false,
+        open: false,
+        regionFilter: 'all',
+      },
+      setTropopause: (updates) => set((state) => ({
+        tropopause: { ...state.tropopause, ...updates },
+      })),
+      invasiveSpecies: {
+        species: [],
+        activeSpeciesId: null,
+        showSpread: true,
+        showImpact: true,
+        showControlEffort: true,
+        showNativeDecline: false,
+        open: false,
+        categoryFilter: 'all',
+      },
+      setInvasiveSpecies: (updates) => set((state) => ({
+        invasiveSpecies: { ...state.invasiveSpecies, ...updates },
+      })),
+      tundraCarbon: {
+        sites: [],
+        activeSiteId: null,
+        showCarbonFlux: true,
+        showPermafrostDepth: true,
+        showVegetationIndex: true,
+        showMethaneRelease: false,
+        open: false,
+        regionFilter: 'all',
+      },
+      setTundraCarbon: (updates) => set((state) => ({
+        tundraCarbon: { ...state.tundraCarbon, ...updates },
+      })),
+      monsoon: {
+        systems: [],
+        activeSystemId: null,
+        showPrecipitation: true,
+        showWindPattern: true,
+        showHumidity: true,
+        showCloudCover: false,
+        open: false,
+        regionFilter: 'all',
+      },
+      setMonsoon: (updates) => set((state) => ({
+        monsoon: { ...state.monsoon, ...updates },
+      })),
+
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
       setAddLocationDialogOpen: (open) => set({ addLocationDialogOpen: open }),
@@ -10283,6 +10611,14 @@ export const useMapStore = create<MapState>()(
         stratosphericAerosol: state.stratosphericAerosol,
         megacityCarbon: state.megacityCarbon,
         oceanEddy: state.oceanEddy,
+        supervolcano: state.supervolcano,
+        polarVortex: state.polarVortex,
+        karstAquifer: state.karstAquifer,
+        subductionZone: state.subductionZone,
+        tropopause: state.tropopause,
+        invasiveSpecies: state.invasiveSpecies,
+        tundraCarbon: state.tundraCarbon,
+        monsoon: state.monsoon,
       }),
     }
   )

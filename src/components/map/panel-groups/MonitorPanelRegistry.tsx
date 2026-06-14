@@ -20,10 +20,45 @@ export function MonitorPanelRegistry() {
   const cryosphereChange = useMapStore((s) => s.cryosphereChange)
   const abyssalPlain = useMapStore((s) => s.abyssalPlain)
   const fjordEcosystem = useMapStore((s) => s.fjordEcosystem)
+  // Task 68
+  const supervolcano = useMapStore((s) => s.supervolcano)
+  const polarVortex = useMapStore((s) => s.polarVortex)
+  const karstAquifer = useMapStore((s) => s.karstAquifer)
+  const subductionZone = useMapStore((s) => s.subductionZone)
+  const tropopause = useMapStore((s) => s.tropopause)
+  const invasiveSpecies = useMapStore((s) => s.invasiveSpecies)
+  const tundraCarbon = useMapStore((s) => s.tundraCarbon)
+  const monsoon = useMapStore((s) => s.monsoon)
 
   return (
     <>
-      {/* Task 67: New Monitoring Panels - loaded via LazyPanel for true lazy loading */}
+      {/* Task 68: New Monitoring Panels - loaded via LazyPanel for true lazy loading */}
+      {supervolcano.open && (
+        <LazyPanel importFn={() => import('@/components/map/SupervolcanoMonitor')} exportName="SupervolcanoMonitor" shouldLoad={true} />
+      )}
+      {polarVortex.open && (
+        <LazyPanel importFn={() => import('@/components/map/PolarVortexMonitor')} exportName="PolarVortexMonitor" shouldLoad={true} />
+      )}
+      {karstAquifer.open && (
+        <LazyPanel importFn={() => import('@/components/map/KarstAquiferMonitor')} exportName="KarstAquiferMonitor" shouldLoad={true} />
+      )}
+      {subductionZone.open && (
+        <LazyPanel importFn={() => import('@/components/map/SubductionZoneMonitor')} exportName="SubductionZoneMonitor" shouldLoad={true} />
+      )}
+      {tropopause.open && (
+        <LazyPanel importFn={() => import('@/components/map/TropopauseMonitor')} exportName="TropopauseMonitor" shouldLoad={true} />
+      )}
+      {invasiveSpecies.open && (
+        <LazyPanel importFn={() => import('@/components/map/InvasiveSpeciesTracker')} exportName="InvasiveSpeciesTracker" shouldLoad={true} />
+      )}
+      {tundraCarbon.open && (
+        <LazyPanel importFn={() => import('@/components/map/TundraCarbonMonitor')} exportName="TundraCarbonMonitor" shouldLoad={true} />
+      )}
+      {monsoon.open && (
+        <LazyPanel importFn={() => import('@/components/map/MonsoonTracker')} exportName="MonsoonTracker" shouldLoad={true} />
+      )}
+
+      {/* Task 67: Monitoring Panels */}
       {geothermalSpring.open && (
         <LazyPanel importFn={() => import('@/components/map/GeothermalSpringMonitor')} exportName="GeothermalSpringMonitor" shouldLoad={true} />
       )}
@@ -49,7 +84,7 @@ export function MonitorPanelRegistry() {
         <LazyPanel importFn={() => import('@/components/map/OceanMesoscaleEddyTracker')} exportName="OceanMesoscaleEddyTracker" shouldLoad={true} />
       )}
 
-      {/* Task 65: Monitoring Panels - loaded via LazyPanel for true lazy loading */}
+      {/* Task 65: Monitoring Panels */}
       {subglacialLake.open && (
         <LazyPanel importFn={() => import('@/components/map/SubglacialLakeExplorer')} exportName="SubglacialLakeExplorer" shouldLoad={true} />
       )}
