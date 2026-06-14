@@ -1,27 +1,7 @@
 'use client'
 
-import dynamic from 'next/dynamic'
 import { useMapStore } from '@/lib/map-store'
-
-// Lazy-loaded monitoring panels - only import when open
-const GeothermalSpringMonitor = dynamic(() => import('@/components/map/GeothermalSpringMonitor').then(m => ({ default: m.GeothermalSpringMonitor })), { ssr: false, loading: () => null })
-const AsteroidImpactRiskMapper = dynamic(() => import('@/components/map/AsteroidImpactRiskMapper').then(m => ({ default: m.AsteroidImpactRiskMapper })), { ssr: false, loading: () => null })
-const DesertOasisMonitor = dynamic(() => import('@/components/map/DesertOasisMonitor').then(m => ({ default: m.DesertOasisMonitor })), { ssr: false, loading: () => null })
-const VolcanicLightningTracker = dynamic(() => import('@/components/map/VolcanicLightningTracker').then(m => ({ default: m.VolcanicLightningTracker })), { ssr: false, loading: () => null })
-const IceCoreDataExplorer = dynamic(() => import('@/components/map/IceCoreDataExplorer').then(m => ({ default: m.IceCoreDataExplorer })), { ssr: false, loading: () => null })
-const StratosphericAerosolMonitor = dynamic(() => import('@/components/map/StratosphericAerosolMonitor').then(m => ({ default: m.StratosphericAerosolMonitor })), { ssr: false, loading: () => null })
-const MegacityCarbonFootprint = dynamic(() => import('@/components/map/MegacityCarbonFootprint').then(m => ({ default: m.MegacityCarbonFootprint })), { ssr: false, loading: () => null })
-const OceanMesoscaleEddyTracker = dynamic(() => import('@/components/map/OceanMesoscaleEddyTracker').then(m => ({ default: m.OceanMesoscaleEddyTracker })), { ssr: false, loading: () => null })
-
-// Task 65 components
-const SubglacialLakeExplorer = dynamic(() => import('@/components/map/SubglacialLakeExplorer').then(m => ({ default: m.SubglacialLakeExplorer })), { ssr: false, loading: () => null })
-const ThermokarstLakeMonitor = dynamic(() => import('@/components/map/ThermokarstLakeMonitor').then(m => ({ default: m.ThermokarstLakeMonitor })), { ssr: false, loading: () => null })
-const PaleoclimateProxyExplorer = dynamic(() => import('@/components/map/PaleoclimateProxyExplorer').then(m => ({ default: m.PaleoclimateProxyExplorer })), { ssr: false, loading: () => null })
-const GeomagneticallyInducedCurrentMonitor = dynamic(() => import('@/components/map/GeomagneticallyInducedCurrentMonitor').then(m => ({ default: m.GeomagneticallyInducedCurrentMonitor })), { ssr: false, loading: () => null })
-const SabkhaEnvironmentMonitor = dynamic(() => import('@/components/map/SabkhaEnvironmentMonitor').then(m => ({ default: m.SabkhaEnvironmentMonitor })), { ssr: false, loading: () => null })
-const CryosphereChangeTracker = dynamic(() => import('@/components/map/CryosphereChangeTracker').then(m => ({ default: m.CryosphereChangeTracker })), { ssr: false, loading: () => null })
-const AbyssalPlainMapper = dynamic(() => import('@/components/map/AbyssalPlainMapper').then(m => ({ default: m.AbyssalPlainMapper })), { ssr: false, loading: () => null })
-const FjordEcosystemMonitor = dynamic(() => import('@/components/map/FjordEcosystemMonitor').then(m => ({ default: m.FjordEcosystemMonitor })), { ssr: false, loading: () => null })
+import { LazyPanel } from '@/components/LazyPanel'
 
 export function MonitorPanelRegistry() {
   const geothermalSpring = useMapStore((s) => s.geothermalSpring)
@@ -43,25 +23,57 @@ export function MonitorPanelRegistry() {
 
   return (
     <>
-      {/* Task 67: New Monitoring Panels */}
-      {geothermalSpring.open && <GeothermalSpringMonitor />}
-      {asteroidImpact.open && <AsteroidImpactRiskMapper />}
-      {desertOasis.open && <DesertOasisMonitor />}
-      {volcanicLightning.open && <VolcanicLightningTracker />}
-      {iceCoreData.open && <IceCoreDataExplorer />}
-      {stratosphericAerosol.open && <StratosphericAerosolMonitor />}
-      {megacityCarbon.open && <MegacityCarbonFootprint />}
-      {oceanEddy.open && <OceanMesoscaleEddyTracker />}
+      {/* Task 67: New Monitoring Panels - loaded via LazyPanel for true lazy loading */}
+      {geothermalSpring.open && (
+        <LazyPanel importFn={() => import('@/components/map/GeothermalSpringMonitor')} exportName="GeothermalSpringMonitor" shouldLoad={true} />
+      )}
+      {asteroidImpact.open && (
+        <LazyPanel importFn={() => import('@/components/map/AsteroidImpactRiskMapper')} exportName="AsteroidImpactRiskMapper" shouldLoad={true} />
+      )}
+      {desertOasis.open && (
+        <LazyPanel importFn={() => import('@/components/map/DesertOasisMonitor')} exportName="DesertOasisMonitor" shouldLoad={true} />
+      )}
+      {volcanicLightning.open && (
+        <LazyPanel importFn={() => import('@/components/map/VolcanicLightningTracker')} exportName="VolcanicLightningTracker" shouldLoad={true} />
+      )}
+      {iceCoreData.open && (
+        <LazyPanel importFn={() => import('@/components/map/IceCoreDataExplorer')} exportName="IceCoreDataExplorer" shouldLoad={true} />
+      )}
+      {stratosphericAerosol.open && (
+        <LazyPanel importFn={() => import('@/components/map/StratosphericAerosolMonitor')} exportName="StratosphericAerosolMonitor" shouldLoad={true} />
+      )}
+      {megacityCarbon.open && (
+        <LazyPanel importFn={() => import('@/components/map/MegacityCarbonFootprint')} exportName="MegacityCarbonFootprint" shouldLoad={true} />
+      )}
+      {oceanEddy.open && (
+        <LazyPanel importFn={() => import('@/components/map/OceanMesoscaleEddyTracker')} exportName="OceanMesoscaleEddyTracker" shouldLoad={true} />
+      )}
 
-      {/* Task 65: Monitoring Panels */}
-      {subglacialLake.open && <SubglacialLakeExplorer />}
-      {thermokarstLake.open && <ThermokarstLakeMonitor />}
-      {paleoclimateProxy.open && <PaleoclimateProxyExplorer />}
-      {gicMonitor.open && <GeomagneticallyInducedCurrentMonitor />}
-      {sabkhaEnvironment.open && <SabkhaEnvironmentMonitor />}
-      {cryosphereChange.open && <CryosphereChangeTracker />}
-      {abyssalPlain.open && <AbyssalPlainMapper />}
-      {fjordEcosystem.open && <FjordEcosystemMonitor />}
+      {/* Task 65: Monitoring Panels - loaded via LazyPanel for true lazy loading */}
+      {subglacialLake.open && (
+        <LazyPanel importFn={() => import('@/components/map/SubglacialLakeExplorer')} exportName="SubglacialLakeExplorer" shouldLoad={true} />
+      )}
+      {thermokarstLake.open && (
+        <LazyPanel importFn={() => import('@/components/map/ThermokarstLakeMonitor')} exportName="ThermokarstLakeMonitor" shouldLoad={true} />
+      )}
+      {paleoclimateProxy.open && (
+        <LazyPanel importFn={() => import('@/components/map/PaleoclimateProxyExplorer')} exportName="PaleoclimateProxyExplorer" shouldLoad={true} />
+      )}
+      {gicMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/GeomagneticallyInducedCurrentMonitor')} exportName="GeomagneticallyInducedCurrentMonitor" shouldLoad={true} />
+      )}
+      {sabkhaEnvironment.open && (
+        <LazyPanel importFn={() => import('@/components/map/SabkhaEnvironmentMonitor')} exportName="SabkhaEnvironmentMonitor" shouldLoad={true} />
+      )}
+      {cryosphereChange.open && (
+        <LazyPanel importFn={() => import('@/components/map/CryosphereChangeTracker')} exportName="CryosphereChangeTracker" shouldLoad={true} />
+      )}
+      {abyssalPlain.open && (
+        <LazyPanel importFn={() => import('@/components/map/AbyssalPlainMapper')} exportName="AbyssalPlainMapper" shouldLoad={true} />
+      )}
+      {fjordEcosystem.open && (
+        <LazyPanel importFn={() => import('@/components/map/FjordEcosystemMonitor')} exportName="FjordEcosystemMonitor" shouldLoad={true} />
+      )}
     </>
   )
 }
