@@ -16,7 +16,7 @@ export default function Home() {
   const { currentStyle, setCurrentStyle, setCenter, setZoom } = useMapStore()
   const [showWelcome, setShowWelcome] = useState(true)
   const [isFullscreen, setIsFullscreen] = useState(false)
-  const [loadStep, setLoadStep] = useState(0)
+  const [loadStep, setLoadStep] = useState(4)
 
   useServiceWorker()
 
@@ -44,25 +44,25 @@ export default function Home() {
 
   useEffect(() => {
     if (loadStep >= 1) return
-    const timer = setTimeout(() => setLoadStep(1), 10000)
+    const timer = setTimeout(() => setLoadStep(1), 2000)
     return () => clearTimeout(timer)
   }, [loadStep])
 
   useEffect(() => {
     if (loadStep >= 2) return
-    const timer = setTimeout(() => setLoadStep(2), 60000)
+    const timer = setTimeout(() => setLoadStep(2), 4000)
     return () => clearTimeout(timer)
   }, [loadStep])
 
   useEffect(() => {
     if (loadStep >= 3) return
-    const timer = setTimeout(() => setLoadStep(3), 120000)
+    const timer = setTimeout(() => setLoadStep(3), 6000)
     return () => clearTimeout(timer)
   }, [loadStep])
 
   useEffect(() => {
     if (loadStep >= 4) return
-    const timer = setTimeout(() => setLoadStep(4), 300000)
+    const timer = setTimeout(() => setLoadStep(4), 8000)
     return () => clearTimeout(timer)
   }, [loadStep])
 

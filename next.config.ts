@@ -12,6 +12,7 @@ const nextConfig: NextConfig = {
     'localhost',
     '127.0.0.1',
   ],
+  turbopack: {},
   webpack: (config, { dev }) => {
     if (dev) {
       config.parallelism = 1

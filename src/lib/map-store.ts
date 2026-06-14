@@ -5111,6 +5111,208 @@ export interface PermafrostCarbonFeedbackData {
   description: string
 }
 
+// Task 72: New monitoring interfaces
+
+export interface TropicalCycloneState {
+  cyclones: TropicalCycloneData[]
+  activeCycloneId: string | null
+  showWindSpeed: boolean
+  showPressure: boolean
+  showRainfall: boolean
+  showStormSurge: boolean
+  open: boolean
+  categoryFilter: 'all' | 'tropical_depression' | 'tropical_storm' | 'category_1_2' | 'category_3_5'
+}
+
+export interface TropicalCycloneData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  windSpeed: number
+  pressure: number
+  rainfall: number
+  stormSurge: number
+  forwardSpeed: number
+  status: 'forming' | 'strengthening' | 'peak' | 'weakening' | 'dissipating'
+  description: string
+}
+
+export interface VolcanicDeformationState {
+  volcanoes: VolcanicDeformationData[]
+  activeVolcanoId: string | null
+  showUplift: boolean
+  showHorizontal: boolean
+  showTilt: boolean
+  showStrainRate: boolean
+  open: boolean
+  typeFilter: 'all' | 'inflation' | 'deflation' | 'complex' | 'stable'
+}
+
+export interface VolcanicDeformationData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  uplift: number
+  horizontal: number
+  tilt: number
+  strainRate: number
+  magmaDepth: number
+  status: 'inflating' | 'deflating' | 'complex' | 'stable' | 'erupting'
+  description: string
+}
+
+export interface CoralReefBleachingDetailState {
+  reefs: CoralReefBleachingDetailData[]
+  activeReefId: string | null
+  showBleachingPercent: boolean
+  showSST: boolean
+  showRecovery: boolean
+  showStressLevel: boolean
+  open: boolean
+  severityFilter: 'all' | 'mild' | 'moderate' | 'severe' | 'extreme'
+}
+
+export interface CoralReefBleachingDetailData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  bleachingPercent: number
+  sst: number
+  recovery: number
+  stressLevel: number
+  diversity: number
+  status: 'healthy' | 'mild' | 'moderate' | 'severe' | 'extreme'
+  description: string
+}
+
+export interface ArcticPermafrostLakesState {
+  lakes: ArcticPermafrostLakesData[]
+  activeLakeId: string | null
+  showArea: boolean
+  showDepth: boolean
+  showThawRate: boolean
+  showMethane: boolean
+  open: boolean
+  typeFilter: 'all' | 'thermokarst' | 'ice_wedge' | 'oriented' | 'drained'
+}
+
+export interface ArcticPermafrostLakesData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  area: number
+  depth: number
+  thawRate: number
+  methane: number
+  iceContent: number
+  status: 'stable' | 'expanding' | 'draining' | 'shrinking' | 'collapsed'
+  description: string
+}
+
+export interface MethaneEmissionHotspotState {
+  hotspots: MethaneEmissionHotspotData[]
+  activeHotspotId: string | null
+  showEmissionRate: boolean
+  showConcentration: boolean
+  showSource: boolean
+  showTrend: boolean
+  open: boolean
+  sourceFilter: 'all' | 'wetland' | 'fossil_fuel' | 'agriculture' | 'landfill'
+}
+
+export interface MethaneEmissionHotspotData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  emissionRate: number
+  concentration: number
+  source: number
+  trend: number
+  uncertainty: number
+  status: 'low' | 'moderate' | 'elevated' | 'high' | 'critical'
+  description: string
+}
+
+export interface CoastalUpwellingState {
+  zones: CoastalUpwellingData[]
+  activeZoneId: string | null
+  showSST: boolean
+  showNutrientLevel: boolean
+  showProductivity: boolean
+  showWindStress: boolean
+  open: boolean
+  typeFilter: 'all' | 'eastern_boundary' | 'equatorial' | 'coastal_jet' | 'wind_driven'
+}
+
+export interface CoastalUpwellingData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  sst: number
+  nutrientLevel: number
+  productivity: number
+  windStress: number
+  chlorophyll: number
+  status: 'strong' | 'moderate' | 'weak' | 'fading' | 'absent'
+  description: string
+}
+
+export interface SpaceDebrisOrbitState {
+  objects: SpaceDebrisOrbitData[]
+  activeObjectId: string | null
+  showAltitude: boolean
+  showVelocity: boolean
+  showCollisionRisk: boolean
+  showDecayRate: boolean
+  open: boolean
+  typeFilter: 'all' | 'debris' | 'defunct_satellite' | 'rocket_body' | 'fragment'
+}
+
+export interface SpaceDebrisOrbitData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  altitude: number
+  velocity: number
+  collisionRisk: number
+  decayRate: number
+  size: number
+  status: 'stable' | 'drifting' | 'decaying' | 'high_risk' | 'reentry_imminent'
+  description: string
+}
+
+export interface TectonicPlateBoundaryState {
+  boundaries: TectonicPlateBoundaryData[]
+  activeBoundaryId: string | null
+  showVelocity: boolean
+  showStress: boolean
+  showSeismicity: boolean
+  showSlipRate: boolean
+  open: boolean
+  typeFilter: 'all' | 'convergent' | 'divergent' | 'transform' | 'complex'
+}
+
+export interface TectonicPlateBoundaryData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  velocity: number
+  stress: number
+  seismicity: number
+  slipRate: number
+  maxDepth: number
+  status: 'locked' | 'creeping' | 'partial_lock' | 'tremor_swarm' | 'rupturing'
+  description: string
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -6439,6 +6641,24 @@ interface MapState {
   setOceanAnoxicZone: (state: Partial<OceanAnoxicZoneState>) => void
   permafrostCarbonFeedback: PermafrostCarbonFeedbackState
   setPermafrostCarbonFeedback: (state: Partial<PermafrostCarbonFeedbackState>) => void
+
+  // Task 72: New monitoring states
+  tropicalCyclone: TropicalCycloneState
+  setTropicalCyclone: (state: Partial<TropicalCycloneState>) => void
+  volcanicDeformation: VolcanicDeformationState
+  setVolcanicDeformation: (state: Partial<VolcanicDeformationState>) => void
+  coralReefBleachingDetail: CoralReefBleachingDetailState
+  setCoralReefBleachingDetail: (state: Partial<CoralReefBleachingDetailState>) => void
+  arcticPermafrostLakes: ArcticPermafrostLakesState
+  setArcticPermafrostLakes: (state: Partial<ArcticPermafrostLakesState>) => void
+  methaneEmissionHotspot: MethaneEmissionHotspotState
+  setMethaneEmissionHotspot: (state: Partial<MethaneEmissionHotspotState>) => void
+  coastalUpwelling: CoastalUpwellingState
+  setCoastalUpwelling: (state: Partial<CoastalUpwellingState>) => void
+  spaceDebrisOrbit: SpaceDebrisOrbitState
+  setSpaceDebrisOrbit: (state: Partial<SpaceDebrisOrbitState>) => void
+  tectonicPlateBoundary: TectonicPlateBoundaryState
+  setTectonicPlateBoundary: (state: Partial<TectonicPlateBoundaryState>) => void
 
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
@@ -11135,6 +11355,38 @@ export const useMapStore = create<MapState>()(
         sites: [], activeSiteId: null, showThawDepth: true, showCarbonStock: true, showMethaneRelease: true, showTemperature: false, open: false, severityFilter: 'all',
       },
       setPermafrostCarbonFeedback: (updates) => set((state) => ({ permafrostCarbonFeedback: { ...state.permafrostCarbonFeedback, ...updates } })),
+      tropicalCyclone: {
+        cyclones: [], activeCycloneId: null, showWindSpeed: true, showPressure: true, showRainfall: true, showStormSurge: false, open: false, categoryFilter: 'all',
+      },
+      setTropicalCyclone: (updates) => set((state) => ({ tropicalCyclone: { ...state.tropicalCyclone, ...updates } })),
+      volcanicDeformation: {
+        volcanoes: [], activeVolcanoId: null, showUplift: true, showHorizontal: true, showTilt: true, showStrainRate: false, open: false, typeFilter: 'all',
+      },
+      setVolcanicDeformation: (updates) => set((state) => ({ volcanicDeformation: { ...state.volcanicDeformation, ...updates } })),
+      coralReefBleachingDetail: {
+        reefs: [], activeReefId: null, showBleachingPercent: true, showSST: true, showRecovery: true, showStressLevel: false, open: false, severityFilter: 'all',
+      },
+      setCoralReefBleachingDetail: (updates) => set((state) => ({ coralReefBleachingDetail: { ...state.coralReefBleachingDetail, ...updates } })),
+      arcticPermafrostLakes: {
+        lakes: [], activeLakeId: null, showArea: true, showDepth: true, showThawRate: true, showMethane: false, open: false, typeFilter: 'all',
+      },
+      setArcticPermafrostLakes: (updates) => set((state) => ({ arcticPermafrostLakes: { ...state.arcticPermafrostLakes, ...updates } })),
+      methaneEmissionHotspot: {
+        hotspots: [], activeHotspotId: null, showEmissionRate: true, showConcentration: true, showSource: true, showTrend: false, open: false, sourceFilter: 'all',
+      },
+      setMethaneEmissionHotspot: (updates) => set((state) => ({ methaneEmissionHotspot: { ...state.methaneEmissionHotspot, ...updates } })),
+      coastalUpwelling: {
+        zones: [], activeZoneId: null, showSST: true, showNutrientLevel: true, showProductivity: true, showWindStress: false, open: false, typeFilter: 'all',
+      },
+      setCoastalUpwelling: (updates) => set((state) => ({ coastalUpwelling: { ...state.coastalUpwelling, ...updates } })),
+      spaceDebrisOrbit: {
+        objects: [], activeObjectId: null, showAltitude: true, showVelocity: true, showCollisionRisk: true, showDecayRate: false, open: false, typeFilter: 'all',
+      },
+      setSpaceDebrisOrbit: (updates) => set((state) => ({ spaceDebrisOrbit: { ...state.spaceDebrisOrbit, ...updates } })),
+      tectonicPlateBoundary: {
+        boundaries: [], activeBoundaryId: null, showVelocity: true, showStress: true, showSeismicity: true, showSlipRate: false, open: false, typeFilter: 'all',
+      },
+      setTectonicPlateBoundary: (updates) => set((state) => ({ tectonicPlateBoundary: { ...state.tectonicPlateBoundary, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
@@ -11472,6 +11724,14 @@ export const useMapStore = create<MapState>()(
         alpineGlacier: state.alpineGlacier,
         oceanAnoxicZone: state.oceanAnoxicZone,
         permafrostCarbonFeedback: state.permafrostCarbonFeedback,
+        tropicalCyclone: state.tropicalCyclone,
+        volcanicDeformation: state.volcanicDeformation,
+        coralReefBleachingDetail: state.coralReefBleachingDetail,
+        arcticPermafrostLakes: state.arcticPermafrostLakes,
+        methaneEmissionHotspot: state.methaneEmissionHotspot,
+        coastalUpwelling: state.coastalUpwelling,
+        spaceDebrisOrbit: state.spaceDebrisOrbit,
+        tectonicPlateBoundary: state.tectonicPlateBoundary,
       }),
     }
   )

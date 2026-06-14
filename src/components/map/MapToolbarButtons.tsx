@@ -176,6 +176,15 @@ import {
   MountainSnow as MountainSnowIcon2,
   Droplets as DropletsIcon5,
   Thermometer as ThermometerIcon5,
+  // Task 72 icons
+  CloudHail as CloudHailIcon2,
+  Move as MoveIcon,
+  Shell as ShellIcon2,
+  Snowflake as SnowflakeIcon3,
+  Flame as FlameIcon7,
+  Waves as WavesIcon8,
+  Orbit as OrbitIcon,
+  Globe as GlobeIcon3,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -2245,6 +2254,14 @@ export function MapToolbarButtons(props: MapToolbarButtonsProps) {
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setAlpineGlacier({ open: true })} title="Alpine Glacier" aria-label="Open alpine glacier monitor"><MountainSnowIcon2 className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setOceanAnoxicZone({ open: true })} title="Ocean Anoxic Zone" aria-label="Open ocean anoxic zone monitor"><DropletsIcon5 className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setPermafrostCarbonFeedback({ open: true })} title="Permafrost Carbon" aria-label="Open permafrost carbon feedback"><ThermometerIcon5 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setTropicalCyclone({ open: true })} title="Tropical Cyclone" aria-label="Open tropical cyclone tracker"><CloudHailIcon2 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setVolcanicDeformation({ open: true })} title="Volcanic Deformation" aria-label="Open volcanic deformation monitor"><MoveIcon className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setCoralReefBleachingDetail({ open: true })} title="Coral Reef Bleaching" aria-label="Open coral reef bleaching detail"><ShellIcon2 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setArcticPermafrostLakes({ open: true })} title="Arctic Permafrost Lakes" aria-label="Open arctic permafrost lakes monitor"><SnowflakeIcon3 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setMethaneEmissionHotspot({ open: true })} title="Methane Emission" aria-label="Open methane emission hotspot"><FlameIcon7 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setCoastalUpwelling({ open: true })} title="Coastal Upwelling" aria-label="Open coastal upwelling monitor"><WavesIcon8 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setSpaceDebrisOrbit({ open: true })} title="Space Debris Orbit" aria-label="Open space debris orbit tracker"><OrbitIcon className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setTectonicPlateBoundary({ open: true })} title="Tectonic Plate Boundary" aria-label="Open tectonic plate boundary monitor"><GlobeIcon3 className="h-4 w-4" /></Button>
           <Button
             variant="outline"
             size="icon"
