@@ -6563,6 +6563,126 @@ export interface MarineHeatwaveState {
   } | null
 }
 
+export interface KelpForestDeclineState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface AtmosphericRiverState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface SubmarineGroundwaterState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface VolcanicGasPlumeState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface CoastalWetlandState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface PolarBearHabitatState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface DesertPavementState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface OceanEddyTransportState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -8029,6 +8149,22 @@ interface MapState {
   setFrostHeave: (state: Partial<FrostHeaveState>) => void
   marineHeatwave: MarineHeatwaveState
   setMarineHeatwave: (state: Partial<MarineHeatwaveState>) => void
+  kelpForestDecline: KelpForestDeclineState
+  setKelpForestDecline: (state: Partial<KelpForestDeclineState>) => void
+  atmosphericRiver: AtmosphericRiverState
+  setAtmosphericRiver: (state: Partial<AtmosphericRiverState>) => void
+  submarineGroundwater: SubmarineGroundwaterState
+  setSubmarineGroundwater: (state: Partial<SubmarineGroundwaterState>) => void
+  volcanicGasPlume: VolcanicGasPlumeState
+  setVolcanicGasPlume: (state: Partial<VolcanicGasPlumeState>) => void
+  coastalWetland: CoastalWetlandState
+  setCoastalWetland: (state: Partial<CoastalWetlandState>) => void
+  polarBearHabitat: PolarBearHabitatState
+  setPolarBearHabitat: (state: Partial<PolarBearHabitatState>) => void
+  desertPavement: DesertPavementState
+  setDesertPavement: (state: Partial<DesertPavementState>) => void
+  oceanEddyTransport: OceanEddyTransportState
+  setOceanEddyTransport: (state: Partial<OceanEddyTransportState>) => void
 
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
@@ -12949,6 +13085,22 @@ export const useMapStore = create<MapState>()(
       setFrostHeave: (updates) => set((state) => ({ frostHeave: { ...state.frostHeave, ...updates } })),
       marineHeatwave: { open: false, data: null },
       setMarineHeatwave: (updates) => set((state) => ({ marineHeatwave: { ...state.marineHeatwave, ...updates } })),
+      kelpForestDecline: { open: false, data: null },
+      setKelpForestDecline: (updates) => set((state) => ({ kelpForestDecline: { ...state.kelpForestDecline, ...updates } })),
+      atmosphericRiver: { open: false, data: null },
+      setAtmosphericRiver: (updates) => set((state) => ({ atmosphericRiver: { ...state.atmosphericRiver, ...updates } })),
+      submarineGroundwater: { open: false, data: null },
+      setSubmarineGroundwater: (updates) => set((state) => ({ submarineGroundwater: { ...state.submarineGroundwater, ...updates } })),
+      volcanicGasPlume: { open: false, data: null },
+      setVolcanicGasPlume: (updates) => set((state) => ({ volcanicGasPlume: { ...state.volcanicGasPlume, ...updates } })),
+      coastalWetland: { open: false, data: null },
+      setCoastalWetland: (updates) => set((state) => ({ coastalWetland: { ...state.coastalWetland, ...updates } })),
+      polarBearHabitat: { open: false, data: null },
+      setPolarBearHabitat: (updates) => set((state) => ({ polarBearHabitat: { ...state.polarBearHabitat, ...updates } })),
+      desertPavement: { open: false, data: null },
+      setDesertPavement: (updates) => set((state) => ({ desertPavement: { ...state.desertPavement, ...updates } })),
+      oceanEddyTransport: { open: false, data: null },
+      setOceanEddyTransport: (updates) => set((state) => ({ oceanEddyTransport: { ...state.oceanEddyTransport, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
@@ -13350,6 +13502,14 @@ export const useMapStore = create<MapState>()(
         oceanMixing: state.oceanMixing,
         frostHeave: state.frostHeave,
         marineHeatwave: state.marineHeatwave,
+        kelpForestDecline: state.kelpForestDecline,
+        atmosphericRiver: state.atmosphericRiver,
+        submarineGroundwater: state.submarineGroundwater,
+        volcanicGasPlume: state.volcanicGasPlume,
+        coastalWetland: state.coastalWetland,
+        polarBearHabitat: state.polarBearHabitat,
+        desertPavement: state.desertPavement,
+        oceanEddyTransport: state.oceanEddyTransport,
       }),
     }
   )

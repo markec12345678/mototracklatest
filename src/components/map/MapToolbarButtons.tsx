@@ -248,6 +248,15 @@ import {
   Droplets as DropletsIcon9,
   Thermometer as ThermometerIcon7,
   Flame as FlameIcon11,
+  // Task 78-a icons
+  TreePine as TreePineIcon6,
+  CloudRain as CloudRainIcon4,
+  Droplet as DropletIcon5,
+  Flame as FlameIcon12,
+  Waves as WavesIcon12,
+  Snowflake as SnowflakeIcon7,
+  Sun as SunIcon9,
+  Globe as GlobeIcon4,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -2381,6 +2390,14 @@ export function MapToolbarButtons(props: MapToolbarButtonsProps) {
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setOceanMixing({ open: true })} title="Ocean Mixing" aria-label="Open ocean mixing monitor"><DropletsIcon9 className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setFrostHeave({ open: true })} title="Frost Heave" aria-label="Open frost heave monitor"><ThermometerIcon7 className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setMarineHeatwave({ open: true })} title="Marine Heatwave" aria-label="Open marine heatwave monitor"><FlameIcon11 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setKelpForestDecline({ open: true })} title="Kelp Forest Decline" aria-label="Open kelp forest decline monitor"><TreePineIcon6 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setAtmosphericRiver({ open: true })} title="Atmospheric River" aria-label="Open atmospheric river monitor"><CloudRainIcon4 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setSubmarineGroundwater({ open: true })} title="Submarine Groundwater" aria-label="Open submarine groundwater monitor"><DropletIcon5 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setVolcanicGasPlume({ open: true })} title="Volcanic Gas Plume" aria-label="Open volcanic gas plume monitor"><FlameIcon12 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setCoastalWetland({ open: true })} title="Coastal Wetland" aria-label="Open coastal wetland monitor"><WavesIcon12 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setPolarBearHabitat({ open: true })} title="Polar Bear Habitat" aria-label="Open polar bear habitat monitor"><SnowflakeIcon7 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setDesertPavement({ open: true })} title="Desert Pavement" aria-label="Open desert pavement monitor"><SunIcon9 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setOceanEddyTransport({ open: true })} title="Ocean Eddy Transport" aria-label="Open ocean eddy transport monitor"><GlobeIcon4 className="h-4 w-4" /></Button>
           <Button
             variant="outline"
             size="icon"
