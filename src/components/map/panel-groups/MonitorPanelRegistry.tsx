@@ -119,6 +119,15 @@ export function MonitorPanelRegistry() {
   const tidalBore = useMapStore((s) => s.tidalBore)
   const peatlandCarbon = useMapStore((s) => s.peatlandCarbon)
   const glacierSurge = useMapStore((s) => s.glacierSurge)
+  // Task 77-a
+  const sargassumBloom = useMapStore((s) => s.sargassumBloom)
+  const iceLensFormation = useMapStore((s) => s.iceLensFormation)
+  const coastalDeadZone = useMapStore((s) => s.coastalDeadZone)
+  const volcanicTremor = useMapStore((s) => s.volcanicTremor)
+  const sandDuneMigration = useMapStore((s) => s.sandDuneMigration)
+  const oceanMixing = useMapStore((s) => s.oceanMixing)
+  const frostHeave = useMapStore((s) => s.frostHeave)
+  const marineHeatwave = useMapStore((s) => s.marineHeatwave)
 
   return (
     <>
@@ -211,6 +220,16 @@ export function MonitorPanelRegistry() {
       {tidalBore.open && (<LazyPanel importFn={() => import('@/components/map/TidalBoreMonitor')} exportName="TidalBoreMonitor" shouldLoad={true} />)}
       {peatlandCarbon.open && (<LazyPanel importFn={() => import('@/components/map/PeatlandCarbonMonitor')} exportName="PeatlandCarbonMonitor" shouldLoad={true} />)}
       {glacierSurge.open && (<LazyPanel importFn={() => import('@/components/map/GlacierSurgeMonitor')} exportName="GlacierSurgeMonitor" shouldLoad={true} />)}
+
+      {/* Task 77-a: New Monitoring Panels */}
+      {sargassumBloom.open && (<LazyPanel importFn={() => import('@/components/map/SargassumBloomMonitor')} exportName="SargassumBloomMonitor" shouldLoad={true} />)}
+      {iceLensFormation.open && (<LazyPanel importFn={() => import('@/components/map/IceLensFormationMonitor')} exportName="IceLensFormationMonitor" shouldLoad={true} />)}
+      {coastalDeadZone.open && (<LazyPanel importFn={() => import('@/components/map/CoastalDeadZoneMonitor')} exportName="CoastalDeadZoneMonitor" shouldLoad={true} />)}
+      {volcanicTremor.open && (<LazyPanel importFn={() => import('@/components/map/VolcanicTremorMonitor')} exportName="VolcanicTremorMonitor" shouldLoad={true} />)}
+      {sandDuneMigration.open && (<LazyPanel importFn={() => import('@/components/map/SandDuneMigrationMonitor')} exportName="SandDuneMigrationMonitor" shouldLoad={true} />)}
+      {oceanMixing.open && (<LazyPanel importFn={() => import('@/components/map/OceanMixingMonitor')} exportName="OceanMixingMonitor" shouldLoad={true} />)}
+      {frostHeave.open && (<LazyPanel importFn={() => import('@/components/map/FrostHeaveMonitor')} exportName="FrostHeaveMonitor" shouldLoad={true} />)}
+      {marineHeatwave.open && (<LazyPanel importFn={() => import('@/components/map/MarineHeatwaveMonitor')} exportName="MarineHeatwaveMonitor" shouldLoad={true} />)}
 
       {/* Task 69: New Monitoring Panels */}
       {lavaFlow.open && (

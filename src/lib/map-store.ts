@@ -6443,6 +6443,126 @@ export interface GlacierSurgeState {
   } | null
 }
 
+export interface SargassumBloomState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface IceLensFormationState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface CoastalDeadZoneState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface VolcanicTremorState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface SandDuneMigrationState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface OceanMixingState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface FrostHeaveState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface MarineHeatwaveState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -7893,6 +8013,22 @@ interface MapState {
   setPeatlandCarbon: (state: Partial<PeatlandCarbonState>) => void
   glacierSurge: GlacierSurgeState
   setGlacierSurge: (state: Partial<GlacierSurgeState>) => void
+  sargassumBloom: SargassumBloomState
+  setSargassumBloom: (state: Partial<SargassumBloomState>) => void
+  iceLensFormation: IceLensFormationState
+  setIceLensFormation: (state: Partial<IceLensFormationState>) => void
+  coastalDeadZone: CoastalDeadZoneState
+  setCoastalDeadZone: (state: Partial<CoastalDeadZoneState>) => void
+  volcanicTremor: VolcanicTremorState
+  setVolcanicTremor: (state: Partial<VolcanicTremorState>) => void
+  sandDuneMigration: SandDuneMigrationState
+  setSandDuneMigration: (state: Partial<SandDuneMigrationState>) => void
+  oceanMixing: OceanMixingState
+  setOceanMixing: (state: Partial<OceanMixingState>) => void
+  frostHeave: FrostHeaveState
+  setFrostHeave: (state: Partial<FrostHeaveState>) => void
+  marineHeatwave: MarineHeatwaveState
+  setMarineHeatwave: (state: Partial<MarineHeatwaveState>) => void
 
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
@@ -12797,6 +12933,22 @@ export const useMapStore = create<MapState>()(
       setPeatlandCarbon: (updates) => set((state) => ({ peatlandCarbon: { ...state.peatlandCarbon, ...updates } })),
       glacierSurge: { open: false, data: null },
       setGlacierSurge: (updates) => set((state) => ({ glacierSurge: { ...state.glacierSurge, ...updates } })),
+      sargassumBloom: { open: false, data: null },
+      setSargassumBloom: (updates) => set((state) => ({ sargassumBloom: { ...state.sargassumBloom, ...updates } })),
+      iceLensFormation: { open: false, data: null },
+      setIceLensFormation: (updates) => set((state) => ({ iceLensFormation: { ...state.iceLensFormation, ...updates } })),
+      coastalDeadZone: { open: false, data: null },
+      setCoastalDeadZone: (updates) => set((state) => ({ coastalDeadZone: { ...state.coastalDeadZone, ...updates } })),
+      volcanicTremor: { open: false, data: null },
+      setVolcanicTremor: (updates) => set((state) => ({ volcanicTremor: { ...state.volcanicTremor, ...updates } })),
+      sandDuneMigration: { open: false, data: null },
+      setSandDuneMigration: (updates) => set((state) => ({ sandDuneMigration: { ...state.sandDuneMigration, ...updates } })),
+      oceanMixing: { open: false, data: null },
+      setOceanMixing: (updates) => set((state) => ({ oceanMixing: { ...state.oceanMixing, ...updates } })),
+      frostHeave: { open: false, data: null },
+      setFrostHeave: (updates) => set((state) => ({ frostHeave: { ...state.frostHeave, ...updates } })),
+      marineHeatwave: { open: false, data: null },
+      setMarineHeatwave: (updates) => set((state) => ({ marineHeatwave: { ...state.marineHeatwave, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
@@ -13190,6 +13342,14 @@ export const useMapStore = create<MapState>()(
         tidalBore: state.tidalBore,
         peatlandCarbon: state.peatlandCarbon,
         glacierSurge: state.glacierSurge,
+        sargassumBloom: state.sargassumBloom,
+        iceLensFormation: state.iceLensFormation,
+        coastalDeadZone: state.coastalDeadZone,
+        volcanicTremor: state.volcanicTremor,
+        sandDuneMigration: state.sandDuneMigration,
+        oceanMixing: state.oceanMixing,
+        frostHeave: state.frostHeave,
+        marineHeatwave: state.marineHeatwave,
       }),
     }
   )
