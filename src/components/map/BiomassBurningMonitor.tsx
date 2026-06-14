@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useMapStore, type BiomassBurningState, type BiomassBurningData } from '@/lib/map-store'
-import { Flame as FlameIcon8, X, FlameKindling, Map, CloudSmoke, TrendingUp, MapPin, Filter } from 'lucide-react'
+import { Flame as FlameIcon8, X, FlameKindling, Map, CloudFog, TrendingUp, MapPin, Filter } from 'lucide-react'
 
 interface DemoRegion extends BiomassBurningData {
   burnType: 'forest' | 'savanna' | 'agricultural' | 'peat'
@@ -171,7 +171,7 @@ export function BiomassBurningMonitor() {
   const overlayToggles: { key: keyof BiomassBurningState; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
     { key: 'showFireCount', label: 'Fire Count', icon: FlameKindling },
     { key: 'showBurnedArea', label: 'Burned Area', icon: Map },
-    { key: 'showEmissions', label: 'Emissions', icon: CloudSmoke },
+    { key: 'showEmissions', label: 'Emissions', icon: CloudFog },
     { key: 'showSmoke', label: 'Smoke', icon: TrendingUp },
   ]
 

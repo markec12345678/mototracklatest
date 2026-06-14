@@ -234,7 +234,6 @@ import {
   Mountain as MountainIcon9,
   Sun as SunIcon8,
   Fish as FishIcon4,
-  AlertTriangle as AlertTriangleIcon,
   Zap as ZapIcon3,
   Droplets as DropletsIcon8,
   Leaf as LeafIcon6,
@@ -276,31 +275,30 @@ import {
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
-  onLocateMe: () => void
-  onToggleFullscreen: () => void
-  isFullscreen: boolean
-  onExportMap: () => void
-  onShare: () => void
-  onSnapshotSave: () => void
-  loadedPanels: Set<string>
-  sidebarOpen: boolean
-  comparisonEnabled: boolean
-  setComparisonEnabled: (enabled: boolean) => void
+  onLocateMe?: () => void
+  onToggleFullscreen?: () => void
+  isFullscreen?: boolean
+  onExportMap?: () => void
+  onShare?: () => void
+  onSnapshotSave?: () => void
+  loadedPanels?: Set<string>
+  sidebarOpen?: boolean
+  comparisonEnabled?: boolean
+  setComparisonEnabled?: (enabled: boolean) => void
 }
 
-export function MapToolbarButtons(props: MapToolbarButtonsProps) {
-  const {
-    onLocateMe,
-    onToggleFullscreen,
-    isFullscreen,
-    onExportMap,
-    onShare,
-    onSnapshotSave,
-    loadedPanels,
-    sidebarOpen,
-    comparisonEnabled,
-    setComparisonEnabled,
-  } = props
+export function MapToolbarButtons({
+  onLocateMe = () => {},
+  onToggleFullscreen = () => {},
+  isFullscreen = false,
+  onExportMap = () => {},
+  onShare = () => {},
+  onSnapshotSave = () => {},
+  loadedPanels = new Set<string>(),
+  sidebarOpen = false,
+  comparisonEnabled = false,
+  setComparisonEnabled = () => {},
+}: MapToolbarButtonsProps) {
 
   const pushNotification = useMapStore((s) => s.pushNotification)
   const measurementSuiteOpen = useMapStore((s) => s.measurementSuiteOpen)
