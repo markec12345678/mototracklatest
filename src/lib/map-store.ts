@@ -2744,6 +2744,17 @@ export interface GeomagneticStormState {
   showAurora: boolean
   open: boolean
   gScaleFilter: 'all' | 'G1' | 'G2' | 'G3' | 'G4' | 'G5'
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
 }
 
 // Task 52: Volcanic Gas Monitor
@@ -6338,6 +6349,111 @@ export interface VolcanicLaharState {
   } | null
 }
 
+export interface SeafloorHydrateState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface CloudForestState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface TidalWhirlpoolState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface MangroveDiebackState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface RiverBankCollapseState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface ThermokarstErosionState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface UpwellingZoneState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
 export interface SaltFlatState {
   open: boolean
   data: {
@@ -6681,6 +6797,46 @@ export interface OceanEddyTransportState {
     description: string
     lastUpdated: string
   } | null
+}
+
+export interface SeafloorHydrateState {
+  open: boolean
+  data: { name: string; value: number; unit: string; status: string; trend: string; lat: number; lng: number; description: string; lastUpdated: string } | null
+}
+
+export interface CloudForestState {
+  open: boolean
+  data: { name: string; value: number; unit: string; status: string; trend: string; lat: number; lng: number; description: string; lastUpdated: string } | null
+}
+
+export interface TidalWhirlpoolState {
+  open: boolean
+  data: { name: string; value: number; unit: string; status: string; trend: string; lat: number; lng: number; description: string; lastUpdated: string } | null
+}
+
+export interface GeomagneticStormState {
+  open: boolean
+  data: { name: string; value: number; unit: string; status: string; trend: string; lat: number; lng: number; description: string; lastUpdated: string } | null
+}
+
+export interface MangroveDiebackState {
+  open: boolean
+  data: { name: string; value: number; unit: string; status: string; trend: string; lat: number; lng: number; description: string; lastUpdated: string } | null
+}
+
+export interface RiverBankCollapseState {
+  open: boolean
+  data: { name: string; value: number; unit: string; status: string; trend: string; lat: number; lng: number; description: string; lastUpdated: string } | null
+}
+
+export interface ThermokarstErosionState {
+  open: boolean
+  data: { name: string; value: number; unit: string; status: string; trend: string; lat: number; lng: number; description: string; lastUpdated: string } | null
+}
+
+export interface UpwellingZoneState {
+  open: boolean
+  data: { name: string; value: number; unit: string; status: string; trend: string; lat: number; lng: number; description: string; lastUpdated: string } | null
 }
 
 interface MapState {
@@ -8119,6 +8275,20 @@ interface MapState {
   setWildfireRiskAssessment: (state: Partial<WildfireRiskAssessmentState>) => void
   volcanicLahar: VolcanicLaharState
   setVolcanicLahar: (state: Partial<VolcanicLaharState>) => void
+  seafloorHydrate: SeafloorHydrateState
+  setSeafloorHydrate: (state: Partial<SeafloorHydrateState>) => void
+  cloudForest: CloudForestState
+  setCloudForest: (state: Partial<CloudForestState>) => void
+  tidalWhirlpool: TidalWhirlpoolState
+  setTidalWhirlpool: (state: Partial<TidalWhirlpoolState>) => void
+  mangroveDieback: MangroveDiebackState
+  setMangroveDieback: (state: Partial<MangroveDiebackState>) => void
+  riverBankCollapse: RiverBankCollapseState
+  setRiverBankCollapse: (state: Partial<RiverBankCollapseState>) => void
+  thermokarstErosion: ThermokarstErosionState
+  setThermokarstErosion: (state: Partial<ThermokarstErosionState>) => void
+  upwellingZone: UpwellingZoneState
+  setUpwellingZone: (state: Partial<UpwellingZoneState>) => void
   saltFlat: SaltFlatState
   setSaltFlat: (state: Partial<SaltFlatState>) => void
   deepSeaCoral: DeepSeaCoralState
@@ -8165,6 +8335,22 @@ interface MapState {
   setDesertPavement: (state: Partial<DesertPavementState>) => void
   oceanEddyTransport: OceanEddyTransportState
   setOceanEddyTransport: (state: Partial<OceanEddyTransportState>) => void
+  seafloorHydrate: SeafloorHydrateState
+  setSeafloorHydrate: (state: Partial<SeafloorHydrateState>) => void
+  cloudForest: CloudForestState
+  setCloudForest: (state: Partial<CloudForestState>) => void
+  tidalWhirlpool: TidalWhirlpoolState
+  setTidalWhirlpool: (state: Partial<TidalWhirlpoolState>) => void
+  geomagneticStorm: GeomagneticStormState
+  setGeomagneticStorm: (state: Partial<GeomagneticStormState>) => void
+  mangroveDieback: MangroveDiebackState
+  setMangroveDieback: (state: Partial<MangroveDiebackState>) => void
+  riverBankCollapse: RiverBankCollapseState
+  setRiverBankCollapse: (state: Partial<RiverBankCollapseState>) => void
+  thermokarstErosion: ThermokarstErosionState
+  setThermokarstErosion: (state: Partial<ThermokarstErosionState>) => void
+  upwellingZone: UpwellingZoneState
+  setUpwellingZone: (state: Partial<UpwellingZoneState>) => void
 
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
@@ -11699,6 +11885,7 @@ export const useMapStore = create<MapState>()(
         showAurora: false,
         open: false,
         gScaleFilter: 'all',
+        data: null,
       },
       setGeomagneticStorm: (updates) => set((state) => ({
         geomagneticStorm: { ...state.geomagneticStorm, ...updates },
@@ -13055,6 +13242,20 @@ export const useMapStore = create<MapState>()(
       setWildfireRiskAssessment: (updates) => set((state) => ({ wildfireRiskAssessment: { ...state.wildfireRiskAssessment, ...updates } })),
       volcanicLahar: { open: false, data: null },
       setVolcanicLahar: (updates) => set((state) => ({ volcanicLahar: { ...state.volcanicLahar, ...updates } })),
+      seafloorHydrate: { open: false, data: null },
+      setSeafloorHydrate: (updates) => set((state) => ({ seafloorHydrate: { ...state.seafloorHydrate, ...updates } })),
+      cloudForest: { open: false, data: null },
+      setCloudForest: (updates) => set((state) => ({ cloudForest: { ...state.cloudForest, ...updates } })),
+      tidalWhirlpool: { open: false, data: null },
+      setTidalWhirlpool: (updates) => set((state) => ({ tidalWhirlpool: { ...state.tidalWhirlpool, ...updates } })),
+      mangroveDieback: { open: false, data: null },
+      setMangroveDieback: (updates) => set((state) => ({ mangroveDieback: { ...state.mangroveDieback, ...updates } })),
+      riverBankCollapse: { open: false, data: null },
+      setRiverBankCollapse: (updates) => set((state) => ({ riverBankCollapse: { ...state.riverBankCollapse, ...updates } })),
+      thermokarstErosion: { open: false, data: null },
+      setThermokarstErosion: (updates) => set((state) => ({ thermokarstErosion: { ...state.thermokarstErosion, ...updates } })),
+      upwellingZone: { open: false, data: null },
+      setUpwellingZone: (updates) => set((state) => ({ upwellingZone: { ...state.upwellingZone, ...updates } })),
       saltFlat: { open: false, data: null },
       setSaltFlat: (updates) => set((state) => ({ saltFlat: { ...state.saltFlat, ...updates } })),
       deepSeaCoral: { open: false, data: null },
@@ -13101,6 +13302,22 @@ export const useMapStore = create<MapState>()(
       setDesertPavement: (updates) => set((state) => ({ desertPavement: { ...state.desertPavement, ...updates } })),
       oceanEddyTransport: { open: false, data: null },
       setOceanEddyTransport: (updates) => set((state) => ({ oceanEddyTransport: { ...state.oceanEddyTransport, ...updates } })),
+      seafloorHydrate: { open: false, data: null },
+      setSeafloorHydrate: (updates) => set((state) => ({ seafloorHydrate: { ...state.seafloorHydrate, ...updates } })),
+      cloudForest: { open: false, data: null },
+      setCloudForest: (updates) => set((state) => ({ cloudForest: { ...state.cloudForest, ...updates } })),
+      tidalWhirlpool: { open: false, data: null },
+      setTidalWhirlpool: (updates) => set((state) => ({ tidalWhirlpool: { ...state.tidalWhirlpool, ...updates } })),
+      geomagneticStorm: { open: false, data: null },
+      setGeomagneticStorm: (updates) => set((state) => ({ geomagneticStorm: { ...state.geomagneticStorm, ...updates } })),
+      mangroveDieback: { open: false, data: null },
+      setMangroveDieback: (updates) => set((state) => ({ mangroveDieback: { ...state.mangroveDieback, ...updates } })),
+      riverBankCollapse: { open: false, data: null },
+      setRiverBankCollapse: (updates) => set((state) => ({ riverBankCollapse: { ...state.riverBankCollapse, ...updates } })),
+      thermokarstErosion: { open: false, data: null },
+      setThermokarstErosion: (updates) => set((state) => ({ thermokarstErosion: { ...state.thermokarstErosion, ...updates } })),
+      upwellingZone: { open: false, data: null },
+      setUpwellingZone: (updates) => set((state) => ({ upwellingZone: { ...state.upwellingZone, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
@@ -13487,6 +13704,13 @@ export const useMapStore = create<MapState>()(
         tidalFlatMonitor: state.tidalFlatMonitor,
         wildfireRiskAssessment: state.wildfireRiskAssessment,
         volcanicLahar: state.volcanicLahar,
+        seafloorHydrate: state.seafloorHydrate,
+        cloudForest: state.cloudForest,
+        tidalWhirlpool: state.tidalWhirlpool,
+        mangroveDieback: state.mangroveDieback,
+        riverBankCollapse: state.riverBankCollapse,
+        thermokarstErosion: state.thermokarstErosion,
+        upwellingZone: state.upwellingZone,
         saltFlat: state.saltFlat,
         deepSeaCoral: state.deepSeaCoral,
         ripCurrent: state.ripCurrent,
@@ -13510,6 +13734,14 @@ export const useMapStore = create<MapState>()(
         polarBearHabitat: state.polarBearHabitat,
         desertPavement: state.desertPavement,
         oceanEddyTransport: state.oceanEddyTransport,
+        seafloorHydrate: state.seafloorHydrate,
+        cloudForest: state.cloudForest,
+        tidalWhirlpool: state.tidalWhirlpool,
+        geomagneticStorm: state.geomagneticStorm,
+        mangroveDieback: state.mangroveDieback,
+        riverBankCollapse: state.riverBankCollapse,
+        thermokarstErosion: state.thermokarstErosion,
+        upwellingZone: state.upwellingZone,
       }),
     }
   )
