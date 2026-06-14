@@ -4708,6 +4708,207 @@ export interface GeomagneticPoleData {
   description: string
 }
 
+// Task 70: New monitoring interfaces
+export interface HydrothermalVentState {
+  vents: HydrothermalVentData[]
+  activeVentId: string | null
+  showTemperature: boolean
+  showFlowRate: boolean
+  showMineralDeposit: boolean
+  showBiodiversity: boolean
+  open: boolean
+  typeFilter: 'all' | 'black_smoker' | 'white_smoker' | 'diffuse' | 'shallow'
+}
+
+export interface HydrothermalVentData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  temperature: number
+  flowRate: number
+  mineralDeposit: number
+  biodiversity: number
+  depth: number
+  status: 'active' | 'waning' | 'dormant' | 'eruptive' | 'extinct'
+  description: string
+}
+
+export interface WatershedHealthState {
+  basins: WatershedHealthData[]
+  activeBasinId: string | null
+  showWaterQuality: boolean
+  showFlowRate: boolean
+  showSedimentLoad: boolean
+  showEcologicalHealth: boolean
+  open: boolean
+  typeFilter: 'all' | 'mountain' | 'plain' | 'coastal' | 'urban'
+}
+
+export interface WatershedHealthData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  waterQuality: number
+  flowRate: number
+  sedimentLoad: number
+  ecologicalHealth: number
+  drainageArea: number
+  status: 'pristine' | 'good' | 'moderate' | 'degraded' | 'critical'
+  description: string
+}
+
+export interface MigratoryFlywayState {
+  flyways: MigratoryFlywayData[]
+  activeFlywayId: string | null
+  showPopulation: boolean
+  showArrivalDate: boolean
+  showThreatLevel: boolean
+  showHabitatQuality: boolean
+  open: boolean
+  typeFilter: 'all' | 'land_bird' | 'waterfowl' | 'shorebird' | 'raptor'
+}
+
+export interface MigratoryFlywayData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  population: number
+  arrivalDate: string
+  threatLevel: number
+  habitatQuality: number
+  migrationDistance: number
+  status: 'peak' | 'active' | 'arriving' | 'departing' | 'declining'
+  description: string
+}
+
+export interface SeagrassMeadowState {
+  meadows: SeagrassMeadowData[]
+  activeMeadowId: string | null
+  showCoverage: boolean
+  showCarbonStock: boolean
+  showWaterClarity: boolean
+  showHealthStatus: boolean
+  open: boolean
+  speciesFilter: 'all' | 'posidonia' | 'zostera' | 'thalassia' | 'cymodocea'
+}
+
+export interface SeagrassMeadowData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  coverage: number
+  carbonStock: number
+  waterClarity: number
+  shootDensity: number
+  depthRange: number
+  status: 'excellent' | 'good' | 'moderate' | 'declining' | 'critical'
+  description: string
+}
+
+export interface UrbanHeatIslandDetailState {
+  zones: UrbanHeatIslandDetailData[]
+  activeZoneId: string | null
+  showTemperatureDelta: boolean
+  showVegetationCover: boolean
+  showAlbedo: boolean
+  showVulnerability: boolean
+  open: boolean
+  zoneFilter: 'all' | 'downtown' | 'industrial' | 'residential' | 'suburban'
+}
+
+export interface UrbanHeatIslandDetailData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  temperatureDelta: number
+  vegetationCover: number
+  albedo: number
+  vulnerability: number
+  populationDensity: number
+  status: 'severe' | 'high' | 'moderate' | 'low' | 'minimal'
+  description: string
+}
+
+export interface OceanAcidificationDetailState {
+  stations: OceanAcidificationDetailData[]
+  activeStationId: string | null
+  showPH: boolean
+  showAragonite: boolean
+  showPCO2: boolean
+  showSaturationState: boolean
+  open: boolean
+  regionFilter: 'all' | 'pacific' | 'atlantic' | 'arctic' | 'coastal'
+}
+
+export interface OceanAcidificationDetailData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  ph: number
+  aragonite: number
+  pco2: number
+  saturationState: number
+  shellGrowthRate: number
+  status: 'critical' | 'severe' | 'elevated' | 'moderate' | 'normal'
+  description: string
+}
+
+export interface DesertificationDetailState {
+  regions: DesertificationDetailData[]
+  activeRegionId: string | null
+  showVegetationIndex: boolean
+  showSoilMoisture: boolean
+  showWindErosion: boolean
+  showDroughtIndex: boolean
+  open: boolean
+  severityFilter: 'all' | 'slight' | 'moderate' | 'severe' | 'very_severe'
+}
+
+export interface DesertificationDetailData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  vegetationIndex: number
+  soilMoisture: number
+  windErosion: number
+  droughtIndex: number
+  landDegradation: number
+  status: 'slight' | 'moderate' | 'severe' | 'very_severe' | 'extreme'
+  description: string
+}
+
+export interface VolcanicGasTrackerState {
+  volcanoes: VolcanicGasTrackerData[]
+  activeVolcanoId: string | null
+  showSO2: boolean
+  showCO2: boolean
+  showH2S: boolean
+  showPlumeHeight: boolean
+  open: boolean
+  gasFilter: 'all' | 'so2_dominated' | 'co2_dominated' | 'h2s_dominated' | 'mixed'
+}
+
+export interface VolcanicGasTrackerData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  so2: number
+  co2: number
+  h2s: number
+  plumeHeight: number
+  hazardLevel: number
+  status: 'normal' | 'elevated' | 'high' | 'critical' | 'eruptive'
+  description: string
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -6001,6 +6202,24 @@ interface MapState {
   setUrbanTreeCanopy: (state: Partial<UrbanTreeCanopyState>) => void
   geomagneticPole: GeomagneticPoleState
   setGeomagneticPole: (state: Partial<GeomagneticPoleState>) => void
+
+  // Task 70: New monitoring states
+  hydrothermalVent: HydrothermalVentState
+  setHydrothermalVent: (state: Partial<HydrothermalVentState>) => void
+  watershedHealth: WatershedHealthState
+  setWatershedHealth: (state: Partial<WatershedHealthState>) => void
+  migratoryFlyway: MigratoryFlywayState
+  setMigratoryFlyway: (state: Partial<MigratoryFlywayState>) => void
+  seagrassMeadow: SeagrassMeadowState
+  setSeagrassMeadow: (state: Partial<SeagrassMeadowState>) => void
+  urbanHeatIslandDetail: UrbanHeatIslandDetailState
+  setUrbanHeatIslandDetail: (state: Partial<UrbanHeatIslandDetailState>) => void
+  oceanAcidificationDetail: OceanAcidificationDetailState
+  setOceanAcidificationDetail: (state: Partial<OceanAcidificationDetailState>) => void
+  desertificationDetail: DesertificationDetailState
+  setDesertificationDetail: (state: Partial<DesertificationDetailState>) => void
+  volcanicGasTracker: VolcanicGasTrackerState
+  setVolcanicGasTracker: (state: Partial<VolcanicGasTrackerState>) => void
 
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
@@ -10632,6 +10851,40 @@ export const useMapStore = create<MapState>()(
         geomagneticPole: { ...state.geomagneticPole, ...updates },
       })),
 
+      // Task 70: New monitoring defaults and setters
+      hydrothermalVent: {
+        vents: [], activeVentId: null, showTemperature: true, showFlowRate: true, showMineralDeposit: true, showBiodiversity: false, open: false, typeFilter: 'all',
+      },
+      setHydrothermalVent: (updates) => set((state) => ({ hydrothermalVent: { ...state.hydrothermalVent, ...updates } })),
+      watershedHealth: {
+        basins: [], activeBasinId: null, showWaterQuality: true, showFlowRate: true, showSedimentLoad: true, showEcologicalHealth: false, open: false, typeFilter: 'all',
+      },
+      setWatershedHealth: (updates) => set((state) => ({ watershedHealth: { ...state.watershedHealth, ...updates } })),
+      migratoryFlyway: {
+        flyways: [], activeFlywayId: null, showPopulation: true, showArrivalDate: true, showThreatLevel: true, showHabitatQuality: false, open: false, typeFilter: 'all',
+      },
+      setMigratoryFlyway: (updates) => set((state) => ({ migratoryFlyway: { ...state.migratoryFlyway, ...updates } })),
+      seagrassMeadow: {
+        meadows: [], activeMeadowId: null, showCoverage: true, showCarbonStock: true, showWaterClarity: true, showHealthStatus: false, open: false, speciesFilter: 'all',
+      },
+      setSeagrassMeadow: (updates) => set((state) => ({ seagrassMeadow: { ...state.seagrassMeadow, ...updates } })),
+      urbanHeatIslandDetail: {
+        zones: [], activeZoneId: null, showTemperatureDelta: true, showVegetationCover: true, showAlbedo: true, showVulnerability: false, open: false, zoneFilter: 'all',
+      },
+      setUrbanHeatIslandDetail: (updates) => set((state) => ({ urbanHeatIslandDetail: { ...state.urbanHeatIslandDetail, ...updates } })),
+      oceanAcidificationDetail: {
+        stations: [], activeStationId: null, showPH: true, showAragonite: true, showPCO2: true, showSaturationState: false, open: false, regionFilter: 'all',
+      },
+      setOceanAcidificationDetail: (updates) => set((state) => ({ oceanAcidificationDetail: { ...state.oceanAcidificationDetail, ...updates } })),
+      desertificationDetail: {
+        regions: [], activeRegionId: null, showVegetationIndex: true, showSoilMoisture: true, showWindErosion: true, showDroughtIndex: false, open: false, severityFilter: 'all',
+      },
+      setDesertificationDetail: (updates) => set((state) => ({ desertificationDetail: { ...state.desertificationDetail, ...updates } })),
+      volcanicGasTracker: {
+        volcanoes: [], activeVolcanoId: null, showSO2: true, showCO2: true, showH2S: true, showPlumeHeight: false, open: false, gasFilter: 'all',
+      },
+      setVolcanicGasTracker: (updates) => set((state) => ({ volcanicGasTracker: { ...state.volcanicGasTracker, ...updates } })),
+
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
       setAddLocationDialogOpen: (open) => set({ addLocationDialogOpen: open }),
@@ -10952,6 +11205,14 @@ export const useMapStore = create<MapState>()(
         soilCarbon: state.soilCarbon,
         urbanTreeCanopy: state.urbanTreeCanopy,
         geomagneticPole: state.geomagneticPole,
+        hydrothermalVent: state.hydrothermalVent,
+        watershedHealth: state.watershedHealth,
+        migratoryFlyway: state.migratoryFlyway,
+        seagrassMeadow: state.seagrassMeadow,
+        urbanHeatIslandDetail: state.urbanHeatIslandDetail,
+        oceanAcidificationDetail: state.oceanAcidificationDetail,
+        desertificationDetail: state.desertificationDetail,
+        volcanicGasTracker: state.volcanicGasTracker,
       }),
     }
   )

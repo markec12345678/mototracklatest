@@ -38,9 +38,28 @@ export function MonitorPanelRegistry() {
   const soilCarbon = useMapStore((s) => s.soilCarbon)
   const urbanTreeCanopy = useMapStore((s) => s.urbanTreeCanopy)
   const geomagneticPole = useMapStore((s) => s.geomagneticPole)
+  // Task 70
+  const hydrothermalVent = useMapStore((s) => s.hydrothermalVent)
+  const watershedHealth = useMapStore((s) => s.watershedHealth)
+  const migratoryFlyway = useMapStore((s) => s.migratoryFlyway)
+  const seagrassMeadow = useMapStore((s) => s.seagrassMeadow)
+  const urbanHeatIslandDetail = useMapStore((s) => s.urbanHeatIslandDetail)
+  const oceanAcidificationDetail = useMapStore((s) => s.oceanAcidificationDetail)
+  const desertificationDetail = useMapStore((s) => s.desertificationDetail)
+  const volcanicGasTracker = useMapStore((s) => s.volcanicGasTracker)
 
   return (
     <>
+      {/* Task 70: New Monitoring Panels */}
+      {hydrothermalVent.open && (<LazyPanel importFn={() => import('@/components/map/HydrothermalVentMonitor')} exportName="HydrothermalVentMonitor" shouldLoad={true} />)}
+      {watershedHealth.open && (<LazyPanel importFn={() => import('@/components/map/WatershedHealthMonitor')} exportName="WatershedHealthMonitor" shouldLoad={true} />)}
+      {migratoryFlyway.open && (<LazyPanel importFn={() => import('@/components/map/MigratoryFlywayMonitor')} exportName="MigratoryFlywayMonitor" shouldLoad={true} />)}
+      {seagrassMeadow.open && (<LazyPanel importFn={() => import('@/components/map/SeagrassMeadowDetailMonitor')} exportName="SeagrassMeadowDetailMonitor" shouldLoad={true} />)}
+      {urbanHeatIslandDetail.open && (<LazyPanel importFn={() => import('@/components/map/UrbanHeatIslandDetailMonitor')} exportName="UrbanHeatIslandDetailMonitor" shouldLoad={true} />)}
+      {oceanAcidificationDetail.open && (<LazyPanel importFn={() => import('@/components/map/OceanAcidificationDetailMonitor')} exportName="OceanAcidificationDetailMonitor" shouldLoad={true} />)}
+      {desertificationDetail.open && (<LazyPanel importFn={() => import('@/components/map/DesertificationDetailMonitor')} exportName="DesertificationDetailMonitor" shouldLoad={true} />)}
+      {volcanicGasTracker.open && (<LazyPanel importFn={() => import('@/components/map/VolcanicGasTrackerMonitor')} exportName="VolcanicGasTrackerMonitor" shouldLoad={true} />)}
+
       {/* Task 69: New Monitoring Panels */}
       {lavaFlow.open && (
         <LazyPanel importFn={() => import('@/components/map/LavaFlowTracker')} exportName="LavaFlowTracker" shouldLoad={true} />

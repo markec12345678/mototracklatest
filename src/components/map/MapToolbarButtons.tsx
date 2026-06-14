@@ -158,6 +158,15 @@ import {
   Sprout as SproutIcon2,
   TreePine as TreePineIcon4,
   Compass as CompassIcon3,
+  // Task 70 icons
+  Flame as FlameIcon6,
+  Droplets as DropletsIcon4,
+  Bird as BirdIcon3,
+  Leaf as LeafIcon4,
+  Thermometer as ThermometerIcon4,
+  FlaskConical as FlaskConicalIcon,
+  Sun as SunIcon4,
+  CloudLightning as CloudLightningIcon,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -2210,6 +2219,15 @@ export function MapToolbarButtons(props: MapToolbarButtonsProps) {
           >
             <CompassIcon3 className="h-4 w-4" />
           </Button>
+          {/* Task 70: New monitoring buttons */}
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setHydrothermalVent({ open: true })} title="Hydrothermal Vent Monitor" aria-label="Open hydrothermal vent monitor"><FlameIcon6 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setWatershedHealth({ open: true })} title="Watershed Health Monitor" aria-label="Open watershed health monitor"><DropletsIcon4 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setMigratoryFlyway({ open: true })} title="Migratory Flyway Monitor" aria-label="Open migratory flyway monitor"><BirdIcon3 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setSeagrassMeadow({ open: true })} title="Seagrass Meadow Monitor" aria-label="Open seagrass meadow monitor"><LeafIcon4 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setUrbanHeatIslandDetail({ open: true })} title="Urban Heat Island Detail" aria-label="Open urban heat island detail"><ThermometerIcon4 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setOceanAcidificationDetail({ open: true })} title="Ocean Acidification Detail" aria-label="Open ocean acidification detail"><FlaskConicalIcon className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setDesertificationDetail({ open: true })} title="Desertification Detail Monitor" aria-label="Open desertification detail monitor"><SunIcon4 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setVolcanicGasTracker({ open: true })} title="Volcanic Gas Tracker" aria-label="Open volcanic gas tracker"><CloudLightningIcon className="h-4 w-4" /></Button>
           <Button
             variant="outline"
             size="icon"
