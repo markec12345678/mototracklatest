@@ -4909,6 +4909,208 @@ export interface VolcanicGasTrackerData {
   description: string
 }
 
+// Task 71: New monitoring interfaces
+
+export interface DeepOceanCurrentState {
+  currents: DeepOceanCurrentData[]
+  activeCurrentId: string | null
+  showTemperature: boolean
+  showSalinity: boolean
+  showVelocity: boolean
+  showVolume: boolean
+  open: boolean
+  typeFilter: 'all' | 'thermohaline' | 'wind_driven' | 'tidal' | 'boundary'
+}
+
+export interface DeepOceanCurrentData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  temperature: number
+  salinity: number
+  velocity: number
+  volume: number
+  depth: number
+  status: 'strong' | 'moderate' | 'weakening' | 'slowing' | 'collapsed'
+  description: string
+}
+
+export interface StratosphericOzoneState {
+  regions: StratosphericOzoneData[]
+  activeRegionId: string | null
+  showOzoneColumn: boolean
+  showUVIndex: boolean
+  showTemperature: boolean
+  showTrend: boolean
+  open: boolean
+  regionFilter: 'all' | 'polar' | 'mid_latitude' | 'tropical' | 'subpolar'
+}
+
+export interface StratosphericOzoneData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  ozoneColumn: number
+  uvIndex: number
+  temperature: number
+  trend: number
+  chlorofluorocarbon: number
+  status: 'recovering' | 'stable' | 'declining' | 'severe' | 'critical'
+  description: string
+}
+
+export interface SeismicHarmonicState {
+  stations: SeismicHarmonicData[]
+  activeStationId: string | null
+  showAmplitude: boolean
+  showFrequency: boolean
+  showDuration: boolean
+  showDepth: boolean
+  open: boolean
+  typeFilter: 'all' | 'volcanic' | 'tectonic' | 'hydrothermal' | 'induced'
+}
+
+export interface SeismicHarmonicData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  amplitude: number
+  frequency: number
+  duration: number
+  depth: number
+  eventCount: number
+  status: 'quiet' | 'low' | 'elevated' | 'harmonic' | 'eruptive'
+  description: string
+}
+
+export interface WildfireSmokeState {
+  plumes: WildfireSmokeData[]
+  activePlumeId: string | null
+  showAOD: boolean
+  showPM25: boolean
+  showPlumeHeight: boolean
+  showDispersion: boolean
+  open: boolean
+  severityFilter: 'all' | 'clear' | 'light' | 'moderate' | 'heavy' | 'hazardous'
+}
+
+export interface WildfireSmokeData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  aod: number
+  pm25: number
+  plumeHeight: number
+  dispersion: number
+  fireArea: number
+  status: 'clear' | 'light' | 'moderate' | 'heavy' | 'hazardous'
+  description: string
+}
+
+export interface EstuaryHealthState {
+  estuaries: EstuaryHealthData[]
+  activeEstuaryId: string | null
+  showWaterQuality: boolean
+  showBiodiversity: boolean
+  showSediment: boolean
+  showNutrientLoad: boolean
+  open: boolean
+  typeFilter: 'all' | 'drowned_valley' | 'bar_built' | 'tectonic' | 'fjord'
+}
+
+export interface EstuaryHealthData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  waterQuality: number
+  biodiversity: number
+  sediment: number
+  nutrientLoad: number
+  tidalRange: number
+  status: 'pristine' | 'good' | 'moderate' | 'degraded' | 'critical'
+  description: string
+}
+
+export interface AlpineGlacierState {
+  glaciers: AlpineGlacierData[]
+  activeGlacierId: string | null
+  showMassBalance: boolean
+  showVelocity: boolean
+  showArea: boolean
+  showLength: boolean
+  open: boolean
+  typeFilter: 'all' | 'valley' | 'cirque' | 'hanging' | 'piedmont'
+}
+
+export interface AlpineGlacierData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  massBalance: number
+  velocity: number
+  area: number
+  length: number
+  elevation: number
+  status: 'advancing' | 'stable' | 'retreating' | 'rapid_retreat' | 'gone'
+  description: string
+}
+
+export interface OceanAnoxicZoneState {
+  zones: OceanAnoxicZoneData[]
+  activeZoneId: string | null
+  showOxygenLevel: boolean
+  showNitrate: boolean
+  showSulfide: boolean
+  showThickness: boolean
+  open: boolean
+  severityFilter: 'all' | 'healthy' | 'mild_depletion' | 'moderate' | 'severe' | 'anoxic'
+}
+
+export interface OceanAnoxicZoneData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  oxygenLevel: number
+  nitrate: number
+  sulfide: number
+  thickness: number
+  depth: number
+  status: 'healthy' | 'mild_depletion' | 'moderate' | 'severe' | 'anoxic'
+  description: string
+}
+
+export interface PermafrostCarbonFeedbackState {
+  sites: PermafrostCarbonFeedbackData[]
+  activeSiteId: string | null
+  showThawDepth: boolean
+  showCarbonStock: boolean
+  showMethaneRelease: boolean
+  showTemperature: boolean
+  open: boolean
+  severityFilter: 'all' | 'frozen' | 'thawing' | 'active_thaw' | 'accelerating' | 'runaway'
+}
+
+export interface PermafrostCarbonFeedbackData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  thawDepth: number
+  carbonStock: number
+  methaneRelease: number
+  temperature: number
+  iceContent: number
+  status: 'frozen' | 'thawing' | 'active_thaw' | 'accelerating' | 'runaway'
+  description: string
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -6220,6 +6422,23 @@ interface MapState {
   setDesertificationDetail: (state: Partial<DesertificationDetailState>) => void
   volcanicGasTracker: VolcanicGasTrackerState
   setVolcanicGasTracker: (state: Partial<VolcanicGasTrackerState>) => void
+  // Task 71: New monitoring states
+  deepOceanCurrent: DeepOceanCurrentState
+  setDeepOceanCurrent: (state: Partial<DeepOceanCurrentState>) => void
+  stratosphericOzone: StratosphericOzoneState
+  setStratosphericOzone: (state: Partial<StratosphericOzoneState>) => void
+  seismicHarmonic: SeismicHarmonicState
+  setSeismicHarmonic: (state: Partial<SeismicHarmonicState>) => void
+  wildfireSmoke: WildfireSmokeState
+  setWildfireSmoke: (state: Partial<WildfireSmokeState>) => void
+  estuaryHealth: EstuaryHealthState
+  setEstuaryHealth: (state: Partial<EstuaryHealthState>) => void
+  alpineGlacier: AlpineGlacierState
+  setAlpineGlacier: (state: Partial<AlpineGlacierState>) => void
+  oceanAnoxicZone: OceanAnoxicZoneState
+  setOceanAnoxicZone: (state: Partial<OceanAnoxicZoneState>) => void
+  permafrostCarbonFeedback: PermafrostCarbonFeedbackState
+  setPermafrostCarbonFeedback: (state: Partial<PermafrostCarbonFeedbackState>) => void
 
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
@@ -10884,6 +11103,38 @@ export const useMapStore = create<MapState>()(
         volcanoes: [], activeVolcanoId: null, showSO2: true, showCO2: true, showH2S: true, showPlumeHeight: false, open: false, gasFilter: 'all',
       },
       setVolcanicGasTracker: (updates) => set((state) => ({ volcanicGasTracker: { ...state.volcanicGasTracker, ...updates } })),
+      deepOceanCurrent: {
+        currents: [], activeCurrentId: null, showTemperature: true, showSalinity: true, showVelocity: true, showVolume: false, open: false, typeFilter: 'all',
+      },
+      setDeepOceanCurrent: (updates) => set((state) => ({ deepOceanCurrent: { ...state.deepOceanCurrent, ...updates } })),
+      stratosphericOzone: {
+        regions: [], activeRegionId: null, showOzoneColumn: true, showUVIndex: true, showTemperature: true, showTrend: false, open: false, regionFilter: 'all',
+      },
+      setStratosphericOzone: (updates) => set((state) => ({ stratosphericOzone: { ...state.stratosphericOzone, ...updates } })),
+      seismicHarmonic: {
+        stations: [], activeStationId: null, showAmplitude: true, showFrequency: true, showDuration: true, showDepth: false, open: false, typeFilter: 'all',
+      },
+      setSeismicHarmonic: (updates) => set((state) => ({ seismicHarmonic: { ...state.seismicHarmonic, ...updates } })),
+      wildfireSmoke: {
+        plumes: [], activePlumeId: null, showAOD: true, showPM25: true, showPlumeHeight: true, showDispersion: false, open: false, severityFilter: 'all',
+      },
+      setWildfireSmoke: (updates) => set((state) => ({ wildfireSmoke: { ...state.wildfireSmoke, ...updates } })),
+      estuaryHealth: {
+        estuaries: [], activeEstuaryId: null, showWaterQuality: true, showBiodiversity: true, showSediment: true, showNutrientLoad: false, open: false, typeFilter: 'all',
+      },
+      setEstuaryHealth: (updates) => set((state) => ({ estuaryHealth: { ...state.estuaryHealth, ...updates } })),
+      alpineGlacier: {
+        glaciers: [], activeGlacierId: null, showMassBalance: true, showVelocity: true, showArea: true, showLength: false, open: false, typeFilter: 'all',
+      },
+      setAlpineGlacier: (updates) => set((state) => ({ alpineGlacier: { ...state.alpineGlacier, ...updates } })),
+      oceanAnoxicZone: {
+        zones: [], activeZoneId: null, showOxygenLevel: true, showNitrate: true, showSulfide: true, showThickness: false, open: false, severityFilter: 'all',
+      },
+      setOceanAnoxicZone: (updates) => set((state) => ({ oceanAnoxicZone: { ...state.oceanAnoxicZone, ...updates } })),
+      permafrostCarbonFeedback: {
+        sites: [], activeSiteId: null, showThawDepth: true, showCarbonStock: true, showMethaneRelease: true, showTemperature: false, open: false, severityFilter: 'all',
+      },
+      setPermafrostCarbonFeedback: (updates) => set((state) => ({ permafrostCarbonFeedback: { ...state.permafrostCarbonFeedback, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
@@ -11213,6 +11464,14 @@ export const useMapStore = create<MapState>()(
         oceanAcidificationDetail: state.oceanAcidificationDetail,
         desertificationDetail: state.desertificationDetail,
         volcanicGasTracker: state.volcanicGasTracker,
+        deepOceanCurrent: state.deepOceanCurrent,
+        stratosphericOzone: state.stratosphericOzone,
+        seismicHarmonic: state.seismicHarmonic,
+        wildfireSmoke: state.wildfireSmoke,
+        estuaryHealth: state.estuaryHealth,
+        alpineGlacier: state.alpineGlacier,
+        oceanAnoxicZone: state.oceanAnoxicZone,
+        permafrostCarbonFeedback: state.permafrostCarbonFeedback,
       }),
     }
   )

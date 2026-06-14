@@ -15,111 +15,116 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useMapStore, type DeepOceanCurrentState, type DeepOceanCurrent as DeepOceanCurrentType } from '@/lib/map-store'
-import { Anchor as AnchorIcon2, X, Gauge, Thermometer, Waves, TrendingUp, MapPin, Filter } from 'lucide-react'
+import { useMapStore, type DeepOceanCurrentState, type DeepOceanCurrentData } from '@/lib/map-store'
+import { Anchor as AnchorIcon2, X, Thermometer, Droplets, Gauge, Waves, MapPin, Filter } from 'lucide-react'
 
-const DEMO_CURRENTS: DeepOceanCurrentType[] = [
+interface DemoCurrent extends DeepOceanCurrentData {
+  currentType: 'thermohaline' | 'wind_driven' | 'tidal' | 'boundary'
+}
+
+const DEMO_CURRENTS: DemoCurrent[] = [
   {
-    id: 'dc-amoc',
-    name: 'AMOC - North Atlantic',
-    latitude: 55.0,
-    longitude: -30.0,
-    currentType: 'thermohaline',
-    velocity: 2.4,
-    temperature: 2.8,
-    salinity: 34.92,
+    id: 'doc-amoc',
+    name: 'AMOC North Atlantic',
+    lat: 55,
+    lng: -30,
+    temperature: 3.2,
+    salinity: 34.9,
+    velocity: 1.5,
+    volume: 17,
     depth: 3500,
-    transportSv: 17.2,
-    oxygenLevel: 5.6,
-    trend: 'weakening',
+    status: 'weakening',
+    description: 'Atlantic Meridional Overturning Circulation showing decline',
+    currentType: 'thermohaline',
   },
   {
-    id: 'dc-aabw',
+    id: 'doc-aabw',
     name: 'Antarctic Bottom Water',
-    latitude: -65.0,
-    longitude: 0.0,
-    currentType: 'antarctic_bottom',
-    velocity: 0.8,
+    lat: -60,
+    lng: 0,
     temperature: -0.8,
-    salinity: 34.66,
+    salinity: 34.7,
+    velocity: 0.3,
+    volume: 12,
     depth: 4500,
-    transportSv: 22.5,
-    oxygenLevel: 7.2,
-    trend: 'stable',
+    status: 'moderate',
+    description: 'Cold dense water mass formed in the Southern Ocean',
+    currentType: 'thermohaline',
   },
   {
-    id: 'dc-dwb',
-    name: 'Deep Western Boundary Current',
-    latitude: 32.0,
-    longitude: -72.0,
-    currentType: 'deep_western_boundary',
-    velocity: 3.1,
-    temperature: 1.9,
-    salinity: 34.88,
-    depth: 2800,
-    transportSv: 14.8,
-    oxygenLevel: 4.9,
-    trend: 'weakening',
-  },
-  {
-    id: 'dc-nadw',
+    id: 'doc-nadw',
     name: 'North Atlantic Deep Water',
-    latitude: 48.0,
-    longitude: -20.0,
-    currentType: 'north_atlantic_deep',
-    velocity: 1.6,
-    temperature: 2.2,
-    salinity: 34.95,
-    depth: 3200,
-    transportSv: 19.1,
-    oxygenLevel: 6.1,
-    trend: 'weakening',
+    lat: 50,
+    lng: -20,
+    temperature: 2.5,
+    salinity: 35.0,
+    velocity: 0.8,
+    volume: 14,
+    depth: 3000,
+    status: 'strong',
+    description: 'Major deep water mass in the Atlantic basin',
+    currentType: 'thermohaline',
   },
   {
-    id: 'dc-ross',
-    name: 'Ross Sea Deep Outflow',
-    latitude: -75.0,
-    longitude: 175.0,
-    currentType: 'antarctic_bottom',
+    id: 'doc-iodw',
+    name: 'Indian Ocean Deep Water',
+    lat: -20,
+    lng: 70,
+    temperature: 1.8,
+    salinity: 34.8,
     velocity: 0.5,
-    temperature: -1.2,
-    salinity: 34.70,
+    volume: 8,
     depth: 3800,
-    transportSv: 8.4,
-    oxygenLevel: 7.8,
-    trend: 'strengthening',
+    status: 'moderate',
+    description: 'Deep water circulation in the Indian Ocean basin',
+    currentType: 'wind_driven',
   },
   {
-    id: 'dc-weddell',
-    name: 'Weddell Sea Bottom Current',
-    latitude: -70.0,
-    longitude: -35.0,
-    currentType: 'antarctic_bottom',
+    id: 'doc-pdw',
+    name: 'Pacific Deep Water',
+    lat: 10,
+    lng: -170,
+    temperature: 1.2,
+    salinity: 34.7,
+    velocity: 0.4,
+    volume: 10,
+    depth: 4000,
+    status: 'slowing',
+    description: 'Deep circulation patterns in the Pacific basin',
+    currentType: 'tidal',
+  },
+  {
+    id: 'doc-cdw',
+    name: 'Circumpolar Deep Water',
+    lat: -55,
+    lng: 140,
+    temperature: 1.0,
+    salinity: 34.7,
     velocity: 0.6,
-    temperature: -0.9,
-    salinity: 34.68,
-    depth: 4200,
-    transportSv: 12.3,
-    oxygenLevel: 7.5,
-    trend: 'collapsing',
+    volume: 15,
+    depth: 3500,
+    status: 'weakening',
+    description: 'Circumpolar deep water encircling Antarctica',
+    currentType: 'boundary',
   },
 ]
 
-const TREND_CONFIG: Record<
-  DeepOceanCurrentType['trend'],
+const STATUS_CONFIG: Record<
+  DeepOceanCurrentData['status'],
   { label: string; color: string; bgClass: string }
 > = {
-  strengthening: { label: 'Strengthening', color: '#22c55e', bgClass: 'bg-green-500/10 text-green-600 border-green-500/30' },
-  stable: { label: 'Stable', color: '#3b82f6', bgClass: 'bg-blue-500/10 text-blue-600 border-blue-500/30' },
-  weakening: { label: 'Weakening', color: '#f97316', bgClass: 'bg-orange-500/10 text-orange-600 border-orange-500/30' },
-  collapsing: { label: 'Collapsing', color: '#ef4444', bgClass: 'bg-red-500/10 text-red-600 border-red-500/30' },
+  strong: { label: 'Strong', color: '#10b981', bgClass: 'bg-emerald-500/10 text-emerald-600 border-emerald-500/30' },
+  moderate: { label: 'Moderate', color: '#3b82f6', bgClass: 'bg-blue-500/10 text-blue-600 border-blue-500/30' },
+  weakening: { label: 'Weakening', color: '#f59e0b', bgClass: 'bg-amber-500/10 text-amber-600 border-amber-500/30' },
+  slowing: { label: 'Slowing', color: '#f97316', bgClass: 'bg-orange-500/10 text-orange-600 border-orange-500/30' },
+  collapsed: { label: 'Collapsed', color: '#ef4444', bgClass: 'bg-red-500/10 text-red-600 border-red-500/30' },
 }
 
-const TYPE_LABELS: Record<DeepOceanCurrentType['currentType'], string> = {
+const CURRENT_TYPE_LABELS: Record<DemoCurrent['currentType'], string> = {
   thermohaline: 'Thermohaline',
-  deep_western_boundary: 'Deep Western Boundary',
-  antarctic_bottom: 'Antarctic Bottom',
-  north_atlantic_deep: 'North Atlantic Deep',
+  wind_driven: 'Wind-Driven',
+  tidal: 'Tidal',
+  boundary: 'Boundary',
 }
 
 export function DeepOceanCurrentMonitor() {
@@ -127,7 +132,7 @@ export function DeepOceanCurrentMonitor() {
   const setState = useMapStore((s) => s.setDeepOceanCurrent)
 
   const currents = useMemo(
-    () => (state.currents.length > 0 ? state.currents : DEMO_CURRENTS),
+    () => (state.currents.length > 0 ? (state.currents as DemoCurrent[]) : DEMO_CURRENTS),
     [state.currents]
   )
 
@@ -140,17 +145,19 @@ export function DeepOceanCurrentMonitor() {
 
   const summary = useMemo(() => {
     if (filteredCurrents.length === 0) {
-      return { avgVelocity: 0, totalTransport: 0, weakeningCount: 0 }
+      return { avgTemperature: 0, avgVelocity: 0, weakeningSlowingCount: 0 }
     }
-    const avgVelocity = filteredCurrents.reduce((sum, c) => sum + c.velocity, 0) / filteredCurrents.length
-    const totalTransport = filteredCurrents.reduce((sum, c) => sum + c.transportSv, 0)
-    const weakeningCount = filteredCurrents.filter(
-      (c) => c.trend === 'weakening' || c.trend === 'collapsing'
+    const avgTemperature =
+      filteredCurrents.reduce((sum, c) => sum + c.temperature, 0) / filteredCurrents.length
+    const avgVelocity =
+      filteredCurrents.reduce((sum, c) => sum + c.velocity, 0) / filteredCurrents.length
+    const weakeningSlowingCount = filteredCurrents.filter(
+      (c) => c.status === 'weakening' || c.status === 'slowing'
     ).length
     return {
-      avgVelocity: Math.round(avgVelocity * 10) / 10,
-      totalTransport: Math.round(totalTransport * 10) / 10,
-      weakeningCount,
+      avgTemperature: Math.round(avgTemperature * 10) / 10,
+      avgVelocity: Math.round(avgVelocity * 100) / 100,
+      weakeningSlowingCount,
     }
   }, [filteredCurrents])
 
@@ -163,35 +170,35 @@ export function DeepOceanCurrentMonitor() {
   if (!state.open) return null
 
   const overlayToggles: { key: keyof DeepOceanCurrentState; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
-    { key: 'showVelocity', label: 'Velocity', icon: Gauge },
     { key: 'showTemperature', label: 'Temperature', icon: Thermometer },
-    { key: 'showTransport', label: 'Transport', icon: Waves },
-    { key: 'showTrend', label: 'Trend', icon: TrendingUp },
+    { key: 'showSalinity', label: 'Salinity', icon: Droplets },
+    { key: 'showVelocity', label: 'Velocity', icon: Gauge },
+    { key: 'showVolume', label: 'Volume', icon: Waves },
   ]
 
   return (
     <div className="fixed right-4 top-16 z-[60] w-[420px] max-w-[calc(100vw-32px)] max-h-[calc(100vh-100px)]">
-      <Card className="bg-background/95 backdrop-blur-xl border border-border/50 rounded-xl shadow-lg overflow-hidden">
-        <CardHeader className="pb-3">
+      <Card className="bg-gradient-to-br from-blue-950/95 to-indigo-950/95 backdrop-blur-xl border border-blue-800/40 rounded-xl shadow-lg shadow-blue-950/30 overflow-hidden">
+        <CardHeader className="pb-3 border-b border-blue-800/30">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-sm flex items-center gap-2">
-              <AnchorIcon2 className="h-4 w-4 text-blue-600" />
+            <CardTitle className="text-sm flex items-center gap-2 text-blue-100">
+              <AnchorIcon2 className="h-4 w-4 text-blue-400" />
               Deep Ocean Current Monitor
             </CardTitle>
             <Button
               variant="ghost"
               size="icon"
-              className="h-7 w-7"
+              className="h-7 w-7 text-blue-300 hover:text-blue-100 hover:bg-blue-800/30"
               onClick={() => setState({ open: false })}
             >
               <X className="h-4 w-4" />
             </Button>
           </div>
         </CardHeader>
-        <CardContent className="space-y-3">
-          {/* Type Filter */}
+        <CardContent className="space-y-3 p-4 text-blue-100">
+          {/* Current Type Filter */}
           <div>
-            <Label className="text-xs text-muted-foreground flex items-center gap-1.5">
+            <Label className="text-xs text-blue-300 flex items-center gap-1.5">
               <Filter className="h-3 w-3" />
               Current Type
             </Label>
@@ -203,83 +210,83 @@ export function DeepOceanCurrentMonitor() {
                 })
               }
             >
-              <SelectTrigger className="h-8 text-xs mt-1">
+              <SelectTrigger className="h-8 text-xs mt-1 bg-blue-900/40 border-blue-700/40 text-blue-100 hover:bg-blue-900/60">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Types</SelectItem>
                 <SelectItem value="thermohaline">Thermohaline</SelectItem>
-                <SelectItem value="deep_western_boundary">Deep Western Boundary</SelectItem>
-                <SelectItem value="antarctic_bottom">Antarctic Bottom</SelectItem>
-                <SelectItem value="north_atlantic_deep">North Atlantic Deep</SelectItem>
+                <SelectItem value="wind_driven">Wind-Driven</SelectItem>
+                <SelectItem value="tidal">Tidal</SelectItem>
+                <SelectItem value="boundary">Boundary</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
-          <Separator />
+          <Separator className="bg-blue-800/30" />
 
           {/* Overlay Toggles */}
           <div className="space-y-1.5">
-            <Label className="text-xs text-muted-foreground">Display Options</Label>
+            <Label className="text-xs text-blue-300">Display Options</Label>
             {overlayToggles.map(({ key, label, icon: Icon }) => (
               <div key={key} className="flex items-center justify-between">
-                <div className="flex items-center gap-1.5 text-xs">
-                  <Icon className="h-3 w-3 text-blue-600" />
+                <div className="flex items-center gap-1.5 text-xs text-blue-200">
+                  <Icon className="h-3 w-3 text-blue-400" />
                   <span>{label}</span>
                 </div>
                 <Switch
                   checked={state[key] as boolean}
                   onCheckedChange={(checked) => setState({ [key]: checked })}
-                  className="scale-75"
+                  className="scale-75 data-[state=checked]:bg-blue-600"
                 />
               </div>
             ))}
           </div>
 
-          <Separator />
+          <Separator className="bg-blue-800/30" />
 
           {/* Summary */}
           <div className="grid grid-cols-3 gap-2">
-            <div className="rounded-lg border border-border/40 p-2 text-center">
-              <div className="text-[10px] text-muted-foreground">Avg Velocity</div>
-              <div className="text-sm font-semibold">{summary.avgVelocity}</div>
-              <div className="text-[9px] text-muted-foreground">cm/s</div>
+            <div className="rounded-lg border border-blue-700/30 bg-blue-900/30 p-2 text-center">
+              <div className="text-[10px] text-blue-400">Avg Temp</div>
+              <div className="text-sm font-semibold text-cyan-400">{summary.avgTemperature}</div>
+              <div className="text-[9px] text-blue-400">&deg;C</div>
             </div>
-            <div className="rounded-lg border border-border/40 p-2 text-center">
-              <div className="text-[10px] text-muted-foreground">Transport</div>
-              <div className="text-sm font-semibold text-blue-600">{summary.totalTransport}</div>
-              <div className="text-[9px] text-muted-foreground">Sv total</div>
+            <div className="rounded-lg border border-blue-700/30 bg-blue-900/30 p-2 text-center">
+              <div className="text-[10px] text-blue-400">Avg Velocity</div>
+              <div className="text-sm font-semibold text-blue-300">{summary.avgVelocity}</div>
+              <div className="text-[9px] text-blue-400">m/s</div>
             </div>
-            <div className="rounded-lg border border-border/40 p-2 text-center">
-              <div className="text-[10px] text-muted-foreground">Declining</div>
-              <div className="text-sm font-semibold text-orange-600">{summary.weakeningCount}</div>
-              <div className="text-[9px] text-muted-foreground">currents</div>
+            <div className="rounded-lg border border-blue-700/30 bg-blue-900/30 p-2 text-center">
+              <div className="text-[10px] text-blue-400">Weakening/Slowing</div>
+              <div className="text-sm font-semibold text-amber-400">{summary.weakeningSlowingCount}</div>
+              <div className="text-[9px] text-blue-400">currents</div>
             </div>
           </div>
 
-          <Separator />
+          <Separator className="bg-blue-800/30" />
 
           {/* Current List */}
           <div className="space-y-1.5">
-            <Label className="text-xs text-muted-foreground">
-              Deep Currents ({filteredCurrents.length})
+            <Label className="text-xs text-blue-300">
+              Ocean Currents ({filteredCurrents.length})
             </Label>
             <ScrollArea className="max-h-[260px]">
               <div className="space-y-2 pr-1">
-                {filteredCurrents.map((c) => {
-                  const isActive = state.activeCurrentId === c.id
-                  const trendCfg = TREND_CONFIG[c.trend]
+                {filteredCurrents.map((current) => {
+                  const isActive = state.activeCurrentId === current.id
+                  const statusCfg = STATUS_CONFIG[current.status]
                   return (
                     <div
-                      key={c.id}
+                      key={current.id}
                       className={`rounded-lg border p-2.5 cursor-pointer transition-all ${
                         isActive
-                          ? 'border-blue-500/50 bg-blue-500/5'
-                          : 'border-border/40 hover:border-blue-500/20 hover:bg-blue-500/5'
+                          ? 'border-blue-500/60 bg-blue-800/30'
+                          : 'border-blue-800/30 hover:border-blue-600/40 hover:bg-blue-900/20'
                       }`}
                       onClick={() =>
                         setState({
-                          activeCurrentId: isActive ? null : c.id,
+                          activeCurrentId: isActive ? null : current.id,
                         })
                       }
                     >
@@ -287,48 +294,48 @@ export function DeepOceanCurrentMonitor() {
                         <div className="flex items-center gap-1.5">
                           <div
                             className="h-2 w-2 rounded-full"
-                            style={{ backgroundColor: trendCfg.color }}
+                            style={{ backgroundColor: statusCfg.color }}
                           />
-                          <span className="text-xs font-medium">{c.name}</span>
+                          <span className="text-xs font-medium text-blue-100">{current.name}</span>
                         </div>
                         <Badge
                           variant="outline"
-                          className={`text-[10px] h-5 ${trendCfg.bgClass}`}
+                          className={`text-[10px] h-5 ${statusCfg.bgClass}`}
                         >
-                          {trendCfg.label}
+                          {statusCfg.label}
                         </Badge>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10px] text-muted-foreground">
-                        {state.showVelocity && (
-                          <div>
-                            Velocity:{' '}
-                            <span className="text-foreground font-medium">
-                              {c.velocity} cm/s
-                            </span>
-                          </div>
-                        )}
+                      <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10px] text-blue-300">
                         {state.showTemperature && (
                           <div>
                             Temp:{' '}
-                            <span className="text-foreground font-medium">
-                              {c.temperature}°C
+                            <span className="text-blue-100 font-medium">
+                              {current.temperature}&deg;C
                             </span>
                           </div>
                         )}
-                        {state.showTransport && (
+                        {state.showSalinity && (
                           <div>
-                            Transport:{' '}
-                            <span className="text-foreground font-medium">
-                              {c.transportSv} Sv
+                            Salinity:{' '}
+                            <span className="text-blue-100 font-medium">
+                              {current.salinity} PSU
                             </span>
                           </div>
                         )}
-                        {state.showTrend && (
+                        {state.showVelocity && (
                           <div>
-                            Type:{' '}
-                            <span className="text-foreground font-medium">
-                              {TYPE_LABELS[c.currentType]}
+                            Velocity:{' '}
+                            <span className="text-blue-100 font-medium">
+                              {current.velocity} m/s
+                            </span>
+                          </div>
+                        )}
+                        {state.showVolume && (
+                          <div>
+                            Volume:{' '}
+                            <span className="text-blue-100 font-medium">
+                              {current.volume} Sv
                             </span>
                           </div>
                         )}
@@ -337,7 +344,7 @@ export function DeepOceanCurrentMonitor() {
                   )
                 })}
                 {filteredCurrents.length === 0 && (
-                  <div className="text-center text-xs text-muted-foreground py-4">
+                  <div className="text-center text-xs text-blue-400 py-4">
                     No currents match the current filter.
                   </div>
                 )}
@@ -348,52 +355,54 @@ export function DeepOceanCurrentMonitor() {
           {/* Active Current Details */}
           {activeCurrent && (
             <>
-              <Separator />
-              <div className="space-y-2 rounded-lg border border-blue-500/20 bg-blue-500/5 p-3">
+              <Separator className="bg-blue-800/30" />
+              <div className="space-y-2 rounded-lg border border-blue-600/30 bg-blue-900/30 p-3">
                 <div className="flex items-center gap-2">
-                  <MapPin className="h-3.5 w-3.5 text-blue-600" />
-                  <span className="text-xs font-semibold">{activeCurrent.name}</span>
+                  <MapPin className="h-3.5 w-3.5 text-blue-400" />
+                  <span className="text-xs font-semibold text-blue-100">{activeCurrent.name}</span>
                   <Badge
                     variant="outline"
-                    className={`text-[10px] h-5 ml-auto ${TREND_CONFIG[activeCurrent.trend].bgClass}`}
+                    className={`text-[10px] h-5 ml-auto ${STATUS_CONFIG[activeCurrent.status].bgClass}`}
                   >
-                    {TREND_CONFIG[activeCurrent.trend].label}
+                    {STATUS_CONFIG[activeCurrent.status].label}
                   </Badge>
                 </div>
                 <div className="grid grid-cols-2 gap-2 text-[11px]">
                   <div>
-                    <span className="text-muted-foreground">Coordinates: </span>
-                    <span className="font-medium">
-                      {activeCurrent.latitude.toFixed(2)}, {activeCurrent.longitude.toFixed(2)}
+                    <span className="text-blue-400">Coordinates: </span>
+                    <span className="font-medium text-blue-100">
+                      {activeCurrent.lat.toFixed(1)}, {activeCurrent.lng.toFixed(1)}
                     </span>
                   </div>
                   <div>
-                    <span className="text-muted-foreground">Type: </span>
-                    <span className="font-medium">{TYPE_LABELS[activeCurrent.currentType]}</span>
+                    <span className="text-blue-400">Temperature: </span>
+                    <span className="font-medium text-cyan-400">{activeCurrent.temperature}&deg;C</span>
                   </div>
                   <div>
-                    <span className="text-muted-foreground">Velocity: </span>
-                    <span className="font-medium">{activeCurrent.velocity} cm/s</span>
+                    <span className="text-blue-400">Salinity: </span>
+                    <span className="font-medium text-blue-200">{activeCurrent.salinity} PSU</span>
                   </div>
                   <div>
-                    <span className="text-muted-foreground">Temperature: </span>
-                    <span className="font-medium">{activeCurrent.temperature}°C</span>
+                    <span className="text-blue-400">Velocity: </span>
+                    <span className="font-medium text-blue-200">{activeCurrent.velocity} m/s</span>
                   </div>
                   <div>
-                    <span className="text-muted-foreground">Salinity: </span>
-                    <span className="font-medium">{activeCurrent.salinity} PSU</span>
+                    <span className="text-blue-400">Volume: </span>
+                    <span className="font-medium text-blue-200">{activeCurrent.volume} Sv</span>
                   </div>
                   <div>
-                    <span className="text-muted-foreground">Depth: </span>
-                    <span className="font-medium">{activeCurrent.depth} m</span>
+                    <span className="text-blue-400">Depth: </span>
+                    <span className="font-medium text-blue-200">{activeCurrent.depth.toLocaleString()} m</span>
                   </div>
-                  <div>
-                    <span className="text-muted-foreground">Transport: </span>
-                    <span className="font-medium">{activeCurrent.transportSv} Sv</span>
+                  <div className="col-span-2">
+                    <span className="text-blue-400">Current Type: </span>
+                    <span className="font-medium text-blue-200">
+                      {(activeCurrent as DemoCurrent).currentType ? CURRENT_TYPE_LABELS[(activeCurrent as DemoCurrent).currentType] : 'N/A'}
+                    </span>
                   </div>
-                  <div>
-                    <span className="text-muted-foreground">Oxygen: </span>
-                    <span className="font-medium">{activeCurrent.oxygenLevel} ml/L</span>
+                  <div className="col-span-2">
+                    <span className="text-blue-400">Description: </span>
+                    <span className="font-medium text-blue-200">{activeCurrent.description}</span>
                   </div>
                 </div>
               </div>
