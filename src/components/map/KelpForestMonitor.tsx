@@ -4,6 +4,10 @@ import { useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { Switch } from '@/components/ui/switch'
+import { Label } from '@/components/ui/label'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { Separator } from '@/components/ui/separator'
 import {
   Select,
   SelectContent,
@@ -11,426 +15,379 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Switch } from '@/components/ui/switch'
-import { Label } from '@/components/ui/label'
-import { Separator } from '@/components/ui/separator'
-import { useMapStore, type KelpForestSite, type KelpForestState } from '@/lib/map-store'
-import { Leaf, X, Thermometer, Fish, Filter, MapPin } from 'lucide-react'
+import { useMapStore, type KelpForestMonitorState, type KelpForestMonitorData } from '@/lib/map-store'
+import { Fish as FishIcon3, X, BarChart3, MapPin, Filter, Leaf, TrendingUp } from 'lucide-react'
 
-const SAMPLE_SITES: KelpForestSite[] = [
+const DEMO_FORESTS: KelpForestMonitorData[] = [
   {
-    id: 'kf-1',
-    name: 'Monterey Bay',
-    latitude: 36.6,
-    longitude: -121.9,
-    canopyCoverage: 78.5,
-    healthIndex: 0.82,
-    species: 'Macrocystis pyrifera',
-    waterTemp: 13.2,
-    nutrientLevel: 6.4,
-    urchinDensity: 3.1,
-    restorationStatus: 'healthy',
+    id: 'kf-california',
+    name: 'California Kelp Forest',
+    lat: 34,
+    lng: -120,
+    coverage: 85,
+    biomass: 12,
+    waterTemp: 15,
+    biodiversity: 90,
+    depth: 20,
+    status: 'thriving',
+    description: 'Healthy kelp forest ecosystem along the California coast',
   },
   {
-    id: 'kf-2',
-    name: 'Channel Islands',
-    latitude: 34.0,
-    longitude: -119.5,
-    canopyCoverage: 92.3,
-    healthIndex: 0.95,
-    species: 'Macrocystis pyrifera',
-    waterTemp: 14.8,
-    nutrientLevel: 7.1,
-    urchinDensity: 1.2,
-    restorationStatus: 'pristine',
+    id: 'kf-tasmania',
+    name: 'Tasmania Giant Kelp',
+    lat: -43,
+    lng: 147,
+    coverage: 25,
+    biomass: 3,
+    waterTemp: 19,
+    biodiversity: 45,
+    depth: 15,
+    status: 'severely_declining',
+    description: 'Once-thriving giant kelp forests now severely impacted by warming waters',
   },
   {
-    id: 'kf-3',
-    name: 'Tasmania',
-    latitude: -43.0,
-    longitude: 147.5,
-    canopyCoverage: 35.6,
-    healthIndex: 0.38,
-    species: 'Ecklonia radiata',
-    waterTemp: 17.4,
-    nutrientLevel: 3.2,
-    urchinDensity: 18.7,
-    restorationStatus: 'declining',
+    id: 'kf-norwegian',
+    name: 'Norwegian Kelp',
+    lat: 62,
+    lng: 5,
+    coverage: 70,
+    biomass: 8,
+    waterTemp: 10,
+    biodiversity: 75,
+    depth: 25,
+    status: 'stable',
+    description: 'Cold-water kelp forests along Norwegian fjords remaining stable',
   },
   {
-    id: 'kf-4',
-    name: 'Patagonia',
-    latitude: -46.5,
-    longitude: -67.5,
-    canopyCoverage: 64.2,
-    healthIndex: 0.71,
-    species: 'Macrocystis pyrifera',
-    waterTemp: 10.5,
-    nutrientLevel: 8.2,
-    urchinDensity: 4.5,
-    restorationStatus: 'healthy',
+    id: 'kf-southafrica',
+    name: 'South Africa Kelp',
+    lat: -34,
+    lng: 18,
+    coverage: 65,
+    biomass: 7,
+    waterTemp: 14,
+    biodiversity: 68,
+    depth: 18,
+    status: 'stable',
+    description: 'Benguela-current supported kelp ecosystem with stable conditions',
   },
   {
-    id: 'kf-5',
-    name: 'Norway Coast',
-    latitude: 63.5,
-    longitude: 8.5,
-    canopyCoverage: 45.1,
-    healthIndex: 0.52,
-    species: 'Laminaria hyperborea',
-    waterTemp: 8.9,
-    nutrientLevel: 5.8,
-    urchinDensity: 12.3,
-    restorationStatus: 'declining',
+    id: 'kf-japanese',
+    name: 'Japanese Kelp',
+    lat: 38,
+    lng: 140,
+    coverage: 55,
+    biomass: 6,
+    waterTemp: 16,
+    biodiversity: 55,
+    depth: 12,
+    status: 'declining',
+    description: 'Kelp forests under pressure from warming and overharvesting',
   },
   {
-    id: 'kf-6',
-    name: 'Scottish Highlands',
-    latitude: 57.5,
-    longitude: -5.5,
-    canopyCoverage: 12.4,
-    healthIndex: 0.15,
-    species: 'Laminaria digitata',
-    waterTemp: 11.2,
-    nutrientLevel: 4.1,
-    urchinDensity: 28.9,
-    restorationStatus: 'barren',
+    id: 'kf-chilean',
+    name: 'Chilean Kelp',
+    lat: -40,
+    lng: -73,
+    coverage: 40,
+    biomass: 5,
+    waterTemp: 13,
+    biodiversity: 50,
+    depth: 22,
+    status: 'declining',
+    description: 'Lesser kelp forests showing gradual decline from environmental changes',
   },
 ]
 
 const STATUS_CONFIG: Record<
-  KelpForestSite['restorationStatus'],
-  { bg: string; text: string; border: string; dot: string }
+  KelpForestMonitorData['status'],
+  { label: string; color: string; bgClass: string }
 > = {
-  pristine: {
-    bg: 'bg-green-100 dark:bg-green-900/30',
-    text: 'text-green-800 dark:text-green-300',
-    border: 'border-green-300 dark:border-green-700',
-    dot: 'bg-green-500',
-  },
-  healthy: {
-    bg: 'bg-lime-100 dark:bg-lime-900/30',
-    text: 'text-lime-800 dark:text-lime-300',
-    border: 'border-lime-300 dark:border-lime-700',
-    dot: 'bg-lime-500',
-  },
-  declining: {
-    bg: 'bg-orange-100 dark:bg-orange-900/30',
-    text: 'text-orange-800 dark:text-orange-300',
-    border: 'border-orange-300 dark:border-orange-700',
-    dot: 'bg-orange-500',
-  },
-  barren: {
-    bg: 'bg-red-100 dark:bg-red-900/30',
-    text: 'text-red-800 dark:text-red-300',
-    border: 'border-red-300 dark:border-red-700',
-    dot: 'bg-red-500',
-  },
+  thriving: { label: 'Thriving', color: '#10b981', bgClass: 'bg-emerald-500/10 text-emerald-600 border-emerald-500/30' },
+  stable: { label: 'Stable', color: '#0ea5e9', bgClass: 'bg-sky-500/10 text-sky-600 border-sky-500/30' },
+  declining: { label: 'Declining', color: '#f59e0b', bgClass: 'bg-amber-500/10 text-amber-600 border-amber-500/30' },
+  severely_declining: { label: 'Severely Declining', color: '#f97316', bgClass: 'bg-orange-500/10 text-orange-600 border-orange-500/30' },
+  collapsed: { label: 'Collapsed', color: '#ef4444', bgClass: 'bg-red-500/10 text-red-600 border-red-500/30' },
 }
 
 export function KelpForestMonitor() {
-  const kelpForest = useMapStore((s) => s.kelpForest)
-  const setKelpForest = useMapStore((s) => s.setKelpForest)
+  const state = useMapStore((s) => s.kelpForestMonitor)
+  const setState = useMapStore((s) => s.setKelpForestMonitor)
 
-  const sites = useMemo(() => {
-    const source = kelpForest.kelpSites.length > 0 ? kelpForest.kelpSites : SAMPLE_SITES
-    return source
-  }, [kelpForest.kelpSites])
+  const forests = useMemo(
+    () => (state.forests.length > 0 ? state.forests : DEMO_FORESTS),
+    [state.forests]
+  )
 
-  const filteredSites = useMemo(() => {
-    let result = sites
-    if (kelpForest.statusFilter !== 'all') {
-      result = result.filter((s) => s.restorationStatus === kelpForest.statusFilter)
-    }
-    return result
-  }, [sites, kelpForest.statusFilter])
-
-  const selectedSite = useMemo(() => {
-    if (!kelpForest.activeSiteId) return null
-    return sites.find((s) => s.id === kelpForest.activeSiteId) ?? null
-  }, [sites, kelpForest.activeSiteId])
+  const filteredForests = useMemo(() => {
+    return forests.filter((f) => {
+      if (state.speciesFilter !== 'all') {
+        const speciesMap: Record<string, string[]> = {
+          macrocystis: ['kf-california', 'kf-chilean'],
+          laminaria: ['kf-norwegian', 'kf-japanese'],
+          ecklonia: ['kf-southafrica'],
+          saccharina: ['kf-tasmania', 'kf-norwegian'],
+        }
+        if (!speciesMap[state.speciesFilter]?.includes(f.id)) return false
+      }
+      return true
+    })
+  }, [forests, state.speciesFilter])
 
   const summary = useMemo(() => {
+    if (filteredForests.length === 0) {
+      return { avgCoverage: 0, avgBiomass: 0, avgWaterTemp: 0 }
+    }
     const avgCoverage =
-      sites.length > 0 ? sites.reduce((sum, s) => sum + s.canopyCoverage, 0) / sites.length : 0
-    const decliningCount = sites.filter(
-      (s) => s.restorationStatus === 'declining' || s.restorationStatus === 'barren'
-    ).length
-    const avgHealth =
-      sites.length > 0 ? sites.reduce((sum, s) => sum + s.healthIndex, 0) / sites.length : 0
-    return { avgCoverage, decliningCount, avgHealth }
-  }, [sites])
+      filteredForests.reduce((sum, f) => sum + f.coverage, 0) / filteredForests.length
+    const avgBiomass =
+      filteredForests.reduce((sum, f) => sum + f.biomass, 0) / filteredForests.length
+    const avgWaterTemp =
+      filteredForests.reduce((sum, f) => sum + f.waterTemp, 0) / filteredForests.length
+    return {
+      avgCoverage: Math.round(avgCoverage),
+      avgBiomass: Math.round(avgBiomass * 10) / 10,
+      avgWaterTemp: Math.round(avgWaterTemp * 10) / 10,
+    }
+  }, [filteredForests])
 
-  if (!kelpForest.open) return null
+  const activeForest = useMemo(
+    () => forests.find((f) => f.id === state.activeForestId) ?? null,
+    [forests, state.activeForestId]
+  )
+
+  if (typeof window === 'undefined') return null
+  if (!state.open) return null
+
+  const overlayToggles: { key: keyof KelpForestMonitorState; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
+    { key: 'showCoverage', label: 'Coverage', icon: BarChart3 },
+    { key: 'showBiomass', label: 'Biomass', icon: Leaf },
+    { key: 'showWaterTemp', label: 'Water Temp', icon: TrendingUp },
+    { key: 'showBiodiversity', label: 'Biodiversity', icon: MapPin },
+  ]
 
   return (
-    <div className="fixed top-4 right-4 z-50 w-[420px] max-h-[calc(100vh-2rem)] overflow-hidden">
-      <Card className="shadow-2xl border-border/60 backdrop-blur-sm bg-background/95">
-        <CardHeader className="pb-3">
+    <div className="fixed right-4 top-16 z-[60] w-[420px] max-w-[calc(100vw-32px)] max-h-[calc(100vh-100px)]">
+      <Card className="bg-gradient-to-br from-emerald-950/95 to-green-950/95 backdrop-blur-xl border border-emerald-800/40 rounded-xl shadow-lg shadow-emerald-950/30 overflow-hidden">
+        <CardHeader className="pb-3 border-b border-emerald-800/30">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Leaf className="h-5 w-5 text-lime-500" />
-              <CardTitle className="text-lg">Kelp Forest Monitor</CardTitle>
-            </div>
+            <CardTitle className="text-sm flex items-center gap-2 text-emerald-100">
+              <FishIcon3 className="h-4 w-4 text-emerald-400" />
+              Kelp Forest Monitor
+            </CardTitle>
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8"
-              onClick={() => setKelpForest({ open: false })}
+              className="h-7 w-7 text-emerald-300 hover:text-emerald-100 hover:bg-emerald-800/30"
+              onClick={() => setState({ open: false })}
             >
               <X className="h-4 w-4" />
             </Button>
           </div>
         </CardHeader>
-
-        <CardContent className="space-y-4 pt-0 overflow-y-auto max-h-[calc(100vh-8rem)]">
-          {/* Summary */}
-          <div className="grid grid-cols-3 gap-2">
-            <div className="rounded-lg bg-lime-50 dark:bg-lime-950/30 p-2.5 text-center">
-              <p className="text-xs text-muted-foreground">Avg Coverage</p>
-              <p className="text-lg font-bold text-lime-600 dark:text-lime-400">
-                {summary.avgCoverage.toFixed(0)}%
-              </p>
-            </div>
-            <div className="rounded-lg bg-orange-50 dark:bg-orange-950/30 p-2.5 text-center">
-              <p className="text-xs text-muted-foreground">Declining</p>
-              <p className="text-lg font-bold text-orange-600 dark:text-orange-400">
-                {summary.decliningCount}
-              </p>
-            </div>
-            <div className="rounded-lg bg-green-50 dark:bg-green-950/30 p-2.5 text-center">
-              <p className="text-xs text-muted-foreground">Avg Health</p>
-              <p className="text-lg font-bold text-green-600 dark:text-green-400">
-                {summary.avgHealth.toFixed(2)}
-              </p>
-            </div>
-          </div>
-
-          <Separator />
-
-          {/* Toggles */}
-          <div className="space-y-2.5">
-            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-              Display Options
-            </p>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-2">
-              <div className="flex items-center gap-2">
-                <Switch
-                  id="kf-show-coverage"
-                  checked={kelpForest.showCoverage}
-                  onCheckedChange={(v) => setKelpForest({ showCoverage: v })}
-                />
-                <Label htmlFor="kf-show-coverage" className="text-xs cursor-pointer">
-                  Canopy Coverage
-                </Label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Switch
-                  id="kf-show-health"
-                  checked={kelpForest.showHealth}
-                  onCheckedChange={(v) => setKelpForest({ showHealth: v })}
-                />
-                <Label htmlFor="kf-show-health" className="text-xs cursor-pointer">
-                  Health Index
-                </Label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Switch
-                  id="kf-show-species"
-                  checked={kelpForest.showSpecies}
-                  onCheckedChange={(v) => setKelpForest({ showSpecies: v })}
-                />
-                <Label htmlFor="kf-show-species" className="text-xs cursor-pointer">
-                  Species
-                </Label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Switch
-                  id="kf-show-restoration"
-                  checked={kelpForest.showRestoration}
-                  onCheckedChange={(v) => setKelpForest({ showRestoration: v })}
-                />
-                <Label htmlFor="kf-show-restoration" className="text-xs cursor-pointer">
-                  Restoration
-                </Label>
-              </div>
-            </div>
-          </div>
-
-          <Separator />
-
-          {/* Status Filter */}
-          <div className="space-y-1.5">
-            <div className="flex items-center gap-1.5">
-              <Filter className="h-3.5 w-3.5 text-muted-foreground" />
-              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                Filter by Status
-              </p>
-            </div>
+        <CardContent className="space-y-3 p-4 text-emerald-100">
+          {/* Species Filter */}
+          <div>
+            <Label className="text-xs text-emerald-300 flex items-center gap-1.5">
+              <Filter className="h-3 w-3" />
+              Species Type
+            </Label>
             <Select
-              value={kelpForest.statusFilter}
+              value={state.speciesFilter}
               onValueChange={(v) =>
-                setKelpForest({
-                  statusFilter: v as KelpForestState['statusFilter'],
+                setState({
+                  speciesFilter: v as KelpForestMonitorState['speciesFilter'],
                 })
               }
             >
-              <SelectTrigger className="h-8 text-xs">
-                <SelectValue placeholder="All statuses" />
+              <SelectTrigger className="h-8 text-xs mt-1 bg-emerald-900/40 border-emerald-700/40 text-emerald-100 hover:bg-emerald-900/60">
+                <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="pristine">Pristine</SelectItem>
-                <SelectItem value="healthy">Healthy</SelectItem>
-                <SelectItem value="declining">Declining</SelectItem>
-                <SelectItem value="barren">Barren</SelectItem>
+                <SelectItem value="all">All Species</SelectItem>
+                <SelectItem value="macrocystis">Macrocystis</SelectItem>
+                <SelectItem value="laminaria">Laminaria</SelectItem>
+                <SelectItem value="ecklonia">Ecklonia</SelectItem>
+                <SelectItem value="saccharina">Saccharina</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
-          <Separator />
+          <Separator className="bg-emerald-800/30" />
 
-          {/* Site List */}
+          {/* Overlay Toggles */}
           <div className="space-y-1.5">
-            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-              Forest Sites ({filteredSites.length})
-            </p>
-            <div className="max-h-64 overflow-y-auto space-y-2 pr-1">
-              {filteredSites.length === 0 && (
-                <p className="text-xs text-muted-foreground text-center py-4">
-                  No sites match the current filter.
-                </p>
-              )}
-              {filteredSites.map((site) => {
-                const sc = STATUS_CONFIG[site.restorationStatus]
-                const isSelected = kelpForest.activeSiteId === site.id
-                return (
-                  <button
-                    key={site.id}
-                    className={`w-full text-left rounded-lg border p-3 transition-colors ${
-                      isSelected
-                        ? 'border-primary bg-primary/5 ring-1 ring-primary/20'
-                        : 'border-border hover:border-primary/40 hover:bg-muted/50'
-                    }`}
-                    onClick={() =>
-                      setKelpForest({
-                        activeSiteId: isSelected ? null : site.id,
-                      })
-                    }
-                  >
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="flex items-center gap-2 min-w-0">
-                        <span className={`h-2.5 w-2.5 rounded-full shrink-0 ${sc.dot}`} />
-                        <span className="text-sm font-medium truncate">{site.name}</span>
-                      </div>
-                      {kelpForest.showRestoration && (
-                        <Badge
-                          variant="outline"
-                          className={`text-[10px] px-1.5 py-0 shrink-0 ${sc.bg} ${sc.text} ${sc.border}`}
-                        >
-                          {site.restorationStatus}
-                        </Badge>
-                      )}
-                    </div>
-                    <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
-                      {kelpForest.showCoverage && (
-                        <span className="flex items-center gap-0.5">
-                          <Leaf className="h-3 w-3" />
-                          {site.canopyCoverage.toFixed(1)}%
-                        </span>
-                      )}
-                      {kelpForest.showHealth && (
-                        <span>Health {site.healthIndex.toFixed(2)}</span>
-                      )}
-                      <span className="flex items-center gap-0.5">
-                        <Thermometer className="h-3 w-3" />
-                        {site.waterTemp.toFixed(1)}°C
-                      </span>
-                      {kelpForest.showSpecies && (
-                        <span className="flex items-center gap-0.5">
-                          <Fish className="h-3 w-3" />
-                          <span className="truncate max-w-[120px]">{site.species}</span>
-                        </span>
-                      )}
-                    </div>
-                  </button>
-                )
-              })}
+            <Label className="text-xs text-emerald-300">Display Options</Label>
+            {overlayToggles.map(({ key, label, icon: Icon }) => (
+              <div key={key} className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5 text-xs text-emerald-200">
+                  <Icon className="h-3 w-3 text-emerald-400" />
+                  <span>{label}</span>
+                </div>
+                <Switch
+                  checked={state[key] as boolean}
+                  onCheckedChange={(checked) => setState({ [key]: checked })}
+                  className="scale-75 data-[state=checked]:bg-emerald-600"
+                />
+              </div>
+            ))}
+          </div>
+
+          <Separator className="bg-emerald-800/30" />
+
+          {/* Summary */}
+          <div className="grid grid-cols-3 gap-2">
+            <div className="rounded-lg border border-emerald-700/30 bg-emerald-900/30 p-2 text-center">
+              <div className="text-[10px] text-emerald-400">Avg Coverage</div>
+              <div className="text-sm font-semibold text-emerald-300">{summary.avgCoverage}%</div>
+              <div className="text-[9px] text-emerald-400">canopy</div>
+            </div>
+            <div className="rounded-lg border border-emerald-700/30 bg-emerald-900/30 p-2 text-center">
+              <div className="text-[10px] text-emerald-400">Avg Biomass</div>
+              <div className="text-sm font-semibold text-emerald-200">{summary.avgBiomass}</div>
+              <div className="text-[9px] text-emerald-400">kg/m²</div>
+            </div>
+            <div className="rounded-lg border border-emerald-700/30 bg-emerald-900/30 p-2 text-center">
+              <div className="text-[10px] text-emerald-400">Avg Temp</div>
+              <div className="text-sm font-semibold text-amber-400">{summary.avgWaterTemp}°C</div>
+              <div className="text-[9px] text-emerald-400">water</div>
             </div>
           </div>
 
-          {/* Selected Site Details */}
-          {selectedSite && (
+          <Separator className="bg-emerald-800/30" />
+
+          {/* Forest List */}
+          <div className="space-y-1.5">
+            <Label className="text-xs text-emerald-300">
+              Kelp Forests ({filteredForests.length})
+            </Label>
+            <ScrollArea className="max-h-[260px]">
+              <div className="space-y-2 pr-1">
+                {filteredForests.map((forest) => {
+                  const isActive = state.activeForestId === forest.id
+                  const statusCfg = STATUS_CONFIG[forest.status]
+                  return (
+                    <div
+                      key={forest.id}
+                      className={`rounded-lg border p-2.5 cursor-pointer transition-all ${
+                        isActive
+                          ? 'border-emerald-500/60 bg-emerald-800/30'
+                          : 'border-emerald-800/30 hover:border-emerald-600/40 hover:bg-emerald-900/20'
+                      }`}
+                      onClick={() =>
+                        setState({
+                          activeForestId: isActive ? null : forest.id,
+                        })
+                      }
+                    >
+                      <div className="flex items-center justify-between mb-1.5">
+                        <div className="flex items-center gap-1.5">
+                          <div
+                            className="h-2 w-2 rounded-full"
+                            style={{ backgroundColor: statusCfg.color }}
+                          />
+                          <span className="text-xs font-medium text-emerald-100">{forest.name}</span>
+                        </div>
+                        <Badge
+                          variant="outline"
+                          className={`text-[10px] h-5 ${statusCfg.bgClass}`}
+                        >
+                          {statusCfg.label}
+                        </Badge>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10px] text-emerald-300">
+                        {state.showCoverage && (
+                          <div>
+                            Coverage:{' '}
+                            <span className="text-emerald-100 font-medium">
+                              {forest.coverage}%
+                            </span>
+                          </div>
+                        )}
+                        {state.showBiomass && (
+                          <div>
+                            Biomass:{' '}
+                            <span className="text-emerald-100 font-medium">
+                              {forest.biomass} kg/m²
+                            </span>
+                          </div>
+                        )}
+                        {state.showWaterTemp && (
+                          <div>
+                            Water Temp:{' '}
+                            <span className="text-amber-400 font-medium">
+                              {forest.waterTemp}°C
+                            </span>
+                          </div>
+                        )}
+                        {state.showBiodiversity && (
+                          <div>
+                            Biodiversity:{' '}
+                            <span className="text-emerald-200 font-medium">
+                              {forest.biodiversity}%
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )
+                })}
+                {filteredForests.length === 0 && (
+                  <div className="text-center text-xs text-emerald-400 py-4">
+                    No forests match the current filter.
+                  </div>
+                )}
+              </div>
+            </ScrollArea>
+          </div>
+
+          {/* Active Forest Details */}
+          {activeForest && (
             <>
-              <Separator />
-              <div className="rounded-lg border bg-muted/30 p-4 space-y-3">
+              <Separator className="bg-emerald-800/30" />
+              <div className="space-y-2 rounded-lg border border-emerald-600/30 bg-emerald-900/30 p-3">
                 <div className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4 text-primary" />
-                  <h3 className="text-sm font-semibold">{selectedSite.name}</h3>
+                  <MapPin className="h-3.5 w-3.5 text-emerald-400" />
+                  <span className="text-xs font-semibold text-emerald-100">{activeForest.name}</span>
+                  <Badge
+                    variant="outline"
+                    className={`text-[10px] h-5 ml-auto ${STATUS_CONFIG[activeForest.status].bgClass}`}
+                  >
+                    {STATUS_CONFIG[activeForest.status].label}
+                  </Badge>
                 </div>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-2 text-[11px]">
                   <div>
-                    <p className="text-[10px] uppercase tracking-wide text-muted-foreground">
-                      Canopy Coverage
-                    </p>
-                    <p className="text-sm font-bold text-lime-600 dark:text-lime-400">
-                      {selectedSite.canopyCoverage.toFixed(1)}%
-                    </p>
+                    <span className="text-emerald-400">Coordinates: </span>
+                    <span className="font-medium text-emerald-100">
+                      {activeForest.lat.toFixed(1)}, {activeForest.lng.toFixed(1)}
+                    </span>
                   </div>
                   <div>
-                    <p className="text-[10px] uppercase tracking-wide text-muted-foreground">
-                      Health Index
-                    </p>
-                    <p className="text-sm font-medium">{selectedSite.healthIndex.toFixed(2)}</p>
+                    <span className="text-emerald-400">Coverage: </span>
+                    <span className="font-medium text-emerald-200">{activeForest.coverage}%</span>
                   </div>
                   <div>
-                    <p className="text-[10px] uppercase tracking-wide text-muted-foreground">
-                      Species
-                    </p>
-                    <p className="text-sm font-medium">{selectedSite.species}</p>
+                    <span className="text-emerald-400">Biomass: </span>
+                    <span className="font-medium text-emerald-200">{activeForest.biomass} kg/m²</span>
                   </div>
                   <div>
-                    <p className="text-[10px] uppercase tracking-wide text-muted-foreground">
-                      Water Temp
-                    </p>
-                    <p className="text-sm font-medium">
-                      {selectedSite.waterTemp.toFixed(1)}°C
-                    </p>
+                    <span className="text-emerald-400">Water Temp: </span>
+                    <span className="font-medium text-amber-400">{activeForest.waterTemp}°C</span>
                   </div>
                   <div>
-                    <p className="text-[10px] uppercase tracking-wide text-muted-foreground">
-                      Nutrient Level
-                    </p>
-                    <p className="text-sm font-medium">{selectedSite.nutrientLevel.toFixed(1)}</p>
+                    <span className="text-emerald-400">Depth: </span>
+                    <span className="font-medium text-emerald-200">{activeForest.depth} m</span>
                   </div>
                   <div>
-                    <p className="text-[10px] uppercase tracking-wide text-muted-foreground">
-                      Urchin Density
-                    </p>
-                    <p className="text-sm font-medium">
-                      {selectedSite.urchinDensity.toFixed(1)}/m²
-                    </p>
+                    <span className="text-emerald-400">Biodiversity: </span>
+                    <span className="font-medium text-emerald-200">{activeForest.biodiversity}%</span>
                   </div>
                   <div className="col-span-2">
-                    <p className="text-[10px] uppercase tracking-wide text-muted-foreground">
-                      Restoration Status
-                    </p>
-                    <Badge
-                      variant="outline"
-                      className={`text-xs mt-0.5 ${STATUS_CONFIG[selectedSite.restorationStatus].bg} ${STATUS_CONFIG[selectedSite.restorationStatus].text} ${STATUS_CONFIG[selectedSite.restorationStatus].border}`}
-                    >
-                      {selectedSite.restorationStatus}
-                    </Badge>
+                    <span className="text-emerald-400">Description: </span>
+                    <span className="font-medium text-emerald-200">{activeForest.description}</span>
                   </div>
-                </div>
-                <div>
-                  <p className="text-[10px] uppercase tracking-wide text-muted-foreground">
-                    Coordinates
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    {selectedSite.latitude.toFixed(2)}°,{' '}
-                    {selectedSite.longitude.toFixed(2)}°
-                  </p>
                 </div>
               </div>
             </>

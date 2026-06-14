@@ -5919,6 +5919,208 @@ export interface SubmarineCanyonData {
   description: string
 }
 
+// Task 76: New monitoring interfaces
+
+export interface KelpForestMonitorState {
+  forests: KelpForestMonitorData[]
+  activeForestId: string | null
+  showCoverage: boolean
+  showBiomass: boolean
+  showWaterTemp: boolean
+  showBiodiversity: boolean
+  open: boolean
+  speciesFilter: 'all' | 'macrocystis' | 'laminaria' | 'ecklonia' | 'saccharina'
+}
+
+export interface KelpForestMonitorData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  coverage: number
+  biomass: number
+  waterTemp: number
+  biodiversity: number
+  depth: number
+  status: 'thriving' | 'stable' | 'declining' | 'severely_declining' | 'collapsed'
+  description: string
+}
+
+export interface VolcanicIslandFormationState {
+  islands: VolcanicIslandFormationData[]
+  activeIslandId: string | null
+  showElevation: boolean
+  showEruptionRate: boolean
+  showArea: boolean
+  showSubsidence: boolean
+  open: boolean
+  stageFilter: 'all' | 'emerging' | 'growing' | 'mature' | 'eroding' | 'submerged'
+}
+
+export interface VolcanicIslandFormationData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  elevation: number
+  eruptionRate: number
+  area: number
+  subsidence: number
+  age: number
+  status: 'emerging' | 'growing' | 'mature' | 'eroding' | 'submerged'
+  description: string
+}
+
+export interface SaltwaterIntrusionState {
+  zones: SaltwaterIntrusionData[]
+  activeZoneId: string | null
+  showChloride: boolean
+  showConductivity: boolean
+  showWaterTable: boolean
+  showIntrusionRate: boolean
+  open: boolean
+  severityFilter: 'all' | 'fresh' | 'slight' | 'moderate' | 'severe' | 'extreme'
+}
+
+export interface SaltwaterIntrusionData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  chloride: number
+  conductivity: number
+  waterTable: number
+  intrusionRate: number
+  pumpingRate: number
+  status: 'fresh' | 'slight' | 'moderate' | 'severe' | 'extreme'
+  description: string
+}
+
+export interface ArcticShippingRouteState {
+  routes: ArcticShippingRouteData[]
+  activeRouteId: string | null
+  showIceThickness: boolean
+  showNavigability: boolean
+  showTransitTime: boolean
+  showTraffic: boolean
+  open: boolean
+  routeFilter: 'all' | 'northern_sea' | 'northwest_passage' | 'transpolar' | 'coastal'
+}
+
+export interface ArcticShippingRouteData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  iceThickness: number
+  navigability: number
+  transitTime: number
+  traffic: number
+  iceFreeDays: number
+  status: 'closed' | 'restricted' | 'partial' | 'open' | 'increasing'
+  description: string
+}
+
+export interface ThermoclineDepthState {
+  stations: ThermoclineDepthData[]
+  activeStationId: string | null
+  showDepth: boolean
+  showGradient: boolean
+  showSST: boolean
+  showTrend: boolean
+  open: boolean
+  regionFilter: 'all' | 'tropical' | 'subtropical' | 'temperate' | 'polar'
+}
+
+export interface ThermoclineDepthData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  depth: number
+  gradient: number
+  sst: number
+  trend: number
+  stratification: number
+  status: 'deepening' | 'stable' | 'shallowing' | 'rapid_shallowing' | 'eroded'
+  description: string
+}
+
+export interface BioluminescentBayState {
+  bays: BioluminescentBayData[]
+  activeBayId: string | null
+  showBrightness: boolean
+  showDinoflagellate: boolean
+  showWaterQuality: boolean
+  showTourism: boolean
+  open: boolean
+  qualityFilter: 'all' | 'spectacular' | 'excellent' | 'good' | 'fading' | 'lost'
+}
+
+export interface BioluminescentBayData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  brightness: number
+  dinoflagellate: number
+  waterQuality: number
+  tourism: number
+  area: number
+  status: 'spectacular' | 'excellent' | 'good' | 'fading' | 'lost'
+  description: string
+}
+
+export interface OrographicRainfallState {
+  regions: OrographicRainfallData[]
+  activeRegionId: string | null
+  showRainfall: boolean
+  showElevation: boolean
+  showWindSpeed: boolean
+  showRunoff: boolean
+  open: boolean
+  typeFilter: 'all' | 'windward' | 'leeward' | 'valley' | 'peak'
+}
+
+export interface OrographicRainfallData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  rainfall: number
+  elevation: number
+  windSpeed: number
+  runoff: number
+  landslideRisk: number
+  status: 'light' | 'moderate' | 'heavy' | 'extreme' | 'catastrophic'
+  description: string
+}
+
+export interface HydrothermalPlumeState {
+  vents: HydrothermalPlumeData[]
+  activeVentId: string | null
+  showPlumeHeight: boolean
+  showTemperature: boolean
+  showChemical: boolean
+  showDispersion: boolean
+  open: boolean
+  typeFilter: 'all' | 'black_smoker' | 'white_smoker' | 'diffuse' | 'megaplume'
+}
+
+export interface HydrothermalPlumeData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  plumeHeight: number
+  temperature: number
+  chemical: number
+  dispersion: number
+  particleDensity: number
+  status: 'dormant' | 'low' | 'moderate' | 'active' | 'eruptive'
+  description: string
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -7319,6 +7521,23 @@ interface MapState {
   setPhytoplanktonBloom: (state: Partial<PhytoplanktonBloomState>) => void
   submarineCanyon: SubmarineCanyonState
   setSubmarineCanyon: (state: Partial<SubmarineCanyonState>) => void
+  // Task 76: New monitoring states
+  kelpForestMonitor: KelpForestMonitorState
+  setKelpForestMonitor: (state: Partial<KelpForestMonitorState>) => void
+  volcanicIslandFormation: VolcanicIslandFormationState
+  setVolcanicIslandFormation: (state: Partial<VolcanicIslandFormationState>) => void
+  saltwaterIntrusion: SaltwaterIntrusionState
+  setSaltwaterIntrusion: (state: Partial<SaltwaterIntrusionState>) => void
+  arcticShippingRoute: ArcticShippingRouteState
+  setArcticShippingRoute: (state: Partial<ArcticShippingRouteState>) => void
+  thermoclineDepth: ThermoclineDepthState
+  setThermoclineDepth: (state: Partial<ThermoclineDepthState>) => void
+  bioluminescentBay: BioluminescentBayState
+  setBioluminescentBay: (state: Partial<BioluminescentBayState>) => void
+  orographicRainfall: OrographicRainfallState
+  setOrographicRainfall: (state: Partial<OrographicRainfallState>) => void
+  hydrothermalPlume: HydrothermalPlumeState
+  setHydrothermalPlume: (state: Partial<HydrothermalPlumeState>) => void
 
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
@@ -12143,6 +12362,38 @@ export const useMapStore = create<MapState>()(
         canyons: [], activeCanyonId: null, showDepth: true, showCurrentSpeed: true, showSediment: true, showBiodiversity: false, open: false, typeFilter: 'all',
       },
       setSubmarineCanyon: (updates) => set((state) => ({ submarineCanyon: { ...state.submarineCanyon, ...updates } })),
+      kelpForestMonitor: {
+        forests: [], activeForestId: null, showCoverage: true, showBiomass: true, showWaterTemp: true, showBiodiversity: false, open: false, speciesFilter: 'all',
+      },
+      setKelpForestMonitor: (updates) => set((state) => ({ kelpForestMonitor: { ...state.kelpForestMonitor, ...updates } })),
+      volcanicIslandFormation: {
+        islands: [], activeIslandId: null, showElevation: true, showEruptionRate: true, showArea: true, showSubsidence: false, open: false, stageFilter: 'all',
+      },
+      setVolcanicIslandFormation: (updates) => set((state) => ({ volcanicIslandFormation: { ...state.volcanicIslandFormation, ...updates } })),
+      saltwaterIntrusion: {
+        zones: [], activeZoneId: null, showChloride: true, showConductivity: true, showWaterTable: true, showIntrusionRate: false, open: false, severityFilter: 'all',
+      },
+      setSaltwaterIntrusion: (updates) => set((state) => ({ saltwaterIntrusion: { ...state.saltwaterIntrusion, ...updates } })),
+      arcticShippingRoute: {
+        routes: [], activeRouteId: null, showIceThickness: true, showNavigability: true, showTransitTime: true, showTraffic: false, open: false, routeFilter: 'all',
+      },
+      setArcticShippingRoute: (updates) => set((state) => ({ arcticShippingRoute: { ...state.arcticShippingRoute, ...updates } })),
+      thermoclineDepth: {
+        stations: [], activeStationId: null, showDepth: true, showGradient: true, showSST: true, showTrend: false, open: false, regionFilter: 'all',
+      },
+      setThermoclineDepth: (updates) => set((state) => ({ thermoclineDepth: { ...state.thermoclineDepth, ...updates } })),
+      bioluminescentBay: {
+        bays: [], activeBayId: null, showBrightness: true, showDinoflagellate: true, showWaterQuality: true, showTourism: false, open: false, qualityFilter: 'all',
+      },
+      setBioluminescentBay: (updates) => set((state) => ({ bioluminescentBay: { ...state.bioluminescentBay, ...updates } })),
+      orographicRainfall: {
+        regions: [], activeRegionId: null, showRainfall: true, showElevation: true, showWindSpeed: true, showRunoff: false, open: false, typeFilter: 'all',
+      },
+      setOrographicRainfall: (updates) => set((state) => ({ orographicRainfall: { ...state.orographicRainfall, ...updates } })),
+      hydrothermalPlume: {
+        vents: [], activeVentId: null, showPlumeHeight: true, showTemperature: true, showChemical: true, showDispersion: false, open: false, typeFilter: 'all',
+      },
+      setHydrothermalPlume: (updates) => set((state) => ({ hydrothermalPlume: { ...state.hydrothermalPlume, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
@@ -12512,6 +12763,14 @@ export const useMapStore = create<MapState>()(
         urbanFloodRisk: state.urbanFloodRisk,
         phytoplanktonBloom: state.phytoplanktonBloom,
         submarineCanyon: state.submarineCanyon,
+        kelpForestMonitor: state.kelpForestMonitor,
+        volcanicIslandFormation: state.volcanicIslandFormation,
+        saltwaterIntrusion: state.saltwaterIntrusion,
+        arcticShippingRoute: state.arcticShippingRoute,
+        thermoclineDepth: state.thermoclineDepth,
+        bioluminescentBay: state.bioluminescentBay,
+        orographicRainfall: state.orographicRainfall,
+        hydrothermalPlume: state.hydrothermalPlume,
       }),
     }
   )

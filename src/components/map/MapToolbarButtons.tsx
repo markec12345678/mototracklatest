@@ -212,6 +212,15 @@ import {
   Droplets as DropletsIcon7,
   Leaf as LeafIcon5,
   ArrowDown as ArrowDownIcon,
+  // Task 76 icons
+  Fish as FishIcon3,
+  Mountain as MountainIcon7,
+  Droplet as DropletIcon4,
+  Ship as ShipIcon3,
+  ArrowDown as ArrowDownIcon2,
+  Sparkles as SparklesIcon5,
+  CloudRain as CloudRainIcon3,
+  Flame as FlameIcon9,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -2313,6 +2322,14 @@ export function MapToolbarButtons(props: MapToolbarButtonsProps) {
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setUrbanFloodRisk({ open: true })} title="Urban Flood Risk" aria-label="Open urban flood risk monitor"><DropletsIcon7 className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setPhytoplanktonBloom({ open: true })} title="Phytoplankton Bloom" aria-label="Open phytoplankton bloom monitor"><LeafIcon5 className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setSubmarineCanyon({ open: true })} title="Submarine Canyon" aria-label="Open submarine canyon monitor"><ArrowDownIcon className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setKelpForestMonitor({ open: true })} title="Kelp Forest" aria-label="Open kelp forest monitor"><FishIcon3 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setVolcanicIslandFormation({ open: true })} title="Volcanic Island Formation" aria-label="Open volcanic island formation monitor"><MountainIcon7 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setSaltwaterIntrusion({ open: true })} title="Saltwater Intrusion" aria-label="Open saltwater intrusion monitor"><DropletIcon4 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setArcticShippingRoute({ open: true })} title="Arctic Shipping Route" aria-label="Open arctic shipping route monitor"><ShipIcon3 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setThermoclineDepth({ open: true })} title="Thermocline Depth" aria-label="Open thermocline depth monitor"><ArrowDownIcon2 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setBioluminescentBay({ open: true })} title="Bioluminescent Bay" aria-label="Open bioluminescent bay monitor"><SparklesIcon5 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setOrographicRainfall({ open: true })} title="Orographic Rainfall" aria-label="Open orographic rainfall monitor"><CloudRainIcon3 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setHydrothermalPlume({ open: true })} title="Hydrothermal Plume" aria-label="Open hydrothermal plume monitor"><FlameIcon9 className="h-4 w-4" /></Button>
           <Button
             variant="outline"
             size="icon"
