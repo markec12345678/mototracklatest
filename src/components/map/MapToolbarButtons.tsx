@@ -149,6 +149,15 @@ import {
   Bug as BugIcon2,
   TreeDeciduous as TreeDeciduousIcon3,
   CloudRain as CloudRainIcon2,
+  // Task 69 icons
+  Flame as FlameIcon4,
+  Waves as WavesIcon5,
+  Flame as FlameIcon5,
+  Sparkles as SparklesIcon4,
+  Mountain as MountainIcon4,
+  Sprout as SproutIcon2,
+  TreePine as TreePineIcon4,
+  Compass as CompassIcon3,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -2119,6 +2128,87 @@ export function MapToolbarButtons(props: MapToolbarButtonsProps) {
             aria-label="Open monsoon tracker"
           >
             <CloudRainIcon2 className="h-4 w-4" />
+          </Button>
+          {/* Task 69: New monitoring buttons */}
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setLavaFlow({ open: true })}
+            title="Lava Flow Tracker"
+            aria-label="Open lava flow tracker"
+          >
+            <FlameIcon4 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setTidalEnergy({ open: true })}
+            title="Tidal Energy Monitor"
+            aria-label="Open tidal energy monitor"
+          >
+            <WavesIcon5 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setPeatFire({ open: true })}
+            title="Peat Fire Monitor"
+            aria-label="Open peat fire monitor"
+          >
+            <FlameIcon5 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setCoralSpawn({ open: true })}
+            title="Coral Spawn Tracker"
+            aria-label="Open coral spawn tracker"
+          >
+            <SparklesIcon4 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setGlacierCalving({ open: true })}
+            title="Glacier Calving Monitor"
+            aria-label="Open glacier calving monitor"
+          >
+            <MountainIcon4 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setSoilCarbon({ open: true })}
+            title="Soil Carbon Monitor"
+            aria-label="Open soil carbon monitor"
+          >
+            <SproutIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setUrbanTreeCanopy({ open: true })}
+            title="Urban Tree Canopy"
+            aria-label="Open urban tree canopy"
+          >
+            <TreePineIcon4 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setGeomagneticPole({ open: true })}
+            title="Geomagnetic Pole Tracker"
+            aria-label="Open geomagnetic pole tracker"
+          >
+            <CompassIcon3 className="h-4 w-4" />
           </Button>
           <Button
             variant="outline"

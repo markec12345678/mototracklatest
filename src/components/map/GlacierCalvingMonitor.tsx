@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -15,175 +15,190 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useMapStore, type GlacierCalvingState, type GlacierCalvingEvent } from '@/lib/map-store'
-import { MountainSnow, X, Waves as WavesIcon5, TrendingDown as TrendingDownIcon, ArrowDown as ArrowDownIcon, MapPin, Filter } from 'lucide-react'
+import { useMapStore, type GlacierCalvingData, type GlacierCalvingState } from '@/lib/map-store'
+import { Mountain as MountainIcon4, X, Activity, TrendingDown, Layers, MapPin, Filter } from 'lucide-react'
 
-const DEMO_EVENTS: GlacierCalvingEvent[] = [
-  {
-    id: 'gc-petermann',
-    name: 'Petermann Glacier Calving',
-    latitude: 80.75,
-    longitude: -60.50,
-    iceVolume: 280,
-    eventSize: 'catastrophic',
-    tsunamiRisk: 'high',
-    glacierName: 'Petermann',
-    glacierType: 'tidewater',
-    retreatRate: 450,
-    seaLevelContribution: 0.12,
-    date: '2024-08-15',
-  },
+const DEMO_GLACIERS: GlacierCalvingData[] = [
   {
     id: 'gc-jakobshavn',
-    name: 'Jakobshavn Calving Event',
-    latitude: 69.17,
-    longitude: -49.90,
-    iceVolume: 150,
-    eventSize: 'large',
-    tsunamiRisk: 'moderate',
-    glacierName: 'Jakobshavn Isbræ',
-    glacierType: 'tidewater',
-    retreatRate: 620,
-    seaLevelContribution: 0.08,
-    date: '2024-07-22',
+    name: 'Jakobshavn Isbrae',
+    lat: 69.15,
+    lng: -49.50,
+    calvingRate: 45,
+    iceVelocity: 17,
+    iceThickness: 2600,
+    seismicActivity: 850,
+    retreatRate: 3.5,
+    status: 'rapid_retreat',
+    description: 'Greenland - Fastest flowing glacier',
+  },
+  {
+    id: 'gc-pine-island',
+    name: 'Pine Island Glacier',
+    lat: -75.0,
+    lng: -100.0,
+    calvingRate: 65,
+    iceVelocity: 4,
+    iceThickness: 2000,
+    seismicActivity: 320,
+    retreatRate: 8.0,
+    status: 'collapsing',
+    description: 'Antarctica - Thinning and acceleration',
   },
   {
     id: 'gc-helheim',
-    name: 'Helheim Glacier Break',
-    latitude: 66.45,
-    longitude: -38.20,
-    iceVolume: 85,
-    eventSize: 'medium',
-    tsunamiRisk: 'low',
-    glacierName: 'Helheim',
-    glacierType: 'tidewater',
-    retreatRate: 310,
-    seaLevelContribution: 0.04,
-    date: '2024-06-10',
+    name: 'Helheim Glacier',
+    lat: 66.35,
+    lng: -38.20,
+    calvingRate: 25,
+    iceVelocity: 8,
+    iceThickness: 1500,
+    seismicActivity: 450,
+    retreatRate: 1.2,
+    status: 'retreating',
+    description: 'Greenland - East Greenland outlet',
   },
   {
-    id: 'gc-eggvesen',
-    name: 'Eggvesen Glacier Retreat',
-    latitude: 61.40,
-    longitude: 6.80,
-    iceVolume: 30,
-    eventSize: 'small',
-    tsunamiRisk: 'none',
-    glacierName: 'Eggvesen',
-    glacierType: 'lake_calving',
-    retreatRate: 85,
-    seaLevelContribution: 0.01,
-    date: '2024-09-01',
+    id: 'gc-columbia',
+    name: 'Columbia Glacier',
+    lat: 61.20,
+    lng: -147.10,
+    calvingRate: 5,
+    iceVelocity: 2,
+    iceThickness: 600,
+    seismicActivity: 180,
+    retreatRate: 0.3,
+    status: 'retreating',
+    description: 'Alaska, USA - Well-studied tidewater glacier',
   },
   {
-    id: 'gc-thwaites',
-    name: 'Thwaites Ice Shelf Collapse',
-    latitude: -75.50,
-    longitude: -106.75,
-    iceVolume: 420,
-    eventSize: 'catastrophic',
-    tsunamiRisk: 'moderate',
-    glacierName: 'Thwaites',
-    glacierType: 'polar',
-    retreatRate: 780,
-    seaLevelContribution: 0.18,
-    date: '2024-05-30',
+    id: 'gc-perito-moreno',
+    name: 'Perito Moreno',
+    lat: -50.50,
+    lng: -73.05,
+    calvingRate: 2,
+    iceVelocity: 1.8,
+    iceThickness: 500,
+    seismicActivity: 95,
+    retreatRate: -0.1,
+    status: 'stable',
+    description: 'Argentina - Rare advancing glacier',
   },
   {
-    id: 'gc-grey',
-    name: 'Grey Glacier Calving',
-    latitude: -50.95,
-    longitude: -73.28,
-    iceVolume: 55,
-    eventSize: 'medium',
-    tsunamiRisk: 'low',
-    glacierName: 'Grey',
-    glacierType: 'lake_calving',
-    retreatRate: 120,
-    seaLevelContribution: 0.02,
-    date: '2024-04-18',
+    id: 'gc-drygalski',
+    name: 'Drygalski Glacier',
+    lat: -75.40,
+    lng: -83.50,
+    calvingRate: 55,
+    iceVelocity: 3.5,
+    iceThickness: 1800,
+    seismicActivity: 580,
+    retreatRate: 5.0,
+    status: 'rapid_retreat',
+    description: 'Antarctica - Ice shelf breakup zone',
   },
 ]
 
-const SIZE_CONFIG: Record<
-  GlacierCalvingEvent['eventSize'],
-  { label: string; color: string; bgClass: string }
-> = {
-  small: { label: 'Small', color: '#22c55e', bgClass: 'bg-green-500/10 text-green-600 border-green-500/30' },
-  medium: { label: 'Medium', color: '#3b82f6', bgClass: 'bg-blue-500/10 text-blue-500 border-blue-500/30' },
-  large: { label: 'Large', color: '#f97316', bgClass: 'bg-orange-500/10 text-orange-600 border-orange-500/30' },
-  catastrophic: { label: 'Catastrophic', color: '#ef4444', bgClass: 'bg-red-500/10 text-red-600 border-red-500/30' },
+const GLACIER_TYPE_MAP: Record<string, GlacierCalvingState['typeFilter']> = {
+  'gc-jakobshavn': 'tidewater',
+  'gc-pine-island': 'ice_shelf',
+  'gc-helheim': 'tidewater',
+  'gc-columbia': 'tidewater',
+  'gc-perito-moreno': 'lake_terminating',
+  'gc-drygalski': 'ice_shelf',
 }
 
-const TSUNAMI_CONFIG: Record<
-  GlacierCalvingEvent['tsunamiRisk'],
-  { label: string; bgClass: string }
+const STATUS_CONFIG: Record<
+  GlacierCalvingData['status'],
+  { label: string; color: string; bgClass: string }
 > = {
-  none: { label: 'None', bgClass: 'bg-gray-500/10 text-gray-500 border-gray-500/30' },
-  low: { label: 'Low', bgClass: 'bg-green-500/10 text-green-600 border-green-500/30' },
-  moderate: { label: 'Moderate', bgClass: 'bg-yellow-500/10 text-yellow-600 border-yellow-500/30' },
-  high: { label: 'High', bgClass: 'bg-red-500/10 text-red-600 border-red-500/30' },
+  advancing: { label: 'Advancing', color: '#10b981', bgClass: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/30' },
+  stable: { label: 'Stable', color: '#22c55e', bgClass: 'bg-green-500/10 text-green-600 border-green-500/30' },
+  retreating: { label: 'Retreating', color: '#eab308', bgClass: 'bg-yellow-500/10 text-yellow-600 border-yellow-500/30' },
+  rapid_retreat: { label: 'Rapid Retreat', color: '#f97316', bgClass: 'bg-orange-500/10 text-orange-600 border-orange-500/30' },
+  collapsing: { label: 'Collapsing', color: '#ef4444', bgClass: 'bg-red-500/10 text-red-600 border-red-500/30' },
+}
+
+const TYPE_FILTER_LABELS: Record<GlacierCalvingState['typeFilter'], string> = {
+  all: 'All Types',
+  tidewater: 'Tidewater',
+  lake_terminating: 'Lake Terminating',
+  ice_shelf: 'Ice Shelf',
+  grounding_line: 'Grounding Line',
 }
 
 export function GlacierCalvingMonitor() {
   const glacierCalving = useMapStore((s) => s.glacierCalving)
   const setGlacierCalving = useMapStore((s) => s.setGlacierCalving)
 
-  const events = useMemo(
-    () => (glacierCalving.events.length > 0 ? glacierCalving.events : DEMO_EVENTS),
-    [glacierCalving.events]
+  const glaciers = useMemo(
+    () => (glacierCalving.glaciers.length > 0 ? glacierCalving.glaciers : DEMO_GLACIERS),
+    [glacierCalving.glaciers]
   )
 
-  const filteredEvents = useMemo(() => {
-    return events.filter((e) => {
-      if (glacierCalving.sizeFilter !== 'all' && e.eventSize !== glacierCalving.sizeFilter) return false
+  const filteredGlaciers = useMemo(() => {
+    return glaciers.filter((g) => {
+      if (glacierCalving.typeFilter !== 'all') {
+        const gType = GLACIER_TYPE_MAP[g.id]
+        if (gType !== glacierCalving.typeFilter) return false
+      }
       return true
     })
-  }, [events, glacierCalving.sizeFilter])
+  }, [glaciers, glacierCalving.typeFilter])
 
   const summary = useMemo(() => {
-    if (filteredEvents.length === 0) {
-      return { totalIceVolume: 0, avgRetreatRate: 0, totalSeaLevelContribution: 0 }
+    if (filteredGlaciers.length === 0) {
+      return { avgCalvingRate: 0, avgRetreatRate: 0, criticalCount: 0 }
     }
-    const totalIceVolume = filteredEvents.reduce((sum, e) => sum + e.iceVolume, 0)
+    const avgCalvingRate =
+      filteredGlaciers.reduce((sum, g) => sum + g.calvingRate, 0) / filteredGlaciers.length
     const avgRetreatRate =
-      filteredEvents.reduce((sum, e) => sum + e.retreatRate, 0) / filteredEvents.length
-    const totalSeaLevelContribution = filteredEvents.reduce((sum, e) => sum + e.seaLevelContribution, 0)
+      filteredGlaciers.reduce((sum, g) => sum + g.retreatRate, 0) / filteredGlaciers.length
+    const criticalCount = filteredGlaciers.filter(
+      (g) => g.status === 'rapid_retreat' || g.status === 'collapsing'
+    ).length
     return {
-      totalIceVolume,
-      avgRetreatRate: Math.round(avgRetreatRate),
-      totalSeaLevelContribution: Math.round(totalSeaLevelContribution * 100) / 100,
+      avgCalvingRate: Math.round(avgCalvingRate * 10) / 10,
+      avgRetreatRate: Math.round(avgRetreatRate * 100) / 100,
+      criticalCount,
     }
-  }, [filteredEvents])
+  }, [filteredGlaciers])
 
-  const activeEvent = useMemo(
-    () => events.find((e) => e.id === glacierCalving.activeEventId) ?? null,
-    [events, glacierCalving.activeEventId]
+  const activeGlacier = useMemo(
+    () => glaciers.find((g) => g.id === glacierCalving.activeGlacierId) ?? null,
+    [glaciers, glacierCalving.activeGlacierId]
   )
+
+  useEffect(() => {
+    const current = useMapStore.getState().glacierCalving
+    if (current.glaciers.length === 0) {
+      useMapStore.getState().setGlacierCalving({ glaciers: DEMO_GLACIERS })
+    }
+  }, [])
 
   if (typeof window === 'undefined') return null
   if (!glacierCalving.open) return null
 
   const overlayToggles: { key: keyof GlacierCalvingState; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
-    { key: 'showIceVolume', label: 'Ice Volume', icon: MountainSnow },
-    { key: 'showTsunamiRisk', label: 'Tsunami Risk', icon: WavesIcon5 },
-    { key: 'showRetreatRate', label: 'Retreat Rate', icon: TrendingDownIcon },
-    { key: 'showSeaLevelContribution', label: 'Sea Level', icon: ArrowDownIcon },
+    { key: 'showCalvingRate', label: 'Calving Rate', icon: Activity },
+    { key: 'showIceVelocity', label: 'Ice Velocity', icon: TrendingDown },
+    { key: 'showIceThickness', label: 'Ice Thickness', icon: Layers },
+    { key: 'showSeismicActivity', label: 'Seismic Activity', icon: MountainIcon4 },
   ]
 
   return (
     <div className="fixed right-4 top-16 z-[60] w-[420px] max-w-[calc(100vw-32px)] max-h-[calc(100vh-100px)]">
-      <Card className="bg-background/95 backdrop-blur-xl border border-border/50 rounded-xl shadow-lg overflow-hidden">
+      <Card className="bg-gradient-to-br from-sky-950/95 to-blue-950/95 backdrop-blur-xl border border-sky-500/20 rounded-xl shadow-lg overflow-hidden text-white">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-sm flex items-center gap-2">
-              <MountainSnow className="h-4 w-4 text-cyan-500" />
+            <CardTitle className="text-sm flex items-center gap-2 text-sky-100">
+              <MountainIcon4 className="h-4 w-4 text-sky-300" />
               Glacier Calving Monitor
             </CardTitle>
             <Button
               variant="ghost"
               size="icon"
-              className="h-7 w-7"
+              className="h-7 w-7 text-sky-300 hover:text-white hover:bg-sky-800/50"
               onClick={() => setGlacierCalving({ open: false })}
             >
               <X className="h-4 w-4" />
@@ -191,42 +206,42 @@ export function GlacierCalvingMonitor() {
           </div>
         </CardHeader>
         <CardContent className="space-y-3">
-          {/* Size Filter */}
+          {/* Type Filter */}
           <div>
-            <Label className="text-xs text-muted-foreground flex items-center gap-1.5">
+            <Label className="text-xs text-sky-300 flex items-center gap-1.5">
               <Filter className="h-3 w-3" />
-              Event Size
+              Glacier Type
             </Label>
             <Select
-              value={glacierCalving.sizeFilter}
+              value={glacierCalving.typeFilter}
               onValueChange={(v) =>
                 setGlacierCalving({
-                  sizeFilter: v as GlacierCalvingState['sizeFilter'],
+                  typeFilter: v as GlacierCalvingState['typeFilter'],
                 })
               }
             >
-              <SelectTrigger className="h-8 text-xs mt-1">
+              <SelectTrigger className="h-8 text-xs mt-1 bg-sky-900/50 border-sky-500/30 text-sky-100">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Sizes</SelectItem>
-                <SelectItem value="small">Small</SelectItem>
-                <SelectItem value="medium">Medium</SelectItem>
-                <SelectItem value="large">Large</SelectItem>
-                <SelectItem value="catastrophic">Catastrophic</SelectItem>
+                {Object.entries(TYPE_FILTER_LABELS).map(([value, label]) => (
+                  <SelectItem key={value} value={value}>
+                    {label}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
 
-          <Separator />
+          <Separator className="bg-sky-500/20" />
 
           {/* Overlay Toggles */}
           <div className="space-y-1.5">
-            <Label className="text-xs text-muted-foreground">Display Options</Label>
+            <Label className="text-xs text-sky-300">Display Options</Label>
             {overlayToggles.map(({ key, label, icon: Icon }) => (
               <div key={key} className="flex items-center justify-between">
-                <div className="flex items-center gap-1.5 text-xs">
-                  <Icon className="h-3 w-3 text-cyan-500" />
+                <div className="flex items-center gap-1.5 text-xs text-sky-100">
+                  <Icon className="h-3 w-3 text-sky-300" />
                   <span>{label}</span>
                 </div>
                 <Switch
@@ -238,50 +253,50 @@ export function GlacierCalvingMonitor() {
             ))}
           </div>
 
-          <Separator />
+          <Separator className="bg-sky-500/20" />
 
           {/* Summary */}
           <div className="grid grid-cols-3 gap-2">
-            <div className="rounded-lg border border-border/40 p-2 text-center">
-              <div className="text-[10px] text-muted-foreground">Total Ice Vol.</div>
-              <div className="text-sm font-semibold">{summary.totalIceVolume}</div>
-              <div className="text-[9px] text-muted-foreground">M m³</div>
+            <div className="rounded-lg border border-sky-500/20 bg-sky-900/40 p-2 text-center">
+              <div className="text-[10px] text-sky-300">Avg Calving Rate</div>
+              <div className="text-sm font-semibold text-sky-100">{summary.avgCalvingRate}</div>
+              <div className="text-[9px] text-sky-400">km²/yr</div>
             </div>
-            <div className="rounded-lg border border-border/40 p-2 text-center">
-              <div className="text-[10px] text-muted-foreground">Avg Retreat</div>
-              <div className="text-sm font-semibold text-cyan-500">{summary.avgRetreatRate}</div>
-              <div className="text-[9px] text-muted-foreground">m/year</div>
+            <div className="rounded-lg border border-sky-500/20 bg-sky-900/40 p-2 text-center">
+              <div className="text-[10px] text-sky-300">Avg Retreat Rate</div>
+              <div className="text-sm font-semibold text-orange-300">{summary.avgRetreatRate}</div>
+              <div className="text-[9px] text-sky-400">km/yr</div>
             </div>
-            <div className="rounded-lg border border-border/40 p-2 text-center">
-              <div className="text-[10px] text-muted-foreground">Sea Level</div>
-              <div className="text-sm font-semibold text-blue-500">{summary.totalSeaLevelContribution}</div>
-              <div className="text-[9px] text-muted-foreground">mm</div>
+            <div className="rounded-lg border border-sky-500/20 bg-sky-900/40 p-2 text-center">
+              <div className="text-[10px] text-sky-300">Critical</div>
+              <div className="text-sm font-semibold text-red-400">{summary.criticalCount}</div>
+              <div className="text-[9px] text-sky-400">sites</div>
             </div>
           </div>
 
-          <Separator />
+          <Separator className="bg-sky-500/20" />
 
-          {/* Event List */}
+          {/* Glacier List */}
           <div className="space-y-1.5">
-            <Label className="text-xs text-muted-foreground">
-              Calving Events ({filteredEvents.length})
+            <Label className="text-xs text-sky-300">
+              Calving Sites ({filteredGlaciers.length})
             </Label>
             <ScrollArea className="max-h-[260px]">
               <div className="space-y-2 pr-1">
-                {filteredEvents.map((event) => {
-                  const isActive = glacierCalving.activeEventId === event.id
-                  const sizeCfg = SIZE_CONFIG[event.eventSize]
+                {filteredGlaciers.map((glacier) => {
+                  const isActive = glacierCalving.activeGlacierId === glacier.id
+                  const statusCfg = STATUS_CONFIG[glacier.status]
                   return (
                     <div
-                      key={event.id}
+                      key={glacier.id}
                       className={`rounded-lg border p-2.5 cursor-pointer transition-all ${
                         isActive
-                          ? 'border-cyan-500/50 bg-cyan-500/5'
-                          : 'border-border/40 hover:border-cyan-500/20 hover:bg-cyan-500/5'
+                          ? 'border-sky-400/50 bg-sky-800/30'
+                          : 'border-sky-500/20 hover:border-sky-400/30 hover:bg-sky-800/20'
                       }`}
                       onClick={() =>
                         setGlacierCalving({
-                          activeEventId: isActive ? null : event.id,
+                          activeGlacierId: isActive ? null : glacier.id,
                         })
                       }
                     >
@@ -289,48 +304,48 @@ export function GlacierCalvingMonitor() {
                         <div className="flex items-center gap-1.5">
                           <div
                             className="h-2 w-2 rounded-full"
-                            style={{ backgroundColor: sizeCfg.color }}
+                            style={{ backgroundColor: statusCfg.color }}
                           />
-                          <span className="text-xs font-medium">{event.name}</span>
+                          <span className="text-xs font-medium text-sky-50">{glacier.name}</span>
                         </div>
                         <Badge
                           variant="outline"
-                          className={`text-[10px] h-5 ${sizeCfg.bgClass}`}
+                          className={`text-[10px] h-5 ${statusCfg.bgClass}`}
                         >
-                          {sizeCfg.label}
+                          {statusCfg.label}
                         </Badge>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10px] text-muted-foreground">
-                        {glacierCalving.showIceVolume && (
+                      <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10px] text-sky-300">
+                        {glacierCalving.showCalvingRate && (
                           <div>
-                            Ice Vol:{' '}
-                            <span className="text-foreground font-medium">
-                              {event.iceVolume} M m³
+                            Calving:{' '}
+                            <span className="text-sky-100 font-medium">
+                              {glacier.calvingRate} km²/yr
                             </span>
                           </div>
                         )}
-                        {glacierCalving.showTsunamiRisk && (
+                        {glacierCalving.showIceVelocity && (
                           <div>
-                            Tsunami:{' '}
-                            <span className="text-foreground font-medium">
-                              {TSUNAMI_CONFIG[event.tsunamiRisk].label}
+                            Velocity:{' '}
+                            <span className="text-sky-100 font-medium">
+                              {glacier.iceVelocity} km/yr
                             </span>
                           </div>
                         )}
-                        {glacierCalving.showRetreatRate && (
+                        {glacierCalving.showIceThickness && (
                           <div>
-                            Retreat:{' '}
-                            <span className="text-foreground font-medium">
-                              {event.retreatRate} m/yr
+                            Thickness:{' '}
+                            <span className="text-sky-100 font-medium">
+                              {glacier.iceThickness} m
                             </span>
                           </div>
                         )}
-                        {glacierCalving.showSeaLevelContribution && (
+                        {glacierCalving.showSeismicActivity && (
                           <div>
-                            Sea Level:{' '}
-                            <span className="text-foreground font-medium">
-                              {event.seaLevelContribution} mm
+                            Seismic:{' '}
+                            <span className="text-sky-100 font-medium">
+                              {glacier.seismicActivity} evt/mo
                             </span>
                           </div>
                         )}
@@ -338,69 +353,57 @@ export function GlacierCalvingMonitor() {
                     </div>
                   )
                 })}
-                {filteredEvents.length === 0 && (
-                  <div className="text-center text-xs text-muted-foreground py-4">
-                    No events match the current filter.
+                {filteredGlaciers.length === 0 && (
+                  <div className="text-center text-xs text-sky-400 py-4">
+                    No glaciers match the current filter.
                   </div>
                 )}
               </div>
             </ScrollArea>
           </div>
 
-          {/* Active Event Details */}
-          {activeEvent && (
+          {/* Active Glacier Details */}
+          {activeGlacier && (
             <>
-              <Separator />
-              <div className="space-y-2 rounded-lg border border-cyan-500/20 bg-cyan-500/5 p-3">
+              <Separator className="bg-sky-500/20" />
+              <div className="space-y-2 rounded-lg border border-sky-400/30 bg-sky-800/30 p-3">
                 <div className="flex items-center gap-2">
-                  <MapPin className="h-3.5 w-3.5 text-cyan-500" />
-                  <span className="text-xs font-semibold">{activeEvent.name}</span>
+                  <MapPin className="h-3.5 w-3.5 text-sky-300" />
+                  <span className="text-xs font-semibold text-sky-50">{activeGlacier.name}</span>
                   <Badge
                     variant="outline"
-                    className={`text-[10px] h-5 ml-auto ${SIZE_CONFIG[activeEvent.eventSize].bgClass}`}
+                    className={`text-[10px] h-5 ml-auto ${STATUS_CONFIG[activeGlacier.status].bgClass}`}
                   >
-                    {SIZE_CONFIG[activeEvent.eventSize].label}
+                    {STATUS_CONFIG[activeGlacier.status].label}
                   </Badge>
                 </div>
+                <div className="text-[10px] text-sky-300 italic">{activeGlacier.description}</div>
                 <div className="grid grid-cols-2 gap-2 text-[11px]">
                   <div>
-                    <span className="text-muted-foreground">Coordinates: </span>
-                    <span className="font-medium">
-                      {activeEvent.latitude.toFixed(2)}, {activeEvent.longitude.toFixed(2)}
+                    <span className="text-sky-400">Coordinates: </span>
+                    <span className="font-medium text-sky-100">
+                      {activeGlacier.lat.toFixed(2)}, {activeGlacier.lng.toFixed(2)}
                     </span>
                   </div>
                   <div>
-                    <span className="text-muted-foreground">Date: </span>
-                    <span className="font-medium">{activeEvent.date}</span>
+                    <span className="text-sky-400">Calving Rate: </span>
+                    <span className="font-medium text-sky-100">{activeGlacier.calvingRate} km²/yr</span>
                   </div>
                   <div>
-                    <span className="text-muted-foreground">Ice Volume: </span>
-                    <span className="font-medium">{activeEvent.iceVolume} M m³</span>
+                    <span className="text-sky-400">Ice Velocity: </span>
+                    <span className="font-medium text-sky-100">{activeGlacier.iceVelocity} km/yr</span>
                   </div>
                   <div>
-                    <span className="text-muted-foreground">Glacier: </span>
-                    <span className="font-medium">{activeEvent.glacierName}</span>
+                    <span className="text-sky-400">Ice Thickness: </span>
+                    <span className="font-medium text-sky-100">{activeGlacier.iceThickness} m</span>
                   </div>
                   <div>
-                    <span className="text-muted-foreground">Glacier Type: </span>
-                    <span className="font-medium capitalize">{activeEvent.glacierType.replace('_', ' ')}</span>
+                    <span className="text-sky-400">Seismic Activity: </span>
+                    <span className="font-medium text-sky-100">{activeGlacier.seismicActivity} events/mo</span>
                   </div>
                   <div>
-                    <span className="text-muted-foreground">Retreat Rate: </span>
-                    <span className="font-medium">{activeEvent.retreatRate} m/yr</span>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground">Sea Level: </span>
-                    <span className="font-medium">{activeEvent.seaLevelContribution} mm</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <span className="text-muted-foreground">Tsunami Risk: </span>
-                    <Badge
-                      variant="outline"
-                      className={`text-[10px] h-4 ${TSUNAMI_CONFIG[activeEvent.tsunamiRisk].bgClass}`}
-                    >
-                      {TSUNAMI_CONFIG[activeEvent.tsunamiRisk].label}
-                    </Badge>
+                    <span className="text-sky-400">Retreat Rate: </span>
+                    <span className="font-medium text-sky-100">{activeGlacier.retreatRate} km/yr</span>
                   </div>
                 </div>
               </div>

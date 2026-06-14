@@ -4507,6 +4507,207 @@ export interface MonsoonData {
   description: string
 }
 
+// Task 69: New monitoring interfaces
+export interface LavaFlowState {
+  flows: LavaFlowData[]
+  activeFlowId: string | null
+  showFlowArea: boolean
+  showTemperature: boolean
+  showVelocity: boolean
+  showEffusionRate: boolean
+  open: boolean
+  typeFilter: 'all' | 'pahoehoe' | 'aa' | 'block' | 'pillow'
+}
+
+export interface LavaFlowData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  flowArea: number
+  temperature: number
+  velocity: number
+  effusionRate: number
+  viscosity: number
+  status: 'active' | 'creeping' | 'stalled' | 'cooling' | 'dormant'
+  description: string
+}
+
+export interface TidalEnergyState {
+  sites: TidalEnergyData[]
+  activeSiteId: string | null
+  showTidalRange: boolean
+  showCurrentSpeed: boolean
+  showPowerPotential: boolean
+  showEnvironmentalImpact: boolean
+  open: boolean
+  typeFilter: 'all' | 'barrage' | 'stream' | 'lagoon' | 'dynamic'
+}
+
+export interface TidalEnergyData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  tidalRange: number
+  currentSpeed: number
+  powerPotential: number
+  environmentalImpact: number
+  capacityFactor: number
+  status: 'operational' | 'pilot' | 'planned' | 'potential' | 'unsuitable'
+  description: string
+}
+
+export interface PeatFireState {
+  fires: PeatFireData[]
+  activeFireId: string | null
+  showBurnArea: boolean
+  showFireDepth: boolean
+  showEmissionRate: boolean
+  showSoilMoisture: boolean
+  open: boolean
+  typeFilter: 'all' | 'surface' | 'ground' | 'deep' | 'smoldering'
+}
+
+export interface PeatFireData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  burnArea: number
+  fireDepth: number
+  emissionRate: number
+  soilMoisture: number
+  peatDepth: number
+  status: 'active' | 'smoldering' | 'suppressed' | 'monitoring' | 'extinguished'
+  description: string
+}
+
+export interface CoralSpawnState {
+  reefs: CoralSpawnData[]
+  activeReefId: string | null
+  showSpawnIntensity: boolean
+  showWaterTemp: boolean
+  showLunarPhase: boolean
+  showLarvalDispersion: boolean
+  open: boolean
+  regionFilter: 'all' | 'pacific' | 'atlantic' | 'indian' | 'red_sea'
+}
+
+export interface CoralSpawnData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  spawnIntensity: number
+  waterTemp: number
+  lunarPhase: number
+  larvalDispersion: number
+  syncIndex: number
+  status: 'peak_spawn' | 'spawning' | 'pre_spawn' | 'post_spawn' | 'failed'
+  description: string
+}
+
+export interface GlacierCalvingState {
+  glaciers: GlacierCalvingData[]
+  activeGlacierId: string | null
+  showCalvingRate: boolean
+  showIceVelocity: boolean
+  showIceThickness: boolean
+  showSeismicActivity: boolean
+  open: boolean
+  typeFilter: 'all' | 'tidewater' | 'lake_terminating' | 'ice_shelf' | 'grounding_line'
+}
+
+export interface GlacierCalvingData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  calvingRate: number
+  iceVelocity: number
+  iceThickness: number
+  seismicActivity: number
+  retreatRate: number
+  status: 'advancing' | 'stable' | 'retreating' | 'rapid_retreat' | 'collapsing'
+  description: string
+}
+
+export interface SoilCarbonState {
+  sites: SoilCarbonData[]
+  activeSiteId: string | null
+  showCarbonStock: boolean
+  showOrganicMatter: boolean
+  showMicrobialActivity: boolean
+  showSequestrationRate: boolean
+  open: boolean
+  typeFilter: 'all' | 'agricultural' | 'forest' | 'grassland' | 'wetland'
+}
+
+export interface SoilCarbonData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  carbonStock: number
+  organicMatter: number
+  microbialActivity: number
+  sequestrationRate: number
+  bulkDensity: number
+  status: 'high_sequestration' | 'stable' | 'depleting' | 'degraded' | 'critical'
+  description: string
+}
+
+export interface UrbanTreeCanopyState {
+  zones: UrbanTreeCanopyData[]
+  activeZoneId: string | null
+  showCanopyCoverage: boolean
+  showTreeDensity: boolean
+  showAirQualityBenefit: boolean
+  showHeatReduction: boolean
+  open: boolean
+  typeFilter: 'all' | 'park' | 'street' | 'residential' | 'industrial'
+}
+
+export interface UrbanTreeCanopyData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  canopyCoverage: number
+  treeDensity: number
+  airQualityBenefit: number
+  heatReduction: number
+  biodiversityIndex: number
+  status: 'excellent' | 'good' | 'moderate' | 'poor' | 'critical'
+  description: string
+}
+
+export interface GeomagneticPoleState {
+  poles: GeomagneticPoleData[]
+  activePoleId: string | null
+  showDriftRate: boolean
+  showFieldStrength: boolean
+  showInclination: boolean
+  showDeclination: boolean
+  open: boolean
+  poleFilter: 'all' | 'north' | 'south'
+}
+
+export interface GeomagneticPoleData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  driftRate: number
+  fieldStrength: number
+  inclination: number
+  declination: number
+  historicalShift: number
+  status: 'stable' | 'shifting' | 'accelerating' | 'excursion' | 'reversal'
+  description: string
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -5782,6 +5983,24 @@ interface MapState {
   setTundraCarbon: (state: Partial<TundraCarbonState>) => void
   monsoon: MonsoonState
   setMonsoon: (state: Partial<MonsoonState>) => void
+
+  // Task 69: New monitoring states
+  lavaFlow: LavaFlowState
+  setLavaFlow: (state: Partial<LavaFlowState>) => void
+  tidalEnergy: TidalEnergyState
+  setTidalEnergy: (state: Partial<TidalEnergyState>) => void
+  peatFire: PeatFireState
+  setPeatFire: (state: Partial<PeatFireState>) => void
+  coralSpawn: CoralSpawnState
+  setCoralSpawn: (state: Partial<CoralSpawnState>) => void
+  glacierCalving: GlacierCalvingState
+  setGlacierCalving: (state: Partial<GlacierCalvingState>) => void
+  soilCarbon: SoilCarbonState
+  setSoilCarbon: (state: Partial<SoilCarbonState>) => void
+  urbanTreeCanopy: UrbanTreeCanopyState
+  setUrbanTreeCanopy: (state: Partial<UrbanTreeCanopyState>) => void
+  geomagneticPole: GeomagneticPoleState
+  setGeomagneticPole: (state: Partial<GeomagneticPoleState>) => void
 
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
@@ -10307,6 +10526,112 @@ export const useMapStore = create<MapState>()(
         monsoon: { ...state.monsoon, ...updates },
       })),
 
+      // Task 69: New monitoring defaults and setters
+      lavaFlow: {
+        flows: [],
+        activeFlowId: null,
+        showFlowArea: true,
+        showTemperature: true,
+        showVelocity: true,
+        showEffusionRate: false,
+        open: false,
+        typeFilter: 'all',
+      },
+      setLavaFlow: (updates) => set((state) => ({
+        lavaFlow: { ...state.lavaFlow, ...updates },
+      })),
+      tidalEnergy: {
+        sites: [],
+        activeSiteId: null,
+        showTidalRange: true,
+        showCurrentSpeed: true,
+        showPowerPotential: true,
+        showEnvironmentalImpact: false,
+        open: false,
+        typeFilter: 'all',
+      },
+      setTidalEnergy: (updates) => set((state) => ({
+        tidalEnergy: { ...state.tidalEnergy, ...updates },
+      })),
+      peatFire: {
+        fires: [],
+        activeFireId: null,
+        showBurnArea: true,
+        showFireDepth: true,
+        showEmissionRate: true,
+        showSoilMoisture: false,
+        open: false,
+        typeFilter: 'all',
+      },
+      setPeatFire: (updates) => set((state) => ({
+        peatFire: { ...state.peatFire, ...updates },
+      })),
+      coralSpawn: {
+        reefs: [],
+        activeReefId: null,
+        showSpawnIntensity: true,
+        showWaterTemp: true,
+        showLunarPhase: true,
+        showLarvalDispersion: false,
+        open: false,
+        regionFilter: 'all',
+      },
+      setCoralSpawn: (updates) => set((state) => ({
+        coralSpawn: { ...state.coralSpawn, ...updates },
+      })),
+      glacierCalving: {
+        glaciers: [],
+        activeGlacierId: null,
+        showCalvingRate: true,
+        showIceVelocity: true,
+        showIceThickness: true,
+        showSeismicActivity: false,
+        open: false,
+        typeFilter: 'all',
+      },
+      setGlacierCalving: (updates) => set((state) => ({
+        glacierCalving: { ...state.glacierCalving, ...updates },
+      })),
+      soilCarbon: {
+        sites: [],
+        activeSiteId: null,
+        showCarbonStock: true,
+        showOrganicMatter: true,
+        showMicrobialActivity: true,
+        showSequestrationRate: false,
+        open: false,
+        typeFilter: 'all',
+      },
+      setSoilCarbon: (updates) => set((state) => ({
+        soilCarbon: { ...state.soilCarbon, ...updates },
+      })),
+      urbanTreeCanopy: {
+        zones: [],
+        activeZoneId: null,
+        showCanopyCoverage: true,
+        showTreeDensity: true,
+        showAirQualityBenefit: true,
+        showHeatReduction: false,
+        open: false,
+        typeFilter: 'all',
+      },
+      setUrbanTreeCanopy: (updates) => set((state) => ({
+        urbanTreeCanopy: { ...state.urbanTreeCanopy, ...updates },
+      })),
+      geomagneticPole: {
+        poles: [],
+        activePoleId: null,
+        showDriftRate: true,
+        showFieldStrength: true,
+        showInclination: true,
+        showDeclination: false,
+        open: false,
+        poleFilter: 'all',
+      },
+      setGeomagneticPole: (updates) => set((state) => ({
+        geomagneticPole: { ...state.geomagneticPole, ...updates },
+      })),
+
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
       setAddLocationDialogOpen: (open) => set({ addLocationDialogOpen: open }),
@@ -10619,6 +10944,14 @@ export const useMapStore = create<MapState>()(
         invasiveSpecies: state.invasiveSpecies,
         tundraCarbon: state.tundraCarbon,
         monsoon: state.monsoon,
+        lavaFlow: state.lavaFlow,
+        tidalEnergy: state.tidalEnergy,
+        peatFire: state.peatFire,
+        coralSpawn: state.coralSpawn,
+        glacierCalving: state.glacierCalving,
+        soilCarbon: state.soilCarbon,
+        urbanTreeCanopy: state.urbanTreeCanopy,
+        geomagneticPole: state.geomagneticPole,
       }),
     }
   )

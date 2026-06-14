@@ -29,10 +29,45 @@ export function MonitorPanelRegistry() {
   const invasiveSpecies = useMapStore((s) => s.invasiveSpecies)
   const tundraCarbon = useMapStore((s) => s.tundraCarbon)
   const monsoon = useMapStore((s) => s.monsoon)
+  // Task 69
+  const lavaFlow = useMapStore((s) => s.lavaFlow)
+  const tidalEnergy = useMapStore((s) => s.tidalEnergy)
+  const peatFire = useMapStore((s) => s.peatFire)
+  const coralSpawn = useMapStore((s) => s.coralSpawn)
+  const glacierCalving = useMapStore((s) => s.glacierCalving)
+  const soilCarbon = useMapStore((s) => s.soilCarbon)
+  const urbanTreeCanopy = useMapStore((s) => s.urbanTreeCanopy)
+  const geomagneticPole = useMapStore((s) => s.geomagneticPole)
 
   return (
     <>
-      {/* Task 68: New Monitoring Panels - loaded via LazyPanel for true lazy loading */}
+      {/* Task 69: New Monitoring Panels */}
+      {lavaFlow.open && (
+        <LazyPanel importFn={() => import('@/components/map/LavaFlowTracker')} exportName="LavaFlowTracker" shouldLoad={true} />
+      )}
+      {tidalEnergy.open && (
+        <LazyPanel importFn={() => import('@/components/map/TidalEnergyMonitor')} exportName="TidalEnergyMonitor" shouldLoad={true} />
+      )}
+      {peatFire.open && (
+        <LazyPanel importFn={() => import('@/components/map/PeatFireMonitor')} exportName="PeatFireMonitor" shouldLoad={true} />
+      )}
+      {coralSpawn.open && (
+        <LazyPanel importFn={() => import('@/components/map/CoralSpawnTracker')} exportName="CoralSpawnTracker" shouldLoad={true} />
+      )}
+      {glacierCalving.open && (
+        <LazyPanel importFn={() => import('@/components/map/GlacierCalvingMonitor')} exportName="GlacierCalvingMonitor" shouldLoad={true} />
+      )}
+      {soilCarbon.open && (
+        <LazyPanel importFn={() => import('@/components/map/SoilCarbonMonitor')} exportName="SoilCarbonMonitor" shouldLoad={true} />
+      )}
+      {urbanTreeCanopy.open && (
+        <LazyPanel importFn={() => import('@/components/map/UrbanTreeCanopy')} exportName="UrbanTreeCanopy" shouldLoad={true} />
+      )}
+      {geomagneticPole.open && (
+        <LazyPanel importFn={() => import('@/components/map/GeomagneticPoleTracker')} exportName="GeomagneticPoleTracker" shouldLoad={true} />
+      )}
+
+      {/* Task 68: Monitoring Panels */}
       {supervolcano.open && (
         <LazyPanel importFn={() => import('@/components/map/SupervolcanoMonitor')} exportName="SupervolcanoMonitor" shouldLoad={true} />
       )}
