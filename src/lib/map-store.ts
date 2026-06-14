@@ -6323,6 +6323,126 @@ export interface WildfireRiskAssessmentData {
   description: string
 }
 
+export interface VolcanicLaharState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface SaltFlatState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface DeepSeaCoralState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface RipCurrentState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface MeteorImpactState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface TidalBoreState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface PeatlandCarbonState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface GlacierSurgeState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -7757,6 +7877,22 @@ interface MapState {
   setTidalFlatMonitor: (state: Partial<TidalFlatMonitorState>) => void
   wildfireRiskAssessment: WildfireRiskAssessmentState
   setWildfireRiskAssessment: (state: Partial<WildfireRiskAssessmentState>) => void
+  volcanicLahar: VolcanicLaharState
+  setVolcanicLahar: (state: Partial<VolcanicLaharState>) => void
+  saltFlat: SaltFlatState
+  setSaltFlat: (state: Partial<SaltFlatState>) => void
+  deepSeaCoral: DeepSeaCoralState
+  setDeepSeaCoral: (state: Partial<DeepSeaCoralState>) => void
+  ripCurrent: RipCurrentState
+  setRipCurrent: (state: Partial<RipCurrentState>) => void
+  meteorImpact: MeteorImpactState
+  setMeteorImpact: (state: Partial<MeteorImpactState>) => void
+  tidalBore: TidalBoreState
+  setTidalBore: (state: Partial<TidalBoreState>) => void
+  peatlandCarbon: PeatlandCarbonState
+  setPeatlandCarbon: (state: Partial<PeatlandCarbonState>) => void
+  glacierSurge: GlacierSurgeState
+  setGlacierSurge: (state: Partial<GlacierSurgeState>) => void
 
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
@@ -12645,6 +12781,22 @@ export const useMapStore = create<MapState>()(
         zones: [], activeZoneId: null, showFireWeather: true, showFuelLoad: true, showTerrain: true, showExposure: false, open: false, riskFilter: 'all',
       },
       setWildfireRiskAssessment: (updates) => set((state) => ({ wildfireRiskAssessment: { ...state.wildfireRiskAssessment, ...updates } })),
+      volcanicLahar: { open: false, data: null },
+      setVolcanicLahar: (updates) => set((state) => ({ volcanicLahar: { ...state.volcanicLahar, ...updates } })),
+      saltFlat: { open: false, data: null },
+      setSaltFlat: (updates) => set((state) => ({ saltFlat: { ...state.saltFlat, ...updates } })),
+      deepSeaCoral: { open: false, data: null },
+      setDeepSeaCoral: (updates) => set((state) => ({ deepSeaCoral: { ...state.deepSeaCoral, ...updates } })),
+      ripCurrent: { open: false, data: null },
+      setRipCurrent: (updates) => set((state) => ({ ripCurrent: { ...state.ripCurrent, ...updates } })),
+      meteorImpact: { open: false, data: null },
+      setMeteorImpact: (updates) => set((state) => ({ meteorImpact: { ...state.meteorImpact, ...updates } })),
+      tidalBore: { open: false, data: null },
+      setTidalBore: (updates) => set((state) => ({ tidalBore: { ...state.tidalBore, ...updates } })),
+      peatlandCarbon: { open: false, data: null },
+      setPeatlandCarbon: (updates) => set((state) => ({ peatlandCarbon: { ...state.peatlandCarbon, ...updates } })),
+      glacierSurge: { open: false, data: null },
+      setGlacierSurge: (updates) => set((state) => ({ glacierSurge: { ...state.glacierSurge, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
@@ -13030,6 +13182,14 @@ export const useMapStore = create<MapState>()(
         ecosystemServiceValue: state.ecosystemServiceValue,
         tidalFlatMonitor: state.tidalFlatMonitor,
         wildfireRiskAssessment: state.wildfireRiskAssessment,
+        volcanicLahar: state.volcanicLahar,
+        saltFlat: state.saltFlat,
+        deepSeaCoral: state.deepSeaCoral,
+        ripCurrent: state.ripCurrent,
+        meteorImpact: state.meteorImpact,
+        tidalBore: state.tidalBore,
+        peatlandCarbon: state.peatlandCarbon,
+        glacierSurge: state.glacierSurge,
       }),
     }
   )
