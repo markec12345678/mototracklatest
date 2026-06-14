@@ -5313,6 +5313,208 @@ export interface TectonicPlateBoundaryData {
   description: string
 }
 
+// Task 73: New monitoring interfaces
+
+export interface LandslideSusceptibilityState {
+  zones: LandslideSusceptibilityData[]
+  activeZoneId: string | null
+  showSlopeAngle: boolean
+  showSoilMoisture: boolean
+  showVegetation: boolean
+  showRainfall: boolean
+  open: boolean
+  riskFilter: 'all' | 'very_low' | 'low' | 'moderate' | 'high' | 'very_high'
+}
+
+export interface LandslideSusceptibilityData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  slopeAngle: number
+  soilMoisture: number
+  vegetation: number
+  rainfall: number
+  population: number
+  status: 'very_low' | 'low' | 'moderate' | 'high' | 'very_high'
+  description: string
+}
+
+export interface SolarFlareActivityState {
+  events: SolarFlareActivityData[]
+  activeEventId: string | null
+  showXRay: boolean
+  showProton: boolean
+  showRadio: boolean
+  showCoronalMass: boolean
+  open: boolean
+  classFilter: 'all' | 'A_B' | 'C' | 'M' | 'X'
+}
+
+export interface SolarFlareActivityData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  xRay: number
+  proton: number
+  radio: number
+  coronalMass: number
+  sunspotArea: number
+  status: 'quiet' | 'minor' | 'moderate' | 'strong' | 'extreme'
+  description: string
+}
+
+export interface RiverDeltaErosionState {
+  deltas: RiverDeltaErosionData[]
+  activeDeltaId: string | null
+  showErosionRate: boolean
+  showSedimentSupply: boolean
+  showSeaLevel: boolean
+  showLandLoss: boolean
+  open: boolean
+  severityFilter: 'all' | 'stable' | 'slow' | 'moderate' | 'rapid' | 'critical'
+}
+
+export interface RiverDeltaErosionData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  erosionRate: number
+  sedimentSupply: number
+  seaLevel: number
+  landLoss: number
+  subsidence: number
+  status: 'stable' | 'slow' | 'moderate' | 'rapid' | 'critical'
+  description: string
+}
+
+export interface SeaIceThicknessState {
+  regions: SeaIceThicknessData[]
+  activeRegionId: string | null
+  showThickness: boolean
+  showConcentration: boolean
+  showExtent: boolean
+  showAge: boolean
+  open: boolean
+  typeFilter: 'all' | 'first_year' | 'multi_year' | 'fast_ice' | 'pack_ice'
+}
+
+export interface SeaIceThicknessData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  thickness: number
+  concentration: number
+  extent: number
+  age: number
+  snowDepth: number
+  status: 'growing' | 'stable' | 'thinning' | 'rapid_thinning' | 'gone'
+  description: string
+}
+
+export interface UrbanAirQualityState {
+  cities: UrbanAirQualityData[]
+  activeCityId: string | null
+  showAQI: boolean
+  showPM25: boolean
+  showNO2: boolean
+  showO3: boolean
+  open: boolean
+  qualityFilter: 'all' | 'good' | 'moderate' | 'unhealthy' | 'very_unhealthy' | 'hazardous'
+}
+
+export interface UrbanAirQualityData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  aqi: number
+  pm25: number
+  no2: number
+  o3: number
+  so2: number
+  status: 'good' | 'moderate' | 'unhealthy' | 'very_unhealthy' | 'hazardous'
+  description: string
+}
+
+export interface GeothermalEnergyState {
+  plants: GeothermalEnergyData[]
+  activePlantId: string | null
+  showOutput: boolean
+  showTemperature: boolean
+  showFlowRate: boolean
+  showEfficiency: boolean
+  open: boolean
+  typeFilter: 'all' | 'dry_steam' | 'flash' | 'binary' | 'enhanced'
+}
+
+export interface GeothermalEnergyData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  output: number
+  temperature: number
+  flowRate: number
+  efficiency: number
+  reservoirDepth: number
+  status: 'optimal' | 'good' | 'moderate' | 'declining' | 'depleted'
+  description: string
+}
+
+export interface AquiferSalinizationState {
+  aquifers: AquiferSalinizationData[]
+  activeAquiferId: string | null
+  showSalinity: boolean
+  showChloride: boolean
+  showWaterLevel: boolean
+  showIntrusion: boolean
+  open: boolean
+  severityFilter: 'all' | 'fresh' | 'slight' | 'moderate' | 'severe' | 'hypersaline'
+}
+
+export interface AquiferSalinizationData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  salinity: number
+  chloride: number
+  waterLevel: number
+  intrusion: number
+  depth: number
+  status: 'fresh' | 'slight' | 'moderate' | 'severe' | 'hypersaline'
+  description: string
+}
+
+export interface BiomassBurningState {
+  regions: BiomassBurningData[]
+  activeRegionId: string | null
+  showFireCount: boolean
+  showBurnedArea: boolean
+  showEmissions: boolean
+  showSmoke: boolean
+  open: boolean
+  typeFilter: 'all' | 'forest' | 'savanna' | 'agricultural' | 'peat'
+}
+
+export interface BiomassBurningData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  fireCount: number
+  burnedArea: number
+  emissions: number
+  smoke: number
+  intensity: number
+  status: 'minimal' | 'low' | 'moderate' | 'high' | 'extreme'
+  description: string
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -6659,6 +6861,24 @@ interface MapState {
   setSpaceDebrisOrbit: (state: Partial<SpaceDebrisOrbitState>) => void
   tectonicPlateBoundary: TectonicPlateBoundaryState
   setTectonicPlateBoundary: (state: Partial<TectonicPlateBoundaryState>) => void
+
+  // Task 73: New monitoring states
+  landslideSusceptibility: LandslideSusceptibilityState
+  setLandslideSusceptibility: (state: Partial<LandslideSusceptibilityState>) => void
+  solarFlareActivity: SolarFlareActivityState
+  setSolarFlareActivity: (state: Partial<SolarFlareActivityState>) => void
+  riverDeltaErosion: RiverDeltaErosionState
+  setRiverDeltaErosion: (state: Partial<RiverDeltaErosionState>) => void
+  seaIceThickness: SeaIceThicknessState
+  setSeaIceThickness: (state: Partial<SeaIceThicknessState>) => void
+  urbanAirQuality: UrbanAirQualityState
+  setUrbanAirQuality: (state: Partial<UrbanAirQualityState>) => void
+  geothermalEnergy: GeothermalEnergyState
+  setGeothermalEnergy: (state: Partial<GeothermalEnergyState>) => void
+  aquiferSalinization: AquiferSalinizationState
+  setAquiferSalinization: (state: Partial<AquiferSalinizationState>) => void
+  biomassBurning: BiomassBurningState
+  setBiomassBurning: (state: Partial<BiomassBurningState>) => void
 
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
@@ -11387,6 +11607,38 @@ export const useMapStore = create<MapState>()(
         boundaries: [], activeBoundaryId: null, showVelocity: true, showStress: true, showSeismicity: true, showSlipRate: false, open: false, typeFilter: 'all',
       },
       setTectonicPlateBoundary: (updates) => set((state) => ({ tectonicPlateBoundary: { ...state.tectonicPlateBoundary, ...updates } })),
+      landslideSusceptibility: {
+        zones: [], activeZoneId: null, showSlopeAngle: true, showSoilMoisture: true, showVegetation: true, showRainfall: false, open: false, riskFilter: 'all',
+      },
+      setLandslideSusceptibility: (updates) => set((state) => ({ landslideSusceptibility: { ...state.landslideSusceptibility, ...updates } })),
+      solarFlareActivity: {
+        events: [], activeEventId: null, showXRay: true, showProton: true, showRadio: true, showCoronalMass: false, open: false, classFilter: 'all',
+      },
+      setSolarFlareActivity: (updates) => set((state) => ({ solarFlareActivity: { ...state.solarFlareActivity, ...updates } })),
+      riverDeltaErosion: {
+        deltas: [], activeDeltaId: null, showErosionRate: true, showSedimentSupply: true, showSeaLevel: true, showLandLoss: false, open: false, severityFilter: 'all',
+      },
+      setRiverDeltaErosion: (updates) => set((state) => ({ riverDeltaErosion: { ...state.riverDeltaErosion, ...updates } })),
+      seaIceThickness: {
+        regions: [], activeRegionId: null, showThickness: true, showConcentration: true, showExtent: true, showAge: false, open: false, typeFilter: 'all',
+      },
+      setSeaIceThickness: (updates) => set((state) => ({ seaIceThickness: { ...state.seaIceThickness, ...updates } })),
+      urbanAirQuality: {
+        cities: [], activeCityId: null, showAQI: true, showPM25: true, showNO2: true, showO3: false, open: false, qualityFilter: 'all',
+      },
+      setUrbanAirQuality: (updates) => set((state) => ({ urbanAirQuality: { ...state.urbanAirQuality, ...updates } })),
+      geothermalEnergy: {
+        plants: [], activePlantId: null, showOutput: true, showTemperature: true, showFlowRate: true, showEfficiency: false, open: false, typeFilter: 'all',
+      },
+      setGeothermalEnergy: (updates) => set((state) => ({ geothermalEnergy: { ...state.geothermalEnergy, ...updates } })),
+      aquiferSalinization: {
+        aquifers: [], activeAquiferId: null, showSalinity: true, showChloride: true, showWaterLevel: true, showIntrusion: false, open: false, severityFilter: 'all',
+      },
+      setAquiferSalinization: (updates) => set((state) => ({ aquiferSalinization: { ...state.aquiferSalinization, ...updates } })),
+      biomassBurning: {
+        regions: [], activeRegionId: null, showFireCount: true, showBurnedArea: true, showEmissions: true, showSmoke: false, open: false, typeFilter: 'all',
+      },
+      setBiomassBurning: (updates) => set((state) => ({ biomassBurning: { ...state.biomassBurning, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
@@ -11732,6 +11984,14 @@ export const useMapStore = create<MapState>()(
         coastalUpwelling: state.coastalUpwelling,
         spaceDebrisOrbit: state.spaceDebrisOrbit,
         tectonicPlateBoundary: state.tectonicPlateBoundary,
+        landslideSusceptibility: state.landslideSusceptibility,
+        solarFlareActivity: state.solarFlareActivity,
+        riverDeltaErosion: state.riverDeltaErosion,
+        seaIceThickness: state.seaIceThickness,
+        urbanAirQuality: state.urbanAirQuality,
+        geothermalEnergy: state.geothermalEnergy,
+        aquiferSalinization: state.aquiferSalinization,
+        biomassBurning: state.biomassBurning,
       }),
     }
   )
