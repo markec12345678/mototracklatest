@@ -7,7 +7,6 @@ import { useMapStore, MAP_STYLES } from '@/lib/map-store'
 import { useServiceWorker } from '@/hooks/use-service-worker'
 import {
   MapPin,
-  Layers,
   Maximize2,
   Minimize2,
 } from 'lucide-react'
@@ -17,7 +16,7 @@ export default function Home() {
   const { currentStyle, setCurrentStyle, setCenter, setZoom } = useMapStore()
   const [showWelcome, setShowWelcome] = useState(true)
   const [isFullscreen, setIsFullscreen] = useState(false)
-  const [loadedPanels, setLoadedPanels] = useState<Set<string>>(new Set(['core']))
+  const [loadStep, setLoadStep] = useState(0)
 
   useServiceWorker()
 
@@ -36,20 +35,36 @@ export default function Home() {
     }
   }, [setCenter, setZoom, setCurrentStyle])
 
-  // Sequential panel loading - loads groups one at a time
+  // Progressive loading with manual trigger
+  // Step 0: Map only (initial load)
+  // Step 1: Search + controls
+  // Step 2: Toolbar buttons
+  // Step 3: Overlays + panels
+  // Step 4: Dialogs + monitors
+
   useEffect(() => {
-    const panelOrder = ['search', 'topbar', 'overlay', 'toolbar', 'mobile', 'dialog']
-    let cancelled = false
-    async function loadPanelsSequentially() {
-      for (const panel of panelOrder) {
-        if (cancelled) break
-        await new Promise(resolve => setTimeout(resolve, 4000))
-        setLoadedPanels(prev => new Set([...prev, panel]))
-      }
-    }
-    loadPanelsSequentially()
-    return () => { cancelled = true }
-  }, [])
+    if (loadStep >= 1) return
+    const timer = setTimeout(() => setLoadStep(1), 5000)
+    return () => clearTimeout(timer)
+  }, [loadStep])
+
+  useEffect(() => {
+    if (loadStep >= 2) return
+    const timer = setTimeout(() => setLoadStep(2), 15000)
+    return () => clearTimeout(timer)
+  }, [loadStep])
+
+  useEffect(() => {
+    if (loadStep >= 3) return
+    const timer = setTimeout(() => setLoadStep(3), 30000)
+    return () => clearTimeout(timer)
+  }, [loadStep])
+
+  useEffect(() => {
+    if (loadStep >= 4) return
+    const timer = setTimeout(() => setLoadStep(4), 60000)
+    return () => clearTimeout(timer)
+  }, [loadStep])
 
   const toggleFullscreen = useCallback(() => {
     if (!document.fullscreenElement) {
@@ -63,7 +78,7 @@ export default function Home() {
 
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-background">
-      {/* Map */}
+      {/* Map - always loaded */}
       <div className="absolute inset-0">
         <LazyPanel
           importFn={() => import('@/components/map/MapView')}
@@ -72,8 +87,8 @@ export default function Home() {
         />
       </div>
 
-      {/* Search Bar */}
-      {loadedPanels.has('search') && (
+      {/* Search + fullscreen toggle */}
+      {loadStep >= 1 && (
         <div className="absolute top-3 left-3 right-3 z-20 pointer-events-none">
           <div className="flex items-center gap-2 pointer-events-auto">
             <div className="flex-1">
@@ -88,7 +103,6 @@ export default function Home() {
               size="icon"
               className="map-control-glass h-9 w-9 rounded-xl shrink-0"
               onClick={toggleFullscreen}
-              title={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'}
             >
               {isFullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
             </Button>
@@ -96,8 +110,8 @@ export default function Home() {
         </div>
       )}
 
-      {/* Toolbar Buttons - loaded after search */}
-      {loadedPanels.has('topbar') && (
+      {/* Toolbar Buttons */}
+      {loadStep >= 2 && (
         <LazyPanel
           importFn={() => import('@/components/map/MapToolbarButtons')}
           exportName="MapToolbarButtons"
@@ -105,49 +119,41 @@ export default function Home() {
         />
       )}
 
-      {/* Overlay panels (compass, indicators, overlays) */}
-      {loadedPanels.has('overlay') && (
-        <LazyPanel
-          importFn={() => import('@/components/map/panel-groups/MapOverlayPanels')}
-          exportName="MapOverlayPanels"
-          shouldLoad={true}
-        />
+      {/* Overlay panels */}
+      {loadStep >= 3 && (
+        <>
+          <LazyPanel
+            importFn={() => import('@/components/map/panel-groups/MapOverlayPanels')}
+            exportName="MapOverlayPanels"
+            shouldLoad={true}
+          />
+          <LazyPanel
+            importFn={() => import('@/components/map/panel-groups/ToolbarPanels')}
+            exportName="ToolbarPanels"
+            shouldLoad={true}
+          />
+          <LazyPanel
+            importFn={() => import('@/components/map/panel-groups/MobileBottomPanels')}
+            exportName="MobileBottomPanels"
+            shouldLoad={true}
+          />
+        </>
       )}
 
-      {/* Toolbar panels (left side) */}
-      {loadedPanels.has('toolbar') && (
-        <LazyPanel
-          importFn={() => import('@/components/map/panel-groups/ToolbarPanels')}
-          exportName="ToolbarPanels"
-          shouldLoad={true}
-        />
-      )}
-
-      {/* Mobile bottom panels */}
-      {loadedPanels.has('mobile') && (
-        <LazyPanel
-          importFn={() => import('@/components/map/panel-groups/MobileBottomPanels')}
-          exportName="MobileBottomPanels"
-          shouldLoad={true}
-        />
-      )}
-
-      {/* Dialog panels */}
-      {loadedPanels.has('dialog') && (
-        <LazyPanel
-          importFn={() => import('@/components/map/panel-groups/DialogPanels')}
-          exportName="DialogPanels"
-          shouldLoad={true}
-        />
-      )}
-
-      {/* Monitor panel registry - loads on demand */}
-      {loadedPanels.has('dialog') && (
-        <LazyPanel
-          importFn={() => import('@/components/map/panel-groups/MonitorPanelRegistry')}
-          exportName="MonitorPanelRegistry"
-          shouldLoad={true}
-        />
+      {/* Dialogs + monitors */}
+      {loadStep >= 4 && (
+        <>
+          <LazyPanel
+            importFn={() => import('@/components/map/panel-groups/DialogPanels')}
+            exportName="DialogPanels"
+            shouldLoad={true}
+          />
+          <LazyPanel
+            importFn={() => import('@/components/map/panel-groups/MonitorPanelRegistry')}
+            exportName="MonitorPanelRegistry"
+            shouldLoad={true}
+          />
+        </>
       )}
 
       {/* Welcome overlay */}
@@ -172,7 +178,7 @@ export default function Home() {
               </div>
               <h1 className="text-2xl font-bold mb-2">MapLibre Explorer</h1>
               <p className="text-muted-foreground mb-6 text-sm">
-                Interactive map application with real-time monitoring, route planning, and environmental tracking.
+                Interactive map with real-time monitoring, route planning & environmental tracking.
               </p>
               <Button
                 className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-8"
