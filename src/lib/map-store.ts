@@ -6959,6 +6959,46 @@ export interface CoastalAcidState {
   } | null
 }
 
+export interface AbyssalVentState {
+  open: boolean
+  data: { name: string; value: number; unit: string; status: string; trend: string; lat: number; lng: number; description: string; lastUpdated: string } | null
+}
+
+export interface DesertLocustState {
+  open: boolean
+  data: { name: string; value: number; unit: string; status: string; trend: string; lat: number; lng: number; description: string; lastUpdated: string } | null
+}
+
+export interface GlacierLakeState {
+  open: boolean
+  data: { name: string; value: number; unit: string; status: string; trend: string; lat: number; lng: number; description: string; lastUpdated: string } | null
+}
+
+export interface TidalPowerState {
+  open: boolean
+  data: { name: string; value: number; unit: string; status: string; trend: string; lat: number; lng: number; description: string; lastUpdated: string } | null
+}
+
+export interface PeatFireRiskState {
+  open: boolean
+  data: { name: string; value: number; unit: string; status: string; trend: string; lat: number; lng: number; description: string; lastUpdated: string } | null
+}
+
+export interface StratosphericWindState {
+  open: boolean
+  data: { name: string; value: number; unit: string; status: string; trend: string; lat: number; lng: number; description: string; lastUpdated: string } | null
+}
+
+export interface PolarOzoneState {
+  open: boolean
+  data: { name: string; value: number; unit: string; status: string; trend: string; lat: number; lng: number; description: string; lastUpdated: string } | null
+}
+
+export interface VolcanicLightningState {
+  open: boolean
+  data: { name: string; value: number; unit: string; status: string; trend: string; lat: number; lng: number; description: string; lastUpdated: string } | null
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -8487,6 +8527,22 @@ interface MapState {
   setRockGlacier: (state: Partial<RockGlacierState>) => void
   coastalAcid: CoastalAcidState
   setCoastalAcid: (state: Partial<CoastalAcidState>) => void
+  abyssalVent: AbyssalVentState
+  setAbyssalVent: (state: Partial<AbyssalVentState>) => void
+  desertLocust: DesertLocustState
+  setDesertLocust: (state: Partial<DesertLocustState>) => void
+  glacierLake: GlacierLakeState
+  setGlacierLake: (state: Partial<GlacierLakeState>) => void
+  tidalPower: TidalPowerState
+  setTidalPower: (state: Partial<TidalPowerState>) => void
+  peatFireRisk: PeatFireRiskState
+  setPeatFireRisk: (state: Partial<PeatFireRiskState>) => void
+  stratosphericWind: StratosphericWindState
+  setStratosphericWind: (state: Partial<StratosphericWindState>) => void
+  polarOzone: PolarOzoneState
+  setPolarOzone: (state: Partial<PolarOzoneState>) => void
+  volcanicLightning: VolcanicLightningState
+  setVolcanicLightning: (state: Partial<VolcanicLightningState>) => void
 
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
@@ -13470,6 +13526,22 @@ export const useMapStore = create<MapState>()(
       setRockGlacier: (updates) => set((state) => ({ rockGlacier: { ...state.rockGlacier, ...updates } })),
       coastalAcid: { open: false, data: null },
       setCoastalAcid: (updates) => set((state) => ({ coastalAcid: { ...state.coastalAcid, ...updates } })),
+      abyssalVent: { open: false, data: null },
+      setAbyssalVent: (updates) => set((state) => ({ abyssalVent: { ...state.abyssalVent, ...updates } })),
+      desertLocust: { open: false, data: null },
+      setDesertLocust: (updates) => set((state) => ({ desertLocust: { ...state.desertLocust, ...updates } })),
+      glacierLake: { open: false, data: null },
+      setGlacierLake: (updates) => set((state) => ({ glacierLake: { ...state.glacierLake, ...updates } })),
+      tidalPower: { open: false, data: null },
+      setTidalPower: (updates) => set((state) => ({ tidalPower: { ...state.tidalPower, ...updates } })),
+      peatFireRisk: { open: false, data: null },
+      setPeatFireRisk: (updates) => set((state) => ({ peatFireRisk: { ...state.peatFireRisk, ...updates } })),
+      stratosphericWind: { open: false, data: null },
+      setStratosphericWind: (updates) => set((state) => ({ stratosphericWind: { ...state.stratosphericWind, ...updates } })),
+      polarOzone: { open: false, data: null },
+      setPolarOzone: (updates) => set((state) => ({ polarOzone: { ...state.polarOzone, ...updates } })),
+      volcanicLightning: { open: false, data: null },
+      setVolcanicLightning: (updates) => set((state) => ({ volcanicLightning: { ...state.volcanicLightning, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
@@ -13902,6 +13974,14 @@ export const useMapStore = create<MapState>()(
         monsoonTrack: state.monsoonTrack,
         rockGlacier: state.rockGlacier,
         coastalAcid: state.coastalAcid,
+        abyssalVent: state.abyssalVent,
+        desertLocust: state.desertLocust,
+        glacierLake: state.glacierLake,
+        tidalPower: state.tidalPower,
+        peatFireRisk: state.peatFireRisk,
+        stratosphericWind: state.stratosphericWind,
+        polarOzone: state.polarOzone,
+        volcanicLightning: state.volcanicLightning,
       }),
     }
   )

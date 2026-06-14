@@ -153,6 +153,14 @@ export function MonitorPanelRegistry() {
   const monsoonTrack = useMapStore((s) => s.monsoonTrack)
   const rockGlacier = useMapStore((s) => s.rockGlacier)
   const coastalAcid = useMapStore((s) => s.coastalAcid)
+  const abyssalVent = useMapStore((s) => s.abyssalVent)
+  const desertLocust = useMapStore((s) => s.desertLocust)
+  const glacierLake = useMapStore((s) => s.glacierLake)
+  const tidalPower = useMapStore((s) => s.tidalPower)
+  const peatFireRisk = useMapStore((s) => s.peatFireRisk)
+  const stratosphericWind = useMapStore((s) => s.stratosphericWind)
+  const polarOzone = useMapStore((s) => s.polarOzone)
+  const volcanicLightning = useMapStore((s) => s.volcanicLightning)
 
   return (
     <>
@@ -281,6 +289,14 @@ export function MonitorPanelRegistry() {
       {monsoonTrack.open && (<LazyPanel importFn={() => import('@/components/map/MonsoonTrackMonitor')} exportName="MonsoonTrackMonitor" shouldLoad={true} />)}
       {rockGlacier.open && (<LazyPanel importFn={() => import('@/components/map/RockGlacierMonitor')} exportName="RockGlacierMonitor" shouldLoad={true} />)}
       {coastalAcid.open && (<LazyPanel importFn={() => import('@/components/map/CoastalAcidMonitor')} exportName="CoastalAcidMonitor" shouldLoad={true} />)}
+      {abyssalVent.open && (<LazyPanel importFn={() => import('@/components/map/AbyssalVentMonitor')} exportName="AbyssalVentMonitor" shouldLoad={true} />)}
+      {desertLocust.open && (<LazyPanel importFn={() => import('@/components/map/DesertLocustMonitor')} exportName="DesertLocustMonitor" shouldLoad={true} />)}
+      {glacierLake.open && (<LazyPanel importFn={() => import('@/components/map/GlacierLakeMonitor')} exportName="GlacierLakeMonitor" shouldLoad={true} />)}
+      {tidalPower.open && (<LazyPanel importFn={() => import('@/components/map/TidalPowerMonitor')} exportName="TidalPowerMonitor" shouldLoad={true} />)}
+      {peatFireRisk.open && (<LazyPanel importFn={() => import('@/components/map/PeatFireRiskMonitor')} exportName="PeatFireRiskMonitor" shouldLoad={true} />)}
+      {stratosphericWind.open && (<LazyPanel importFn={() => import('@/components/map/StratosphericWindMonitor')} exportName="StratosphericWindMonitor" shouldLoad={true} />)}
+      {polarOzone.open && (<LazyPanel importFn={() => import('@/components/map/PolarOzoneMonitor')} exportName="PolarOzoneMonitor" shouldLoad={true} />)}
+      {volcanicLightning.open && (<LazyPanel importFn={() => import('@/components/map/VolcanicLightningMonitor')} exportName="VolcanicLightningMonitor" shouldLoad={true} />)}
 
       {/* Task 69: New Monitoring Panels */}
       {lavaFlow.open && (
