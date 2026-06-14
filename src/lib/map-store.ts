@@ -4111,6 +4111,198 @@ export interface FjordEcosystemState {
   healthFilter: 'all' | 'excellent' | 'good' | 'moderate' | 'poor'
 }
 
+// Task 67: Geothermal Spring Monitor
+export interface GeothermalSpring {
+  id: string
+  name: string
+  temperature: number
+  ph: number
+  flowRate: number
+  mineralContent: number
+  seismicActivity: number
+  latitude: number
+  longitude: number
+}
+
+export interface GeothermalSpringState {
+  springs: GeothermalSpring[]
+  activeSpringId: string | null
+  showTemperature: boolean
+  showFlowRate: boolean
+  showMineralContent: boolean
+  showSeismicActivity: boolean
+  open: boolean
+  tempFilter: 'all' | 'low' | 'medium' | 'high' | 'extreme'
+}
+
+// Task 67: Asteroid Impact Risk Mapper
+export interface NearEarthObject {
+  id: string
+  name: string
+  diameter: number
+  velocity: number
+  missDistance: number
+  hazardScore: number
+  approachDate: string
+  latitude: number
+  longitude: number
+}
+
+export interface AsteroidImpactState {
+  objects: NearEarthObject[]
+  activeObjectId: string | null
+  showTrajectory: boolean
+  showHazardScore: boolean
+  showSizeComparison: boolean
+  open: boolean
+  hazardFilter: 'all' | 'low' | 'moderate' | 'high' | 'critical'
+}
+
+// Task 67: Desert Oasis Monitor
+export interface DesertOasis {
+  id: string
+  name: string
+  waterLevel: number
+  salinity: number
+  vegetationIndex: number
+  areaChange: number
+  temperature: number
+  latitude: number
+  longitude: number
+}
+
+export interface DesertOasisState {
+  oases: DesertOasis[]
+  activeOasisId: string | null
+  showWaterLevel: boolean
+  showSalinity: boolean
+  showVegetation: boolean
+  showAreaChange: boolean
+  open: boolean
+  healthFilter: 'all' | 'thriving' | 'stable' | 'declining' | 'critical'
+}
+
+// Task 67: Volcanic Lightning Tracker
+export interface VolcanicLightning {
+  id: string
+  volcanoName: string
+  strikeCount: number
+  frequency: number
+  ashCloudHeight: number
+  eruptionIntensity: number
+  lastStrike: string
+  latitude: number
+  longitude: number
+}
+
+export interface VolcanicLightningState {
+  strikes: VolcanicLightning[]
+  activeStrikeId: string | null
+  showFrequency: boolean
+  showAshHeight: boolean
+  showEruptionIntensity: boolean
+  showStrikeCount: boolean
+  open: boolean
+  intensityFilter: 'all' | 'low' | 'moderate' | 'high' | 'extreme'
+}
+
+// Task 67: Ice Core Data Explorer
+export interface IceCoreSample {
+  id: string
+  name: string
+  depth: number
+  age: number
+  co2Level: number
+  temperature: number
+  dustConcentration: number
+  latitude: number
+  longitude: number
+}
+
+export interface IceCoreDataState {
+  samples: IceCoreSample[]
+  activeSampleId: string | null
+  showCO2: boolean
+  showTemperature: boolean
+  showDust: boolean
+  showDepth: boolean
+  open: boolean
+  ageFilter: 'all' | 'holocene' | 'pleistocene' | 'pliocene' | 'miocene'
+}
+
+// Task 67: Stratospheric Aerosol Monitor
+export interface AerosolLayer {
+  id: string
+  name: string
+  altitude: number
+  opticalDepth: number
+  composition: string
+  coverage: number
+  radiativeEffect: number
+  latitude: number
+  longitude: number
+}
+
+export interface StratosphericAerosolState {
+  layers: AerosolLayer[]
+  activeLayerId: string | null
+  showOpticalDepth: boolean
+  showAltitude: boolean
+  showCoverage: boolean
+  showRadiativeEffect: boolean
+  open: boolean
+  compositionFilter: 'all' | 'sulfate' | 'volcanic' | 'dust' | 'biomass'
+}
+
+// Task 67: Megacity Carbon Footprint
+export interface MegacityEmission {
+  id: string
+  name: string
+  population: number
+  co2Emissions: number
+  methaneEmissions: number
+  transportShare: number
+  energyShare: number
+  industrialShare: number
+  latitude: number
+  longitude: number
+}
+
+export interface MegacityCarbonState {
+  cities: MegacityEmission[]
+  activeCityId: string | null
+  showCO2: boolean
+  showMethane: boolean
+  showTransportShare: boolean
+  showEnergyShare: boolean
+  open: boolean
+  emissionFilter: 'all' | 'low' | 'moderate' | 'high' | 'very-high'
+}
+
+// Task 67: Ocean Mesoscale Eddy Tracker
+export interface MesoscaleEddy {
+  id: string
+  name: string
+  eddyType: 'cyclonic' | 'anticyclonic'
+  radius: number
+  maxVelocity: number
+  temperatureAnomaly: number
+  lifetime: number
+  latitude: number
+  longitude: number
+}
+
+export interface OceanEddyState {
+  eddies: MesoscaleEddy[]
+  activeEddyId: string | null
+  showRadius: boolean
+  showVelocity: boolean
+  showTempAnomaly: boolean
+  showLifetime: boolean
+  open: boolean
+  typeFilter: 'all' | 'cyclonic' | 'anticyclonic'
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -5336,6 +5528,38 @@ interface MapState {
   // Task 65: Fjord Ecosystem Monitor
   fjordEcosystem: FjordEcosystemState
   setFjordEcosystem: (state: Partial<FjordEcosystemState>) => void
+
+  // Task 67: Geothermal Spring Monitor
+  geothermalSpring: GeothermalSpringState
+  setGeothermalSpring: (state: Partial<GeothermalSpringState>) => void
+
+  // Task 67: Asteroid Impact Risk Mapper
+  asteroidImpact: AsteroidImpactState
+  setAsteroidImpact: (state: Partial<AsteroidImpactState>) => void
+
+  // Task 67: Desert Oasis Monitor
+  desertOasis: DesertOasisState
+  setDesertOasis: (state: Partial<DesertOasisState>) => void
+
+  // Task 67: Volcanic Lightning Tracker
+  volcanicLightning: VolcanicLightningState
+  setVolcanicLightning: (state: Partial<VolcanicLightningState>) => void
+
+  // Task 67: Ice Core Data Explorer
+  iceCoreData: IceCoreDataState
+  setIceCoreData: (state: Partial<IceCoreDataState>) => void
+
+  // Task 67: Stratospheric Aerosol Monitor
+  stratosphericAerosol: StratosphericAerosolState
+  setStratosphericAerosol: (state: Partial<StratosphericAerosolState>) => void
+
+  // Task 67: Megacity Carbon Footprint
+  megacityCarbon: MegacityCarbonState
+  setMegacityCarbon: (state: Partial<MegacityCarbonState>) => void
+
+  // Task 67: Ocean Mesoscale Eddy Tracker
+  oceanEddy: OceanEddyState
+  setOceanEddy: (state: Partial<OceanEddyState>) => void
 
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
@@ -9644,6 +9868,117 @@ export const useMapStore = create<MapState>()(
         fjordEcosystem: { ...state.fjordEcosystem, ...updates },
       })),
 
+      geothermalSpring: {
+        springs: [],
+        activeSpringId: null,
+        showTemperature: true,
+        showFlowRate: true,
+        showMineralContent: false,
+        showSeismicActivity: true,
+        open: false,
+        tempFilter: 'all',
+      },
+      setGeothermalSpring: (updates) => set((state) => ({
+        geothermalSpring: { ...state.geothermalSpring, ...updates },
+      })),
+
+      asteroidImpact: {
+        objects: [],
+        activeObjectId: null,
+        showTrajectory: true,
+        showHazardScore: true,
+        showSizeComparison: false,
+        open: false,
+        hazardFilter: 'all',
+      },
+      setAsteroidImpact: (updates) => set((state) => ({
+        asteroidImpact: { ...state.asteroidImpact, ...updates },
+      })),
+
+      desertOasis: {
+        oases: [],
+        activeOasisId: null,
+        showWaterLevel: true,
+        showSalinity: true,
+        showVegetation: true,
+        showAreaChange: false,
+        open: false,
+        healthFilter: 'all',
+      },
+      setDesertOasis: (updates) => set((state) => ({
+        desertOasis: { ...state.desertOasis, ...updates },
+      })),
+
+      volcanicLightning: {
+        strikes: [],
+        activeStrikeId: null,
+        showFrequency: true,
+        showAshHeight: true,
+        showEruptionIntensity: true,
+        showStrikeCount: false,
+        open: false,
+        intensityFilter: 'all',
+      },
+      setVolcanicLightning: (updates) => set((state) => ({
+        volcanicLightning: { ...state.volcanicLightning, ...updates },
+      })),
+
+      iceCoreData: {
+        samples: [],
+        activeSampleId: null,
+        showCO2: true,
+        showTemperature: true,
+        showDust: false,
+        showDepth: true,
+        open: false,
+        ageFilter: 'all',
+      },
+      setIceCoreData: (updates) => set((state) => ({
+        iceCoreData: { ...state.iceCoreData, ...updates },
+      })),
+
+      stratosphericAerosol: {
+        layers: [],
+        activeLayerId: null,
+        showOpticalDepth: true,
+        showAltitude: true,
+        showCoverage: false,
+        showRadiativeEffect: true,
+        open: false,
+        compositionFilter: 'all',
+      },
+      setStratosphericAerosol: (updates) => set((state) => ({
+        stratosphericAerosol: { ...state.stratosphericAerosol, ...updates },
+      })),
+
+      megacityCarbon: {
+        cities: [],
+        activeCityId: null,
+        showCO2: true,
+        showMethane: false,
+        showTransportShare: true,
+        showEnergyShare: true,
+        open: false,
+        emissionFilter: 'all',
+      },
+      setMegacityCarbon: (updates) => set((state) => ({
+        megacityCarbon: { ...state.megacityCarbon, ...updates },
+      })),
+
+      oceanEddy: {
+        eddies: [],
+        activeEddyId: null,
+        showRadius: true,
+        showVelocity: true,
+        showTempAnomaly: true,
+        showLifetime: false,
+        open: false,
+        typeFilter: 'all',
+      },
+      setOceanEddy: (updates) => set((state) => ({
+        oceanEddy: { ...state.oceanEddy, ...updates },
+      })),
+
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
       setAddLocationDialogOpen: (open) => set({ addLocationDialogOpen: open }),
@@ -9940,6 +10275,14 @@ export const useMapStore = create<MapState>()(
         cryosphereChange: state.cryosphereChange,
         abyssalPlain: state.abyssalPlain,
         fjordEcosystem: state.fjordEcosystem,
+        geothermalSpring: state.geothermalSpring,
+        asteroidImpact: state.asteroidImpact,
+        desertOasis: state.desertOasis,
+        volcanicLightning: state.volcanicLightning,
+        iceCoreData: state.iceCoreData,
+        stratosphericAerosol: state.stratosphericAerosol,
+        megacityCarbon: state.megacityCarbon,
+        oceanEddy: state.oceanEddy,
       }),
     }
   )

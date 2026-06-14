@@ -2546,6 +2546,86 @@ export default function Home() {
           <Button
             variant="outline"
             size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setGeothermalSpring({ open: true })}
+            title="Geothermal Spring Monitor"
+            aria-label="Open geothermal spring monitor"
+          >
+            <FlameIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setAsteroidImpact({ open: true })}
+            title="Asteroid Impact Risk Mapper"
+            aria-label="Open asteroid impact risk mapper"
+          >
+            <Zap className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setDesertOasis({ open: true })}
+            title="Desert Oasis Monitor"
+            aria-label="Open desert oasis monitor"
+          >
+            <DropletsIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setVolcanicLightning({ open: true })}
+            title="Volcanic Lightning Tracker"
+            aria-label="Open volcanic lightning tracker"
+          >
+            <Zap className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setIceCoreData({ open: true })}
+            title="Ice Core Data Explorer"
+            aria-label="Open ice core data explorer"
+          >
+            <SnowflakeIcon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setStratosphericAerosol({ open: true })}
+            title="Stratospheric Aerosol Monitor"
+            aria-label="Open stratospheric aerosol monitor"
+          >
+            <CloudIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setMegacityCarbon({ open: true })}
+            title="Megacity Carbon Footprint"
+            aria-label="Open megacity carbon footprint"
+          >
+            <Globe2Icon2 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            onClick={() => useMapStore.getState().setOceanEddy({ open: true })}
+            title="Ocean Mesoscale Eddy Tracker"
+            aria-label="Open ocean mesoscale eddy tracker"
+          >
+            <WavesIcon3 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
             className="hidden sm:flex map-control-glass h-10 w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             onClick={() =>
               window.open('https://github.com/maplibre/maplibre-native', '_blank')
