@@ -5515,6 +5515,208 @@ export interface BiomassBurningData {
   description: string
 }
 
+// Task 74: New monitoring interfaces
+
+export interface GlacialLakeOutburstState {
+  lakes: GlacialLakeOutburstData[]
+  activeLakeId: string | null
+  showWaterLevel: boolean
+  showDamStability: boolean
+  showFloodPotential: boolean
+  showDownstreamRisk: boolean
+  open: boolean
+  riskFilter: 'all' | 'low' | 'moderate' | 'high' | 'very_high' | 'imminent'
+}
+
+export interface GlacialLakeOutburstData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  waterLevel: number
+  damStability: number
+  floodPotential: number
+  downstreamRisk: number
+  lakeArea: number
+  status: 'low' | 'moderate' | 'high' | 'very_high' | 'imminent'
+  description: string
+}
+
+export interface OceanMicroplasticState {
+  zones: OceanMicroplasticData[]
+  activeZoneId: string | null
+  showConcentration: boolean
+  showParticleSize: boolean
+  showDepth: boolean
+  showAccumulation: boolean
+  open: boolean
+  typeFilter: 'all' | 'gyre' | 'coastal' | 'river_mouth' | 'deep_ocean'
+}
+
+export interface OceanMicroplasticData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  concentration: number
+  particleSize: number
+  depth: number
+  accumulation: number
+  sourceDistance: number
+  status: 'low' | 'moderate' | 'elevated' | 'high' | 'extreme'
+  description: string
+}
+
+export interface VolcanicAshDispersionState {
+  clouds: VolcanicAshDispersionData[]
+  activeCloudId: string | null
+  showAshColumn: boolean
+  showDispersion: boolean
+  showAviationRisk: boolean
+  showFallout: boolean
+  open: boolean
+  severityFilter: 'all' | 'advisory' | 'warning' | 'critical' | 'catastrophic'
+}
+
+export interface VolcanicAshDispersionData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  ashColumn: number
+  dispersion: number
+  aviationRisk: number
+  fallout: number
+  so2Mass: number
+  status: 'advisory' | 'warning' | 'critical' | 'catastrophic'
+  description: string
+}
+
+export interface DroughtSeverityState {
+  regions: DroughtSeverityData[]
+  activeRegionId: string | null
+  showSPI: boolean
+  showSoilMoisture: boolean
+  showVegetation: boolean
+  showWaterStress: boolean
+  open: boolean
+  severityFilter: 'all' | 'abnormally_dry' | 'moderate' | 'severe' | 'extreme' | 'exceptional'
+}
+
+export interface DroughtSeverityData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  spi: number
+  soilMoisture: number
+  vegetation: number
+  waterStress: number
+  reservoirLevel: number
+  status: 'abnormally_dry' | 'moderate' | 'severe' | 'extreme' | 'exceptional'
+  description: string
+}
+
+export interface TsunamiWaveHeightState {
+  events: TsunamiWaveHeightData[]
+  activeEventId: string | null
+  showWaveHeight: boolean
+  showArrivalTime: boolean
+  showInundation: boolean
+  showCurrentSpeed: boolean
+  open: boolean
+  severityFilter: 'all' | 'advisory' | 'watch' | 'warning' | 'major'
+}
+
+export interface TsunamiWaveHeightData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  waveHeight: number
+  arrivalTime: number
+  inundation: number
+  currentSpeed: number
+  magnitude: number
+  status: 'advisory' | 'watch' | 'warning' | 'major'
+  description: string
+}
+
+export interface CaveEcosystemState {
+  caves: CaveEcosystemData[]
+  activeCaveId: string | null
+  showBiodiversity: boolean
+  showTemperature: boolean
+  showHumidity: boolean
+  showWaterQuality: boolean
+  open: boolean
+  typeFilter: 'all' | 'limestone' | 'lava_tube' | 'ice' | 'sea'
+}
+
+export interface CaveEcosystemData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  biodiversity: number
+  temperature: number
+  humidity: number
+  waterQuality: number
+  depth: number
+  status: 'pristine' | 'good' | 'moderate' | 'degraded' | 'critical'
+  description: string
+}
+
+export interface SolarIrradianceState {
+  stations: SolarIrradianceData[]
+  activeStationId: string | null
+  showGHI: boolean
+  showDNI: boolean
+  showDHI: boolean
+  showUVIndex: boolean
+  open: boolean
+  regionFilter: 'all' | 'desert' | 'tropical' | 'temperate' | 'polar'
+}
+
+export interface SolarIrradianceData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  ghi: number
+  dni: number
+  dhi: number
+  uvIndex: number
+  cloudCover: number
+  status: 'excellent' | 'good' | 'moderate' | 'low' | 'minimal'
+  description: string
+}
+
+export interface PeatlandRestorationState {
+  sites: PeatlandRestorationData[]
+  activeSiteId: string | null
+  showWaterTable: boolean
+  showVegetation: boolean
+  showCarbonStock: boolean
+  showRestorationProgress: boolean
+  open: boolean
+  statusFilter: 'all' | 'pristine' | 'degraded' | 'restoring' | 'restored' | 'failed'
+}
+
+export interface PeatlandRestorationData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  waterTable: number
+  vegetation: number
+  carbonStock: number
+  restorationProgress: number
+  area: number
+  status: 'pristine' | 'degraded' | 'restoring' | 'restored' | 'failed'
+  description: string
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -6879,6 +7081,24 @@ interface MapState {
   setAquiferSalinization: (state: Partial<AquiferSalinizationState>) => void
   biomassBurning: BiomassBurningState
   setBiomassBurning: (state: Partial<BiomassBurningState>) => void
+
+  // Task 74: New monitoring states
+  glacialLakeOutburst: GlacialLakeOutburstState
+  setGlacialLakeOutburst: (state: Partial<GlacialLakeOutburstState>) => void
+  oceanMicroplastic: OceanMicroplasticState
+  setOceanMicroplastic: (state: Partial<OceanMicroplasticState>) => void
+  volcanicAshDispersion: VolcanicAshDispersionState
+  setVolcanicAshDispersion: (state: Partial<VolcanicAshDispersionState>) => void
+  droughtSeverity: DroughtSeverityState
+  setDroughtSeverity: (state: Partial<DroughtSeverityState>) => void
+  tsunamiWaveHeight: TsunamiWaveHeightState
+  setTsunamiWaveHeight: (state: Partial<TsunamiWaveHeightState>) => void
+  caveEcosystem: CaveEcosystemState
+  setCaveEcosystem: (state: Partial<CaveEcosystemState>) => void
+  solarIrradiance: SolarIrradianceState
+  setSolarIrradiance: (state: Partial<SolarIrradianceState>) => void
+  peatlandRestoration: PeatlandRestorationState
+  setPeatlandRestoration: (state: Partial<PeatlandRestorationState>) => void
 
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
@@ -11639,6 +11859,38 @@ export const useMapStore = create<MapState>()(
         regions: [], activeRegionId: null, showFireCount: true, showBurnedArea: true, showEmissions: true, showSmoke: false, open: false, typeFilter: 'all',
       },
       setBiomassBurning: (updates) => set((state) => ({ biomassBurning: { ...state.biomassBurning, ...updates } })),
+      glacialLakeOutburst: {
+        lakes: [], activeLakeId: null, showWaterLevel: true, showDamStability: true, showFloodPotential: true, showDownstreamRisk: false, open: false, riskFilter: 'all',
+      },
+      setGlacialLakeOutburst: (updates) => set((state) => ({ glacialLakeOutburst: { ...state.glacialLakeOutburst, ...updates } })),
+      oceanMicroplastic: {
+        zones: [], activeZoneId: null, showConcentration: true, showParticleSize: true, showDepth: true, showAccumulation: false, open: false, typeFilter: 'all',
+      },
+      setOceanMicroplastic: (updates) => set((state) => ({ oceanMicroplastic: { ...state.oceanMicroplastic, ...updates } })),
+      volcanicAshDispersion: {
+        clouds: [], activeCloudId: null, showAshColumn: true, showDispersion: true, showAviationRisk: true, showFallout: false, open: false, severityFilter: 'all',
+      },
+      setVolcanicAshDispersion: (updates) => set((state) => ({ volcanicAshDispersion: { ...state.volcanicAshDispersion, ...updates } })),
+      droughtSeverity: {
+        regions: [], activeRegionId: null, showSPI: true, showSoilMoisture: true, showVegetation: true, showWaterStress: false, open: false, severityFilter: 'all',
+      },
+      setDroughtSeverity: (updates) => set((state) => ({ droughtSeverity: { ...state.droughtSeverity, ...updates } })),
+      tsunamiWaveHeight: {
+        events: [], activeEventId: null, showWaveHeight: true, showArrivalTime: true, showInundation: true, showCurrentSpeed: false, open: false, severityFilter: 'all',
+      },
+      setTsunamiWaveHeight: (updates) => set((state) => ({ tsunamiWaveHeight: { ...state.tsunamiWaveHeight, ...updates } })),
+      caveEcosystem: {
+        caves: [], activeCaveId: null, showBiodiversity: true, showTemperature: true, showHumidity: true, showWaterQuality: false, open: false, typeFilter: 'all',
+      },
+      setCaveEcosystem: (updates) => set((state) => ({ caveEcosystem: { ...state.caveEcosystem, ...updates } })),
+      solarIrradiance: {
+        stations: [], activeStationId: null, showGHI: true, showDNI: true, showDHI: true, showUVIndex: false, open: false, regionFilter: 'all',
+      },
+      setSolarIrradiance: (updates) => set((state) => ({ solarIrradiance: { ...state.solarIrradiance, ...updates } })),
+      peatlandRestoration: {
+        sites: [], activeSiteId: null, showWaterTable: true, showVegetation: true, showCarbonStock: true, showRestorationProgress: false, open: false, statusFilter: 'all',
+      },
+      setPeatlandRestoration: (updates) => set((state) => ({ peatlandRestoration: { ...state.peatlandRestoration, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
@@ -11992,6 +12244,14 @@ export const useMapStore = create<MapState>()(
         geothermalEnergy: state.geothermalEnergy,
         aquiferSalinization: state.aquiferSalinization,
         biomassBurning: state.biomassBurning,
+        glacialLakeOutburst: state.glacialLakeOutburst,
+        oceanMicroplastic: state.oceanMicroplastic,
+        volcanicAshDispersion: state.volcanicAshDispersion,
+        droughtSeverity: state.droughtSeverity,
+        tsunamiWaveHeight: state.tsunamiWaveHeight,
+        caveEcosystem: state.caveEcosystem,
+        solarIrradiance: state.solarIrradiance,
+        peatlandRestoration: state.peatlandRestoration,
       }),
     }
   )

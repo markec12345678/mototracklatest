@@ -74,6 +74,15 @@ export function MonitorPanelRegistry() {
   const geothermalEnergy = useMapStore((s) => s.geothermalEnergy)
   const aquiferSalinization = useMapStore((s) => s.aquiferSalinization)
   const biomassBurning = useMapStore((s) => s.biomassBurning)
+  // Task 74
+  const glacialLakeOutburst = useMapStore((s) => s.glacialLakeOutburst)
+  const oceanMicroplastic = useMapStore((s) => s.oceanMicroplastic)
+  const volcanicAshDispersion = useMapStore((s) => s.volcanicAshDispersion)
+  const droughtSeverity = useMapStore((s) => s.droughtSeverity)
+  const tsunamiWaveHeight = useMapStore((s) => s.tsunamiWaveHeight)
+  const caveEcosystem = useMapStore((s) => s.caveEcosystem)
+  const solarIrradiance = useMapStore((s) => s.solarIrradiance)
+  const peatlandRestoration = useMapStore((s) => s.peatlandRestoration)
 
   return (
     <>
@@ -116,6 +125,16 @@ export function MonitorPanelRegistry() {
       {geothermalEnergy.open && (<LazyPanel importFn={() => import('@/components/map/GeothermalEnergyMonitor')} exportName="GeothermalEnergyMonitor" shouldLoad={true} />)}
       {aquiferSalinization.open && (<LazyPanel importFn={() => import('@/components/map/AquiferSalinizationMonitor')} exportName="AquiferSalinizationMonitor" shouldLoad={true} />)}
       {biomassBurning.open && (<LazyPanel importFn={() => import('@/components/map/BiomassBurningMonitor')} exportName="BiomassBurningMonitor" shouldLoad={true} />)}
+
+      {/* Task 74: New Monitoring Panels */}
+      {glacialLakeOutburst.open && (<LazyPanel importFn={() => import('@/components/map/GlacialLakeOutburstMonitor')} exportName="GlacialLakeOutburstMonitor" shouldLoad={true} />)}
+      {oceanMicroplastic.open && (<LazyPanel importFn={() => import('@/components/map/OceanMicroplasticTracker')} exportName="OceanMicroplasticTracker" shouldLoad={true} />)}
+      {volcanicAshDispersion.open && (<LazyPanel importFn={() => import('@/components/map/VolcanicAshDispersionMonitor')} exportName="VolcanicAshDispersionMonitor" shouldLoad={true} />)}
+      {droughtSeverity.open && (<LazyPanel importFn={() => import('@/components/map/DroughtSeverityMonitor')} exportName="DroughtSeverityMonitor" shouldLoad={true} />)}
+      {tsunamiWaveHeight.open && (<LazyPanel importFn={() => import('@/components/map/TsunamiWaveHeightMonitor')} exportName="TsunamiWaveHeightMonitor" shouldLoad={true} />)}
+      {caveEcosystem.open && (<LazyPanel importFn={() => import('@/components/map/CaveEcosystemMonitor')} exportName="CaveEcosystemMonitor" shouldLoad={true} />)}
+      {solarIrradiance.open && (<LazyPanel importFn={() => import('@/components/map/SolarIrradianceMonitor')} exportName="SolarIrradianceMonitor" shouldLoad={true} />)}
+      {peatlandRestoration.open && (<LazyPanel importFn={() => import('@/components/map/PeatlandRestorationTracker')} exportName="PeatlandRestorationTracker" shouldLoad={true} />)}
 
       {/* Task 69: New Monitoring Panels */}
       {lavaFlow.open && (
