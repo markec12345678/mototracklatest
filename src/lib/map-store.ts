@@ -5717,6 +5717,208 @@ export interface PeatlandRestorationData {
   description: string
 }
 
+// Task 75: New monitoring interfaces
+
+export interface MangroveCarbonState {
+  forests: MangroveCarbonData[]
+  activeForestId: string | null
+  showCarbonStock: boolean
+  showArea: boolean
+  showDegradation: boolean
+  showRestoration: boolean
+  open: boolean
+  speciesFilter: 'all' | 'rhizophora' | 'avicennia' | 'sonneratia' | 'mixed'
+}
+
+export interface MangroveCarbonData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  carbonStock: number
+  area: number
+  degradation: number
+  restoration: number
+  biodiversity: number
+  status: 'excellent' | 'good' | 'moderate' | 'degraded' | 'critical'
+  description: string
+}
+
+export interface OceanHeatContentState {
+  basins: OceanHeatContentData[]
+  activeBasinId: string | null
+  showHeatContent: boolean
+  showTemperature: boolean
+  showSalinity: boolean
+  showTrend: boolean
+  open: boolean
+  depthFilter: 'all' | 'surface' | 'thermocline' | 'intermediate' | 'deep'
+}
+
+export interface OceanHeatContentData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  heatContent: number
+  temperature: number
+  salinity: number
+  trend: number
+  stratification: number
+  status: 'cooling' | 'stable' | 'warming' | 'rapid_warming' | 'extreme_warming'
+  description: string
+}
+
+export interface DustStormTrackerState {
+  storms: DustStormTrackerData[]
+  activeStormId: string | null
+  showAOD: boolean
+  showWindSpeed: boolean
+  showVisibility: boolean
+  showPM10: boolean
+  open: boolean
+  severityFilter: 'all' | 'light' | 'moderate' | 'heavy' | 'severe' | 'catastrophic'
+}
+
+export interface DustStormTrackerData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  aod: number
+  windSpeed: number
+  visibility: number
+  pm10: number
+  duration: number
+  status: 'light' | 'moderate' | 'heavy' | 'severe' | 'catastrophic'
+  description: string
+}
+
+export interface CoralDiseaseMonitorState {
+  reefs: CoralDiseaseMonitorData[]
+  activeReefId: string | null
+  showPrevalence: boolean
+  showWhiteSyndrome: boolean
+  showBlackBand: boolean
+  showRecoveryRate: boolean
+  open: boolean
+  diseaseFilter: 'all' | 'white_syndrome' | 'black_band' | 'yellow_band' | 'tumor'
+}
+
+export interface CoralDiseaseMonitorData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  prevalence: number
+  whiteSyndrome: number
+  blackBand: number
+  recoveryRate: number
+  waterTemp: number
+  status: 'healthy' | 'low' | 'moderate' | 'high' | 'epidemic'
+  description: string
+}
+
+export interface IceShelfCollapseState {
+  shelves: IceShelfCollapseData[]
+  activeShelfId: string | null
+  showArea: boolean
+  showThickness: boolean
+  showFracture: boolean
+  showMeltRate: boolean
+  open: boolean
+  stabilityFilter: 'all' | 'stable' | 'weakening' | 'fracturing' | 'collapsing' | 'collapsed'
+}
+
+export interface IceShelfCollapseData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  area: number
+  thickness: number
+  fracture: number
+  meltRate: number
+  buttressing: number
+  status: 'stable' | 'weakening' | 'fracturing' | 'collapsing' | 'collapsed'
+  description: string
+}
+
+export interface UrbanFloodRiskState {
+  zones: UrbanFloodRiskData[]
+  activeZoneId: string | null
+  showImpervious: boolean
+  showDrainage: boolean
+  showElevation: boolean
+  showHistorical: boolean
+  open: boolean
+  riskFilter: 'all' | 'minimal' | 'low' | 'moderate' | 'high' | 'extreme'
+}
+
+export interface UrbanFloodRiskData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  impervious: number
+  drainage: number
+  elevation: number
+  historical: number
+  population: number
+  status: 'minimal' | 'low' | 'moderate' | 'high' | 'extreme'
+  description: string
+}
+
+export interface PhytoplanktonBloomState {
+  blooms: PhytoplanktonBloomData[]
+  activeBloomId: string | null
+  showChlorophyll: boolean
+  showToxicity: boolean
+  showExtent: boolean
+  showDuration: boolean
+  open: boolean
+  speciesFilter: 'all' | 'karenia' | 'alexandrium' | 'pseudo_nitzschia' | 'microcystis'
+}
+
+export interface PhytoplanktonBloomData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  chlorophyll: number
+  toxicity: number
+  extent: number
+  duration: number
+  species: number
+  status: 'background' | 'bloom' | 'dense_bloom' | 'harmful' | 'severe_hab'
+  description: string
+}
+
+export interface SubmarineCanyonState {
+  canyons: SubmarineCanyonData[]
+  activeCanyonId: string | null
+  showDepth: boolean
+  showCurrentSpeed: boolean
+  showSediment: boolean
+  showBiodiversity: boolean
+  open: boolean
+  typeFilter: 'all' | 'river_originated' | 'shelf_incised' | 'slope' | 'blind'
+}
+
+export interface SubmarineCanyonData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  depth: number
+  currentSpeed: number
+  sediment: number
+  biodiversity: number
+  length: number
+  status: 'active' | 'moderate' | 'quiet' | 'dormant' | 'buried'
+  description: string
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -7099,6 +7301,24 @@ interface MapState {
   setSolarIrradiance: (state: Partial<SolarIrradianceState>) => void
   peatlandRestoration: PeatlandRestorationState
   setPeatlandRestoration: (state: Partial<PeatlandRestorationState>) => void
+
+  // Task 75: New monitoring states
+  mangroveCarbon: MangroveCarbonState
+  setMangroveCarbon: (state: Partial<MangroveCarbonState>) => void
+  oceanHeatContent: OceanHeatContentState
+  setOceanHeatContent: (state: Partial<OceanHeatContentState>) => void
+  dustStormTracker: DustStormTrackerState
+  setDustStormTracker: (state: Partial<DustStormTrackerState>) => void
+  coralDiseaseMonitor: CoralDiseaseMonitorState
+  setCoralDiseaseMonitor: (state: Partial<CoralDiseaseMonitorState>) => void
+  iceShelfCollapse: IceShelfCollapseState
+  setIceShelfCollapse: (state: Partial<IceShelfCollapseState>) => void
+  urbanFloodRisk: UrbanFloodRiskState
+  setUrbanFloodRisk: (state: Partial<UrbanFloodRiskState>) => void
+  phytoplanktonBloom: PhytoplanktonBloomState
+  setPhytoplanktonBloom: (state: Partial<PhytoplanktonBloomState>) => void
+  submarineCanyon: SubmarineCanyonState
+  setSubmarineCanyon: (state: Partial<SubmarineCanyonState>) => void
 
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
@@ -11891,6 +12111,38 @@ export const useMapStore = create<MapState>()(
         sites: [], activeSiteId: null, showWaterTable: true, showVegetation: true, showCarbonStock: true, showRestorationProgress: false, open: false, statusFilter: 'all',
       },
       setPeatlandRestoration: (updates) => set((state) => ({ peatlandRestoration: { ...state.peatlandRestoration, ...updates } })),
+      mangroveCarbon: {
+        forests: [], activeForestId: null, showCarbonStock: true, showArea: true, showDegradation: true, showRestoration: false, open: false, speciesFilter: 'all',
+      },
+      setMangroveCarbon: (updates) => set((state) => ({ mangroveCarbon: { ...state.mangroveCarbon, ...updates } })),
+      oceanHeatContent: {
+        basins: [], activeBasinId: null, showHeatContent: true, showTemperature: true, showSalinity: true, showTrend: false, open: false, depthFilter: 'all',
+      },
+      setOceanHeatContent: (updates) => set((state) => ({ oceanHeatContent: { ...state.oceanHeatContent, ...updates } })),
+      dustStormTracker: {
+        storms: [], activeStormId: null, showAOD: true, showWindSpeed: true, showVisibility: true, showPM10: false, open: false, severityFilter: 'all',
+      },
+      setDustStormTracker: (updates) => set((state) => ({ dustStormTracker: { ...state.dustStormTracker, ...updates } })),
+      coralDiseaseMonitor: {
+        reefs: [], activeReefId: null, showPrevalence: true, showWhiteSyndrome: true, showBlackBand: true, showRecoveryRate: false, open: false, diseaseFilter: 'all',
+      },
+      setCoralDiseaseMonitor: (updates) => set((state) => ({ coralDiseaseMonitor: { ...state.coralDiseaseMonitor, ...updates } })),
+      iceShelfCollapse: {
+        shelves: [], activeShelfId: null, showArea: true, showThickness: true, showFracture: true, showMeltRate: false, open: false, stabilityFilter: 'all',
+      },
+      setIceShelfCollapse: (updates) => set((state) => ({ iceShelfCollapse: { ...state.iceShelfCollapse, ...updates } })),
+      urbanFloodRisk: {
+        zones: [], activeZoneId: null, showImpervious: true, showDrainage: true, showElevation: true, showHistorical: false, open: false, riskFilter: 'all',
+      },
+      setUrbanFloodRisk: (updates) => set((state) => ({ urbanFloodRisk: { ...state.urbanFloodRisk, ...updates } })),
+      phytoplanktonBloom: {
+        blooms: [], activeBloomId: null, showChlorophyll: true, showToxicity: true, showExtent: true, showDuration: false, open: false, speciesFilter: 'all',
+      },
+      setPhytoplanktonBloom: (updates) => set((state) => ({ phytoplanktonBloom: { ...state.phytoplanktonBloom, ...updates } })),
+      submarineCanyon: {
+        canyons: [], activeCanyonId: null, showDepth: true, showCurrentSpeed: true, showSediment: true, showBiodiversity: false, open: false, typeFilter: 'all',
+      },
+      setSubmarineCanyon: (updates) => set((state) => ({ submarineCanyon: { ...state.submarineCanyon, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
@@ -12252,6 +12504,14 @@ export const useMapStore = create<MapState>()(
         caveEcosystem: state.caveEcosystem,
         solarIrradiance: state.solarIrradiance,
         peatlandRestoration: state.peatlandRestoration,
+        mangroveCarbon: state.mangroveCarbon,
+        oceanHeatContent: state.oceanHeatContent,
+        dustStormTracker: state.dustStormTracker,
+        coralDiseaseMonitor: state.coralDiseaseMonitor,
+        iceShelfCollapse: state.iceShelfCollapse,
+        urbanFloodRisk: state.urbanFloodRisk,
+        phytoplanktonBloom: state.phytoplanktonBloom,
+        submarineCanyon: state.submarineCanyon,
       }),
     }
   )
