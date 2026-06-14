@@ -6839,6 +6839,126 @@ export interface UpwellingZoneState {
   data: { name: string; value: number; unit: string; status: string; trend: string; lat: number; lng: number; description: string; lastUpdated: string } | null
 }
 
+export interface CoralSpawnSyncState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface LavaTubeState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface SaltMarshCarbonState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface IceStreamVelocityState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface SubmarinePipelineState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface MonsoonTrackState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface RockGlacierState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
+export interface CoastalAcidState {
+  open: boolean
+  data: {
+    name: string
+    value: number
+    unit: string
+    status: string
+    trend: string
+    lat: number
+    lng: number
+    description: string
+    lastUpdated: string
+  } | null
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -8351,6 +8471,22 @@ interface MapState {
   setThermokarstErosion: (state: Partial<ThermokarstErosionState>) => void
   upwellingZone: UpwellingZoneState
   setUpwellingZone: (state: Partial<UpwellingZoneState>) => void
+  coralSpawnSync: CoralSpawnSyncState
+  setCoralSpawnSync: (state: Partial<CoralSpawnSyncState>) => void
+  lavaTube: LavaTubeState
+  setLavaTube: (state: Partial<LavaTubeState>) => void
+  saltMarshCarbon: SaltMarshCarbonState
+  setSaltMarshCarbon: (state: Partial<SaltMarshCarbonState>) => void
+  iceStreamVelocity: IceStreamVelocityState
+  setIceStreamVelocity: (state: Partial<IceStreamVelocityState>) => void
+  submarinePipeline: SubmarinePipelineState
+  setSubmarinePipeline: (state: Partial<SubmarinePipelineState>) => void
+  monsoonTrack: MonsoonTrackState
+  setMonsoonTrack: (state: Partial<MonsoonTrackState>) => void
+  rockGlacier: RockGlacierState
+  setRockGlacier: (state: Partial<RockGlacierState>) => void
+  coastalAcid: CoastalAcidState
+  setCoastalAcid: (state: Partial<CoastalAcidState>) => void
 
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
@@ -13318,6 +13454,22 @@ export const useMapStore = create<MapState>()(
       setThermokarstErosion: (updates) => set((state) => ({ thermokarstErosion: { ...state.thermokarstErosion, ...updates } })),
       upwellingZone: { open: false, data: null },
       setUpwellingZone: (updates) => set((state) => ({ upwellingZone: { ...state.upwellingZone, ...updates } })),
+      coralSpawnSync: { open: false, data: null },
+      setCoralSpawnSync: (updates) => set((state) => ({ coralSpawnSync: { ...state.coralSpawnSync, ...updates } })),
+      lavaTube: { open: false, data: null },
+      setLavaTube: (updates) => set((state) => ({ lavaTube: { ...state.lavaTube, ...updates } })),
+      saltMarshCarbon: { open: false, data: null },
+      setSaltMarshCarbon: (updates) => set((state) => ({ saltMarshCarbon: { ...state.saltMarshCarbon, ...updates } })),
+      iceStreamVelocity: { open: false, data: null },
+      setIceStreamVelocity: (updates) => set((state) => ({ iceStreamVelocity: { ...state.iceStreamVelocity, ...updates } })),
+      submarinePipeline: { open: false, data: null },
+      setSubmarinePipeline: (updates) => set((state) => ({ submarinePipeline: { ...state.submarinePipeline, ...updates } })),
+      monsoonTrack: { open: false, data: null },
+      setMonsoonTrack: (updates) => set((state) => ({ monsoonTrack: { ...state.monsoonTrack, ...updates } })),
+      rockGlacier: { open: false, data: null },
+      setRockGlacier: (updates) => set((state) => ({ rockGlacier: { ...state.rockGlacier, ...updates } })),
+      coastalAcid: { open: false, data: null },
+      setCoastalAcid: (updates) => set((state) => ({ coastalAcid: { ...state.coastalAcid, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
@@ -13742,6 +13894,14 @@ export const useMapStore = create<MapState>()(
         riverBankCollapse: state.riverBankCollapse,
         thermokarstErosion: state.thermokarstErosion,
         upwellingZone: state.upwellingZone,
+        coralSpawnSync: state.coralSpawnSync,
+        lavaTube: state.lavaTube,
+        saltMarshCarbon: state.saltMarshCarbon,
+        iceStreamVelocity: state.iceStreamVelocity,
+        submarinePipeline: state.submarinePipeline,
+        monsoonTrack: state.monsoonTrack,
+        rockGlacier: state.rockGlacier,
+        coastalAcid: state.coastalAcid,
       }),
     }
   )

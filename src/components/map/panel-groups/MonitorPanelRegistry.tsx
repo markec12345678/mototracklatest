@@ -145,6 +145,14 @@ export function MonitorPanelRegistry() {
   const riverBankCollapse = useMapStore((s) => s.riverBankCollapse)
   const thermokarstErosion = useMapStore((s) => s.thermokarstErosion)
   const upwellingZone = useMapStore((s) => s.upwellingZone)
+  const coralSpawnSync = useMapStore((s) => s.coralSpawnSync)
+  const lavaTube = useMapStore((s) => s.lavaTube)
+  const saltMarshCarbon = useMapStore((s) => s.saltMarshCarbon)
+  const iceStreamVelocity = useMapStore((s) => s.iceStreamVelocity)
+  const submarinePipeline = useMapStore((s) => s.submarinePipeline)
+  const monsoonTrack = useMapStore((s) => s.monsoonTrack)
+  const rockGlacier = useMapStore((s) => s.rockGlacier)
+  const coastalAcid = useMapStore((s) => s.coastalAcid)
 
   return (
     <>
@@ -265,6 +273,14 @@ export function MonitorPanelRegistry() {
       {riverBankCollapse.open && (<LazyPanel importFn={() => import('@/components/map/RiverBankCollapseMonitor')} exportName="RiverBankCollapseMonitor" shouldLoad={true} />)}
       {thermokarstErosion.open && (<LazyPanel importFn={() => import('@/components/map/ThermokarstErosionMonitor')} exportName="ThermokarstErosionMonitor" shouldLoad={true} />)}
       {upwellingZone.open && (<LazyPanel importFn={() => import('@/components/map/UpwellingZoneMonitor')} exportName="UpwellingZoneMonitor" shouldLoad={true} />)}
+      {coralSpawnSync.open && (<LazyPanel importFn={() => import('@/components/map/CoralSpawnSyncMonitor')} exportName="CoralSpawnSyncMonitor" shouldLoad={true} />)}
+      {lavaTube.open && (<LazyPanel importFn={() => import('@/components/map/LavaTubeMonitor')} exportName="LavaTubeMonitor" shouldLoad={true} />)}
+      {saltMarshCarbon.open && (<LazyPanel importFn={() => import('@/components/map/SaltMarshCarbonMonitor')} exportName="SaltMarshCarbonMonitor" shouldLoad={true} />)}
+      {iceStreamVelocity.open && (<LazyPanel importFn={() => import('@/components/map/IceStreamVelocityMonitor')} exportName="IceStreamVelocityMonitor" shouldLoad={true} />)}
+      {submarinePipeline.open && (<LazyPanel importFn={() => import('@/components/map/SubmarinePipelineMonitor')} exportName="SubmarinePipelineMonitor" shouldLoad={true} />)}
+      {monsoonTrack.open && (<LazyPanel importFn={() => import('@/components/map/MonsoonTrackMonitor')} exportName="MonsoonTrackMonitor" shouldLoad={true} />)}
+      {rockGlacier.open && (<LazyPanel importFn={() => import('@/components/map/RockGlacierMonitor')} exportName="RockGlacierMonitor" shouldLoad={true} />)}
+      {coastalAcid.open && (<LazyPanel importFn={() => import('@/components/map/CoastalAcidMonitor')} exportName="CoastalAcidMonitor" shouldLoad={true} />)}
 
       {/* Task 69: New Monitoring Panels */}
       {lavaFlow.open && (
