@@ -44,25 +44,25 @@ export default function Home() {
 
   useEffect(() => {
     if (loadStep >= 1) return
-    const timer = setTimeout(() => setLoadStep(1), 5000)
+    const timer = setTimeout(() => setLoadStep(1), 10000)
     return () => clearTimeout(timer)
   }, [loadStep])
 
   useEffect(() => {
     if (loadStep >= 2) return
-    const timer = setTimeout(() => setLoadStep(2), 15000)
+    const timer = setTimeout(() => setLoadStep(2), 60000)
     return () => clearTimeout(timer)
   }, [loadStep])
 
   useEffect(() => {
     if (loadStep >= 3) return
-    const timer = setTimeout(() => setLoadStep(3), 30000)
+    const timer = setTimeout(() => setLoadStep(3), 120000)
     return () => clearTimeout(timer)
   }, [loadStep])
 
   useEffect(() => {
     if (loadStep >= 4) return
-    const timer = setTimeout(() => setLoadStep(4), 60000)
+    const timer = setTimeout(() => setLoadStep(4), 300000)
     return () => clearTimeout(timer)
   }, [loadStep])
 
