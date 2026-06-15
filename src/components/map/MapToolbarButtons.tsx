@@ -257,6 +257,15 @@ import {
   Wind as WindIcon9,
   Droplets as DropletsIcon9,
   Droplet as DropletIcon6,
+  // Task 90 icons
+  Snowflake as SnowflakeIcon9,
+  Cloud as CloudIcon5,
+  Thermometer as ThermometerIcon8,
+  Droplets as DropletsIcon10,
+  Mountain as MountainIcon10,
+  Wind as WindIcon10,
+  Droplet as DropletIcon7,
+  MountainSnow as MountainSnowIcon4,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -2401,6 +2410,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setUrbanHeatVentilation({ open: true })} title="Urban Heat Ventilation" aria-label="Open urban heat ventilation monitor"><WindIcon9 className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setBrinePool({ open: true })} title="Brine Pool" aria-label="Open brine pool monitor"><DropletsIcon9 className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setSupraglacialStream({ open: true })} title="Supraglacial Stream" aria-label="Open supraglacial stream monitor"><DropletIcon6 className="h-4 w-4" /></Button>
+          {/* Task 90 buttons */}
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setMethaneHydrateStability({ open: true })} title="Methane Hydrate Stability" aria-label="Open methane hydrate stability monitor"><SnowflakeIcon9 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setVolcanicAshCloud({ open: true })} title="Volcanic Ash Cloud" aria-label="Open volcanic ash cloud monitor"><CloudIcon5 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setGeothermalGradient({ open: true })} title="Geothermal Gradient" aria-label="Open geothermal gradient monitor"><ThermometerIcon8 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setOceanDeoxygenation({ open: true })} title="Ocean Deoxygenation" aria-label="Open ocean deoxygenation monitor"><DropletsIcon10 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setRockGlacier({ open: true })} title="Rock Glacier" aria-label="Open rock glacier monitor"><MountainIcon10 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setDustHemisphere({ open: true })} title="Dust Hemisphere Transport" aria-label="Open dust hemisphere transport monitor"><WindIcon10 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setMicroplasticOcean({ open: true })} title="Microplastic Ocean" aria-label="Open microplastic ocean monitor"><DropletIcon7 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setGlacierBasalSlide({ open: true })} title="Glacier Basal Slide" aria-label="Open glacier basal slide monitor"><MountainSnowIcon4 className="h-4 w-4" /></Button>
           <Button
             variant="outline"
             size="icon"

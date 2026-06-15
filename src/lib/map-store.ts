@@ -6870,6 +6870,190 @@ export interface SupraglacialStreamData {
   description: string
 }
 
+export interface MethaneHydrateStabilityState {
+  zones: MethaneHydrateStabilityData[]
+  activeZoneId: string | null
+  showStability: boolean
+  showTemperature: boolean
+  showPressure: boolean
+  open: boolean
+  stabilityFilter: 'all' | 'stable' | 'transitional' | 'unstable' | 'dissociating'
+}
+
+export interface MethaneHydrateStabilityData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  stability: 'stable' | 'transitional' | 'unstable' | 'dissociating'
+  temperature: number
+  pressure: number
+  depth: number
+  methaneConcentration: number
+  description: string
+}
+
+export interface VolcanicAshCloudState {
+  clouds: VolcanicAshCloudData[]
+  activeCloudId: string | null
+  showAltitude: boolean
+  showDispersion: boolean
+  showConcentration: boolean
+  open: boolean
+  alertFilter: 'all' | 'advisory' | 'warning' | 'critical' | 'severe'
+}
+
+export interface VolcanicAshCloudData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  altitude: number
+  dispersionRadius: number
+  concentration: number
+  alertLevel: 'advisory' | 'warning' | 'critical' | 'severe'
+  windDirection: string
+  description: string
+}
+
+export interface GeothermalGradientState {
+  sites: GeothermalGradientData[]
+  activeSiteId: string | null
+  showGradient: boolean
+  showTemperature: boolean
+  showFlow: boolean
+  open: boolean
+  potentialFilter: 'all' | 'low' | 'moderate' | 'high' | 'exceptional'
+}
+
+export interface GeothermalGradientData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  gradient: number
+  temperature: number
+  flowRate: number
+  potential: 'low' | 'moderate' | 'high' | 'exceptional'
+  depth: number
+  description: string
+}
+
+export interface OceanDeoxygenationState {
+  zones: OceanDeoxygenationData[]
+  activeZoneId: string | null
+  showOxygen: boolean
+  showArea: boolean
+  showImpact: boolean
+  open: boolean
+  severityFilter: 'all' | 'mild' | 'moderate' | 'severe' | 'anoxic'
+}
+
+export interface OceanDeoxygenationData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  oxygenLevel: number
+  affectedArea: number
+  marineImpact: number
+  severity: 'mild' | 'moderate' | 'severe' | 'anoxic'
+  depthRange: string
+  description: string
+}
+
+export interface RockGlacierState {
+  glaciers: RockGlacierData[]
+  activeGlacierId: string | null
+  showVelocity: boolean
+  showTemperature: boolean
+  showIceContent: boolean
+  open: boolean
+  activityFilter: 'all' | 'active' | 'transitional' | 'inactive' | 'relict'
+}
+
+export interface RockGlacierData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  velocity: number
+  temperature: number
+  iceContent: number
+  activity: 'active' | 'transitional' | 'inactive' | 'relict'
+  area: number
+  description: string
+}
+
+export interface DustHemisphereState {
+  events: DustHemisphereData[]
+  activeEventId: string | null
+  showConcentration: boolean
+  showTransport: boolean
+  showDeposition: boolean
+  open: boolean
+  intensityFilter: 'all' | 'minor' | 'moderate' | 'major' | 'extreme'
+}
+
+export interface DustHemisphereData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  concentration: number
+  transportDistance: number
+  depositionRate: number
+  intensity: 'minor' | 'moderate' | 'major' | 'extreme'
+  sourceRegion: string
+  description: string
+}
+
+export interface MicroplasticOceanState {
+  zones: MicroplasticOceanData[]
+  activeZoneId: string | null
+  showConcentration: boolean
+  showSize: boolean
+  showSourceType: boolean
+  open: boolean
+  densityFilter: 'all' | 'low' | 'moderate' | 'high' | 'extreme'
+}
+
+export interface MicroplasticOceanData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  concentration: number
+  avgSize: number
+  sourceType: 'river_input' | 'coastal_runoff' | 'fishing_debris' | 'atmospheric'
+  density: 'low' | 'moderate' | 'high' | 'extreme'
+  depth: number
+  description: string
+}
+
+export interface GlacierBasalSlideState {
+  glaciers: GlacierBasalSlideData[]
+  activeGlacierId: string | null
+  showVelocity: boolean
+  showBasalTemp: boolean
+  showSlideRisk: boolean
+  open: boolean
+  riskFilter: 'all' | 'low' | 'moderate' | 'high' | 'critical'
+}
+
+export interface GlacierBasalSlideData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  velocity: number
+  basalTemperature: number
+  slideRisk: number
+  risk: 'low' | 'moderate' | 'high' | 'critical'
+  iceThickness: number
+  description: string
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -8352,6 +8536,22 @@ interface MapState {
   setBrinePool: (state: Partial<BrinePoolState>) => void
   supraglacialStream: SupraglacialStreamState
   setSupraglacialStream: (state: Partial<SupraglacialStreamState>) => void
+  methaneHydrateStability: MethaneHydrateStabilityState
+  setMethaneHydrateStability: (state: Partial<MethaneHydrateStabilityState>) => void
+  volcanicAshCloud: VolcanicAshCloudState
+  setVolcanicAshCloud: (state: Partial<VolcanicAshCloudState>) => void
+  geothermalGradient: GeothermalGradientState
+  setGeothermalGradient: (state: Partial<GeothermalGradientState>) => void
+  oceanDeoxygenation: OceanDeoxygenationState
+  setOceanDeoxygenation: (state: Partial<OceanDeoxygenationState>) => void
+  rockGlacier: RockGlacierState
+  setRockGlacier: (state: Partial<RockGlacierState>) => void
+  dustHemisphere: DustHemisphereState
+  setDustHemisphere: (state: Partial<DustHemisphereState>) => void
+  microplasticOcean: MicroplasticOceanState
+  setMicroplasticOcean: (state: Partial<MicroplasticOceanState>) => void
+  glacierBasalSlide: GlacierBasalSlideState
+  setGlacierBasalSlide: (state: Partial<GlacierBasalSlideState>) => void
 
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
@@ -13336,6 +13536,38 @@ export const useMapStore = create<MapState>()(
         streams: [], activeStreamId: null, showFlowRate: true, showTemperature: true, showMeltRate: false, open: false, statusFilter: 'all',
       },
       setSupraglacialStream: (updates) => set((state) => ({ supraglacialStream: { ...state.supraglacialStream, ...updates } })),
+      methaneHydrateStability: {
+        zones: [], activeZoneId: null, showStability: true, showTemperature: true, showPressure: false, open: false, stabilityFilter: 'all',
+      },
+      setMethaneHydrateStability: (updates) => set((state) => ({ methaneHydrateStability: { ...state.methaneHydrateStability, ...updates } })),
+      volcanicAshCloud: {
+        clouds: [], activeCloudId: null, showAltitude: true, showDispersion: true, showConcentration: false, open: false, alertFilter: 'all',
+      },
+      setVolcanicAshCloud: (updates) => set((state) => ({ volcanicAshCloud: { ...state.volcanicAshCloud, ...updates } })),
+      geothermalGradient: {
+        sites: [], activeSiteId: null, showGradient: true, showTemperature: true, showFlow: false, open: false, potentialFilter: 'all',
+      },
+      setGeothermalGradient: (updates) => set((state) => ({ geothermalGradient: { ...state.geothermalGradient, ...updates } })),
+      oceanDeoxygenation: {
+        zones: [], activeZoneId: null, showOxygen: true, showArea: true, showImpact: false, open: false, severityFilter: 'all',
+      },
+      setOceanDeoxygenation: (updates) => set((state) => ({ oceanDeoxygenation: { ...state.oceanDeoxygenation, ...updates } })),
+      rockGlacier: {
+        glaciers: [], activeGlacierId: null, showVelocity: true, showTemperature: true, showIceContent: false, open: false, activityFilter: 'all',
+      },
+      setRockGlacier: (updates) => set((state) => ({ rockGlacier: { ...state.rockGlacier, ...updates } })),
+      dustHemisphere: {
+        events: [], activeEventId: null, showConcentration: true, showTransport: true, showDeposition: false, open: false, intensityFilter: 'all',
+      },
+      setDustHemisphere: (updates) => set((state) => ({ dustHemisphere: { ...state.dustHemisphere, ...updates } })),
+      microplasticOcean: {
+        zones: [], activeZoneId: null, showConcentration: true, showSize: true, showSourceType: false, open: false, densityFilter: 'all',
+      },
+      setMicroplasticOcean: (updates) => set((state) => ({ microplasticOcean: { ...state.microplasticOcean, ...updates } })),
+      glacierBasalSlide: {
+        glaciers: [], activeGlacierId: null, showVelocity: true, showBasalTemp: true, showSlideRisk: false, open: false, riskFilter: 'all',
+      },
+      setGlacierBasalSlide: (updates) => set((state) => ({ glacierBasalSlide: { ...state.glacierBasalSlide, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
@@ -13745,6 +13977,14 @@ export const useMapStore = create<MapState>()(
         urbanHeatVentilation: state.urbanHeatVentilation,
         brinePool: state.brinePool,
         supraglacialStream: state.supraglacialStream,
+        methaneHydrateStability: state.methaneHydrateStability,
+        volcanicAshCloud: state.volcanicAshCloud,
+        geothermalGradient: state.geothermalGradient,
+        oceanDeoxygenation: state.oceanDeoxygenation,
+        rockGlacier: state.rockGlacier,
+        dustHemisphere: state.dustHemisphere,
+        microplasticOcean: state.microplasticOcean,
+        glacierBasalSlide: state.glacierBasalSlide,
       }),
     }
   )
