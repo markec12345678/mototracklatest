@@ -6504,6 +6504,188 @@ export interface StratosphericWarmingData {
   description: string
 }
 
+export interface SubmarineGroundwaterState {
+  discharges: SubmarineGroundwaterData[]
+  activeDischargeId: string | null
+  showFlowRate: boolean
+  showSalinity: boolean
+  showNutrients: boolean
+  open: boolean
+  typeFilter: 'all' | 'coastal' | 'offshore' | 'volcanic' | 'karst'
+}
+
+export interface SubmarineGroundwaterData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  flowRate: number
+  salinity: number
+  nutrientLoad: number
+  dischargeType: 'coastal' | 'offshore' | 'volcanic' | 'karst'
+  temperature: number
+  description: string
+}
+
+export interface HydrothermalSulfideState {
+  vents: HydrothermalSulfideData[]
+  activeVentId: string | null
+  showMineralContent: boolean
+  showTemperature: boolean
+  showActivity: boolean
+  open: boolean
+  activityFilter: 'all' | 'active' | 'dormant' | 'extinct' | 'pulsing'
+}
+
+export interface HydrothermalSulfideData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  mineralContent: number
+  temperature: number
+  activity: 'active' | 'dormant' | 'extinct' | 'pulsing'
+  sulfideDeposit: number
+  depth: number
+  description: string
+}
+
+export interface LunarTidalForceState {
+  stations: LunarTidalForceData[]
+  activeStationId: string | null
+  showTidalRange: boolean
+  showLunarPhase: boolean
+  showCurrentSpeed: boolean
+  open: boolean
+  phaseFilter: 'all' | 'spring' | 'neap' | 'perigee' | 'apogee'
+}
+
+export interface LunarTidalForceData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  tidalRange: number
+  lunarPhase: 'spring' | 'neap' | 'perigee' | 'apogee'
+  currentSpeed: number
+  gravitationalPull: number
+  description: string
+}
+
+export interface RipCurrentState {
+  zones: RipCurrentData[]
+  activeZoneId: string | null
+  showRisk: boolean
+  showSpeed: boolean
+  showFrequency: boolean
+  open: boolean
+  riskFilter: 'all' | 'low' | 'moderate' | 'high' | 'extreme'
+}
+
+export interface RipCurrentData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  risk: 'low' | 'moderate' | 'high' | 'extreme'
+  speed: number
+  frequency: number
+  beachType: 'sandy' | 'rocky' | 'barred' | 'headland'
+  description: string
+}
+
+export interface AvalancheDebrisFlowState {
+  events: AvalancheDebrisFlowData[]
+  activeEventId: string | null
+  showVolume: boolean
+  showVelocity: boolean
+  showRunout: boolean
+  open: boolean
+  typeFilter: 'all' | 'snow_avalanche' | 'debris_flow' | 'rockfall' | 'mudslide'
+}
+
+export interface AvalancheDebrisFlowData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  volume: number
+  velocity: number
+  runoutDistance: number
+  eventType: 'snow_avalanche' | 'debris_flow' | 'rockfall' | 'mudslide'
+  slope: number
+  description: string
+}
+
+export interface CoastalAcidificationState {
+  sites: CoastalAcidificationData[]
+  activeSiteId: string | null
+  showPH: boolean
+  showCarbonDioxide: boolean
+  showSaturation: boolean
+  open: boolean
+  severityFilter: 'all' | 'mild' | 'moderate' | 'severe' | 'extreme'
+}
+
+export interface CoastalAcidificationData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  ph: number
+  carbonDioxide: number
+  aragoniteSaturation: number
+  severity: 'mild' | 'moderate' | 'severe' | 'extreme'
+  shellfishImpact: number
+  description: string
+}
+
+export interface DesertSandSeaState {
+  regions: DesertSandSeaData[]
+  activeRegionId: string | null
+  showDuneHeight: boolean
+  showMigration: boolean
+  showArea: boolean
+  open: boolean
+  typeFilter: 'all' | 'barchan' | 'seif' | 'star' | 'transverse'
+}
+
+export interface DesertSandSeaData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  duneHeight: number
+  migrationRate: number
+  area: number
+  duneType: 'barchan' | 'seif' | 'star' | 'transverse'
+  windDirection: string
+  description: string
+}
+
+export interface SubsidenceHazardState {
+  zones: SubsidenceHazardData[]
+  activeZoneId: string | null
+  showRate: boolean
+  showRisk: boolean
+  showInfrastructure: boolean
+  open: boolean
+  riskFilter: 'all' | 'low' | 'moderate' | 'high' | 'critical'
+}
+
+export interface SubsidenceHazardData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  subsidenceRate: number
+  totalSubsidence: number
+  infrastructureRisk: number
+  cause: 'groundwater' | 'mining' | 'oil_extraction' | 'natural_compaction'
+  risk: 'low' | 'moderate' | 'high' | 'critical'
+  description: string
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -7954,6 +8136,22 @@ interface MapState {
   setUrbanNoiseCorridor: (state: Partial<UrbanNoiseCorridorState>) => void
   stratosphericWarming: StratosphericWarmingState
   setStratosphericWarming: (state: Partial<StratosphericWarmingState>) => void
+  submarineGroundwater: SubmarineGroundwaterState
+  setSubmarineGroundwater: (state: Partial<SubmarineGroundwaterState>) => void
+  hydrothermalSulfide: HydrothermalSulfideState
+  setHydrothermalSulfide: (state: Partial<HydrothermalSulfideState>) => void
+  lunarTidalForce: LunarTidalForceState
+  setLunarTidalForce: (state: Partial<LunarTidalForceState>) => void
+  ripCurrent: RipCurrentState
+  setRipCurrent: (state: Partial<RipCurrentState>) => void
+  avalancheDebrisFlow: AvalancheDebrisFlowState
+  setAvalancheDebrisFlow: (state: Partial<AvalancheDebrisFlowState>) => void
+  coastalAcidification: CoastalAcidificationState
+  setCoastalAcidification: (state: Partial<CoastalAcidificationState>) => void
+  desertSandSea: DesertSandSeaState
+  setDesertSandSea: (state: Partial<DesertSandSeaState>) => void
+  subsidenceHazard: SubsidenceHazardState
+  setSubsidenceHazard: (state: Partial<SubsidenceHazardState>) => void
 
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
@@ -12874,6 +13072,38 @@ export const useMapStore = create<MapState>()(
         events: [], activeEventId: null, showTemperature: true, showWindReversal: true, showImpact: false, open: false, intensityFilter: 'all',
       },
       setStratosphericWarming: (updates) => set((state) => ({ stratosphericWarming: { ...state.stratosphericWarming, ...updates } })),
+      submarineGroundwater: {
+        discharges: [], activeDischargeId: null, showFlowRate: true, showSalinity: true, showNutrients: false, open: false, typeFilter: 'all',
+      },
+      setSubmarineGroundwater: (updates) => set((state) => ({ submarineGroundwater: { ...state.submarineGroundwater, ...updates } })),
+      hydrothermalSulfide: {
+        vents: [], activeVentId: null, showMineralContent: true, showTemperature: true, showActivity: false, open: false, activityFilter: 'all',
+      },
+      setHydrothermalSulfide: (updates) => set((state) => ({ hydrothermalSulfide: { ...state.hydrothermalSulfide, ...updates } })),
+      lunarTidalForce: {
+        stations: [], activeStationId: null, showTidalRange: true, showLunarPhase: true, showCurrentSpeed: false, open: false, phaseFilter: 'all',
+      },
+      setLunarTidalForce: (updates) => set((state) => ({ lunarTidalForce: { ...state.lunarTidalForce, ...updates } })),
+      ripCurrent: {
+        zones: [], activeZoneId: null, showRisk: true, showSpeed: true, showFrequency: false, open: false, riskFilter: 'all',
+      },
+      setRipCurrent: (updates) => set((state) => ({ ripCurrent: { ...state.ripCurrent, ...updates } })),
+      avalancheDebrisFlow: {
+        events: [], activeEventId: null, showVolume: true, showVelocity: true, showRunout: false, open: false, typeFilter: 'all',
+      },
+      setAvalancheDebrisFlow: (updates) => set((state) => ({ avalancheDebrisFlow: { ...state.avalancheDebrisFlow, ...updates } })),
+      coastalAcidification: {
+        sites: [], activeSiteId: null, showPH: true, showCarbonDioxide: true, showSaturation: false, open: false, severityFilter: 'all',
+      },
+      setCoastalAcidification: (updates) => set((state) => ({ coastalAcidification: { ...state.coastalAcidification, ...updates } })),
+      desertSandSea: {
+        regions: [], activeRegionId: null, showDuneHeight: true, showMigration: true, showArea: false, open: false, typeFilter: 'all',
+      },
+      setDesertSandSea: (updates) => set((state) => ({ desertSandSea: { ...state.desertSandSea, ...updates } })),
+      subsidenceHazard: {
+        zones: [], activeZoneId: null, showRate: true, showRisk: true, showInfrastructure: false, open: false, riskFilter: 'all',
+      },
+      setSubsidenceHazard: (updates) => set((state) => ({ subsidenceHazard: { ...state.subsidenceHazard, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
@@ -13267,6 +13497,14 @@ export const useMapStore = create<MapState>()(
         mangroveLoss: state.mangroveLoss,
         urbanNoiseCorridor: state.urbanNoiseCorridor,
         stratosphericWarming: state.stratosphericWarming,
+        submarineGroundwater: state.submarineGroundwater,
+        hydrothermalSulfide: state.hydrothermalSulfide,
+        lunarTidalForce: state.lunarTidalForce,
+        ripCurrent: state.ripCurrent,
+        avalancheDebrisFlow: state.avalancheDebrisFlow,
+        coastalAcidification: state.coastalAcidification,
+        desertSandSea: state.desertSandSea,
+        subsidenceHazard: state.subsidenceHazard,
       }),
     }
   )
