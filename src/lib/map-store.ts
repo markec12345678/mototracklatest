@@ -6686,6 +6686,190 @@ export interface SubsidenceHazardData {
   description: string
 }
 
+export interface VolcanicLaharState {
+  flows: VolcanicLaharData[]
+  activeFlowId: string | null
+  showVolume: boolean
+  showVelocity: boolean
+  showRisk: boolean
+  open: boolean
+  riskFilter: 'all' | 'low' | 'moderate' | 'high' | 'extreme'
+}
+
+export interface VolcanicLaharData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  volume: number
+  velocity: number
+  reachDistance: number
+  triggerType: 'rainfall' | 'glacial_melt' | 'pyroclastic' | 'dam_break'
+  risk: 'low' | 'moderate' | 'high' | 'extreme'
+  description: string
+}
+
+export interface DeepWaterCoralState {
+  reefs: DeepWaterCoralData[]
+  activeReefId: string | null
+  showDepth: boolean
+  showHealth: boolean
+  showSpecies: boolean
+  open: boolean
+  healthFilter: 'all' | 'pristine' | 'good' | 'stressed' | 'degraded'
+}
+
+export interface DeepWaterCoralData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  depth: number
+  healthIndex: number
+  speciesCount: number
+  status: 'pristine' | 'good' | 'stressed' | 'degraded'
+  area: number
+  description: string
+}
+
+export interface PolarBearHabitatState {
+  regions: PolarBearHabitatData[]
+  activeRegionId: string | null
+  showIceCover: boolean
+  showPopulation: boolean
+  showMigration: boolean
+  open: boolean
+  statusFilter: 'all' | 'stable' | 'declining' | 'critical' | 'recovering'
+}
+
+export interface PolarBearHabitatData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  iceCoverPercent: number
+  population: number
+  migrationDistance: number
+  status: 'stable' | 'declining' | 'critical' | 'recovering'
+  seaIceLoss: number
+  description: string
+}
+
+export interface SoilSalinizationState {
+  zones: SoilSalinizationData[]
+  activeZoneId: string | null
+  showSalinity: boolean
+  showCropImpact: boolean
+  showArea: boolean
+  open: boolean
+  severityFilter: 'all' | 'slight' | 'moderate' | 'severe' | 'very_severe'
+}
+
+export interface SoilSalinizationData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  salinityLevel: number
+  cropYieldLoss: number
+  affectedArea: number
+  severity: 'slight' | 'moderate' | 'severe' | 'very_severe'
+  irrigationType: 'flood' | 'drip' | 'sprinkler' | 'rainfed'
+  description: string
+}
+
+export interface TsunamiRunupState {
+  sites: TsunamiRunupData[]
+  activeSiteId: string | null
+  showRunup: boolean
+  showInundation: boolean
+  showRisk: boolean
+  open: boolean
+  riskFilter: 'all' | 'low' | 'moderate' | 'high' | 'extreme'
+}
+
+export interface TsunamiRunupData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  maxRunup: number
+  inundationDistance: number
+  recurrenceInterval: number
+  risk: 'low' | 'moderate' | 'high' | 'extreme'
+  lastEvent: string
+  description: string
+}
+
+export interface UrbanHeatVentilationState {
+  corridors: UrbanHeatVentilationData[]
+  activeCorridorId: string | null
+  showAirflow: boolean
+  showTemperature: boolean
+  showPollution: boolean
+  open: boolean
+  efficiencyFilter: 'all' | 'excellent' | 'good' | 'poor' | 'stagnant'
+}
+
+export interface UrbanHeatVentilationData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  airflowRate: number
+  temperatureReduction: number
+  pollutionRemoval: number
+  efficiency: 'excellent' | 'good' | 'poor' | 'stagnant'
+  buildingHeight: number
+  description: string
+}
+
+export interface BrinePoolState {
+  pools: BrinePoolData[]
+  activePoolId: string | null
+  showSalinity: boolean
+  showDepth: boolean
+  showBiology: boolean
+  open: boolean
+  activityFilter: 'all' | 'active' | 'dormant' | 'fossil' | 'forming'
+}
+
+export interface BrinePoolData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  salinity: number
+  poolDepth: number
+  biodiversityIndex: number
+  activity: 'active' | 'dormant' | 'fossil' | 'forming'
+  seafloorDepth: number
+  description: string
+}
+
+export interface SupraglacialStreamState {
+  streams: SupraglacialStreamData[]
+  activeStreamId: string | null
+  showFlowRate: boolean
+  showTemperature: boolean
+  showMeltRate: boolean
+  open: boolean
+  statusFilter: 'all' | 'flowing' | 'seasonal' | 'frozen' | 'draining'
+}
+
+export interface SupraglacialStreamData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  flowRate: number
+  waterTemperature: number
+  meltRate: number
+  status: 'flowing' | 'seasonal' | 'frozen' | 'draining'
+  channelWidth: number
+  description: string
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -8152,6 +8336,22 @@ interface MapState {
   setDesertSandSea: (state: Partial<DesertSandSeaState>) => void
   subsidenceHazard: SubsidenceHazardState
   setSubsidenceHazard: (state: Partial<SubsidenceHazardState>) => void
+  volcanicLahar: VolcanicLaharState
+  setVolcanicLahar: (state: Partial<VolcanicLaharState>) => void
+  deepWaterCoral: DeepWaterCoralState
+  setDeepWaterCoral: (state: Partial<DeepWaterCoralState>) => void
+  polarBearHabitat: PolarBearHabitatState
+  setPolarBearHabitat: (state: Partial<PolarBearHabitatState>) => void
+  soilSalinization: SoilSalinizationState
+  setSoilSalinization: (state: Partial<SoilSalinizationState>) => void
+  tsunamiRunup: TsunamiRunupState
+  setTsunamiRunup: (state: Partial<TsunamiRunupState>) => void
+  urbanHeatVentilation: UrbanHeatVentilationState
+  setUrbanHeatVentilation: (state: Partial<UrbanHeatVentilationState>) => void
+  brinePool: BrinePoolState
+  setBrinePool: (state: Partial<BrinePoolState>) => void
+  supraglacialStream: SupraglacialStreamState
+  setSupraglacialStream: (state: Partial<SupraglacialStreamState>) => void
 
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
@@ -13104,6 +13304,38 @@ export const useMapStore = create<MapState>()(
         zones: [], activeZoneId: null, showRate: true, showRisk: true, showInfrastructure: false, open: false, riskFilter: 'all',
       },
       setSubsidenceHazard: (updates) => set((state) => ({ subsidenceHazard: { ...state.subsidenceHazard, ...updates } })),
+      volcanicLahar: {
+        flows: [], activeFlowId: null, showVolume: true, showVelocity: true, showRisk: false, open: false, riskFilter: 'all',
+      },
+      setVolcanicLahar: (updates) => set((state) => ({ volcanicLahar: { ...state.volcanicLahar, ...updates } })),
+      deepWaterCoral: {
+        reefs: [], activeReefId: null, showDepth: true, showHealth: true, showSpecies: false, open: false, healthFilter: 'all',
+      },
+      setDeepWaterCoral: (updates) => set((state) => ({ deepWaterCoral: { ...state.deepWaterCoral, ...updates } })),
+      polarBearHabitat: {
+        regions: [], activeRegionId: null, showIceCover: true, showPopulation: true, showMigration: false, open: false, statusFilter: 'all',
+      },
+      setPolarBearHabitat: (updates) => set((state) => ({ polarBearHabitat: { ...state.polarBearHabitat, ...updates } })),
+      soilSalinization: {
+        zones: [], activeZoneId: null, showSalinity: true, showCropImpact: true, showArea: false, open: false, severityFilter: 'all',
+      },
+      setSoilSalinization: (updates) => set((state) => ({ soilSalinization: { ...state.soilSalinization, ...updates } })),
+      tsunamiRunup: {
+        sites: [], activeSiteId: null, showRunup: true, showInundation: true, showRisk: false, open: false, riskFilter: 'all',
+      },
+      setTsunamiRunup: (updates) => set((state) => ({ tsunamiRunup: { ...state.tsunamiRunup, ...updates } })),
+      urbanHeatVentilation: {
+        corridors: [], activeCorridorId: null, showAirflow: true, showTemperature: true, showPollution: false, open: false, efficiencyFilter: 'all',
+      },
+      setUrbanHeatVentilation: (updates) => set((state) => ({ urbanHeatVentilation: { ...state.urbanHeatVentilation, ...updates } })),
+      brinePool: {
+        pools: [], activePoolId: null, showSalinity: true, showDepth: true, showBiology: false, open: false, activityFilter: 'all',
+      },
+      setBrinePool: (updates) => set((state) => ({ brinePool: { ...state.brinePool, ...updates } })),
+      supraglacialStream: {
+        streams: [], activeStreamId: null, showFlowRate: true, showTemperature: true, showMeltRate: false, open: false, statusFilter: 'all',
+      },
+      setSupraglacialStream: (updates) => set((state) => ({ supraglacialStream: { ...state.supraglacialStream, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
@@ -13505,6 +13737,14 @@ export const useMapStore = create<MapState>()(
         coastalAcidification: state.coastalAcidification,
         desertSandSea: state.desertSandSea,
         subsidenceHazard: state.subsidenceHazard,
+        volcanicLahar: state.volcanicLahar,
+        deepWaterCoral: state.deepWaterCoral,
+        polarBearHabitat: state.polarBearHabitat,
+        soilSalinization: state.soilSalinization,
+        tsunamiRunup: state.tsunamiRunup,
+        urbanHeatVentilation: state.urbanHeatVentilation,
+        brinePool: state.brinePool,
+        supraglacialStream: state.supraglacialStream,
       }),
     }
   )
