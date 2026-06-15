@@ -8568,6 +8568,22 @@ interface MapState {
   setThermohalineCirculation: (state: Partial<ThermohalineCirculationState>) => void
   hydroseismicActivity: HydroseismicActivityState
   setHydroseismicActivity: (state: Partial<HydroseismicActivityState>) => void
+  lavaTubeCave: LavaTubeCaveState
+  setLavaTubeCave: (state: Partial<LavaTubeCaveState>) => void
+  submarineCanyonFisheries: SubmarineCanyonFisheriesState
+  setSubmarineCanyonFisheries: (state: Partial<SubmarineCanyonFisheriesState>) => void
+  polynyaIce: PolynyaIceState
+  setPolynyaIce: (state: Partial<PolynyaIceState>) => void
+  volcanicDomeGrowth: VolcanicDomeGrowthState
+  setVolcanicDomeGrowth: (state: Partial<VolcanicDomeGrowthState>) => void
+  seamountBiodiversity: SeamountBiodiversityState
+  setSeamountBiodiversity: (state: Partial<SeamountBiodiversityState>) => void
+  estuaryAcidification: EstuaryAcidificationState
+  setEstuaryAcidification: (state: Partial<EstuaryAcidificationState>) => void
+  abyssalSedimentFlux: AbyssalSedimentFluxState
+  setAbyssalSedimentFlux: (state: Partial<AbyssalSedimentFluxState>) => void
+  glacialMoulin: GlacialMoulinState
+  setGlacialMoulin: (state: Partial<GlacialMoulinState>) => void
 
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
@@ -9119,6 +9135,182 @@ export interface HydroseismicActivityState {
   showMagnitude: boolean
   showDepth: boolean
   showWaterLevel: boolean
+}
+
+export interface LavaTubeCaveData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  length: number
+  temperature: number
+  lavaType: string
+  status: 'active' | 'cooling' | 'dormant' | 'collapsed'
+  description: string
+}
+
+export interface LavaTubeCaveState {
+  open: boolean
+  caves: LavaTubeCaveData[]
+  activeCaveId: string | null
+  statusFilter: 'all' | 'active' | 'cooling' | 'dormant' | 'collapsed'
+  showLength: boolean
+  showTemperature: boolean
+  showLavaType: boolean
+}
+
+export interface SubmarineCanyonFisheriesData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  depth: number
+  fishSpecies: string
+  catchVolume: number
+  status: 'productive' | 'depleted' | 'recovering' | 'protected'
+  description: string
+}
+
+export interface SubmarineCanyonFisheriesState {
+  open: boolean
+  fisheries: SubmarineCanyonFisheriesData[]
+  activeFisheryId: string | null
+  statusFilter: 'all' | 'productive' | 'depleted' | 'recovering' | 'protected'
+  showDepth: boolean
+  showCatchVolume: boolean
+  showFishSpecies: boolean
+}
+
+export interface PolynyaIceData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  area: number
+  iceThickness: number
+  waterTemperature: number
+  status: 'open' | 'refreezing' | 'seasonal' | 'permanent'
+  description: string
+}
+
+export interface PolynyaIceState {
+  open: boolean
+  polynyas: PolynyaIceData[]
+  activePolynyaId: string | null
+  statusFilter: 'all' | 'open' | 'refreezing' | 'seasonal' | 'permanent'
+  showArea: boolean
+  showIceThickness: boolean
+  showWaterTemperature: boolean
+}
+
+export interface VolcanicDomeGrowthData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  growthRate: number
+  domeVolume: number
+  temperature: number
+  status: 'growing' | 'stable' | 'collapsing' | 'exploding'
+  description: string
+}
+
+export interface VolcanicDomeGrowthState {
+  open: boolean
+  domes: VolcanicDomeGrowthData[]
+  activeDomeId: string | null
+  statusFilter: 'all' | 'growing' | 'stable' | 'collapsing' | 'exploding'
+  showGrowthRate: boolean
+  showDomeVolume: boolean
+  showTemperature: boolean
+}
+
+export interface SeamountBiodiversityData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  depth: number
+  speciesCount: number
+  endemismRate: number
+  status: 'pristine' | 'threatened' | 'impacted' | 'protected'
+  description: string
+}
+
+export interface SeamountBiodiversityState {
+  open: boolean
+  seamounts: SeamountBiodiversityData[]
+  activeSeamountId: string | null
+  statusFilter: 'all' | 'pristine' | 'threatened' | 'impacted' | 'protected'
+  showDepth: boolean
+  showSpeciesCount: boolean
+  showEndemismRate: boolean
+}
+
+export interface EstuaryAcidificationData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  pH: number
+  alkalinity: number
+  salinity: number
+  status: 'healthy' | 'moderate' | 'acidified' | 'critical'
+  description: string
+}
+
+export interface EstuaryAcidificationState {
+  open: boolean
+  estuaries: EstuaryAcidificationData[]
+  activeEstuaryId: string | null
+  statusFilter: 'all' | 'healthy' | 'moderate' | 'acidified' | 'critical'
+  showPH: boolean
+  showAlkalinity: boolean
+  showSalinity: boolean
+}
+
+export interface AbyssalSedimentFluxData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  sedimentRate: number
+  depth: number
+  fluxDirection: string
+  status: 'depositing' | 'eroding' | 'stable' | 'turbidite'
+  description: string
+}
+
+export interface AbyssalSedimentFluxState {
+  open: boolean
+  sites: AbyssalSedimentFluxData[]
+  activeSiteId: string | null
+  statusFilter: 'all' | 'depositing' | 'eroding' | 'stable' | 'turbidite'
+  showSedimentRate: boolean
+  showDepth: boolean
+  showFluxDirection: boolean
+}
+
+export interface GlacialMoulinData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  depth: number
+  flowRate: number
+  diameter: number
+  status: 'active' | 'seasonal' | 'frozen' | 'draining'
+  description: string
+}
+
+export interface GlacialMoulinState {
+  open: boolean
+  moulins: GlacialMoulinData[]
+  activeMoulinId: string | null
+  statusFilter: 'all' | 'active' | 'seasonal' | 'frozen' | 'draining'
+  showDepth: boolean
+  showFlowRate: boolean
+  showDiameter: boolean
 }
 
 export const useMapStore = create<MapState>()(
@@ -13800,6 +13992,38 @@ export const useMapStore = create<MapState>()(
         events: [], activeEventId: null, showMagnitude: true, showDepth: true, showWaterLevel: false, open: false, typeFilter: 'all',
       },
       setHydroseismicActivity: (updates) => set((state) => ({ hydroseismicActivity: { ...state.hydroseismicActivity, ...updates } })),
+      lavaTubeCave: {
+        caves: [], activeCaveId: null, showLength: true, showTemperature: true, showLavaType: false, open: false, statusFilter: 'all',
+      },
+      setLavaTubeCave: (updates) => set((state) => ({ lavaTubeCave: { ...state.lavaTubeCave, ...updates } })),
+      submarineCanyonFisheries: {
+        fisheries: [], activeFisheryId: null, showDepth: true, showCatchVolume: true, showFishSpecies: false, open: false, statusFilter: 'all',
+      },
+      setSubmarineCanyonFisheries: (updates) => set((state) => ({ submarineCanyonFisheries: { ...state.submarineCanyonFisheries, ...updates } })),
+      polynyaIce: {
+        polynyas: [], activePolynyaId: null, showArea: true, showIceThickness: true, showWaterTemperature: false, open: false, statusFilter: 'all',
+      },
+      setPolynyaIce: (updates) => set((state) => ({ polynyaIce: { ...state.polynyaIce, ...updates } })),
+      volcanicDomeGrowth: {
+        domes: [], activeDomeId: null, showGrowthRate: true, showDomeVolume: true, showTemperature: false, open: false, statusFilter: 'all',
+      },
+      setVolcanicDomeGrowth: (updates) => set((state) => ({ volcanicDomeGrowth: { ...state.volcanicDomeGrowth, ...updates } })),
+      seamountBiodiversity: {
+        seamounts: [], activeSeamountId: null, showDepth: true, showSpeciesCount: true, showEndemismRate: false, open: false, statusFilter: 'all',
+      },
+      setSeamountBiodiversity: (updates) => set((state) => ({ seamountBiodiversity: { ...state.seamountBiodiversity, ...updates } })),
+      estuaryAcidification: {
+        estuaries: [], activeEstuaryId: null, showPH: true, showAlkalinity: true, showSalinity: false, open: false, statusFilter: 'all',
+      },
+      setEstuaryAcidification: (updates) => set((state) => ({ estuaryAcidification: { ...state.estuaryAcidification, ...updates } })),
+      abyssalSedimentFlux: {
+        sites: [], activeSiteId: null, showSedimentRate: true, showDepth: true, showFluxDirection: false, open: false, statusFilter: 'all',
+      },
+      setAbyssalSedimentFlux: (updates) => set((state) => ({ abyssalSedimentFlux: { ...state.abyssalSedimentFlux, ...updates } })),
+      glacialMoulin: {
+        moulins: [], activeMoulinId: null, showDepth: true, showFlowRate: true, showDiameter: false, open: false, statusFilter: 'all',
+      },
+      setGlacialMoulin: (updates) => set((state) => ({ glacialMoulin: { ...state.glacialMoulin, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
@@ -14225,6 +14449,14 @@ export const useMapStore = create<MapState>()(
         rockfallHazard: state.rockfallHazard,
         thermohalineCirculation: state.thermohalineCirculation,
         hydroseismicActivity: state.hydroseismicActivity,
+        lavaTubeCave: state.lavaTubeCave,
+        submarineCanyonFisheries: state.submarineCanyonFisheries,
+        polynyaIce: state.polynyaIce,
+        volcanicDomeGrowth: state.volcanicDomeGrowth,
+        seamountBiodiversity: state.seamountBiodiversity,
+        estuaryAcidification: state.estuaryAcidification,
+        abyssalSedimentFlux: state.abyssalSedimentFlux,
+        glacialMoulin: state.glacialMoulin,
       }),
     }
   )
