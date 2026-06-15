@@ -8633,6 +8633,38 @@ interface MapState {
   limnicEruptionMonitor: LimnicEruptionMonitorState
   setLimnicEruptionMonitor: (state: Partial<LimnicEruptionMonitorState>) => void
 
+  // Task 95: Volcanic Tremor Monitor
+  volcanicTremor: VolcanicTremorState
+  setVolcanicTremor: (state: Partial<VolcanicTremorState>) => void
+
+  // Task 95: Ice Wedge Polygon Monitor
+  iceWedgePolygon: IceWedgePolygonState
+  setIceWedgePolygon: (state: Partial<IceWedgePolygonState>) => void
+
+  // Task 95: Salt Flat Crust Monitor
+  saltFlatCrust: SaltFlatCrustState
+  setSaltFlatCrust: (state: Partial<SaltFlatCrustState>) => void
+
+  // Task 95: Cold Water Coral Reef Monitor
+  coldWaterCoralReef: ColdWaterCoralReefState
+  setColdWaterCoralReef: (state: Partial<ColdWaterCoralReefState>) => void
+
+  // Task 95: Peatland Carbon Sink Monitor
+  peatlandCarbonSink: PeatlandCarbonSinkState
+  setPeatlandCarbonSink: (state: Partial<PeatlandCarbonSinkState>) => void
+
+  // Task 95: Hyporheic Zone Monitor
+  hyporheicZone: HyporheicZoneState
+  setHyporheicZone: (state: Partial<HyporheicZoneState>) => void
+
+  // Task 95: Submarine Fan Monitor
+  submarineFan: SubmarineFanState
+  setSubmarineFan: (state: Partial<SubmarineFanState>) => void
+
+  // Task 95: Coastal Dune System Monitor
+  coastalDuneSystem: CoastalDuneSystemState
+  setCoastalDuneSystem: (state: Partial<CoastalDuneSystemState>) => void
+
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
   setAddLocationDialogOpen: (open: boolean) => void
@@ -9887,6 +9919,190 @@ export interface LimnicEruptionMonitorState {
   showCO2Concentration: boolean
   showGasReleaseRate: boolean
   showWaterDepth: boolean
+}
+
+// Task 95: Volcanic Tremor Monitor
+export interface VolcanicTremorData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  amplitude: number
+  frequency: number
+  duration: number
+  status: 'harmonic' | 'spasmodic' | 'continuous' | 'tremor_free'
+  description: string
+}
+
+export interface VolcanicTremorState {
+  open: boolean
+  data: VolcanicTremorData[]
+  showAmplitude: boolean
+  showFrequency: boolean
+  showDuration: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 95: Ice Wedge Polygon Monitor
+export interface IceWedgePolygonData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  polygonArea: number
+  wedgeDepth: number
+  degradationRate: number
+  status: 'intact' | 'degrading' | 'thawed' | 'thermokarst'
+  description: string
+}
+
+export interface IceWedgePolygonState {
+  open: boolean
+  data: IceWedgePolygonData[]
+  showPolygonArea: boolean
+  showWedgeDepth: boolean
+  showDegradationRate: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 95: Salt Flat Crust Monitor
+export interface SaltFlatCrustData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  crustThickness: number
+  salinity: number
+  moistureContent: number
+  status: 'crystalline' | 'deliquescent' | 'eroding' | 'submerged'
+  description: string
+}
+
+export interface SaltFlatCrustState {
+  open: boolean
+  data: SaltFlatCrustData[]
+  showCrustThickness: boolean
+  showSalinity: boolean
+  showMoistureContent: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 95: Cold Water Coral Reef Monitor
+export interface ColdWaterCoralReefData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  depth: number
+  temperature: number
+  coralCover: number
+  status: 'thriving' | 'stressed' | 'bleached' | 'protected'
+  description: string
+}
+
+export interface ColdWaterCoralReefState {
+  open: boolean
+  data: ColdWaterCoralReefData[]
+  showDepth: boolean
+  showTemperature: boolean
+  showCoralCover: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 95: Peatland Carbon Sink Monitor
+export interface PeatlandCarbonSinkData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  carbonStock: number
+  sequestrationRate: number
+  waterTableDepth: number
+  status: 'accumulating' | 'stable' | 'emitting' | 'degraded'
+  description: string
+}
+
+export interface PeatlandCarbonSinkState {
+  open: boolean
+  data: PeatlandCarbonSinkData[]
+  showCarbonStock: boolean
+  showSequestrationRate: boolean
+  showWaterTableDepth: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 95: Hyporheic Zone Monitor
+export interface HyporheicZoneData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  exchangeRate: number
+  residenceTime: number
+  temperature: number
+  status: 'active' | 'restricted' | 'stagnant' | 'flowing'
+  description: string
+}
+
+export interface HyporheicZoneState {
+  open: boolean
+  data: HyporheicZoneData[]
+  showExchangeRate: boolean
+  showResidenceTime: boolean
+  showTemperature: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 95: Submarine Fan Monitor
+export interface SubmarineFanData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  sedimentationRate: number
+  channelDepth: number
+  fanArea: number
+  status: 'active' | 'abandoned' | 'channelized' | 'hemipelagic'
+  description: string
+}
+
+export interface SubmarineFanState {
+  open: boolean
+  data: SubmarineFanData[]
+  showSedimentationRate: boolean
+  showChannelDepth: boolean
+  showFanArea: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 95: Coastal Dune System Monitor
+export interface CoastalDuneSystemData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  duneHeight: number
+  erosionRate: number
+  vegetationCover: number
+  status: 'accreting' | 'stable' | 'eroding' | 'breached'
+  description: string
+}
+
+export interface CoastalDuneSystemState {
+  open: boolean
+  data: CoastalDuneSystemData[]
+  showDuneHeight: boolean
+  showErosionRate: boolean
+  showVegetationCover: boolean
+  statusFilter: string
+  activeItemId: string | null
 }
 
 export const useMapStore = create<MapState>()(
@@ -14697,6 +14913,54 @@ export const useMapStore = create<MapState>()(
       },
       setLimnicEruptionMonitor: (updates) => set((state) => ({ limnicEruptionMonitor: { ...state.limnicEruptionMonitor, ...updates } })),
 
+      // Task 95: Volcanic Tremor Monitor
+      volcanicTremor: {
+        data: [], activeItemId: null, showAmplitude: true, showFrequency: true, showDuration: false, open: false, statusFilter: '',
+      },
+      setVolcanicTremor: (updates) => set((state) => ({ volcanicTremor: { ...state.volcanicTremor, ...updates } })),
+
+      // Task 95: Ice Wedge Polygon Monitor
+      iceWedgePolygon: {
+        data: [], activeItemId: null, showPolygonArea: true, showWedgeDepth: true, showDegradationRate: false, open: false, statusFilter: '',
+      },
+      setIceWedgePolygon: (updates) => set((state) => ({ iceWedgePolygon: { ...state.iceWedgePolygon, ...updates } })),
+
+      // Task 95: Salt Flat Crust Monitor
+      saltFlatCrust: {
+        data: [], activeItemId: null, showCrustThickness: true, showSalinity: true, showMoistureContent: false, open: false, statusFilter: '',
+      },
+      setSaltFlatCrust: (updates) => set((state) => ({ saltFlatCrust: { ...state.saltFlatCrust, ...updates } })),
+
+      // Task 95: Cold Water Coral Reef Monitor
+      coldWaterCoralReef: {
+        data: [], activeItemId: null, showDepth: true, showTemperature: true, showCoralCover: false, open: false, statusFilter: '',
+      },
+      setColdWaterCoralReef: (updates) => set((state) => ({ coldWaterCoralReef: { ...state.coldWaterCoralReef, ...updates } })),
+
+      // Task 95: Peatland Carbon Sink Monitor
+      peatlandCarbonSink: {
+        data: [], activeItemId: null, showCarbonStock: true, showSequestrationRate: true, showWaterTableDepth: false, open: false, statusFilter: '',
+      },
+      setPeatlandCarbonSink: (updates) => set((state) => ({ peatlandCarbonSink: { ...state.peatlandCarbonSink, ...updates } })),
+
+      // Task 95: Hyporheic Zone Monitor
+      hyporheicZone: {
+        data: [], activeItemId: null, showExchangeRate: true, showResidenceTime: true, showTemperature: false, open: false, statusFilter: '',
+      },
+      setHyporheicZone: (updates) => set((state) => ({ hyporheicZone: { ...state.hyporheicZone, ...updates } })),
+
+      // Task 95: Submarine Fan Monitor
+      submarineFan: {
+        data: [], activeItemId: null, showSedimentationRate: true, showChannelDepth: true, showFanArea: false, open: false, statusFilter: '',
+      },
+      setSubmarineFan: (updates) => set((state) => ({ submarineFan: { ...state.submarineFan, ...updates } })),
+
+      // Task 95: Coastal Dune System Monitor
+      coastalDuneSystem: {
+        data: [], activeItemId: null, showDuneHeight: true, showErosionRate: true, showVegetationCover: false, open: false, statusFilter: '',
+      },
+      setCoastalDuneSystem: (updates) => set((state) => ({ coastalDuneSystem: { ...state.coastalDuneSystem, ...updates } })),
+
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
       setAddLocationDialogOpen: (open) => set({ addLocationDialogOpen: open }),
@@ -15153,6 +15417,14 @@ export const useMapStore = create<MapState>()(
         frostHeaveMonitor: state.frostHeaveMonitor,
         pumiceRaftDrift: state.pumiceRaftDrift,
         limnicEruptionMonitor: state.limnicEruptionMonitor,
+        volcanicTremor: state.volcanicTremor,
+        iceWedgePolygon: state.iceWedgePolygon,
+        saltFlatCrust: state.saltFlatCrust,
+        coldWaterCoralReef: state.coldWaterCoralReef,
+        peatlandCarbonSink: state.peatlandCarbonSink,
+        hyporheicZone: state.hyporheicZone,
+        submarineFan: state.submarineFan,
+        coastalDuneSystem: state.coastalDuneSystem,
       }),
     }
   )

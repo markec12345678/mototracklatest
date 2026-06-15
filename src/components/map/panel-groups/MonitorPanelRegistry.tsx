@@ -191,6 +191,15 @@ export function MonitorPanelRegistry() {
   const frostHeaveMonitor = useMapStore((s) => s.frostHeaveMonitor)
   const pumiceRaftDrift = useMapStore((s) => s.pumiceRaftDrift)
   const limnicEruptionMonitor = useMapStore((s) => s.limnicEruptionMonitor)
+  // Task 95
+  const volcanicTremor = useMapStore((s) => s.volcanicTremor)
+  const iceWedgePolygon = useMapStore((s) => s.iceWedgePolygon)
+  const saltFlatCrust = useMapStore((s) => s.saltFlatCrust)
+  const coldWaterCoralReef = useMapStore((s) => s.coldWaterCoralReef)
+  const peatlandCarbonSink = useMapStore((s) => s.peatlandCarbonSink)
+  const hyporheicZone = useMapStore((s) => s.hyporheicZone)
+  const submarineFan = useMapStore((s) => s.submarineFan)
+  const coastalDuneSystem = useMapStore((s) => s.coastalDuneSystem)
 
   return (
     <>
@@ -541,6 +550,31 @@ export function MonitorPanelRegistry() {
       )}
       {limnicEruptionMonitor.open && (
         <LazyPanel importFn={() => import('@/components/map/LimnicEruptionMonitor')} exportName="LimnicEruptionMonitor" shouldLoad={true} />
+      )}
+      {/* Task 95: New Monitoring Panels */}
+      {volcanicTremor.open && (
+        <LazyPanel importFn={() => import('@/components/map/VolcanicTremorMonitor')} exportName="VolcanicTremorMonitor" shouldLoad={true} />
+      )}
+      {iceWedgePolygon.open && (
+        <LazyPanel importFn={() => import('@/components/map/IceWedgePolygonMonitor')} exportName="IceWedgePolygonMonitor" shouldLoad={true} />
+      )}
+      {saltFlatCrust.open && (
+        <LazyPanel importFn={() => import('@/components/map/SaltFlatCrustMonitor')} exportName="SaltFlatCrustMonitor" shouldLoad={true} />
+      )}
+      {coldWaterCoralReef.open && (
+        <LazyPanel importFn={() => import('@/components/map/ColdWaterCoralReefMonitor')} exportName="ColdWaterCoralReefMonitor" shouldLoad={true} />
+      )}
+      {peatlandCarbonSink.open && (
+        <LazyPanel importFn={() => import('@/components/map/PeatlandCarbonSinkMonitor')} exportName="PeatlandCarbonSinkMonitor" shouldLoad={true} />
+      )}
+      {hyporheicZone.open && (
+        <LazyPanel importFn={() => import('@/components/map/HyporheicZoneMonitor')} exportName="HyporheicZoneMonitor" shouldLoad={true} />
+      )}
+      {submarineFan.open && (
+        <LazyPanel importFn={() => import('@/components/map/SubmarineFanMonitor')} exportName="SubmarineFanMonitor" shouldLoad={true} />
+      )}
+      {coastalDuneSystem.open && (
+        <LazyPanel importFn={() => import('@/components/map/CoastalDuneSystemMonitor')} exportName="CoastalDuneSystemMonitor" shouldLoad={true} />
       )}
     </>
   )
