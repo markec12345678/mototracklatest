@@ -8665,6 +8665,24 @@ interface MapState {
   coastalDuneSystem: CoastalDuneSystemState
   setCoastalDuneSystem: (state: Partial<CoastalDuneSystemState>) => void
 
+  // Task 96: New Monitors
+  karstSpringDischarge: KarstSpringDischargeState
+  setKarstSpringDischarge: (state: Partial<KarstSpringDischargeState>) => void
+  caveDripMonitor: CaveDripMonitorState
+  setCaveDripMonitor: (state: Partial<CaveDripMonitorState>) => void
+  tidalCreekMonitor: TidalCreekMonitorState
+  setTidalCreekMonitor: (state: Partial<TidalCreekMonitorState>) => void
+  saltMarshCarbon: SaltMarshCarbonState
+  setSaltMarshCarbon: (state: Partial<SaltMarshCarbonState>) => void
+  opalPaleoMonitor: OpalPaleoMonitorState
+  setOpalPaleoMonitor: (state: Partial<OpalPaleoMonitorState>) => void
+  aeolianDustDeposition: AeolianDustDepositionState
+  setAeolianDustDeposition: (state: Partial<AeolianDustDepositionState>) => void
+  katabaticWindMonitor: KatabaticWindMonitorState
+  setKatabaticWindMonitor: (state: Partial<KatabaticWindMonitorState>) => void
+  snowAvalancheTracker: SnowAvalancheTrackerState
+  setSnowAvalancheTracker: (state: Partial<SnowAvalancheTrackerState>) => void
+
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
   setAddLocationDialogOpen: (open: boolean) => void
@@ -10101,6 +10119,190 @@ export interface CoastalDuneSystemState {
   showDuneHeight: boolean
   showErosionRate: boolean
   showVegetationCover: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 96: Karst Spring Discharge Monitor
+export interface KarstSpringDischargeData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  dischargeRate: number
+  waterTemperature: number
+  conductivity: number
+  status: 'flowing' | 'seasonal' | 'dry' | 'flooding'
+  description: string
+}
+
+export interface KarstSpringDischargeState {
+  open: boolean
+  data: KarstSpringDischargeData[]
+  showDischargeRate: boolean
+  showWaterTemperature: boolean
+  showConductivity: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 96: Cave Drip Monitor
+export interface CaveDripMonitorData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  dripRate: number
+  calciumConcentration: number
+  pHDrip: number
+  status: 'active' | 'slow' | 'dry' | 'contaminated'
+  description: string
+}
+
+export interface CaveDripMonitorState {
+  open: boolean
+  data: CaveDripMonitorData[]
+  showDripRate: boolean
+  showCalciumConcentration: boolean
+  showPHDrip: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 96: Tidal Creek Monitor
+export interface TidalCreekMonitorData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  tidalRange: number
+  creekDepth: number
+  salinity: number
+  status: 'flooding' | 'ebbing' | 'neap' | 'spring'
+  description: string
+}
+
+export interface TidalCreekMonitorState {
+  open: boolean
+  data: TidalCreekMonitorData[]
+  showTidalRange: boolean
+  showCreekDepth: boolean
+  showSalinity: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 96: Salt Marsh Carbon Monitor
+export interface SaltMarshCarbonData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  carbonStock: number
+  accretionRate: number
+  vegetationCover: number
+  status: 'sequestering' | 'stable' | 'emitting' | 'eroding'
+  description: string
+}
+
+export interface SaltMarshCarbonState {
+  open: boolean
+  data: SaltMarshCarbonData[]
+  showCarbonStock: boolean
+  showAccretionRate: boolean
+  showVegetationCover: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 96: Opal Paleo Monitor
+export interface OpalPaleoMonitorData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  opalConcentration: number
+  diatomCount: number
+  sedimentAge: number
+  status: 'pristine' | 'processed' | 'degraded' | 'archived'
+  description: string
+}
+
+export interface OpalPaleoMonitorState {
+  open: boolean
+  data: OpalPaleoMonitorData[]
+  showOpalConcentration: boolean
+  showDiatomCount: boolean
+  showSedimentAge: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 96: Aeolian Dust Deposition Monitor
+export interface AeolianDustDepositionData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  depositionRate: number
+  particleSize: number
+  dustOrigin: number
+  status: 'heavy' | 'moderate' | 'light' | 'settled'
+  description: string
+}
+
+export interface AeolianDustDepositionState {
+  open: boolean
+  data: AeolianDustDepositionData[]
+  showDepositionRate: boolean
+  showParticleSize: boolean
+  showDustOrigin: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 96: Katabatic Wind Monitor
+export interface KatabaticWindMonitorData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  windSpeed: number
+  temperature: number
+  windChill: number
+  status: 'gale' | 'strong' | 'moderate' | 'calm'
+  description: string
+}
+
+export interface KatabaticWindMonitorState {
+  open: boolean
+  data: KatabaticWindMonitorData[]
+  showWindSpeed: boolean
+  showTemperature: boolean
+  showWindChill: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 96: Snow Avalanche Tracker
+export interface SnowAvalancheTrackerData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  slopeAngle: number
+  snowDepth: number
+  avalancheSize: number
+  status: 'recent' | 'likely' | 'possible' | 'unlikely'
+  description: string
+}
+
+export interface SnowAvalancheTrackerState {
+  open: boolean
+  data: SnowAvalancheTrackerData[]
+  showSlopeAngle: boolean
+  showSnowDepth: boolean
+  showAvalancheSize: boolean
   statusFilter: string
   activeItemId: string | null
 }
@@ -14961,6 +15163,40 @@ export const useMapStore = create<MapState>()(
       },
       setCoastalDuneSystem: (updates) => set((state) => ({ coastalDuneSystem: { ...state.coastalDuneSystem, ...updates } })),
 
+      // Task 96: New Monitors
+      karstSpringDischarge: {
+        data: [], activeItemId: null, showDischargeRate: true, showWaterTemperature: true, showConductivity: false, open: false, statusFilter: '',
+      },
+      setKarstSpringDischarge: (updates) => set((state) => ({ karstSpringDischarge: { ...state.karstSpringDischarge, ...updates } })),
+      caveDripMonitor: {
+        data: [], activeItemId: null, showDripRate: true, showCalciumConcentration: true, showPHDrip: false, open: false, statusFilter: '',
+      },
+      setCaveDripMonitor: (updates) => set((state) => ({ caveDripMonitor: { ...state.caveDripMonitor, ...updates } })),
+      tidalCreekMonitor: {
+        data: [], activeItemId: null, showTidalRange: true, showCreekDepth: true, showSalinity: false, open: false, statusFilter: '',
+      },
+      setTidalCreekMonitor: (updates) => set((state) => ({ tidalCreekMonitor: { ...state.tidalCreekMonitor, ...updates } })),
+      saltMarshCarbon: {
+        data: [], activeItemId: null, showCarbonStock: true, showAccretionRate: true, showVegetationCover: false, open: false, statusFilter: '',
+      },
+      setSaltMarshCarbon: (updates) => set((state) => ({ saltMarshCarbon: { ...state.saltMarshCarbon, ...updates } })),
+      opalPaleoMonitor: {
+        data: [], activeItemId: null, showOpalConcentration: true, showDiatomCount: true, showSedimentAge: false, open: false, statusFilter: '',
+      },
+      setOpalPaleoMonitor: (updates) => set((state) => ({ opalPaleoMonitor: { ...state.opalPaleoMonitor, ...updates } })),
+      aeolianDustDeposition: {
+        data: [], activeItemId: null, showDepositionRate: true, showParticleSize: true, showDustOrigin: false, open: false, statusFilter: '',
+      },
+      setAeolianDustDeposition: (updates) => set((state) => ({ aeolianDustDeposition: { ...state.aeolianDustDeposition, ...updates } })),
+      katabaticWindMonitor: {
+        data: [], activeItemId: null, showWindSpeed: true, showTemperature: true, showWindChill: false, open: false, statusFilter: '',
+      },
+      setKatabaticWindMonitor: (updates) => set((state) => ({ katabaticWindMonitor: { ...state.katabaticWindMonitor, ...updates } })),
+      snowAvalancheTracker: {
+        data: [], activeItemId: null, showSlopeAngle: true, showSnowDepth: true, showAvalancheSize: false, open: false, statusFilter: '',
+      },
+      setSnowAvalancheTracker: (updates) => set((state) => ({ snowAvalancheTracker: { ...state.snowAvalancheTracker, ...updates } })),
+
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
       setAddLocationDialogOpen: (open) => set({ addLocationDialogOpen: open }),
@@ -15425,6 +15661,15 @@ export const useMapStore = create<MapState>()(
         hyporheicZone: state.hyporheicZone,
         submarineFan: state.submarineFan,
         coastalDuneSystem: state.coastalDuneSystem,
+        // Task 96
+        karstSpringDischarge: state.karstSpringDischarge,
+        caveDripMonitor: state.caveDripMonitor,
+        tidalCreekMonitor: state.tidalCreekMonitor,
+        saltMarshCarbon: state.saltMarshCarbon,
+        opalPaleoMonitor: state.opalPaleoMonitor,
+        aeolianDustDeposition: state.aeolianDustDeposition,
+        katabaticWindMonitor: state.katabaticWindMonitor,
+        snowAvalancheTracker: state.snowAvalancheTracker,
       }),
     }
   )

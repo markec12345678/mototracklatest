@@ -200,6 +200,15 @@ export function MonitorPanelRegistry() {
   const hyporheicZone = useMapStore((s) => s.hyporheicZone)
   const submarineFan = useMapStore((s) => s.submarineFan)
   const coastalDuneSystem = useMapStore((s) => s.coastalDuneSystem)
+  // Task 96
+  const karstSpringDischarge = useMapStore((s) => s.karstSpringDischarge)
+  const caveDripMonitor = useMapStore((s) => s.caveDripMonitor)
+  const tidalCreekMonitor = useMapStore((s) => s.tidalCreekMonitor)
+  const saltMarshCarbon = useMapStore((s) => s.saltMarshCarbon)
+  const opalPaleoMonitor = useMapStore((s) => s.opalPaleoMonitor)
+  const aeolianDustDeposition = useMapStore((s) => s.aeolianDustDeposition)
+  const katabaticWindMonitor = useMapStore((s) => s.katabaticWindMonitor)
+  const snowAvalancheTracker = useMapStore((s) => s.snowAvalancheTracker)
 
   return (
     <>
@@ -575,6 +584,31 @@ export function MonitorPanelRegistry() {
       )}
       {coastalDuneSystem.open && (
         <LazyPanel importFn={() => import('@/components/map/CoastalDuneSystemMonitor')} exportName="CoastalDuneSystemMonitor" shouldLoad={true} />
+      )}
+      {/* Task 96: New Monitoring Panels */}
+      {karstSpringDischarge.open && (
+        <LazyPanel importFn={() => import('@/components/map/KarstSpringDischargeMonitor')} exportName="KarstSpringDischargeMonitor" shouldLoad={true} />
+      )}
+      {caveDripMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/CaveDripMonitorPanel')} exportName="CaveDripMonitorPanel" shouldLoad={true} />
+      )}
+      {tidalCreekMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/TidalCreekMonitor')} exportName="TidalCreekMonitor" shouldLoad={true} />
+      )}
+      {saltMarshCarbon.open && (
+        <LazyPanel importFn={() => import('@/components/map/SaltMarshCarbonMonitor')} exportName="SaltMarshCarbonMonitor" shouldLoad={true} />
+      )}
+      {opalPaleoMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/OpalPaleoMonitor')} exportName="OpalPaleoMonitor" shouldLoad={true} />
+      )}
+      {aeolianDustDeposition.open && (
+        <LazyPanel importFn={() => import('@/components/map/AeolianDustDepositionMonitor')} exportName="AeolianDustDepositionMonitor" shouldLoad={true} />
+      )}
+      {katabaticWindMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/KatabaticWindMonitor')} exportName="KatabaticWindMonitor" shouldLoad={true} />
+      )}
+      {snowAvalancheTracker.open && (
+        <LazyPanel importFn={() => import('@/components/map/SnowAvalancheTracker')} exportName="SnowAvalancheTracker" shouldLoad={true} />
       )}
     </>
   )
