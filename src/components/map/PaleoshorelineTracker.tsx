@@ -15,128 +15,128 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useMapStore, type AbyssalSedimentFluxState, type AbyssalSedimentFluxData } from '@/lib/map-store'
-import { Layers as LayersIcon5, X, Ruler, ArrowDown, ArrowRight, MapPin, Filter } from 'lucide-react'
+import { useMapStore, type PaleoshorelineTrackerState, type PaleoshorelineTrackerData } from '@/lib/map-store'
+import { MapPinned as MapPinnedIcon2, X, Clock, Mountain, Waves, MapPin, Filter } from 'lucide-react'
 
-const SAMPLE_LOCATIONS: AbyssalSedimentFluxData[] = [
+const SAMPLE_LOCATIONS: PaleoshorelineTrackerData[] = [
   {
-    id: 'af-pacific-clay',
-    name: 'Pacific Red Clay Zone',
-    lat: 0.0,
-    lng: -170.0,
-    sedimentRate: 0.001,
-    depth: 5500,
-    fluxDirection: 'Downward',
-    status: 'depositing',
-    description: 'Ultra-slow pelagic clay deposition',
+    id: 'ps-blacksea',
+    name: 'Black Sea Ancient Shore',
+    lat: 44.0,
+    lng: 34.0,
+    shorelineAge: 8,
+    elevation: 15,
+    seaLevelIndicator: 120,
+    status: 'preserved',
+    description: "Preserved Noah's Flood shoreline",
   },
   {
-    id: 'af-benguela',
-    name: 'Benguela Upwelling Zone',
-    lat: -22.0,
-    lng: 12.0,
-    sedimentRate: 0.15,
-    depth: 3000,
-    fluxDirection: 'Upward',
+    id: 'ps-sahara',
+    name: 'Mega-Lake Chad Shore',
+    lat: 14.0,
+    lng: 14.0,
+    shorelineAge: 5,
+    elevation: 280,
+    seaLevelIndicator: 50,
+    status: 'exposed',
+    description: 'Holocene lake shoreline exposed',
+  },
+  {
+    id: 'ps-mediterranean',
+    name: 'Messinian Shoreline',
+    lat: 36.0,
+    lng: 15.0,
+    shorelineAge: 5300,
+    elevation: 2500,
+    seaLevelIndicator: -2500,
     status: 'eroding',
-    description: 'High productivity upwelling with bottom current erosion',
+    description: 'Messinian salinity crisis shore',
   },
   {
-    id: 'af-bengal-fan',
-    name: 'Bengal Fan Abyssal',
-    lat: 10.0,
-    lng: 85.0,
-    sedimentRate: 0.5,
-    depth: 4000,
-    fluxDirection: 'Downward',
-    status: 'depositing',
-    description: 'Massive turbidite deposit from Ganges-Brahmaputra',
-  },
-  {
-    id: 'af-mid-atlantic',
-    name: 'Mid-Atlantic Ridge Abyssal',
-    lat: 25.0,
-    lng: -45.0,
-    sedimentRate: 0.02,
-    depth: 4500,
-    fluxDirection: 'Lateral',
-    status: 'stable',
-    description: 'Hydrothermal-influenced sediment accumulation',
+    id: 'ps-baltic',
+    name: 'Baltic Ancylus Shore',
+    lat: 58.0,
+    lng: 18.0,
+    shorelineAge: 9,
+    elevation: 45,
+    seaLevelIndicator: 25,
+    status: 'submerged',
+    description: 'Ancylus Lake submerged shore',
   },
 ]
 
-const STATUS_COLORS: Record<AbyssalSedimentFluxData['status'], { label: string; color: string; bgClass: string }> = {
-  depositing: { label: 'Depositing', color: '#f59e0b', bgClass: 'bg-amber-500/10 text-amber-600 border-amber-500/30' },
-  eroding: { label: 'Eroding', color: '#3b82f6', bgClass: 'bg-blue-500/10 text-blue-600 border-blue-500/30' },
-  stable: { label: 'Stable', color: '#64748b', bgClass: 'bg-slate-500/10 text-slate-400 border-slate-500/30' },
-  turbidite: { label: 'Turbidite', color: '#ef4444', bgClass: 'bg-red-500/10 text-red-600 border-red-500/30' },
+const STATUS_COLORS: Record<PaleoshorelineTrackerData['status'], { label: string; color: string; bgClass: string }> = {
+  preserved: { label: 'Preserved', color: '#22c55e', bgClass: 'bg-green-500/10 text-green-600 border-green-500/30' },
+  exposed: { label: 'Exposed', color: '#f59e0b', bgClass: 'bg-amber-500/10 text-amber-600 border-amber-500/30' },
+  eroding: { label: 'Eroding', color: '#f97316', bgClass: 'bg-orange-500/10 text-orange-600 border-orange-500/30' },
+  submerged: { label: 'Submerged', color: '#3b82f6', bgClass: 'bg-blue-500/10 text-blue-600 border-blue-500/30' },
 }
 
-function TrendIcon({ status }: { status: AbyssalSedimentFluxData['status'] }) {
+function TrendIcon({ status }: { status: PaleoshorelineTrackerData['status'] }) {
   const cfg = STATUS_COLORS[status]
   return (
     <div className="h-2 w-2 rounded-full" style={{ backgroundColor: cfg.color }} />
   )
 }
 
-export function AbyssalSedimentFluxMonitor() {
-  const state = useMapStore((s) => s.abyssalSedimentFlux)
-  const setState = useMapStore((s) => s.setAbyssalSedimentFlux)
+export function PaleoshorelineTracker() {
+  const state = useMapStore((s) => s.paleoshorelineTracker)
+  const setState = useMapStore((s) => s.setPaleoshorelineTracker)
 
-  const sites = useMemo(
-    () => (state.sites.length > 0 ? state.sites : SAMPLE_LOCATIONS),
-    [state.sites]
+  const items = useMemo(
+    () => (state.data.length > 0 ? state.data : SAMPLE_LOCATIONS),
+    [state.data]
   )
 
   const filteredItems = useMemo(() => {
-    return sites.filter((s) => {
-      if (state.statusFilter !== 'all' && s.status !== state.statusFilter) return false
+    return items.filter((item) => {
+      if (state.statusFilter !== 'all' && item.status !== state.statusFilter) return false
       return true
     })
-  }, [sites, state.statusFilter])
+  }, [items, state.statusFilter])
 
   const summary = useMemo(() => {
     if (filteredItems.length === 0) {
-      return { totalSites: 0, avgSedimentRate: 0, avgDepth: 0, depositingCount: 0 }
+      return { totalSites: 0, avgAge: 0, maxElevation: 0, preservedExposedCount: 0 }
     }
-    const avgSedimentRate = filteredItems.reduce((sum, s) => sum + s.sedimentRate, 0) / filteredItems.length
-    const avgDepth = filteredItems.reduce((sum, s) => sum + s.depth, 0) / filteredItems.length
-    const depositingCount = filteredItems.filter((s) => s.status === 'depositing').length
+    const avgAge = filteredItems.reduce((sum, item) => sum + item.shorelineAge, 0) / filteredItems.length
+    const maxElevation = Math.max(...filteredItems.map((item) => item.elevation))
+    const preservedExposedCount = filteredItems.filter((item) => item.status === 'preserved' || item.status === 'exposed').length
     return {
       totalSites: filteredItems.length,
-      avgSedimentRate: Math.round(avgSedimentRate * 1000) / 1000,
-      avgDepth: Math.round(avgDepth),
-      depositingCount,
+      avgAge: Math.round(avgAge * 10) / 10,
+      maxElevation,
+      preservedExposedCount,
     }
   }, [filteredItems])
 
   const activeItem = useMemo(
-    () => sites.find((s) => s.id === state.activeSiteId) ?? null,
-    [sites, state.activeSiteId]
+    () => items.find((item) => item.id === state.activeItemId) ?? null,
+    [items, state.activeItemId]
   )
 
   const geojson = useMemo(() => ({
     type: 'FeatureCollection' as const,
-    features: filteredItems.map((s) => ({
+    features: filteredItems.map((item) => ({
       type: 'Feature' as const,
-      geometry: { type: 'Point' as const, coordinates: [s.lng, s.lat] },
-      properties: { id: s.id, name: s.name, status: s.status, depth: s.depth },
+      geometry: { type: 'Point' as const, coordinates: [item.lng, item.lat] },
+      properties: { id: item.id, name: item.name, status: item.status, shorelineAge: item.shorelineAge },
     })),
   }), [filteredItems])
 
   useEffect(() => {
-    if (state.sites.length === 0) {
-      useMapStore.getState().setAbyssalSedimentFlux({ sites: SAMPLE_LOCATIONS })
+    if (state.data.length === 0) {
+      useMapStore.getState().setPaleoshorelineTracker({ data: SAMPLE_LOCATIONS })
     }
-  }, [state.sites.length])
+  }, [state.data.length])
 
   if (typeof window === 'undefined') return null
   if (!state.open) return null
 
-  const overlayToggles: { key: keyof AbyssalSedimentFluxState; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
-    { key: 'showSedimentRate', label: 'Sediment Rate', icon: ArrowDown },
-    { key: 'showDepth', label: 'Depth', icon: Ruler },
-    { key: 'showFluxDirection', label: 'Flux Direction', icon: ArrowRight },
+  const overlayToggles: { key: keyof PaleoshorelineTrackerState; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
+    { key: 'showShorelineAge', label: 'Shoreline Age', icon: Clock },
+    { key: 'showElevation', label: 'Elevation', icon: Mountain },
+    { key: 'showSeaLevelIndicator', label: 'Sea Level Indicator', icon: Waves },
   ]
 
   void geojson
@@ -147,8 +147,8 @@ export function AbyssalSedimentFluxMonitor() {
         <CardHeader className="pb-3 border-b border-stone-700/30">
           <div className="flex items-center justify-between">
             <CardTitle className="text-sm flex items-center gap-2 text-stone-100">
-              <LayersIcon5 className="h-4 w-4 text-stone-400" />
-              Abyssal Sediment Flux Monitor
+              <MapPinnedIcon2 className="h-4 w-4 text-stone-400" />
+              Paleoshoreline Tracker
             </CardTitle>
             <Button
               variant="ghost"
@@ -170,7 +170,7 @@ export function AbyssalSedimentFluxMonitor() {
             <Select
               value={state.statusFilter}
               onValueChange={(v) =>
-                setState({ statusFilter: v as AbyssalSedimentFluxState['statusFilter'] })
+                setState({ statusFilter: v as PaleoshorelineTrackerState['statusFilter'] })
               }
             >
               <SelectTrigger className="h-8 text-xs mt-1 bg-stone-900/40 border-stone-700/40 text-stone-100 hover:bg-stone-900/60">
@@ -178,10 +178,10 @@ export function AbyssalSedimentFluxMonitor() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="depositing">Depositing</SelectItem>
+                <SelectItem value="preserved">Preserved</SelectItem>
+                <SelectItem value="exposed">Exposed</SelectItem>
                 <SelectItem value="eroding">Eroding</SelectItem>
-                <SelectItem value="stable">Stable</SelectItem>
-                <SelectItem value="turbidite">Turbidite</SelectItem>
+                <SelectItem value="submerged">Submerged</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -213,53 +213,53 @@ export function AbyssalSedimentFluxMonitor() {
             <div className="rounded-lg border border-stone-700/30 bg-stone-900/30 p-2 text-center">
               <div className="text-[10px] text-stone-400/70">Total Sites</div>
               <div className="text-sm font-semibold text-stone-200">{summary.totalSites}</div>
-              <div className="text-[9px] text-stone-400/60">monitored</div>
+              <div className="text-[9px] text-stone-400/60">tracked</div>
             </div>
             <div className="rounded-lg border border-stone-700/30 bg-stone-900/30 p-2 text-center">
-              <div className="text-[10px] text-stone-400/70">Avg Sediment Rate</div>
-              <div className="text-sm font-semibold text-neutral-300">{summary.avgSedimentRate}</div>
-              <div className="text-[9px] text-stone-400/60">cm/kyr</div>
+              <div className="text-[10px] text-stone-400/70">Avg Age</div>
+              <div className="text-sm font-semibold text-amber-400">{summary.avgAge}</div>
+              <div className="text-[9px] text-stone-400/60">kyr BP</div>
             </div>
             <div className="rounded-lg border border-stone-700/30 bg-stone-900/30 p-2 text-center">
-              <div className="text-[10px] text-stone-400/70">Avg Depth</div>
-              <div className="text-sm font-semibold text-amber-400">{summary.avgDepth}</div>
+              <div className="text-[10px] text-stone-400/70">Max Elevation</div>
+              <div className="text-sm font-semibold text-green-400">{summary.maxElevation}</div>
               <div className="text-[9px] text-stone-400/60">m</div>
             </div>
             <div className="rounded-lg border border-stone-700/30 bg-stone-900/30 p-2 text-center">
-              <div className="text-[10px] text-stone-400/70">Depositing Count</div>
-              <div className="text-sm font-semibold text-amber-400">{summary.depositingCount}</div>
+              <div className="text-[10px] text-stone-400/70">Preserved+Exposed</div>
+              <div className="text-sm font-semibold text-blue-400">{summary.preservedExposedCount}</div>
               <div className="text-[9px] text-stone-400/60">sites</div>
             </div>
           </div>
 
           <Separator className="bg-stone-700/30" />
 
-          {/* Site List */}
+          {/* Location List */}
           <div className="space-y-1.5">
             <Label className="text-xs text-stone-300/80">
-              Abyssal Sites ({filteredItems.length})
+              Sites ({filteredItems.length})
             </Label>
             <ScrollArea className="max-h-[260px]">
               <div className="space-y-2 pr-1">
-                {filteredItems.map((s) => {
-                  const isActive = state.activeSiteId === s.id
-                  const statusCfg = STATUS_COLORS[s.status]
+                {filteredItems.map((item) => {
+                  const isActive = state.activeItemId === item.id
+                  const statusCfg = STATUS_COLORS[item.status]
                   return (
                     <div
-                      key={s.id}
+                      key={item.id}
                       className={`rounded-lg border p-2.5 cursor-pointer transition-all ${
                         isActive
                           ? 'border-stone-500/50 bg-stone-800/30'
                           : 'border-stone-700/30 hover:border-stone-500/30 hover:bg-stone-800/20'
                       }`}
                       onClick={() =>
-                        setState({ activeSiteId: isActive ? null : s.id })
+                        setState({ activeItemId: isActive ? null : item.id })
                       }
                     >
                       <div className="flex items-center justify-between mb-1.5">
                         <div className="flex items-center gap-1.5">
-                          <TrendIcon status={s.status} />
-                          <span className="text-xs font-medium text-stone-100">{s.name}</span>
+                          <TrendIcon status={item.status} />
+                          <span className="text-xs font-medium text-stone-100">{item.name}</span>
                         </div>
                         <Badge
                           variant="outline"
@@ -270,22 +270,22 @@ export function AbyssalSedimentFluxMonitor() {
                       </div>
 
                       <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10px] text-stone-300/60">
-                        {state.showSedimentRate && (
+                        {state.showShorelineAge && (
                           <div>
-                            Sed. Rate:{' '}
-                            <span className="text-stone-100 font-medium">{s.sedimentRate} cm/kyr</span>
+                            Age:{' '}
+                            <span className="text-stone-100 font-medium">{item.shorelineAge} kyr BP</span>
                           </div>
                         )}
-                        {state.showDepth && (
+                        {state.showElevation && (
                           <div>
-                            Depth:{' '}
-                            <span className="text-stone-100 font-medium">{s.depth}m</span>
+                            Elevation:{' '}
+                            <span className="text-stone-100 font-medium">{item.elevation} m</span>
                           </div>
                         )}
-                        {state.showFluxDirection && (
+                        {state.showSeaLevelIndicator && (
                           <div>
-                            Flux:{' '}
-                            <span className="text-stone-100 font-medium">{s.fluxDirection}</span>
+                            Sea Level:{' '}
+                            <span className="text-stone-100 font-medium">{item.seaLevelIndicator} m above MSL</span>
                           </div>
                         )}
                       </div>
@@ -301,7 +301,7 @@ export function AbyssalSedimentFluxMonitor() {
             </ScrollArea>
           </div>
 
-          {/* Active Site Details */}
+          {/* Active Item Details */}
           {activeItem && (
             <>
               <Separator className="bg-stone-700/30" />
@@ -325,16 +325,16 @@ export function AbyssalSedimentFluxMonitor() {
                     </span>
                   </div>
                   <div>
-                    <span className="text-stone-400/70">Depth: </span>
-                    <span className="font-medium text-amber-400">{activeItem.depth}m</span>
+                    <span className="text-stone-400/70">Age: </span>
+                    <span className="font-medium text-amber-400">{activeItem.shorelineAge} kyr BP</span>
                   </div>
                   <div>
-                    <span className="text-stone-400/70">Sed. Rate: </span>
-                    <span className="font-medium text-neutral-300">{activeItem.sedimentRate} cm/kyr</span>
+                    <span className="text-stone-400/70">Elevation: </span>
+                    <span className="font-medium text-green-400">{activeItem.elevation} m</span>
                   </div>
                   <div>
-                    <span className="text-stone-400/70">Flux Direction: </span>
-                    <span className="font-medium text-blue-400">{activeItem.fluxDirection}</span>
+                    <span className="text-stone-400/70">Sea Level: </span>
+                    <span className="font-medium text-blue-400">{activeItem.seaLevelIndicator} m above MSL</span>
                   </div>
                 </div>
               </div>

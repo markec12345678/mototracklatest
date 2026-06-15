@@ -15,128 +15,128 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useMapStore, type SeamountBiodiversityState, type SeamountBiodiversityData } from '@/lib/map-store'
-import { Shell as ShellIcon3, X, Ruler, Fish, Percent, MapPin, Filter } from 'lucide-react'
+import { useMapStore, type MangroveRootSystemState, type MangroveRootSystemData } from '@/lib/map-store'
+import { TreePine as TreePineIcon8, X, Activity, Layers, Droplets, MapPin, Filter } from 'lucide-react'
 
-const SAMPLE_LOCATIONS: SeamountBiodiversityData[] = [
+const SAMPLE_LOCATIONS: MangroveRootSystemData[] = [
   {
-    id: 'sb-davidson',
-    name: 'Davidson Seamount',
-    lat: 35.7,
-    lng: -122.7,
-    depth: 1250,
-    speciesCount: 350,
-    endemismRate: 0.15,
-    status: 'pristine',
-    description: 'Deep-sea coral gardens off California coast',
+    id: 'mr-sundarbans',
+    name: 'Sundarbans Mangrove',
+    lat: 22.0,
+    lng: 89.0,
+    rootDensity: 85,
+    sedimentAccretion: 5.2,
+    carbonStock: 120,
+    status: 'healthy',
+    description: "World's largest mangrove forest",
   },
   {
-    id: 'sb-empress',
-    name: 'Empress of Britain Seamount',
-    lat: 47.0,
-    lng: -27.0,
-    depth: 800,
-    speciesCount: 220,
-    endemismRate: 0.08,
-    status: 'threatened',
-    description: 'Mid-Atlantic seamount with trawling impacts',
+    id: 'mr-florida',
+    name: 'Florida Mangrove Root',
+    lat: 25.2,
+    lng: -81.0,
+    rootDensity: 62,
+    sedimentAccretion: 3.8,
+    carbonStock: 95,
+    status: 'stressed',
+    description: 'Hurricane-impacted root system',
   },
   {
-    id: 'sb-cobb',
-    name: 'Cobb Seamount',
-    lat: 46.8,
-    lng: -130.8,
-    depth: 500,
-    speciesCount: 180,
-    endemismRate: 0.12,
-    status: 'impacted',
-    description: 'Northeast Pacific seamount with fishing damage',
+    id: 'mr-vietnam',
+    name: 'Mekong Delta Mangrove',
+    lat: 9.5,
+    lng: 106.0,
+    rootDensity: 35,
+    sedimentAccretion: 1.5,
+    carbonStock: 55,
+    status: 'declining',
+    description: 'Shrimp farm encroachment',
   },
   {
-    id: 'sb-vhma',
-    name: 'Vema Seamount',
-    lat: -31.6,
-    lng: 8.3,
-    depth: 2000,
-    speciesCount: 120,
-    endemismRate: 0.25,
-    status: 'protected',
-    description: 'Protected seamount with high endemism in South Atlantic',
+    id: 'mr-kenya',
+    name: 'Gazi Bay Mangrove',
+    lat: -4.4167,
+    lng: 39.5,
+    rootDensity: 72,
+    sedimentAccretion: 4.5,
+    carbonStock: 110,
+    status: 'restored',
+    description: 'Community restoration project',
   },
 ]
 
-const STATUS_COLORS: Record<SeamountBiodiversityData['status'], { label: string; color: string; bgClass: string }> = {
-  pristine: { label: 'Pristine', color: '#22c55e', bgClass: 'bg-green-500/10 text-green-600 border-green-500/30' },
-  threatened: { label: 'Threatened', color: '#f59e0b', bgClass: 'bg-amber-500/10 text-amber-600 border-amber-500/30' },
-  impacted: { label: 'Impacted', color: '#f97316', bgClass: 'bg-orange-500/10 text-orange-600 border-orange-500/30' },
-  protected: { label: 'Protected', color: '#3b82f6', bgClass: 'bg-blue-500/10 text-blue-600 border-blue-500/30' },
+const STATUS_COLORS: Record<MangroveRootSystemData['status'], { label: string; color: string; bgClass: string }> = {
+  healthy: { label: 'Healthy', color: '#22c55e', bgClass: 'bg-green-500/10 text-green-600 border-green-500/30' },
+  stressed: { label: 'Stressed', color: '#f59e0b', bgClass: 'bg-amber-500/10 text-amber-600 border-amber-500/30' },
+  declining: { label: 'Declining', color: '#ef4444', bgClass: 'bg-red-500/10 text-red-600 border-red-500/30' },
+  restored: { label: 'Restored', color: '#3b82f6', bgClass: 'bg-blue-500/10 text-blue-600 border-blue-500/30' },
 }
 
-function TrendIcon({ status }: { status: SeamountBiodiversityData['status'] }) {
+function TrendIcon({ status }: { status: MangroveRootSystemData['status'] }) {
   const cfg = STATUS_COLORS[status]
   return (
     <div className="h-2 w-2 rounded-full" style={{ backgroundColor: cfg.color }} />
   )
 }
 
-export function SeamountBiodiversityMonitor() {
-  const state = useMapStore((s) => s.seamountBiodiversity)
-  const setState = useMapStore((s) => s.setSeamountBiodiversity)
+export function MangroveRootSystemMonitor() {
+  const state = useMapStore((s) => s.mangroveRootSystem)
+  const setState = useMapStore((s) => s.setMangroveRootSystem)
 
-  const seamounts = useMemo(
-    () => (state.seamounts.length > 0 ? state.seamounts : SAMPLE_LOCATIONS),
-    [state.seamounts]
+  const items = useMemo(
+    () => (state.data.length > 0 ? state.data : SAMPLE_LOCATIONS),
+    [state.data]
   )
 
   const filteredItems = useMemo(() => {
-    return seamounts.filter((s) => {
-      if (state.statusFilter !== 'all' && s.status !== state.statusFilter) return false
+    return items.filter((item) => {
+      if (state.statusFilter !== 'all' && item.status !== state.statusFilter) return false
       return true
     })
-  }, [seamounts, state.statusFilter])
+  }, [items, state.statusFilter])
 
   const summary = useMemo(() => {
     if (filteredItems.length === 0) {
-      return { totalSeamounts: 0, avgSpeciesCount: 0, avgEndemism: 0, pristineCount: 0 }
+      return { totalSites: 0, avgDensity: 0, avgCarbon: 0, healthyRestoredCount: 0 }
     }
-    const avgSpeciesCount = filteredItems.reduce((sum, s) => sum + s.speciesCount, 0) / filteredItems.length
-    const avgEndemism = filteredItems.reduce((sum, s) => sum + s.endemismRate, 0) / filteredItems.length
-    const pristineCount = filteredItems.filter((s) => s.status === 'pristine').length
+    const avgDensity = filteredItems.reduce((sum, item) => sum + item.rootDensity, 0) / filteredItems.length
+    const avgCarbon = filteredItems.reduce((sum, item) => sum + item.carbonStock, 0) / filteredItems.length
+    const healthyRestoredCount = filteredItems.filter((item) => item.status === 'healthy' || item.status === 'restored').length
     return {
-      totalSeamounts: filteredItems.length,
-      avgSpeciesCount: Math.round(avgSpeciesCount),
-      avgEndemism: Math.round(avgEndemism * 1000) / 10,
-      pristineCount,
+      totalSites: filteredItems.length,
+      avgDensity: Math.round(avgDensity * 10) / 10,
+      avgCarbon: Math.round(avgCarbon * 10) / 10,
+      healthyRestoredCount,
     }
   }, [filteredItems])
 
   const activeItem = useMemo(
-    () => seamounts.find((s) => s.id === state.activeSeamountId) ?? null,
-    [seamounts, state.activeSeamountId]
+    () => items.find((item) => item.id === state.activeItemId) ?? null,
+    [items, state.activeItemId]
   )
 
   const geojson = useMemo(() => ({
     type: 'FeatureCollection' as const,
-    features: filteredItems.map((s) => ({
+    features: filteredItems.map((item) => ({
       type: 'Feature' as const,
-      geometry: { type: 'Point' as const, coordinates: [s.lng, s.lat] },
-      properties: { id: s.id, name: s.name, status: s.status, depth: s.depth },
+      geometry: { type: 'Point' as const, coordinates: [item.lng, item.lat] },
+      properties: { id: item.id, name: item.name, status: item.status, rootDensity: item.rootDensity },
     })),
   }), [filteredItems])
 
   useEffect(() => {
-    if (state.seamounts.length === 0) {
-      useMapStore.getState().setSeamountBiodiversity({ seamounts: SAMPLE_LOCATIONS })
+    if (state.data.length === 0) {
+      useMapStore.getState().setMangroveRootSystem({ data: SAMPLE_LOCATIONS })
     }
-  }, [state.seamounts.length])
+  }, [state.data.length])
 
   if (typeof window === 'undefined') return null
   if (!state.open) return null
 
-  const overlayToggles: { key: keyof SeamountBiodiversityState; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
-    { key: 'showDepth', label: 'Depth', icon: Ruler },
-    { key: 'showSpeciesCount', label: 'Species Count', icon: Fish },
-    { key: 'showEndemismRate', label: 'Endemism Rate', icon: Percent },
+  const overlayToggles: { key: keyof MangroveRootSystemState; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
+    { key: 'showRootDensity', label: 'Root Density', icon: Activity },
+    { key: 'showSedimentAccretion', label: 'Sediment Accretion', icon: Layers },
+    { key: 'showCarbonStock', label: 'Carbon Stock', icon: Droplets },
   ]
 
   void geojson
@@ -147,8 +147,8 @@ export function SeamountBiodiversityMonitor() {
         <CardHeader className="pb-3 border-b border-emerald-700/30">
           <div className="flex items-center justify-between">
             <CardTitle className="text-sm flex items-center gap-2 text-emerald-100">
-              <ShellIcon3 className="h-4 w-4 text-emerald-400" />
-              Seamount Biodiversity Monitor
+              <TreePineIcon8 className="h-4 w-4 text-emerald-400" />
+              Mangrove Root System
             </CardTitle>
             <Button
               variant="ghost"
@@ -170,7 +170,7 @@ export function SeamountBiodiversityMonitor() {
             <Select
               value={state.statusFilter}
               onValueChange={(v) =>
-                setState({ statusFilter: v as SeamountBiodiversityState['statusFilter'] })
+                setState({ statusFilter: v as MangroveRootSystemState['statusFilter'] })
               }
             >
               <SelectTrigger className="h-8 text-xs mt-1 bg-emerald-900/40 border-emerald-700/40 text-emerald-100 hover:bg-emerald-900/60">
@@ -178,10 +178,10 @@ export function SeamountBiodiversityMonitor() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="pristine">Pristine</SelectItem>
-                <SelectItem value="threatened">Threatened</SelectItem>
-                <SelectItem value="impacted">Impacted</SelectItem>
-                <SelectItem value="protected">Protected</SelectItem>
+                <SelectItem value="healthy">Healthy</SelectItem>
+                <SelectItem value="stressed">Stressed</SelectItem>
+                <SelectItem value="declining">Declining</SelectItem>
+                <SelectItem value="restored">Restored</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -211,55 +211,55 @@ export function SeamountBiodiversityMonitor() {
           {/* Summary Metrics */}
           <div className="grid grid-cols-2 gap-2">
             <div className="rounded-lg border border-emerald-700/30 bg-emerald-900/30 p-2 text-center">
-              <div className="text-[10px] text-emerald-400/70">Total Seamounts</div>
-              <div className="text-sm font-semibold text-emerald-200">{summary.totalSeamounts}</div>
+              <div className="text-[10px] text-emerald-400/70">Total Sites</div>
+              <div className="text-sm font-semibold text-emerald-200">{summary.totalSites}</div>
               <div className="text-[9px] text-emerald-400/60">monitored</div>
             </div>
             <div className="rounded-lg border border-emerald-700/30 bg-emerald-900/30 p-2 text-center">
-              <div className="text-[10px] text-emerald-400/70">Avg Species Count</div>
-              <div className="text-sm font-semibold text-teal-400">{summary.avgSpeciesCount}</div>
-              <div className="text-[9px] text-emerald-400/60">species</div>
+              <div className="text-[10px] text-emerald-400/70">Avg Density</div>
+              <div className="text-sm font-semibold text-green-400">{summary.avgDensity}</div>
+              <div className="text-[9px] text-emerald-400/60">roots/m²</div>
             </div>
             <div className="rounded-lg border border-emerald-700/30 bg-emerald-900/30 p-2 text-center">
-              <div className="text-[10px] text-emerald-400/70">Avg Endemism</div>
-              <div className="text-sm font-semibold text-green-400">{summary.avgEndemism}</div>
-              <div className="text-[9px] text-emerald-400/60">%</div>
+              <div className="text-[10px] text-emerald-400/70">Avg Carbon</div>
+              <div className="text-sm font-semibold text-teal-400">{summary.avgCarbon}</div>
+              <div className="text-[9px] text-emerald-400/60">tC/ha</div>
             </div>
             <div className="rounded-lg border border-emerald-700/30 bg-emerald-900/30 p-2 text-center">
-              <div className="text-[10px] text-emerald-400/70">Pristine Count</div>
-              <div className="text-sm font-semibold text-green-400">{summary.pristineCount}</div>
-              <div className="text-[9px] text-emerald-400/60">seamounts</div>
+              <div className="text-[10px] text-emerald-400/70">Healthy+Restored</div>
+              <div className="text-sm font-semibold text-blue-400">{summary.healthyRestoredCount}</div>
+              <div className="text-[9px] text-emerald-400/60">sites</div>
             </div>
           </div>
 
           <Separator className="bg-emerald-700/30" />
 
-          {/* Seamount List */}
+          {/* Location List */}
           <div className="space-y-1.5">
             <Label className="text-xs text-emerald-300/80">
-              Seamounts ({filteredItems.length})
+              Sites ({filteredItems.length})
             </Label>
             <ScrollArea className="max-h-[260px]">
               <div className="space-y-2 pr-1">
-                {filteredItems.map((s) => {
-                  const isActive = state.activeSeamountId === s.id
-                  const statusCfg = STATUS_COLORS[s.status]
+                {filteredItems.map((item) => {
+                  const isActive = state.activeItemId === item.id
+                  const statusCfg = STATUS_COLORS[item.status]
                   return (
                     <div
-                      key={s.id}
+                      key={item.id}
                       className={`rounded-lg border p-2.5 cursor-pointer transition-all ${
                         isActive
                           ? 'border-emerald-500/50 bg-emerald-800/30'
                           : 'border-emerald-700/30 hover:border-emerald-500/30 hover:bg-emerald-800/20'
                       }`}
                       onClick={() =>
-                        setState({ activeSeamountId: isActive ? null : s.id })
+                        setState({ activeItemId: isActive ? null : item.id })
                       }
                     >
                       <div className="flex items-center justify-between mb-1.5">
                         <div className="flex items-center gap-1.5">
-                          <TrendIcon status={s.status} />
-                          <span className="text-xs font-medium text-emerald-100">{s.name}</span>
+                          <TrendIcon status={item.status} />
+                          <span className="text-xs font-medium text-emerald-100">{item.name}</span>
                         </div>
                         <Badge
                           variant="outline"
@@ -270,22 +270,22 @@ export function SeamountBiodiversityMonitor() {
                       </div>
 
                       <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10px] text-emerald-300/60">
-                        {state.showDepth && (
+                        {state.showRootDensity && (
                           <div>
-                            Depth:{' '}
-                            <span className="text-emerald-100 font-medium">{s.depth}m</span>
+                            Density:{' '}
+                            <span className="text-emerald-100 font-medium">{item.rootDensity} roots/m²</span>
                           </div>
                         )}
-                        {state.showSpeciesCount && (
+                        {state.showSedimentAccretion && (
                           <div>
-                            Species:{' '}
-                            <span className="text-emerald-100 font-medium">{s.speciesCount}</span>
+                            Accretion:{' '}
+                            <span className="text-emerald-100 font-medium">{item.sedimentAccretion} mm/yr</span>
                           </div>
                         )}
-                        {state.showEndemismRate && (
+                        {state.showCarbonStock && (
                           <div>
-                            Endemism:{' '}
-                            <span className="text-emerald-100 font-medium">{(s.endemismRate * 100).toFixed(0)}%</span>
+                            Carbon:{' '}
+                            <span className="text-teal-400 font-medium">{item.carbonStock} tC/ha</span>
                           </div>
                         )}
                       </div>
@@ -294,14 +294,14 @@ export function SeamountBiodiversityMonitor() {
                 })}
                 {filteredItems.length === 0 && (
                   <div className="text-center text-xs text-emerald-400/50 py-4">
-                    No seamounts match the current filter.
+                    No sites match the current filter.
                   </div>
                 )}
               </div>
             </ScrollArea>
           </div>
 
-          {/* Active Seamount Details */}
+          {/* Active Item Details */}
           {activeItem && (
             <>
               <Separator className="bg-emerald-700/30" />
@@ -325,16 +325,16 @@ export function SeamountBiodiversityMonitor() {
                     </span>
                   </div>
                   <div>
-                    <span className="text-emerald-400/70">Depth: </span>
-                    <span className="font-medium text-teal-400">{activeItem.depth}m</span>
+                    <span className="text-emerald-400/70">Density: </span>
+                    <span className="font-medium text-green-400">{activeItem.rootDensity} roots/m²</span>
                   </div>
                   <div>
-                    <span className="text-emerald-400/70">Species Count: </span>
-                    <span className="font-medium text-green-400">{activeItem.speciesCount}</span>
+                    <span className="text-emerald-400/70">Accretion: </span>
+                    <span className="font-medium text-teal-400">{activeItem.sedimentAccretion} mm/yr</span>
                   </div>
                   <div>
-                    <span className="text-emerald-400/70">Endemism: </span>
-                    <span className="font-medium text-cyan-400">{(activeItem.endemismRate * 100).toFixed(0)}%</span>
+                    <span className="text-emerald-400/70">Carbon: </span>
+                    <span className="font-medium text-blue-400">{activeItem.carbonStock} tC/ha</span>
                   </div>
                 </div>
               </div>

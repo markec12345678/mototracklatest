@@ -15,104 +15,104 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useMapStore, type GlacierSurgeEventState, type GlacierSurgeEventData } from '@/lib/map-store'
-import { Zap as ZapIcon3, X, ArrowRight, Mountain, Clock, MapPin, Filter } from 'lucide-react'
+import { useMapStore, type IceStreamVelocityState, type IceStreamVelocityData } from '@/lib/map-store'
+import { ArrowUpFromLine as ArrowUpIcon4, X, Gauge, Mountain, Zap, MapPin, Filter } from 'lucide-react'
 
-const SAMPLE_LOCATIONS: GlacierSurgeEventData[] = [
+const SAMPLE_LOCATIONS: IceStreamVelocityData[] = [
   {
-    id: 'gs-bering',
-    name: 'Bering Glacier Surge',
-    lat: 60.3833,
-    lng: -143.0333,
-    surgeVelocity: 15,
-    iceDisplacement: 1200,
-    surgeDuration: 180,
-    status: 'surging',
-    description: 'Largest surge in North America',
+    id: 'is-pineisland',
+    name: 'Pine Island Glacier',
+    lat: -75.25,
+    lng: -100.0,
+    flowVelocity: 3500,
+    iceThickness: 2100,
+    basalShearStress: 120,
+    status: 'accelerating',
+    description: 'Fastest thinning glacier',
   },
   {
-    id: 'gs-variegated',
-    name: 'Variegated Glacier',
-    lat: 59.9333,
-    lng: -139.75,
-    surgeVelocity: 5,
-    iceDisplacement: 600,
-    surgeDuration: 90,
-    status: 'slowing',
-    description: 'Periodic surge cycles',
+    id: 'is-thwaites',
+    name: 'Thwaites Glacier',
+    lat: -75.5,
+    lng: -107.0,
+    flowVelocity: 2800,
+    iceThickness: 1800,
+    basalShearStress: 95,
+    status: 'accelerating',
+    description: 'Doomsday glacier',
   },
   {
-    id: 'gs-medvezhiy',
-    name: 'Medvezhiy Glacier',
-    lat: 38.8333,
-    lng: 69.8333,
-    surgeVelocity: 0.5,
-    iceDisplacement: 50,
-    surgeDuration: 0,
+    id: 'is-whillans',
+    name: 'Whillans Ice Stream',
+    lat: -84.0,
+    lng: -160.0,
+    flowVelocity: 400,
+    iceThickness: 950,
+    basalShearStress: 30,
     status: 'stable',
-    description: 'Known for catastrophic surges',
+    description: 'Sticky-spot ice stream',
   },
   {
-    id: 'gs-trapridge',
-    name: 'Trapridge Glacier',
-    lat: 61.2333,
-    lng: -140.3667,
-    surgeVelocity: 2,
-    iceDisplacement: 300,
-    surgeDuration: 365,
-    status: 'post_surge',
-    description: 'Slow surge progression',
+    id: 'is-kamb',
+    name: 'Kamb Ice Stream',
+    lat: -82.0,
+    lng: -155.0,
+    flowVelocity: 10,
+    iceThickness: 800,
+    basalShearStress: 5,
+    status: 'stagnant',
+    description: 'Stagnated ice stream',
   },
 ]
 
-const STATUS_COLORS: Record<GlacierSurgeEventData['status'], { label: string; color: string; bgClass: string }> = {
-  surging: { label: 'Surging', color: '#ef4444', bgClass: 'bg-red-500/10 text-red-600 border-red-500/30' },
-  slowing: { label: 'Slowing', color: '#f59e0b', bgClass: 'bg-amber-500/10 text-amber-600 border-amber-500/30' },
+const STATUS_COLORS: Record<IceStreamVelocityData['status'], { label: string; color: string; bgClass: string }> = {
+  accelerating: { label: 'Accelerating', color: '#ef4444', bgClass: 'bg-red-500/10 text-red-600 border-red-500/30' },
   stable: { label: 'Stable', color: '#22c55e', bgClass: 'bg-green-500/10 text-green-600 border-green-500/30' },
-  post_surge: { label: 'Post Surge', color: '#3b82f6', bgClass: 'bg-blue-500/10 text-blue-600 border-blue-500/30' },
+  decelerating: { label: 'Decelerating', color: '#f59e0b', bgClass: 'bg-amber-500/10 text-amber-600 border-amber-500/30' },
+  stagnant: { label: 'Stagnant', color: '#64748b', bgClass: 'bg-slate-500/10 text-slate-600 border-slate-500/30' },
 }
 
-function TrendIcon({ status }: { status: GlacierSurgeEventData['status'] }) {
+function TrendIcon({ status }: { status: IceStreamVelocityData['status'] }) {
   const cfg = STATUS_COLORS[status]
   return (
     <div className="h-2 w-2 rounded-full" style={{ backgroundColor: cfg.color }} />
   )
 }
 
-export function GlacierSurgeEventMonitor() {
-  const state = useMapStore((s) => s.glacierSurgeEvent)
-  const setState = useMapStore((s) => s.setGlacierSurgeEvent)
+export function IceStreamVelocityMonitor() {
+  const state = useMapStore((s) => s.iceStreamVelocity)
+  const setState = useMapStore((s) => s.setIceStreamVelocity)
 
-  const events = useMemo(
-    () => (state.events.length > 0 ? state.events : SAMPLE_LOCATIONS),
-    [state.events]
+  const items = useMemo(
+    () => (state.data.length > 0 ? state.data : SAMPLE_LOCATIONS),
+    [state.data]
   )
 
   const filteredItems = useMemo(() => {
-    return events.filter((e) => {
-      if (state.statusFilter !== 'all' && e.status !== state.statusFilter) return false
+    return items.filter((e) => {
+      if (state.statusFilter !== 'all' && state.statusFilter !== '' && e.status !== state.statusFilter) return false
       return true
     })
-  }, [events, state.statusFilter])
+  }, [items, state.statusFilter])
 
   const summary = useMemo(() => {
     if (filteredItems.length === 0) {
-      return { totalGlaciers: 0, avgSurgeVelocity: 0, avgDisplacement: 0, surgingSlowingCount: 0 }
+      return { totalStreams: 0, avgVelocity: 0, avgThickness: 0, acceleratingCount: 0 }
     }
-    const avgSurgeVelocity = Math.round(filteredItems.reduce((sum, e) => sum + e.surgeVelocity, 0) / filteredItems.length)
-    const avgDisplacement = Math.round(filteredItems.reduce((sum, e) => sum + e.iceDisplacement, 0) / filteredItems.length)
-    const surgingSlowingCount = filteredItems.filter((e) => e.status === 'surging' || e.status === 'slowing').length
+    const avgVelocity = filteredItems.reduce((sum, e) => sum + e.flowVelocity, 0) / filteredItems.length
+    const avgThickness = filteredItems.reduce((sum, e) => sum + e.iceThickness, 0) / filteredItems.length
+    const acceleratingCount = filteredItems.filter((e) => e.status === 'accelerating').length
     return {
-      totalGlaciers: filteredItems.length,
-      avgSurgeVelocity,
-      avgDisplacement,
-      surgingSlowingCount,
+      totalStreams: filteredItems.length,
+      avgVelocity: Math.round(avgVelocity),
+      avgThickness: Math.round(avgThickness),
+      acceleratingCount,
     }
   }, [filteredItems])
 
   const activeItem = useMemo(
-    () => events.find((e) => e.id === state.activeEventId) ?? null,
-    [events, state.activeEventId]
+    () => items.find((e) => e.id === state.activeItemId) ?? null,
+    [items, state.activeItemId]
   )
 
   const geojson = useMemo(() => ({
@@ -120,23 +120,23 @@ export function GlacierSurgeEventMonitor() {
     features: filteredItems.map((e) => ({
       type: 'Feature' as const,
       geometry: { type: 'Point' as const, coordinates: [e.lng, e.lat] },
-      properties: { id: e.id, name: e.name, status: e.status, surgeVelocity: e.surgeVelocity },
+      properties: { id: e.id, name: e.name, status: e.status, flowVelocity: e.flowVelocity },
     })),
   }), [filteredItems])
 
   useEffect(() => {
-    if (state.events.length === 0) {
-      useMapStore.getState().setGlacierSurgeEvent({ events: SAMPLE_LOCATIONS })
+    if (state.data.length === 0) {
+      useMapStore.getState().setIceStreamVelocity({ data: SAMPLE_LOCATIONS })
     }
-  }, [state.events.length])
+  }, [state.data.length])
 
   if (typeof window === 'undefined') return null
   if (!state.open) return null
 
-  const overlayToggles: { key: keyof GlacierSurgeEventState; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
-    { key: 'showSurgeVelocity', label: 'Surge Velocity', icon: ArrowRight },
-    { key: 'showIceDisplacement', label: 'Ice Displacement', icon: Mountain },
-    { key: 'showSurgeDuration', label: 'Surge Duration', icon: Clock },
+  const overlayToggles: { key: keyof IceStreamVelocityState; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
+    { key: 'showFlowVelocity', label: 'Flow Velocity', icon: Gauge },
+    { key: 'showIceThickness', label: 'Ice Thickness', icon: Mountain },
+    { key: 'showBasalShearStress', label: 'Basal Shear Stress', icon: Zap },
   ]
 
   void geojson
@@ -147,8 +147,8 @@ export function GlacierSurgeEventMonitor() {
         <CardHeader className="pb-3 border-b border-sky-700/30">
           <div className="flex items-center justify-between">
             <CardTitle className="text-sm flex items-center gap-2 text-sky-100">
-              <ZapIcon3 className="h-4 w-4 text-sky-400" />
-              Glacier Surge Event
+              <ArrowUpIcon4 className="h-4 w-4 text-sky-400" />
+              Ice Stream Velocity
             </CardTitle>
             <Button
               variant="ghost"
@@ -168,9 +168,9 @@ export function GlacierSurgeEventMonitor() {
               Status
             </Label>
             <Select
-              value={state.statusFilter}
+              value={state.statusFilter || 'all'}
               onValueChange={(v) =>
-                setState({ statusFilter: v as GlacierSurgeEventState['statusFilter'] })
+                setState({ statusFilter: v as IceStreamVelocityState['statusFilter'] })
               }
             >
               <SelectTrigger className="h-8 text-xs mt-1 bg-sky-900/40 border-sky-700/40 text-sky-100 hover:bg-sky-900/60">
@@ -178,10 +178,10 @@ export function GlacierSurgeEventMonitor() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="surging">Surging</SelectItem>
-                <SelectItem value="slowing">Slowing</SelectItem>
+                <SelectItem value="accelerating">Accelerating</SelectItem>
                 <SelectItem value="stable">Stable</SelectItem>
-                <SelectItem value="post_surge">Post Surge</SelectItem>
+                <SelectItem value="decelerating">Decelerating</SelectItem>
+                <SelectItem value="stagnant">Stagnant</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -211,38 +211,38 @@ export function GlacierSurgeEventMonitor() {
           {/* Summary Metrics */}
           <div className="grid grid-cols-2 gap-2">
             <div className="rounded-lg border border-sky-700/30 bg-sky-900/30 p-2 text-center">
-              <div className="text-[10px] text-sky-400/70">Total Glaciers</div>
-              <div className="text-sm font-semibold text-sky-200">{summary.totalGlaciers}</div>
+              <div className="text-[10px] text-sky-400/70">Total Streams</div>
+              <div className="text-sm font-semibold text-sky-200">{summary.totalStreams}</div>
               <div className="text-[9px] text-sky-400/60">monitored</div>
             </div>
             <div className="rounded-lg border border-sky-700/30 bg-sky-900/30 p-2 text-center">
-              <div className="text-[10px] text-sky-400/70">Avg Surge Velocity</div>
-              <div className="text-sm font-semibold text-orange-400">{summary.avgSurgeVelocity}</div>
-              <div className="text-[9px] text-sky-400/60">m/day</div>
+              <div className="text-[10px] text-sky-400/70">Avg Velocity</div>
+              <div className="text-sm font-semibold text-blue-400">{summary.avgVelocity.toLocaleString()}</div>
+              <div className="text-[9px] text-sky-400/60">m/yr</div>
             </div>
             <div className="rounded-lg border border-sky-700/30 bg-sky-900/30 p-2 text-center">
-              <div className="text-[10px] text-sky-400/70">Avg Displacement</div>
-              <div className="text-sm font-semibold text-yellow-400">{summary.avgDisplacement}</div>
+              <div className="text-[10px] text-sky-400/70">Avg Thickness</div>
+              <div className="text-sm font-semibold text-cyan-400">{summary.avgThickness.toLocaleString()}</div>
               <div className="text-[9px] text-sky-400/60">m</div>
             </div>
             <div className="rounded-lg border border-sky-700/30 bg-sky-900/30 p-2 text-center">
-              <div className="text-[10px] text-sky-400/70">Surging+Slowing</div>
-              <div className="text-sm font-semibold text-red-400">{summary.surgingSlowingCount}</div>
-              <div className="text-[9px] text-sky-400/60">glaciers</div>
+              <div className="text-[10px] text-sky-400/70">Accelerating</div>
+              <div className="text-sm font-semibold text-red-400">{summary.acceleratingCount}</div>
+              <div className="text-[9px] text-sky-400/60">streams</div>
             </div>
           </div>
 
           <Separator className="bg-sky-700/30" />
 
-          {/* Event List */}
+          {/* Location List */}
           <div className="space-y-1.5">
             <Label className="text-xs text-sky-300/80">
-              Events ({filteredItems.length})
+              Locations ({filteredItems.length})
             </Label>
             <ScrollArea className="max-h-[260px]">
               <div className="space-y-2 pr-1">
                 {filteredItems.map((e) => {
-                  const isActive = state.activeEventId === e.id
+                  const isActive = state.activeItemId === e.id
                   const statusCfg = STATUS_COLORS[e.status]
                   return (
                     <div
@@ -253,7 +253,7 @@ export function GlacierSurgeEventMonitor() {
                           : 'border-sky-700/30 hover:border-sky-500/30 hover:bg-sky-800/20'
                       }`}
                       onClick={() =>
-                        setState({ activeEventId: isActive ? null : e.id })
+                        setState({ activeItemId: isActive ? null : e.id })
                       }
                     >
                       <div className="flex items-center justify-between mb-1.5">
@@ -270,22 +270,22 @@ export function GlacierSurgeEventMonitor() {
                       </div>
 
                       <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10px] text-sky-300/60">
-                        {state.showSurgeVelocity && (
+                        {state.showFlowVelocity && (
                           <div>
                             Velocity:{' '}
-                            <span className="text-sky-100 font-medium">{e.surgeVelocity} m/day</span>
+                            <span className="text-sky-100 font-medium">{e.flowVelocity.toLocaleString()} m/yr</span>
                           </div>
                         )}
-                        {state.showIceDisplacement && (
+                        {state.showIceThickness && (
                           <div>
-                            Displacement:{' '}
-                            <span className="text-sky-100 font-medium">{e.iceDisplacement} m</span>
+                            Thickness:{' '}
+                            <span className="text-sky-100 font-medium">{e.iceThickness.toLocaleString()} m</span>
                           </div>
                         )}
-                        {state.showSurgeDuration && (
+                        {state.showBasalShearStress && (
                           <div>
-                            Duration:{' '}
-                            <span className="text-sky-100 font-medium">{e.surgeDuration} days</span>
+                            Shear:{' '}
+                            <span className="text-sky-100 font-medium">{e.basalShearStress} kPa</span>
                           </div>
                         )}
                       </div>
@@ -294,14 +294,14 @@ export function GlacierSurgeEventMonitor() {
                 })}
                 {filteredItems.length === 0 && (
                   <div className="text-center text-xs text-sky-400/50 py-4">
-                    No events match the current filter.
+                    No locations match the current filter.
                   </div>
                 )}
               </div>
             </ScrollArea>
           </div>
 
-          {/* Active Event Details */}
+          {/* Active Item Details */}
           {activeItem && (
             <>
               <Separator className="bg-sky-700/30" />
@@ -325,16 +325,16 @@ export function GlacierSurgeEventMonitor() {
                     </span>
                   </div>
                   <div>
-                    <span className="text-sky-400/70">Surge Velocity: </span>
-                    <span className="font-medium text-orange-400">{activeItem.surgeVelocity} m/day</span>
+                    <span className="text-sky-400/70">Velocity: </span>
+                    <span className="font-medium text-blue-400">{activeItem.flowVelocity.toLocaleString()} m/yr</span>
                   </div>
                   <div>
-                    <span className="text-sky-400/70">Displacement: </span>
-                    <span className="font-medium text-yellow-400">{activeItem.iceDisplacement} m</span>
+                    <span className="text-sky-400/70">Thickness: </span>
+                    <span className="font-medium text-cyan-400">{activeItem.iceThickness.toLocaleString()} m</span>
                   </div>
                   <div>
-                    <span className="text-sky-400/70">Duration: </span>
-                    <span className="font-medium text-sky-400">{activeItem.surgeDuration} days</span>
+                    <span className="text-sky-400/70">Shear Stress: </span>
+                    <span className="font-medium text-sky-400">{activeItem.basalShearStress} kPa</span>
                   </div>
                 </div>
               </div>

@@ -15,104 +15,104 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useMapStore, type LimnicEruptionMonitorState, type LimnicEruptionMonitorData } from '@/lib/map-store'
-import { Siren as SirenIcon2, X, Waves, Wind, MapPin, Filter } from 'lucide-react'
+import { useMapStore, type RiftValleyVolcanoState, type RiftValleyVolcanoData } from '@/lib/map-store'
+import { Flame as FlameIcon17, X, Layers, Activity, Thermometer, MapPin, Filter } from 'lucide-react'
 
-const SAMPLE_LOCATIONS: LimnicEruptionMonitorData[] = [
+const SAMPLE_LOCATIONS: RiftValleyVolcanoData[] = [
   {
-    id: 'le-nyos',
-    name: 'Lake Nyos',
-    lat: 6.4417,
-    lng: 10.2983,
-    co2Concentration: 85000,
-    gasReleaseRate: 120,
-    waterDepth: 208,
-    status: 'critical',
-    description: 'Historic CO₂ eruption 1986',
+    id: 'rv-nyiragongo',
+    name: 'Nyiragongo Volcano',
+    lat: -1.5208,
+    lng: 29.2313,
+    magmaChamberDepth: 5,
+    deformationRate: 15,
+    so2Emission: 2500,
+    status: 'active',
+    description: 'Active lava lake volcano',
   },
   {
-    id: 'le-monoun',
-    name: 'Lake Monoun',
-    lat: 5.5833,
-    lng: 10.5833,
-    co2Concentration: 42000,
-    gasReleaseRate: 65,
-    waterDepth: 95,
-    status: 'elevated',
-    description: '1984 limnic eruption',
+    id: 'rv-ol-doinyo',
+    name: 'Ol Doinyo Lengai',
+    lat: -2.7583,
+    lng: 35.8983,
+    magmaChamberDepth: 12,
+    deformationRate: 2,
+    so2Emission: 150,
+    status: 'dormant',
+    description: 'Carbonatite volcano',
   },
   {
-    id: 'le-kivu',
-    name: 'Lake Kivu',
-    lat: -2.0,
-    lng: 28.9167,
-    co2Concentration: 25000,
-    gasReleaseRate: 35,
-    waterDepth: 485,
-    status: 'monitoring',
-    description: 'Dissolved CO₂+methane lake',
+    id: 'rv-geldungur',
+    name: 'Geldungur Fissure',
+    lat: -4.0833,
+    lng: 35.5833,
+    magmaChamberDepth: 8,
+    deformationRate: 8,
+    so2Emission: 500,
+    status: 'fissuring',
+    description: 'Active fissure eruption',
   },
   {
-    id: 'le-albert',
-    name: 'Lake Albert',
-    lat: 1.6667,
-    lng: 30.9167,
-    co2Concentration: 5000,
-    gasReleaseRate: 8,
-    waterDepth: 58,
-    status: 'stable',
-    description: 'Lower risk stratified lake',
+    id: 'rv-menengai',
+    name: 'Menengai Caldera',
+    lat: -0.2,
+    lng: 36.05,
+    magmaChamberDepth: 3,
+    deformationRate: 0.5,
+    so2Emission: 50,
+    status: 'caldera_formation',
+    description: 'Massive caldera system',
   },
 ]
 
-const STATUS_COLORS: Record<LimnicEruptionMonitorData['status'], { label: string; color: string; bgClass: string }> = {
-  critical: { label: 'Critical', color: '#ef4444', bgClass: 'bg-red-500/10 text-red-600 border-red-500/30' },
-  elevated: { label: 'Elevated', color: '#f97316', bgClass: 'bg-orange-500/10 text-orange-600 border-orange-500/30' },
-  monitoring: { label: 'Monitoring', color: '#3b82f6', bgClass: 'bg-blue-500/10 text-blue-600 border-blue-500/30' },
-  stable: { label: 'Stable', color: '#22c55e', bgClass: 'bg-green-500/10 text-green-600 border-green-500/30' },
+const STATUS_COLORS: Record<RiftValleyVolcanoData['status'], { label: string; color: string; bgClass: string }> = {
+  active: { label: 'Active', color: '#ef4444', bgClass: 'bg-red-500/10 text-red-600 border-red-500/30' },
+  dormant: { label: 'Dormant', color: '#64748b', bgClass: 'bg-slate-500/10 text-slate-600 border-slate-500/30' },
+  fissuring: { label: 'Fissuring', color: '#f97316', bgClass: 'bg-orange-500/10 text-orange-600 border-orange-500/30' },
+  caldera_formation: { label: 'Caldera', color: '#f59e0b', bgClass: 'bg-amber-500/10 text-amber-600 border-amber-500/30' },
 }
 
-function TrendIcon({ status }: { status: LimnicEruptionMonitorData['status'] }) {
+function TrendIcon({ status }: { status: RiftValleyVolcanoData['status'] }) {
   const cfg = STATUS_COLORS[status]
   return (
     <div className="h-2 w-2 rounded-full" style={{ backgroundColor: cfg.color }} />
   )
 }
 
-export function LimnicEruptionMonitor() {
-  const state = useMapStore((s) => s.limnicEruptionMonitor)
-  const setState = useMapStore((s) => s.setLimnicEruptionMonitor)
+export function RiftValleyVolcanoMonitor() {
+  const state = useMapStore((s) => s.riftValleyVolcano)
+  const setState = useMapStore((s) => s.setRiftValleyVolcano)
 
-  const lakes = useMemo(
-    () => (state.lakes.length > 0 ? state.lakes : SAMPLE_LOCATIONS),
-    [state.lakes]
+  const items = useMemo(
+    () => (state.data.length > 0 ? state.data : SAMPLE_LOCATIONS),
+    [state.data]
   )
 
   const filteredItems = useMemo(() => {
-    return lakes.filter((e) => {
-      if (state.statusFilter !== 'all' && e.status !== state.statusFilter) return false
+    return items.filter((e) => {
+      if (state.statusFilter !== 'all' && state.statusFilter !== '' && e.status !== state.statusFilter) return false
       return true
     })
-  }, [lakes, state.statusFilter])
+  }, [items, state.statusFilter])
 
   const summary = useMemo(() => {
     if (filteredItems.length === 0) {
-      return { totalLakes: 0, maxCo2: 0, avgGasRate: 0, criticalElevatedCount: 0 }
+      return { totalVolcanoes: 0, avgDepth: 0, maxSo2: 0, activeFissuringCount: 0 }
     }
-    const maxCo2 = Math.max(...filteredItems.map((e) => e.co2Concentration))
-    const avgGasRate = filteredItems.reduce((sum, e) => sum + e.gasReleaseRate, 0) / filteredItems.length
-    const criticalElevatedCount = filteredItems.filter((e) => e.status === 'critical' || e.status === 'elevated').length
+    const avgDepth = filteredItems.reduce((sum, e) => sum + e.magmaChamberDepth, 0) / filteredItems.length
+    const maxSo2 = Math.max(...filteredItems.map((e) => e.so2Emission))
+    const activeFissuringCount = filteredItems.filter((e) => e.status === 'active' || e.status === 'fissuring').length
     return {
-      totalLakes: filteredItems.length,
-      maxCo2,
-      avgGasRate,
-      criticalElevatedCount,
+      totalVolcanoes: filteredItems.length,
+      avgDepth: Math.round(avgDepth * 10) / 10,
+      maxSo2,
+      activeFissuringCount,
     }
   }, [filteredItems])
 
   const activeItem = useMemo(
-    () => lakes.find((e) => e.id === state.activeLakeId) ?? null,
-    [lakes, state.activeLakeId]
+    () => items.find((e) => e.id === state.activeItemId) ?? null,
+    [items, state.activeItemId]
   )
 
   const geojson = useMemo(() => ({
@@ -120,35 +120,35 @@ export function LimnicEruptionMonitor() {
     features: filteredItems.map((e) => ({
       type: 'Feature' as const,
       geometry: { type: 'Point' as const, coordinates: [e.lng, e.lat] },
-      properties: { id: e.id, name: e.name, status: e.status, co2Concentration: e.co2Concentration },
+      properties: { id: e.id, name: e.name, status: e.status, magmaChamberDepth: e.magmaChamberDepth },
     })),
   }), [filteredItems])
 
   useEffect(() => {
-    if (state.lakes.length === 0) {
-      useMapStore.getState().setLimnicEruptionMonitor({ lakes: SAMPLE_LOCATIONS })
+    if (state.data.length === 0) {
+      useMapStore.getState().setRiftValleyVolcano({ data: SAMPLE_LOCATIONS })
     }
-  }, [state.lakes.length])
+  }, [state.data.length])
 
   if (typeof window === 'undefined') return null
   if (!state.open) return null
 
-  const overlayToggles: { key: keyof LimnicEruptionMonitorState; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
-    { key: 'showCO2Concentration', label: 'CO₂ Concentration', icon: Wind },
-    { key: 'showGasReleaseRate', label: 'Gas Release Rate', icon: Waves },
-    { key: 'showWaterDepth', label: 'Water Depth', icon: Filter },
+  const overlayToggles: { key: keyof RiftValleyVolcanoState; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
+    { key: 'showMagmaChamberDepth', label: 'Magma Chamber Depth', icon: Layers },
+    { key: 'showDeformationRate', label: 'Deformation Rate', icon: Activity },
+    { key: 'showSo2Emission', label: 'SO₂ Emission', icon: Thermometer },
   ]
 
   void geojson
 
   return (
     <div className="fixed right-4 top-16 z-[60] w-[420px] max-w-[calc(100vw-32px)] max-h-[calc(100vh-100px)]">
-      <Card className="bg-gradient-to-br from-red-950/95 to-rose-950/95 backdrop-blur-xl border border-red-800/40 rounded-xl shadow-lg overflow-hidden">
+      <Card className="bg-gradient-to-br from-red-950/95 to-orange-950/95 backdrop-blur-xl border border-red-800/40 rounded-xl shadow-lg overflow-hidden">
         <CardHeader className="pb-3 border-b border-red-700/30">
           <div className="flex items-center justify-between">
             <CardTitle className="text-sm flex items-center gap-2 text-red-100">
-              <SirenIcon2 className="h-4 w-4 text-red-400" />
-              Limnic Eruption Monitor
+              <FlameIcon17 className="h-4 w-4 text-red-400" />
+              Rift Valley Volcano
             </CardTitle>
             <Button
               variant="ghost"
@@ -168,9 +168,9 @@ export function LimnicEruptionMonitor() {
               Status
             </Label>
             <Select
-              value={state.statusFilter}
+              value={state.statusFilter || 'all'}
               onValueChange={(v) =>
-                setState({ statusFilter: v as LimnicEruptionMonitorState['statusFilter'] })
+                setState({ statusFilter: v as RiftValleyVolcanoState['statusFilter'] })
               }
             >
               <SelectTrigger className="h-8 text-xs mt-1 bg-red-900/40 border-red-700/40 text-red-100 hover:bg-red-900/60">
@@ -178,10 +178,10 @@ export function LimnicEruptionMonitor() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="critical">Critical</SelectItem>
-                <SelectItem value="elevated">Elevated</SelectItem>
-                <SelectItem value="monitoring">Monitoring</SelectItem>
-                <SelectItem value="stable">Stable</SelectItem>
+                <SelectItem value="active">Active</SelectItem>
+                <SelectItem value="dormant">Dormant</SelectItem>
+                <SelectItem value="fissuring">Fissuring</SelectItem>
+                <SelectItem value="caldera_formation">Caldera Formation</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -211,38 +211,38 @@ export function LimnicEruptionMonitor() {
           {/* Summary Metrics */}
           <div className="grid grid-cols-2 gap-2">
             <div className="rounded-lg border border-red-700/30 bg-red-900/30 p-2 text-center">
-              <div className="text-[10px] text-red-400/70">Total Lakes</div>
-              <div className="text-sm font-semibold text-red-200">{summary.totalLakes}</div>
+              <div className="text-[10px] text-red-400/70">Total Volcanoes</div>
+              <div className="text-sm font-semibold text-red-200">{summary.totalVolcanoes}</div>
               <div className="text-[9px] text-red-400/60">monitored</div>
             </div>
             <div className="rounded-lg border border-red-700/30 bg-red-900/30 p-2 text-center">
-              <div className="text-[10px] text-red-400/70">Max CO₂</div>
-              <div className="text-sm font-semibold text-orange-400">{summary.maxCo2.toLocaleString()}</div>
-              <div className="text-[9px] text-red-400/60">ppm</div>
+              <div className="text-[10px] text-red-400/70">Avg Depth</div>
+              <div className="text-sm font-semibold text-orange-400">{summary.avgDepth}</div>
+              <div className="text-[9px] text-red-400/60">km</div>
             </div>
             <div className="rounded-lg border border-red-700/30 bg-red-900/30 p-2 text-center">
-              <div className="text-[10px] text-red-400/70">Avg Gas Rate</div>
-              <div className="text-sm font-semibold text-amber-400">{summary.avgGasRate.toFixed(1)}</div>
-              <div className="text-[9px] text-red-400/60">m³/hr</div>
+              <div className="text-[10px] text-red-400/70">Max SO₂</div>
+              <div className="text-sm font-semibold text-yellow-400">{summary.maxSo2.toLocaleString()}</div>
+              <div className="text-[9px] text-red-400/60">tons/day</div>
             </div>
             <div className="rounded-lg border border-red-700/30 bg-red-900/30 p-2 text-center">
-              <div className="text-[10px] text-red-400/70">Critical+Elevated</div>
-              <div className="text-sm font-semibold text-red-400">{summary.criticalElevatedCount}</div>
-              <div className="text-[9px] text-red-400/60">lakes</div>
+              <div className="text-[10px] text-red-400/70">Active+Fissuring</div>
+              <div className="text-sm font-semibold text-red-400">{summary.activeFissuringCount}</div>
+              <div className="text-[9px] text-red-400/60">volcanoes</div>
             </div>
           </div>
 
           <Separator className="bg-red-700/30" />
 
-          {/* Lake List */}
+          {/* Location List */}
           <div className="space-y-1.5">
             <Label className="text-xs text-red-300/80">
-              Lakes ({filteredItems.length})
+              Locations ({filteredItems.length})
             </Label>
             <ScrollArea className="max-h-[260px]">
               <div className="space-y-2 pr-1">
                 {filteredItems.map((e) => {
-                  const isActive = state.activeLakeId === e.id
+                  const isActive = state.activeItemId === e.id
                   const statusCfg = STATUS_COLORS[e.status]
                   return (
                     <div
@@ -253,7 +253,7 @@ export function LimnicEruptionMonitor() {
                           : 'border-red-700/30 hover:border-red-500/30 hover:bg-red-800/20'
                       }`}
                       onClick={() =>
-                        setState({ activeLakeId: isActive ? null : e.id })
+                        setState({ activeItemId: isActive ? null : e.id })
                       }
                     >
                       <div className="flex items-center justify-between mb-1.5">
@@ -270,22 +270,22 @@ export function LimnicEruptionMonitor() {
                       </div>
 
                       <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10px] text-red-300/60">
-                        {state.showCO2Concentration && (
-                          <div>
-                            CO₂:{' '}
-                            <span className="text-red-100 font-medium">{e.co2Concentration.toLocaleString()} ppm</span>
-                          </div>
-                        )}
-                        {state.showGasReleaseRate && (
-                          <div>
-                            Gas Rate:{' '}
-                            <span className="text-red-100 font-medium">{e.gasReleaseRate} m³/hr</span>
-                          </div>
-                        )}
-                        {state.showWaterDepth && (
+                        {state.showMagmaChamberDepth && (
                           <div>
                             Depth:{' '}
-                            <span className="text-red-100 font-medium">{e.waterDepth} m</span>
+                            <span className="text-red-100 font-medium">{e.magmaChamberDepth} km</span>
+                          </div>
+                        )}
+                        {state.showDeformationRate && (
+                          <div>
+                            Deform:{' '}
+                            <span className="text-red-100 font-medium">{e.deformationRate} cm/yr</span>
+                          </div>
+                        )}
+                        {state.showSo2Emission && (
+                          <div>
+                            SO₂:{' '}
+                            <span className="text-red-100 font-medium">{e.so2Emission.toLocaleString()} tons/day</span>
                           </div>
                         )}
                       </div>
@@ -294,14 +294,14 @@ export function LimnicEruptionMonitor() {
                 })}
                 {filteredItems.length === 0 && (
                   <div className="text-center text-xs text-red-400/50 py-4">
-                    No lakes match the current filter.
+                    No locations match the current filter.
                   </div>
                 )}
               </div>
             </ScrollArea>
           </div>
 
-          {/* Active Lake Details */}
+          {/* Active Item Details */}
           {activeItem && (
             <>
               <Separator className="bg-red-700/30" />
@@ -325,16 +325,16 @@ export function LimnicEruptionMonitor() {
                     </span>
                   </div>
                   <div>
-                    <span className="text-red-400/70">CO₂: </span>
-                    <span className="font-medium text-orange-400">{activeItem.co2Concentration.toLocaleString()} ppm</span>
+                    <span className="text-red-400/70">Depth: </span>
+                    <span className="font-medium text-orange-400">{activeItem.magmaChamberDepth} km</span>
                   </div>
                   <div>
-                    <span className="text-red-400/70">Gas Rate: </span>
-                    <span className="font-medium text-amber-400">{activeItem.gasReleaseRate} m³/hr</span>
+                    <span className="text-red-400/70">Deformation: </span>
+                    <span className="font-medium text-yellow-400">{activeItem.deformationRate} cm/yr</span>
                   </div>
                   <div>
-                    <span className="text-red-400/70">Water Depth: </span>
-                    <span className="font-medium text-red-400">{activeItem.waterDepth} m</span>
+                    <span className="text-red-400/70">SO₂: </span>
+                    <span className="font-medium text-red-400">{activeItem.so2Emission.toLocaleString()} tons/day</span>
                   </div>
                 </div>
               </div>

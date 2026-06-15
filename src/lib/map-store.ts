@@ -8682,6 +8682,22 @@ interface MapState {
   setKatabaticWindMonitor: (state: Partial<KatabaticWindMonitorState>) => void
   snowAvalancheTracker: SnowAvalancheTrackerState
   setSnowAvalancheTracker: (state: Partial<SnowAvalancheTrackerState>) => void
+  riftValleyVolcano: RiftValleyVolcanoState
+  setRiftValleyVolcano: (state: Partial<RiftValleyVolcanoState>) => void
+  streamBankErosion: StreamBankErosionState
+  setStreamBankErosion: (state: Partial<StreamBankErosionState>) => void
+  iceStreamVelocity: IceStreamVelocityState
+  setIceStreamVelocity: (state: Partial<IceStreamVelocityState>) => void
+  coastalAquifer: CoastalAquiferState
+  setCoastalAquifer: (state: Partial<CoastalAquiferState>) => void
+  mangroveRootSystem: MangroveRootSystemState
+  setMangroveRootSystem: (state: Partial<MangroveRootSystemState>) => void
+  paleoshorelineTracker: PaleoshorelineTrackerState
+  setPaleoshorelineTracker: (state: Partial<PaleoshorelineTrackerState>) => void
+  cryoconiteGranule: CryoconiteGranuleState
+  setCryoconiteGranule: (state: Partial<CryoconiteGranuleState>) => void
+  subglacialWaterSystem: SubglacialWaterSystemState
+  setSubglacialWaterSystem: (state: Partial<SubglacialWaterSystemState>) => void
 
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
@@ -10303,6 +10319,190 @@ export interface SnowAvalancheTrackerState {
   showSlopeAngle: boolean
   showSnowDepth: boolean
   showAvalancheSize: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 97: Rift Valley Volcano
+export interface RiftValleyVolcanoData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  magmaChamberDepth: number
+  deformationRate: number
+  so2Emission: number
+  status: 'active' | 'dormant' | 'fissuring' | 'caldera_formation'
+  description: string
+}
+
+export interface RiftValleyVolcanoState {
+  open: boolean
+  data: RiftValleyVolcanoData[]
+  showMagmaChamberDepth: boolean
+  showDeformationRate: boolean
+  showSo2Emission: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 97: Stream Bank Erosion
+export interface StreamBankErosionData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  erosionRate: number
+  bankAngle: number
+  vegetationCover: number
+  status: 'severe' | 'moderate' | 'minimal' | 'stabilized'
+  description: string
+}
+
+export interface StreamBankErosionState {
+  open: boolean
+  data: StreamBankErosionData[]
+  showErosionRate: boolean
+  showBankAngle: boolean
+  showVegetationCover: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 97: Ice Stream Velocity
+export interface IceStreamVelocityData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  flowVelocity: number
+  iceThickness: number
+  basalShearStress: number
+  status: 'accelerating' | 'stable' | 'decelerating' | 'stagnant'
+  description: string
+}
+
+export interface IceStreamVelocityState {
+  open: boolean
+  data: IceStreamVelocityData[]
+  showFlowVelocity: boolean
+  showIceThickness: boolean
+  showBasalShearStress: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 97: Coastal Aquifer
+export interface CoastalAquiferData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  saltwaterFront: number
+  waterTableDepth: number
+  chlorideConcentration: number
+  status: 'intruded' | 'advancing' | 'stable' | 'protected'
+  description: string
+}
+
+export interface CoastalAquiferState {
+  open: boolean
+  data: CoastalAquiferData[]
+  showSaltwaterFront: boolean
+  showWaterTableDepth: boolean
+  showChlorideConcentration: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 97: Mangrove Root System
+export interface MangroveRootSystemData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  rootDensity: number
+  sedimentAccretion: number
+  carbonStock: number
+  status: 'healthy' | 'stressed' | 'declining' | 'restored'
+  description: string
+}
+
+export interface MangroveRootSystemState {
+  open: boolean
+  data: MangroveRootSystemData[]
+  showRootDensity: boolean
+  showSedimentAccretion: boolean
+  showCarbonStock: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 97: Paleoshoreline Tracker
+export interface PaleoshorelineTrackerData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  shorelineAge: number
+  elevation: number
+  seaLevelIndicator: number
+  status: 'preserved' | 'exposed' | 'eroding' | 'submerged'
+  description: string
+}
+
+export interface PaleoshorelineTrackerState {
+  open: boolean
+  data: PaleoshorelineTrackerData[]
+  showShorelineAge: boolean
+  showElevation: boolean
+  showSeaLevelIndicator: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 97: Cryoconite Granule
+export interface CryoconiteGranuleData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  granuleDiameter: number
+  organicContent: number
+  albedoEffect: number
+  status: 'forming' | 'active' | 'melting' | 'deposited'
+  description: string
+}
+
+export interface CryoconiteGranuleState {
+  open: boolean
+  data: CryoconiteGranuleData[]
+  showGranuleDiameter: boolean
+  showOrganicContent: boolean
+  showAlbedoEffect: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 97: Subglacial Water System
+export interface SubglacialWaterSystemData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  waterPressure: number
+  flowRate: number
+  channelDiameter: number
+  status: 'active' | 'drainage' | 'pressure_building' | 'quiescent'
+  description: string
+}
+
+export interface SubglacialWaterSystemState {
+  open: boolean
+  data: SubglacialWaterSystemData[]
+  showWaterPressure: boolean
+  showFlowRate: boolean
+  showChannelDiameter: boolean
   statusFilter: string
   activeItemId: string | null
 }
@@ -15196,6 +15396,38 @@ export const useMapStore = create<MapState>()(
         data: [], activeItemId: null, showSlopeAngle: true, showSnowDepth: true, showAvalancheSize: false, open: false, statusFilter: '',
       },
       setSnowAvalancheTracker: (updates) => set((state) => ({ snowAvalancheTracker: { ...state.snowAvalancheTracker, ...updates } })),
+      riftValleyVolcano: {
+        data: [], activeItemId: null, showMagmaChamberDepth: true, showDeformationRate: true, showSo2Emission: false, open: false, statusFilter: '',
+      },
+      setRiftValleyVolcano: (updates) => set((state) => ({ riftValleyVolcano: { ...state.riftValleyVolcano, ...updates } })),
+      streamBankErosion: {
+        data: [], activeItemId: null, showErosionRate: true, showBankAngle: true, showVegetationCover: false, open: false, statusFilter: '',
+      },
+      setStreamBankErosion: (updates) => set((state) => ({ streamBankErosion: { ...state.streamBankErosion, ...updates } })),
+      iceStreamVelocity: {
+        data: [], activeItemId: null, showFlowVelocity: true, showIceThickness: true, showBasalShearStress: false, open: false, statusFilter: '',
+      },
+      setIceStreamVelocity: (updates) => set((state) => ({ iceStreamVelocity: { ...state.iceStreamVelocity, ...updates } })),
+      coastalAquifer: {
+        data: [], activeItemId: null, showSaltwaterFront: true, showWaterTableDepth: true, showChlorideConcentration: false, open: false, statusFilter: '',
+      },
+      setCoastalAquifer: (updates) => set((state) => ({ coastalAquifer: { ...state.coastalAquifer, ...updates } })),
+      mangroveRootSystem: {
+        data: [], activeItemId: null, showRootDensity: true, showSedimentAccretion: true, showCarbonStock: false, open: false, statusFilter: '',
+      },
+      setMangroveRootSystem: (updates) => set((state) => ({ mangroveRootSystem: { ...state.mangroveRootSystem, ...updates } })),
+      paleoshorelineTracker: {
+        data: [], activeItemId: null, showShorelineAge: true, showElevation: true, showSeaLevelIndicator: false, open: false, statusFilter: '',
+      },
+      setPaleoshorelineTracker: (updates) => set((state) => ({ paleoshorelineTracker: { ...state.paleoshorelineTracker, ...updates } })),
+      cryoconiteGranule: {
+        data: [], activeItemId: null, showGranuleDiameter: true, showOrganicContent: true, showAlbedoEffect: false, open: false, statusFilter: '',
+      },
+      setCryoconiteGranule: (updates) => set((state) => ({ cryoconiteGranule: { ...state.cryoconiteGranule, ...updates } })),
+      subglacialWaterSystem: {
+        data: [], activeItemId: null, showWaterPressure: true, showFlowRate: true, showChannelDiameter: false, open: false, statusFilter: '',
+      },
+      setSubglacialWaterSystem: (updates) => set((state) => ({ subglacialWaterSystem: { ...state.subglacialWaterSystem, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
@@ -15670,6 +15902,15 @@ export const useMapStore = create<MapState>()(
         aeolianDustDeposition: state.aeolianDustDeposition,
         katabaticWindMonitor: state.katabaticWindMonitor,
         snowAvalancheTracker: state.snowAvalancheTracker,
+        // Task 97
+        riftValleyVolcano: state.riftValleyVolcano,
+        streamBankErosion: state.streamBankErosion,
+        iceStreamVelocity: state.iceStreamVelocity,
+        coastalAquifer: state.coastalAquifer,
+        mangroveRootSystem: state.mangroveRootSystem,
+        paleoshorelineTracker: state.paleoshorelineTracker,
+        cryoconiteGranule: state.cryoconiteGranule,
+        subglacialWaterSystem: state.subglacialWaterSystem,
       }),
     }
   )

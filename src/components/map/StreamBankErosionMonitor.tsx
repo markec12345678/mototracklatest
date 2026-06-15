@@ -15,128 +15,128 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useMapStore, type VolcanicDomeGrowthState, type VolcanicDomeGrowthData } from '@/lib/map-store'
-import { Mountain as MountainIcon11, X, TrendingUp, Box, Thermometer, MapPin, Filter } from 'lucide-react'
+import { useMapStore, type StreamBankErosionState, type StreamBankErosionData } from '@/lib/map-store'
+import { Waves as WavesIcon18, X, TrendingDown, Compass, TreePine, MapPin, Filter } from 'lucide-react'
 
-const SAMPLE_LOCATIONS: VolcanicDomeGrowthData[] = [
+const SAMPLE_LOCATIONS: StreamBankErosionData[] = [
   {
-    id: 'vd-soufriere',
-    name: 'Soufrière Hills Dome',
-    lat: 16.72,
-    lng: -62.18,
-    growthRate: 2.5,
-    domeVolume: 80,
-    temperature: 700,
-    status: 'growing',
-    description: 'Actively growing lava dome on Montserrat',
+    id: 'sb-mississippi',
+    name: 'Mississippi River Bank',
+    lat: 35.15,
+    lng: -90.05,
+    erosionRate: 85,
+    bankAngle: 65,
+    vegetationCover: 15,
+    status: 'severe',
+    description: 'Active meander erosion',
   },
   {
-    id: 'vd-unzen',
-    name: 'Unzen Dome',
-    lat: 32.76,
-    lng: 130.29,
-    growthRate: 0.0,
-    domeVolume: 25,
-    temperature: 300,
-    status: 'stable',
-    description: 'Stabilized dome from 1991-95 eruption',
+    id: 'sb-danube',
+    name: 'Danube River Bank',
+    lat: 48.2,
+    lng: 16.35,
+    erosionRate: 28,
+    bankAngle: 45,
+    vegetationCover: 52,
+    status: 'moderate',
+    description: 'Moderate bank undercutting',
   },
   {
-    id: 'vd-mt-st-helens',
-    name: 'Mt. St. Helens Dome',
-    lat: 46.20,
-    lng: -122.18,
-    growthRate: 0.0,
-    domeVolume: 92,
-    temperature: 200,
-    status: 'stable',
-    description: 'Dome formed in 2004-08 eruption phase',
+    id: 'sb-thames',
+    name: 'Thames River Bank',
+    lat: 51.5,
+    lng: -0.12,
+    erosionRate: 5,
+    bankAngle: 30,
+    vegetationCover: 78,
+    status: 'minimal',
+    description: 'Stabilized urban bank',
   },
   {
-    id: 'vd-merapi',
-    name: 'Merapi Dome',
-    lat: -7.54,
-    lng: 110.44,
-    growthRate: 5.0,
-    domeVolume: 150,
-    temperature: 900,
-    status: 'collapsing',
-    description: 'Periodic dome collapse generating pyroclastic flows',
+    id: 'sb-amazon',
+    name: 'Amazon River Bank',
+    lat: -3.4167,
+    lng: -60.0,
+    erosionRate: 42,
+    bankAngle: 55,
+    vegetationCover: 25,
+    status: 'stabilized',
+    description: 'Vegetation-stabilized bank',
   },
 ]
 
-const STATUS_COLORS: Record<VolcanicDomeGrowthData['status'], { label: string; color: string; bgClass: string }> = {
-  growing: { label: 'Growing', color: '#22c55e', bgClass: 'bg-green-500/10 text-green-600 border-green-500/30' },
-  stable: { label: 'Stable', color: '#3b82f6', bgClass: 'bg-blue-500/10 text-blue-600 border-blue-500/30' },
-  collapsing: { label: 'Collapsing', color: '#f97316', bgClass: 'bg-orange-500/10 text-orange-600 border-orange-500/30' },
-  exploding: { label: 'Exploding', color: '#ef4444', bgClass: 'bg-red-500/10 text-red-600 border-red-500/30' },
+const STATUS_COLORS: Record<StreamBankErosionData['status'], { label: string; color: string; bgClass: string }> = {
+  severe: { label: 'Severe', color: '#ef4444', bgClass: 'bg-red-500/10 text-red-600 border-red-500/30' },
+  moderate: { label: 'Moderate', color: '#f59e0b', bgClass: 'bg-amber-500/10 text-amber-600 border-amber-500/30' },
+  minimal: { label: 'Minimal', color: '#22c55e', bgClass: 'bg-green-500/10 text-green-600 border-green-500/30' },
+  stabilized: { label: 'Stabilized', color: '#3b82f6', bgClass: 'bg-blue-500/10 text-blue-600 border-blue-500/30' },
 }
 
-function TrendIcon({ status }: { status: VolcanicDomeGrowthData['status'] }) {
+function TrendIcon({ status }: { status: StreamBankErosionData['status'] }) {
   const cfg = STATUS_COLORS[status]
   return (
     <div className="h-2 w-2 rounded-full" style={{ backgroundColor: cfg.color }} />
   )
 }
 
-export function VolcanicDomeGrowthMonitor() {
-  const state = useMapStore((s) => s.volcanicDomeGrowth)
-  const setState = useMapStore((s) => s.setVolcanicDomeGrowth)
+export function StreamBankErosionMonitor() {
+  const state = useMapStore((s) => s.streamBankErosion)
+  const setState = useMapStore((s) => s.setStreamBankErosion)
 
-  const domes = useMemo(
-    () => (state.domes.length > 0 ? state.domes : SAMPLE_LOCATIONS),
-    [state.domes]
+  const items = useMemo(
+    () => (state.data.length > 0 ? state.data : SAMPLE_LOCATIONS),
+    [state.data]
   )
 
   const filteredItems = useMemo(() => {
-    return domes.filter((d) => {
-      if (state.statusFilter !== 'all' && d.status !== state.statusFilter) return false
+    return items.filter((e) => {
+      if (state.statusFilter !== 'all' && state.statusFilter !== '' && e.status !== state.statusFilter) return false
       return true
     })
-  }, [domes, state.statusFilter])
+  }, [items, state.statusFilter])
 
   const summary = useMemo(() => {
     if (filteredItems.length === 0) {
-      return { totalDomes: 0, avgGrowthRate: 0, totalVolume: 0, growingCount: 0 }
+      return { totalSites: 0, avgErosion: 0, avgVegetation: 0, severeCount: 0 }
     }
-    const avgGrowthRate = filteredItems.reduce((sum, d) => sum + d.growthRate, 0) / filteredItems.length
-    const totalVolume = filteredItems.reduce((sum, d) => sum + d.domeVolume, 0)
-    const growingCount = filteredItems.filter((d) => d.status === 'growing').length
+    const avgErosion = filteredItems.reduce((sum, e) => sum + e.erosionRate, 0) / filteredItems.length
+    const avgVegetation = filteredItems.reduce((sum, e) => sum + e.vegetationCover, 0) / filteredItems.length
+    const severeCount = filteredItems.filter((e) => e.status === 'severe').length
     return {
-      totalDomes: filteredItems.length,
-      avgGrowthRate: Math.round(avgGrowthRate * 10) / 10,
-      totalVolume: Math.round(totalVolume),
-      growingCount,
+      totalSites: filteredItems.length,
+      avgErosion: Math.round(avgErosion * 10) / 10,
+      avgVegetation: Math.round(avgVegetation * 10) / 10,
+      severeCount,
     }
   }, [filteredItems])
 
   const activeItem = useMemo(
-    () => domes.find((d) => d.id === state.activeDomeId) ?? null,
-    [domes, state.activeDomeId]
+    () => items.find((e) => e.id === state.activeItemId) ?? null,
+    [items, state.activeItemId]
   )
 
   const geojson = useMemo(() => ({
     type: 'FeatureCollection' as const,
-    features: filteredItems.map((d) => ({
+    features: filteredItems.map((e) => ({
       type: 'Feature' as const,
-      geometry: { type: 'Point' as const, coordinates: [d.lng, d.lat] },
-      properties: { id: d.id, name: d.name, status: d.status, growthRate: d.growthRate },
+      geometry: { type: 'Point' as const, coordinates: [e.lng, e.lat] },
+      properties: { id: e.id, name: e.name, status: e.status, erosionRate: e.erosionRate },
     })),
   }), [filteredItems])
 
   useEffect(() => {
-    if (state.domes.length === 0) {
-      useMapStore.getState().setVolcanicDomeGrowth({ domes: SAMPLE_LOCATIONS })
+    if (state.data.length === 0) {
+      useMapStore.getState().setStreamBankErosion({ data: SAMPLE_LOCATIONS })
     }
-  }, [state.domes.length])
+  }, [state.data.length])
 
   if (typeof window === 'undefined') return null
   if (!state.open) return null
 
-  const overlayToggles: { key: keyof VolcanicDomeGrowthState; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
-    { key: 'showGrowthRate', label: 'Growth Rate', icon: TrendingUp },
-    { key: 'showDomeVolume', label: 'Dome Volume', icon: Box },
-    { key: 'showTemperature', label: 'Temperature', icon: Thermometer },
+  const overlayToggles: { key: keyof StreamBankErosionState; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
+    { key: 'showErosionRate', label: 'Erosion Rate', icon: TrendingDown },
+    { key: 'showBankAngle', label: 'Bank Angle', icon: Compass },
+    { key: 'showVegetationCover', label: 'Vegetation Cover', icon: TreePine },
   ]
 
   void geojson
@@ -147,8 +147,8 @@ export function VolcanicDomeGrowthMonitor() {
         <CardHeader className="pb-3 border-b border-amber-700/30">
           <div className="flex items-center justify-between">
             <CardTitle className="text-sm flex items-center gap-2 text-amber-100">
-              <MountainIcon11 className="h-4 w-4 text-amber-400" />
-              Volcanic Dome Growth Monitor
+              <WavesIcon18 className="h-4 w-4 text-amber-400" />
+              Stream Bank Erosion
             </CardTitle>
             <Button
               variant="ghost"
@@ -168,9 +168,9 @@ export function VolcanicDomeGrowthMonitor() {
               Status
             </Label>
             <Select
-              value={state.statusFilter}
+              value={state.statusFilter || 'all'}
               onValueChange={(v) =>
-                setState({ statusFilter: v as VolcanicDomeGrowthState['statusFilter'] })
+                setState({ statusFilter: v as StreamBankErosionState['statusFilter'] })
               }
             >
               <SelectTrigger className="h-8 text-xs mt-1 bg-amber-900/40 border-amber-700/40 text-amber-100 hover:bg-amber-900/60">
@@ -178,10 +178,10 @@ export function VolcanicDomeGrowthMonitor() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="growing">Growing</SelectItem>
-                <SelectItem value="stable">Stable</SelectItem>
-                <SelectItem value="collapsing">Collapsing</SelectItem>
-                <SelectItem value="exploding">Exploding</SelectItem>
+                <SelectItem value="severe">Severe</SelectItem>
+                <SelectItem value="moderate">Moderate</SelectItem>
+                <SelectItem value="minimal">Minimal</SelectItem>
+                <SelectItem value="stabilized">Stabilized</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -211,55 +211,55 @@ export function VolcanicDomeGrowthMonitor() {
           {/* Summary Metrics */}
           <div className="grid grid-cols-2 gap-2">
             <div className="rounded-lg border border-amber-700/30 bg-amber-900/30 p-2 text-center">
-              <div className="text-[10px] text-amber-400/70">Total Domes</div>
-              <div className="text-sm font-semibold text-amber-200">{summary.totalDomes}</div>
+              <div className="text-[10px] text-amber-400/70">Total Sites</div>
+              <div className="text-sm font-semibold text-amber-200">{summary.totalSites}</div>
               <div className="text-[9px] text-amber-400/60">monitored</div>
             </div>
             <div className="rounded-lg border border-amber-700/30 bg-amber-900/30 p-2 text-center">
-              <div className="text-[10px] text-amber-400/70">Avg Growth Rate</div>
-              <div className="text-sm font-semibold text-green-400">{summary.avgGrowthRate}</div>
-              <div className="text-[9px] text-amber-400/60">m³/s</div>
+              <div className="text-[10px] text-amber-400/70">Avg Erosion</div>
+              <div className="text-sm font-semibold text-orange-400">{summary.avgErosion}</div>
+              <div className="text-[9px] text-amber-400/60">cm/yr</div>
             </div>
             <div className="rounded-lg border border-amber-700/30 bg-amber-900/30 p-2 text-center">
-              <div className="text-[10px] text-amber-400/70">Total Volume</div>
-              <div className="text-sm font-semibold text-yellow-400">{summary.totalVolume}</div>
-              <div className="text-[9px] text-amber-400/60">×10⁶ m³</div>
+              <div className="text-[10px] text-amber-400/70">Avg Vegetation</div>
+              <div className="text-sm font-semibold text-green-400">{summary.avgVegetation}%</div>
+              <div className="text-[9px] text-amber-400/60">cover</div>
             </div>
             <div className="rounded-lg border border-amber-700/30 bg-amber-900/30 p-2 text-center">
-              <div className="text-[10px] text-amber-400/70">Growing Count</div>
-              <div className="text-sm font-semibold text-emerald-400">{summary.growingCount}</div>
-              <div className="text-[9px] text-amber-400/60">domes</div>
+              <div className="text-[10px] text-amber-400/70">Severe</div>
+              <div className="text-sm font-semibold text-red-400">{summary.severeCount}</div>
+              <div className="text-[9px] text-amber-400/60">sites</div>
             </div>
           </div>
 
           <Separator className="bg-amber-700/30" />
 
-          {/* Dome List */}
+          {/* Location List */}
           <div className="space-y-1.5">
             <Label className="text-xs text-amber-300/80">
-              Domes ({filteredItems.length})
+              Locations ({filteredItems.length})
             </Label>
             <ScrollArea className="max-h-[260px]">
               <div className="space-y-2 pr-1">
-                {filteredItems.map((d) => {
-                  const isActive = state.activeDomeId === d.id
-                  const statusCfg = STATUS_COLORS[d.status]
+                {filteredItems.map((e) => {
+                  const isActive = state.activeItemId === e.id
+                  const statusCfg = STATUS_COLORS[e.status]
                   return (
                     <div
-                      key={d.id}
+                      key={e.id}
                       className={`rounded-lg border p-2.5 cursor-pointer transition-all ${
                         isActive
                           ? 'border-amber-500/50 bg-amber-800/30'
                           : 'border-amber-700/30 hover:border-amber-500/30 hover:bg-amber-800/20'
                       }`}
                       onClick={() =>
-                        setState({ activeDomeId: isActive ? null : d.id })
+                        setState({ activeItemId: isActive ? null : e.id })
                       }
                     >
                       <div className="flex items-center justify-between mb-1.5">
                         <div className="flex items-center gap-1.5">
-                          <TrendIcon status={d.status} />
-                          <span className="text-xs font-medium text-amber-100">{d.name}</span>
+                          <TrendIcon status={e.status} />
+                          <span className="text-xs font-medium text-amber-100">{e.name}</span>
                         </div>
                         <Badge
                           variant="outline"
@@ -270,22 +270,22 @@ export function VolcanicDomeGrowthMonitor() {
                       </div>
 
                       <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10px] text-amber-300/60">
-                        {state.showGrowthRate && (
+                        {state.showErosionRate && (
                           <div>
-                            Growth Rate:{' '}
-                            <span className="text-amber-100 font-medium">{d.growthRate} m³/s</span>
+                            Erosion:{' '}
+                            <span className="text-amber-100 font-medium">{e.erosionRate} cm/yr</span>
                           </div>
                         )}
-                        {state.showDomeVolume && (
+                        {state.showBankAngle && (
                           <div>
-                            Volume:{' '}
-                            <span className="text-amber-100 font-medium">{d.domeVolume} ×10⁶ m³</span>
+                            Angle:{' '}
+                            <span className="text-amber-100 font-medium">{e.bankAngle}°</span>
                           </div>
                         )}
-                        {state.showTemperature && (
+                        {state.showVegetationCover && (
                           <div>
-                            Temperature:{' '}
-                            <span className="text-amber-100 font-medium">{d.temperature}°C</span>
+                            Vegetation:{' '}
+                            <span className="text-amber-100 font-medium">{e.vegetationCover}%</span>
                           </div>
                         )}
                       </div>
@@ -294,14 +294,14 @@ export function VolcanicDomeGrowthMonitor() {
                 })}
                 {filteredItems.length === 0 && (
                   <div className="text-center text-xs text-amber-400/50 py-4">
-                    No domes match the current filter.
+                    No locations match the current filter.
                   </div>
                 )}
               </div>
             </ScrollArea>
           </div>
 
-          {/* Active Dome Details */}
+          {/* Active Item Details */}
           {activeItem && (
             <>
               <Separator className="bg-amber-700/30" />
@@ -325,16 +325,16 @@ export function VolcanicDomeGrowthMonitor() {
                     </span>
                   </div>
                   <div>
-                    <span className="text-amber-400/70">Growth Rate: </span>
-                    <span className="font-medium text-green-400">{activeItem.growthRate} m³/s</span>
+                    <span className="text-amber-400/70">Erosion: </span>
+                    <span className="font-medium text-orange-400">{activeItem.erosionRate} cm/yr</span>
                   </div>
                   <div>
-                    <span className="text-amber-400/70">Volume: </span>
-                    <span className="font-medium text-yellow-400">{activeItem.domeVolume} ×10⁶ m³</span>
+                    <span className="text-amber-400/70">Bank Angle: </span>
+                    <span className="font-medium text-yellow-400">{activeItem.bankAngle}°</span>
                   </div>
                   <div>
-                    <span className="text-amber-400/70">Temperature: </span>
-                    <span className="font-medium text-red-400">{activeItem.temperature}°C</span>
+                    <span className="text-amber-400/70">Vegetation: </span>
+                    <span className="font-medium text-green-400">{activeItem.vegetationCover}%</span>
                   </div>
                 </div>
               </div>

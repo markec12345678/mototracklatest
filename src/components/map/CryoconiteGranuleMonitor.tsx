@@ -15,139 +15,140 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useMapStore, type CryoconiteHoleState, type CryoconiteHoleData } from '@/lib/map-store'
-import { CircleDot as CircleDotIcon2, X, Ruler, Leaf, Circle, MapPin, Filter } from 'lucide-react'
+import { useMapStore, type CryoconiteGranuleState, type CryoconiteGranuleData } from '@/lib/map-store'
+import { CircleDot as CircleDotIcon3, X, Circle, Leaf, Sun, MapPin, Filter } from 'lucide-react'
 
-const SAMPLE_LOCATIONS: CryoconiteHoleData[] = [
+const SAMPLE_LOCATIONS: CryoconiteGranuleData[] = [
   {
-    id: 'ch-greenland-1',
+    id: 'cg-greenland-w',
     name: 'Greenland Ice Sheet W',
     lat: 67.0,
     lng: -50.0,
-    depth: 25,
-    diameter: 12,
-    organicContent: 0.35,
-    status: 'active',
-    description: 'Active cryoconite hole with thriving microbial mat',
+    granuleDiameter: 2.5,
+    organicContent: 18,
+    albedoEffect: 3.2,
+    status: 'forming',
+    description: 'Active granule formation zone',
   },
   {
-    id: 'ch-antarctica-1',
-    name: 'Antarctica McMurdo',
-    lat: -77.8,
-    lng: 166.7,
-    depth: 8,
-    diameter: 5,
-    organicContent: 0.15,
-    status: 'frozen',
-    description: 'Frozen cryoconite hole in Dry Valleys',
-  },
-  {
-    id: 'ch-alaska-1',
-    name: 'Alaska Juneau Icefield',
-    lat: 58.8,
+    id: 'cg-alaska',
+    name: 'Alaska Juneau Granule',
+    lat: 58.5,
     lng: -134.5,
-    depth: 18,
-    diameter: 9,
-    organicContent: 0.28,
+    granuleDiameter: 3.8,
+    organicContent: 25,
+    albedoEffect: 5.5,
     status: 'active',
-    description: 'Seasonally active hole with dark microbial deposits',
+    description: 'Mature cryoconite ecosystem',
   },
   {
-    id: 'ch-iceland-1',
+    id: 'cg-iceland',
     name: 'Iceland Vatnajökull',
     lat: 64.4,
     lng: -16.8,
-    depth: 30,
-    diameter: 15,
-    organicContent: 0.42,
-    status: 'draining',
-    description: 'Draining cryoconite hole with high organic content',
+    granuleDiameter: 1.5,
+    organicContent: 12,
+    albedoEffect: 8.0,
+    status: 'melting',
+    description: 'Accelerating melt from granules',
+  },
+  {
+    id: 'cg-antarctic',
+    name: 'Antarctic McMurdo',
+    lat: -77.8,
+    lng: 166.7,
+    granuleDiameter: 0.8,
+    organicContent: 8,
+    albedoEffect: 1.5,
+    status: 'deposited',
+    description: 'Winter deposited granules',
   },
 ]
 
-const STATUS_COLORS: Record<CryoconiteHoleData['status'], { label: string; color: string; bgClass: string }> = {
+const STATUS_COLORS: Record<CryoconiteGranuleData['status'], { label: string; color: string; bgClass: string }> = {
+  forming: { label: 'Forming', color: '#06b6d4', bgClass: 'bg-cyan-500/10 text-cyan-600 border-cyan-500/30' },
   active: { label: 'Active', color: '#22c55e', bgClass: 'bg-green-500/10 text-green-600 border-green-500/30' },
-  frozen: { label: 'Frozen', color: '#64748b', bgClass: 'bg-slate-500/10 text-slate-400 border-slate-500/30' },
-  draining: { label: 'Draining', color: '#06b6d4', bgClass: 'bg-cyan-500/10 text-cyan-600 border-cyan-500/30' },
+  melting: { label: 'Melting', color: '#f59e0b', bgClass: 'bg-amber-500/10 text-amber-600 border-amber-500/30' },
+  deposited: { label: 'Deposited', color: '#64748b', bgClass: 'bg-slate-500/10 text-slate-600 border-slate-500/30' },
 }
 
-function TrendIcon({ status }: { status: CryoconiteHoleData['status'] }) {
+function TrendIcon({ status }: { status: CryoconiteGranuleData['status'] }) {
   const cfg = STATUS_COLORS[status]
   return (
     <div className="h-2 w-2 rounded-full" style={{ backgroundColor: cfg.color }} />
   )
 }
 
-export function CryoconiteHoleMonitor() {
-  const state = useMapStore((s) => s.cryoconiteHole)
-  const setState = useMapStore((s) => s.setCryoconiteHole)
+export function CryoconiteGranuleMonitor() {
+  const state = useMapStore((s) => s.cryoconiteGranule)
+  const setState = useMapStore((s) => s.setCryoconiteGranule)
 
-  const holes = useMemo(
-    () => (state.holes.length > 0 ? state.holes : SAMPLE_LOCATIONS),
-    [state.holes]
+  const items = useMemo(
+    () => (state.data.length > 0 ? state.data : SAMPLE_LOCATIONS),
+    [state.data]
   )
 
   const filteredItems = useMemo(() => {
-    return holes.filter((h) => {
-      if (state.statusFilter !== 'all' && h.status !== state.statusFilter) return false
+    return items.filter((item) => {
+      if (state.statusFilter !== 'all' && item.status !== state.statusFilter) return false
       return true
     })
-  }, [holes, state.statusFilter])
+  }, [items, state.statusFilter])
 
   const summary = useMemo(() => {
     if (filteredItems.length === 0) {
-      return { totalHoles: 0, avgDepth: 0, avgOrganicContent: 0, activeCount: 0 }
+      return { totalSites: 0, avgDiameter: 0, avgAlbedo: 0, formingActiveCount: 0 }
     }
-    const avgDepth = filteredItems.reduce((sum, h) => sum + h.depth, 0) / filteredItems.length
-    const avgOrganicContent = filteredItems.reduce((sum, h) => sum + h.organicContent, 0) / filteredItems.length
-    const activeCount = filteredItems.filter((h) => h.status === 'active').length
+    const avgDiameter = filteredItems.reduce((sum, item) => sum + item.granuleDiameter, 0) / filteredItems.length
+    const avgAlbedo = filteredItems.reduce((sum, item) => sum + item.albedoEffect, 0) / filteredItems.length
+    const formingActiveCount = filteredItems.filter((item) => item.status === 'forming' || item.status === 'active').length
     return {
-      totalHoles: filteredItems.length,
-      avgDepth: Math.round(avgDepth * 10) / 10,
-      avgOrganicContent: Math.round(avgOrganicContent * 100) / 100,
-      activeCount,
+      totalSites: filteredItems.length,
+      avgDiameter: Math.round(avgDiameter * 100) / 100,
+      avgAlbedo: Math.round(avgAlbedo * 100) / 100,
+      formingActiveCount,
     }
   }, [filteredItems])
 
   const activeItem = useMemo(
-    () => holes.find((h) => h.id === state.activeHoleId) ?? null,
-    [holes, state.activeHoleId]
+    () => items.find((item) => item.id === state.activeItemId) ?? null,
+    [items, state.activeItemId]
   )
 
   const geojson = useMemo(() => ({
     type: 'FeatureCollection' as const,
-    features: filteredItems.map((h) => ({
+    features: filteredItems.map((item) => ({
       type: 'Feature' as const,
-      geometry: { type: 'Point' as const, coordinates: [h.lng, h.lat] },
-      properties: { id: h.id, name: h.name, status: h.status, depth: h.depth },
+      geometry: { type: 'Point' as const, coordinates: [item.lng, item.lat] },
+      properties: { id: item.id, name: item.name, status: item.status, granuleDiameter: item.granuleDiameter },
     })),
   }), [filteredItems])
 
   useEffect(() => {
-    if (state.holes.length === 0) {
-      useMapStore.getState().setCryoconiteHole({ holes: SAMPLE_LOCATIONS })
+    if (state.data.length === 0) {
+      useMapStore.getState().setCryoconiteGranule({ data: SAMPLE_LOCATIONS })
     }
-  }, [state.holes.length])
+  }, [state.data.length])
 
   if (typeof window === 'undefined') return null
   if (!state.open) return null
 
-  const overlayToggles: { key: keyof CryoconiteHoleState; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
-    { key: 'showDepth', label: 'Depth', icon: Ruler },
+  const overlayToggles: { key: keyof CryoconiteGranuleState; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
+    { key: 'showGranuleDiameter', label: 'Granule Diameter', icon: Circle },
     { key: 'showOrganicContent', label: 'Organic Content', icon: Leaf },
-    { key: 'showDiameter', label: 'Diameter', icon: Circle },
+    { key: 'showAlbedoEffect', label: 'Albedo Effect', icon: Sun },
   ]
 
   void geojson
 
   return (
     <div className="fixed right-4 top-16 z-[60] w-[420px] max-w-[calc(100vw-32px)] max-h-[calc(100vh-100px)]">
-      <Card className="bg-gradient-to-br from-slate-950/95 to-blue-950/95 backdrop-blur-xl border border-slate-800/40 rounded-xl shadow-lg overflow-hidden">
+      <Card className="bg-gradient-to-br from-slate-950/95 to-zinc-950/95 backdrop-blur-xl border border-slate-800/40 rounded-xl shadow-lg overflow-hidden">
         <CardHeader className="pb-3 border-b border-slate-700/30">
           <div className="flex items-center justify-between">
             <CardTitle className="text-sm flex items-center gap-2 text-slate-100">
-              <CircleDotIcon2 className="h-4 w-4 text-slate-400" />
-              Cryoconite Hole Monitor
+              <CircleDotIcon3 className="h-4 w-4 text-slate-400" />
+              Cryoconite Granule
             </CardTitle>
             <Button
               variant="ghost"
@@ -169,7 +170,7 @@ export function CryoconiteHoleMonitor() {
             <Select
               value={state.statusFilter}
               onValueChange={(v) =>
-                setState({ statusFilter: v as CryoconiteHoleState['statusFilter'] })
+                setState({ statusFilter: v as CryoconiteGranuleState['statusFilter'] })
               }
             >
               <SelectTrigger className="h-8 text-xs mt-1 bg-slate-900/40 border-slate-700/40 text-slate-100 hover:bg-slate-900/60">
@@ -177,9 +178,10 @@ export function CryoconiteHoleMonitor() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Statuses</SelectItem>
+                <SelectItem value="forming">Forming</SelectItem>
                 <SelectItem value="active">Active</SelectItem>
-                <SelectItem value="frozen">Frozen</SelectItem>
-                <SelectItem value="draining">Draining</SelectItem>
+                <SelectItem value="melting">Melting</SelectItem>
+                <SelectItem value="deposited">Deposited</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -198,7 +200,7 @@ export function CryoconiteHoleMonitor() {
                 <Switch
                   checked={state[key] as boolean}
                   onCheckedChange={(checked) => setState({ [key]: checked })}
-                  className="scale-75 data-[state=checked]:bg-blue-600"
+                  className="scale-75 data-[state=checked]:bg-slate-600"
                 />
               </div>
             ))}
@@ -209,55 +211,55 @@ export function CryoconiteHoleMonitor() {
           {/* Summary Metrics */}
           <div className="grid grid-cols-2 gap-2">
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Total Holes</div>
-              <div className="text-sm font-semibold text-slate-200">{summary.totalHoles}</div>
+              <div className="text-[10px] text-slate-400/70">Total Sites</div>
+              <div className="text-sm font-semibold text-slate-200">{summary.totalSites}</div>
               <div className="text-[9px] text-slate-400/60">monitored</div>
             </div>
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Avg Depth</div>
-              <div className="text-sm font-semibold text-blue-400">{summary.avgDepth}</div>
-              <div className="text-[9px] text-slate-400/60">cm</div>
+              <div className="text-[10px] text-slate-400/70">Avg Diameter</div>
+              <div className="text-sm font-semibold text-cyan-400">{summary.avgDiameter}</div>
+              <div className="text-[9px] text-slate-400/60">mm</div>
             </div>
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Avg Organic Content</div>
-              <div className="text-sm font-semibold text-green-400">{(summary.avgOrganicContent * 100).toFixed(0)}</div>
+              <div className="text-[10px] text-slate-400/70">Avg Albedo</div>
+              <div className="text-sm font-semibold text-amber-400">{summary.avgAlbedo}</div>
               <div className="text-[9px] text-slate-400/60">%</div>
             </div>
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Active Count</div>
-              <div className="text-sm font-semibold text-green-400">{summary.activeCount}</div>
-              <div className="text-[9px] text-slate-400/60">holes</div>
+              <div className="text-[10px] text-slate-400/70">Forming+Active</div>
+              <div className="text-sm font-semibold text-green-400">{summary.formingActiveCount}</div>
+              <div className="text-[9px] text-slate-400/60">sites</div>
             </div>
           </div>
 
           <Separator className="bg-slate-700/30" />
 
-          {/* Hole List */}
+          {/* Location List */}
           <div className="space-y-1.5">
             <Label className="text-xs text-slate-300/80">
-              Cryoconite Holes ({filteredItems.length})
+              Sites ({filteredItems.length})
             </Label>
             <ScrollArea className="max-h-[260px]">
               <div className="space-y-2 pr-1">
-                {filteredItems.map((h) => {
-                  const isActive = state.activeHoleId === h.id
-                  const statusCfg = STATUS_COLORS[h.status]
+                {filteredItems.map((item) => {
+                  const isActive = state.activeItemId === item.id
+                  const statusCfg = STATUS_COLORS[item.status]
                   return (
                     <div
-                      key={h.id}
+                      key={item.id}
                       className={`rounded-lg border p-2.5 cursor-pointer transition-all ${
                         isActive
-                          ? 'border-blue-500/50 bg-slate-800/30'
-                          : 'border-slate-700/30 hover:border-blue-500/30 hover:bg-slate-800/20'
+                          ? 'border-slate-500/50 bg-slate-800/30'
+                          : 'border-slate-700/30 hover:border-slate-500/30 hover:bg-slate-800/20'
                       }`}
                       onClick={() =>
-                        setState({ activeHoleId: isActive ? null : h.id })
+                        setState({ activeItemId: isActive ? null : item.id })
                       }
                     >
                       <div className="flex items-center justify-between mb-1.5">
                         <div className="flex items-center gap-1.5">
-                          <TrendIcon status={h.status} />
-                          <span className="text-xs font-medium text-slate-100">{h.name}</span>
+                          <TrendIcon status={item.status} />
+                          <span className="text-xs font-medium text-slate-100">{item.name}</span>
                         </div>
                         <Badge
                           variant="outline"
@@ -268,22 +270,22 @@ export function CryoconiteHoleMonitor() {
                       </div>
 
                       <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10px] text-slate-300/60">
-                        {state.showDepth && (
-                          <div>
-                            Depth:{' '}
-                            <span className="text-slate-100 font-medium">{h.depth}cm</span>
-                          </div>
-                        )}
-                        {state.showDiameter && (
+                        {state.showGranuleDiameter && (
                           <div>
                             Diameter:{' '}
-                            <span className="text-slate-100 font-medium">{h.diameter}cm</span>
+                            <span className="text-slate-100 font-medium">{item.granuleDiameter} mm</span>
                           </div>
                         )}
                         {state.showOrganicContent && (
                           <div>
                             Organic:{' '}
-                            <span className="text-slate-100 font-medium">{(h.organicContent * 100).toFixed(0)}%</span>
+                            <span className="text-slate-100 font-medium">{item.organicContent}%</span>
+                          </div>
+                        )}
+                        {state.showAlbedoEffect && (
+                          <div>
+                            Albedo:{' '}
+                            <span className="text-cyan-400 font-medium">{item.albedoEffect}%</span>
                           </div>
                         )}
                       </div>
@@ -292,20 +294,20 @@ export function CryoconiteHoleMonitor() {
                 })}
                 {filteredItems.length === 0 && (
                   <div className="text-center text-xs text-slate-400/50 py-4">
-                    No holes match the current filter.
+                    No sites match the current filter.
                   </div>
                 )}
               </div>
             </ScrollArea>
           </div>
 
-          {/* Active Hole Details */}
+          {/* Active Item Details */}
           {activeItem && (
             <>
               <Separator className="bg-slate-700/30" />
-              <div className="space-y-2 rounded-lg border border-blue-600/30 bg-slate-800/20 p-3">
+              <div className="space-y-2 rounded-lg border border-slate-600/30 bg-slate-800/20 p-3">
                 <div className="flex items-center gap-2">
-                  <MapPin className="h-3.5 w-3.5 text-blue-400" />
+                  <MapPin className="h-3.5 w-3.5 text-slate-400" />
                   <span className="text-xs font-semibold text-slate-100">{activeItem.name}</span>
                   <Badge
                     variant="outline"
@@ -323,16 +325,16 @@ export function CryoconiteHoleMonitor() {
                     </span>
                   </div>
                   <div>
-                    <span className="text-slate-400/70">Depth: </span>
-                    <span className="font-medium text-blue-400">{activeItem.depth}cm</span>
-                  </div>
-                  <div>
                     <span className="text-slate-400/70">Diameter: </span>
-                    <span className="font-medium text-cyan-400">{activeItem.diameter}cm</span>
+                    <span className="font-medium text-cyan-400">{activeItem.granuleDiameter} mm</span>
                   </div>
                   <div>
                     <span className="text-slate-400/70">Organic: </span>
-                    <span className="font-medium text-green-400">{(activeItem.organicContent * 100).toFixed(0)}%</span>
+                    <span className="font-medium text-green-400">{activeItem.organicContent}%</span>
+                  </div>
+                  <div>
+                    <span className="text-slate-400/70">Albedo: </span>
+                    <span className="font-medium text-amber-400">{activeItem.albedoEffect}%</span>
                   </div>
                 </div>
               </div>

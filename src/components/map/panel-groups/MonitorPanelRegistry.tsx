@@ -209,6 +209,15 @@ export function MonitorPanelRegistry() {
   const aeolianDustDeposition = useMapStore((s) => s.aeolianDustDeposition)
   const katabaticWindMonitor = useMapStore((s) => s.katabaticWindMonitor)
   const snowAvalancheTracker = useMapStore((s) => s.snowAvalancheTracker)
+  // Task 97
+  const riftValleyVolcano = useMapStore((s) => s.riftValleyVolcano)
+  const streamBankErosion = useMapStore((s) => s.streamBankErosion)
+  const iceStreamVelocity = useMapStore((s) => s.iceStreamVelocity)
+  const coastalAquifer = useMapStore((s) => s.coastalAquifer)
+  const mangroveRootSystem = useMapStore((s) => s.mangroveRootSystem)
+  const paleoshorelineTracker = useMapStore((s) => s.paleoshorelineTracker)
+  const cryoconiteGranule = useMapStore((s) => s.cryoconiteGranule)
+  const subglacialWaterSystem = useMapStore((s) => s.subglacialWaterSystem)
 
   return (
     <>
@@ -609,6 +618,31 @@ export function MonitorPanelRegistry() {
       )}
       {snowAvalancheTracker.open && (
         <LazyPanel importFn={() => import('@/components/map/SnowAvalancheTracker')} exportName="SnowAvalancheTracker" shouldLoad={true} />
+      )}
+      {/* Task 97: New Monitoring Panels */}
+      {riftValleyVolcano.open && (
+        <LazyPanel importFn={() => import('@/components/map/RiftValleyVolcanoMonitor')} exportName="RiftValleyVolcanoMonitor" shouldLoad={true} />
+      )}
+      {streamBankErosion.open && (
+        <LazyPanel importFn={() => import('@/components/map/StreamBankErosionMonitor')} exportName="StreamBankErosionMonitor" shouldLoad={true} />
+      )}
+      {iceStreamVelocity.open && (
+        <LazyPanel importFn={() => import('@/components/map/IceStreamVelocityMonitor')} exportName="IceStreamVelocityMonitor" shouldLoad={true} />
+      )}
+      {coastalAquifer.open && (
+        <LazyPanel importFn={() => import('@/components/map/CoastalAquiferMonitor')} exportName="CoastalAquiferMonitor" shouldLoad={true} />
+      )}
+      {mangroveRootSystem.open && (
+        <LazyPanel importFn={() => import('@/components/map/MangroveRootSystemMonitor')} exportName="MangroveRootSystemMonitor" shouldLoad={true} />
+      )}
+      {paleoshorelineTracker.open && (
+        <LazyPanel importFn={() => import('@/components/map/PaleoshorelineTracker')} exportName="PaleoshorelineTracker" shouldLoad={true} />
+      )}
+      {cryoconiteGranule.open && (
+        <LazyPanel importFn={() => import('@/components/map/CryoconiteGranuleMonitor')} exportName="CryoconiteGranuleMonitor" shouldLoad={true} />
+      )}
+      {subglacialWaterSystem.open && (
+        <LazyPanel importFn={() => import('@/components/map/SubglacialWaterSystemMonitor')} exportName="SubglacialWaterSystemMonitor" shouldLoad={true} />
       )}
     </>
   )
