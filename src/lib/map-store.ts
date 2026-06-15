@@ -8616,6 +8616,22 @@ interface MapState {
   setIntertidalZone: (state: Partial<IntertidalZoneState>) => void
   desertFlashFlood: DesertFlashFloodState
   setDesertFlashFlood: (state: Partial<DesertFlashFloodState>) => void
+  mudVolcanoActivity: MudVolcanoActivityState
+  setMudVolcanoActivity: (state: Partial<MudVolcanoActivityState>) => void
+  glacierSurgeEvent: GlacierSurgeEventState
+  setGlacierSurgeEvent: (state: Partial<GlacierSurgeEventState>) => void
+  seicheWaveOscillation: SeicheWaveOscillationState
+  setSeicheWaveOscillation: (state: Partial<SeicheWaveOscillationState>) => void
+  laharFlowTracker: LaharFlowTrackerState
+  setLaharFlowTracker: (state: Partial<LaharFlowTrackerState>) => void
+  icePenitentMonitor: IcePenitentMonitorState
+  setIcePenitentMonitor: (state: Partial<IcePenitentMonitorState>) => void
+  frostHeaveMonitor: FrostHeaveMonitorState
+  setFrostHeaveMonitor: (state: Partial<FrostHeaveMonitorState>) => void
+  pumiceRaftDrift: PumiceRaftDriftState
+  setPumiceRaftDrift: (state: Partial<PumiceRaftDriftState>) => void
+  limnicEruptionMonitor: LimnicEruptionMonitorState
+  setLimnicEruptionMonitor: (state: Partial<LimnicEruptionMonitorState>) => void
 
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
@@ -9695,6 +9711,182 @@ export interface DesertFlashFloodState {
   showRainfallIntensity: boolean
   showFloodVolume: boolean
   showCatchmentArea: boolean
+}
+
+export interface MudVolcanoActivityData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  eruptionRate: number
+  flowTemperature: number
+  mudViscosity: number
+  status: 'erupting' | 'flowing' | 'dormant' | 'monitoring'
+  description: string
+}
+
+export interface MudVolcanoActivityState {
+  open: boolean
+  volcanoes: MudVolcanoActivityData[]
+  activeVolcanoId: string | null
+  statusFilter: 'all' | 'erupting' | 'flowing' | 'dormant' | 'monitoring'
+  showEruptionRate: boolean
+  showFlowTemperature: boolean
+  showMudViscosity: boolean
+}
+
+export interface GlacierSurgeEventData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  surgeVelocity: number
+  iceDisplacement: number
+  surgeDuration: number
+  status: 'surging' | 'slowing' | 'stable' | 'post_surge'
+  description: string
+}
+
+export interface GlacierSurgeEventState {
+  open: boolean
+  events: GlacierSurgeEventData[]
+  activeEventId: string | null
+  statusFilter: 'all' | 'surging' | 'slowing' | 'stable' | 'post_surge'
+  showSurgeVelocity: boolean
+  showIceDisplacement: boolean
+  showSurgeDuration: boolean
+}
+
+export interface SeicheWaveOscillationData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  waveAmplitude: number
+  oscillationPeriod: number
+  waterLevelChange: number
+  status: 'active' | 'subsiding' | 'standing' | 'calm'
+  description: string
+}
+
+export interface SeicheWaveOscillationState {
+  open: boolean
+  oscillations: SeicheWaveOscillationData[]
+  activeOscillationId: string | null
+  statusFilter: 'all' | 'active' | 'subsiding' | 'standing' | 'calm'
+  showWaveAmplitude: boolean
+  showOscillationPeriod: boolean
+  showWaterLevelChange: boolean
+}
+
+export interface LaharFlowTrackerData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  flowVelocity: number
+  sedimentConcentration: number
+  flowVolume: number
+  status: 'active' | 'advancing' | 'channelized' | 'deposited'
+  description: string
+}
+
+export interface LaharFlowTrackerState {
+  open: boolean
+  flows: LaharFlowTrackerData[]
+  activeFlowId: string | null
+  statusFilter: 'all' | 'active' | 'advancing' | 'channelized' | 'deposited'
+  showFlowVelocity: boolean
+  showSedimentConcentration: boolean
+  showFlowVolume: boolean
+}
+
+export interface IcePenitentMonitorData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  spikeHeight: number
+  formationDensity: number
+  surfaceTemperature: number
+  status: 'forming' | 'stable' | 'melting' | 'degraded'
+  description: string
+}
+
+export interface IcePenitentMonitorState {
+  open: boolean
+  formations: IcePenitentMonitorData[]
+  activeFormationId: string | null
+  statusFilter: 'all' | 'forming' | 'stable' | 'melting' | 'degraded'
+  showSpikeHeight: boolean
+  showFormationDensity: boolean
+  showSurfaceTemperature: boolean
+}
+
+export interface FrostHeaveMonitorData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  heaveAmount: number
+  groundTemperature: number
+  soilMoistureContent: number
+  status: 'heaving' | 'frozen' | 'thawing' | 'stable'
+  description: string
+}
+
+export interface FrostHeaveMonitorState {
+  open: boolean
+  sites: FrostHeaveMonitorData[]
+  activeSiteId: string | null
+  statusFilter: 'all' | 'heaving' | 'frozen' | 'thawing' | 'stable'
+  showHeaveAmount: boolean
+  showGroundTemperature: boolean
+  showSoilMoistureContent: boolean
+}
+
+export interface PumiceRaftDriftData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  raftArea: number
+  driftSpeed: number
+  pumiceDensity: number
+  status: 'drifting' | 'dispersing' | 'beaching' | 'sinking'
+  description: string
+}
+
+export interface PumiceRaftDriftState {
+  open: boolean
+  rafts: PumiceRaftDriftData[]
+  activeRaftId: string | null
+  statusFilter: 'all' | 'drifting' | 'dispersing' | 'beaching' | 'sinking'
+  showRaftArea: boolean
+  showDriftSpeed: boolean
+  showPumiceDensity: boolean
+}
+
+export interface LimnicEruptionMonitorData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  co2Concentration: number
+  gasReleaseRate: number
+  waterDepth: number
+  status: 'critical' | 'elevated' | 'monitoring' | 'stable'
+  description: string
+}
+
+export interface LimnicEruptionMonitorState {
+  open: boolean
+  lakes: LimnicEruptionMonitorData[]
+  activeLakeId: string | null
+  statusFilter: 'all' | 'critical' | 'elevated' | 'monitoring' | 'stable'
+  showCO2Concentration: boolean
+  showGasReleaseRate: boolean
+  showWaterDepth: boolean
 }
 
 export const useMapStore = create<MapState>()(
@@ -14472,6 +14664,38 @@ export const useMapStore = create<MapState>()(
         events: [], activeEventId: null, showRainfallIntensity: true, showFloodVolume: true, showCatchmentArea: false, open: false, statusFilter: 'all',
       },
       setDesertFlashFlood: (updates) => set((state) => ({ desertFlashFlood: { ...state.desertFlashFlood, ...updates } })),
+      mudVolcanoActivity: {
+        volcanoes: [], activeVolcanoId: null, showEruptionRate: true, showFlowTemperature: true, showMudViscosity: false, open: false, statusFilter: 'all',
+      },
+      setMudVolcanoActivity: (updates) => set((state) => ({ mudVolcanoActivity: { ...state.mudVolcanoActivity, ...updates } })),
+      glacierSurgeEvent: {
+        events: [], activeEventId: null, showSurgeVelocity: true, showIceDisplacement: true, showSurgeDuration: false, open: false, statusFilter: 'all',
+      },
+      setGlacierSurgeEvent: (updates) => set((state) => ({ glacierSurgeEvent: { ...state.glacierSurgeEvent, ...updates } })),
+      seicheWaveOscillation: {
+        oscillations: [], activeOscillationId: null, showWaveAmplitude: true, showOscillationPeriod: true, showWaterLevelChange: false, open: false, statusFilter: 'all',
+      },
+      setSeicheWaveOscillation: (updates) => set((state) => ({ seicheWaveOscillation: { ...state.seicheWaveOscillation, ...updates } })),
+      laharFlowTracker: {
+        flows: [], activeFlowId: null, showFlowVelocity: true, showSedimentConcentration: true, showFlowVolume: false, open: false, statusFilter: 'all',
+      },
+      setLaharFlowTracker: (updates) => set((state) => ({ laharFlowTracker: { ...state.laharFlowTracker, ...updates } })),
+      icePenitentMonitor: {
+        formations: [], activeFormationId: null, showSpikeHeight: true, showFormationDensity: true, showSurfaceTemperature: false, open: false, statusFilter: 'all',
+      },
+      setIcePenitentMonitor: (updates) => set((state) => ({ icePenitentMonitor: { ...state.icePenitentMonitor, ...updates } })),
+      frostHeaveMonitor: {
+        sites: [], activeSiteId: null, showHeaveAmount: true, showGroundTemperature: true, showSoilMoistureContent: false, open: false, statusFilter: 'all',
+      },
+      setFrostHeaveMonitor: (updates) => set((state) => ({ frostHeaveMonitor: { ...state.frostHeaveMonitor, ...updates } })),
+      pumiceRaftDrift: {
+        rafts: [], activeRaftId: null, showRaftArea: true, showDriftSpeed: true, showPumiceDensity: false, open: false, statusFilter: 'all',
+      },
+      setPumiceRaftDrift: (updates) => set((state) => ({ pumiceRaftDrift: { ...state.pumiceRaftDrift, ...updates } })),
+      limnicEruptionMonitor: {
+        lakes: [], activeLakeId: null, showCO2Concentration: true, showGasReleaseRate: true, showWaterDepth: false, open: false, statusFilter: 'all',
+      },
+      setLimnicEruptionMonitor: (updates) => set((state) => ({ limnicEruptionMonitor: { ...state.limnicEruptionMonitor, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
@@ -14921,6 +15145,14 @@ export const useMapStore = create<MapState>()(
         subaqueousLavaFlow: state.subaqueousLavaFlow,
         intertidalZone: state.intertidalZone,
         desertFlashFlood: state.desertFlashFlood,
+        mudVolcanoActivity: state.mudVolcanoActivity,
+        glacierSurgeEvent: state.glacierSurgeEvent,
+        seicheWaveOscillation: state.seicheWaveOscillation,
+        laharFlowTracker: state.laharFlowTracker,
+        icePenitentMonitor: state.icePenitentMonitor,
+        frostHeaveMonitor: state.frostHeaveMonitor,
+        pumiceRaftDrift: state.pumiceRaftDrift,
+        limnicEruptionMonitor: state.limnicEruptionMonitor,
       }),
     }
   )

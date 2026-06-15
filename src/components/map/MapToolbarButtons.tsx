@@ -302,6 +302,15 @@ import {
   Flame as VolcanoIcon,
   Waves as WavesIcon15,
   CloudRain as CloudRainIcon5,
+  // Task 94 icons
+  Mountain as MountainIcon12,
+  Zap as ZapIcon3,
+  Waves as WavesIcon16,
+  CloudRain as CloudRainIcon6,
+  Snowflake as SnowflakeIcon11,
+  ArrowUpFromLine as ArrowUpIcon3,
+  Ship as ShipIcon4,
+  Siren as SirenIcon2,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -2487,6 +2496,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setSubaqueousLavaFlow({ open: true })} title="Subaqueous Lava Flow" aria-label="Open subaqueous lava flow monitor"><VolcanoIcon className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setIntertidalZone({ open: true })} title="Intertidal Zone" aria-label="Open intertidal zone monitor"><WavesIcon15 className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setDesertFlashFlood({ open: true })} title="Desert Flash Flood" aria-label="Open desert flash flood monitor"><CloudRainIcon5 className="h-4 w-4" /></Button>
+          {/* Task 94: New Monitor Buttons */}
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setMudVolcanoActivity({ open: true })} title="Mud Volcano Activity" aria-label="Open mud volcano activity monitor"><MountainIcon12 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setGlacierSurgeEvent({ open: true })} title="Glacier Surge Event" aria-label="Open glacier surge event monitor"><ZapIcon3 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setSeicheWaveOscillation({ open: true })} title="Seiche Wave Oscillation" aria-label="Open seiche wave oscillation monitor"><WavesIcon16 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setLaharFlowTracker({ open: true })} title="Lahar Flow Tracker" aria-label="Open lahar flow tracker"><CloudRainIcon6 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setIcePenitentMonitor({ open: true })} title="Ice Penitent Monitor" aria-label="Open ice penitent monitor"><SnowflakeIcon11 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setFrostHeaveMonitor({ open: true })} title="Frost Heave Monitor" aria-label="Open frost heave monitor"><ArrowUpIcon3 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setPumiceRaftDrift({ open: true })} title="Pumice Raft Drift" aria-label="Open pumice raft drift tracker"><ShipIcon4 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setLimnicEruptionMonitor({ open: true })} title="Limnic Eruption Monitor" aria-label="Open limnic eruption monitor"><SirenIcon2 className="h-4 w-4" /></Button>
           <Button
             variant="outline"
             size="icon"

@@ -182,6 +182,15 @@ export function MonitorPanelRegistry() {
   const subaqueousLavaFlow = useMapStore((s) => s.subaqueousLavaFlow)
   const intertidalZone = useMapStore((s) => s.intertidalZone)
   const desertFlashFlood = useMapStore((s) => s.desertFlashFlood)
+  // Task 94
+  const mudVolcanoActivity = useMapStore((s) => s.mudVolcanoActivity)
+  const glacierSurgeEvent = useMapStore((s) => s.glacierSurgeEvent)
+  const seicheWaveOscillation = useMapStore((s) => s.seicheWaveOscillation)
+  const laharFlowTracker = useMapStore((s) => s.laharFlowTracker)
+  const icePenitentMonitor = useMapStore((s) => s.icePenitentMonitor)
+  const frostHeaveMonitor = useMapStore((s) => s.frostHeaveMonitor)
+  const pumiceRaftDrift = useMapStore((s) => s.pumiceRaftDrift)
+  const limnicEruptionMonitor = useMapStore((s) => s.limnicEruptionMonitor)
 
   return (
     <>
@@ -507,6 +516,31 @@ export function MonitorPanelRegistry() {
       )}
       {desertFlashFlood.open && (
         <LazyPanel importFn={() => import('@/components/map/DesertFlashFloodMonitor')} exportName="DesertFlashFloodMonitor" shouldLoad={true} />
+      )}
+      {/* Task 94: New Monitoring Panels */}
+      {mudVolcanoActivity.open && (
+        <LazyPanel importFn={() => import('@/components/map/MudVolcanoActivityMonitor')} exportName="MudVolcanoActivityMonitor" shouldLoad={true} />
+      )}
+      {glacierSurgeEvent.open && (
+        <LazyPanel importFn={() => import('@/components/map/GlacierSurgeEventMonitor')} exportName="GlacierSurgeEventMonitor" shouldLoad={true} />
+      )}
+      {seicheWaveOscillation.open && (
+        <LazyPanel importFn={() => import('@/components/map/SeicheWaveOscillationMonitor')} exportName="SeicheWaveOscillationMonitor" shouldLoad={true} />
+      )}
+      {laharFlowTracker.open && (
+        <LazyPanel importFn={() => import('@/components/map/LaharFlowTracker')} exportName="LaharFlowTracker" shouldLoad={true} />
+      )}
+      {icePenitentMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/IcePenitentMonitor')} exportName="IcePenitentMonitor" shouldLoad={true} />
+      )}
+      {frostHeaveMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/FrostHeaveMonitor')} exportName="FrostHeaveMonitor" shouldLoad={true} />
+      )}
+      {pumiceRaftDrift.open && (
+        <LazyPanel importFn={() => import('@/components/map/PumiceRaftDriftTracker')} exportName="PumiceRaftDriftTracker" shouldLoad={true} />
+      )}
+      {limnicEruptionMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/LimnicEruptionMonitor')} exportName="LimnicEruptionMonitor" shouldLoad={true} />
       )}
     </>
   )
