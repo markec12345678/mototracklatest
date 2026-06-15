@@ -8552,6 +8552,22 @@ interface MapState {
   setMicroplasticOcean: (state: Partial<MicroplasticOceanState>) => void
   glacierBasalSlide: GlacierBasalSlideState
   setGlacierBasalSlide: (state: Partial<GlacierBasalSlideState>) => void
+  volcanicFumarole: VolcanicFumaroleState
+  setVolcanicFumarole: (state: Partial<VolcanicFumaroleState>) => void
+  hydroclimateExtremes: HydroclimateExtremesState
+  setHydroclimateExtremes: (state: Partial<HydroclimateExtremesState>) => void
+  megafaunaTracking: MegafaunaTrackingState
+  setMegafaunaTracking: (state: Partial<MegafaunaTrackingState>) => void
+  cryoconiteHole: CryoconiteHoleState
+  setCryoconiteHole: (state: Partial<CryoconiteHoleState>) => void
+  sapFlow: SapFlowState
+  setSapFlow: (state: Partial<SapFlowState>) => void
+  rockfallHazard: RockfallHazardState
+  setRockfallHazard: (state: Partial<RockfallHazardState>) => void
+  thermohalineCirculation: ThermohalineCirculationState
+  setThermohalineCirculation: (state: Partial<ThermohalineCirculationState>) => void
+  hydroseismicActivity: HydroseismicActivityState
+  setHydroseismicActivity: (state: Partial<HydroseismicActivityState>) => void
 
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
@@ -8919,6 +8935,190 @@ export interface MapOverlay {
   maxZoom?: number
   isTms?: boolean
   description?: string
+}
+
+// Task 91: Volcanic Fumarole Monitor
+export interface VolcanicFumaroleData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  temperature: number
+  gasComposition: string
+  pressure: number
+  status: 'active' | 'dormant' | 'intensifying'
+  description: string
+}
+
+export interface VolcanicFumaroleState {
+  open: boolean
+  fumaroles: VolcanicFumaroleData[]
+  activeFumaroleId: string | null
+  statusFilter: 'all' | 'active' | 'dormant' | 'intensifying'
+  showTemperature: boolean
+  showGasComposition: boolean
+  showPressure: boolean
+}
+
+// Task 91: Hydroclimate Extremes Monitor
+export interface HydroclimateExtremesData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  eventType: 'drought' | 'flood' | 'heatwave' | 'coldwave'
+  severity: number
+  duration: number
+  description: string
+}
+
+export interface HydroclimateExtremesState {
+  open: boolean
+  events: HydroclimateExtremesData[]
+  activeEventId: string | null
+  typeFilter: 'all' | 'drought' | 'flood' | 'heatwave' | 'coldwave'
+  showSeverity: boolean
+  showDuration: boolean
+  showTrend: boolean
+}
+
+// Task 91: Megafauna Tracker
+export interface MegafaunaTrackingData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  species: string
+  population: number
+  trend: 'increasing' | 'stable' | 'declining'
+  habitatStatus: 'optimal' | 'stressed' | 'critical'
+  description: string
+}
+
+export interface MegafaunaTrackingState {
+  open: boolean
+  animals: MegafaunaTrackingData[]
+  activeAnimalId: string | null
+  speciesFilter: 'all' | string
+  showPopulation: boolean
+  showTrend: boolean
+  showHabitat: boolean
+}
+
+// Task 91: Cryoconite Hole Monitor
+export interface CryoconiteHoleData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  depth: number
+  diameter: number
+  organicContent: number
+  status: 'active' | 'frozen' | 'draining'
+  description: string
+}
+
+export interface CryoconiteHoleState {
+  open: boolean
+  holes: CryoconiteHoleData[]
+  activeHoleId: string | null
+  statusFilter: 'all' | 'active' | 'frozen' | 'draining'
+  showDepth: boolean
+  showOrganicContent: boolean
+  showDiameter: boolean
+}
+
+// Task 91: Sap Flow Monitor
+export interface SapFlowData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  species: string
+  flowRate: number
+  treeDiameter: number
+  status: 'normal' | 'stress' | 'dormant'
+  description: string
+}
+
+export interface SapFlowState {
+  open: boolean
+  sensors: SapFlowData[]
+  activeSensorId: string | null
+  statusFilter: 'all' | 'normal' | 'stress' | 'dormant'
+  showFlowRate: boolean
+  showTreeDiameter: boolean
+  showTrend: boolean
+}
+
+// Task 91: Rockfall Hazard Monitor
+export interface RockfallHazardData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  hazardLevel: 'low' | 'moderate' | 'high' | 'extreme'
+  slopeAngle: number
+  rockVolume: number
+  triggerType: string
+  description: string
+}
+
+export interface RockfallHazardState {
+  open: boolean
+  zones: RockfallHazardData[]
+  activeZoneId: string | null
+  hazardFilter: 'all' | 'low' | 'moderate' | 'high' | 'extreme'
+  showSlopeAngle: boolean
+  showRockVolume: boolean
+  showTriggerType: boolean
+}
+
+// Task 91: Thermohaline Circulation Monitor
+export interface ThermohalineCirculationData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  waterMass: string
+  temperature: number
+  salinity: number
+  velocity: number
+  status: 'strong' | 'weakening' | 'stalled'
+  description: string
+}
+
+export interface ThermohalineCirculationState {
+  open: boolean
+  currents: ThermohalineCirculationData[]
+  activeCurrentId: string | null
+  statusFilter: 'all' | 'strong' | 'weakening' | 'stalled'
+  showTemperature: boolean
+  showSalinity: boolean
+  showVelocity: boolean
+}
+
+export interface HydroseismicActivityData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  magnitude: number
+  depth: number
+  waterLevel: number
+  activityType: 'reservoir_induced' | 'geothermal' | 'submarine' | 'glacial'
+  status: 'active' | 'quiet' | 'swarming'
+  description: string
+}
+
+export interface HydroseismicActivityState {
+  open: boolean
+  events: HydroseismicActivityData[]
+  activeEventId: string | null
+  typeFilter: 'all' | 'reservoir_induced' | 'geothermal' | 'submarine' | 'glacial'
+  showMagnitude: boolean
+  showDepth: boolean
+  showWaterLevel: boolean
 }
 
 export const useMapStore = create<MapState>()(
@@ -13568,6 +13768,38 @@ export const useMapStore = create<MapState>()(
         glaciers: [], activeGlacierId: null, showVelocity: true, showBasalTemp: true, showSlideRisk: false, open: false, riskFilter: 'all',
       },
       setGlacierBasalSlide: (updates) => set((state) => ({ glacierBasalSlide: { ...state.glacierBasalSlide, ...updates } })),
+      volcanicFumarole: {
+        fumaroles: [], activeFumaroleId: null, showTemperature: true, showGasComposition: true, showPressure: false, open: false, statusFilter: 'all',
+      },
+      setVolcanicFumarole: (updates) => set((state) => ({ volcanicFumarole: { ...state.volcanicFumarole, ...updates } })),
+      hydroclimateExtremes: {
+        events: [], activeEventId: null, showSeverity: true, showDuration: true, showTrend: false, open: false, typeFilter: 'all',
+      },
+      setHydroclimateExtremes: (updates) => set((state) => ({ hydroclimateExtremes: { ...state.hydroclimateExtremes, ...updates } })),
+      megafaunaTracking: {
+        animals: [], activeAnimalId: null, showPopulation: true, showTrend: true, showHabitat: false, open: false, speciesFilter: 'all',
+      },
+      setMegafaunaTracking: (updates) => set((state) => ({ megafaunaTracking: { ...state.megafaunaTracking, ...updates } })),
+      cryoconiteHole: {
+        holes: [], activeHoleId: null, showDepth: true, showOrganicContent: true, showDiameter: false, open: false, statusFilter: 'all',
+      },
+      setCryoconiteHole: (updates) => set((state) => ({ cryoconiteHole: { ...state.cryoconiteHole, ...updates } })),
+      sapFlow: {
+        sensors: [], activeSensorId: null, showFlowRate: true, showTreeDiameter: true, showTrend: false, open: false, statusFilter: 'all',
+      },
+      setSapFlow: (updates) => set((state) => ({ sapFlow: { ...state.sapFlow, ...updates } })),
+      rockfallHazard: {
+        zones: [], activeZoneId: null, showSlopeAngle: true, showRockVolume: true, showTriggerType: false, open: false, hazardFilter: 'all',
+      },
+      setRockfallHazard: (updates) => set((state) => ({ rockfallHazard: { ...state.rockfallHazard, ...updates } })),
+      thermohalineCirculation: {
+        currents: [], activeCurrentId: null, showTemperature: true, showSalinity: true, showVelocity: false, open: false, statusFilter: 'all',
+      },
+      setThermohalineCirculation: (updates) => set((state) => ({ thermohalineCirculation: { ...state.thermohalineCirculation, ...updates } })),
+      hydroseismicActivity: {
+        events: [], activeEventId: null, showMagnitude: true, showDepth: true, showWaterLevel: false, open: false, typeFilter: 'all',
+      },
+      setHydroseismicActivity: (updates) => set((state) => ({ hydroseismicActivity: { ...state.hydroseismicActivity, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
@@ -13985,6 +14217,14 @@ export const useMapStore = create<MapState>()(
         dustHemisphere: state.dustHemisphere,
         microplasticOcean: state.microplasticOcean,
         glacierBasalSlide: state.glacierBasalSlide,
+        volcanicFumarole: state.volcanicFumarole,
+        hydroclimateExtremes: state.hydroclimateExtremes,
+        megafaunaTracking: state.megafaunaTracking,
+        cryoconiteHole: state.cryoconiteHole,
+        sapFlow: state.sapFlow,
+        rockfallHazard: state.rockfallHazard,
+        thermohalineCirculation: state.thermohalineCirculation,
+        hydroseismicActivity: state.hydroseismicActivity,
       }),
     }
   )

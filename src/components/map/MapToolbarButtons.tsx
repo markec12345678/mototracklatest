@@ -266,6 +266,15 @@ import {
   Wind as WindIcon10,
   Droplet as DropletIcon7,
   MountainSnow as MountainSnowIcon4,
+  // Task 90b icons
+  Flame as FlameIcon13,
+  CloudRain as CloudRainIcon4,
+  Footprints as FootprintsIcon2,
+  CircleDot as CircleDotIcon2,
+  TreeDeciduous as TreeDeciduousIcon4,
+  TriangleAlert as TriangleAlertIcon2,
+  Waves as WavesIcon13,
+  Activity as ActivityIcon5,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -2419,6 +2428,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setDustHemisphere({ open: true })} title="Dust Hemisphere Transport" aria-label="Open dust hemisphere transport monitor"><WindIcon10 className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setMicroplasticOcean({ open: true })} title="Microplastic Ocean" aria-label="Open microplastic ocean monitor"><DropletIcon7 className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setGlacierBasalSlide({ open: true })} title="Glacier Basal Slide" aria-label="Open glacier basal slide monitor"><MountainSnowIcon4 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setVolcanicFumarole({ open: true })} title="Volcanic Fumarole" aria-label="Open volcanic fumarole monitor"><FlameIcon13 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setHydroclimateExtremes({ open: true })} title="Hydroclimate Extremes" aria-label="Open hydroclimate extremes monitor"><CloudRainIcon4 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setMegafaunaTracking({ open: true })} title="Megafauna Tracking" aria-label="Open megafauna tracking monitor"><FootprintsIcon2 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setCryoconiteHole({ open: true })} title="Cryoconite Hole" aria-label="Open cryoconite hole monitor"><CircleDotIcon2 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setSapFlow({ open: true })} title="Sap Flow Monitor" aria-label="Open sap flow monitor"><TreeDeciduousIcon4 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setRockfallHazard({ open: true })} title="Rockfall Hazard" aria-label="Open rockfall hazard monitor"><TriangleAlertIcon2 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setThermohalineCirculation({ open: true })} title="Thermohaline Circulation" aria-label="Open thermohaline circulation monitor"><WavesIcon13 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setHydroseismicActivity({ open: true })} title="Hydroseismic Activity" aria-label="Open hydroseismic activity monitor"><ActivityIcon5 className="h-4 w-4" /></Button>
           <Button
             variant="outline"
             size="icon"
