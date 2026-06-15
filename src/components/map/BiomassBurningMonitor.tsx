@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useMapStore, type BiomassBurningState, type BiomassBurningData } from '@/lib/map-store'
-import { Flame as FlameIcon8, X, FlameKindling, Map, CloudSmoke, TrendingUp, MapPin, Filter } from 'lucide-react'
+import { Flame as FlameIcon8, X, FlameKindling, Map, CloudCog as CloudSmoke, TrendingUp, MapPin, Filter } from 'lucide-react'
 
 interface DemoRegion extends BiomassBurningData {
   burnType: 'forest' | 'savanna' | 'agricultural' | 'peat'

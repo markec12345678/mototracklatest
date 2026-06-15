@@ -6323,6 +6323,187 @@ export interface WildfireRiskAssessmentData {
   description: string
 }
 
+export interface KarstSinkholeState {
+  sinkholes: KarstSinkholeData[]
+  activeSinkholeId: string | null
+  showDepth: boolean
+  showRisk: boolean
+  showSubsidence: boolean
+  open: boolean
+  riskFilter: 'all' | 'low' | 'moderate' | 'high' | 'critical'
+}
+
+export interface KarstSinkholeData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  depth: number
+  diameter: number
+  subsidenceRate: number
+  waterTableDepth: number
+  risk: 'low' | 'moderate' | 'high' | 'critical'
+  description: string
+}
+
+export interface VolcanicSO2State {
+  sources: VolcanicSO2Data[]
+  activeSourceId: string | null
+  showConcentration: boolean
+  showPlume: boolean
+  showAlerts: boolean
+  open: boolean
+  alertFilter: 'all' | 'low' | 'moderate' | 'high' | 'severe'
+}
+
+export interface VolcanicSO2Data {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  so2Concentration: number
+  plumeHeight: number
+  emissionRate: number
+  alertLevel: 'low' | 'moderate' | 'high' | 'severe'
+  description: string
+}
+
+export interface IcebergTrackerState {
+  icebergs: IcebergTrackerData[]
+  activeIcebergId: string | null
+  showTrajectory: boolean
+  showSize: boolean
+  showDrift: boolean
+  open: boolean
+  sizeFilter: 'all' | 'small' | 'medium' | 'large' | 'giant'
+}
+
+export interface IcebergTrackerData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  length: number
+  width: number
+  driftSpeed: number
+  thickness: number
+  size: 'small' | 'medium' | 'large' | 'giant'
+  description: string
+}
+
+export interface CaveMineralState {
+  formations: CaveMineralData[]
+  activeFormationId: string | null
+  showMineralType: boolean
+  showAge: boolean
+  showPurity: boolean
+  open: boolean
+  typeFilter: 'all' | 'stalactite' | 'stalagmite' | 'flowstone' | 'crystal'
+}
+
+export interface CaveMineralData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  mineralType: 'stalactite' | 'stalagmite' | 'flowstone' | 'crystal'
+  growthRate: number
+  age: number
+  purity: number
+  description: string
+}
+
+export interface SeafloorHydrateState {
+  deposits: SeafloorHydrateData[]
+  activeDepositId: string | null
+  showVolume: boolean
+  showStability: boolean
+  showDepth: boolean
+  open: boolean
+  stabilityFilter: 'all' | 'stable' | 'unstable' | 'dissociating' | 'critical'
+}
+
+export interface SeafloorHydrateData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  volume: number
+  stability: 'stable' | 'unstable' | 'dissociating' | 'critical'
+  seafloorDepth: number
+  temperature: number
+  description: string
+}
+
+export interface MangroveLossState {
+  regions: MangroveLossData[]
+  activeRegionId: string | null
+  showLossRate: boolean
+  showRecovery: boolean
+  showBiodiversity: boolean
+  open: boolean
+  lossFilter: 'all' | 'stable' | 'declining' | 'rapid_loss' | 'critical'
+}
+
+export interface MangroveLossData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  lossRate: number
+  recoveryRate: number
+  biodiversityIndex: number
+  area: number
+  status: 'stable' | 'declining' | 'rapid_loss' | 'critical'
+  description: string
+}
+
+export interface UrbanNoiseCorridorState {
+  corridors: UrbanNoiseCorridorData[]
+  activeCorridorId: string | null
+  showLevel: boolean
+  showSources: boolean
+  showHealthImpact: boolean
+  open: boolean
+  levelFilter: 'all' | 'low' | 'moderate' | 'high' | 'extreme'
+}
+
+export interface UrbanNoiseCorridorData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  noiseLevel: number
+  population: number
+  healthImpact: number
+  sourceType: 'traffic' | 'industrial' | 'aircraft' | 'railway'
+  level: 'low' | 'moderate' | 'high' | 'extreme'
+  description: string
+}
+
+export interface StratosphericWarmingState {
+  events: StratosphericWarmingData[]
+  activeEventId: string | null
+  showTemperature: boolean
+  showWindReversal: boolean
+  showImpact: boolean
+  open: boolean
+  intensityFilter: 'all' | 'minor' | 'moderate' | 'major' | 'extreme'
+}
+
+export interface StratosphericWarmingData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  temperatureRise: number
+  windSpeed: number
+  altitude: number
+  surfaceImpact: number
+  intensity: 'minor' | 'moderate' | 'major' | 'extreme'
+  description: string
+}
+
 interface MapState {
   // Map view state
   center: [number, number]
@@ -7757,6 +7938,22 @@ interface MapState {
   setTidalFlatMonitor: (state: Partial<TidalFlatMonitorState>) => void
   wildfireRiskAssessment: WildfireRiskAssessmentState
   setWildfireRiskAssessment: (state: Partial<WildfireRiskAssessmentState>) => void
+  karstSinkhole: KarstSinkholeState
+  setKarstSinkhole: (state: Partial<KarstSinkholeState>) => void
+  volcanicSO2: VolcanicSO2State
+  setVolcanicSO2: (state: Partial<VolcanicSO2State>) => void
+  icebergTracker: IcebergTrackerState
+  setIcebergTracker: (state: Partial<IcebergTrackerState>) => void
+  caveMineral: CaveMineralState
+  setCaveMineral: (state: Partial<CaveMineralState>) => void
+  seafloorHydrate: SeafloorHydrateState
+  setSeafloorHydrate: (state: Partial<SeafloorHydrateState>) => void
+  mangroveLoss: MangroveLossState
+  setMangroveLoss: (state: Partial<MangroveLossState>) => void
+  urbanNoiseCorridor: UrbanNoiseCorridorState
+  setUrbanNoiseCorridor: (state: Partial<UrbanNoiseCorridorState>) => void
+  stratosphericWarming: StratosphericWarmingState
+  setStratosphericWarming: (state: Partial<StratosphericWarmingState>) => void
 
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
@@ -12645,6 +12842,38 @@ export const useMapStore = create<MapState>()(
         zones: [], activeZoneId: null, showFireWeather: true, showFuelLoad: true, showTerrain: true, showExposure: false, open: false, riskFilter: 'all',
       },
       setWildfireRiskAssessment: (updates) => set((state) => ({ wildfireRiskAssessment: { ...state.wildfireRiskAssessment, ...updates } })),
+      karstSinkhole: {
+        sinkholes: [], activeSinkholeId: null, showDepth: true, showRisk: true, showSubsidence: false, open: false, riskFilter: 'all',
+      },
+      setKarstSinkhole: (updates) => set((state) => ({ karstSinkhole: { ...state.karstSinkhole, ...updates } })),
+      volcanicSO2: {
+        sources: [], activeSourceId: null, showConcentration: true, showPlume: true, showAlerts: false, open: false, alertFilter: 'all',
+      },
+      setVolcanicSO2: (updates) => set((state) => ({ volcanicSO2: { ...state.volcanicSO2, ...updates } })),
+      icebergTracker: {
+        icebergs: [], activeIcebergId: null, showTrajectory: true, showSize: true, showDrift: false, open: false, sizeFilter: 'all',
+      },
+      setIcebergTracker: (updates) => set((state) => ({ icebergTracker: { ...state.icebergTracker, ...updates } })),
+      caveMineral: {
+        formations: [], activeFormationId: null, showMineralType: true, showAge: true, showPurity: false, open: false, typeFilter: 'all',
+      },
+      setCaveMineral: (updates) => set((state) => ({ caveMineral: { ...state.caveMineral, ...updates } })),
+      seafloorHydrate: {
+        deposits: [], activeDepositId: null, showVolume: true, showStability: true, showDepth: false, open: false, stabilityFilter: 'all',
+      },
+      setSeafloorHydrate: (updates) => set((state) => ({ seafloorHydrate: { ...state.seafloorHydrate, ...updates } })),
+      mangroveLoss: {
+        regions: [], activeRegionId: null, showLossRate: true, showRecovery: true, showBiodiversity: false, open: false, lossFilter: 'all',
+      },
+      setMangroveLoss: (updates) => set((state) => ({ mangroveLoss: { ...state.mangroveLoss, ...updates } })),
+      urbanNoiseCorridor: {
+        corridors: [], activeCorridorId: null, showLevel: true, showSources: true, showHealthImpact: false, open: false, levelFilter: 'all',
+      },
+      setUrbanNoiseCorridor: (updates) => set((state) => ({ urbanNoiseCorridor: { ...state.urbanNoiseCorridor, ...updates } })),
+      stratosphericWarming: {
+        events: [], activeEventId: null, showTemperature: true, showWindReversal: true, showImpact: false, open: false, intensityFilter: 'all',
+      },
+      setStratosphericWarming: (updates) => set((state) => ({ stratosphericWarming: { ...state.stratosphericWarming, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
@@ -13030,6 +13259,14 @@ export const useMapStore = create<MapState>()(
         ecosystemServiceValue: state.ecosystemServiceValue,
         tidalFlatMonitor: state.tidalFlatMonitor,
         wildfireRiskAssessment: state.wildfireRiskAssessment,
+        karstSinkhole: state.karstSinkhole,
+        volcanicSO2: state.volcanicSO2,
+        icebergTracker: state.icebergTracker,
+        caveMineral: state.caveMineral,
+        seafloorHydrate: state.seafloorHydrate,
+        mangroveLoss: state.mangroveLoss,
+        urbanNoiseCorridor: state.urbanNoiseCorridor,
+        stratosphericWarming: state.stratosphericWarming,
       }),
     }
   )
