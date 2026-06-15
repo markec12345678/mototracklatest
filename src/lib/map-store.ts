@@ -8600,6 +8600,22 @@ interface MapState {
   setDesertificationFront: (state: Partial<DesertificationFrontState>) => void
   coralReefRecovery: CoralReefRecoveryState
   setCoralReefRecovery: (state: Partial<CoralReefRecoveryState>) => void
+  methaneCrater: MethaneCraterState
+  setMethaneCrater: (state: Partial<MethaneCraterState>) => void
+  subglacialVolcano: SubglacialVolcanoState
+  setSubglacialVolcano: (state: Partial<SubglacialVolcanoState>) => void
+  coralSpawnPrediction: CoralSpawnPredictionState
+  setCoralSpawnPrediction: (state: Partial<CoralSpawnPredictionState>) => void
+  hydrothermalDiffuseFlow: HydrothermalDiffuseFlowState
+  setHydrothermalDiffuseFlow: (state: Partial<HydrothermalDiffuseFlowState>) => void
+  permafrostCarbonPipeline: PermafrostCarbonPipelineState
+  setPermafrostCarbonPipeline: (state: Partial<PermafrostCarbonPipelineState>) => void
+  subaqueousLavaFlow: SubaqueousLavaFlowState
+  setSubaqueousLavaFlow: (state: Partial<SubaqueousLavaFlowState>) => void
+  intertidalZone: IntertidalZoneState
+  setIntertidalZone: (state: Partial<IntertidalZoneState>) => void
+  desertFlashFlood: DesertFlashFloodState
+  setDesertFlashFlood: (state: Partial<DesertFlashFloodState>) => void
 
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
@@ -9503,6 +9519,182 @@ export interface CoralReefRecoveryState {
   showLiveCoralCover: boolean
   showRecoveryRate: boolean
   showBleachingHistory: boolean
+}
+
+export interface MethaneCraterData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  diameter: number
+  depth: number
+  methaneConcentration: number
+  status: 'growing' | 'stable' | 'erupting' | 'dormant'
+  description: string
+}
+
+export interface MethaneCraterState {
+  open: boolean
+  craters: MethaneCraterData[]
+  activeCraterId: string | null
+  statusFilter: 'all' | 'growing' | 'stable' | 'erupting' | 'dormant'
+  showDiameter: boolean
+  showDepth: boolean
+  showMethaneConcentration: boolean
+}
+
+export interface SubglacialVolcanoData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  iceThickness: number
+  heatFlux: number
+  eruptionProbability: number
+  status: 'active' | 'unrest' | 'dormant' | 'monitoring'
+  description: string
+}
+
+export interface SubglacialVolcanoState {
+  open: boolean
+  volcanoes: SubglacialVolcanoData[]
+  activeVolcanoId: string | null
+  statusFilter: 'all' | 'active' | 'unrest' | 'dormant' | 'monitoring'
+  showIceThickness: boolean
+  showHeatFlux: boolean
+  showEruptionProbability: boolean
+}
+
+export interface CoralSpawnPredictionData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  spawnDate: string
+  waterTemperature: number
+  moonPhase: string
+  status: 'predicted' | 'spawning' | 'post_spawn' | 'delayed'
+  description: string
+}
+
+export interface CoralSpawnPredictionState {
+  open: boolean
+  predictions: CoralSpawnPredictionData[]
+  activePredictionId: string | null
+  statusFilter: 'all' | 'predicted' | 'spawning' | 'post_spawn' | 'delayed'
+  showSpawnDate: boolean
+  showWaterTemperature: boolean
+  showMoonPhase: boolean
+}
+
+export interface HydrothermalDiffuseFlowData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  flowRate: number
+  temperature: number
+  chemosynthesisRate: number
+  status: 'active' | 'waning' | 'pulsing' | 'extinct'
+  description: string
+}
+
+export interface HydrothermalDiffuseFlowState {
+  open: boolean
+  flows: HydrothermalDiffuseFlowData[]
+  activeFlowId: string | null
+  statusFilter: 'all' | 'active' | 'waning' | 'pulsing' | 'extinct'
+  showFlowRate: boolean
+  showTemperature: boolean
+  showChemosynthesisRate: boolean
+}
+
+export interface PermafrostCarbonPipelineData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  carbonStock: number
+  thawDepth: number
+  pipelineRisk: number
+  status: 'safe' | 'moderate' | 'high_risk' | 'critical'
+  description: string
+}
+
+export interface PermafrostCarbonPipelineState {
+  open: boolean
+  segments: PermafrostCarbonPipelineData[]
+  activeSegmentId: string | null
+  statusFilter: 'all' | 'safe' | 'moderate' | 'high_risk' | 'critical'
+  showCarbonStock: boolean
+  showThawDepth: boolean
+  showPipelineRisk: boolean
+}
+
+export interface SubaqueousLavaFlowData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  flowLength: number
+  depth: number
+  lavaTemperature: number
+  status: 'active' | 'inflating' | 'cooling' | 'solidified'
+  description: string
+}
+
+export interface SubaqueousLavaFlowState {
+  open: boolean
+  flows: SubaqueousLavaFlowData[]
+  activeFlowId: string | null
+  statusFilter: 'all' | 'active' | 'inflating' | 'cooling' | 'solidified'
+  showFlowLength: boolean
+  showDepth: boolean
+  showLavaTemperature: boolean
+}
+
+export interface IntertidalZoneData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  tidalRange: number
+  biodiversityIndex: number
+  seaLevelRise: number
+  status: 'healthy' | 'stressed' | 'degraded' | 'restored'
+  description: string
+}
+
+export interface IntertidalZoneState {
+  open: boolean
+  zones: IntertidalZoneData[]
+  activeZoneId: string | null
+  statusFilter: 'all' | 'healthy' | 'stressed' | 'degraded' | 'restored'
+  showTidalRange: boolean
+  showBiodiversityIndex: boolean
+  showSeaLevelRise: boolean
+}
+
+export interface DesertFlashFloodData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  rainfallIntensity: number
+  floodVolume: number
+  catchmentArea: number
+  status: 'watch' | 'warning' | 'active' | 'receding'
+  description: string
+}
+
+export interface DesertFlashFloodState {
+  open: boolean
+  events: DesertFlashFloodData[]
+  activeEventId: string | null
+  statusFilter: 'all' | 'watch' | 'warning' | 'active' | 'receding'
+  showRainfallIntensity: boolean
+  showFloodVolume: boolean
+  showCatchmentArea: boolean
 }
 
 export const useMapStore = create<MapState>()(
@@ -14248,6 +14440,38 @@ export const useMapStore = create<MapState>()(
         reefs: [], activeReefId: null, showLiveCoralCover: true, showRecoveryRate: true, showBleachingHistory: false, open: false, statusFilter: 'all',
       },
       setCoralReefRecovery: (updates) => set((state) => ({ coralReefRecovery: { ...state.coralReefRecovery, ...updates } })),
+      methaneCrater: {
+        craters: [], activeCraterId: null, showDiameter: true, showDepth: true, showMethaneConcentration: false, open: false, statusFilter: 'all',
+      },
+      setMethaneCrater: (updates) => set((state) => ({ methaneCrater: { ...state.methaneCrater, ...updates } })),
+      subglacialVolcano: {
+        volcanoes: [], activeVolcanoId: null, showIceThickness: true, showHeatFlux: true, showEruptionProbability: false, open: false, statusFilter: 'all',
+      },
+      setSubglacialVolcano: (updates) => set((state) => ({ subglacialVolcano: { ...state.subglacialVolcano, ...updates } })),
+      coralSpawnPrediction: {
+        predictions: [], activePredictionId: null, showSpawnDate: true, showWaterTemperature: true, showMoonPhase: false, open: false, statusFilter: 'all',
+      },
+      setCoralSpawnPrediction: (updates) => set((state) => ({ coralSpawnPrediction: { ...state.coralSpawnPrediction, ...updates } })),
+      hydrothermalDiffuseFlow: {
+        flows: [], activeFlowId: null, showFlowRate: true, showTemperature: true, showChemosynthesisRate: false, open: false, statusFilter: 'all',
+      },
+      setHydrothermalDiffuseFlow: (updates) => set((state) => ({ hydrothermalDiffuseFlow: { ...state.hydrothermalDiffuseFlow, ...updates } })),
+      permafrostCarbonPipeline: {
+        segments: [], activeSegmentId: null, showCarbonStock: true, showThawDepth: true, showPipelineRisk: false, open: false, statusFilter: 'all',
+      },
+      setPermafrostCarbonPipeline: (updates) => set((state) => ({ permafrostCarbonPipeline: { ...state.permafrostCarbonPipeline, ...updates } })),
+      subaqueousLavaFlow: {
+        flows: [], activeFlowId: null, showFlowLength: true, showDepth: true, showLavaTemperature: false, open: false, statusFilter: 'all',
+      },
+      setSubaqueousLavaFlow: (updates) => set((state) => ({ subaqueousLavaFlow: { ...state.subaqueousLavaFlow, ...updates } })),
+      intertidalZone: {
+        zones: [], activeZoneId: null, showTidalRange: true, showBiodiversityIndex: true, showSeaLevelRise: false, open: false, statusFilter: 'all',
+      },
+      setIntertidalZone: (updates) => set((state) => ({ intertidalZone: { ...state.intertidalZone, ...updates } })),
+      desertFlashFlood: {
+        events: [], activeEventId: null, showRainfallIntensity: true, showFloodVolume: true, showCatchmentArea: false, open: false, statusFilter: 'all',
+      },
+      setDesertFlashFlood: (updates) => set((state) => ({ desertFlashFlood: { ...state.desertFlashFlood, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
@@ -14689,6 +14913,14 @@ export const useMapStore = create<MapState>()(
         oceanCurrentProfiler: state.oceanCurrentProfiler,
         desertificationFront: state.desertificationFront,
         coralReefRecovery: state.coralReefRecovery,
+        methaneCrater: state.methaneCrater,
+        subglacialVolcano: state.subglacialVolcano,
+        coralSpawnPrediction: state.coralSpawnPrediction,
+        hydrothermalDiffuseFlow: state.hydrothermalDiffuseFlow,
+        permafrostCarbonPipeline: state.permafrostCarbonPipeline,
+        subaqueousLavaFlow: state.subaqueousLavaFlow,
+        intertidalZone: state.intertidalZone,
+        desertFlashFlood: state.desertFlashFlood,
       }),
     }
   )

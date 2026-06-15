@@ -173,6 +173,15 @@ export function MonitorPanelRegistry() {
   const oceanCurrentProfiler = useMapStore((s) => s.oceanCurrentProfiler)
   const desertificationFront = useMapStore((s) => s.desertificationFront)
   const coralReefRecovery = useMapStore((s) => s.coralReefRecovery)
+  // Task 93
+  const methaneCrater = useMapStore((s) => s.methaneCrater)
+  const subglacialVolcano = useMapStore((s) => s.subglacialVolcano)
+  const coralSpawnPrediction = useMapStore((s) => s.coralSpawnPrediction)
+  const hydrothermalDiffuseFlow = useMapStore((s) => s.hydrothermalDiffuseFlow)
+  const permafrostCarbonPipeline = useMapStore((s) => s.permafrostCarbonPipeline)
+  const subaqueousLavaFlow = useMapStore((s) => s.subaqueousLavaFlow)
+  const intertidalZone = useMapStore((s) => s.intertidalZone)
+  const desertFlashFlood = useMapStore((s) => s.desertFlashFlood)
 
   return (
     <>
@@ -473,6 +482,31 @@ export function MonitorPanelRegistry() {
       )}
       {coralReefRecovery.open && (
         <LazyPanel importFn={() => import('@/components/map/CoralReefRecoveryMonitor')} exportName="CoralReefRecoveryMonitor" shouldLoad={true} />
+      )}
+      {/* Task 93: New Monitoring Panels */}
+      {methaneCrater.open && (
+        <LazyPanel importFn={() => import('@/components/map/MethaneCraterMonitor')} exportName="MethaneCraterMonitor" shouldLoad={true} />
+      )}
+      {subglacialVolcano.open && (
+        <LazyPanel importFn={() => import('@/components/map/SubglacialVolcanoTracker')} exportName="SubglacialVolcanoTracker" shouldLoad={true} />
+      )}
+      {coralSpawnPrediction.open && (
+        <LazyPanel importFn={() => import('@/components/map/CoralSpawnPredictionMonitor')} exportName="CoralSpawnPredictionMonitor" shouldLoad={true} />
+      )}
+      {hydrothermalDiffuseFlow.open && (
+        <LazyPanel importFn={() => import('@/components/map/HydrothermalDiffuseFlowMonitor')} exportName="HydrothermalDiffuseFlowMonitor" shouldLoad={true} />
+      )}
+      {permafrostCarbonPipeline.open && (
+        <LazyPanel importFn={() => import('@/components/map/PermafrostCarbonPipelineMonitor')} exportName="PermafrostCarbonPipelineMonitor" shouldLoad={true} />
+      )}
+      {subaqueousLavaFlow.open && (
+        <LazyPanel importFn={() => import('@/components/map/SubaqueousLavaFlowMonitor')} exportName="SubaqueousLavaFlowMonitor" shouldLoad={true} />
+      )}
+      {intertidalZone.open && (
+        <LazyPanel importFn={() => import('@/components/map/IntertidalZoneMonitor')} exportName="IntertidalZoneMonitor" shouldLoad={true} />
+      )}
+      {desertFlashFlood.open && (
+        <LazyPanel importFn={() => import('@/components/map/DesertFlashFloodMonitor')} exportName="DesertFlashFloodMonitor" shouldLoad={true} />
       )}
     </>
   )

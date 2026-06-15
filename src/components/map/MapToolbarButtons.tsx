@@ -293,6 +293,15 @@ import {
   Compass as CompassIcon4,
   Sun as SunIcon8,
   Fish as FishIcon6,
+  // Task 93 icons
+  Flame as FlameIcon15,
+  Flame as FlameIcon16,
+  Sparkles as SparklesIcon6,
+  Droplets as DropletsIcon12,
+  AlertTriangle as AlertTriangleIcon2,
+  Flame as VolcanoIcon,
+  Waves as WavesIcon15,
+  CloudRain as CloudRainIcon5,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -2470,6 +2479,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setOceanCurrentProfiler({ open: true })} title="Ocean Current Profiler" aria-label="Open ocean current profiler monitor"><CompassIcon4 className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setDesertificationFront({ open: true })} title="Desertification Front" aria-label="Open desertification front monitor"><SunIcon8 className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setCoralReefRecovery({ open: true })} title="Coral Reef Recovery" aria-label="Open coral reef recovery monitor"><FishIcon6 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setMethaneCrater({ open: true })} title="Methane Crater" aria-label="Open methane crater monitor"><FlameIcon15 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setSubglacialVolcano({ open: true })} title="Subglacial Volcano" aria-label="Open subglacial volcano tracker"><FlameIcon16 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setCoralSpawnPrediction({ open: true })} title="Coral Spawn Prediction" aria-label="Open coral spawn prediction"><SparklesIcon6 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setHydrothermalDiffuseFlow({ open: true })} title="Hydrothermal Diffuse Flow" aria-label="Open hydrothermal diffuse flow monitor"><DropletsIcon12 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setPermafrostCarbonPipeline({ open: true })} title="Permafrost Carbon Pipeline" aria-label="Open permafrost carbon pipeline monitor"><AlertTriangleIcon2 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setSubaqueousLavaFlow({ open: true })} title="Subaqueous Lava Flow" aria-label="Open subaqueous lava flow monitor"><VolcanoIcon className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setIntertidalZone({ open: true })} title="Intertidal Zone" aria-label="Open intertidal zone monitor"><WavesIcon15 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setDesertFlashFlood({ open: true })} title="Desert Flash Flood" aria-label="Open desert flash flood monitor"><CloudRainIcon5 className="h-4 w-4" /></Button>
           <Button
             variant="outline"
             size="icon"
