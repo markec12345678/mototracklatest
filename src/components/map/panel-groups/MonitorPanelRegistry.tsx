@@ -164,6 +164,15 @@ export function MonitorPanelRegistry() {
   const estuaryAcidification = useMapStore((s) => s.estuaryAcidification)
   const abyssalSedimentFlux = useMapStore((s) => s.abyssalSedimentFlux)
   const glacialMoulin = useMapStore((s) => s.glacialMoulin)
+  // Task 92
+  const iceShelfCalving = useMapStore((s) => s.iceShelfCalving)
+  const volcanicGasPlume = useMapStore((s) => s.volcanicGasPlume)
+  const submarineLandslide = useMapStore((s) => s.submarineLandslide)
+  const coastalWetlandLoss = useMapStore((s) => s.coastalWetlandLoss)
+  const tundraPermafrostThaw = useMapStore((s) => s.tundraPermafrostThaw)
+  const oceanCurrentProfiler = useMapStore((s) => s.oceanCurrentProfiler)
+  const desertificationFront = useMapStore((s) => s.desertificationFront)
+  const coralReefRecovery = useMapStore((s) => s.coralReefRecovery)
 
   return (
     <>
@@ -439,6 +448,31 @@ export function MonitorPanelRegistry() {
       )}
       {glacialMoulin.open && (
         <LazyPanel importFn={() => import('@/components/map/GlacialMoulinExplorer')} exportName="GlacialMoulinExplorer" shouldLoad={true} />
+      )}
+      {/* Task 92: New Monitoring Panels */}
+      {iceShelfCalving.open && (
+        <LazyPanel importFn={() => import('@/components/map/IceShelfCalvingMonitor')} exportName="IceShelfCalvingMonitor" shouldLoad={true} />
+      )}
+      {volcanicGasPlume.open && (
+        <LazyPanel importFn={() => import('@/components/map/VolcanicGasPlumeTracker')} exportName="VolcanicGasPlumeTracker" shouldLoad={true} />
+      )}
+      {submarineLandslide.open && (
+        <LazyPanel importFn={() => import('@/components/map/SubmarineLandslideMonitor')} exportName="SubmarineLandslideMonitor" shouldLoad={true} />
+      )}
+      {coastalWetlandLoss.open && (
+        <LazyPanel importFn={() => import('@/components/map/CoastalWetlandLossMonitor')} exportName="CoastalWetlandLossMonitor" shouldLoad={true} />
+      )}
+      {tundraPermafrostThaw.open && (
+        <LazyPanel importFn={() => import('@/components/map/TundraPermafrostThawMonitor')} exportName="TundraPermafrostThawMonitor" shouldLoad={true} />
+      )}
+      {oceanCurrentProfiler.open && (
+        <LazyPanel importFn={() => import('@/components/map/OceanCurrentProfilerMonitor')} exportName="OceanCurrentProfilerMonitor" shouldLoad={true} />
+      )}
+      {desertificationFront.open && (
+        <LazyPanel importFn={() => import('@/components/map/DesertificationFrontMonitor')} exportName="DesertificationFrontMonitor" shouldLoad={true} />
+      )}
+      {coralReefRecovery.open && (
+        <LazyPanel importFn={() => import('@/components/map/CoralReefRecoveryMonitor')} exportName="CoralReefRecoveryMonitor" shouldLoad={true} />
       )}
     </>
   )

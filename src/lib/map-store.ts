@@ -8584,6 +8584,22 @@ interface MapState {
   setAbyssalSedimentFlux: (state: Partial<AbyssalSedimentFluxState>) => void
   glacialMoulin: GlacialMoulinState
   setGlacialMoulin: (state: Partial<GlacialMoulinState>) => void
+  iceShelfCalving: IceShelfCalvingState
+  setIceShelfCalving: (state: Partial<IceShelfCalvingState>) => void
+  volcanicGasPlume: VolcanicGasPlumeState
+  setVolcanicGasPlume: (state: Partial<VolcanicGasPlumeState>) => void
+  submarineLandslide: SubmarineLandslideState
+  setSubmarineLandslide: (state: Partial<SubmarineLandslideState>) => void
+  coastalWetlandLoss: CoastalWetlandLossState
+  setCoastalWetlandLoss: (state: Partial<CoastalWetlandLossState>) => void
+  tundraPermafrostThaw: TundraPermafrostThawState
+  setTundraPermafrostThaw: (state: Partial<TundraPermafrostThawState>) => void
+  oceanCurrentProfiler: OceanCurrentProfilerState
+  setOceanCurrentProfiler: (state: Partial<OceanCurrentProfilerState>) => void
+  desertificationFront: DesertificationFrontState
+  setDesertificationFront: (state: Partial<DesertificationFrontState>) => void
+  coralReefRecovery: CoralReefRecoveryState
+  setCoralReefRecovery: (state: Partial<CoralReefRecoveryState>) => void
 
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
@@ -9311,6 +9327,182 @@ export interface GlacialMoulinState {
   showDepth: boolean
   showFlowRate: boolean
   showDiameter: boolean
+}
+
+export interface IceShelfCalvingData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  area: number
+  calvingRate: number
+  thickness: number
+  status: 'stable' | 'retreating' | 'accelerating' | 'collapsing'
+  description: string
+}
+
+export interface IceShelfCalvingState {
+  open: boolean
+  shelves: IceShelfCalvingData[]
+  activeShelfId: string | null
+  statusFilter: 'all' | 'stable' | 'retreating' | 'accelerating' | 'collapsing'
+  showArea: boolean
+  showCalvingRate: boolean
+  showThickness: boolean
+}
+
+export interface VolcanicGasPlumeData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  so2Concentration: number
+  plumeHeight: number
+  gasType: string
+  status: 'emitting' | 'elevated' | 'declining' | 'quiet'
+  description: string
+}
+
+export interface VolcanicGasPlumeState {
+  open: boolean
+  plumes: VolcanicGasPlumeData[]
+  activePlumeId: string | null
+  statusFilter: 'all' | 'emitting' | 'elevated' | 'declining' | 'quiet'
+  showSO2: boolean
+  showPlumeHeight: boolean
+  showGasType: boolean
+}
+
+export interface SubmarineLandslideData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  volume: number
+  depth: number
+  slopeAngle: number
+  status: 'susceptible' | 'creeping' | 'triggered' | 'post_failure'
+  description: string
+}
+
+export interface SubmarineLandslideState {
+  open: boolean
+  slides: SubmarineLandslideData[]
+  activeSlideId: string | null
+  statusFilter: 'all' | 'susceptible' | 'creeping' | 'triggered' | 'post_failure'
+  showVolume: boolean
+  showDepth: boolean
+  showSlopeAngle: boolean
+}
+
+export interface CoastalWetlandLossData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  areaLost: number
+  remainingArea: number
+  lossRate: number
+  status: 'intact' | 'degrading' | 'critical' | 'restored'
+  description: string
+}
+
+export interface CoastalWetlandLossState {
+  open: boolean
+  wetlands: CoastalWetlandLossData[]
+  activeWetlandId: string | null
+  statusFilter: 'all' | 'intact' | 'degrading' | 'critical' | 'restored'
+  showAreaLost: boolean
+  showRemainingArea: boolean
+  showLossRate: boolean
+}
+
+export interface TundraPermafrostThawData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  activeLayerDepth: number
+  groundTemperature: number
+  thawRate: number
+  status: 'frozen' | 'thawing' | 'degraded' | 'thermokarst'
+  description: string
+}
+
+export interface TundraPermafrostThawState {
+  open: boolean
+  sites: TundraPermafrostThawData[]
+  activeSiteId: string | null
+  statusFilter: 'all' | 'frozen' | 'thawing' | 'degraded' | 'thermokarst'
+  showActiveLayerDepth: boolean
+  showGroundTemperature: boolean
+  showThawRate: boolean
+}
+
+export interface OceanCurrentProfilerData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  currentSpeed: number
+  direction: number
+  depth: number
+  status: 'strong' | 'moderate' | 'weak' | 'reversed'
+  description: string
+}
+
+export interface OceanCurrentProfilerState {
+  open: boolean
+  profiles: OceanCurrentProfilerData[]
+  activeProfileId: string | null
+  statusFilter: 'all' | 'strong' | 'moderate' | 'weak' | 'reversed'
+  showCurrentSpeed: boolean
+  showDirection: boolean
+  showDepth: boolean
+}
+
+export interface DesertificationFrontData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  advanceRate: number
+  vegetationIndex: number
+  soilMoisture: number
+  status: 'advancing' | 'stable' | 'retreating' | 'severe'
+  description: string
+}
+
+export interface DesertificationFrontState {
+  open: boolean
+  fronts: DesertificationFrontData[]
+  activeFrontId: string | null
+  statusFilter: 'all' | 'advancing' | 'stable' | 'retreating' | 'severe'
+  showAdvanceRate: boolean
+  showVegetationIndex: boolean
+  showSoilMoisture: boolean
+}
+
+export interface CoralReefRecoveryData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  liveCoralCover: number
+  recoveryRate: number
+  bleachingHistory: number
+  status: 'recovering' | 'stable' | 'declining' | 'bleached'
+  description: string
+}
+
+export interface CoralReefRecoveryState {
+  open: boolean
+  reefs: CoralReefRecoveryData[]
+  activeReefId: string | null
+  statusFilter: 'all' | 'recovering' | 'stable' | 'declining' | 'bleached'
+  showLiveCoralCover: boolean
+  showRecoveryRate: boolean
+  showBleachingHistory: boolean
 }
 
 export const useMapStore = create<MapState>()(
@@ -14024,6 +14216,38 @@ export const useMapStore = create<MapState>()(
         moulins: [], activeMoulinId: null, showDepth: true, showFlowRate: true, showDiameter: false, open: false, statusFilter: 'all',
       },
       setGlacialMoulin: (updates) => set((state) => ({ glacialMoulin: { ...state.glacialMoulin, ...updates } })),
+      iceShelfCalving: {
+        shelves: [], activeShelfId: null, showArea: true, showCalvingRate: true, showThickness: false, open: false, statusFilter: 'all',
+      },
+      setIceShelfCalving: (updates) => set((state) => ({ iceShelfCalving: { ...state.iceShelfCalving, ...updates } })),
+      volcanicGasPlume: {
+        plumes: [], activePlumeId: null, showSO2: true, showPlumeHeight: true, showGasType: false, open: false, statusFilter: 'all',
+      },
+      setVolcanicGasPlume: (updates) => set((state) => ({ volcanicGasPlume: { ...state.volcanicGasPlume, ...updates } })),
+      submarineLandslide: {
+        slides: [], activeSlideId: null, showVolume: true, showDepth: true, showSlopeAngle: false, open: false, statusFilter: 'all',
+      },
+      setSubmarineLandslide: (updates) => set((state) => ({ submarineLandslide: { ...state.submarineLandslide, ...updates } })),
+      coastalWetlandLoss: {
+        wetlands: [], activeWetlandId: null, showAreaLost: true, showRemainingArea: true, showLossRate: false, open: false, statusFilter: 'all',
+      },
+      setCoastalWetlandLoss: (updates) => set((state) => ({ coastalWetlandLoss: { ...state.coastalWetlandLoss, ...updates } })),
+      tundraPermafrostThaw: {
+        sites: [], activeSiteId: null, showActiveLayerDepth: true, showGroundTemperature: true, showThawRate: false, open: false, statusFilter: 'all',
+      },
+      setTundraPermafrostThaw: (updates) => set((state) => ({ tundraPermafrostThaw: { ...state.tundraPermafrostThaw, ...updates } })),
+      oceanCurrentProfiler: {
+        profiles: [], activeProfileId: null, showCurrentSpeed: true, showDirection: true, showDepth: false, open: false, statusFilter: 'all',
+      },
+      setOceanCurrentProfiler: (updates) => set((state) => ({ oceanCurrentProfiler: { ...state.oceanCurrentProfiler, ...updates } })),
+      desertificationFront: {
+        fronts: [], activeFrontId: null, showAdvanceRate: true, showVegetationIndex: true, showSoilMoisture: false, open: false, statusFilter: 'all',
+      },
+      setDesertificationFront: (updates) => set((state) => ({ desertificationFront: { ...state.desertificationFront, ...updates } })),
+      coralReefRecovery: {
+        reefs: [], activeReefId: null, showLiveCoralCover: true, showRecoveryRate: true, showBleachingHistory: false, open: false, statusFilter: 'all',
+      },
+      setCoralReefRecovery: (updates) => set((state) => ({ coralReefRecovery: { ...state.coralReefRecovery, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
@@ -14457,6 +14681,14 @@ export const useMapStore = create<MapState>()(
         estuaryAcidification: state.estuaryAcidification,
         abyssalSedimentFlux: state.abyssalSedimentFlux,
         glacialMoulin: state.glacialMoulin,
+        iceShelfCalving: state.iceShelfCalving,
+        volcanicGasPlume: state.volcanicGasPlume,
+        submarineLandslide: state.submarineLandslide,
+        coastalWetlandLoss: state.coastalWetlandLoss,
+        tundraPermafrostThaw: state.tundraPermafrostThaw,
+        oceanCurrentProfiler: state.oceanCurrentProfiler,
+        desertificationFront: state.desertificationFront,
+        coralReefRecovery: state.coralReefRecovery,
       }),
     }
   )
