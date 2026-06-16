@@ -472,6 +472,15 @@ import {
   Users as UsersIcon,
   Fuel as FuelIcon,
   Warehouse as WarehouseIcon,
+  // Task 113 icons
+  Thermometer as ThermometerIcon24,
+  Cloud as CloudIcon7,
+  Waves as WavesIcon25,
+  Snowflake as SnowflakeIcon17,
+  ThermometerSun as ThermometerSunIcon3,
+  CloudRain as CloudRainIcon8,
+  Mountain as MountainIcon18,
+  Droplet as DropletIcon15,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -551,6 +560,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const transitRidershipOpen = useMapStore((s) => s.transitRidership.open)
   const fuelStationNetworkOpen = useMapStore((s) => s.fuelStationNetwork.open)
   const logisticsDepotStatusOpen = useMapStore((s) => s.logisticsDepotStatus.open)
+  // Task 113: Climate Change Indicators
+  const globalTemperatureAnomalyOpen = useMapStore((s) => s.globalTemperatureAnomaly.open)
+  const co2AtmosphericOpen = useMapStore((s) => s.co2Atmospheric.open)
+  const seaLevelRiseTrackOpen = useMapStore((s) => s.seaLevelRiseTrack.open)
+  const iceCapExtentOpen = useMapStore((s) => s.iceCapExtent.open)
+  const permafrostThawTrackOpen = useMapStore((s) => s.permafrostThawTrack.open)
+  const extremeWeatherIndexOpen = useMapStore((s) => s.extremeWeatherIndex.open)
+  const glacierRetreatTrackOpen = useMapStore((s) => s.glacierRetreatTrack.open)
+  const oceanAcidificationTrackOpen = useMapStore((s) => s.oceanAcidificationTrack.open)
 
   if (typeof window === 'undefined') return null
 
@@ -3897,6 +3915,191 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
               </TooltipTrigger>
               <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
                 Logistics Depot Status Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          {/* Task 113: Climate Change Indicators */}
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    globalTemperatureAnomalyOpen
+                      ? 'bg-red-500 text-white shadow-md shadow-red-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setGlobalTemperatureAnomaly({ open: true })}
+                  aria-label="Global Temperature Anomaly Monitor"
+                >
+                  <ThermometerIcon24 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Global Temperature Anomaly Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    co2AtmosphericOpen
+                      ? 'bg-gray-500 text-white shadow-md shadow-gray-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setCo2Atmospheric({ open: true })}
+                  aria-label="CO2 Atmospheric Monitor"
+                >
+                  <CloudIcon7 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                CO2 Atmospheric Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    seaLevelRiseTrackOpen
+                      ? 'bg-blue-500 text-white shadow-md shadow-blue-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setSeaLevelRiseTrack({ open: true })}
+                  aria-label="Sea Level Rise Tracker Monitor"
+                >
+                  <WavesIcon25 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Sea Level Rise Tracker Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    iceCapExtentOpen
+                      ? 'bg-cyan-500 text-white shadow-md shadow-cyan-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setIceCapExtent({ open: true })}
+                  aria-label="Ice Cap Extent Monitor"
+                >
+                  <SnowflakeIcon17 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Ice Cap Extent Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    permafrostThawTrackOpen
+                      ? 'bg-orange-500 text-white shadow-md shadow-orange-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setPermafrostThawTrack({ open: true })}
+                  aria-label="Permafrost Thaw Tracker Monitor"
+                >
+                  <ThermometerSunIcon3 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Permafrost Thaw Tracker Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    extremeWeatherIndexOpen
+                      ? 'bg-purple-500 text-white shadow-md shadow-purple-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setExtremeWeatherIndex({ open: true })}
+                  aria-label="Extreme Weather Index Monitor"
+                >
+                  <CloudRainIcon8 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Extreme Weather Index Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    glacierRetreatTrackOpen
+                      ? 'bg-sky-500 text-white shadow-md shadow-sky-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setGlacierRetreatTrack({ open: true })}
+                  aria-label="Glacier Retreat Tracker Monitor"
+                >
+                  <MountainIcon18 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Glacier Retreat Tracker Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    oceanAcidificationTrackOpen
+                      ? 'bg-teal-500 text-white shadow-md shadow-teal-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setOceanAcidificationTrack({ open: true })}
+                  aria-label="Ocean Acidification Tracker Monitor"
+                >
+                  <DropletIcon15 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Ocean Acidification Tracker Monitor
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

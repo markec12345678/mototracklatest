@@ -4051,6 +4051,24 @@ interface MapState {
   // Geofence Alert History open state (already has geofenceAlertOpen)
   // Contour Generator open state (already has contourGeneratorOpen)
   // MapLabels open state (already has mapLabelsOpen)
+
+  // Task 113: Climate Change Indicators
+  globalTemperatureAnomaly: MonitorState
+  setGlobalTemperatureAnomaly: (state: Partial<MonitorState>) => void
+  co2Atmospheric: MonitorState
+  setCo2Atmospheric: (state: Partial<MonitorState>) => void
+  seaLevelRiseTrack: MonitorState
+  setSeaLevelRiseTrack: (state: Partial<MonitorState>) => void
+  iceCapExtent: MonitorState
+  setIceCapExtent: (state: Partial<MonitorState>) => void
+  permafrostThawTrack: MonitorState
+  setPermafrostThawTrack: (state: Partial<MonitorState>) => void
+  extremeWeatherIndex: MonitorState
+  setExtremeWeatherIndex: (state: Partial<MonitorState>) => void
+  glacierRetreatTrack: MonitorState
+  setGlacierRetreatTrack: (state: Partial<MonitorState>) => void
+  oceanAcidificationTrack: MonitorState
+  setOceanAcidificationTrack: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -7937,6 +7955,24 @@ export const useMapStore = create<MapState>()(
       setVolcanoThermal: (updates) => set((state) => ({ volcanoThermal: { ...state.volcanoThermal, ...updates } })),
       setWildfireSpread: (updates) => set((state) => ({ wildfireSpread: { ...state.wildfireSpread, ...updates } })),
       setWindPattern: (updates) => set((state) => ({ windPattern: { ...state.windPattern, ...updates } })),
+
+      // Task 113: Climate Change Indicators
+      globalTemperatureAnomaly: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      co2Atmospheric: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      seaLevelRiseTrack: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      iceCapExtent: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      permafrostThawTrack: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      extremeWeatherIndex: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      glacierRetreatTrack: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      oceanAcidificationTrack: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      setGlobalTemperatureAnomaly: (updates) => set((state) => ({ globalTemperatureAnomaly: { ...state.globalTemperatureAnomaly, ...updates } })),
+      setCo2Atmospheric: (updates) => set((state) => ({ co2Atmospheric: { ...state.co2Atmospheric, ...updates } })),
+      setSeaLevelRiseTrack: (updates) => set((state) => ({ seaLevelRiseTrack: { ...state.seaLevelRiseTrack, ...updates } })),
+      setIceCapExtent: (updates) => set((state) => ({ iceCapExtent: { ...state.iceCapExtent, ...updates } })),
+      setPermafrostThawTrack: (updates) => set((state) => ({ permafrostThawTrack: { ...state.permafrostThawTrack, ...updates } })),
+      setExtremeWeatherIndex: (updates) => set((state) => ({ extremeWeatherIndex: { ...state.extremeWeatherIndex, ...updates } })),
+      setGlacierRetreatTrack: (updates) => set((state) => ({ glacierRetreatTrack: { ...state.glacierRetreatTrack, ...updates } })),
+      setOceanAcidificationTrack: (updates) => set((state) => ({ oceanAcidificationTrack: { ...state.oceanAcidificationTrack, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

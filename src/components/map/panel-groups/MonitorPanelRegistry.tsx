@@ -351,6 +351,15 @@ export function MonitorPanelRegistry() {
   const transitRidership = useMapStore((s) => s.transitRidership)
   const fuelStationNetwork = useMapStore((s) => s.fuelStationNetwork)
   const logisticsDepotStatus = useMapStore((s) => s.logisticsDepotStatus)
+  // Task 113: Climate Change Indicators
+  const globalTemperatureAnomaly = useMapStore((s) => s.globalTemperatureAnomaly)
+  const co2Atmospheric = useMapStore((s) => s.co2Atmospheric)
+  const seaLevelRiseTrack = useMapStore((s) => s.seaLevelRiseTrack)
+  const iceCapExtent = useMapStore((s) => s.iceCapExtent)
+  const permafrostThawTrack = useMapStore((s) => s.permafrostThawTrack)
+  const extremeWeatherIndex = useMapStore((s) => s.extremeWeatherIndex)
+  const glacierRetreatTrack = useMapStore((s) => s.glacierRetreatTrack)
+  const oceanAcidificationTrack = useMapStore((s) => s.oceanAcidificationTrack)
 
   return (
     <>
@@ -1145,6 +1154,31 @@ export function MonitorPanelRegistry() {
       )}
       {logisticsDepotStatus.open && (
         <LazyPanel importFn={() => import('@/components/map/LogisticsDepotStatusMonitor')} exportName="LogisticsDepotStatusMonitor" shouldLoad={true} />
+      )}
+      {/* Task 113: Climate Change Indicators */}
+      {globalTemperatureAnomaly.open && (
+        <LazyPanel importFn={() => import('@/components/map/GlobalTemperatureAnomalyMonitor')} exportName="GlobalTemperatureAnomalyMonitor" shouldLoad={true} />
+      )}
+      {co2Atmospheric.open && (
+        <LazyPanel importFn={() => import('@/components/map/Co2AtmosphericMonitor')} exportName="Co2AtmosphericMonitor" shouldLoad={true} />
+      )}
+      {seaLevelRiseTrack.open && (
+        <LazyPanel importFn={() => import('@/components/map/SeaLevelRiseMonitor')} exportName="SeaLevelRiseMonitor" shouldLoad={true} />
+      )}
+      {iceCapExtent.open && (
+        <LazyPanel importFn={() => import('@/components/map/IceCapExtentMonitor')} exportName="IceCapExtentMonitor" shouldLoad={true} />
+      )}
+      {permafrostThawTrack.open && (
+        <LazyPanel importFn={() => import('@/components/map/PermafrostThawTrackMonitor')} exportName="PermafrostThawTrackMonitor" shouldLoad={true} />
+      )}
+      {extremeWeatherIndex.open && (
+        <LazyPanel importFn={() => import('@/components/map/ExtremeWeatherIndexMonitor')} exportName="ExtremeWeatherIndexMonitor" shouldLoad={true} />
+      )}
+      {glacierRetreatTrack.open && (
+        <LazyPanel importFn={() => import('@/components/map/GlacierRetreatTrackMonitor')} exportName="GlacierRetreatTrackMonitor" shouldLoad={true} />
+      )}
+      {oceanAcidificationTrack.open && (
+        <LazyPanel importFn={() => import('@/components/map/OceanAcidificationTrackMonitor')} exportName="OceanAcidificationTrackMonitor" shouldLoad={true} />
       )}
     </>
   )
