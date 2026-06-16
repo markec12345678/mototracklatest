@@ -4206,6 +4206,23 @@ interface MapState {
   setGymFitnessCenter: (state: Partial<MonitorState>) => void
   nightlifeVenue: MonitorState
   setNightlifeVenue: (state: Partial<MonitorState>) => void
+  // Task 122: Education & Research Institutions
+  universityCampusMonitor: MonitorState
+  setUniversityCampusMonitor: (state: Partial<MonitorState>) => void
+  libraryResourceMonitor: MonitorState
+  setLibraryResourceMonitor: (state: Partial<MonitorState>) => void
+  laboratorySafetyMonitor: MonitorState
+  setLaboratorySafetyMonitor: (state: Partial<MonitorState>) => void
+  researchOutputMonitor: MonitorState
+  setResearchOutputMonitor: (state: Partial<MonitorState>) => void
+  studentEnrollmentMonitor: MonitorState
+  setStudentEnrollmentMonitor: (state: Partial<MonitorState>) => void
+  academicCitationMonitor: MonitorState
+  setAcademicCitationMonitor: (state: Partial<MonitorState>) => void
+  innovationPatentMonitor: MonitorState
+  setInnovationPatentMonitor: (state: Partial<MonitorState>) => void
+  fieldStationResearch: MonitorState
+  setFieldStationResearch: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -8228,6 +8245,15 @@ export const useMapStore = create<MapState>()(
       cinemaTheaterAttendance: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       gymFitnessCenter: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       nightlifeVenue: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 122: Education & Research Institutions
+      universityCampusMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      libraryResourceMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      laboratorySafetyMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      researchOutputMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      studentEnrollmentMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      academicCitationMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      innovationPatentMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      fieldStationResearch: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -8254,6 +8280,15 @@ export const useMapStore = create<MapState>()(
       setCinemaTheaterAttendance: (updates) => set((state) => ({ cinemaTheaterAttendance: { ...state.cinemaTheaterAttendance, ...updates } })),
       setGymFitnessCenter: (updates) => set((state) => ({ gymFitnessCenter: { ...state.gymFitnessCenter, ...updates } })),
       setNightlifeVenue: (updates) => set((state) => ({ nightlifeVenue: { ...state.nightlifeVenue, ...updates } })),
+      // Task 122: Education & Research Institutions
+      setUniversityCampusMonitor: (updates) => set((state) => ({ universityCampusMonitor: { ...state.universityCampusMonitor, ...updates } })),
+      setLibraryResourceMonitor: (updates) => set((state) => ({ libraryResourceMonitor: { ...state.libraryResourceMonitor, ...updates } })),
+      setLaboratorySafetyMonitor: (updates) => set((state) => ({ laboratorySafetyMonitor: { ...state.laboratorySafetyMonitor, ...updates } })),
+      setResearchOutputMonitor: (updates) => set((state) => ({ researchOutputMonitor: { ...state.researchOutputMonitor, ...updates } })),
+      setStudentEnrollmentMonitor: (updates) => set((state) => ({ studentEnrollmentMonitor: { ...state.studentEnrollmentMonitor, ...updates } })),
+      setAcademicCitationMonitor: (updates) => set((state) => ({ academicCitationMonitor: { ...state.academicCitationMonitor, ...updates } })),
+      setInnovationPatentMonitor: (updates) => set((state) => ({ innovationPatentMonitor: { ...state.innovationPatentMonitor, ...updates } })),
+      setFieldStationResearch: (updates) => set((state) => ({ fieldStationResearch: { ...state.fieldStationResearch, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

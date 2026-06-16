@@ -553,6 +553,15 @@ import {
   Film as FilmIcon,
   Dumbbell as DumbbellIcon,
   Music as MusicIcon,
+  // Task 122 icons
+  GraduationCap as GraduationCapIcon,
+  Library as LibraryIcon,
+  Microscope as MicroscopeIcon,
+  FlaskConical as FlaskConicalIcon8,
+  Atom as AtomIcon,
+  Brain as BrainIcon,
+  Lightbulb as LightbulbIcon,
+  PencilRuler as PencilRulerIcon,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -713,6 +722,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const cinemaTheaterAttendanceOpen = useMapStore((s) => s.cinemaTheaterAttendance.open)
   const gymFitnessCenterOpen = useMapStore((s) => s.gymFitnessCenter.open)
   const nightlifeVenueOpen = useMapStore((s) => s.nightlifeVenue.open)
+  // Task 122: Education & Research Institutions
+  const universityCampusMonitorOpen = useMapStore((s) => s.universityCampusMonitor.open)
+  const libraryResourceMonitorOpen = useMapStore((s) => s.libraryResourceMonitor.open)
+  const laboratorySafetyMonitorOpen = useMapStore((s) => s.laboratorySafetyMonitor.open)
+  const researchOutputMonitorOpen = useMapStore((s) => s.researchOutputMonitor.open)
+  const studentEnrollmentMonitorOpen = useMapStore((s) => s.studentEnrollmentMonitor.open)
+  const academicCitationMonitorOpen = useMapStore((s) => s.academicCitationMonitor.open)
+  const innovationPatentMonitorOpen = useMapStore((s) => s.innovationPatentMonitor.open)
+  const fieldStationResearchOpen = useMapStore((s) => s.fieldStationResearch.open)
 
   if (typeof window === 'undefined') return null
 
@@ -5486,6 +5504,71 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <MusicIcon className="h-4 w-4" />
             {nightlifeVenueOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-fuchsia-400" />}
+          </button>
+          {/* Task 122: Education & Research Institutions */}
+          <button
+            onClick={() => useMapStore.getState().setUniversityCampusMonitor({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${universityCampusMonitorOpen ? 'bg-violet-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="University Campus Monitor"
+          >
+            <GraduationCapIcon className="h-4 w-4" />
+            {universityCampusMonitorOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-violet-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setLibraryResourceMonitor({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${libraryResourceMonitorOpen ? 'bg-emerald-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Library Resource Monitor"
+          >
+            <LibraryIcon className="h-4 w-4" />
+            {libraryResourceMonitorOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setLaboratorySafetyMonitor({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${laboratorySafetyMonitorOpen ? 'bg-rose-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Laboratory Safety Monitor"
+          >
+            <MicroscopeIcon className="h-4 w-4" />
+            {laboratorySafetyMonitorOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setResearchOutputMonitor({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${researchOutputMonitorOpen ? 'bg-amber-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Research Output Monitor"
+          >
+            <FlaskConicalIcon8 className="h-4 w-4" />
+            {researchOutputMonitorOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setStudentEnrollmentMonitor({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${studentEnrollmentMonitorOpen ? 'bg-cyan-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Student Enrollment Monitor"
+          >
+            <AtomIcon className="h-4 w-4" />
+            {studentEnrollmentMonitorOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setAcademicCitationMonitor({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${academicCitationMonitorOpen ? 'bg-fuchsia-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Academic Citation Monitor"
+          >
+            <BrainIcon className="h-4 w-4" />
+            {academicCitationMonitorOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-fuchsia-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setInnovationPatentMonitor({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${innovationPatentMonitorOpen ? 'bg-yellow-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Innovation Patent Monitor"
+          >
+            <LightbulbIcon className="h-4 w-4" />
+            {innovationPatentMonitorOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-yellow-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setFieldStationResearch({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${fieldStationResearchOpen ? 'bg-teal-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Field Station Research Monitor"
+          >
+            <PencilRulerIcon className="h-4 w-4" />
+            {fieldStationResearchOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-400" />}
           </button>
         </div>
       </div>

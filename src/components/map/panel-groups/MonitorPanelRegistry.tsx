@@ -423,6 +423,15 @@ export function MonitorPanelRegistry() {
   const cinemaTheaterAttendance = useMapStore((s) => s.cinemaTheaterAttendance)
   const gymFitnessCenter = useMapStore((s) => s.gymFitnessCenter)
   const nightlifeVenue = useMapStore((s) => s.nightlifeVenue)
+  // Task 122: Education & Research Institutions
+  const universityCampusMonitor = useMapStore((s) => s.universityCampusMonitor)
+  const libraryResourceMonitor = useMapStore((s) => s.libraryResourceMonitor)
+  const laboratorySafetyMonitor = useMapStore((s) => s.laboratorySafetyMonitor)
+  const researchOutputMonitor = useMapStore((s) => s.researchOutputMonitor)
+  const studentEnrollmentMonitor = useMapStore((s) => s.studentEnrollmentMonitor)
+  const academicCitationMonitor = useMapStore((s) => s.academicCitationMonitor)
+  const innovationPatentMonitor = useMapStore((s) => s.innovationPatentMonitor)
+  const fieldStationResearch = useMapStore((s) => s.fieldStationResearch)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -1451,6 +1460,31 @@ export function MonitorPanelRegistry() {
       )}
       {nightlifeVenue.open && (
         <LazyPanel importFn={() => import('@/components/map/NightlifeVenueMonitor').then(m => ({ default: m.NightlifeVenueMonitor }))} exportName="NightlifeVenueMonitor" shouldLoad={nightlifeVenue.open} />
+      )}
+      {/* Task 122: Education & Research Institutions */}
+      {universityCampusMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/UniversityCampusMonitor').then(m => ({ default: m.UniversityCampusMonitor }))} exportName="UniversityCampusMonitor" shouldLoad={universityCampusMonitor.open} />
+      )}
+      {libraryResourceMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/LibraryResourceMonitor').then(m => ({ default: m.LibraryResourceMonitor }))} exportName="LibraryResourceMonitor" shouldLoad={libraryResourceMonitor.open} />
+      )}
+      {laboratorySafetyMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/LaboratorySafetyMonitor').then(m => ({ default: m.LaboratorySafetyMonitor }))} exportName="LaboratorySafetyMonitor" shouldLoad={laboratorySafetyMonitor.open} />
+      )}
+      {researchOutputMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/ResearchOutputMonitor').then(m => ({ default: m.ResearchOutputMonitor }))} exportName="ResearchOutputMonitor" shouldLoad={researchOutputMonitor.open} />
+      )}
+      {studentEnrollmentMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/StudentEnrollmentMonitor').then(m => ({ default: m.StudentEnrollmentMonitor }))} exportName="StudentEnrollmentMonitor" shouldLoad={studentEnrollmentMonitor.open} />
+      )}
+      {academicCitationMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/AcademicCitationMonitor').then(m => ({ default: m.AcademicCitationMonitor }))} exportName="AcademicCitationMonitor" shouldLoad={academicCitationMonitor.open} />
+      )}
+      {innovationPatentMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/InnovationPatentMonitor').then(m => ({ default: m.InnovationPatentMonitor }))} exportName="InnovationPatentMonitor" shouldLoad={innovationPatentMonitor.open} />
+      )}
+      {fieldStationResearch.open && (
+        <LazyPanel importFn={() => import('@/components/map/FieldStationResearchMonitor').then(m => ({ default: m.FieldStationResearchMonitor }))} exportName="FieldStationResearchMonitor" shouldLoad={fieldStationResearch.open} />
       )}
     </>
   )
