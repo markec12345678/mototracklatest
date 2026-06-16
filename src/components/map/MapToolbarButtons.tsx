@@ -606,6 +606,15 @@ import {
   Brain as BrainIcon2,
   Accessibility as AccessibilityIcon,
   Syringe as SyringeIcon2,
+  // Task 128 icons
+  Wheat as WheatIcon2,
+  Beef as BeefIcon,
+  Milk as MilkIcon,
+  Egg as EggIcon,
+  Fish as FishIcon9,
+  Factory as FactoryIcon4,
+  Soup as SoupIcon,
+  Snowflake as SnowflakeIcon19,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -820,6 +829,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const mentalHealthCenterOpen = useMapStore((s) => s.mentalHealthCenter.open)
   const rehabilitationCenterOpen = useMapStore((s) => s.rehabilitationCenter.open)
   const vaccinationDriveOpen = useMapStore((s) => s.vaccinationDrive.open)
+  // Task 128: Agricultural Production & Food Supply
+  const cropYieldForecastOpen = useMapStore((s) => s.cropYieldForecast.open)
+  const livestockPopulationOpen = useMapStore((s) => s.livestockPopulation.open)
+  const dairyFarmProductionOpen = useMapStore((s) => s.dairyFarmProduction.open)
+  const poultryFarmOutputOpen = useMapStore((s) => s.poultryFarmOutput.open)
+  const aquacultureFisheryOpen = useMapStore((s) => s.aquacultureFishery.open)
+  const grainSiloStorageOpen = useMapStore((s) => s.grainSiloStorage.open)
+  const foodProcessingPlantOpen = useMapStore((s) => s.foodProcessingPlant.open)
+  const coldChainLogisticsOpen = useMapStore((s) => s.coldChainLogistics.open)
 
   if (typeof window === 'undefined') return null
 
@@ -5983,6 +6001,71 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <SyringeIcon2 className="h-4 w-4" />
             {vaccinationDriveOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-yellow-400" />}
+          </button>
+          {/* Task 128: Agricultural Production & Food Supply */}
+          <button
+            onClick={() => useMapStore.getState().setCropYieldForecast({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${cropYieldForecastOpen ? 'bg-amber-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Crop Yield Forecast Monitor"
+          >
+            <WheatIcon2 className="h-4 w-4" />
+            {cropYieldForecastOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setLivestockPopulation({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${livestockPopulationOpen ? 'bg-orange-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Livestock Population Monitor"
+          >
+            <BeefIcon className="h-4 w-4" />
+            {livestockPopulationOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setDairyFarmProduction({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${dairyFarmProductionOpen ? 'bg-cyan-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Dairy Farm Production Monitor"
+          >
+            <MilkIcon className="h-4 w-4" />
+            {dairyFarmProductionOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setPoultryFarmOutput({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${poultryFarmOutputOpen ? 'bg-yellow-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Poultry Farm Output Monitor"
+          >
+            <EggIcon className="h-4 w-4" />
+            {poultryFarmOutputOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-yellow-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setAquacultureFishery({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${aquacultureFisheryOpen ? 'bg-teal-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Aquaculture Fishery Monitor"
+          >
+            <FishIcon9 className="h-4 w-4" />
+            {aquacultureFisheryOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setGrainSiloStorage({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${grainSiloStorageOpen ? 'bg-amber-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Grain Silo Storage Monitor"
+          >
+            <FactoryIcon4 className="h-4 w-4" />
+            {grainSiloStorageOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setFoodProcessingPlant({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${foodProcessingPlantOpen ? 'bg-rose-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Food Processing Plant Monitor"
+          >
+            <SoupIcon className="h-4 w-4" />
+            {foodProcessingPlantOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setColdChainLogistics({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${coldChainLogisticsOpen ? 'bg-cyan-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Cold Chain Logistics Monitor"
+          >
+            <SnowflakeIcon19 className="h-4 w-4" />
+            {coldChainLogisticsOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-400" />}
           </button>
         </div>
       </div>

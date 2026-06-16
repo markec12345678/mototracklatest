@@ -4308,6 +4308,23 @@ interface MapState {
   setRehabilitationCenter: (state: Partial<MonitorState>) => void
   vaccinationDrive: MonitorState
   setVaccinationDrive: (state: Partial<MonitorState>) => void
+  // Task 128: Agricultural Production & Food Supply
+  cropYieldForecast: MonitorState
+  setCropYieldForecast: (state: Partial<MonitorState>) => void
+  livestockPopulation: MonitorState
+  setLivestockPopulation: (state: Partial<MonitorState>) => void
+  dairyFarmProduction: MonitorState
+  setDairyFarmProduction: (state: Partial<MonitorState>) => void
+  poultryFarmOutput: MonitorState
+  setPoultryFarmOutput: (state: Partial<MonitorState>) => void
+  aquacultureFishery: MonitorState
+  setAquacultureFishery: (state: Partial<MonitorState>) => void
+  grainSiloStorage: MonitorState
+  setGrainSiloStorage: (state: Partial<MonitorState>) => void
+  foodProcessingPlant: MonitorState
+  setFoodProcessingPlant: (state: Partial<MonitorState>) => void
+  coldChainLogistics: MonitorState
+  setColdChainLogistics: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -8384,6 +8401,15 @@ export const useMapStore = create<MapState>()(
       mentalHealthCenter: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       rehabilitationCenter: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       vaccinationDrive: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 128: Agricultural Production & Food Supply
+      cropYieldForecast: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      livestockPopulation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      dairyFarmProduction: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      poultryFarmOutput: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      aquacultureFishery: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      grainSiloStorage: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      foodProcessingPlant: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      coldChainLogistics: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -8464,6 +8490,15 @@ export const useMapStore = create<MapState>()(
       setMentalHealthCenter: (updates) => set((state) => ({ mentalHealthCenter: { ...state.mentalHealthCenter, ...updates } })),
       setRehabilitationCenter: (updates) => set((state) => ({ rehabilitationCenter: { ...state.rehabilitationCenter, ...updates } })),
       setVaccinationDrive: (updates) => set((state) => ({ vaccinationDrive: { ...state.vaccinationDrive, ...updates } })),
+      // Task 128: Agricultural Production & Food Supply
+      setCropYieldForecast: (updates) => set((state) => ({ cropYieldForecast: { ...state.cropYieldForecast, ...updates } })),
+      setLivestockPopulation: (updates) => set((state) => ({ livestockPopulation: { ...state.livestockPopulation, ...updates } })),
+      setDairyFarmProduction: (updates) => set((state) => ({ dairyFarmProduction: { ...state.dairyFarmProduction, ...updates } })),
+      setPoultryFarmOutput: (updates) => set((state) => ({ poultryFarmOutput: { ...state.poultryFarmOutput, ...updates } })),
+      setAquacultureFishery: (updates) => set((state) => ({ aquacultureFishery: { ...state.aquacultureFishery, ...updates } })),
+      setGrainSiloStorage: (updates) => set((state) => ({ grainSiloStorage: { ...state.grainSiloStorage, ...updates } })),
+      setFoodProcessingPlant: (updates) => set((state) => ({ foodProcessingPlant: { ...state.foodProcessingPlant, ...updates } })),
+      setColdChainLogistics: (updates) => set((state) => ({ coldChainLogistics: { ...state.coldChainLogistics, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

@@ -477,6 +477,15 @@ export function MonitorPanelRegistry() {
   const mentalHealthCenter = useMapStore((s) => s.mentalHealthCenter)
   const rehabilitationCenter = useMapStore((s) => s.rehabilitationCenter)
   const vaccinationDrive = useMapStore((s) => s.vaccinationDrive)
+  // Task 128: Agricultural Production & Food Supply
+  const cropYieldForecast = useMapStore((s) => s.cropYieldForecast)
+  const livestockPopulation = useMapStore((s) => s.livestockPopulation)
+  const dairyFarmProduction = useMapStore((s) => s.dairyFarmProduction)
+  const poultryFarmOutput = useMapStore((s) => s.poultryFarmOutput)
+  const aquacultureFishery = useMapStore((s) => s.aquacultureFishery)
+  const grainSiloStorage = useMapStore((s) => s.grainSiloStorage)
+  const foodProcessingPlant = useMapStore((s) => s.foodProcessingPlant)
+  const coldChainLogistics = useMapStore((s) => s.coldChainLogistics)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -1655,6 +1664,31 @@ export function MonitorPanelRegistry() {
       )}
       {vaccinationDrive.open && (
         <LazyPanel importFn={() => import('@/components/map/VaccinationDriveMonitor').then(m => ({ default: m.VaccinationDriveMonitor }))} exportName="VaccinationDriveMonitor" shouldLoad={vaccinationDrive.open} />
+      )}
+      {/* Task 128: Agricultural Production & Food Supply */}
+      {cropYieldForecast.open && (
+        <LazyPanel importFn={() => import('@/components/map/CropYieldForecastMonitor').then(m => ({ default: m.CropYieldForecastMonitor }))} exportName="CropYieldForecastMonitor" shouldLoad={cropYieldForecast.open} />
+      )}
+      {livestockPopulation.open && (
+        <LazyPanel importFn={() => import('@/components/map/LivestockPopulationMonitor').then(m => ({ default: m.LivestockPopulationMonitor }))} exportName="LivestockPopulationMonitor" shouldLoad={livestockPopulation.open} />
+      )}
+      {dairyFarmProduction.open && (
+        <LazyPanel importFn={() => import('@/components/map/DairyFarmProductionMonitor').then(m => ({ default: m.DairyFarmProductionMonitor }))} exportName="DairyFarmProductionMonitor" shouldLoad={dairyFarmProduction.open} />
+      )}
+      {poultryFarmOutput.open && (
+        <LazyPanel importFn={() => import('@/components/map/PoultryFarmOutputMonitor').then(m => ({ default: m.PoultryFarmOutputMonitor }))} exportName="PoultryFarmOutputMonitor" shouldLoad={poultryFarmOutput.open} />
+      )}
+      {aquacultureFishery.open && (
+        <LazyPanel importFn={() => import('@/components/map/AquacultureFisheryMonitor').then(m => ({ default: m.AquacultureFisheryMonitor }))} exportName="AquacultureFisheryMonitor" shouldLoad={aquacultureFishery.open} />
+      )}
+      {grainSiloStorage.open && (
+        <LazyPanel importFn={() => import('@/components/map/GrainSiloStorageMonitor').then(m => ({ default: m.GrainSiloStorageMonitor }))} exportName="GrainSiloStorageMonitor" shouldLoad={grainSiloStorage.open} />
+      )}
+      {foodProcessingPlant.open && (
+        <LazyPanel importFn={() => import('@/components/map/FoodProcessingPlantMonitor').then(m => ({ default: m.FoodProcessingPlantMonitor }))} exportName="FoodProcessingPlantMonitor" shouldLoad={foodProcessingPlant.open} />
+      )}
+      {coldChainLogistics.open && (
+        <LazyPanel importFn={() => import('@/components/map/ColdChainLogisticsMonitor').then(m => ({ default: m.ColdChainLogisticsMonitor }))} exportName="ColdChainLogisticsMonitor" shouldLoad={coldChainLogistics.open} />
       )}
     </>
   )
