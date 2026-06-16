@@ -579,6 +579,15 @@ import {
   Flag as FlagIcon3,
   Flag as FlagIcon4,
   Waves as WavesIcon4,
+  // Task 125 icons
+  Shield as ShieldIcon6,
+  Flame as FlameIcon22,
+  PhoneCall as PhoneCallIcon,
+  Lock as LockIcon3,
+  Scale as ScaleIcon,
+  DoorOpen as DoorOpenIcon,
+  Car as CarIcon3,
+  LifeBuoy as LifeBuoyIcon,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -766,6 +775,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const racetrackActivityOpen = useMapStore((s) => s.racetrackActivity.open)
   const golfCourseStatusOpen = useMapStore((s) => s.golfCourseStatus.open)
   const waterParkCapacityOpen = useMapStore((s) => s.waterParkCapacity.open)
+  // Task 125: Public Safety & Law Enforcement
+  const policeStationStatusOpen = useMapStore((s) => s.policeStationStatus.open)
+  const fireDepartmentResponseOpen = useMapStore((s) => s.fireDepartmentResponse.open)
+  const emergencyDispatch911Open = useMapStore((s) => s.emergencyDispatch911.open)
+  const prisonFacilityMonitorOpen = useMapStore((s) => s.prisonFacilityMonitor.open)
+  const courtHouseScheduleOpen = useMapStore((s) => s.courtHouseSchedule.open)
+  const borderPatrolActivityOpen = useMapStore((s) => s.borderPatrolActivity.open)
+  const trafficEnforcementUnitOpen = useMapStore((s) => s.trafficEnforcementUnit.open)
+  const disasterResponseCoordOpen = useMapStore((s) => s.disasterResponseCoord.open)
 
   if (typeof window === 'undefined') return null
 
@@ -5734,6 +5752,71 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <WavesIcon4 className="h-4 w-4" />
             {waterParkCapacityOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-400" />}
+          </button>
+          {/* Task 125: Public Safety & Law Enforcement */}
+          <button
+            onClick={() => useMapStore.getState().setPoliceStationStatus({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${policeStationStatusOpen ? 'bg-blue-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Police Station Status Monitor"
+          >
+            <ShieldIcon6 className="h-4 w-4" />
+            {policeStationStatusOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-blue-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setFireDepartmentResponse({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${fireDepartmentResponseOpen ? 'bg-red-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Fire Department Response Monitor"
+          >
+            <FlameIcon22 className="h-4 w-4" />
+            {fireDepartmentResponseOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setEmergencyDispatch911({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${emergencyDispatch911Open ? 'bg-rose-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Emergency Dispatch 911 Monitor"
+          >
+            <PhoneCallIcon className="h-4 w-4" />
+            {emergencyDispatch911Open && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setPrisonFacilityMonitor({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${prisonFacilityMonitorOpen ? 'bg-slate-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Prison Facility Monitor"
+          >
+            <LockIcon3 className="h-4 w-4" />
+            {prisonFacilityMonitorOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-slate-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCourtHouseSchedule({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${courtHouseScheduleOpen ? 'bg-amber-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Court House Schedule Monitor"
+          >
+            <ScaleIcon className="h-4 w-4" />
+            {courtHouseScheduleOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBorderPatrolActivity({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${borderPatrolActivityOpen ? 'bg-emerald-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Border Patrol Activity Monitor"
+          >
+            <DoorOpenIcon className="h-4 w-4" />
+            {borderPatrolActivityOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setTrafficEnforcementUnit({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${trafficEnforcementUnitOpen ? 'bg-cyan-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Traffic Enforcement Unit Monitor"
+          >
+            <CarIcon3 className="h-4 w-4" />
+            {trafficEnforcementUnitOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setDisasterResponseCoord({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${disasterResponseCoordOpen ? 'bg-orange-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Disaster Response Coord Monitor"
+          >
+            <LifeBuoyIcon className="h-4 w-4" />
+            {disasterResponseCoordOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-400" />}
           </button>
         </div>
       </div>

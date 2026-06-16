@@ -4257,6 +4257,23 @@ interface MapState {
   setGolfCourseStatus: (state: Partial<MonitorState>) => void
   waterParkCapacity: MonitorState
   setWaterParkCapacity: (state: Partial<MonitorState>) => void
+  // Task 125: Public Safety & Law Enforcement
+  policeStationStatus: MonitorState
+  setPoliceStationStatus: (state: Partial<MonitorState>) => void
+  fireDepartmentResponse: MonitorState
+  setFireDepartmentResponse: (state: Partial<MonitorState>) => void
+  emergencyDispatch911: MonitorState
+  setEmergencyDispatch911: (state: Partial<MonitorState>) => void
+  prisonFacilityMonitor: MonitorState
+  setPrisonFacilityMonitor: (state: Partial<MonitorState>) => void
+  courtHouseSchedule: MonitorState
+  setCourtHouseSchedule: (state: Partial<MonitorState>) => void
+  borderPatrolActivity: MonitorState
+  setBorderPatrolActivity: (state: Partial<MonitorState>) => void
+  trafficEnforcementUnit: MonitorState
+  setTrafficEnforcementUnit: (state: Partial<MonitorState>) => void
+  disasterResponseCoord: MonitorState
+  setDisasterResponseCoord: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -8306,6 +8323,15 @@ export const useMapStore = create<MapState>()(
       racetrackActivity: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       golfCourseStatus: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       waterParkCapacity: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 125: Public Safety & Law Enforcement
+      policeStationStatus: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      fireDepartmentResponse: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      emergencyDispatch911: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      prisonFacilityMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      courtHouseSchedule: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      borderPatrolActivity: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      trafficEnforcementUnit: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      disasterResponseCoord: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -8359,6 +8385,15 @@ export const useMapStore = create<MapState>()(
       setRacetrackActivity: (updates) => set((state) => ({ racetrackActivity: { ...state.racetrackActivity, ...updates } })),
       setGolfCourseStatus: (updates) => set((state) => ({ golfCourseStatus: { ...state.golfCourseStatus, ...updates } })),
       setWaterParkCapacity: (updates) => set((state) => ({ waterParkCapacity: { ...state.waterParkCapacity, ...updates } })),
+      // Task 125: Public Safety & Law Enforcement
+      setPoliceStationStatus: (updates) => set((state) => ({ policeStationStatus: { ...state.policeStationStatus, ...updates } })),
+      setFireDepartmentResponse: (updates) => set((state) => ({ fireDepartmentResponse: { ...state.fireDepartmentResponse, ...updates } })),
+      setEmergencyDispatch911: (updates) => set((state) => ({ emergencyDispatch911: { ...state.emergencyDispatch911, ...updates } })),
+      setPrisonFacilityMonitor: (updates) => set((state) => ({ prisonFacilityMonitor: { ...state.prisonFacilityMonitor, ...updates } })),
+      setCourtHouseSchedule: (updates) => set((state) => ({ courtHouseSchedule: { ...state.courtHouseSchedule, ...updates } })),
+      setBorderPatrolActivity: (updates) => set((state) => ({ borderPatrolActivity: { ...state.borderPatrolActivity, ...updates } })),
+      setTrafficEnforcementUnit: (updates) => set((state) => ({ trafficEnforcementUnit: { ...state.trafficEnforcementUnit, ...updates } })),
+      setDisasterResponseCoord: (updates) => set((state) => ({ disasterResponseCoord: { ...state.disasterResponseCoord, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

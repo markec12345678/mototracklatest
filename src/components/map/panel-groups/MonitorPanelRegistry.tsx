@@ -450,6 +450,15 @@ export function MonitorPanelRegistry() {
   const racetrackActivity = useMapStore((s) => s.racetrackActivity)
   const golfCourseStatus = useMapStore((s) => s.golfCourseStatus)
   const waterParkCapacity = useMapStore((s) => s.waterParkCapacity)
+  // Task 125: Public Safety & Law Enforcement
+  const policeStationStatus = useMapStore((s) => s.policeStationStatus)
+  const fireDepartmentResponse = useMapStore((s) => s.fireDepartmentResponse)
+  const emergencyDispatch911 = useMapStore((s) => s.emergencyDispatch911)
+  const prisonFacilityMonitor = useMapStore((s) => s.prisonFacilityMonitor)
+  const courtHouseSchedule = useMapStore((s) => s.courtHouseSchedule)
+  const borderPatrolActivity = useMapStore((s) => s.borderPatrolActivity)
+  const trafficEnforcementUnit = useMapStore((s) => s.trafficEnforcementUnit)
+  const disasterResponseCoord = useMapStore((s) => s.disasterResponseCoord)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -1553,6 +1562,31 @@ export function MonitorPanelRegistry() {
       )}
       {waterParkCapacity.open && (
         <LazyPanel importFn={() => import('@/components/map/WaterParkCapacityMonitor').then(m => ({ default: m.WaterParkCapacityMonitor }))} exportName="WaterParkCapacityMonitor" shouldLoad={waterParkCapacity.open} />
+      )}
+      {/* Task 125: Public Safety & Law Enforcement */}
+      {policeStationStatus.open && (
+        <LazyPanel importFn={() => import('@/components/map/PoliceStationStatusMonitor').then(m => ({ default: m.PoliceStationStatusMonitor }))} exportName="PoliceStationStatusMonitor" shouldLoad={policeStationStatus.open} />
+      )}
+      {fireDepartmentResponse.open && (
+        <LazyPanel importFn={() => import('@/components/map/FireDepartmentResponseMonitor').then(m => ({ default: m.FireDepartmentResponseMonitor }))} exportName="FireDepartmentResponseMonitor" shouldLoad={fireDepartmentResponse.open} />
+      )}
+      {emergencyDispatch911.open && (
+        <LazyPanel importFn={() => import('@/components/map/EmergencyDispatch911Monitor').then(m => ({ default: m.EmergencyDispatch911Monitor }))} exportName="EmergencyDispatch911Monitor" shouldLoad={emergencyDispatch911.open} />
+      )}
+      {prisonFacilityMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/PrisonFacilityMonitor').then(m => ({ default: m.PrisonFacilityMonitor }))} exportName="PrisonFacilityMonitor" shouldLoad={prisonFacilityMonitor.open} />
+      )}
+      {courtHouseSchedule.open && (
+        <LazyPanel importFn={() => import('@/components/map/CourtHouseScheduleMonitor').then(m => ({ default: m.CourtHouseScheduleMonitor }))} exportName="CourtHouseScheduleMonitor" shouldLoad={courtHouseSchedule.open} />
+      )}
+      {borderPatrolActivity.open && (
+        <LazyPanel importFn={() => import('@/components/map/BorderPatrolActivityMonitor').then(m => ({ default: m.BorderPatrolActivityMonitor }))} exportName="BorderPatrolActivityMonitor" shouldLoad={borderPatrolActivity.open} />
+      )}
+      {trafficEnforcementUnit.open && (
+        <LazyPanel importFn={() => import('@/components/map/TrafficEnforcementUnitMonitor').then(m => ({ default: m.TrafficEnforcementUnitMonitor }))} exportName="TrafficEnforcementUnitMonitor" shouldLoad={trafficEnforcementUnit.open} />
+      )}
+      {disasterResponseCoord.open && (
+        <LazyPanel importFn={() => import('@/components/map/DisasterResponseCoordMonitor').then(m => ({ default: m.DisasterResponseCoordMonitor }))} exportName="DisasterResponseCoordMonitor" shouldLoad={disasterResponseCoord.open} />
       )}
     </>
   )
