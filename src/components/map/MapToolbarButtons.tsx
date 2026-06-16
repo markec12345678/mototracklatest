@@ -535,6 +535,15 @@ import {
   Wind as WindIcon19,
   CircleDot as CircleDotIcon4,
   FlaskConical as FlaskConicalIcon7,
+  // Task 120 icons
+  Camera as CameraIcon,
+  Building2 as Building2Icon3,
+  Trees as TreesIcon,
+  Landmark as LandmarkIcon,
+  Umbrella as UmbrellaIcon,
+  Snowflake as SnowflakeIcon18,
+  Ship as ShipIcon7,
+  FerrisWheel as FerrisWheelIcon,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -677,6 +686,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const carbonMonoxideColumnOpen = useMapStore((s) => s.carbonMonoxideColumn.open)
   const particulateMatterTrack119Open = useMapStore((s) => s.particulateMatterTrack119.open)
   const vocConcentrationMapOpen = useMapStore((s) => s.vocConcentrationMap.open)
+  // Task 120: Tourism & Travel Infrastructure
+  const touristAttractionMonitorOpen = useMapStore((s) => s.touristAttractionMonitor.open)
+  const hotelOccupancyMonitorOpen = useMapStore((s) => s.hotelOccupancyMonitor.open)
+  const nationalParkVisitorMonitorOpen = useMapStore((s) => s.nationalParkVisitorMonitor.open)
+  const museumFootfallMonitorOpen = useMapStore((s) => s.museumFootfallMonitor.open)
+  const beachSafetyMonitorOpen = useMapStore((s) => s.beachSafetyMonitor.open)
+  const skiResortConditionMonitorOpen = useMapStore((s) => s.skiResortConditionMonitor.open)
+  const cruisePortActivityMonitorOpen = useMapStore((s) => s.cruisePortActivityMonitor.open)
+  const themeParkQueueMonitorOpen = useMapStore((s) => s.themeParkQueueMonitor.open)
 
   if (typeof window === 'undefined') return null
 
@@ -5321,6 +5339,71 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
+          {/* Task 120: Tourism & Travel Infrastructure */}
+          <button
+            onClick={() => useMapStore.getState().setTouristAttractionMonitor({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${touristAttractionMonitorOpen ? 'bg-rose-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Tourist Attraction Monitor"
+          >
+            <CameraIcon className="h-4 w-4" />
+            {touristAttractionMonitorOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setHotelOccupancyMonitor({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${hotelOccupancyMonitorOpen ? 'bg-amber-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Hotel Occupancy Monitor"
+          >
+            <Building2Icon3 className="h-4 w-4" />
+            {hotelOccupancyMonitorOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setNationalParkVisitorMonitor({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${nationalParkVisitorMonitorOpen ? 'bg-emerald-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="National Park Visitor Monitor"
+          >
+            <TreesIcon className="h-4 w-4" />
+            {nationalParkVisitorMonitorOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setMuseumFootfallMonitor({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${museumFootfallMonitorOpen ? 'bg-violet-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Museum Footfall Monitor"
+          >
+            <LandmarkIcon className="h-4 w-4" />
+            {museumFootfallMonitorOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-violet-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBeachSafetyMonitor({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${beachSafetyMonitorOpen ? 'bg-cyan-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Beach Safety Monitor"
+          >
+            <UmbrellaIcon className="h-4 w-4" />
+            {beachSafetyMonitorOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setSkiResortConditionMonitor({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${skiResortConditionMonitorOpen ? 'bg-sky-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Ski Resort Condition Monitor"
+          >
+            <SnowflakeIcon18 className="h-4 w-4" />
+            {skiResortConditionMonitorOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-sky-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCruisePortActivityMonitor({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${cruisePortActivityMonitorOpen ? 'bg-teal-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Cruise Port Activity Monitor"
+          >
+            <ShipIcon7 className="h-4 w-4" />
+            {cruisePortActivityMonitorOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setThemeParkQueueMonitor({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${themeParkQueueMonitorOpen ? 'bg-fuchsia-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Theme Park Queue Monitor"
+          >
+            <FerrisWheelIcon className="h-4 w-4" />
+            {themeParkQueueMonitorOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-fuchsia-400" />}
+          </button>
         </div>
       </div>
     </>

@@ -405,6 +405,15 @@ export function MonitorPanelRegistry() {
   const carbonMonoxideColumn = useMapStore((s) => s.carbonMonoxideColumn)
   const particulateMatterTrack119 = useMapStore((s) => s.particulateMatterTrack119)
   const vocConcentrationMap = useMapStore((s) => s.vocConcentrationMap)
+  // Task 120: Tourism & Travel Infrastructure
+  const touristAttractionMonitor = useMapStore((s) => s.touristAttractionMonitor)
+  const hotelOccupancyMonitor = useMapStore((s) => s.hotelOccupancyMonitor)
+  const nationalParkVisitorMonitor = useMapStore((s) => s.nationalParkVisitorMonitor)
+  const museumFootfallMonitor = useMapStore((s) => s.museumFootfallMonitor)
+  const beachSafetyMonitor = useMapStore((s) => s.beachSafetyMonitor)
+  const skiResortConditionMonitor = useMapStore((s) => s.skiResortConditionMonitor)
+  const cruisePortActivityMonitor = useMapStore((s) => s.cruisePortActivityMonitor)
+  const themeParkQueueMonitor = useMapStore((s) => s.themeParkQueueMonitor)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -1383,6 +1392,31 @@ export function MonitorPanelRegistry() {
       )}
       {vocConcentrationMap.open && (
         <LazyPanel importFn={() => import('@/components/map/VocConcentrationMap').then(m => ({ default: m.VocConcentrationMap }))} exportName="VocConcentrationMap" shouldLoad={vocConcentrationMap.open} />
+      )}
+      {/* Task 120: Tourism & Travel Infrastructure */}
+      {touristAttractionMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/TouristAttractionMonitor').then(m => ({ default: m.TouristAttractionMonitor }))} exportName="TouristAttractionMonitor" shouldLoad={touristAttractionMonitor.open} />
+      )}
+      {hotelOccupancyMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/HotelOccupancyMonitor').then(m => ({ default: m.HotelOccupancyMonitor }))} exportName="HotelOccupancyMonitor" shouldLoad={hotelOccupancyMonitor.open} />
+      )}
+      {nationalParkVisitorMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/NationalParkVisitorMonitor').then(m => ({ default: m.NationalParkVisitorMonitor }))} exportName="NationalParkVisitorMonitor" shouldLoad={nationalParkVisitorMonitor.open} />
+      )}
+      {museumFootfallMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/MuseumFootfallMonitor').then(m => ({ default: m.MuseumFootfallMonitor }))} exportName="MuseumFootfallMonitor" shouldLoad={museumFootfallMonitor.open} />
+      )}
+      {beachSafetyMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/BeachSafetyMonitor').then(m => ({ default: m.BeachSafetyMonitor }))} exportName="BeachSafetyMonitor" shouldLoad={beachSafetyMonitor.open} />
+      )}
+      {skiResortConditionMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/SkiResortConditionMonitor').then(m => ({ default: m.SkiResortConditionMonitor }))} exportName="SkiResortConditionMonitor" shouldLoad={skiResortConditionMonitor.open} />
+      )}
+      {cruisePortActivityMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/CruisePortActivityMonitor').then(m => ({ default: m.CruisePortActivityMonitor }))} exportName="CruisePortActivityMonitor" shouldLoad={cruisePortActivityMonitor.open} />
+      )}
+      {themeParkQueueMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/ThemeParkQueueMonitor').then(m => ({ default: m.ThemeParkQueueMonitor }))} exportName="ThemeParkQueueMonitor" shouldLoad={themeParkQueueMonitor.open} />
       )}
     </>
   )

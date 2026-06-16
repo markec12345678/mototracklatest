@@ -4172,6 +4172,23 @@ interface MapState {
   setParticulateMatterTrack119: (state: Partial<MonitorState>) => void
   vocConcentrationMap: MonitorState
   setVocConcentrationMap: (state: Partial<MonitorState>) => void
+  // Task 120: Tourism & Travel Infrastructure
+  touristAttractionMonitor: MonitorState
+  setTouristAttractionMonitor: (state: Partial<MonitorState>) => void
+  hotelOccupancyMonitor: MonitorState
+  setHotelOccupancyMonitor: (state: Partial<MonitorState>) => void
+  nationalParkVisitorMonitor: MonitorState
+  setNationalParkVisitorMonitor: (state: Partial<MonitorState>) => void
+  museumFootfallMonitor: MonitorState
+  setMuseumFootfallMonitor: (state: Partial<MonitorState>) => void
+  beachSafetyMonitor: MonitorState
+  setBeachSafetyMonitor: (state: Partial<MonitorState>) => void
+  skiResortConditionMonitor: MonitorState
+  setSkiResortConditionMonitor: (state: Partial<MonitorState>) => void
+  cruisePortActivityMonitor: MonitorState
+  setCruisePortActivityMonitor: (state: Partial<MonitorState>) => void
+  themeParkQueueMonitor: MonitorState
+  setThemeParkQueueMonitor: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -8176,6 +8193,15 @@ export const useMapStore = create<MapState>()(
       carbonMonoxideColumn: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       particulateMatterTrack119: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       vocConcentrationMap: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 120: Tourism & Travel Infrastructure
+      touristAttractionMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      hotelOccupancyMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      nationalParkVisitorMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      museumFootfallMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      beachSafetyMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      skiResortConditionMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      cruisePortActivityMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      themeParkQueueMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -8184,6 +8210,15 @@ export const useMapStore = create<MapState>()(
       setCarbonMonoxideColumn: (updates) => set((state) => ({ carbonMonoxideColumn: { ...state.carbonMonoxideColumn, ...updates } })),
       setParticulateMatterTrack119: (updates) => set((state) => ({ particulateMatterTrack119: { ...state.particulateMatterTrack119, ...updates } })),
       setVocConcentrationMap: (updates) => set((state) => ({ vocConcentrationMap: { ...state.vocConcentrationMap, ...updates } })),
+      // Task 120: Tourism & Travel Infrastructure
+      setTouristAttractionMonitor: (updates) => set((state) => ({ touristAttractionMonitor: { ...state.touristAttractionMonitor, ...updates } })),
+      setHotelOccupancyMonitor: (updates) => set((state) => ({ hotelOccupancyMonitor: { ...state.hotelOccupancyMonitor, ...updates } })),
+      setNationalParkVisitorMonitor: (updates) => set((state) => ({ nationalParkVisitorMonitor: { ...state.nationalParkVisitorMonitor, ...updates } })),
+      setMuseumFootfallMonitor: (updates) => set((state) => ({ museumFootfallMonitor: { ...state.museumFootfallMonitor, ...updates } })),
+      setBeachSafetyMonitor: (updates) => set((state) => ({ beachSafetyMonitor: { ...state.beachSafetyMonitor, ...updates } })),
+      setSkiResortConditionMonitor: (updates) => set((state) => ({ skiResortConditionMonitor: { ...state.skiResortConditionMonitor, ...updates } })),
+      setCruisePortActivityMonitor: (updates) => set((state) => ({ cruisePortActivityMonitor: { ...state.cruisePortActivityMonitor, ...updates } })),
+      setThemeParkQueueMonitor: (updates) => set((state) => ({ themeParkQueueMonitor: { ...state.themeParkQueueMonitor, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
