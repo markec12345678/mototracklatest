@@ -459,6 +459,15 @@ export function MonitorPanelRegistry() {
   const borderPatrolActivity = useMapStore((s) => s.borderPatrolActivity)
   const trafficEnforcementUnit = useMapStore((s) => s.trafficEnforcementUnit)
   const disasterResponseCoord = useMapStore((s) => s.disasterResponseCoord)
+  // Task 126: Telecommunications & Broadcasting
+  const cellTowerNetwork = useMapStore((s) => s.cellTowerNetwork)
+  const fiberOpticBackbone = useMapStore((s) => s.fiberOpticBackbone)
+  const dataCenterCloud = useMapStore((s) => s.dataCenterCloud)
+  const radioBroadcastStation = useMapStore((s) => s.radioBroadcastStation)
+  const tvTransmissionTower = useMapStore((s) => s.tvTransmissionTower)
+  const satelliteGroundStation = useMapStore((s) => s.satelliteGroundStation)
+  const wifiHotspotNetwork = useMapStore((s) => s.wifiHotspotNetwork)
+  const internetExchangePoint = useMapStore((s) => s.internetExchangePoint)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -1587,6 +1596,31 @@ export function MonitorPanelRegistry() {
       )}
       {disasterResponseCoord.open && (
         <LazyPanel importFn={() => import('@/components/map/DisasterResponseCoordMonitor').then(m => ({ default: m.DisasterResponseCoordMonitor }))} exportName="DisasterResponseCoordMonitor" shouldLoad={disasterResponseCoord.open} />
+      )}
+      {/* Task 126: Telecommunications & Broadcasting */}
+      {cellTowerNetwork.open && (
+        <LazyPanel importFn={() => import('@/components/map/CellTowerNetworkMonitor').then(m => ({ default: m.CellTowerNetworkMonitor }))} exportName="CellTowerNetworkMonitor" shouldLoad={cellTowerNetwork.open} />
+      )}
+      {fiberOpticBackbone.open && (
+        <LazyPanel importFn={() => import('@/components/map/FiberOpticBackboneMonitor').then(m => ({ default: m.FiberOpticBackboneMonitor }))} exportName="FiberOpticBackboneMonitor" shouldLoad={fiberOpticBackbone.open} />
+      )}
+      {dataCenterCloud.open && (
+        <LazyPanel importFn={() => import('@/components/map/DataCenterCloudMonitor').then(m => ({ default: m.DataCenterCloudMonitor }))} exportName="DataCenterCloudMonitor" shouldLoad={dataCenterCloud.open} />
+      )}
+      {radioBroadcastStation.open && (
+        <LazyPanel importFn={() => import('@/components/map/RadioBroadcastStationMonitor').then(m => ({ default: m.RadioBroadcastStationMonitor }))} exportName="RadioBroadcastStationMonitor" shouldLoad={radioBroadcastStation.open} />
+      )}
+      {tvTransmissionTower.open && (
+        <LazyPanel importFn={() => import('@/components/map/TvTransmissionTowerMonitor').then(m => ({ default: m.TvTransmissionTowerMonitor }))} exportName="TvTransmissionTowerMonitor" shouldLoad={tvTransmissionTower.open} />
+      )}
+      {satelliteGroundStation.open && (
+        <LazyPanel importFn={() => import('@/components/map/SatelliteGroundStationMonitor').then(m => ({ default: m.SatelliteGroundStationMonitor }))} exportName="SatelliteGroundStationMonitor" shouldLoad={satelliteGroundStation.open} />
+      )}
+      {wifiHotspotNetwork.open && (
+        <LazyPanel importFn={() => import('@/components/map/WifiHotspotNetworkMonitor').then(m => ({ default: m.WifiHotspotNetworkMonitor }))} exportName="WifiHotspotNetworkMonitor" shouldLoad={wifiHotspotNetwork.open} />
+      )}
+      {internetExchangePoint.open && (
+        <LazyPanel importFn={() => import('@/components/map/InternetExchangePointMonitor').then(m => ({ default: m.InternetExchangePointMonitor }))} exportName="InternetExchangePointMonitor" shouldLoad={internetExchangePoint.open} />
       )}
     </>
   )

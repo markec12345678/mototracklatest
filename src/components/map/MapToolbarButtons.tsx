@@ -588,6 +588,15 @@ import {
   DoorOpen as DoorOpenIcon,
   Car as CarIcon3,
   LifeBuoy as LifeBuoyIcon,
+  // Task 126 icons
+  RadioTower as RadioTowerIcon,
+  Globe as GlobeIcon5,
+  Server as ServerIcon,
+  Radio as RadioIcon5,
+  Tv as TvIcon,
+  Satellite as SatelliteIcon3,
+  Wifi as WifiIcon,
+  Shuffle as ShuffleIcon,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -784,6 +793,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const borderPatrolActivityOpen = useMapStore((s) => s.borderPatrolActivity.open)
   const trafficEnforcementUnitOpen = useMapStore((s) => s.trafficEnforcementUnit.open)
   const disasterResponseCoordOpen = useMapStore((s) => s.disasterResponseCoord.open)
+  // Task 126: Telecommunications & Broadcasting
+  const cellTowerNetworkOpen = useMapStore((s) => s.cellTowerNetwork.open)
+  const fiberOpticBackboneOpen = useMapStore((s) => s.fiberOpticBackbone.open)
+  const dataCenterCloudOpen = useMapStore((s) => s.dataCenterCloud.open)
+  const radioBroadcastStationOpen = useMapStore((s) => s.radioBroadcastStation.open)
+  const tvTransmissionTowerOpen = useMapStore((s) => s.tvTransmissionTower.open)
+  const satelliteGroundStationOpen = useMapStore((s) => s.satelliteGroundStation.open)
+  const wifiHotspotNetworkOpen = useMapStore((s) => s.wifiHotspotNetwork.open)
+  const internetExchangePointOpen = useMapStore((s) => s.internetExchangePoint.open)
 
   if (typeof window === 'undefined') return null
 
@@ -5817,6 +5835,71 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <LifeBuoyIcon className="h-4 w-4" />
             {disasterResponseCoordOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-400" />}
+          </button>
+          {/* Task 126: Telecommunications & Broadcasting */}
+          <button
+            onClick={() => useMapStore.getState().setCellTowerNetwork({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${cellTowerNetworkOpen ? 'bg-cyan-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Cell Tower Network Monitor"
+          >
+            <RadioTowerIcon className="h-4 w-4" />
+            {cellTowerNetworkOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setFiberOpticBackbone({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${fiberOpticBackboneOpen ? 'bg-violet-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Fiber Optic Backbone Monitor"
+          >
+            <GlobeIcon5 className="h-4 w-4" />
+            {fiberOpticBackboneOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-violet-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setDataCenterCloud({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${dataCenterCloudOpen ? 'bg-emerald-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Data Center Cloud Monitor"
+          >
+            <ServerIcon className="h-4 w-4" />
+            {dataCenterCloudOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setRadioBroadcastStation({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${radioBroadcastStationOpen ? 'bg-amber-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Radio Broadcast Station Monitor"
+          >
+            <RadioIcon5 className="h-4 w-4" />
+            {radioBroadcastStationOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setTvTransmissionTower({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${tvTransmissionTowerOpen ? 'bg-rose-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="TV Transmission Tower Monitor"
+          >
+            <TvIcon className="h-4 w-4" />
+            {tvTransmissionTowerOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setSatelliteGroundStation({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${satelliteGroundStationOpen ? 'bg-slate-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Satellite Ground Station Monitor"
+          >
+            <SatelliteIcon3 className="h-4 w-4" />
+            {satelliteGroundStationOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-slate-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setWifiHotspotNetwork({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${wifiHotspotNetworkOpen ? 'bg-lime-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Wifi Hotspot Network Monitor"
+          >
+            <WifiIcon className="h-4 w-4" />
+            {wifiHotspotNetworkOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-lime-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setInternetExchangePoint({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${internetExchangePointOpen ? 'bg-fuchsia-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Internet Exchange Point Monitor"
+          >
+            <ShuffleIcon className="h-4 w-4" />
+            {internetExchangePointOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-fuchsia-400" />}
           </button>
         </div>
       </div>

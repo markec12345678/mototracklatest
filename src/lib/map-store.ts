@@ -4274,6 +4274,23 @@ interface MapState {
   setTrafficEnforcementUnit: (state: Partial<MonitorState>) => void
   disasterResponseCoord: MonitorState
   setDisasterResponseCoord: (state: Partial<MonitorState>) => void
+  // Task 126: Telecommunications & Broadcasting
+  cellTowerNetwork: MonitorState
+  setCellTowerNetwork: (state: Partial<MonitorState>) => void
+  fiberOpticBackbone: MonitorState
+  setFiberOpticBackbone: (state: Partial<MonitorState>) => void
+  dataCenterCloud: MonitorState
+  setDataCenterCloud: (state: Partial<MonitorState>) => void
+  radioBroadcastStation: MonitorState
+  setRadioBroadcastStation: (state: Partial<MonitorState>) => void
+  tvTransmissionTower: MonitorState
+  setTvTransmissionTower: (state: Partial<MonitorState>) => void
+  satelliteGroundStation: MonitorState
+  setSatelliteGroundStation: (state: Partial<MonitorState>) => void
+  wifiHotspotNetwork: MonitorState
+  setWifiHotspotNetwork: (state: Partial<MonitorState>) => void
+  internetExchangePoint: MonitorState
+  setInternetExchangePoint: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -8332,6 +8349,15 @@ export const useMapStore = create<MapState>()(
       borderPatrolActivity: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       trafficEnforcementUnit: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       disasterResponseCoord: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 126: Telecommunications & Broadcasting
+      cellTowerNetwork: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      fiberOpticBackbone: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      dataCenterCloud: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      radioBroadcastStation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      tvTransmissionTower: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      satelliteGroundStation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      wifiHotspotNetwork: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      internetExchangePoint: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -8394,6 +8420,15 @@ export const useMapStore = create<MapState>()(
       setBorderPatrolActivity: (updates) => set((state) => ({ borderPatrolActivity: { ...state.borderPatrolActivity, ...updates } })),
       setTrafficEnforcementUnit: (updates) => set((state) => ({ trafficEnforcementUnit: { ...state.trafficEnforcementUnit, ...updates } })),
       setDisasterResponseCoord: (updates) => set((state) => ({ disasterResponseCoord: { ...state.disasterResponseCoord, ...updates } })),
+      // Task 126: Telecommunications & Broadcasting
+      setCellTowerNetwork: (updates) => set((state) => ({ cellTowerNetwork: { ...state.cellTowerNetwork, ...updates } })),
+      setFiberOpticBackbone: (updates) => set((state) => ({ fiberOpticBackbone: { ...state.fiberOpticBackbone, ...updates } })),
+      setDataCenterCloud: (updates) => set((state) => ({ dataCenterCloud: { ...state.dataCenterCloud, ...updates } })),
+      setRadioBroadcastStation: (updates) => set((state) => ({ radioBroadcastStation: { ...state.radioBroadcastStation, ...updates } })),
+      setTvTransmissionTower: (updates) => set((state) => ({ tvTransmissionTower: { ...state.tvTransmissionTower, ...updates } })),
+      setSatelliteGroundStation: (updates) => set((state) => ({ satelliteGroundStation: { ...state.satelliteGroundStation, ...updates } })),
+      setWifiHotspotNetwork: (updates) => set((state) => ({ wifiHotspotNetwork: { ...state.wifiHotspotNetwork, ...updates } })),
+      setInternetExchangePoint: (updates) => set((state) => ({ internetExchangePoint: { ...state.internetExchangePoint, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
