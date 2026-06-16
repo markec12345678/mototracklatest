@@ -308,6 +308,15 @@ export function MonitorPanelRegistry() {
   const solarFluxIndex = useMapStore((s) => s.solarFluxIndex)
   const spaceRadiationDose = useMapStore((s) => s.spaceRadiationDose)
   const satelliteDrag = useMapStore((s) => s.satelliteDrag)
+  // Task 108: Urban Infrastructure & Smart City
+  const trafficFlowMonitor = useMapStore((s) => s.trafficFlowMonitor)
+  const bridgeStructuralHealth = useMapStore((s) => s.bridgeStructuralHealth)
+  const waterPipeNetwork = useMapStore((s) => s.waterPipeNetwork)
+  const powerGridLoad = useMapStore((s) => s.powerGridLoad)
+  const wasteCollectionRoute = useMapStore((s) => s.wasteCollectionRoute)
+  const airQualityUrban = useMapStore((s) => s.airQualityUrban)
+  const noiseLevelMapper = useMapStore((s) => s.noiseLevelMapper)
+  const smartParkingCapacity = useMapStore((s) => s.smartParkingCapacity)
 
   return (
     <>
@@ -983,6 +992,31 @@ export function MonitorPanelRegistry() {
       )}
       {satelliteDrag.open && (
         <LazyPanel importFn={() => import('@/components/map/SatelliteDragMonitor')} exportName="SatelliteDragMonitor" shouldLoad={true} />
+      )}
+      {/* Task 108: Urban Infrastructure & Smart City */}
+      {trafficFlowMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/TrafficFlowMonitor')} exportName="TrafficFlowMonitor" shouldLoad={true} />
+      )}
+      {bridgeStructuralHealth.open && (
+        <LazyPanel importFn={() => import('@/components/map/BridgeStructuralHealthMonitor')} exportName="BridgeStructuralHealthMonitor" shouldLoad={true} />
+      )}
+      {waterPipeNetwork.open && (
+        <LazyPanel importFn={() => import('@/components/map/WaterPipeNetworkMonitor')} exportName="WaterPipeNetworkMonitor" shouldLoad={true} />
+      )}
+      {powerGridLoad.open && (
+        <LazyPanel importFn={() => import('@/components/map/PowerGridLoadMonitor')} exportName="PowerGridLoadMonitor" shouldLoad={true} />
+      )}
+      {wasteCollectionRoute.open && (
+        <LazyPanel importFn={() => import('@/components/map/WasteCollectionRouteMonitor')} exportName="WasteCollectionRouteMonitor" shouldLoad={true} />
+      )}
+      {airQualityUrban.open && (
+        <LazyPanel importFn={() => import('@/components/map/AirQualityUrbanMonitor')} exportName="AirQualityUrbanMonitor" shouldLoad={true} />
+      )}
+      {noiseLevelMapper.open && (
+        <LazyPanel importFn={() => import('@/components/map/NoiseLevelMapperMonitor')} exportName="NoiseLevelMapperMonitor" shouldLoad={true} />
+      )}
+      {smartParkingCapacity.open && (
+        <LazyPanel importFn={() => import('@/components/map/SmartParkingCapacityMonitor')} exportName="SmartParkingCapacityMonitor" shouldLoad={true} />
       )}
     </>
   )

@@ -429,6 +429,15 @@ import {
   Sun as SunIcon11,
   Siren as SirenIcon3,
   Satellite as SatelliteIcon2,
+  // Task 108 icons
+  Car as CarIcon2,
+  Construction as ConstructionIcon,
+  Cylinder as PipeIcon,
+  Zap as ZapIcon5,
+  Trash2 as TrashIcon2,
+  Wind as WindIcon16,
+  Volume2 as Volume2Icon2,
+  ParkingCircle as ParkingIcon,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -465,6 +474,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const usageStatsOpen = useMapStore((s) => s.usageStatsOpen)
   const collageCreatorOpen = useMapStore((s) => s.collageCreatorOpen)
   const eventsFinderOpen = useMapStore((s) => s.eventsFinderOpen)
+  // Task 108: Urban Infrastructure & Smart City
+  const trafficFlowMonitorOpen = useMapStore((s) => s.trafficFlowMonitor.open)
+  const bridgeStructuralHealthOpen = useMapStore((s) => s.bridgeStructuralHealth.open)
+  const waterPipeNetworkOpen = useMapStore((s) => s.waterPipeNetwork.open)
+  const powerGridLoadOpen = useMapStore((s) => s.powerGridLoad.open)
+  const wasteCollectionRouteOpen = useMapStore((s) => s.wasteCollectionRoute.open)
+  const airQualityUrbanOpen = useMapStore((s) => s.airQualityUrban.open)
+  const noiseLevelMapperOpen = useMapStore((s) => s.noiseLevelMapper.open)
+  const smartParkingCapacityOpen = useMapStore((s) => s.smartParkingCapacity.open)
 
   if (typeof window === 'undefined') return null
 
@@ -2933,6 +2951,191 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
               </TooltipTrigger>
               <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
                 Nearby Events Finder
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          {/* Task 108: Urban Infrastructure & Smart City */}
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    trafficFlowMonitorOpen
+                      ? 'bg-emerald-500 text-white shadow-md shadow-emerald-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setTrafficFlowMonitor({ open: true })}
+                  aria-label="Traffic Flow Monitor"
+                >
+                  <CarIcon2 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Traffic Flow Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    bridgeStructuralHealthOpen
+                      ? 'bg-stone-500 text-white shadow-md shadow-stone-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setBridgeStructuralHealth({ open: true })}
+                  aria-label="Bridge Structural Health Monitor"
+                >
+                  <ConstructionIcon className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Bridge Structural Health Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    waterPipeNetworkOpen
+                      ? 'bg-blue-500 text-white shadow-md shadow-blue-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setWaterPipeNetwork({ open: true })}
+                  aria-label="Water Pipe Network Monitor"
+                >
+                  <PipeIcon className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Water Pipe Network Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    powerGridLoadOpen
+                      ? 'bg-yellow-500 text-white shadow-md shadow-yellow-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setPowerGridLoad({ open: true })}
+                  aria-label="Power Grid Load Monitor"
+                >
+                  <ZapIcon5 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Power Grid Load Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    wasteCollectionRouteOpen
+                      ? 'bg-green-500 text-white shadow-md shadow-green-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setWasteCollectionRoute({ open: true })}
+                  aria-label="Waste Collection Route Monitor"
+                >
+                  <TrashIcon2 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Waste Collection Route Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    airQualityUrbanOpen
+                      ? 'bg-slate-500 text-white shadow-md shadow-slate-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setAirQualityUrban({ open: true })}
+                  aria-label="Air Quality Urban Monitor"
+                >
+                  <WindIcon16 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Air Quality Urban Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    noiseLevelMapperOpen
+                      ? 'bg-purple-500 text-white shadow-md shadow-purple-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setNoiseLevelMapper({ open: true })}
+                  aria-label="Noise Level Mapper Monitor"
+                >
+                  <Volume2Icon2 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Noise Level Mapper Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    smartParkingCapacityOpen
+                      ? 'bg-indigo-500 text-white shadow-md shadow-indigo-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setSmartParkingCapacity({ open: true })}
+                  aria-label="Smart Parking Capacity Monitor"
+                >
+                  <ParkingIcon className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Smart Parking Capacity Monitor
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

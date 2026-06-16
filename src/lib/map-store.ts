@@ -8879,6 +8879,24 @@ interface MapState {
   satelliteDrag: SatelliteDragState
   setSatelliteDrag: (state: Partial<SatelliteDragState>) => void
 
+  // Task 108: Urban Infrastructure & Smart City
+  trafficFlowMonitor: TrafficFlowState
+  setTrafficFlowMonitor: (state: Partial<TrafficFlowState>) => void
+  bridgeStructuralHealth: BridgeStructuralHealthState
+  setBridgeStructuralHealth: (state: Partial<BridgeStructuralHealthState>) => void
+  waterPipeNetwork: WaterPipeNetworkState
+  setWaterPipeNetwork: (state: Partial<WaterPipeNetworkState>) => void
+  powerGridLoad: PowerGridLoadState
+  setPowerGridLoad: (state: Partial<PowerGridLoadState>) => void
+  wasteCollectionRoute: WasteCollectionRouteState
+  setWasteCollectionRoute: (state: Partial<WasteCollectionRouteState>) => void
+  airQualityUrban: AirQualityUrbanState
+  setAirQualityUrban: (state: Partial<AirQualityUrbanState>) => void
+  noiseLevelMapper: NoiseLevelMapperState
+  setNoiseLevelMapper: (state: Partial<NoiseLevelMapperState>) => void
+  smartParkingCapacity: SmartParkingCapacityState
+  setSmartParkingCapacity: (state: Partial<SmartParkingCapacityState>) => void
+
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
   setAddLocationDialogOpen: (open: boolean) => void
@@ -12453,6 +12471,199 @@ export interface SatelliteDragState {
   showOrbitalDecay: boolean
   showAtmosphericDensity: boolean
   showAltitude: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 108: Urban Infrastructure & Smart City
+export interface TrafficFlowData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  averageSpeed: number     // km/h
+  congestionIndex: number  // 0-100
+  vehicleCount: number     // vehicles/hour
+  travelTime: number       // minutes
+  status: 'congested' | 'moderate' | 'flowing' | 'clear'
+  description: string
+}
+
+export interface TrafficFlowState {
+  open: boolean
+  data: TrafficFlowData[]
+  showAverageSpeed: boolean
+  showCongestionIndex: boolean
+  showVehicleCount: boolean
+  showTravelTime: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface BridgeStructuralHealthData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  structuralStress: number // MPa
+  vibrationLevel: number   // mm/s
+  loadCapacity: number     // tonnes
+  corrosionIndex: number   // 0-100
+  status: 'critical' | 'warning' | 'stable' | 'optimal'
+  description: string
+}
+
+export interface BridgeStructuralHealthState {
+  open: boolean
+  data: BridgeStructuralHealthData[]
+  showStructuralStress: boolean
+  showVibrationLevel: boolean
+  showLoadCapacity: boolean
+  showCorrosionIndex: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface WaterPipeNetworkData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  pressureLevel: number  // bar
+  flowRate: number       // L/s
+  leakDetection: number  // leaks/km
+  waterQuality: number   // 0-100
+  status: 'burst' | 'leaking' | 'normal' | 'optimal'
+  description: string
+}
+
+export interface WaterPipeNetworkState {
+  open: boolean
+  data: WaterPipeNetworkData[]
+  showPressureLevel: boolean
+  showFlowRate: boolean
+  showLeakDetection: boolean
+  showWaterQuality: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface PowerGridLoadData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  gridLoad: number       // %
+  peakDemand: number     // GW
+  frequency: number      // Hz
+  reserveMargin: number  // %
+  status: 'overloaded' | 'high' | 'normal' | 'low'
+  description: string
+}
+
+export interface PowerGridLoadState {
+  open: boolean
+  data: PowerGridLoadData[]
+  showGridLoad: boolean
+  showPeakDemand: boolean
+  showFrequency: boolean
+  showReserveMargin: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface WasteCollectionRouteData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  collectionRate: number   // %
+  routeEfficiency: number  // %
+  fillLevel: number        // %
+  recyclingRate: number    // %
+  status: 'overflow' | 'delayed' | 'ontrack' | 'efficient'
+  description: string
+}
+
+export interface WasteCollectionRouteState {
+  open: boolean
+  data: WasteCollectionRouteData[]
+  showCollectionRate: boolean
+  showRouteEfficiency: boolean
+  showFillLevel: boolean
+  showRecyclingRate: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface AirQualityUrbanData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  aqiIndex: number      // 0-500
+  pm25Level: number     // ug/m3
+  no2Level: number      // ppb
+  o3Level: number       // ppb
+  status: 'hazardous' | 'unhealthy' | 'moderate' | 'good'
+  description: string
+}
+
+export interface AirQualityUrbanState {
+  open: boolean
+  data: AirQualityUrbanData[]
+  showAqiIndex: boolean
+  showPm25Level: boolean
+  showNo2Level: boolean
+  showO3Level: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface NoiseLevelMapperData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  avgDecibels: number    // dB
+  peakLevel: number      // dB
+  quietZonePercent: number // %
+  nightLevel: number     // dB
+  status: 'extreme' | 'high' | 'moderate' | 'quiet'
+  description: string
+}
+
+export interface NoiseLevelMapperState {
+  open: boolean
+  data: NoiseLevelMapperData[]
+  showAvgDecibels: boolean
+  showPeakLevel: boolean
+  showQuietZonePercent: boolean
+  showNightLevel: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface SmartParkingCapacityData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  occupancyRate: number  // %
+  availableSpots: number // count
+  avgDuration: number    // minutes
+  turnoverRate: number   // vehicles/spot/day
+  status: 'full' | 'crowded' | 'available' | 'empty'
+  description: string
+}
+
+export interface SmartParkingCapacityState {
+  open: boolean
+  data: SmartParkingCapacityData[]
+  showOccupancyRate: boolean
+  showAvailableSpots: boolean
+  showAvgDuration: boolean
+  showTurnoverRate: boolean
   statusFilter: string
   activeItemId: string | null
 }
@@ -17719,6 +17930,40 @@ export const useMapStore = create<MapState>()(
       },
       setSatelliteDrag: (updates) => set((state) => ({ satelliteDrag: { ...state.satelliteDrag, ...updates } })),
 
+      // Task 108: Urban Infrastructure & Smart City
+      trafficFlowMonitor: {
+        data: [], activeItemId: null, showAverageSpeed: true, showCongestionIndex: true, showVehicleCount: false, showTravelTime: false, open: false, statusFilter: '',
+      },
+      setTrafficFlowMonitor: (updates) => set((state) => ({ trafficFlowMonitor: { ...state.trafficFlowMonitor, ...updates } })),
+      bridgeStructuralHealth: {
+        data: [], activeItemId: null, showStructuralStress: true, showVibrationLevel: true, showLoadCapacity: false, showCorrosionIndex: false, open: false, statusFilter: '',
+      },
+      setBridgeStructuralHealth: (updates) => set((state) => ({ bridgeStructuralHealth: { ...state.bridgeStructuralHealth, ...updates } })),
+      waterPipeNetwork: {
+        data: [], activeItemId: null, showPressureLevel: true, showFlowRate: true, showLeakDetection: false, showWaterQuality: false, open: false, statusFilter: '',
+      },
+      setWaterPipeNetwork: (updates) => set((state) => ({ waterPipeNetwork: { ...state.waterPipeNetwork, ...updates } })),
+      powerGridLoad: {
+        data: [], activeItemId: null, showGridLoad: true, showPeakDemand: true, showFrequency: false, showReserveMargin: false, open: false, statusFilter: '',
+      },
+      setPowerGridLoad: (updates) => set((state) => ({ powerGridLoad: { ...state.powerGridLoad, ...updates } })),
+      wasteCollectionRoute: {
+        data: [], activeItemId: null, showCollectionRate: true, showRouteEfficiency: true, showFillLevel: false, showRecyclingRate: false, open: false, statusFilter: '',
+      },
+      setWasteCollectionRoute: (updates) => set((state) => ({ wasteCollectionRoute: { ...state.wasteCollectionRoute, ...updates } })),
+      airQualityUrban: {
+        data: [], activeItemId: null, showAqiIndex: true, showPm25Level: true, showNo2Level: false, showO3Level: false, open: false, statusFilter: '',
+      },
+      setAirQualityUrban: (updates) => set((state) => ({ airQualityUrban: { ...state.airQualityUrban, ...updates } })),
+      noiseLevelMapper: {
+        data: [], activeItemId: null, showAvgDecibels: true, showPeakLevel: true, showQuietZonePercent: false, showNightLevel: false, open: false, statusFilter: '',
+      },
+      setNoiseLevelMapper: (updates) => set((state) => ({ noiseLevelMapper: { ...state.noiseLevelMapper, ...updates } })),
+      smartParkingCapacity: {
+        data: [], activeItemId: null, showOccupancyRate: true, showAvailableSpots: true, showAvgDuration: false, showTurnoverRate: false, open: false, statusFilter: '',
+      },
+      setSmartParkingCapacity: (updates) => set((state) => ({ smartParkingCapacity: { ...state.smartParkingCapacity, ...updates } })),
+
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
       setAddLocationDialogOpen: (open) => set({ addLocationDialogOpen: open }),
@@ -18264,6 +18509,15 @@ export const useMapStore = create<MapState>()(
         solarFluxIndex: state.solarFluxIndex,
         spaceRadiationDose: state.spaceRadiationDose,
         satelliteDrag: state.satelliteDrag,
+        // Task 108: Urban Infrastructure & Smart City
+        trafficFlowMonitor: state.trafficFlowMonitor,
+        bridgeStructuralHealth: state.bridgeStructuralHealth,
+        waterPipeNetwork: state.waterPipeNetwork,
+        powerGridLoad: state.powerGridLoad,
+        wasteCollectionRoute: state.wasteCollectionRoute,
+        airQualityUrban: state.airQualityUrban,
+        noiseLevelMapper: state.noiseLevelMapper,
+        smartParkingCapacity: state.smartParkingCapacity,
         // Task 96
         karstSpringDischarge: state.karstSpringDischarge,
         caveDripMonitor: state.caveDripMonitor,
