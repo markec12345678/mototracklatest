@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -16,30 +16,64 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useMapStore, type SolarIrradianceState, type SolarIrradianceData } from '@/lib/map-store'
-import { Sun as SunIcon7, X, Zap, ArrowRight, Circle, ShieldAlert, MapPin, Filter } from 'lucide-react'
+import { Sun as SunIcon12, X, Zap, ArrowRight, Circle, SunMedium, MapPin, Filter } from 'lucide-react'
 
-const DEMO_STATIONS: SolarIrradianceData[] = [
+const SAMPLE_LOCATIONS: SolarIrradianceData[] = [
   {
-    id: 'si-1', name: 'Sahara Desert', lat: 25, lng: 0, ghi: 2500, dni: 2800, dhi: 400, uvIndex: 12, cloudCover: 5, status: 'excellent', description: 'Highest solar irradiance on Earth with minimal cloud cover',
+    id: 'si-sahara',
+    name: 'Sahara Solar',
+    lat: 23.400,
+    lng: 25.660,
+    ghi: 2500,
+    dni: 2800,
+    dhi: 400,
+    uvIndex: 12,
+    cloudCover: 5,
+    status: 'excellent',
+    description: 'Highest solar irradiance on Earth with minimal cloud cover',
   },
   {
-    id: 'si-2', name: 'Arabian Desert', lat: 22, lng: 50, ghi: 2400, dni: 2600, dhi: 450, uvIndex: 11, cloudCover: 8, status: 'excellent', description: 'Premium solar energy potential in the Arabian Peninsula',
+    id: 'si-mojave',
+    name: 'Mojave Desert',
+    lat: 35.010,
+    lng: -115.470,
+    ghi: 2200,
+    dni: 2500,
+    dhi: 500,
+    uvIndex: 10,
+    cloudCover: 10,
+    status: 'excellent',
+    description: 'Major solar farm region in the southwestern United States',
   },
   {
-    id: 'si-3', name: 'Mojave Desert', lat: 35, lng: -116, ghi: 2200, dni: 2500, dhi: 500, uvIndex: 10, cloudCover: 10, status: 'good', description: 'Major solar farm region in the southwestern United States',
+    id: 'si-arabian',
+    name: 'Arabian Peninsula',
+    lat: 24.000,
+    lng: 45.000,
+    ghi: 2400,
+    dni: 2600,
+    dhi: 450,
+    uvIndex: 11,
+    cloudCover: 8,
+    status: 'good',
+    description: 'Premium solar energy potential in the Arabian Peninsula',
   },
   {
-    id: 'si-4', name: 'Mediterranean', lat: 40, lng: 15, ghi: 1800, dni: 2000, dhi: 600, uvIndex: 8, cloudCover: 25, status: 'moderate', description: 'Good solar potential with seasonal variation',
-  },
-  {
-    id: 'si-5', name: 'Northern Europe', lat: 55, lng: 10, ghi: 1000, dni: 900, dhi: 500, uvIndex: 4, cloudCover: 60, status: 'low', description: 'Limited solar irradiance due to high latitude and clouds',
-  },
-  {
-    id: 'si-6', name: 'Antarctic', lat: -75, lng: 0, ghi: 300, dni: 200, dhi: 200, uvIndex: 1, cloudCover: 80, status: 'minimal', description: 'Minimal solar irradiance with extreme seasonal variation',
+    id: 'si-atacama',
+    name: 'Atacama Desert',
+    lat: -24.000,
+    lng: -69.500,
+    ghi: 2300,
+    dni: 2700,
+    dhi: 350,
+    uvIndex: 13,
+    cloudCover: 3,
+    status: 'excellent',
+    description: 'World highest DNI in the Atacama Desert of Chile',
   },
 ]
 
-const STATUS_CONFIG: Record<SolarIrradianceData['status'], { label: string; color: string; bgClass: string }> = {
+const STATUS_COLORS: Record<SolarIrradianceData['status'], { label: string; color: string; bgClass: string }> = {
   excellent: { label: 'Excellent', color: '#10b981', bgClass: 'bg-emerald-500/10 text-emerald-600 border-emerald-500/30' },
   good: { label: 'Good', color: '#0ea5e9', bgClass: 'bg-sky-500/10 text-sky-600 border-sky-500/30' },
   moderate: { label: 'Moderate', color: '#f59e0b', bgClass: 'bg-amber-500/10 text-amber-600 border-amber-500/30' },
@@ -47,33 +81,42 @@ const STATUS_CONFIG: Record<SolarIrradianceData['status'], { label: string; colo
   minimal: { label: 'Minimal', color: '#ef4444', bgClass: 'bg-red-500/10 text-red-600 border-red-500/30' },
 }
 
+function TrendIcon({ status }: { status: SolarIrradianceData['status'] }) {
+  const cfg = STATUS_COLORS[status]
+  return (
+    <div className="h-2 w-2 rounded-full" style={{ backgroundColor: cfg.color }} />
+  )
+}
+
 export function SolarIrradianceMonitor() {
   const state = useMapStore((s) => s.solarIrradiance)
   const setState = useMapStore((s) => s.setSolarIrradiance)
 
   const stations = useMemo(
-    () => (state.stations.length > 0 ? state.stations : DEMO_STATIONS),
+    () => (state.stations.length > 0 ? state.stations : SAMPLE_LOCATIONS),
     [state.stations]
   )
 
   const filteredStations = useMemo(() => {
     return stations.filter((s) => {
-      if (state.regionFilter !== 'all') return true
+      if (state.regionFilter !== 'all' && state.regionFilter !== '' && s.status !== state.regionFilter) return false
       return true
     })
   }, [stations, state.regionFilter])
 
   const summary = useMemo(() => {
     if (filteredStations.length === 0) {
-      return { avgGHI: 0, avgDNI: 0, excellentCount: 0 }
+      return { avgGHI: 0, avgDNI: 0, avgDHI: 0, peakHours: 0 }
     }
     const avgGHI = filteredStations.reduce((sum, s) => sum + s.ghi, 0) / filteredStations.length
     const avgDNI = filteredStations.reduce((sum, s) => sum + s.dni, 0) / filteredStations.length
-    const excellentCount = filteredStations.filter((s) => s.status === 'excellent').length
+    const avgDHI = filteredStations.reduce((sum, s) => sum + s.dhi, 0) / filteredStations.length
+    const peakHours = avgGHI / 1000
     return {
       avgGHI: Math.round(avgGHI),
       avgDNI: Math.round(avgDNI),
-      excellentCount,
+      avgDHI: Math.round(avgDHI),
+      peakHours: peakHours.toFixed(1),
     }
   }, [filteredStations])
 
@@ -82,121 +125,144 @@ export function SolarIrradianceMonitor() {
     [stations, state.activeStationId]
   )
 
+  const geojson = useMemo(() => ({
+    type: 'FeatureCollection' as const,
+    features: filteredStations.map((s) => ({
+      type: 'Feature' as const,
+      geometry: { type: 'Point' as const, coordinates: [s.lng, s.lat] },
+      properties: { id: s.id, name: s.name, status: s.status, ghi: s.ghi },
+    })),
+  }), [filteredStations])
+
+  useEffect(() => {
+    if (state.stations.length === 0) {
+      useMapStore.getState().setSolarIrradiance({ stations: SAMPLE_LOCATIONS })
+    }
+  }, [state.stations.length])
+
   if (typeof window === 'undefined') return null
   if (!state.open) return null
 
   const overlayToggles: { key: keyof SolarIrradianceState; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
-    { key: 'showGHI', label: 'GHI', icon: Zap },
-    { key: 'showDNI', label: 'DNI', icon: ArrowRight },
-    { key: 'showDHI', label: 'DHI', icon: Circle },
-    { key: 'showUVIndex', label: 'UV Index', icon: ShieldAlert },
+    { key: 'showGHI', label: 'GHI W/m\u00B2', icon: Zap },
+    { key: 'showDNI', label: 'DNI W/m\u00B2', icon: ArrowRight },
+    { key: 'showDHI', label: 'DHI W/m\u00B2', icon: Circle },
+    { key: 'showUVIndex', label: 'Peak Hours', icon: SunMedium },
   ]
+
+  void geojson
 
   return (
     <div className="fixed right-4 top-16 z-[60] w-[420px] max-w-[calc(100vw-32px)] max-h-[calc(100vh-100px)]">
-      <Card className="bg-gradient-to-br from-yellow-950/95 to-orange-950/95 backdrop-blur-xl border border-yellow-800/40 rounded-xl shadow-lg shadow-yellow-950/30 overflow-hidden">
-        <CardHeader className="pb-3 border-b border-yellow-800/30">
+      <Card className="bg-gradient-to-br from-amber-950/95 to-orange-950/95 backdrop-blur-xl border border-amber-700/40 rounded-xl shadow-lg overflow-hidden">
+        <CardHeader className="pb-3 border-b border-amber-700/30">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-sm flex items-center gap-2 text-yellow-100">
-              <SunIcon7 className="h-4 w-4 text-yellow-400" />
+            <CardTitle className="text-sm flex items-center gap-2 text-amber-100">
+              <SunIcon12 className="h-4 w-4 text-amber-400" />
               Solar Irradiance Monitor
             </CardTitle>
             <Button
               variant="ghost"
               size="icon"
-              className="h-7 w-7 text-yellow-300 hover:text-yellow-100 hover:bg-yellow-800/30"
+              className="h-7 w-7 text-amber-300 hover:text-amber-100 hover:bg-amber-800/30"
               onClick={() => setState({ open: false })}
             >
               <X className="h-4 w-4" />
             </Button>
           </div>
         </CardHeader>
-        <CardContent className="space-y-3 p-4 text-yellow-100">
-          {/* Region Filter */}
+        <CardContent className="space-y-3 p-4 text-amber-100">
+          {/* Status Filter */}
           <div>
-            <Label className="text-xs text-yellow-300 flex items-center gap-1.5">
+            <Label className="text-xs text-amber-300/80 flex items-center gap-1.5">
               <Filter className="h-3 w-3" />
-              Region
+              Status
             </Label>
             <Select
-              value={state.regionFilter}
+              value={state.regionFilter || 'all'}
               onValueChange={(v) =>
                 setState({ regionFilter: v as SolarIrradianceState['regionFilter'] })
               }
             >
-              <SelectTrigger className="h-8 text-xs mt-1 bg-yellow-900/40 border-yellow-700/40 text-yellow-100 hover:bg-yellow-900/60">
+              <SelectTrigger className="h-8 text-xs mt-1 bg-amber-900/40 border-amber-700/40 text-amber-100 hover:bg-amber-900/60">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Regions</SelectItem>
-                <SelectItem value="desert">Desert</SelectItem>
-                <SelectItem value="tropical">Tropical</SelectItem>
-                <SelectItem value="temperate">Temperate</SelectItem>
-                <SelectItem value="polar">Polar</SelectItem>
+                <SelectItem value="all">All Statuses</SelectItem>
+                <SelectItem value="excellent">Excellent</SelectItem>
+                <SelectItem value="good">Good</SelectItem>
+                <SelectItem value="moderate">Moderate</SelectItem>
+                <SelectItem value="low">Low</SelectItem>
+                <SelectItem value="minimal">Minimal</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
-          <Separator className="bg-yellow-800/30" />
+          <Separator className="bg-amber-700/30" />
 
           {/* Overlay Toggles */}
           <div className="space-y-1.5">
-            <Label className="text-xs text-yellow-300">Display Options</Label>
+            <Label className="text-xs text-amber-300/80">Display Options</Label>
             {overlayToggles.map(({ key, label, icon: Icon }) => (
               <div key={key} className="flex items-center justify-between">
-                <div className="flex items-center gap-1.5 text-xs text-yellow-200">
-                  <Icon className="h-3 w-3 text-yellow-400" />
+                <div className="flex items-center gap-1.5 text-xs text-amber-200">
+                  <Icon className="h-3 w-3 text-amber-400" />
                   <span>{label}</span>
                 </div>
                 <Switch
                   checked={state[key] as boolean}
                   onCheckedChange={(checked) => setState({ [key]: checked })}
-                  className="scale-75 data-[state=checked]:bg-yellow-600"
+                  className="scale-75 data-[state=checked]:bg-amber-600"
                 />
               </div>
             ))}
           </div>
 
-          <Separator className="bg-yellow-800/30" />
+          <Separator className="bg-amber-700/30" />
 
-          {/* Summary */}
-          <div className="grid grid-cols-3 gap-2">
-            <div className="rounded-lg border border-yellow-700/30 bg-yellow-900/30 p-2 text-center">
-              <div className="text-[10px] text-yellow-400">Avg GHI</div>
+          {/* Summary Metrics */}
+          <div className="grid grid-cols-2 gap-2">
+            <div className="rounded-lg border border-amber-700/30 bg-amber-900/30 p-2 text-center">
+              <div className="text-[10px] text-amber-400/70">GHI</div>
               <div className="text-sm font-semibold text-orange-300">{summary.avgGHI}</div>
-              <div className="text-[9px] text-yellow-400">kWh/m&sup2;</div>
+              <div className="text-[9px] text-amber-400/60">W/m\u00B2</div>
             </div>
-            <div className="rounded-lg border border-yellow-700/30 bg-yellow-900/30 p-2 text-center">
-              <div className="text-[10px] text-yellow-400">Avg DNI</div>
-              <div className="text-sm font-semibold text-yellow-300">{summary.avgDNI}</div>
-              <div className="text-[9px] text-yellow-400">kWh/m&sup2;</div>
+            <div className="rounded-lg border border-amber-700/30 bg-amber-900/30 p-2 text-center">
+              <div className="text-[10px] text-amber-400/70">DNI</div>
+              <div className="text-sm font-semibold text-amber-300">{summary.avgDNI}</div>
+              <div className="text-[9px] text-amber-400/60">W/m\u00B2</div>
             </div>
-            <div className="rounded-lg border border-yellow-700/30 bg-yellow-900/30 p-2 text-center">
-              <div className="text-[10px] text-yellow-400">Excellent</div>
-              <div className="text-sm font-semibold text-emerald-400">{summary.excellentCount}</div>
-              <div className="text-[9px] text-yellow-400">stations</div>
+            <div className="rounded-lg border border-amber-700/30 bg-amber-900/30 p-2 text-center">
+              <div className="text-[10px] text-amber-400/70">DHI</div>
+              <div className="text-sm font-semibold text-yellow-400">{summary.avgDHI}</div>
+              <div className="text-[9px] text-amber-400/60">W/m\u00B2</div>
+            </div>
+            <div className="rounded-lg border border-amber-700/30 bg-amber-900/30 p-2 text-center">
+              <div className="text-[10px] text-amber-400/70">Peak Hours</div>
+              <div className="text-sm font-semibold text-emerald-400">{summary.peakHours}</div>
+              <div className="text-[9px] text-amber-400/60">h/day</div>
             </div>
           </div>
 
-          <Separator className="bg-yellow-800/30" />
+          <Separator className="bg-amber-700/30" />
 
           {/* Station List */}
           <div className="space-y-1.5">
-            <Label className="text-xs text-yellow-300">
+            <Label className="text-xs text-amber-300/80">
               Solar Stations ({filteredStations.length})
             </Label>
             <ScrollArea className="max-h-[260px]">
               <div className="space-y-2 pr-1">
                 {filteredStations.map((station) => {
                   const isActive = state.activeStationId === station.id
-                  const statusCfg = STATUS_CONFIG[station.status]
+                  const statusCfg = STATUS_COLORS[station.status]
                   return (
                     <div
                       key={station.id}
                       className={`rounded-lg border p-2.5 cursor-pointer transition-all ${
                         isActive
-                          ? 'border-yellow-500/60 bg-yellow-800/30'
-                          : 'border-yellow-800/30 hover:border-yellow-600/40 hover:bg-yellow-900/20'
+                          ? 'border-amber-500/50 bg-amber-800/30'
+                          : 'border-amber-700/30 hover:border-amber-500/30 hover:bg-amber-800/20'
                       }`}
                       onClick={() =>
                         setState({ activeStationId: isActive ? null : station.id })
@@ -204,11 +270,8 @@ export function SolarIrradianceMonitor() {
                     >
                       <div className="flex items-center justify-between mb-1.5">
                         <div className="flex items-center gap-1.5">
-                          <div
-                            className="h-2 w-2 rounded-full"
-                            style={{ backgroundColor: statusCfg.color }}
-                          />
-                          <span className="text-xs font-medium text-yellow-100">{station.name}</span>
+                          <TrendIcon status={station.status} />
+                          <span className="text-xs font-medium text-amber-100">{station.name}</span>
                         </div>
                         <Badge
                           variant="outline"
@@ -218,25 +281,29 @@ export function SolarIrradianceMonitor() {
                         </Badge>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10px] text-yellow-300">
+                      <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10px] text-amber-300/60">
                         {state.showGHI && (
                           <div>
-                            GHI: <span className="text-yellow-100 font-medium">{station.ghi}</span>
+                            GHI:{' '}
+                            <span className="text-amber-100 font-medium">{station.ghi} W/m\u00B2</span>
                           </div>
                         )}
                         {state.showDNI && (
                           <div>
-                            DNI: <span className="text-yellow-100 font-medium">{station.dni}</span>
+                            DNI:{' '}
+                            <span className="text-amber-100 font-medium">{station.dni} W/m\u00B2</span>
                           </div>
                         )}
                         {state.showDHI && (
                           <div>
-                            DHI: <span className="text-yellow-100 font-medium">{station.dhi}</span>
+                            DHI:{' '}
+                            <span className="text-amber-100 font-medium">{station.dhi} W/m\u00B2</span>
                           </div>
                         )}
                         {state.showUVIndex && (
                           <div>
-                            UV: <span className="text-yellow-100 font-medium">{station.uvIndex}</span>
+                            Peak Hours:{' '}
+                            <span className="text-amber-100 font-medium">{(station.ghi / 1000).toFixed(1)} h</span>
                           </div>
                         )}
                       </div>
@@ -244,7 +311,7 @@ export function SolarIrradianceMonitor() {
                   )
                 })}
                 {filteredStations.length === 0 && (
-                  <div className="text-center text-xs text-yellow-400 py-4">
+                  <div className="text-center text-xs text-amber-400/50 py-4">
                     No stations match the current filter.
                   </div>
                 )}
@@ -255,48 +322,37 @@ export function SolarIrradianceMonitor() {
           {/* Active Station Details */}
           {activeStation && (
             <>
-              <Separator className="bg-yellow-800/30" />
-              <div className="space-y-2 rounded-lg border border-yellow-600/30 bg-yellow-900/30 p-3">
+              <Separator className="bg-amber-700/30" />
+              <div className="space-y-2 rounded-lg border border-amber-600/30 bg-amber-800/20 p-3">
                 <div className="flex items-center gap-2">
-                  <MapPin className="h-3.5 w-3.5 text-yellow-400" />
-                  <span className="text-xs font-semibold text-yellow-100">{activeStation.name}</span>
+                  <MapPin className="h-3.5 w-3.5 text-amber-400" />
+                  <span className="text-xs font-semibold text-amber-100">{activeStation.name}</span>
                   <Badge
                     variant="outline"
-                    className={`text-[10px] h-5 ml-auto ${STATUS_CONFIG[activeStation.status].bgClass}`}
+                    className={`text-[10px] h-5 ml-auto ${STATUS_COLORS[activeStation.status].bgClass}`}
                   >
-                    {STATUS_CONFIG[activeStation.status].label}
+                    {STATUS_COLORS[activeStation.status].label}
                   </Badge>
                 </div>
+                <p className="text-[10px] text-amber-300/60 italic">{activeStation.description}</p>
                 <div className="grid grid-cols-2 gap-2 text-[11px]">
                   <div>
-                    <span className="text-yellow-400">Coordinates: </span>
-                    <span className="font-medium text-yellow-100">
-                      {activeStation.lat.toFixed(1)}, {activeStation.lng.toFixed(1)}
+                    <span className="text-amber-400/70">Coordinates: </span>
+                    <span className="font-medium text-amber-100">
+                      {activeStation.lat.toFixed(2)}, {activeStation.lng.toFixed(2)}
                     </span>
                   </div>
                   <div>
-                    <span className="text-yellow-400">GHI: </span>
-                    <span className="font-medium text-orange-300">{activeStation.ghi} kWh/m&sup2;</span>
+                    <span className="text-amber-400/70">GHI: </span>
+                    <span className="font-medium text-orange-300">{activeStation.ghi} W/m\u00B2</span>
                   </div>
                   <div>
-                    <span className="text-yellow-400">DNI: </span>
-                    <span className="font-medium text-yellow-200">{activeStation.dni} kWh/m&sup2;</span>
+                    <span className="text-amber-400/70">DNI: </span>
+                    <span className="font-medium text-amber-200">{activeStation.dni} W/m\u00B2</span>
                   </div>
                   <div>
-                    <span className="text-yellow-400">DHI: </span>
-                    <span className="font-medium text-yellow-200">{activeStation.dhi} kWh/m&sup2;</span>
-                  </div>
-                  <div>
-                    <span className="text-yellow-400">UV Index: </span>
-                    <span className="font-medium text-red-400">{activeStation.uvIndex}</span>
-                  </div>
-                  <div>
-                    <span className="text-yellow-400">Cloud Cover: </span>
-                    <span className="font-medium text-yellow-200">{activeStation.cloudCover}%</span>
-                  </div>
-                  <div className="col-span-2">
-                    <span className="text-yellow-400">Description: </span>
-                    <span className="font-medium text-yellow-200">{activeStation.description}</span>
+                    <span className="text-amber-400/70">DHI: </span>
+                    <span className="font-medium text-yellow-400">{activeStation.dhi} W/m\u00B2</span>
                   </div>
                 </div>
               </div>

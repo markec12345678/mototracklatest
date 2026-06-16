@@ -326,6 +326,13 @@ export function MonitorPanelRegistry() {
   const harvestYieldPredict = useMapStore((s) => s.harvestYieldPredict)
   const greenhouseClimate = useMapStore((s) => s.greenhouseClimate)
   const livestockMovement = useMapStore((s) => s.livestockMovement)
+  // Task 110: Renewable Energy & Grid Monitoring
+  const windFarmOutput = useMapStore((s) => s.windFarmOutput)
+  const hydroelectricFlow = useMapStore((s) => s.hydroelectricFlow)
+  const biomassEnergyYield = useMapStore((s) => s.biomassEnergyYield)
+  const tidalEnergyPotential = useMapStore((s) => s.tidalEnergyPotential)
+  const gridStabilityIndex = useMapStore((s) => s.gridStabilityIndex)
+  const energyStorageLevel = useMapStore((s) => s.energyStorageLevel)
 
   return (
     <>
@@ -1051,6 +1058,25 @@ export function MonitorPanelRegistry() {
       )}
       {livestockMovement.open && (
         <LazyPanel importFn={() => import('@/components/map/LivestockMovementMonitor')} exportName="LivestockMovementMonitor" shouldLoad={true} />
+      )}
+      {/* Task 110: Renewable Energy & Grid Monitoring */}
+      {windFarmOutput.open && (
+        <LazyPanel importFn={() => import('@/components/map/WindFarmOutputMonitor')} exportName="WindFarmOutputMonitor" shouldLoad={true} />
+      )}
+      {hydroelectricFlow.open && (
+        <LazyPanel importFn={() => import('@/components/map/HydroelectricFlowMonitor')} exportName="HydroelectricFlowMonitor" shouldLoad={true} />
+      )}
+      {biomassEnergyYield.open && (
+        <LazyPanel importFn={() => import('@/components/map/BiomassEnergyYieldMonitor')} exportName="BiomassEnergyYieldMonitor" shouldLoad={true} />
+      )}
+      {tidalEnergyPotential.open && (
+        <LazyPanel importFn={() => import('@/components/map/TidalEnergyPotentialMonitor')} exportName="TidalEnergyPotentialMonitor" shouldLoad={true} />
+      )}
+      {gridStabilityIndex.open && (
+        <LazyPanel importFn={() => import('@/components/map/GridStabilityIndexMonitor')} exportName="GridStabilityIndexMonitor" shouldLoad={true} />
+      )}
+      {energyStorageLevel.open && (
+        <LazyPanel importFn={() => import('@/components/map/EnergyStorageLevelMonitor')} exportName="EnergyStorageLevelMonitor" shouldLoad={true} />
       )}
     </>
   )

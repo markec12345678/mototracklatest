@@ -8915,6 +8915,20 @@ interface MapState {
   livestockMovement: LivestockMovementState
   setLivestockMovement: (state: Partial<LivestockMovementState>) => void
 
+  // Task 110: Renewable Energy & Grid Monitoring
+  windFarmOutput: WindFarmOutputState
+  setWindFarmOutput: (state: Partial<WindFarmOutputState>) => void
+  hydroelectricFlow: HydroelectricFlowState
+  setHydroelectricFlow: (state: Partial<HydroelectricFlowState>) => void
+  biomassEnergyYield: BiomassEnergyYieldState
+  setBiomassEnergyYield: (state: Partial<BiomassEnergyYieldState>) => void
+  tidalEnergyPotential: TidalEnergyPotentialState
+  setTidalEnergyPotential: (state: Partial<TidalEnergyPotentialState>) => void
+  gridStabilityIndex: GridStabilityIndexState
+  setGridStabilityIndex: (state: Partial<GridStabilityIndexState>) => void
+  energyStorageLevel: EnergyStorageLevelState
+  setEnergyStorageLevel: (state: Partial<EnergyStorageLevelState>) => void
+
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
   setAddLocationDialogOpen: (open: boolean) => void
@@ -13069,6 +13083,151 @@ export interface LivestockMovementState {
   showAvgSpeed: boolean
   showGrazingArea: boolean
   showHealthIndex: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 110: Renewable Energy & Grid Monitoring
+export interface WindFarmOutputData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  windSpeed: number          // m/s
+  powerOutput: number        // MW
+  capacityFactor: number     // 0-100
+  rotorRpm: number           // rpm
+  status: 'offline' | 'low' | 'optimal' | 'curtailed'
+  description: string
+}
+
+export interface WindFarmOutputState {
+  open: boolean
+  data: WindFarmOutputData[]
+  showWindSpeed: boolean
+  showPowerOutput: boolean
+  showCapacityFactor: boolean
+  showRotorRpm: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface HydroelectricFlowData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  flowRate: number           // m3/s
+  reservoirLevel: number     // 0-100
+  turbineEfficiency: number  // 0-100
+  powerOutput: number        // MW
+  status: 'drought' | 'low' | 'normal' | 'flood'
+  description: string
+}
+
+export interface HydroelectricFlowState {
+  open: boolean
+  data: HydroelectricFlowData[]
+  showFlowRate: boolean
+  showReservoirLevel: boolean
+  showTurbineEfficiency: boolean
+  showPowerOutput: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface BiomassEnergyYieldData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  feedstockSupply: number    // tonnes/day
+  biogasOutput: number       // m3/h
+  conversionEfficiency: number // 0-100
+  carbonOffset: number       // tonnes CO2/yr
+  status: 'inactive' | 'low' | 'normal' | 'peak'
+  description: string
+}
+
+export interface BiomassEnergyYieldState {
+  open: boolean
+  data: BiomassEnergyYieldData[]
+  showFeedstockSupply: boolean
+  showBiogasOutput: boolean
+  showConversionEfficiency: boolean
+  showCarbonOffset: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface TidalEnergyPotentialData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  tidalRange: number         // m
+  currentSpeed: number       // m/s
+  powerDensity: number       // kW/m2
+  predictability: number     // 0-100
+  status: 'weak' | 'moderate' | 'strong' | 'exceptional'
+  description: string
+}
+
+export interface TidalEnergyPotentialState {
+  open: boolean
+  data: TidalEnergyPotentialData[]
+  showTidalRange: boolean
+  showCurrentSpeed: boolean
+  showPowerDensity: boolean
+  showPredictability: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface GridStabilityIndexData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  frequency: number          // Hz
+  voltageDeviation: number   // 0-100
+  loadBalance: number        // 0-100
+  reserveMargin: number      // 0-100
+  status: 'critical' | 'warning' | 'stable' | 'optimal'
+  description: string
+}
+
+export interface GridStabilityIndexState {
+  open: boolean
+  data: GridStabilityIndexData[]
+  showFrequency: boolean
+  showVoltageDeviation: boolean
+  showLoadBalance: boolean
+  showReserveMargin: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface EnergyStorageLevelData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  storageCapacity: number    // MWh
+  chargeLevel: number        // 0-100
+  dischargeRate: number      // MW
+  roundTripEfficiency: number // 0-100
+  status: 'depleted' | 'low' | 'charged' | 'full'
+  description: string
+}
+
+export interface EnergyStorageLevelState {
+  open: boolean
+  data: EnergyStorageLevelData[]
+  showStorageCapacity: boolean
+  showChargeLevel: boolean
+  showDischargeRate: boolean
+  showRoundTripEfficiency: boolean
   statusFilter: string
   activeItemId: string | null
 }
@@ -18403,6 +18562,32 @@ export const useMapStore = create<MapState>()(
       },
       setLivestockMovement: (updates) => set((state) => ({ livestockMovement: { ...state.livestockMovement, ...updates } })),
 
+      // Task 110: Renewable Energy & Grid Monitoring
+      windFarmOutput: {
+        data: [], activeItemId: null, showWindSpeed: true, showPowerOutput: true, showCapacityFactor: false, showRotorRpm: false, open: false, statusFilter: '',
+      },
+      setWindFarmOutput: (updates) => set((state) => ({ windFarmOutput: { ...state.windFarmOutput, ...updates } })),
+      hydroelectricFlow: {
+        data: [], activeItemId: null, showFlowRate: true, showReservoirLevel: true, showTurbineEfficiency: false, showPowerOutput: false, open: false, statusFilter: '',
+      },
+      setHydroelectricFlow: (updates) => set((state) => ({ hydroelectricFlow: { ...state.hydroelectricFlow, ...updates } })),
+      biomassEnergyYield: {
+        data: [], activeItemId: null, showFeedstockSupply: true, showBiogasOutput: true, showConversionEfficiency: false, showCarbonOffset: false, open: false, statusFilter: '',
+      },
+      setBiomassEnergyYield: (updates) => set((state) => ({ biomassEnergyYield: { ...state.biomassEnergyYield, ...updates } })),
+      tidalEnergyPotential: {
+        data: [], activeItemId: null, showTidalRange: true, showCurrentSpeed: true, showPowerDensity: false, showPredictability: false, open: false, statusFilter: '',
+      },
+      setTidalEnergyPotential: (updates) => set((state) => ({ tidalEnergyPotential: { ...state.tidalEnergyPotential, ...updates } })),
+      gridStabilityIndex: {
+        data: [], activeItemId: null, showFrequency: true, showVoltageDeviation: true, showLoadBalance: false, showReserveMargin: false, open: false, statusFilter: '',
+      },
+      setGridStabilityIndex: (updates) => set((state) => ({ gridStabilityIndex: { ...state.gridStabilityIndex, ...updates } })),
+      energyStorageLevel: {
+        data: [], activeItemId: null, showStorageCapacity: true, showChargeLevel: true, showDischargeRate: false, showRoundTripEfficiency: false, open: false, statusFilter: '',
+      },
+      setEnergyStorageLevel: (updates) => set((state) => ({ energyStorageLevel: { ...state.energyStorageLevel, ...updates } })),
+
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
       setAddLocationDialogOpen: (open) => set({ addLocationDialogOpen: open }),
@@ -18966,6 +19151,13 @@ export const useMapStore = create<MapState>()(
         harvestYieldPredict: state.harvestYieldPredict,
         greenhouseClimate: state.greenhouseClimate,
         livestockMovement: state.livestockMovement,
+        // Task 110: Renewable Energy & Grid Monitoring
+        windFarmOutput: state.windFarmOutput,
+        hydroelectricFlow: state.hydroelectricFlow,
+        biomassEnergyYield: state.biomassEnergyYield,
+        tidalEnergyPotential: state.tidalEnergyPotential,
+        gridStabilityIndex: state.gridStabilityIndex,
+        energyStorageLevel: state.energyStorageLevel,
         // Task 96
         karstSpringDischarge: state.karstSpringDischarge,
         caveDripMonitor: state.caveDripMonitor,

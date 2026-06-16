@@ -447,6 +447,13 @@ import {
   Sprout as WheatIcon,
   Thermometer as ThermometerIcon23,
   Footprints as FootprintsIcon3,
+  // Task 110 icons
+  Wind as WindIcon17,
+  Waves as WavesIcon24,
+  TreePine as TreePineIcon10,
+  Anchor as AnchorIcon4,
+  Activity as ActivityIcon9,
+  BatteryMedium as BatteryIcon,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -501,6 +508,13 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const harvestYieldPredictOpen = useMapStore((s) => s.harvestYieldPredict.open)
   const greenhouseClimateOpen = useMapStore((s) => s.greenhouseClimate.open)
   const livestockMovementOpen = useMapStore((s) => s.livestockMovement.open)
+  // Task 110: Renewable Energy & Grid Monitoring
+  const windFarmOutputOpen = useMapStore((s) => s.windFarmOutput.open)
+  const hydroelectricFlowOpen = useMapStore((s) => s.hydroelectricFlow.open)
+  const biomassEnergyYieldOpen = useMapStore((s) => s.biomassEnergyYield.open)
+  const tidalEnergyPotentialOpen = useMapStore((s) => s.tidalEnergyPotential.open)
+  const gridStabilityIndexOpen = useMapStore((s) => s.gridStabilityIndex.open)
+  const energyStorageLevelOpen = useMapStore((s) => s.energyStorageLevel.open)
 
   if (typeof window === 'undefined') return null
 
@@ -3339,6 +3353,145 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
               </TooltipTrigger>
               <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
                 Livestock Movement Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          {/* Task 110: Renewable Energy & Grid Monitoring */}
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    windFarmOutputOpen
+                      ? 'bg-sky-500 text-white shadow-md shadow-sky-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setWindFarmOutput({ open: true })}
+                  aria-label="Wind Farm Output Monitor"
+                >
+                  <WindIcon17 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Wind Farm Output Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    hydroelectricFlowOpen
+                      ? 'bg-blue-500 text-white shadow-md shadow-blue-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setHydroelectricFlow({ open: true })}
+                  aria-label="Hydroelectric Flow Monitor"
+                >
+                  <WavesIcon24 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Hydroelectric Flow Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    biomassEnergyYieldOpen
+                      ? 'bg-green-500 text-white shadow-md shadow-green-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setBiomassEnergyYield({ open: true })}
+                  aria-label="Biomass Energy Yield Monitor"
+                >
+                  <TreePineIcon10 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Biomass Energy Yield Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    tidalEnergyPotentialOpen
+                      ? 'bg-teal-500 text-white shadow-md shadow-teal-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setTidalEnergyPotential({ open: true })}
+                  aria-label="Tidal Energy Potential Monitor"
+                >
+                  <AnchorIcon4 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Tidal Energy Potential Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    gridStabilityIndexOpen
+                      ? 'bg-violet-500 text-white shadow-md shadow-violet-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setGridStabilityIndex({ open: true })}
+                  aria-label="Grid Stability Index Monitor"
+                >
+                  <ActivityIcon9 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Grid Stability Index Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    energyStorageLevelOpen
+                      ? 'bg-lime-500 text-white shadow-md shadow-lime-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setEnergyStorageLevel({ open: true })}
+                  aria-label="Energy Storage Level Monitor"
+                >
+                  <BatteryIcon className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Energy Storage Level Monitor
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
