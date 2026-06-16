@@ -272,6 +272,15 @@ export function MonitorPanelRegistry() {
   const atmosphericRiverFlow = useMapStore((s) => s.atmosphericRiverFlow)
   const polarFrontJet = useMapStore((s) => s.polarFrontJet)
   const tradeWindBelt = useMapStore((s) => s.tradeWindBelt)
+  // Task 104: Biogeography and Ecosystem
+  const speciesMigrationRoute = useMapStore((s) => s.speciesMigrationRoute)
+  const habitatCorridor = useMapStore((s) => s.habitatCorridor)
+  const endemicHotspot = useMapStore((s) => s.endemicHotspot)
+  const keystonePopulation = useMapStore((s) => s.keystonePopulation)
+  const wildlifeCorridor = useMapStore((s) => s.wildlifeCorridor)
+  const biomeTransition = useMapStore((s) => s.biomeTransition)
+  const forestCanopyCover = useMapStore((s) => s.forestCanopyCover)
+  const wetlandBiodiversityIndex = useMapStore((s) => s.wetlandBiodiversityIndex)
 
   return (
     <>
@@ -847,6 +856,31 @@ export function MonitorPanelRegistry() {
       )}
       {tradeWindBelt.open && (
         <LazyPanel importFn={() => import('@/components/map/TradeWindBeltMonitor')} exportName="TradeWindBeltMonitor" shouldLoad={true} />
+      )}
+      {/* Task 104: Biogeography and Ecosystem */}
+      {speciesMigrationRoute.open && (
+        <LazyPanel importFn={() => import('@/components/map/SpeciesMigrationRouteMonitor')} exportName="SpeciesMigrationRouteMonitor" shouldLoad={true} />
+      )}
+      {habitatCorridor.open && (
+        <LazyPanel importFn={() => import('@/components/map/HabitatCorridorMonitor')} exportName="HabitatCorridorMonitor" shouldLoad={true} />
+      )}
+      {endemicHotspot.open && (
+        <LazyPanel importFn={() => import('@/components/map/EndemicHotspotMonitor')} exportName="EndemicHotspotMonitor" shouldLoad={true} />
+      )}
+      {keystonePopulation.open && (
+        <LazyPanel importFn={() => import('@/components/map/KeystonePopulationMonitor')} exportName="KeystonePopulationMonitor" shouldLoad={true} />
+      )}
+      {wildlifeCorridor.open && (
+        <LazyPanel importFn={() => import('@/components/map/WildlifeCorridorMonitor')} exportName="WildlifeCorridorMonitor" shouldLoad={true} />
+      )}
+      {biomeTransition.open && (
+        <LazyPanel importFn={() => import('@/components/map/BiomeTransitionMonitor')} exportName="BiomeTransitionMonitor" shouldLoad={true} />
+      )}
+      {forestCanopyCover.open && (
+        <LazyPanel importFn={() => import('@/components/map/ForestCanopyCoverMonitor')} exportName="ForestCanopyCoverMonitor" shouldLoad={true} />
+      )}
+      {wetlandBiodiversityIndex.open && (
+        <LazyPanel importFn={() => import('@/components/map/WetlandBiodiversityIndexMonitor')} exportName="WetlandBiodiversityIndexMonitor" shouldLoad={true} />
       )}
     </>
   )

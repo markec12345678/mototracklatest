@@ -393,6 +393,15 @@ import {
   CloudRain as CloudRainIcon7,
   Snowflake as SnowflakeIcon14,
   Ship as ShipIcon5,
+  // Task 104 icons
+  Bird as BirdIcon5,
+  TreePine as TreePineIcon9,
+  Sparkles as SparklesIcon8,
+  Bug as BugIcon4,
+  Route as RouteIcon2,
+  Layers as LayersIcon9,
+  TreeDeciduous as TreeDeciduousIcon5,
+  Droplets as DropletsIcon17,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -2662,6 +2671,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setAtmosphericRiverFlow({ open: true })} title="Atmospheric River Flow" aria-label="Open atmospheric river flow monitor"><CloudRainIcon7 className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setPolarFrontJet({ open: true })} title="Polar Front Jet" aria-label="Open polar front jet monitor"><SnowflakeIcon14 className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setTradeWindBelt({ open: true })} title="Trade Wind Belt" aria-label="Open trade wind belt monitor"><ShipIcon5 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setSpeciesMigrationRoute({ open: true })} title="Species Migration Route" aria-label="Open species migration route monitor"><BirdIcon5 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setHabitatCorridor({ open: true })} title="Habitat Corridor" aria-label="Open habitat corridor monitor"><TreePineIcon9 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setEndemicHotspot({ open: true })} title="Endemic Hotspot" aria-label="Open endemic hotspot monitor"><SparklesIcon8 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setKeystonePopulation({ open: true })} title="Keystone Population" aria-label="Open keystone population monitor"><BugIcon4 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setWildlifeCorridor({ open: true })} title="Wildlife Corridor" aria-label="Open wildlife corridor monitor"><RouteIcon2 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setBiomeTransition({ open: true })} title="Biome Transition" aria-label="Open biome transition monitor"><LayersIcon9 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setForestCanopyCover({ open: true })} title="Forest Canopy Cover" aria-label="Open forest canopy cover monitor"><TreeDeciduousIcon5 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setWetlandBiodiversityIndex({ open: true })} title="Wetland Biodiversity" aria-label="Open wetland biodiversity index monitor"><DropletsIcon17 className="h-4 w-4" /></Button>
           <Button
             variant="outline"
             size="icon"

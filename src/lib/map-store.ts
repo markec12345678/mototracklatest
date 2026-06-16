@@ -8807,6 +8807,24 @@ interface MapState {
   tradeWindBelt: TradeWindBeltState
   setTradeWindBelt: (state: Partial<TradeWindBeltState>) => void
 
+  // Task 104: Biogeography and Ecosystem
+  speciesMigrationRoute: SpeciesMigrationRouteState
+  setSpeciesMigrationRoute: (state: Partial<SpeciesMigrationRouteState>) => void
+  habitatCorridor: HabitatCorridorState
+  setHabitatCorridor: (state: Partial<HabitatCorridorState>) => void
+  endemicHotspot: EndemicHotspotState
+  setEndemicHotspot: (state: Partial<EndemicHotspotState>) => void
+  keystonePopulation: KeystonePopulationState
+  setKeystonePopulation: (state: Partial<KeystonePopulationState>) => void
+  wildlifeCorridor: WildlifeCorridorState
+  setWildlifeCorridor: (state: Partial<WildlifeCorridorState>) => void
+  biomeTransition: BiomeTransitionState
+  setBiomeTransition: (state: Partial<BiomeTransitionState>) => void
+  forestCanopyCover: ForestCanopyCoverState
+  setForestCanopyCover: (state: Partial<ForestCanopyCoverState>) => void
+  wetlandBiodiversityIndex: WetlandBiodiversityIndexState
+  setWetlandBiodiversityIndex: (state: Partial<WetlandBiodiversityIndexState>) => void
+
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
   setAddLocationDialogOpen: (open: boolean) => void
@@ -11673,6 +11691,183 @@ export interface TradeWindBeltState {
   showWindSpeed: boolean
   showConvergenceZone: boolean
   showConsistency: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 104: Biogeography and Ecosystem
+export interface SpeciesMigrationRouteData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  migratoryDistance: number  // km
+  populationSize: number     // individuals
+  timingShift: number        // days (deviation from historical)
+  status: 'active' | 'delayed' | 'disrupted' | 'collapsed'
+  description: string
+}
+
+export interface SpeciesMigrationRouteState {
+  open: boolean
+  data: SpeciesMigrationRouteData[]
+  showMigratoryDistance: boolean
+  showPopulationSize: boolean
+  showTimingShift: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface HabitatCorridorData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  corridorWidth: number     // km
+  connectivityIndex: number  // 0-1
+  barrierCount: number      // count
+  status: 'intact' | 'degraded' | 'fragmented' | 'severed'
+  description: string
+}
+
+export interface HabitatCorridorState {
+  open: boolean
+  data: HabitatCorridorData[]
+  showCorridorWidth: boolean
+  showConnectivityIndex: boolean
+  showBarrierCount: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface EndemicHotspotData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  endemicSpeciesCount: number
+  threatLevel: number        // 1-10
+  protectionCoverage: number // %
+  status: 'protected' | 'vulnerable' | 'threatened' | 'critical'
+  description: string
+}
+
+export interface EndemicHotspotState {
+  open: boolean
+  data: EndemicHotspotData[]
+  showEndemicSpeciesCount: boolean
+  showThreatLevel: boolean
+  showProtectionCoverage: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface KeystonePopulationData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  populationDensity: number  // per km²
+  reproductionRate: number   // offspring/year
+  ecosystemImpact: number    // 0-1
+  status: 'thriving' | 'stable' | 'declining' | 'critical'
+  description: string
+}
+
+export interface KeystonePopulationState {
+  open: boolean
+  data: KeystonePopulationData[]
+  showPopulationDensity: boolean
+  showReproductionRate: boolean
+  showEcosystemImpact: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface WildlifeCorridorData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  corridorLength: number    // km
+  speciesUsing: number      // count
+  crossingEvents: number    // per month
+  status: 'functional' | 'partial' | 'bottleneck' | 'blocked'
+  description: string
+}
+
+export interface WildlifeCorridorState {
+  open: boolean
+  data: WildlifeCorridorData[]
+  showCorridorLength: boolean
+  showSpeciesUsing: boolean
+  showCrossingEvents: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface BiomeTransitionData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  transitionWidth: number   // km
+  speciesTurnover: number   // %
+  shiftRate: number         // km/decade
+  status: 'stable' | 'shifting' | 'expanding' | 'contracting'
+  description: string
+}
+
+export interface BiomeTransitionState {
+  open: boolean
+  data: BiomeTransitionData[]
+  showTransitionWidth: boolean
+  showSpeciesTurnover: boolean
+  showShiftRate: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface ForestCanopyCoverData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  canopyDensity: number     // %
+  leafAreaIndex: number     // m²/m²
+  carbonStock: number       // tonnes/ha
+  status: 'dense' | 'moderate' | 'open' | 'degraded'
+  description: string
+}
+
+export interface ForestCanopyCoverState {
+  open: boolean
+  data: ForestCanopyCoverData[]
+  showCanopyDensity: boolean
+  showLeafAreaIndex: boolean
+  showCarbonStock: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface WetlandBiodiversityIndexData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  speciesRichness: number   // count
+  shannonIndex: number      // H
+  waterQuality: number      // 0-100
+  status: 'pristine' | 'good' | 'moderate' | 'degraded'
+  description: string
+}
+
+export interface WetlandBiodiversityIndexState {
+  open: boolean
+  data: WetlandBiodiversityIndexData[]
+  showSpeciesRichness: boolean
+  showShannonIndex: boolean
+  showWaterQuality: boolean
   statusFilter: string
   activeItemId: string | null
 }
@@ -16803,6 +16998,40 @@ export const useMapStore = create<MapState>()(
       },
       setTradeWindBelt: (updates) => set((state) => ({ tradeWindBelt: { ...state.tradeWindBelt, ...updates } })),
 
+      // Task 104: Biogeography and Ecosystem
+      speciesMigrationRoute: {
+        data: [], activeItemId: null, showMigratoryDistance: true, showPopulationSize: true, showTimingShift: false, open: false, statusFilter: '',
+      },
+      setSpeciesMigrationRoute: (updates) => set((state) => ({ speciesMigrationRoute: { ...state.speciesMigrationRoute, ...updates } })),
+      habitatCorridor: {
+        data: [], activeItemId: null, showCorridorWidth: true, showConnectivityIndex: true, showBarrierCount: false, open: false, statusFilter: '',
+      },
+      setHabitatCorridor: (updates) => set((state) => ({ habitatCorridor: { ...state.habitatCorridor, ...updates } })),
+      endemicHotspot: {
+        data: [], activeItemId: null, showEndemicSpeciesCount: true, showThreatLevel: true, showProtectionCoverage: false, open: false, statusFilter: '',
+      },
+      setEndemicHotspot: (updates) => set((state) => ({ endemicHotspot: { ...state.endemicHotspot, ...updates } })),
+      keystonePopulation: {
+        data: [], activeItemId: null, showPopulationDensity: true, showReproductionRate: true, showEcosystemImpact: false, open: false, statusFilter: '',
+      },
+      setKeystonePopulation: (updates) => set((state) => ({ keystonePopulation: { ...state.keystonePopulation, ...updates } })),
+      wildlifeCorridor: {
+        data: [], activeItemId: null, showCorridorLength: true, showSpeciesUsing: true, showCrossingEvents: false, open: false, statusFilter: '',
+      },
+      setWildlifeCorridor: (updates) => set((state) => ({ wildlifeCorridor: { ...state.wildlifeCorridor, ...updates } })),
+      biomeTransition: {
+        data: [], activeItemId: null, showTransitionWidth: true, showSpeciesTurnover: true, showShiftRate: false, open: false, statusFilter: '',
+      },
+      setBiomeTransition: (updates) => set((state) => ({ biomeTransition: { ...state.biomeTransition, ...updates } })),
+      forestCanopyCover: {
+        data: [], activeItemId: null, showCanopyDensity: true, showLeafAreaIndex: true, showCarbonStock: false, open: false, statusFilter: '',
+      },
+      setForestCanopyCover: (updates) => set((state) => ({ forestCanopyCover: { ...state.forestCanopyCover, ...updates } })),
+      wetlandBiodiversityIndex: {
+        data: [], activeItemId: null, showSpeciesRichness: true, showShannonIndex: true, showWaterQuality: false, open: false, statusFilter: '',
+      },
+      setWetlandBiodiversityIndex: (updates) => set((state) => ({ wetlandBiodiversityIndex: { ...state.wetlandBiodiversityIndex, ...updates } })),
+
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
       setAddLocationDialogOpen: (open) => set({ addLocationDialogOpen: open }),
@@ -17312,6 +17541,15 @@ export const useMapStore = create<MapState>()(
         atmosphericRiverFlow: state.atmosphericRiverFlow,
         polarFrontJet: state.polarFrontJet,
         tradeWindBelt: state.tradeWindBelt,
+        // Task 104
+        speciesMigrationRoute: state.speciesMigrationRoute,
+        habitatCorridor: state.habitatCorridor,
+        endemicHotspot: state.endemicHotspot,
+        keystonePopulation: state.keystonePopulation,
+        wildlifeCorridor: state.wildlifeCorridor,
+        biomeTransition: state.biomeTransition,
+        forestCanopyCover: state.forestCanopyCover,
+        wetlandBiodiversityIndex: state.wetlandBiodiversityIndex,
         // Task 96
         karstSpringDischarge: state.karstSpringDischarge,
         caveDripMonitor: state.caveDripMonitor,
