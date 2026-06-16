@@ -1469,303 +1469,303 @@ export function MonitorPanelRegistry() {
       )}
       {/* Task 119: Atmospheric Chemistry & Air Quality */}
       {ozoneLayerTrack119.open && (
-        <LazyPanel importFn={() => import('@/components/map/OzoneLayerMonitor').then(m => ({ default: m.OzoneLayerMonitor }))} exportName="OzoneLayerMonitor" shouldLoad={ozoneLayerTrack119.open} />
+        <LazyPanel importFn={() => import('@/components/map/OzoneLayerMonitor')} exportName="OzoneLayerMonitor" shouldLoad={ozoneLayerTrack119.open} />
       )}
       {methaneEmissionSourceTrack.open && (
-        <LazyPanel importFn={() => import('@/components/map/MethaneEmissionSource').then(m => ({ default: m.MethaneEmissionSource }))} exportName="MethaneEmissionSource" shouldLoad={methaneEmissionSourceTrack.open} />
+        <LazyPanel importFn={() => import('@/components/map/MethaneEmissionSource')} exportName="MethaneEmissionSource" shouldLoad={methaneEmissionSourceTrack.open} />
       )}
       {aerosolOpticalDepth.open && (
-        <LazyPanel importFn={() => import('@/components/map/AerosolOpticalDepth').then(m => ({ default: m.AerosolOpticalDepth }))} exportName="AerosolOpticalDepth" shouldLoad={aerosolOpticalDepth.open} />
+        <LazyPanel importFn={() => import('@/components/map/AerosolOpticalDepth')} exportName="AerosolOpticalDepth" shouldLoad={aerosolOpticalDepth.open} />
       )}
       {nitrogenDioxideColumn.open && (
-        <LazyPanel importFn={() => import('@/components/map/NitrogenDioxideColumn').then(m => ({ default: m.NitrogenDioxideColumn }))} exportName="NitrogenDioxideColumn" shouldLoad={nitrogenDioxideColumn.open} />
+        <LazyPanel importFn={() => import('@/components/map/NitrogenDioxideColumn')} exportName="NitrogenDioxideColumn" shouldLoad={nitrogenDioxideColumn.open} />
       )}
       {sulfurDioxideFlux.open && (
-        <LazyPanel importFn={() => import('@/components/map/SulfurDioxideFlux').then(m => ({ default: m.SulfurDioxideFlux }))} exportName="SulfurDioxideFlux" shouldLoad={sulfurDioxideFlux.open} />
+        <LazyPanel importFn={() => import('@/components/map/SulfurDioxideFlux')} exportName="SulfurDioxideFlux" shouldLoad={sulfurDioxideFlux.open} />
       )}
       {carbonMonoxideColumn.open && (
-        <LazyPanel importFn={() => import('@/components/map/CarbonMonoxideColumn').then(m => ({ default: m.CarbonMonoxideColumn }))} exportName="CarbonMonoxideColumn" shouldLoad={carbonMonoxideColumn.open} />
+        <LazyPanel importFn={() => import('@/components/map/CarbonMonoxideColumn')} exportName="CarbonMonoxideColumn" shouldLoad={carbonMonoxideColumn.open} />
       )}
       {particulateMatterTrack119.open && (
-        <LazyPanel importFn={() => import('@/components/map/ParticulateMatterMonitor').then(m => ({ default: m.ParticulateMatterMonitor }))} exportName="ParticulateMatterMonitor" shouldLoad={particulateMatterTrack119.open} />
+        <LazyPanel importFn={() => import('@/components/map/ParticulateMatterMonitor')} exportName="ParticulateMatterMonitor" shouldLoad={particulateMatterTrack119.open} />
       )}
       {vocConcentrationMap.open && (
-        <LazyPanel importFn={() => import('@/components/map/VocConcentrationMap').then(m => ({ default: m.VocConcentrationMap }))} exportName="VocConcentrationMap" shouldLoad={vocConcentrationMap.open} />
+        <LazyPanel importFn={() => import('@/components/map/VocConcentrationMap')} exportName="VocConcentrationMap" shouldLoad={vocConcentrationMap.open} />
       )}
       {/* Task 120: Tourism & Travel Infrastructure */}
       {touristAttractionMonitor.open && (
-        <LazyPanel importFn={() => import('@/components/map/TouristAttractionMonitor').then(m => ({ default: m.TouristAttractionMonitor }))} exportName="TouristAttractionMonitor" shouldLoad={touristAttractionMonitor.open} />
+        <LazyPanel importFn={() => import('@/components/map/TouristAttractionMonitor')} exportName="TouristAttractionMonitor" shouldLoad={touristAttractionMonitor.open} />
       )}
       {hotelOccupancyMonitor.open && (
-        <LazyPanel importFn={() => import('@/components/map/HotelOccupancyMonitor').then(m => ({ default: m.HotelOccupancyMonitor }))} exportName="HotelOccupancyMonitor" shouldLoad={hotelOccupancyMonitor.open} />
+        <LazyPanel importFn={() => import('@/components/map/HotelOccupancyMonitor')} exportName="HotelOccupancyMonitor" shouldLoad={hotelOccupancyMonitor.open} />
       )}
       {nationalParkVisitorMonitor.open && (
-        <LazyPanel importFn={() => import('@/components/map/NationalParkVisitorMonitor').then(m => ({ default: m.NationalParkVisitorMonitor }))} exportName="NationalParkVisitorMonitor" shouldLoad={nationalParkVisitorMonitor.open} />
+        <LazyPanel importFn={() => import('@/components/map/NationalParkVisitorMonitor')} exportName="NationalParkVisitorMonitor" shouldLoad={nationalParkVisitorMonitor.open} />
       )}
       {museumFootfallMonitor.open && (
-        <LazyPanel importFn={() => import('@/components/map/MuseumFootfallMonitor').then(m => ({ default: m.MuseumFootfallMonitor }))} exportName="MuseumFootfallMonitor" shouldLoad={museumFootfallMonitor.open} />
+        <LazyPanel importFn={() => import('@/components/map/MuseumFootfallMonitor')} exportName="MuseumFootfallMonitor" shouldLoad={museumFootfallMonitor.open} />
       )}
       {beachSafetyMonitor.open && (
-        <LazyPanel importFn={() => import('@/components/map/BeachSafetyMonitor').then(m => ({ default: m.BeachSafetyMonitor }))} exportName="BeachSafetyMonitor" shouldLoad={beachSafetyMonitor.open} />
+        <LazyPanel importFn={() => import('@/components/map/BeachSafetyMonitor')} exportName="BeachSafetyMonitor" shouldLoad={beachSafetyMonitor.open} />
       )}
       {skiResortConditionMonitor.open && (
-        <LazyPanel importFn={() => import('@/components/map/SkiResortConditionMonitor').then(m => ({ default: m.SkiResortConditionMonitor }))} exportName="SkiResortConditionMonitor" shouldLoad={skiResortConditionMonitor.open} />
+        <LazyPanel importFn={() => import('@/components/map/SkiResortConditionMonitor')} exportName="SkiResortConditionMonitor" shouldLoad={skiResortConditionMonitor.open} />
       )}
       {cruisePortActivityMonitor.open && (
-        <LazyPanel importFn={() => import('@/components/map/CruisePortActivityMonitor').then(m => ({ default: m.CruisePortActivityMonitor }))} exportName="CruisePortActivityMonitor" shouldLoad={cruisePortActivityMonitor.open} />
+        <LazyPanel importFn={() => import('@/components/map/CruisePortActivityMonitor')} exportName="CruisePortActivityMonitor" shouldLoad={cruisePortActivityMonitor.open} />
       )}
       {themeParkQueueMonitor.open && (
-        <LazyPanel importFn={() => import('@/components/map/ThemeParkQueueMonitor').then(m => ({ default: m.ThemeParkQueueMonitor }))} exportName="ThemeParkQueueMonitor" shouldLoad={themeParkQueueMonitor.open} />
+        <LazyPanel importFn={() => import('@/components/map/ThemeParkQueueMonitor')} exportName="ThemeParkQueueMonitor" shouldLoad={themeParkQueueMonitor.open} />
       )}
       {/* Task 121: Retail & Commercial Intelligence */}
       {shoppingMallTraffic.open && (
-        <LazyPanel importFn={() => import('@/components/map/ShoppingMallTrafficMonitor').then(m => ({ default: m.ShoppingMallTrafficMonitor }))} exportName="ShoppingMallTrafficMonitor" shouldLoad={shoppingMallTraffic.open} />
+        <LazyPanel importFn={() => import('@/components/map/ShoppingMallTrafficMonitor')} exportName="ShoppingMallTrafficMonitor" shouldLoad={shoppingMallTraffic.open} />
       )}
       {retailStorePerformance.open && (
-        <LazyPanel importFn={() => import('@/components/map/RetailStorePerformanceMonitor').then(m => ({ default: m.RetailStorePerformanceMonitor }))} exportName="RetailStorePerformanceMonitor" shouldLoad={retailStorePerformance.open} />
+        <LazyPanel importFn={() => import('@/components/map/RetailStorePerformanceMonitor')} exportName="RetailStorePerformanceMonitor" shouldLoad={retailStorePerformance.open} />
       )}
       {restaurantOccupancy.open && (
-        <LazyPanel importFn={() => import('@/components/map/RestaurantOccupancyMonitor').then(m => ({ default: m.RestaurantOccupancyMonitor }))} exportName="RestaurantOccupancyMonitor" shouldLoad={restaurantOccupancy.open} />
+        <LazyPanel importFn={() => import('@/components/map/RestaurantOccupancyMonitor')} exportName="RestaurantOccupancyMonitor" shouldLoad={restaurantOccupancy.open} />
       )}
       {supermarketQueue.open && (
-        <LazyPanel importFn={() => import('@/components/map/SupermarketQueueMonitor').then(m => ({ default: m.SupermarketQueueMonitor }))} exportName="SupermarketQueueMonitor" shouldLoad={supermarketQueue.open} />
+        <LazyPanel importFn={() => import('@/components/map/SupermarketQueueMonitor')} exportName="SupermarketQueueMonitor" shouldLoad={supermarketQueue.open} />
       )}
       {streetMarketActivity.open && (
-        <LazyPanel importFn={() => import('@/components/map/StreetMarketActivityMonitor').then(m => ({ default: m.StreetMarketActivityMonitor }))} exportName="StreetMarketActivityMonitor" shouldLoad={streetMarketActivity.open} />
+        <LazyPanel importFn={() => import('@/components/map/StreetMarketActivityMonitor')} exportName="StreetMarketActivityMonitor" shouldLoad={streetMarketActivity.open} />
       )}
       {cinemaTheaterAttendance.open && (
-        <LazyPanel importFn={() => import('@/components/map/CinemaTheaterAttendanceMonitor').then(m => ({ default: m.CinemaTheaterAttendanceMonitor }))} exportName="CinemaTheaterAttendanceMonitor" shouldLoad={cinemaTheaterAttendance.open} />
+        <LazyPanel importFn={() => import('@/components/map/CinemaTheaterAttendanceMonitor')} exportName="CinemaTheaterAttendanceMonitor" shouldLoad={cinemaTheaterAttendance.open} />
       )}
       {gymFitnessCenter.open && (
-        <LazyPanel importFn={() => import('@/components/map/GymFitnessCenterMonitor').then(m => ({ default: m.GymFitnessCenterMonitor }))} exportName="GymFitnessCenterMonitor" shouldLoad={gymFitnessCenter.open} />
+        <LazyPanel importFn={() => import('@/components/map/GymFitnessCenterMonitor')} exportName="GymFitnessCenterMonitor" shouldLoad={gymFitnessCenter.open} />
       )}
       {nightlifeVenue.open && (
-        <LazyPanel importFn={() => import('@/components/map/NightlifeVenueMonitor').then(m => ({ default: m.NightlifeVenueMonitor }))} exportName="NightlifeVenueMonitor" shouldLoad={nightlifeVenue.open} />
+        <LazyPanel importFn={() => import('@/components/map/NightlifeVenueMonitor')} exportName="NightlifeVenueMonitor" shouldLoad={nightlifeVenue.open} />
       )}
       {/* Task 122: Education & Research Institutions */}
       {universityCampusMonitor.open && (
-        <LazyPanel importFn={() => import('@/components/map/UniversityCampusMonitor').then(m => ({ default: m.UniversityCampusMonitor }))} exportName="UniversityCampusMonitor" shouldLoad={universityCampusMonitor.open} />
+        <LazyPanel importFn={() => import('@/components/map/UniversityCampusMonitor')} exportName="UniversityCampusMonitor" shouldLoad={universityCampusMonitor.open} />
       )}
       {libraryResourceMonitor.open && (
-        <LazyPanel importFn={() => import('@/components/map/LibraryResourceMonitor').then(m => ({ default: m.LibraryResourceMonitor }))} exportName="LibraryResourceMonitor" shouldLoad={libraryResourceMonitor.open} />
+        <LazyPanel importFn={() => import('@/components/map/LibraryResourceMonitor')} exportName="LibraryResourceMonitor" shouldLoad={libraryResourceMonitor.open} />
       )}
       {laboratorySafetyMonitor.open && (
-        <LazyPanel importFn={() => import('@/components/map/LaboratorySafetyMonitor').then(m => ({ default: m.LaboratorySafetyMonitor }))} exportName="LaboratorySafetyMonitor" shouldLoad={laboratorySafetyMonitor.open} />
+        <LazyPanel importFn={() => import('@/components/map/LaboratorySafetyMonitor')} exportName="LaboratorySafetyMonitor" shouldLoad={laboratorySafetyMonitor.open} />
       )}
       {researchOutputMonitor.open && (
-        <LazyPanel importFn={() => import('@/components/map/ResearchOutputMonitor').then(m => ({ default: m.ResearchOutputMonitor }))} exportName="ResearchOutputMonitor" shouldLoad={researchOutputMonitor.open} />
+        <LazyPanel importFn={() => import('@/components/map/ResearchOutputMonitor')} exportName="ResearchOutputMonitor" shouldLoad={researchOutputMonitor.open} />
       )}
       {studentEnrollmentMonitor.open && (
-        <LazyPanel importFn={() => import('@/components/map/StudentEnrollmentMonitor').then(m => ({ default: m.StudentEnrollmentMonitor }))} exportName="StudentEnrollmentMonitor" shouldLoad={studentEnrollmentMonitor.open} />
+        <LazyPanel importFn={() => import('@/components/map/StudentEnrollmentMonitor')} exportName="StudentEnrollmentMonitor" shouldLoad={studentEnrollmentMonitor.open} />
       )}
       {academicCitationMonitor.open && (
-        <LazyPanel importFn={() => import('@/components/map/AcademicCitationMonitor').then(m => ({ default: m.AcademicCitationMonitor }))} exportName="AcademicCitationMonitor" shouldLoad={academicCitationMonitor.open} />
+        <LazyPanel importFn={() => import('@/components/map/AcademicCitationMonitor')} exportName="AcademicCitationMonitor" shouldLoad={academicCitationMonitor.open} />
       )}
       {innovationPatentMonitor.open && (
-        <LazyPanel importFn={() => import('@/components/map/InnovationPatentMonitor').then(m => ({ default: m.InnovationPatentMonitor }))} exportName="InnovationPatentMonitor" shouldLoad={innovationPatentMonitor.open} />
+        <LazyPanel importFn={() => import('@/components/map/InnovationPatentMonitor')} exportName="InnovationPatentMonitor" shouldLoad={innovationPatentMonitor.open} />
       )}
       {fieldStationResearch.open && (
-        <LazyPanel importFn={() => import('@/components/map/FieldStationResearchMonitor').then(m => ({ default: m.FieldStationResearchMonitor }))} exportName="FieldStationResearchMonitor" shouldLoad={fieldStationResearch.open} />
+        <LazyPanel importFn={() => import('@/components/map/FieldStationResearchMonitor')} exportName="FieldStationResearchMonitor" shouldLoad={fieldStationResearch.open} />
       )}
       {/* Task 123: Financial & Banking Centers */}
       {bankBranchTraffic.open && (
-        <LazyPanel importFn={() => import('@/components/map/BankBranchTrafficMonitor').then(m => ({ default: m.BankBranchTrafficMonitor }))} exportName="BankBranchTrafficMonitor" shouldLoad={bankBranchTraffic.open} />
+        <LazyPanel importFn={() => import('@/components/map/BankBranchTrafficMonitor')} exportName="BankBranchTrafficMonitor" shouldLoad={bankBranchTraffic.open} />
       )}
       {stockExchangeMonitor.open && (
-        <LazyPanel importFn={() => import('@/components/map/StockExchangeMonitor').then(m => ({ default: m.StockExchangeMonitor }))} exportName="StockExchangeMonitor" shouldLoad={stockExchangeMonitor.open} />
+        <LazyPanel importFn={() => import('@/components/map/StockExchangeMonitor')} exportName="StockExchangeMonitor" shouldLoad={stockExchangeMonitor.open} />
       )}
       {atmNetworkStatus.open && (
-        <LazyPanel importFn={() => import('@/components/map/AtmNetworkStatusMonitor').then(m => ({ default: m.AtmNetworkStatusMonitor }))} exportName="AtmNetworkStatusMonitor" shouldLoad={atmNetworkStatus.open} />
+        <LazyPanel importFn={() => import('@/components/map/AtmNetworkStatusMonitor')} exportName="AtmNetworkStatusMonitor" shouldLoad={atmNetworkStatus.open} />
       )}
       {cryptocurrencyMining.open && (
-        <LazyPanel importFn={() => import('@/components/map/CryptocurrencyMiningMonitor').then(m => ({ default: m.CryptocurrencyMiningMonitor }))} exportName="CryptocurrencyMiningMonitor" shouldLoad={cryptocurrencyMining.open} />
+        <LazyPanel importFn={() => import('@/components/map/CryptocurrencyMiningMonitor')} exportName="CryptocurrencyMiningMonitor" shouldLoad={cryptocurrencyMining.open} />
       )}
       {insuranceClaimCenter.open && (
-        <LazyPanel importFn={() => import('@/components/map/InsuranceClaimCenterMonitor').then(m => ({ default: m.InsuranceClaimCenterMonitor }))} exportName="InsuranceClaimCenterMonitor" shouldLoad={insuranceClaimCenter.open} />
+        <LazyPanel importFn={() => import('@/components/map/InsuranceClaimCenterMonitor')} exportName="InsuranceClaimCenterMonitor" shouldLoad={insuranceClaimCenter.open} />
       )}
       {paymentGatewayStatus.open && (
-        <LazyPanel importFn={() => import('@/components/map/PaymentGatewayStatusMonitor').then(m => ({ default: m.PaymentGatewayStatusMonitor }))} exportName="PaymentGatewayStatusMonitor" shouldLoad={paymentGatewayStatus.open} />
+        <LazyPanel importFn={() => import('@/components/map/PaymentGatewayStatusMonitor')} exportName="PaymentGatewayStatusMonitor" shouldLoad={paymentGatewayStatus.open} />
       )}
       {fintechHubActivity.open && (
-        <LazyPanel importFn={() => import('@/components/map/FintechHubActivityMonitor').then(m => ({ default: m.FintechHubActivityMonitor }))} exportName="FintechHubActivityMonitor" shouldLoad={fintechHubActivity.open} />
+        <LazyPanel importFn={() => import('@/components/map/FintechHubActivityMonitor')} exportName="FintechHubActivityMonitor" shouldLoad={fintechHubActivity.open} />
       )}
       {goldReserveVault.open && (
-        <LazyPanel importFn={() => import('@/components/map/GoldReserveVaultMonitor').then(m => ({ default: m.GoldReserveVaultMonitor }))} exportName="GoldReserveVaultMonitor" shouldLoad={goldReserveVault.open} />
+        <LazyPanel importFn={() => import('@/components/map/GoldReserveVaultMonitor')} exportName="GoldReserveVaultMonitor" shouldLoad={goldReserveVault.open} />
       )}
       {/* Task 124: Sports & Entertainment Venues */}
       {stadiumCrowdMonitor.open && (
-        <LazyPanel importFn={() => import('@/components/map/StadiumCrowdMonitor').then(m => ({ default: m.StadiumCrowdMonitor }))} exportName="StadiumCrowdMonitor" shouldLoad={stadiumCrowdMonitor.open} />
+        <LazyPanel importFn={() => import('@/components/map/StadiumCrowdMonitor')} exportName="StadiumCrowdMonitor" shouldLoad={stadiumCrowdMonitor.open} />
       )}
       {arenaEventMonitor.open && (
-        <LazyPanel importFn={() => import('@/components/map/ArenaEventMonitor').then(m => ({ default: m.ArenaEventMonitor }))} exportName="ArenaEventMonitor" shouldLoad={arenaEventMonitor.open} />
+        <LazyPanel importFn={() => import('@/components/map/ArenaEventMonitor')} exportName="ArenaEventMonitor" shouldLoad={arenaEventMonitor.open} />
       )}
       {concertVenueMonitor.open && (
-        <LazyPanel importFn={() => import('@/components/map/ConcertVenueMonitor').then(m => ({ default: m.ConcertVenueMonitor }))} exportName="ConcertVenueMonitor" shouldLoad={concertVenueMonitor.open} />
+        <LazyPanel importFn={() => import('@/components/map/ConcertVenueMonitor')} exportName="ConcertVenueMonitor" shouldLoad={concertVenueMonitor.open} />
       )}
       {sportLeagueStanding.open && (
-        <LazyPanel importFn={() => import('@/components/map/SportLeagueStandingMonitor').then(m => ({ default: m.SportLeagueStandingMonitor }))} exportName="SportLeagueStandingMonitor" shouldLoad={sportLeagueStanding.open} />
+        <LazyPanel importFn={() => import('@/components/map/SportLeagueStandingMonitor')} exportName="SportLeagueStandingMonitor" shouldLoad={sportLeagueStanding.open} />
       )}
       {olympicVenueMonitor.open && (
-        <LazyPanel importFn={() => import('@/components/map/OlympicVenueMonitor').then(m => ({ default: m.OlympicVenueMonitor }))} exportName="OlympicVenueMonitor" shouldLoad={olympicVenueMonitor.open} />
+        <LazyPanel importFn={() => import('@/components/map/OlympicVenueMonitor')} exportName="OlympicVenueMonitor" shouldLoad={olympicVenueMonitor.open} />
       )}
       {racetrackActivity.open && (
-        <LazyPanel importFn={() => import('@/components/map/RacetrackActivityMonitor').then(m => ({ default: m.RacetrackActivityMonitor }))} exportName="RacetrackActivityMonitor" shouldLoad={racetrackActivity.open} />
+        <LazyPanel importFn={() => import('@/components/map/RacetrackActivityMonitor')} exportName="RacetrackActivityMonitor" shouldLoad={racetrackActivity.open} />
       )}
       {golfCourseStatus.open && (
-        <LazyPanel importFn={() => import('@/components/map/GolfCourseStatusMonitor').then(m => ({ default: m.GolfCourseStatusMonitor }))} exportName="GolfCourseStatusMonitor" shouldLoad={golfCourseStatus.open} />
+        <LazyPanel importFn={() => import('@/components/map/GolfCourseStatusMonitor')} exportName="GolfCourseStatusMonitor" shouldLoad={golfCourseStatus.open} />
       )}
       {waterParkCapacity.open && (
-        <LazyPanel importFn={() => import('@/components/map/WaterParkCapacityMonitor').then(m => ({ default: m.WaterParkCapacityMonitor }))} exportName="WaterParkCapacityMonitor" shouldLoad={waterParkCapacity.open} />
+        <LazyPanel importFn={() => import('@/components/map/WaterParkCapacityMonitor')} exportName="WaterParkCapacityMonitor" shouldLoad={waterParkCapacity.open} />
       )}
       {/* Task 125: Public Safety & Law Enforcement */}
       {policeStationStatus.open && (
-        <LazyPanel importFn={() => import('@/components/map/PoliceStationStatusMonitor').then(m => ({ default: m.PoliceStationStatusMonitor }))} exportName="PoliceStationStatusMonitor" shouldLoad={policeStationStatus.open} />
+        <LazyPanel importFn={() => import('@/components/map/PoliceStationStatusMonitor')} exportName="PoliceStationStatusMonitor" shouldLoad={policeStationStatus.open} />
       )}
       {fireDepartmentResponse.open && (
-        <LazyPanel importFn={() => import('@/components/map/FireDepartmentResponseMonitor').then(m => ({ default: m.FireDepartmentResponseMonitor }))} exportName="FireDepartmentResponseMonitor" shouldLoad={fireDepartmentResponse.open} />
+        <LazyPanel importFn={() => import('@/components/map/FireDepartmentResponseMonitor')} exportName="FireDepartmentResponseMonitor" shouldLoad={fireDepartmentResponse.open} />
       )}
       {emergencyDispatch911.open && (
-        <LazyPanel importFn={() => import('@/components/map/EmergencyDispatch911Monitor').then(m => ({ default: m.EmergencyDispatch911Monitor }))} exportName="EmergencyDispatch911Monitor" shouldLoad={emergencyDispatch911.open} />
+        <LazyPanel importFn={() => import('@/components/map/EmergencyDispatch911Monitor')} exportName="EmergencyDispatch911Monitor" shouldLoad={emergencyDispatch911.open} />
       )}
       {prisonFacilityMonitor.open && (
-        <LazyPanel importFn={() => import('@/components/map/PrisonFacilityMonitor').then(m => ({ default: m.PrisonFacilityMonitor }))} exportName="PrisonFacilityMonitor" shouldLoad={prisonFacilityMonitor.open} />
+        <LazyPanel importFn={() => import('@/components/map/PrisonFacilityMonitor')} exportName="PrisonFacilityMonitor" shouldLoad={prisonFacilityMonitor.open} />
       )}
       {courtHouseSchedule.open && (
-        <LazyPanel importFn={() => import('@/components/map/CourtHouseScheduleMonitor').then(m => ({ default: m.CourtHouseScheduleMonitor }))} exportName="CourtHouseScheduleMonitor" shouldLoad={courtHouseSchedule.open} />
+        <LazyPanel importFn={() => import('@/components/map/CourtHouseScheduleMonitor')} exportName="CourtHouseScheduleMonitor" shouldLoad={courtHouseSchedule.open} />
       )}
       {borderPatrolActivity.open && (
-        <LazyPanel importFn={() => import('@/components/map/BorderPatrolActivityMonitor').then(m => ({ default: m.BorderPatrolActivityMonitor }))} exportName="BorderPatrolActivityMonitor" shouldLoad={borderPatrolActivity.open} />
+        <LazyPanel importFn={() => import('@/components/map/BorderPatrolActivityMonitor')} exportName="BorderPatrolActivityMonitor" shouldLoad={borderPatrolActivity.open} />
       )}
       {trafficEnforcementUnit.open && (
-        <LazyPanel importFn={() => import('@/components/map/TrafficEnforcementUnitMonitor').then(m => ({ default: m.TrafficEnforcementUnitMonitor }))} exportName="TrafficEnforcementUnitMonitor" shouldLoad={trafficEnforcementUnit.open} />
+        <LazyPanel importFn={() => import('@/components/map/TrafficEnforcementUnitMonitor')} exportName="TrafficEnforcementUnitMonitor" shouldLoad={trafficEnforcementUnit.open} />
       )}
       {disasterResponseCoord.open && (
-        <LazyPanel importFn={() => import('@/components/map/DisasterResponseCoordMonitor').then(m => ({ default: m.DisasterResponseCoordMonitor }))} exportName="DisasterResponseCoordMonitor" shouldLoad={disasterResponseCoord.open} />
+        <LazyPanel importFn={() => import('@/components/map/DisasterResponseCoordMonitor')} exportName="DisasterResponseCoordMonitor" shouldLoad={disasterResponseCoord.open} />
       )}
       {/* Task 126: Telecommunications & Broadcasting */}
       {cellTowerNetwork.open && (
-        <LazyPanel importFn={() => import('@/components/map/CellTowerNetworkMonitor').then(m => ({ default: m.CellTowerNetworkMonitor }))} exportName="CellTowerNetworkMonitor" shouldLoad={cellTowerNetwork.open} />
+        <LazyPanel importFn={() => import('@/components/map/CellTowerNetworkMonitor')} exportName="CellTowerNetworkMonitor" shouldLoad={cellTowerNetwork.open} />
       )}
       {fiberOpticBackbone.open && (
-        <LazyPanel importFn={() => import('@/components/map/FiberOpticBackboneMonitor').then(m => ({ default: m.FiberOpticBackboneMonitor }))} exportName="FiberOpticBackboneMonitor" shouldLoad={fiberOpticBackbone.open} />
+        <LazyPanel importFn={() => import('@/components/map/FiberOpticBackboneMonitor')} exportName="FiberOpticBackboneMonitor" shouldLoad={fiberOpticBackbone.open} />
       )}
       {dataCenterCloud.open && (
-        <LazyPanel importFn={() => import('@/components/map/DataCenterCloudMonitor').then(m => ({ default: m.DataCenterCloudMonitor }))} exportName="DataCenterCloudMonitor" shouldLoad={dataCenterCloud.open} />
+        <LazyPanel importFn={() => import('@/components/map/DataCenterCloudMonitor')} exportName="DataCenterCloudMonitor" shouldLoad={dataCenterCloud.open} />
       )}
       {radioBroadcastStation.open && (
-        <LazyPanel importFn={() => import('@/components/map/RadioBroadcastStationMonitor').then(m => ({ default: m.RadioBroadcastStationMonitor }))} exportName="RadioBroadcastStationMonitor" shouldLoad={radioBroadcastStation.open} />
+        <LazyPanel importFn={() => import('@/components/map/RadioBroadcastStationMonitor')} exportName="RadioBroadcastStationMonitor" shouldLoad={radioBroadcastStation.open} />
       )}
       {tvTransmissionTower.open && (
-        <LazyPanel importFn={() => import('@/components/map/TvTransmissionTowerMonitor').then(m => ({ default: m.TvTransmissionTowerMonitor }))} exportName="TvTransmissionTowerMonitor" shouldLoad={tvTransmissionTower.open} />
+        <LazyPanel importFn={() => import('@/components/map/TvTransmissionTowerMonitor')} exportName="TvTransmissionTowerMonitor" shouldLoad={tvTransmissionTower.open} />
       )}
       {satelliteGroundStation.open && (
-        <LazyPanel importFn={() => import('@/components/map/SatelliteGroundStationMonitor').then(m => ({ default: m.SatelliteGroundStationMonitor }))} exportName="SatelliteGroundStationMonitor" shouldLoad={satelliteGroundStation.open} />
+        <LazyPanel importFn={() => import('@/components/map/SatelliteGroundStationMonitor')} exportName="SatelliteGroundStationMonitor" shouldLoad={satelliteGroundStation.open} />
       )}
       {wifiHotspotNetwork.open && (
-        <LazyPanel importFn={() => import('@/components/map/WifiHotspotNetworkMonitor').then(m => ({ default: m.WifiHotspotNetworkMonitor }))} exportName="WifiHotspotNetworkMonitor" shouldLoad={wifiHotspotNetwork.open} />
+        <LazyPanel importFn={() => import('@/components/map/WifiHotspotNetworkMonitor')} exportName="WifiHotspotNetworkMonitor" shouldLoad={wifiHotspotNetwork.open} />
       )}
       {internetExchangePoint.open && (
-        <LazyPanel importFn={() => import('@/components/map/InternetExchangePointMonitor').then(m => ({ default: m.InternetExchangePointMonitor }))} exportName="InternetExchangePointMonitor" shouldLoad={internetExchangePoint.open} />
+        <LazyPanel importFn={() => import('@/components/map/InternetExchangePointMonitor')} exportName="InternetExchangePointMonitor" shouldLoad={internetExchangePoint.open} />
       )}
       {/* Task 127: Healthcare & Medical Facilities */}
       {hospitalCapacityTrack127.open && (
-        <LazyPanel importFn={() => import('@/components/map/HospitalCapacityTrack127Monitor').then(m => ({ default: m.HospitalCapacityTrack127Monitor }))} exportName="HospitalCapacityTrack127Monitor" shouldLoad={hospitalCapacityTrack127.open} />
+        <LazyPanel importFn={() => import('@/components/map/HospitalCapacityTrack127Monitor')} exportName="HospitalCapacityTrack127Monitor" shouldLoad={hospitalCapacityTrack127.open} />
       )}
       {clinicUrgentCare.open && (
-        <LazyPanel importFn={() => import('@/components/map/ClinicUrgentCareMonitor').then(m => ({ default: m.ClinicUrgentCareMonitor }))} exportName="ClinicUrgentCareMonitor" shouldLoad={clinicUrgentCare.open} />
+        <LazyPanel importFn={() => import('@/components/map/ClinicUrgentCareMonitor')} exportName="ClinicUrgentCareMonitor" shouldLoad={clinicUrgentCare.open} />
       )}
       {pharmacyNetwork.open && (
-        <LazyPanel importFn={() => import('@/components/map/PharmacyNetworkMonitor').then(m => ({ default: m.PharmacyNetworkMonitor }))} exportName="PharmacyNetworkMonitor" shouldLoad={pharmacyNetwork.open} />
+        <LazyPanel importFn={() => import('@/components/map/PharmacyNetworkMonitor')} exportName="PharmacyNetworkMonitor" shouldLoad={pharmacyNetwork.open} />
       )}
       {bloodBankSupply.open && (
-        <LazyPanel importFn={() => import('@/components/map/BloodBankSupplyMonitor').then(m => ({ default: m.BloodBankSupplyMonitor }))} exportName="BloodBankSupplyMonitor" shouldLoad={bloodBankSupply.open} />
+        <LazyPanel importFn={() => import('@/components/map/BloodBankSupplyMonitor')} exportName="BloodBankSupplyMonitor" shouldLoad={bloodBankSupply.open} />
       )}
       {medicalResearchLab.open && (
-        <LazyPanel importFn={() => import('@/components/map/MedicalResearchLabMonitor').then(m => ({ default: m.MedicalResearchLabMonitor }))} exportName="MedicalResearchLabMonitor" shouldLoad={medicalResearchLab.open} />
+        <LazyPanel importFn={() => import('@/components/map/MedicalResearchLabMonitor')} exportName="MedicalResearchLabMonitor" shouldLoad={medicalResearchLab.open} />
       )}
       {mentalHealthCenter.open && (
-        <LazyPanel importFn={() => import('@/components/map/MentalHealthCenterMonitor').then(m => ({ default: m.MentalHealthCenterMonitor }))} exportName="MentalHealthCenterMonitor" shouldLoad={mentalHealthCenter.open} />
+        <LazyPanel importFn={() => import('@/components/map/MentalHealthCenterMonitor')} exportName="MentalHealthCenterMonitor" shouldLoad={mentalHealthCenter.open} />
       )}
       {rehabilitationCenter.open && (
-        <LazyPanel importFn={() => import('@/components/map/RehabilitationCenterMonitor').then(m => ({ default: m.RehabilitationCenterMonitor }))} exportName="RehabilitationCenterMonitor" shouldLoad={rehabilitationCenter.open} />
+        <LazyPanel importFn={() => import('@/components/map/RehabilitationCenterMonitor')} exportName="RehabilitationCenterMonitor" shouldLoad={rehabilitationCenter.open} />
       )}
       {vaccinationDrive.open && (
-        <LazyPanel importFn={() => import('@/components/map/VaccinationDriveMonitor').then(m => ({ default: m.VaccinationDriveMonitor }))} exportName="VaccinationDriveMonitor" shouldLoad={vaccinationDrive.open} />
+        <LazyPanel importFn={() => import('@/components/map/VaccinationDriveMonitor')} exportName="VaccinationDriveMonitor" shouldLoad={vaccinationDrive.open} />
       )}
       {/* Task 128: Agricultural Production & Food Supply */}
       {cropYieldForecast.open && (
-        <LazyPanel importFn={() => import('@/components/map/CropYieldForecastMonitor').then(m => ({ default: m.CropYieldForecastMonitor }))} exportName="CropYieldForecastMonitor" shouldLoad={cropYieldForecast.open} />
+        <LazyPanel importFn={() => import('@/components/map/CropYieldForecastMonitor')} exportName="CropYieldForecastMonitor" shouldLoad={cropYieldForecast.open} />
       )}
       {livestockPopulation.open && (
-        <LazyPanel importFn={() => import('@/components/map/LivestockPopulationMonitor').then(m => ({ default: m.LivestockPopulationMonitor }))} exportName="LivestockPopulationMonitor" shouldLoad={livestockPopulation.open} />
+        <LazyPanel importFn={() => import('@/components/map/LivestockPopulationMonitor')} exportName="LivestockPopulationMonitor" shouldLoad={livestockPopulation.open} />
       )}
       {dairyFarmProduction.open && (
-        <LazyPanel importFn={() => import('@/components/map/DairyFarmProductionMonitor').then(m => ({ default: m.DairyFarmProductionMonitor }))} exportName="DairyFarmProductionMonitor" shouldLoad={dairyFarmProduction.open} />
+        <LazyPanel importFn={() => import('@/components/map/DairyFarmProductionMonitor')} exportName="DairyFarmProductionMonitor" shouldLoad={dairyFarmProduction.open} />
       )}
       {poultryFarmOutput.open && (
-        <LazyPanel importFn={() => import('@/components/map/PoultryFarmOutputMonitor').then(m => ({ default: m.PoultryFarmOutputMonitor }))} exportName="PoultryFarmOutputMonitor" shouldLoad={poultryFarmOutput.open} />
+        <LazyPanel importFn={() => import('@/components/map/PoultryFarmOutputMonitor')} exportName="PoultryFarmOutputMonitor" shouldLoad={poultryFarmOutput.open} />
       )}
       {aquacultureFishery.open && (
-        <LazyPanel importFn={() => import('@/components/map/AquacultureFisheryMonitor').then(m => ({ default: m.AquacultureFisheryMonitor }))} exportName="AquacultureFisheryMonitor" shouldLoad={aquacultureFishery.open} />
+        <LazyPanel importFn={() => import('@/components/map/AquacultureFisheryMonitor')} exportName="AquacultureFisheryMonitor" shouldLoad={aquacultureFishery.open} />
       )}
       {grainSiloStorage.open && (
-        <LazyPanel importFn={() => import('@/components/map/GrainSiloStorageMonitor').then(m => ({ default: m.GrainSiloStorageMonitor }))} exportName="GrainSiloStorageMonitor" shouldLoad={grainSiloStorage.open} />
+        <LazyPanel importFn={() => import('@/components/map/GrainSiloStorageMonitor')} exportName="GrainSiloStorageMonitor" shouldLoad={grainSiloStorage.open} />
       )}
       {foodProcessingPlant.open && (
-        <LazyPanel importFn={() => import('@/components/map/FoodProcessingPlantMonitor').then(m => ({ default: m.FoodProcessingPlantMonitor }))} exportName="FoodProcessingPlantMonitor" shouldLoad={foodProcessingPlant.open} />
+        <LazyPanel importFn={() => import('@/components/map/FoodProcessingPlantMonitor')} exportName="FoodProcessingPlantMonitor" shouldLoad={foodProcessingPlant.open} />
       )}
       {coldChainLogistics.open && (
-        <LazyPanel importFn={() => import('@/components/map/ColdChainLogisticsMonitor').then(m => ({ default: m.ColdChainLogisticsMonitor }))} exportName="ColdChainLogisticsMonitor" shouldLoad={coldChainLogistics.open} />
+        <LazyPanel importFn={() => import('@/components/map/ColdChainLogisticsMonitor')} exportName="ColdChainLogisticsMonitor" shouldLoad={coldChainLogistics.open} />
       )}
       {/* Task 129: Energy Generation & Utilities */}
       {nuclearPowerPlant.open && (
-        <LazyPanel importFn={() => import('@/components/map/NuclearPowerPlantMonitor').then(m => ({ default: m.NuclearPowerPlantMonitor }))} exportName="NuclearPowerPlantMonitor" shouldLoad={nuclearPowerPlant.open} />
+        <LazyPanel importFn={() => import('@/components/map/NuclearPowerPlantMonitor')} exportName="NuclearPowerPlantMonitor" shouldLoad={nuclearPowerPlant.open} />
       )}
       {naturalGasTerminal.open && (
-        <LazyPanel importFn={() => import('@/components/map/NaturalGasTerminalMonitor').then(m => ({ default: m.NaturalGasTerminalMonitor }))} exportName="NaturalGasTerminalMonitor" shouldLoad={naturalGasTerminal.open} />
+        <LazyPanel importFn={() => import('@/components/map/NaturalGasTerminalMonitor')} exportName="NaturalGasTerminalMonitor" shouldLoad={naturalGasTerminal.open} />
       )}
       {coalPowerStation.open && (
-        <LazyPanel importFn={() => import('@/components/map/CoalPowerStationMonitor').then(m => ({ default: m.CoalPowerStationMonitor }))} exportName="CoalPowerStationMonitor" shouldLoad={coalPowerStation.open} />
+        <LazyPanel importFn={() => import('@/components/map/CoalPowerStationMonitor')} exportName="CoalPowerStationMonitor" shouldLoad={coalPowerStation.open} />
       )}
       {hydroelectricDam.open && (
-        <LazyPanel importFn={() => import('@/components/map/HydroelectricDamMonitor').then(m => ({ default: m.HydroelectricDamMonitor }))} exportName="HydroelectricDamMonitor" shouldLoad={hydroelectricDam.open} />
+        <LazyPanel importFn={() => import('@/components/map/HydroelectricDamMonitor')} exportName="HydroelectricDamMonitor" shouldLoad={hydroelectricDam.open} />
       )}
       {evChargingNetwork.open && (
-        <LazyPanel importFn={() => import('@/components/map/EvChargingNetworkMonitor').then(m => ({ default: m.EvChargingNetworkMonitor }))} exportName="EvChargingNetworkMonitor" shouldLoad={evChargingNetwork.open} />
+        <LazyPanel importFn={() => import('@/components/map/EvChargingNetworkMonitor')} exportName="EvChargingNetworkMonitor" shouldLoad={evChargingNetwork.open} />
       )}
       {batteryStorageFacility.open && (
-        <LazyPanel importFn={() => import('@/components/map/BatteryStorageFacilityMonitor').then(m => ({ default: m.BatteryStorageFacilityMonitor }))} exportName="BatteryStorageFacilityMonitor" shouldLoad={batteryStorageFacility.open} />
+        <LazyPanel importFn={() => import('@/components/map/BatteryStorageFacilityMonitor')} exportName="BatteryStorageFacilityMonitor" shouldLoad={batteryStorageFacility.open} />
       )}
       {districtHeatingPlant.open && (
-        <LazyPanel importFn={() => import('@/components/map/DistrictHeatingPlantMonitor').then(m => ({ default: m.DistrictHeatingPlantMonitor }))} exportName="DistrictHeatingPlantMonitor" shouldLoad={districtHeatingPlant.open} />
+        <LazyPanel importFn={() => import('@/components/map/DistrictHeatingPlantMonitor')} exportName="DistrictHeatingPlantMonitor" shouldLoad={districtHeatingPlant.open} />
       )}
       {waterTreatmentUtility.open && (
-        <LazyPanel importFn={() => import('@/components/map/WaterTreatmentUtilityMonitor').then(m => ({ default: m.WaterTreatmentUtilityMonitor }))} exportName="WaterTreatmentUtilityMonitor" shouldLoad={waterTreatmentUtility.open} />
+        <LazyPanel importFn={() => import('@/components/map/WaterTreatmentUtilityMonitor')} exportName="WaterTreatmentUtilityMonitor" shouldLoad={waterTreatmentUtility.open} />
       )}
       {/* Task 130: Mining, Minerals & Raw Materials */}
       {goldMineOperation.open && (
-        <LazyPanel importFn={() => import('@/components/map/GoldMineOperationMonitor').then(m => ({ default: m.GoldMineOperationMonitor }))} exportName="GoldMineOperationMonitor" shouldLoad={goldMineOperation.open} />
+        <LazyPanel importFn={() => import('@/components/map/GoldMineOperationMonitor')} exportName="GoldMineOperationMonitor" shouldLoad={goldMineOperation.open} />
       )}
       {copperMineOutput.open && (
-        <LazyPanel importFn={() => import('@/components/map/CopperMineOutputMonitor').then(m => ({ default: m.CopperMineOutputMonitor }))} exportName="CopperMineOutputMonitor" shouldLoad={copperMineOutput.open} />
+        <LazyPanel importFn={() => import('@/components/map/CopperMineOutputMonitor')} exportName="CopperMineOutputMonitor" shouldLoad={copperMineOutput.open} />
       )}
       {ironOreExtraction.open && (
-        <LazyPanel importFn={() => import('@/components/map/IronOreExtractionMonitor').then(m => ({ default: m.IronOreExtractionMonitor }))} exportName="IronOreExtractionMonitor" shouldLoad={ironOreExtraction.open} />
+        <LazyPanel importFn={() => import('@/components/map/IronOreExtractionMonitor')} exportName="IronOreExtractionMonitor" shouldLoad={ironOreExtraction.open} />
       )}
       {coalMineProduction.open && (
-        <LazyPanel importFn={() => import('@/components/map/CoalMineProductionMonitor').then(m => ({ default: m.CoalMineProductionMonitor }))} exportName="CoalMineProductionMonitor" shouldLoad={coalMineProduction.open} />
+        <LazyPanel importFn={() => import('@/components/map/CoalMineProductionMonitor')} exportName="CoalMineProductionMonitor" shouldLoad={coalMineProduction.open} />
       )}
       {diamondMineOutput.open && (
-        <LazyPanel importFn={() => import('@/components/map/DiamondMineOutputMonitor').then(m => ({ default: m.DiamondMineOutputMonitor }))} exportName="DiamondMineOutputMonitor" shouldLoad={diamondMineOutput.open} />
+        <LazyPanel importFn={() => import('@/components/map/DiamondMineOutputMonitor')} exportName="DiamondMineOutputMonitor" shouldLoad={diamondMineOutput.open} />
       )}
       {rareEarthMineral.open && (
-        <LazyPanel importFn={() => import('@/components/map/RareEarthMineralMonitor').then(m => ({ default: m.RareEarthMineralMonitor }))} exportName="RareEarthMineralMonitor" shouldLoad={rareEarthMineral.open} />
+        <LazyPanel importFn={() => import('@/components/map/RareEarthMineralMonitor')} exportName="RareEarthMineralMonitor" shouldLoad={rareEarthMineral.open} />
       )}
       {lithiumExtraction.open && (
-        <LazyPanel importFn={() => import('@/components/map/LithiumExtractionMonitor').then(m => ({ default: m.LithiumExtractionMonitor }))} exportName="LithiumExtractionMonitor" shouldLoad={lithiumExtraction.open} />
+        <LazyPanel importFn={() => import('@/components/map/LithiumExtractionMonitor')} exportName="LithiumExtractionMonitor" shouldLoad={lithiumExtraction.open} />
       )}
       {uraniumMiningSite.open && (
-        <LazyPanel importFn={() => import('@/components/map/UraniumMiningSiteMonitor').then(m => ({ default: m.UraniumMiningSiteMonitor }))} exportName="UraniumMiningSiteMonitor" shouldLoad={uraniumMiningSite.open} />
+        <LazyPanel importFn={() => import('@/components/map/UraniumMiningSiteMonitor')} exportName="UraniumMiningSiteMonitor" shouldLoad={uraniumMiningSite.open} />
       )}
       {/* Task 131: Transportation & Logistics Hubs */}
       {airportTerminalStatus.open && (
