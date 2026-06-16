@@ -414,6 +414,15 @@ export function MonitorPanelRegistry() {
   const skiResortConditionMonitor = useMapStore((s) => s.skiResortConditionMonitor)
   const cruisePortActivityMonitor = useMapStore((s) => s.cruisePortActivityMonitor)
   const themeParkQueueMonitor = useMapStore((s) => s.themeParkQueueMonitor)
+  // Task 121: Retail & Commercial Intelligence
+  const shoppingMallTraffic = useMapStore((s) => s.shoppingMallTraffic)
+  const retailStorePerformance = useMapStore((s) => s.retailStorePerformance)
+  const restaurantOccupancy = useMapStore((s) => s.restaurantOccupancy)
+  const supermarketQueue = useMapStore((s) => s.supermarketQueue)
+  const streetMarketActivity = useMapStore((s) => s.streetMarketActivity)
+  const cinemaTheaterAttendance = useMapStore((s) => s.cinemaTheaterAttendance)
+  const gymFitnessCenter = useMapStore((s) => s.gymFitnessCenter)
+  const nightlifeVenue = useMapStore((s) => s.nightlifeVenue)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -1417,6 +1426,31 @@ export function MonitorPanelRegistry() {
       )}
       {themeParkQueueMonitor.open && (
         <LazyPanel importFn={() => import('@/components/map/ThemeParkQueueMonitor').then(m => ({ default: m.ThemeParkQueueMonitor }))} exportName="ThemeParkQueueMonitor" shouldLoad={themeParkQueueMonitor.open} />
+      )}
+      {/* Task 121: Retail & Commercial Intelligence */}
+      {shoppingMallTraffic.open && (
+        <LazyPanel importFn={() => import('@/components/map/ShoppingMallTrafficMonitor').then(m => ({ default: m.ShoppingMallTrafficMonitor }))} exportName="ShoppingMallTrafficMonitor" shouldLoad={shoppingMallTraffic.open} />
+      )}
+      {retailStorePerformance.open && (
+        <LazyPanel importFn={() => import('@/components/map/RetailStorePerformanceMonitor').then(m => ({ default: m.RetailStorePerformanceMonitor }))} exportName="RetailStorePerformanceMonitor" shouldLoad={retailStorePerformance.open} />
+      )}
+      {restaurantOccupancy.open && (
+        <LazyPanel importFn={() => import('@/components/map/RestaurantOccupancyMonitor').then(m => ({ default: m.RestaurantOccupancyMonitor }))} exportName="RestaurantOccupancyMonitor" shouldLoad={restaurantOccupancy.open} />
+      )}
+      {supermarketQueue.open && (
+        <LazyPanel importFn={() => import('@/components/map/SupermarketQueueMonitor').then(m => ({ default: m.SupermarketQueueMonitor }))} exportName="SupermarketQueueMonitor" shouldLoad={supermarketQueue.open} />
+      )}
+      {streetMarketActivity.open && (
+        <LazyPanel importFn={() => import('@/components/map/StreetMarketActivityMonitor').then(m => ({ default: m.StreetMarketActivityMonitor }))} exportName="StreetMarketActivityMonitor" shouldLoad={streetMarketActivity.open} />
+      )}
+      {cinemaTheaterAttendance.open && (
+        <LazyPanel importFn={() => import('@/components/map/CinemaTheaterAttendanceMonitor').then(m => ({ default: m.CinemaTheaterAttendanceMonitor }))} exportName="CinemaTheaterAttendanceMonitor" shouldLoad={cinemaTheaterAttendance.open} />
+      )}
+      {gymFitnessCenter.open && (
+        <LazyPanel importFn={() => import('@/components/map/GymFitnessCenterMonitor').then(m => ({ default: m.GymFitnessCenterMonitor }))} exportName="GymFitnessCenterMonitor" shouldLoad={gymFitnessCenter.open} />
+      )}
+      {nightlifeVenue.open && (
+        <LazyPanel importFn={() => import('@/components/map/NightlifeVenueMonitor').then(m => ({ default: m.NightlifeVenueMonitor }))} exportName="NightlifeVenueMonitor" shouldLoad={nightlifeVenue.open} />
       )}
     </>
   )

@@ -4189,6 +4189,23 @@ interface MapState {
   setCruisePortActivityMonitor: (state: Partial<MonitorState>) => void
   themeParkQueueMonitor: MonitorState
   setThemeParkQueueMonitor: (state: Partial<MonitorState>) => void
+  // Task 121: Retail & Commercial Intelligence
+  shoppingMallTraffic: MonitorState
+  setShoppingMallTraffic: (state: Partial<MonitorState>) => void
+  retailStorePerformance: MonitorState
+  setRetailStorePerformance: (state: Partial<MonitorState>) => void
+  restaurantOccupancy: MonitorState
+  setRestaurantOccupancy: (state: Partial<MonitorState>) => void
+  supermarketQueue: MonitorState
+  setSupermarketQueue: (state: Partial<MonitorState>) => void
+  streetMarketActivity: MonitorState
+  setStreetMarketActivity: (state: Partial<MonitorState>) => void
+  cinemaTheaterAttendance: MonitorState
+  setCinemaTheaterAttendance: (state: Partial<MonitorState>) => void
+  gymFitnessCenter: MonitorState
+  setGymFitnessCenter: (state: Partial<MonitorState>) => void
+  nightlifeVenue: MonitorState
+  setNightlifeVenue: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -8202,6 +8219,15 @@ export const useMapStore = create<MapState>()(
       skiResortConditionMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       cruisePortActivityMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       themeParkQueueMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 121: Retail & Commercial Intelligence
+      shoppingMallTraffic: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      retailStorePerformance: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      restaurantOccupancy: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      supermarketQueue: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      streetMarketActivity: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      cinemaTheaterAttendance: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      gymFitnessCenter: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      nightlifeVenue: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -8219,6 +8245,15 @@ export const useMapStore = create<MapState>()(
       setSkiResortConditionMonitor: (updates) => set((state) => ({ skiResortConditionMonitor: { ...state.skiResortConditionMonitor, ...updates } })),
       setCruisePortActivityMonitor: (updates) => set((state) => ({ cruisePortActivityMonitor: { ...state.cruisePortActivityMonitor, ...updates } })),
       setThemeParkQueueMonitor: (updates) => set((state) => ({ themeParkQueueMonitor: { ...state.themeParkQueueMonitor, ...updates } })),
+      // Task 121: Retail & Commercial Intelligence
+      setShoppingMallTraffic: (updates) => set((state) => ({ shoppingMallTraffic: { ...state.shoppingMallTraffic, ...updates } })),
+      setRetailStorePerformance: (updates) => set((state) => ({ retailStorePerformance: { ...state.retailStorePerformance, ...updates } })),
+      setRestaurantOccupancy: (updates) => set((state) => ({ restaurantOccupancy: { ...state.restaurantOccupancy, ...updates } })),
+      setSupermarketQueue: (updates) => set((state) => ({ supermarketQueue: { ...state.supermarketQueue, ...updates } })),
+      setStreetMarketActivity: (updates) => set((state) => ({ streetMarketActivity: { ...state.streetMarketActivity, ...updates } })),
+      setCinemaTheaterAttendance: (updates) => set((state) => ({ cinemaTheaterAttendance: { ...state.cinemaTheaterAttendance, ...updates } })),
+      setGymFitnessCenter: (updates) => set((state) => ({ gymFitnessCenter: { ...state.gymFitnessCenter, ...updates } })),
+      setNightlifeVenue: (updates) => set((state) => ({ nightlifeVenue: { ...state.nightlifeVenue, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

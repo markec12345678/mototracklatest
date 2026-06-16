@@ -544,6 +544,15 @@ import {
   Snowflake as SnowflakeIcon18,
   Ship as ShipIcon7,
   FerrisWheel as FerrisWheelIcon,
+  // Task 121 icons
+  ShoppingBag as ShoppingBagIcon,
+  Store as StoreIcon,
+  Utensils as UtensilsIcon,
+  ShoppingCart as ShoppingCartIcon,
+  Store as StoreIcon2,
+  Film as FilmIcon,
+  Dumbbell as DumbbellIcon,
+  Music as MusicIcon,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -695,6 +704,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const skiResortConditionMonitorOpen = useMapStore((s) => s.skiResortConditionMonitor.open)
   const cruisePortActivityMonitorOpen = useMapStore((s) => s.cruisePortActivityMonitor.open)
   const themeParkQueueMonitorOpen = useMapStore((s) => s.themeParkQueueMonitor.open)
+  // Task 121: Retail & Commercial Intelligence
+  const shoppingMallTrafficOpen = useMapStore((s) => s.shoppingMallTraffic.open)
+  const retailStorePerformanceOpen = useMapStore((s) => s.retailStorePerformance.open)
+  const restaurantOccupancyOpen = useMapStore((s) => s.restaurantOccupancy.open)
+  const supermarketQueueOpen = useMapStore((s) => s.supermarketQueue.open)
+  const streetMarketActivityOpen = useMapStore((s) => s.streetMarketActivity.open)
+  const cinemaTheaterAttendanceOpen = useMapStore((s) => s.cinemaTheaterAttendance.open)
+  const gymFitnessCenterOpen = useMapStore((s) => s.gymFitnessCenter.open)
+  const nightlifeVenueOpen = useMapStore((s) => s.nightlifeVenue.open)
 
   if (typeof window === 'undefined') return null
 
@@ -5403,6 +5421,71 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <FerrisWheelIcon className="h-4 w-4" />
             {themeParkQueueMonitorOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-fuchsia-400" />}
+          </button>
+          {/* Task 121: Retail & Commercial Intelligence */}
+          <button
+            onClick={() => useMapStore.getState().setShoppingMallTraffic({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${shoppingMallTrafficOpen ? 'bg-rose-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Shopping Mall Traffic Monitor"
+          >
+            <ShoppingBagIcon className="h-4 w-4" />
+            {shoppingMallTrafficOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setRetailStorePerformance({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${retailStorePerformanceOpen ? 'bg-amber-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Retail Store Performance Monitor"
+          >
+            <StoreIcon className="h-4 w-4" />
+            {retailStorePerformanceOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setRestaurantOccupancy({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${restaurantOccupancyOpen ? 'bg-orange-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Restaurant Occupancy Monitor"
+          >
+            <UtensilsIcon className="h-4 w-4" />
+            {restaurantOccupancyOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setSupermarketQueue({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${supermarketQueueOpen ? 'bg-emerald-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Supermarket Queue Monitor"
+          >
+            <ShoppingCartIcon className="h-4 w-4" />
+            {supermarketQueueOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setStreetMarketActivity({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${streetMarketActivityOpen ? 'bg-lime-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Street Market Activity Monitor"
+          >
+            <StoreIcon2 className="h-4 w-4" />
+            {streetMarketActivityOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-lime-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCinemaTheaterAttendance({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${cinemaTheaterAttendanceOpen ? 'bg-violet-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Cinema Theater Attendance Monitor"
+          >
+            <FilmIcon className="h-4 w-4" />
+            {cinemaTheaterAttendanceOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-violet-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setGymFitnessCenter({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${gymFitnessCenterOpen ? 'bg-cyan-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Gym Fitness Center Monitor"
+          >
+            <DumbbellIcon className="h-4 w-4" />
+            {gymFitnessCenterOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setNightlifeVenue({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${nightlifeVenueOpen ? 'bg-fuchsia-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Nightlife Venue Monitor"
+          >
+            <MusicIcon className="h-4 w-4" />
+            {nightlifeVenueOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-fuchsia-400" />}
           </button>
         </div>
       </div>
