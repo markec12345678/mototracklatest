@@ -245,6 +245,15 @@ export function MonitorPanelRegistry() {
   const podzolProfile = useMapStore((s) => s.podzolProfile)
   const gleyRedox = useMapStore((s) => s.gleyRedox)
   const calcicHorizon = useMapStore((s) => s.calcicHorizon)
+  // Task 101
+  const oreGradeAssay = useMapStore((s) => s.oreGradeAssay)
+  const mineTailingsDam = useMapStore((s) => s.mineTailingsDam)
+  const mineralVeinThickness = useMapStore((s) => s.mineralVeinThickness)
+  const stripMineRatio = useMapStore((s) => s.stripMineRatio)
+  const undergroundMineVent = useMapStore((s) => s.undergroundMineVent)
+  const acidMineDrainage = useMapStore((s) => s.acidMineDrainage)
+  const oreReserveEstimate = useMapStore((s) => s.oreReserveEstimate)
+  const mineralDepositGrade = useMapStore((s) => s.mineralDepositGrade)
 
   return (
     <>
@@ -745,6 +754,31 @@ export function MonitorPanelRegistry() {
       )}
       {calcicHorizon.open && (
         <LazyPanel importFn={() => import('@/components/map/CalcicHorizonMonitor')} exportName="CalcicHorizonMonitor" shouldLoad={true} />
+      )}
+      {/* Task 101: Mineral Resources and Mining */}
+      {oreGradeAssay.open && (
+        <LazyPanel importFn={() => import('@/components/map/OreGradeAssayMonitor')} exportName="OreGradeAssayMonitor" shouldLoad={true} />
+      )}
+      {mineTailingsDam.open && (
+        <LazyPanel importFn={() => import('@/components/map/MineTailingsDamMonitor')} exportName="MineTailingsDamMonitor" shouldLoad={true} />
+      )}
+      {mineralVeinThickness.open && (
+        <LazyPanel importFn={() => import('@/components/map/MineralVeinThicknessMonitor')} exportName="MineralVeinThicknessMonitor" shouldLoad={true} />
+      )}
+      {stripMineRatio.open && (
+        <LazyPanel importFn={() => import('@/components/map/StripMineRatioMonitor')} exportName="StripMineRatioMonitor" shouldLoad={true} />
+      )}
+      {undergroundMineVent.open && (
+        <LazyPanel importFn={() => import('@/components/map/UndergroundMineVentMonitor')} exportName="UndergroundMineVentMonitor" shouldLoad={true} />
+      )}
+      {acidMineDrainage.open && (
+        <LazyPanel importFn={() => import('@/components/map/AcidMineDrainageMonitor')} exportName="AcidMineDrainageMonitor" shouldLoad={true} />
+      )}
+      {oreReserveEstimate.open && (
+        <LazyPanel importFn={() => import('@/components/map/OreReserveEstimateMonitor')} exportName="OreReserveEstimateMonitor" shouldLoad={true} />
+      )}
+      {mineralDepositGrade.open && (
+        <LazyPanel importFn={() => import('@/components/map/MineralDepositGradeMonitor')} exportName="MineralDepositGradeMonitor" shouldLoad={true} />
       )}
     </>
   )

@@ -8753,6 +8753,24 @@ interface MapState {
   calcicHorizon: CalcicHorizonState
   setCalcicHorizon: (state: Partial<CalcicHorizonState>) => void
 
+  // Task 101: Mineral Resources and Mining
+  oreGradeAssay: OreGradeAssayState
+  setOreGradeAssay: (state: Partial<OreGradeAssayState>) => void
+  mineTailingsDam: MineTailingsDamState
+  setMineTailingsDam: (state: Partial<MineTailingsDamState>) => void
+  mineralVeinThickness: MineralVeinThicknessState
+  setMineralVeinThickness: (state: Partial<MineralVeinThicknessState>) => void
+  stripMineRatio: StripMineRatioState
+  setStripMineRatio: (state: Partial<StripMineRatioState>) => void
+  undergroundMineVent: UndergroundMineVentState
+  setUndergroundMineVent: (state: Partial<UndergroundMineVentState>) => void
+  acidMineDrainage: AcidMineDrainageState
+  setAcidMineDrainage: (state: Partial<AcidMineDrainageState>) => void
+  oreReserveEstimate: OreReserveEstimateState
+  setOreReserveEstimate: (state: Partial<OreReserveEstimateState>) => void
+  mineralDepositGrade: MineralDepositGradeState
+  setMineralDepositGrade: (state: Partial<MineralDepositGradeState>) => void
+
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
   setAddLocationDialogOpen: (open: boolean) => void
@@ -11088,6 +11106,183 @@ export interface CalcicHorizonState {
   showCaco3Content: boolean
   showHorizonDepth: boolean
   showNoduleDensity: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 101: Mineral Resources and Mining
+export interface OreGradeAssayData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  metalGrade: number        // g/t or %
+  cutoffGrade: number       // g/t or %
+  recoveryRate: number      // %
+  status: 'high_grade' | 'economic' | 'marginal' | 'subeconomic'
+  description: string
+}
+
+export interface OreGradeAssayState {
+  open: boolean
+  data: OreGradeAssayData[]
+  showMetalGrade: boolean
+  showCutoffGrade: boolean
+  showRecoveryRate: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface MineTailingsDamData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  damHeight: number         // m
+  storageVolume: number     // million m³
+  phreaticLevel: number     // m from base
+  status: 'critical' | 'elevated' | 'normal' | 'draining'
+  description: string
+}
+
+export interface MineTailingsDamState {
+  open: boolean
+  data: MineTailingsDamData[]
+  showDamHeight: boolean
+  showStorageVolume: boolean
+  showPhreaticLevel: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface MineralVeinThicknessData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  veinWidth: number         // cm
+  oreMineral: number        // %
+  depthExtent: number       // m
+  status: 'thick' | 'moderate' | 'thin' | 'pinching'
+  description: string
+}
+
+export interface MineralVeinThicknessState {
+  open: boolean
+  data: MineralVeinThicknessData[]
+  showVeinWidth: boolean
+  showOreMineral: boolean
+  showDepthExtent: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface StripMineRatioData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  stripRatio: number        // waste:ore
+  overburdenDepth: number   // m
+  oreThickness: number      // m
+  status: 'favorable' | 'marginal' | 'high' | 'uneconomic'
+  description: string
+}
+
+export interface StripMineRatioState {
+  open: boolean
+  data: StripMineRatioData[]
+  showStripRatio: boolean
+  showOverburdenDepth: boolean
+  showOreThickness: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface UndergroundMineVentData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  airflowRate: number       // m³/s
+  methaneLevel: number      // %
+  temperature: number       // °C
+  status: 'dangerous' | 'alert' | 'adequate' | 'optimal'
+  description: string
+}
+
+export interface UndergroundMineVentState {
+  open: boolean
+  data: UndergroundMineVentData[]
+  showAirflowRate: boolean
+  showMethaneLevel: boolean
+  showTemperature: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface AcidMineDrainageData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  pH: number
+  ironConcentration: number // mg/L
+  sulfateLevel: number      // mg/L
+  status: 'severe' | 'moderate' | 'mild' | 'neutral'
+  description: string
+}
+
+export interface AcidMineDrainageState {
+  open: boolean
+  data: AcidMineDrainageData[]
+  showPH: boolean
+  showIronConcentration: boolean
+  showSulfateLevel: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface OreReserveEstimateData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  provenReserve: number     // Mt
+  probableReserve: number   // Mt
+  resourceGrade: number     // g/t
+  status: 'proven' | 'probable' | 'inferred' | 'exploration'
+  description: string
+}
+
+export interface OreReserveEstimateState {
+  open: boolean
+  data: OreReserveEstimateData[]
+  showProvenReserve: boolean
+  showProbableReserve: boolean
+  showResourceGrade: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface MineralDepositGradeData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  depositTonnes: number     // Mt
+  averageGrade: number      // %
+  containedMetal: number    // kt
+  status: 'giant' | 'major' | 'moderate' | 'small'
+  description: string
+}
+
+export interface MineralDepositGradeState {
+  open: boolean
+  data: MineralDepositGradeData[]
+  showDepositTonnes: boolean
+  showAverageGrade: boolean
+  showContainedMetal: boolean
   statusFilter: string
   activeItemId: string | null
 }
@@ -16116,6 +16311,40 @@ export const useMapStore = create<MapState>()(
       },
       setCalcicHorizon: (updates) => set((state) => ({ calcicHorizon: { ...state.calcicHorizon, ...updates } })),
 
+      // Task 101: Mineral Resources and Mining
+      oreGradeAssay: {
+        data: [], activeItemId: null, showMetalGrade: true, showCutoffGrade: true, showRecoveryRate: false, open: false, statusFilter: '',
+      },
+      setOreGradeAssay: (updates) => set((state) => ({ oreGradeAssay: { ...state.oreGradeAssay, ...updates } })),
+      mineTailingsDam: {
+        data: [], activeItemId: null, showDamHeight: true, showStorageVolume: true, showPhreaticLevel: false, open: false, statusFilter: '',
+      },
+      setMineTailingsDam: (updates) => set((state) => ({ mineTailingsDam: { ...state.mineTailingsDam, ...updates } })),
+      mineralVeinThickness: {
+        data: [], activeItemId: null, showVeinWidth: true, showOreMineral: true, showDepthExtent: false, open: false, statusFilter: '',
+      },
+      setMineralVeinThickness: (updates) => set((state) => ({ mineralVeinThickness: { ...state.mineralVeinThickness, ...updates } })),
+      stripMineRatio: {
+        data: [], activeItemId: null, showStripRatio: true, showOverburdenDepth: true, showOreThickness: false, open: false, statusFilter: '',
+      },
+      setStripMineRatio: (updates) => set((state) => ({ stripMineRatio: { ...state.stripMineRatio, ...updates } })),
+      undergroundMineVent: {
+        data: [], activeItemId: null, showAirflowRate: true, showMethaneLevel: true, showTemperature: false, open: false, statusFilter: '',
+      },
+      setUndergroundMineVent: (updates) => set((state) => ({ undergroundMineVent: { ...state.undergroundMineVent, ...updates } })),
+      acidMineDrainage: {
+        data: [], activeItemId: null, showPH: true, showIronConcentration: true, showSulfateLevel: false, open: false, statusFilter: '',
+      },
+      setAcidMineDrainage: (updates) => set((state) => ({ acidMineDrainage: { ...state.acidMineDrainage, ...updates } })),
+      oreReserveEstimate: {
+        data: [], activeItemId: null, showProvenReserve: true, showProbableReserve: true, showResourceGrade: false, open: false, statusFilter: '',
+      },
+      setOreReserveEstimate: (updates) => set((state) => ({ oreReserveEstimate: { ...state.oreReserveEstimate, ...updates } })),
+      mineralDepositGrade: {
+        data: [], activeItemId: null, showDepositTonnes: true, showAverageGrade: true, showContainedMetal: false, open: false, statusFilter: '',
+      },
+      setMineralDepositGrade: (updates) => set((state) => ({ mineralDepositGrade: { ...state.mineralDepositGrade, ...updates } })),
+
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
       setAddLocationDialogOpen: (open) => set({ addLocationDialogOpen: open }),
@@ -16598,6 +16827,15 @@ export const useMapStore = create<MapState>()(
         podzolProfile: state.podzolProfile,
         gleyRedox: state.gleyRedox,
         calcicHorizon: state.calcicHorizon,
+        // Task 101
+        oreGradeAssay: state.oreGradeAssay,
+        mineTailingsDam: state.mineTailingsDam,
+        mineralVeinThickness: state.mineralVeinThickness,
+        stripMineRatio: state.stripMineRatio,
+        undergroundMineVent: state.undergroundMineVent,
+        acidMineDrainage: state.acidMineDrainage,
+        oreReserveEstimate: state.oreReserveEstimate,
+        mineralDepositGrade: state.mineralDepositGrade,
         // Task 96
         karstSpringDischarge: state.karstSpringDischarge,
         caveDripMonitor: state.caveDripMonitor,

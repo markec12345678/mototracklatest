@@ -46,6 +46,7 @@ import {
   CalendarDays,
   ArrowUpFromLine,
   Compass,
+  Container,
   Waypoints,
   CloudSun,
   MessageCircle,
@@ -365,6 +366,15 @@ import {
   Layers as LayersIcon8,
   Droplet as DropletIcon11,
   Mountain as MountainIcon15,
+  // Task 101 icons
+  Gem as GemIcon5,
+  AlertTriangle as AlertTriangleIcon4,
+  Drill as DrillIcon2,
+  Container as ContainerIcon,
+  Wind as WindIcon13,
+  Droplet as DropletIcon12,
+  Database as DatabaseIcon2,
+  Mountain as MountainIcon16,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -2610,6 +2620,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setPodzolProfile({ open: true })} title="Podzol Profile" aria-label="Open podzol profile monitor"><LayersIcon8 className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setGleyRedox({ open: true })} title="Gley Redox" aria-label="Open gley redox monitor"><DropletIcon11 className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setCalcicHorizon({ open: true })} title="Calcic Horizon" aria-label="Open calcic Horizon monitor"><MountainIcon15 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setOreGradeAssay({ open: true })} title="Ore Grade Assay" aria-label="Open ore grade assay monitor"><GemIcon5 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setMineTailingsDam({ open: true })} title="Mine Tailings Dam" aria-label="Open mine tailings dam monitor"><AlertTriangleIcon4 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setMineralVeinThickness({ open: true })} title="Mineral Vein Thickness" aria-label="Open mineral vein thickness monitor"><DrillIcon2 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setStripMineRatio({ open: true })} title="Strip Mine Ratio" aria-label="Open strip mine ratio monitor"><ContainerIcon className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setUndergroundMineVent({ open: true })} title="Underground Mine Vent" aria-label="Open underground mine vent monitor"><WindIcon13 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setAcidMineDrainage({ open: true })} title="Acid Mine Drainage" aria-label="Open acid mine drainage monitor"><DropletIcon12 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setOreReserveEstimate({ open: true })} title="Ore Reserve Estimate" aria-label="Open ore reserve estimate monitor"><DatabaseIcon2 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setMineralDepositGrade({ open: true })} title="Mineral Deposit Grade" aria-label="Open mineral deposit grade monitor"><MountainIcon16 className="h-4 w-4" /></Button>
           <Button
             variant="outline"
             size="icon"
