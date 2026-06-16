@@ -481,6 +481,24 @@ import {
   CloudRain as CloudRainIcon8,
   Mountain as MountainIcon18,
   Droplet as DropletIcon15,
+  // Task 114 icons
+  Shield as ShieldIcon5,
+  Route as RouteIcon4,
+  Cross as CrossIcon,
+  Search as SearchIcon3,
+  Package as PackageIcon,
+  Radio as RadioIcon4,
+  AlertTriangle as AlertTriangleIcon6,
+  Activity as ActivityIcon10,
+  // Task 115 icons
+  Database as DatabaseIcon3,
+  Construction as ConstructionIcon2,
+  Droplets as DropletsIcon21,
+  FlaskConical as FlaskConicalIcon5,
+  Biohazard as BiohazardIcon2,
+  CloudRain as CloudRainIcon9,
+  GlassWater as GlassWaterIcon,
+  Waves as WavesIcon26,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -569,6 +587,24 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const extremeWeatherIndexOpen = useMapStore((s) => s.extremeWeatherIndex.open)
   const glacierRetreatTrackOpen = useMapStore((s) => s.glacierRetreatTrack.open)
   const oceanAcidificationTrackOpen = useMapStore((s) => s.oceanAcidificationTrack.open)
+  // Task 114: Disaster Response & Emergency Management
+  const emergencyShelterMapOpen = useMapStore((s) => s.emergencyShelterMap.open)
+  const evacuationRouteOpen = useMapStore((s) => s.evacuationRoute.open)
+  const firstAidStationOpen = useMapStore((s) => s.firstAidStation.open)
+  const searchRescueGridOpen = useMapStore((s) => s.searchRescueGrid.open)
+  const supplyChainReliefOpen = useMapStore((s) => s.supplyChainRelief.open)
+  const communicationNetworkOpen = useMapStore((s) => s.communicationNetwork.open)
+  const damageAssessmentOpen = useMapStore((s) => s.damageAssessment.open)
+  const casualtyTrackingOpen = useMapStore((s) => s.casualtyTracking.open)
+  // Task 115: Water Resources Management
+  const reservoirCapacityOpen = useMapStore((s) => s.reservoirCapacity.open)
+  const damIntegrityOpen = useMapStore((s) => s.damIntegrity.open)
+  const irrigationCommandOpen = useMapStore((s) => s.irrigationCommand.open)
+  const waterTreatmentPlantOpen = useMapStore((s) => s.waterTreatmentPlant.open)
+  const watershedPollutionOpen = useMapStore((s) => s.watershedPollution.open)
+  const floodControlSystemOpen = useMapStore((s) => s.floodControlSystem.open)
+  const drinkingWaterQualityOpen = useMapStore((s) => s.drinkingWaterQuality.open)
+  const desalinationOutputOpen = useMapStore((s) => s.desalinationOutput.open)
 
   if (typeof window === 'undefined') return null
 
@@ -4100,6 +4136,376 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
               </TooltipTrigger>
               <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
                 Ocean Acidification Tracker Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          {/* Task 114: Disaster Response & Emergency Management */}
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    emergencyShelterMapOpen
+                      ? 'bg-red-500 text-white shadow-md shadow-red-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setEmergencyShelterMap({ open: true })}
+                  aria-label="Emergency Shelter Map Monitor"
+                >
+                  <ShieldIcon5 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Emergency Shelter Map Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    evacuationRouteOpen
+                      ? 'bg-orange-500 text-white shadow-md shadow-orange-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setEvacuationRoute({ open: true })}
+                  aria-label="Evacuation Route Monitor"
+                >
+                  <RouteIcon4 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Evacuation Route Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    firstAidStationOpen
+                      ? 'bg-emerald-500 text-white shadow-md shadow-emerald-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setFirstAidStation({ open: true })}
+                  aria-label="First Aid Station Monitor"
+                >
+                  <CrossIcon className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                First Aid Station Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    searchRescueGridOpen
+                      ? 'bg-blue-500 text-white shadow-md shadow-blue-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setSearchRescueGrid({ open: true })}
+                  aria-label="Search and Rescue Grid Monitor"
+                >
+                  <SearchIcon3 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Search and Rescue Grid Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    supplyChainReliefOpen
+                      ? 'bg-amber-500 text-white shadow-md shadow-amber-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setSupplyChainRelief({ open: true })}
+                  aria-label="Supply Chain Relief Monitor"
+                >
+                  <PackageIcon className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Supply Chain Relief Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    communicationNetworkOpen
+                      ? 'bg-violet-500 text-white shadow-md shadow-violet-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setCommunicationNetwork({ open: true })}
+                  aria-label="Communication Network Monitor"
+                >
+                  <RadioIcon4 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Communication Network Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    damageAssessmentOpen
+                      ? 'bg-rose-500 text-white shadow-md shadow-rose-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setDamageAssessment({ open: true })}
+                  aria-label="Damage Assessment Monitor"
+                >
+                  <AlertTriangleIcon6 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Damage Assessment Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    casualtyTrackingOpen
+                      ? 'bg-slate-500 text-white shadow-md shadow-slate-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setCasualtyTracking({ open: true })}
+                  aria-label="Casualty Tracking Monitor"
+                >
+                  <ActivityIcon10 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Casualty Tracking Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          {/* Task 115: Water Resources Management */}
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    reservoirCapacityOpen
+                      ? 'bg-blue-500 text-white shadow-md shadow-blue-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setReservoirCapacity({ open: true })}
+                  aria-label="Reservoir Capacity Monitor"
+                >
+                  <DatabaseIcon3 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Reservoir Capacity Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    damIntegrityOpen
+                      ? 'bg-stone-500 text-white shadow-md shadow-stone-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setDamIntegrity({ open: true })}
+                  aria-label="Dam Integrity Monitor"
+                >
+                  <ConstructionIcon2 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Dam Integrity Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    irrigationCommandOpen
+                      ? 'bg-green-500 text-white shadow-md shadow-green-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setIrrigationCommand({ open: true })}
+                  aria-label="Irrigation Command Monitor"
+                >
+                  <DropletsIcon21 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Irrigation Command Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    waterTreatmentPlantOpen
+                      ? 'bg-teal-500 text-white shadow-md shadow-teal-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setWaterTreatmentPlant({ open: true })}
+                  aria-label="Water Treatment Plant Monitor"
+                >
+                  <FlaskConicalIcon5 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Water Treatment Plant Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    watershedPollutionOpen
+                      ? 'bg-amber-500 text-white shadow-md shadow-amber-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setWatershedPollution({ open: true })}
+                  aria-label="Watershed Pollution Monitor"
+                >
+                  <BiohazardIcon2 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Watershed Pollution Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    floodControlSystemOpen
+                      ? 'bg-indigo-500 text-white shadow-md shadow-indigo-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setFloodControlSystem({ open: true })}
+                  aria-label="Flood Control System Monitor"
+                >
+                  <CloudRainIcon9 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Flood Control System Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    drinkingWaterQualityOpen
+                      ? 'bg-cyan-500 text-white shadow-md shadow-cyan-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setDrinkingWaterQuality({ open: true })}
+                  aria-label="Drinking Water Quality Monitor"
+                >
+                  <GlassWaterIcon className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Drinking Water Quality Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    desalinationOutputOpen
+                      ? 'bg-sky-500 text-white shadow-md shadow-sky-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setDesalinationOutput({ open: true })}
+                  aria-label="Desalination Output Monitor"
+                >
+                  <WavesIcon26 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Desalination Output Monitor
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

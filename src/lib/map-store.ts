@@ -4069,6 +4069,41 @@ interface MapState {
   setGlacierRetreatTrack: (state: Partial<MonitorState>) => void
   oceanAcidificationTrack: MonitorState
   setOceanAcidificationTrack: (state: Partial<MonitorState>) => void
+
+  // Task 114: Disaster Response & Emergency Management
+  emergencyShelterMap: MonitorState
+  setEmergencyShelterMap: (state: Partial<MonitorState>) => void
+  evacuationRoute: MonitorState
+  setEvacuationRoute: (state: Partial<MonitorState>) => void
+  firstAidStation: MonitorState
+  setFirstAidStation: (state: Partial<MonitorState>) => void
+  searchRescueGrid: MonitorState
+  setSearchRescueGrid: (state: Partial<MonitorState>) => void
+  supplyChainRelief: MonitorState
+  setSupplyChainRelief: (state: Partial<MonitorState>) => void
+  communicationNetwork: MonitorState
+  setCommunicationNetwork: (state: Partial<MonitorState>) => void
+  damageAssessment: MonitorState
+  setDamageAssessment: (state: Partial<MonitorState>) => void
+  casualtyTracking: MonitorState
+  setCasualtyTracking: (state: Partial<MonitorState>) => void
+  // Task 115: Water Resources Management
+  reservoirCapacity: MonitorState
+  setReservoirCapacity: (state: Partial<MonitorState>) => void
+  damIntegrity: MonitorState
+  setDamIntegrity: (state: Partial<MonitorState>) => void
+  irrigationCommand: MonitorState
+  setIrrigationCommand: (state: Partial<MonitorState>) => void
+  waterTreatmentPlant: MonitorState
+  setWaterTreatmentPlant: (state: Partial<MonitorState>) => void
+  watershedPollution: MonitorState
+  setWatershedPollution: (state: Partial<MonitorState>) => void
+  floodControlSystem: MonitorState
+  setFloodControlSystem: (state: Partial<MonitorState>) => void
+  drinkingWaterQuality: MonitorState
+  setDrinkingWaterQuality: (state: Partial<MonitorState>) => void
+  desalinationOutput: MonitorState
+  setDesalinationOutput: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -7973,6 +8008,42 @@ export const useMapStore = create<MapState>()(
       setExtremeWeatherIndex: (updates) => set((state) => ({ extremeWeatherIndex: { ...state.extremeWeatherIndex, ...updates } })),
       setGlacierRetreatTrack: (updates) => set((state) => ({ glacierRetreatTrack: { ...state.glacierRetreatTrack, ...updates } })),
       setOceanAcidificationTrack: (updates) => set((state) => ({ oceanAcidificationTrack: { ...state.oceanAcidificationTrack, ...updates } })),
+
+      // Task 114: Disaster Response & Emergency Management
+      emergencyShelterMap: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      evacuationRoute: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      firstAidStation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      searchRescueGrid: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      supplyChainRelief: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      communicationNetwork: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      damageAssessment: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      casualtyTracking: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      setEmergencyShelterMap: (updates) => set((state) => ({ emergencyShelterMap: { ...state.emergencyShelterMap, ...updates } })),
+      setEvacuationRoute: (updates) => set((state) => ({ evacuationRoute: { ...state.evacuationRoute, ...updates } })),
+      setFirstAidStation: (updates) => set((state) => ({ firstAidStation: { ...state.firstAidStation, ...updates } })),
+      setSearchRescueGrid: (updates) => set((state) => ({ searchRescueGrid: { ...state.searchRescueGrid, ...updates } })),
+      setSupplyChainRelief: (updates) => set((state) => ({ supplyChainRelief: { ...state.supplyChainRelief, ...updates } })),
+      setCommunicationNetwork: (updates) => set((state) => ({ communicationNetwork: { ...state.communicationNetwork, ...updates } })),
+      setDamageAssessment: (updates) => set((state) => ({ damageAssessment: { ...state.damageAssessment, ...updates } })),
+      setCasualtyTracking: (updates) => set((state) => ({ casualtyTracking: { ...state.casualtyTracking, ...updates } })),
+
+      // Task 115: Water Resources Management
+      reservoirCapacity: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      damIntegrity: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      irrigationCommand: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      waterTreatmentPlant: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      watershedPollution: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      floodControlSystem: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      drinkingWaterQuality: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      desalinationOutput: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      setReservoirCapacity: (updates) => set((state) => ({ reservoirCapacity: { ...state.reservoirCapacity, ...updates } })),
+      setDamIntegrity: (updates) => set((state) => ({ damIntegrity: { ...state.damIntegrity, ...updates } })),
+      setIrrigationCommand: (updates) => set((state) => ({ irrigationCommand: { ...state.irrigationCommand, ...updates } })),
+      setWaterTreatmentPlant: (updates) => set((state) => ({ waterTreatmentPlant: { ...state.waterTreatmentPlant, ...updates } })),
+      setWatershedPollution: (updates) => set((state) => ({ watershedPollution: { ...state.watershedPollution, ...updates } })),
+      setFloodControlSystem: (updates) => set((state) => ({ floodControlSystem: { ...state.floodControlSystem, ...updates } })),
+      setDrinkingWaterQuality: (updates) => set((state) => ({ drinkingWaterQuality: { ...state.drinkingWaterQuality, ...updates } })),
+      setDesalinationOutput: (updates) => set((state) => ({ desalinationOutput: { ...state.desalinationOutput, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

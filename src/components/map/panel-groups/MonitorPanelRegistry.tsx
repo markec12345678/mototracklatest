@@ -360,6 +360,24 @@ export function MonitorPanelRegistry() {
   const extremeWeatherIndex = useMapStore((s) => s.extremeWeatherIndex)
   const glacierRetreatTrack = useMapStore((s) => s.glacierRetreatTrack)
   const oceanAcidificationTrack = useMapStore((s) => s.oceanAcidificationTrack)
+  // Task 114: Disaster Response & Emergency Management
+  const emergencyShelterMap = useMapStore((s) => s.emergencyShelterMap)
+  const evacuationRoute = useMapStore((s) => s.evacuationRoute)
+  const firstAidStation = useMapStore((s) => s.firstAidStation)
+  const searchRescueGrid = useMapStore((s) => s.searchRescueGrid)
+  const supplyChainRelief = useMapStore((s) => s.supplyChainRelief)
+  const communicationNetwork = useMapStore((s) => s.communicationNetwork)
+  const damageAssessment = useMapStore((s) => s.damageAssessment)
+  const casualtyTracking = useMapStore((s) => s.casualtyTracking)
+  // Task 115: Water Resources Management
+  const reservoirCapacity = useMapStore((s) => s.reservoirCapacity)
+  const damIntegrity = useMapStore((s) => s.damIntegrity)
+  const irrigationCommand = useMapStore((s) => s.irrigationCommand)
+  const waterTreatmentPlant = useMapStore((s) => s.waterTreatmentPlant)
+  const watershedPollution = useMapStore((s) => s.watershedPollution)
+  const floodControlSystem = useMapStore((s) => s.floodControlSystem)
+  const drinkingWaterQuality = useMapStore((s) => s.drinkingWaterQuality)
+  const desalinationOutput = useMapStore((s) => s.desalinationOutput)
 
   return (
     <>
@@ -1179,6 +1197,56 @@ export function MonitorPanelRegistry() {
       )}
       {oceanAcidificationTrack.open && (
         <LazyPanel importFn={() => import('@/components/map/OceanAcidificationTrackMonitor')} exportName="OceanAcidificationTrackMonitor" shouldLoad={true} />
+      )}
+      {/* Task 114: Disaster Response & Emergency Management */}
+      {emergencyShelterMap.open && (
+        <LazyPanel importFn={() => import('@/components/map/EmergencyShelterMapMonitor')} exportName="EmergencyShelterMapMonitor" shouldLoad={true} />
+      )}
+      {evacuationRoute.open && (
+        <LazyPanel importFn={() => import('@/components/map/EvacuationRouteMonitor')} exportName="EvacuationRouteMonitor" shouldLoad={true} />
+      )}
+      {firstAidStation.open && (
+        <LazyPanel importFn={() => import('@/components/map/FirstAidStationMonitor')} exportName="FirstAidStationMonitor" shouldLoad={true} />
+      )}
+      {searchRescueGrid.open && (
+        <LazyPanel importFn={() => import('@/components/map/SearchRescueGridMonitor')} exportName="SearchRescueGridMonitor" shouldLoad={true} />
+      )}
+      {supplyChainRelief.open && (
+        <LazyPanel importFn={() => import('@/components/map/SupplyChainReliefMonitor')} exportName="SupplyChainReliefMonitor" shouldLoad={true} />
+      )}
+      {communicationNetwork.open && (
+        <LazyPanel importFn={() => import('@/components/map/CommunicationNetworkMonitor')} exportName="CommunicationNetworkMonitor" shouldLoad={true} />
+      )}
+      {damageAssessment.open && (
+        <LazyPanel importFn={() => import('@/components/map/DamageAssessmentMonitor')} exportName="DamageAssessmentMonitor" shouldLoad={true} />
+      )}
+      {casualtyTracking.open && (
+        <LazyPanel importFn={() => import('@/components/map/CasualtyTrackingMonitor')} exportName="CasualtyTrackingMonitor" shouldLoad={true} />
+      )}
+      {/* Task 115: Water Resources Management */}
+      {reservoirCapacity.open && (
+        <LazyPanel importFn={() => import('@/components/map/ReservoirCapacityMonitor')} exportName="ReservoirCapacityMonitor" shouldLoad={true} />
+      )}
+      {damIntegrity.open && (
+        <LazyPanel importFn={() => import('@/components/map/DamIntegrityMonitor')} exportName="DamIntegrityMonitor" shouldLoad={true} />
+      )}
+      {irrigationCommand.open && (
+        <LazyPanel importFn={() => import('@/components/map/IrrigationCommandMonitor')} exportName="IrrigationCommandMonitor" shouldLoad={true} />
+      )}
+      {waterTreatmentPlant.open && (
+        <LazyPanel importFn={() => import('@/components/map/WaterTreatmentPlantMonitor')} exportName="WaterTreatmentPlantMonitor" shouldLoad={true} />
+      )}
+      {watershedPollution.open && (
+        <LazyPanel importFn={() => import('@/components/map/WatershedPollutionMonitor')} exportName="WatershedPollutionMonitor" shouldLoad={true} />
+      )}
+      {floodControlSystem.open && (
+        <LazyPanel importFn={() => import('@/components/map/FloodControlSystemMonitor')} exportName="FloodControlSystemMonitor" shouldLoad={true} />
+      )}
+      {drinkingWaterQuality.open && (
+        <LazyPanel importFn={() => import('@/components/map/DrinkingWaterQualityMonitor')} exportName="DrinkingWaterQualityMonitor" shouldLoad={true} />
+      )}
+      {desalinationOutput.open && (
+        <LazyPanel importFn={() => import('@/components/map/DesalinationOutputMonitor')} exportName="DesalinationOutputMonitor" shouldLoad={true} />
       )}
     </>
   )
