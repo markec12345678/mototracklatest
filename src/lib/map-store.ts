@@ -8771,6 +8771,24 @@ interface MapState {
   mineralDepositGrade: MineralDepositGradeState
   setMineralDepositGrade: (state: Partial<MineralDepositGradeState>) => void
 
+  // Task 102: Ocean Circulation and Currents
+  thermohalineCell: ThermohalineCellState
+  setThermohalineCell: (state: Partial<ThermohalineCellState>) => void
+  ekmanTransport: EkmanTransportState
+  setEkmanTransport: (state: Partial<EkmanTransportState>) => void
+  geostrophicCurrent: GeostrophicCurrentState
+  setGeostrophicCurrent: (state: Partial<GeostrophicCurrentState>) => void
+  upwellingIntensity: UpwellingIntensityState
+  setUpwellingIntensity: (state: Partial<UpwellingIntensityState>) => void
+  westernBoundary: WesternBoundaryState
+  setWesternBoundary: (state: Partial<WesternBoundaryState>) => void
+  deepWaterFormation: DeepWaterFormationState
+  setDeepWaterFormation: (state: Partial<DeepWaterFormationState>) => void
+  oceanGyre: OceanGyreState
+  setOceanGyre: (state: Partial<OceanGyreState>) => void
+  tropicalCurrent: TropicalCurrentState
+  setTropicalCurrent: (state: Partial<TropicalCurrentState>) => void
+
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
   setAddLocationDialogOpen: (open: boolean) => void
@@ -11283,6 +11301,183 @@ export interface MineralDepositGradeState {
   showDepositTonnes: boolean
   showAverageGrade: boolean
   showContainedMetal: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 102: Ocean Circulation and Currents
+export interface ThermohalineCellData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  overturningRate: number   // Sv (Sverdrups)
+  temperature: number       // °C
+  salinity: number          // PSU
+  status: 'strong' | 'moderate' | 'weakening' | 'collapsed'
+  description: string
+}
+
+export interface ThermohalineCellState {
+  open: boolean
+  data: ThermohalineCellData[]
+  showOverturningRate: boolean
+  showTemperature: boolean
+  showSalinity: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface EkmanTransportData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  transportAngle: number    // degrees
+  windSpeed: number         // m/s
+  surfaceVelocity: number   // m/s
+  status: 'aligned' | 'deflected' | 'reversed' | 'calm'
+  description: string
+}
+
+export interface EkmanTransportState {
+  open: boolean
+  data: EkmanTransportData[]
+  showTransportAngle: boolean
+  showWindSpeed: boolean
+  showSurfaceVelocity: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface GeostrophicCurrentData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  currentSpeed: number      // m/s
+  pressureGradient: number  // Pa/km
+  coriolisEffect: number    // 10^-4 s^-1
+  status: 'intense' | 'moderate' | 'weak' | 'stagnant'
+  description: string
+}
+
+export interface GeostrophicCurrentState {
+  open: boolean
+  data: GeostrophicCurrentData[]
+  showCurrentSpeed: boolean
+  showPressureGradient: boolean
+  showCoriolisEffect: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface UpwellingIntensityData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  upwellingVelocity: number // m/day
+  sstAnomaly: number        // °C
+  chlorophyllConcentration: number // mg/m³
+  status: 'strong' | 'moderate' | 'weak' | 'suppressed'
+  description: string
+}
+
+export interface UpwellingIntensityState {
+  open: boolean
+  data: UpwellingIntensityData[]
+  showUpwellingVelocity: boolean
+  showSstAnomaly: boolean
+  showChlorophyllConcentration: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface WesternBoundaryData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  peakVelocity: number      // m/s
+  transportVolume: number   // Sv
+  meanderAmplitude: number  // km
+  status: 'intensified' | 'normal' | 'weakened' | 'detached'
+  description: string
+}
+
+export interface WesternBoundaryState {
+  open: boolean
+  data: WesternBoundaryData[]
+  showPeakVelocity: boolean
+  showTransportVolume: boolean
+  showMeanderAmplitude: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface DeepWaterFormationData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  convectionDepth: number   // m
+  densityAnomaly: number    // kg/m³
+  formationRate: number     // Sv
+  status: 'active' | 'seasonal' | 'reduced' | 'absent'
+  description: string
+}
+
+export interface DeepWaterFormationState {
+  open: boolean
+  data: DeepWaterFormationData[]
+  showConvectionDepth: boolean
+  showDensityAnomaly: boolean
+  showFormationRate: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface OceanGyreData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  rotationPeriod: number    // days
+  diameter: number          // km
+  eddyKineticEnergy: number // cm²/s²
+  status: 'energetic' | 'stable' | 'shrinking' | 'expanding'
+  description: string
+}
+
+export interface OceanGyreState {
+  open: boolean
+  data: OceanGyreData[]
+  showRotationPeriod: boolean
+  showDiameter: boolean
+  showEddyKineticEnergy: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface TropicalCurrentData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  currentSpeed: number      // m/s
+  temperature: number       // °C
+  freshwaterFlux: number    // m/year
+  status: 'surging' | 'flowing' | 'slack' | 'reversed'
+  description: string
+}
+
+export interface TropicalCurrentState {
+  open: boolean
+  data: TropicalCurrentData[]
+  showCurrentSpeed: boolean
+  showTemperature: boolean
+  showFreshwaterFlux: boolean
   statusFilter: string
   activeItemId: string | null
 }
@@ -16345,6 +16540,40 @@ export const useMapStore = create<MapState>()(
       },
       setMineralDepositGrade: (updates) => set((state) => ({ mineralDepositGrade: { ...state.mineralDepositGrade, ...updates } })),
 
+      // Task 102: Ocean Circulation and Currents
+      thermohalineCell: {
+        data: [], activeItemId: null, showOverturningRate: true, showTemperature: true, showSalinity: false, open: false, statusFilter: '',
+      },
+      setThermohalineCell: (updates) => set((state) => ({ thermohalineCell: { ...state.thermohalineCell, ...updates } })),
+      ekmanTransport: {
+        data: [], activeItemId: null, showTransportAngle: true, showWindSpeed: true, showSurfaceVelocity: false, open: false, statusFilter: '',
+      },
+      setEkmanTransport: (updates) => set((state) => ({ ekmanTransport: { ...state.ekmanTransport, ...updates } })),
+      geostrophicCurrent: {
+        data: [], activeItemId: null, showCurrentSpeed: true, showPressureGradient: true, showCoriolisEffect: false, open: false, statusFilter: '',
+      },
+      setGeostrophicCurrent: (updates) => set((state) => ({ geostrophicCurrent: { ...state.geostrophicCurrent, ...updates } })),
+      upwellingIntensity: {
+        data: [], activeItemId: null, showUpwellingVelocity: true, showSstAnomaly: true, showChlorophyllConcentration: false, open: false, statusFilter: '',
+      },
+      setUpwellingIntensity: (updates) => set((state) => ({ upwellingIntensity: { ...state.upwellingIntensity, ...updates } })),
+      westernBoundary: {
+        data: [], activeItemId: null, showPeakVelocity: true, showTransportVolume: true, showMeanderAmplitude: false, open: false, statusFilter: '',
+      },
+      setWesternBoundary: (updates) => set((state) => ({ westernBoundary: { ...state.westernBoundary, ...updates } })),
+      deepWaterFormation: {
+        data: [], activeItemId: null, showConvectionDepth: true, showDensityAnomaly: true, showFormationRate: false, open: false, statusFilter: '',
+      },
+      setDeepWaterFormation: (updates) => set((state) => ({ deepWaterFormation: { ...state.deepWaterFormation, ...updates } })),
+      oceanGyre: {
+        data: [], activeItemId: null, showRotationPeriod: true, showDiameter: true, showEddyKineticEnergy: false, open: false, statusFilter: '',
+      },
+      setOceanGyre: (updates) => set((state) => ({ oceanGyre: { ...state.oceanGyre, ...updates } })),
+      tropicalCurrent: {
+        data: [], activeItemId: null, showCurrentSpeed: true, showTemperature: true, showFreshwaterFlux: false, open: false, statusFilter: '',
+      },
+      setTropicalCurrent: (updates) => set((state) => ({ tropicalCurrent: { ...state.tropicalCurrent, ...updates } })),
+
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
       setAddLocationDialogOpen: (open) => set({ addLocationDialogOpen: open }),
@@ -16836,6 +17065,15 @@ export const useMapStore = create<MapState>()(
         acidMineDrainage: state.acidMineDrainage,
         oreReserveEstimate: state.oreReserveEstimate,
         mineralDepositGrade: state.mineralDepositGrade,
+        // Task 102
+        thermohalineCell: state.thermohalineCell,
+        ekmanTransport: state.ekmanTransport,
+        geostrophicCurrent: state.geostrophicCurrent,
+        upwellingIntensity: state.upwellingIntensity,
+        westernBoundary: state.westernBoundary,
+        deepWaterFormation: state.deepWaterFormation,
+        oceanGyre: state.oceanGyre,
+        tropicalCurrent: state.tropicalCurrent,
         // Task 96
         karstSpringDischarge: state.karstSpringDischarge,
         caveDripMonitor: state.caveDripMonitor,

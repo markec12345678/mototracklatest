@@ -375,6 +375,15 @@ import {
   Droplet as DropletIcon12,
   Database as DatabaseIcon2,
   Mountain as MountainIcon16,
+  // Task 102 icons
+  Waves as WavesIcon21,
+  Wind as WindIcon14,
+  Compass as CompassIcon5,
+  ArrowUpFromLine as ArrowUpIcon5,
+  ArrowRight as ArrowRightIcon,
+  ArrowDown as ArrowDownIcon6,
+  RotateCcw as RotateCcwIcon2,
+  Sun as SunIcon10,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -2628,6 +2637,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setAcidMineDrainage({ open: true })} title="Acid Mine Drainage" aria-label="Open acid mine drainage monitor"><DropletIcon12 className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setOreReserveEstimate({ open: true })} title="Ore Reserve Estimate" aria-label="Open ore reserve estimate monitor"><DatabaseIcon2 className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setMineralDepositGrade({ open: true })} title="Mineral Deposit Grade" aria-label="Open mineral deposit grade monitor"><MountainIcon16 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setThermohalineCell({ open: true })} title="Thermohaline Cell" aria-label="Open thermohaline cell monitor"><WavesIcon21 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setEkmanTransport({ open: true })} title="Ekman Transport" aria-label="Open ekman transport monitor"><WindIcon14 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setGeostrophicCurrent({ open: true })} title="Geostrophic Current" aria-label="Open geostrophic current monitor"><CompassIcon5 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setUpwellingIntensity({ open: true })} title="Upwelling Intensity" aria-label="Open upwelling intensity monitor"><ArrowUpIcon5 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setWesternBoundary({ open: true })} title="Western Boundary" aria-label="Open western boundary monitor"><ArrowRightIcon className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setDeepWaterFormation({ open: true })} title="Deep Water Formation" aria-label="Open deep water formation monitor"><ArrowDownIcon6 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setOceanGyre({ open: true })} title="Ocean Gyre" aria-label="Open ocean gyre monitor"><RotateCcwIcon2 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setTropicalCurrent({ open: true })} title="Tropical Current" aria-label="Open tropical current monitor"><SunIcon10 className="h-4 w-4" /></Button>
           <Button
             variant="outline"
             size="icon"

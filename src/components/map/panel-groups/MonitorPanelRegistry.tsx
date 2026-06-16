@@ -254,6 +254,15 @@ export function MonitorPanelRegistry() {
   const acidMineDrainage = useMapStore((s) => s.acidMineDrainage)
   const oreReserveEstimate = useMapStore((s) => s.oreReserveEstimate)
   const mineralDepositGrade = useMapStore((s) => s.mineralDepositGrade)
+  // Task 102: Ocean Circulation and Currents
+  const thermohalineCell = useMapStore((s) => s.thermohalineCell)
+  const ekmanTransport = useMapStore((s) => s.ekmanTransport)
+  const geostrophicCurrent = useMapStore((s) => s.geostrophicCurrent)
+  const upwellingIntensity = useMapStore((s) => s.upwellingIntensity)
+  const westernBoundary = useMapStore((s) => s.westernBoundary)
+  const deepWaterFormation = useMapStore((s) => s.deepWaterFormation)
+  const oceanGyre = useMapStore((s) => s.oceanGyre)
+  const tropicalCurrent = useMapStore((s) => s.tropicalCurrent)
 
   return (
     <>
@@ -779,6 +788,31 @@ export function MonitorPanelRegistry() {
       )}
       {mineralDepositGrade.open && (
         <LazyPanel importFn={() => import('@/components/map/MineralDepositGradeMonitor')} exportName="MineralDepositGradeMonitor" shouldLoad={true} />
+      )}
+      {/* Task 102: Ocean Circulation and Currents */}
+      {thermohalineCell.open && (
+        <LazyPanel importFn={() => import('@/components/map/ThermohalineCellMonitor')} exportName="ThermohalineCellMonitor" shouldLoad={true} />
+      )}
+      {ekmanTransport.open && (
+        <LazyPanel importFn={() => import('@/components/map/EkmanTransportMonitor')} exportName="EkmanTransportMonitor" shouldLoad={true} />
+      )}
+      {geostrophicCurrent.open && (
+        <LazyPanel importFn={() => import('@/components/map/GeostrophicCurrentMonitor')} exportName="GeostrophicCurrentMonitor" shouldLoad={true} />
+      )}
+      {upwellingIntensity.open && (
+        <LazyPanel importFn={() => import('@/components/map/UpwellingIntensityMonitor')} exportName="UpwellingIntensityMonitor" shouldLoad={true} />
+      )}
+      {westernBoundary.open && (
+        <LazyPanel importFn={() => import('@/components/map/WesternBoundaryMonitor')} exportName="WesternBoundaryMonitor" shouldLoad={true} />
+      )}
+      {deepWaterFormation.open && (
+        <LazyPanel importFn={() => import('@/components/map/DeepWaterFormationMonitor')} exportName="DeepWaterFormationMonitor" shouldLoad={true} />
+      )}
+      {oceanGyre.open && (
+        <LazyPanel importFn={() => import('@/components/map/OceanGyreMonitor')} exportName="OceanGyreMonitor" shouldLoad={true} />
+      )}
+      {tropicalCurrent.open && (
+        <LazyPanel importFn={() => import('@/components/map/TropicalCurrentMonitor')} exportName="TropicalCurrentMonitor" shouldLoad={true} />
       )}
     </>
   )
