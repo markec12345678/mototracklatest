@@ -468,6 +468,15 @@ export function MonitorPanelRegistry() {
   const satelliteGroundStation = useMapStore((s) => s.satelliteGroundStation)
   const wifiHotspotNetwork = useMapStore((s) => s.wifiHotspotNetwork)
   const internetExchangePoint = useMapStore((s) => s.internetExchangePoint)
+  // Task 127: Healthcare & Medical Facilities
+  const hospitalCapacityTrack127 = useMapStore((s) => s.hospitalCapacityTrack127)
+  const clinicUrgentCare = useMapStore((s) => s.clinicUrgentCare)
+  const pharmacyNetwork = useMapStore((s) => s.pharmacyNetwork)
+  const bloodBankSupply = useMapStore((s) => s.bloodBankSupply)
+  const medicalResearchLab = useMapStore((s) => s.medicalResearchLab)
+  const mentalHealthCenter = useMapStore((s) => s.mentalHealthCenter)
+  const rehabilitationCenter = useMapStore((s) => s.rehabilitationCenter)
+  const vaccinationDrive = useMapStore((s) => s.vaccinationDrive)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -1621,6 +1630,31 @@ export function MonitorPanelRegistry() {
       )}
       {internetExchangePoint.open && (
         <LazyPanel importFn={() => import('@/components/map/InternetExchangePointMonitor').then(m => ({ default: m.InternetExchangePointMonitor }))} exportName="InternetExchangePointMonitor" shouldLoad={internetExchangePoint.open} />
+      )}
+      {/* Task 127: Healthcare & Medical Facilities */}
+      {hospitalCapacityTrack127.open && (
+        <LazyPanel importFn={() => import('@/components/map/HospitalCapacityTrack127Monitor').then(m => ({ default: m.HospitalCapacityTrack127Monitor }))} exportName="HospitalCapacityTrack127Monitor" shouldLoad={hospitalCapacityTrack127.open} />
+      )}
+      {clinicUrgentCare.open && (
+        <LazyPanel importFn={() => import('@/components/map/ClinicUrgentCareMonitor').then(m => ({ default: m.ClinicUrgentCareMonitor }))} exportName="ClinicUrgentCareMonitor" shouldLoad={clinicUrgentCare.open} />
+      )}
+      {pharmacyNetwork.open && (
+        <LazyPanel importFn={() => import('@/components/map/PharmacyNetworkMonitor').then(m => ({ default: m.PharmacyNetworkMonitor }))} exportName="PharmacyNetworkMonitor" shouldLoad={pharmacyNetwork.open} />
+      )}
+      {bloodBankSupply.open && (
+        <LazyPanel importFn={() => import('@/components/map/BloodBankSupplyMonitor').then(m => ({ default: m.BloodBankSupplyMonitor }))} exportName="BloodBankSupplyMonitor" shouldLoad={bloodBankSupply.open} />
+      )}
+      {medicalResearchLab.open && (
+        <LazyPanel importFn={() => import('@/components/map/MedicalResearchLabMonitor').then(m => ({ default: m.MedicalResearchLabMonitor }))} exportName="MedicalResearchLabMonitor" shouldLoad={medicalResearchLab.open} />
+      )}
+      {mentalHealthCenter.open && (
+        <LazyPanel importFn={() => import('@/components/map/MentalHealthCenterMonitor').then(m => ({ default: m.MentalHealthCenterMonitor }))} exportName="MentalHealthCenterMonitor" shouldLoad={mentalHealthCenter.open} />
+      )}
+      {rehabilitationCenter.open && (
+        <LazyPanel importFn={() => import('@/components/map/RehabilitationCenterMonitor').then(m => ({ default: m.RehabilitationCenterMonitor }))} exportName="RehabilitationCenterMonitor" shouldLoad={rehabilitationCenter.open} />
+      )}
+      {vaccinationDrive.open && (
+        <LazyPanel importFn={() => import('@/components/map/VaccinationDriveMonitor').then(m => ({ default: m.VaccinationDriveMonitor }))} exportName="VaccinationDriveMonitor" shouldLoad={vaccinationDrive.open} />
       )}
     </>
   )

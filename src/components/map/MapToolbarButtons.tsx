@@ -597,6 +597,15 @@ import {
   Satellite as SatelliteIcon3,
   Wifi as WifiIcon,
   Shuffle as ShuffleIcon,
+  // Task 127 icons
+  Building2 as Building2Icon5,
+  Stethoscope as StethoscopeIcon,
+  Pill as PillIcon,
+  Droplet as DropletIcon17,
+  Microscope as MicroscopeIcon2,
+  Brain as BrainIcon2,
+  Accessibility as AccessibilityIcon,
+  Syringe as SyringeIcon2,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -802,6 +811,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const satelliteGroundStationOpen = useMapStore((s) => s.satelliteGroundStation.open)
   const wifiHotspotNetworkOpen = useMapStore((s) => s.wifiHotspotNetwork.open)
   const internetExchangePointOpen = useMapStore((s) => s.internetExchangePoint.open)
+  // Task 127: Healthcare & Medical Facilities
+  const hospitalCapacityTrack127Open = useMapStore((s) => s.hospitalCapacityTrack127.open)
+  const clinicUrgentCareOpen = useMapStore((s) => s.clinicUrgentCare.open)
+  const pharmacyNetworkOpen = useMapStore((s) => s.pharmacyNetwork.open)
+  const bloodBankSupplyOpen = useMapStore((s) => s.bloodBankSupply.open)
+  const medicalResearchLabOpen = useMapStore((s) => s.medicalResearchLab.open)
+  const mentalHealthCenterOpen = useMapStore((s) => s.mentalHealthCenter.open)
+  const rehabilitationCenterOpen = useMapStore((s) => s.rehabilitationCenter.open)
+  const vaccinationDriveOpen = useMapStore((s) => s.vaccinationDrive.open)
 
   if (typeof window === 'undefined') return null
 
@@ -5900,6 +5918,71 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <ShuffleIcon className="h-4 w-4" />
             {internetExchangePointOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-fuchsia-400" />}
+          </button>
+          {/* Task 127: Healthcare & Medical Facilities */}
+          <button
+            onClick={() => useMapStore.getState().setHospitalCapacityTrack127({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${hospitalCapacityTrack127Open ? 'bg-rose-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Hospital Capacity Monitor"
+          >
+            <Building2Icon5 className="h-4 w-4" />
+            {hospitalCapacityTrack127Open && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setClinicUrgentCare({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${clinicUrgentCareOpen ? 'bg-cyan-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Clinic Urgent Care Monitor"
+          >
+            <StethoscopeIcon className="h-4 w-4" />
+            {clinicUrgentCareOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setPharmacyNetwork({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${pharmacyNetworkOpen ? 'bg-emerald-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Pharmacy Network Monitor"
+          >
+            <PillIcon className="h-4 w-4" />
+            {pharmacyNetworkOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBloodBankSupply({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${bloodBankSupplyOpen ? 'bg-red-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Blood Bank Supply Monitor"
+          >
+            <DropletIcon17 className="h-4 w-4" />
+            {bloodBankSupplyOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setMedicalResearchLab({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${medicalResearchLabOpen ? 'bg-violet-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Medical Research Lab Monitor"
+          >
+            <MicroscopeIcon2 className="h-4 w-4" />
+            {medicalResearchLabOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-violet-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setMentalHealthCenter({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${mentalHealthCenterOpen ? 'bg-teal-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Mental Health Center Monitor"
+          >
+            <BrainIcon2 className="h-4 w-4" />
+            {mentalHealthCenterOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setRehabilitationCenter({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${rehabilitationCenterOpen ? 'bg-amber-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Rehabilitation Center Monitor"
+          >
+            <AccessibilityIcon className="h-4 w-4" />
+            {rehabilitationCenterOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setVaccinationDrive({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${vaccinationDriveOpen ? 'bg-yellow-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Vaccination Drive Monitor"
+          >
+            <SyringeIcon2 className="h-4 w-4" />
+            {vaccinationDriveOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-yellow-400" />}
           </button>
         </div>
       </div>

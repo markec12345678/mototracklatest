@@ -4291,6 +4291,23 @@ interface MapState {
   setWifiHotspotNetwork: (state: Partial<MonitorState>) => void
   internetExchangePoint: MonitorState
   setInternetExchangePoint: (state: Partial<MonitorState>) => void
+  // Task 127: Healthcare & Medical Facilities
+  hospitalCapacityTrack127: MonitorState
+  setHospitalCapacityTrack127: (state: Partial<MonitorState>) => void
+  clinicUrgentCare: MonitorState
+  setClinicUrgentCare: (state: Partial<MonitorState>) => void
+  pharmacyNetwork: MonitorState
+  setPharmacyNetwork: (state: Partial<MonitorState>) => void
+  bloodBankSupply: MonitorState
+  setBloodBankSupply: (state: Partial<MonitorState>) => void
+  medicalResearchLab: MonitorState
+  setMedicalResearchLab: (state: Partial<MonitorState>) => void
+  mentalHealthCenter: MonitorState
+  setMentalHealthCenter: (state: Partial<MonitorState>) => void
+  rehabilitationCenter: MonitorState
+  setRehabilitationCenter: (state: Partial<MonitorState>) => void
+  vaccinationDrive: MonitorState
+  setVaccinationDrive: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -8358,6 +8375,15 @@ export const useMapStore = create<MapState>()(
       satelliteGroundStation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       wifiHotspotNetwork: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       internetExchangePoint: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 127: Healthcare & Medical Facilities
+      hospitalCapacityTrack127: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      clinicUrgentCare: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      pharmacyNetwork: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      bloodBankSupply: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      medicalResearchLab: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      mentalHealthCenter: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      rehabilitationCenter: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      vaccinationDrive: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -8429,6 +8455,15 @@ export const useMapStore = create<MapState>()(
       setSatelliteGroundStation: (updates) => set((state) => ({ satelliteGroundStation: { ...state.satelliteGroundStation, ...updates } })),
       setWifiHotspotNetwork: (updates) => set((state) => ({ wifiHotspotNetwork: { ...state.wifiHotspotNetwork, ...updates } })),
       setInternetExchangePoint: (updates) => set((state) => ({ internetExchangePoint: { ...state.internetExchangePoint, ...updates } })),
+      // Task 127: Healthcare & Medical Facilities
+      setHospitalCapacityTrack127: (updates) => set((state) => ({ hospitalCapacityTrack127: { ...state.hospitalCapacityTrack127, ...updates } })),
+      setClinicUrgentCare: (updates) => set((state) => ({ clinicUrgentCare: { ...state.clinicUrgentCare, ...updates } })),
+      setPharmacyNetwork: (updates) => set((state) => ({ pharmacyNetwork: { ...state.pharmacyNetwork, ...updates } })),
+      setBloodBankSupply: (updates) => set((state) => ({ bloodBankSupply: { ...state.bloodBankSupply, ...updates } })),
+      setMedicalResearchLab: (updates) => set((state) => ({ medicalResearchLab: { ...state.medicalResearchLab, ...updates } })),
+      setMentalHealthCenter: (updates) => set((state) => ({ mentalHealthCenter: { ...state.mentalHealthCenter, ...updates } })),
+      setRehabilitationCenter: (updates) => set((state) => ({ rehabilitationCenter: { ...state.rehabilitationCenter, ...updates } })),
+      setVaccinationDrive: (updates) => set((state) => ({ vaccinationDrive: { ...state.vaccinationDrive, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
