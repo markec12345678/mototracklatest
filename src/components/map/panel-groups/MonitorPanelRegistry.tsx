@@ -504,6 +504,15 @@ export function MonitorPanelRegistry() {
   const rareEarthMineral = useMapStore((s) => s.rareEarthMineral)
   const lithiumExtraction = useMapStore((s) => s.lithiumExtraction)
   const uraniumMiningSite = useMapStore((s) => s.uraniumMiningSite)
+  // Task 131: Transportation & Logistics Hubs
+  const airportTerminalStatus = useMapStore((s) => s.airportTerminalStatus)
+  const seaportContainerTerminal = useMapStore((s) => s.seaportContainerTerminal)
+  const railwayStationTraffic = useMapStore((s) => s.railwayStationTraffic)
+  const cargoWarehouseStatus = useMapStore((s) => s.cargoWarehouseStatus)
+  const borderCrossingQueue = useMapStore((s) => s.borderCrossingQueue)
+  const highwayTollPlaza = useMapStore((s) => s.highwayTollPlaza)
+  const inlandContainerDepot = useMapStore((s) => s.inlandContainerDepot)
+  const lastMileDeliveryHub = useMapStore((s) => s.lastMileDeliveryHub)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -1757,6 +1766,31 @@ export function MonitorPanelRegistry() {
       )}
       {uraniumMiningSite.open && (
         <LazyPanel importFn={() => import('@/components/map/UraniumMiningSiteMonitor').then(m => ({ default: m.UraniumMiningSiteMonitor }))} exportName="UraniumMiningSiteMonitor" shouldLoad={uraniumMiningSite.open} />
+      )}
+      {/* Task 131: Transportation & Logistics Hubs */}
+      {airportTerminalStatus.open && (
+        <LazyPanel importFn={() => import('@/components/map/AirportTerminalStatusMonitor')} exportName="AirportTerminalStatusMonitor" shouldLoad={airportTerminalStatus.open} />
+      )}
+      {seaportContainerTerminal.open && (
+        <LazyPanel importFn={() => import('@/components/map/SeaportContainerTerminalMonitor')} exportName="SeaportContainerTerminalMonitor" shouldLoad={seaportContainerTerminal.open} />
+      )}
+      {railwayStationTraffic.open && (
+        <LazyPanel importFn={() => import('@/components/map/RailwayStationTrafficMonitor')} exportName="RailwayStationTrafficMonitor" shouldLoad={railwayStationTraffic.open} />
+      )}
+      {cargoWarehouseStatus.open && (
+        <LazyPanel importFn={() => import('@/components/map/CargoWarehouseStatusMonitor')} exportName="CargoWarehouseStatusMonitor" shouldLoad={cargoWarehouseStatus.open} />
+      )}
+      {borderCrossingQueue.open && (
+        <LazyPanel importFn={() => import('@/components/map/BorderCrossingQueueMonitor')} exportName="BorderCrossingQueueMonitor" shouldLoad={borderCrossingQueue.open} />
+      )}
+      {highwayTollPlaza.open && (
+        <LazyPanel importFn={() => import('@/components/map/HighwayTollPlazaMonitor')} exportName="HighwayTollPlazaMonitor" shouldLoad={highwayTollPlaza.open} />
+      )}
+      {inlandContainerDepot.open && (
+        <LazyPanel importFn={() => import('@/components/map/InlandContainerDepotMonitor')} exportName="InlandContainerDepotMonitor" shouldLoad={inlandContainerDepot.open} />
+      )}
+      {lastMileDeliveryHub.open && (
+        <LazyPanel importFn={() => import('@/components/map/LastMileDeliveryHubMonitor')} exportName="LastMileDeliveryHubMonitor" shouldLoad={lastMileDeliveryHub.open} />
       )}
     </>
   )

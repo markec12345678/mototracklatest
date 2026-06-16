@@ -4359,6 +4359,23 @@ interface MapState {
   setLithiumExtraction: (state: Partial<MonitorState>) => void
   uraniumMiningSite: MonitorState
   setUraniumMiningSite: (state: Partial<MonitorState>) => void
+  // Task 131: Transportation & Logistics Hubs
+  airportTerminalStatus: MonitorState
+  setAirportTerminalStatus: (state: Partial<MonitorState>) => void
+  seaportContainerTerminal: MonitorState
+  setSeaportContainerTerminal: (state: Partial<MonitorState>) => void
+  railwayStationTraffic: MonitorState
+  setRailwayStationTraffic: (state: Partial<MonitorState>) => void
+  cargoWarehouseStatus: MonitorState
+  setCargoWarehouseStatus: (state: Partial<MonitorState>) => void
+  borderCrossingQueue: MonitorState
+  setBorderCrossingQueue: (state: Partial<MonitorState>) => void
+  highwayTollPlaza: MonitorState
+  setHighwayTollPlaza: (state: Partial<MonitorState>) => void
+  inlandContainerDepot: MonitorState
+  setInlandContainerDepot: (state: Partial<MonitorState>) => void
+  lastMileDeliveryHub: MonitorState
+  setLastMileDeliveryHub: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -8462,6 +8479,15 @@ export const useMapStore = create<MapState>()(
       rareEarthMineral: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       lithiumExtraction: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       uraniumMiningSite: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 131: Transportation & Logistics Hubs
+      airportTerminalStatus: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      seaportContainerTerminal: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      railwayStationTraffic: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      cargoWarehouseStatus: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      borderCrossingQueue: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      highwayTollPlaza: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      inlandContainerDepot: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      lastMileDeliveryHub: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -8569,6 +8595,15 @@ export const useMapStore = create<MapState>()(
       setRareEarthMineral: (updates) => set((state) => ({ rareEarthMineral: { ...state.rareEarthMineral, ...updates } })),
       setLithiumExtraction: (updates) => set((state) => ({ lithiumExtraction: { ...state.lithiumExtraction, ...updates } })),
       setUraniumMiningSite: (updates) => set((state) => ({ uraniumMiningSite: { ...state.uraniumMiningSite, ...updates } })),
+      // Task 131: Transportation & Logistics Hubs
+      setAirportTerminalStatus: (updates) => set((state) => ({ airportTerminalStatus: { ...state.airportTerminalStatus, ...updates } })),
+      setSeaportContainerTerminal: (updates) => set((state) => ({ seaportContainerTerminal: { ...state.seaportContainerTerminal, ...updates } })),
+      setRailwayStationTraffic: (updates) => set((state) => ({ railwayStationTraffic: { ...state.railwayStationTraffic, ...updates } })),
+      setCargoWarehouseStatus: (updates) => set((state) => ({ cargoWarehouseStatus: { ...state.cargoWarehouseStatus, ...updates } })),
+      setBorderCrossingQueue: (updates) => set((state) => ({ borderCrossingQueue: { ...state.borderCrossingQueue, ...updates } })),
+      setHighwayTollPlaza: (updates) => set((state) => ({ highwayTollPlaza: { ...state.highwayTollPlaza, ...updates } })),
+      setInlandContainerDepot: (updates) => set((state) => ({ inlandContainerDepot: { ...state.inlandContainerDepot, ...updates } })),
+      setLastMileDeliveryHub: (updates) => set((state) => ({ lastMileDeliveryHub: { ...state.lastMileDeliveryHub, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

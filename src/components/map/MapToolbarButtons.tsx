@@ -633,6 +633,15 @@ import {
   Gem as GemIcon8,
   Battery as BatteryIcon3,
   Atom as AtomIcon3,
+  // Task 131 icons - Transportation & Logistics Hubs
+  PlaneLanding as PlaneLandingIcon,
+  ShipWheel as ShipWheelIcon,
+  TrainTrack as TrainTrackIcon,
+  Warehouse as WarehouseIcon2,
+  FlagTriangleRight as FlagTriangleRightIcon,
+  Coins as CoinsIcon2,
+  Container as ContainerIcon3,
+  PackageCheck as PackageCheckIcon,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -874,6 +883,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const rareEarthMineralOpen = useMapStore((s) => s.rareEarthMineral.open)
   const lithiumExtractionOpen = useMapStore((s) => s.lithiumExtraction.open)
   const uraniumMiningSiteOpen = useMapStore((s) => s.uraniumMiningSite.open)
+  // Task 131: Transportation & Logistics Hubs
+  const airportTerminalStatusOpen = useMapStore((s) => s.airportTerminalStatus.open)
+  const seaportContainerTerminalOpen = useMapStore((s) => s.seaportContainerTerminal.open)
+  const railwayStationTrafficOpen = useMapStore((s) => s.railwayStationTraffic.open)
+  const cargoWarehouseStatusOpen = useMapStore((s) => s.cargoWarehouseStatus.open)
+  const borderCrossingQueueOpen = useMapStore((s) => s.borderCrossingQueue.open)
+  const highwayTollPlazaOpen = useMapStore((s) => s.highwayTollPlaza.open)
+  const inlandContainerDepotOpen = useMapStore((s) => s.inlandContainerDepot.open)
+  const lastMileDeliveryHubOpen = useMapStore((s) => s.lastMileDeliveryHub.open)
 
   if (typeof window === 'undefined') return null
 
@@ -6232,6 +6250,71 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <AtomIcon3 className="h-4 w-4" />
             {uraniumMiningSiteOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-400" />}
+          </button>
+          {/* Task 131: Transportation & Logistics Hubs */}
+          <button
+            onClick={() => useMapStore.getState().setAirportTerminalStatus({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${airportTerminalStatusOpen ? 'bg-sky-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Airport Terminal Status Monitor"
+          >
+            <PlaneLandingIcon className="h-4 w-4" />
+            {airportTerminalStatusOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-sky-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setSeaportContainerTerminal({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${seaportContainerTerminalOpen ? 'bg-cyan-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Seaport Container Terminal Monitor"
+          >
+            <ShipWheelIcon className="h-4 w-4" />
+            {seaportContainerTerminalOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setRailwayStationTraffic({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${railwayStationTrafficOpen ? 'bg-rose-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Railway Station Traffic Monitor"
+          >
+            <TrainTrackIcon className="h-4 w-4" />
+            {railwayStationTrafficOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCargoWarehouseStatus({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${cargoWarehouseStatusOpen ? 'bg-orange-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Cargo Warehouse Status Monitor"
+          >
+            <WarehouseIcon2 className="h-4 w-4" />
+            {cargoWarehouseStatusOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBorderCrossingQueue({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${borderCrossingQueueOpen ? 'bg-purple-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Border Crossing Queue Monitor"
+          >
+            <FlagTriangleRightIcon className="h-4 w-4" />
+            {borderCrossingQueueOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-purple-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setHighwayTollPlaza({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${highwayTollPlazaOpen ? 'bg-teal-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Highway Toll Plaza Monitor"
+          >
+            <CoinsIcon2 className="h-4 w-4" />
+            {highwayTollPlazaOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setInlandContainerDepot({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${inlandContainerDepotOpen ? 'bg-violet-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Inland Container Depot Monitor"
+          >
+            <ContainerIcon3 className="h-4 w-4" />
+            {inlandContainerDepotOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-violet-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setLastMileDeliveryHub({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${lastMileDeliveryHubOpen ? 'bg-green-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Last Mile Delivery Hub Monitor"
+          >
+            <PackageCheckIcon className="h-4 w-4" />
+            {lastMileDeliveryHubOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-green-400" />}
           </button>
         </div>
       </div>
