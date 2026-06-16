@@ -4223,6 +4223,23 @@ interface MapState {
   setInnovationPatentMonitor: (state: Partial<MonitorState>) => void
   fieldStationResearch: MonitorState
   setFieldStationResearch: (state: Partial<MonitorState>) => void
+  // Task 123: Financial & Banking Centers
+  bankBranchTraffic: MonitorState
+  setBankBranchTraffic: (state: Partial<MonitorState>) => void
+  stockExchangeMonitor: MonitorState
+  setStockExchangeMonitor: (state: Partial<MonitorState>) => void
+  atmNetworkStatus: MonitorState
+  setAtmNetworkStatus: (state: Partial<MonitorState>) => void
+  cryptocurrencyMining: MonitorState
+  setCryptocurrencyMining: (state: Partial<MonitorState>) => void
+  insuranceClaimCenter: MonitorState
+  setInsuranceClaimCenter: (state: Partial<MonitorState>) => void
+  paymentGatewayStatus: MonitorState
+  setPaymentGatewayStatus: (state: Partial<MonitorState>) => void
+  fintechHubActivity: MonitorState
+  setFintechHubActivity: (state: Partial<MonitorState>) => void
+  goldReserveVault: MonitorState
+  setGoldReserveVault: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -8254,6 +8271,15 @@ export const useMapStore = create<MapState>()(
       academicCitationMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       innovationPatentMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       fieldStationResearch: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 123: Financial & Banking Centers
+      bankBranchTraffic: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      stockExchangeMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      atmNetworkStatus: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      cryptocurrencyMining: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      insuranceClaimCenter: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      paymentGatewayStatus: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      fintechHubActivity: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      goldReserveVault: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -8289,6 +8315,15 @@ export const useMapStore = create<MapState>()(
       setAcademicCitationMonitor: (updates) => set((state) => ({ academicCitationMonitor: { ...state.academicCitationMonitor, ...updates } })),
       setInnovationPatentMonitor: (updates) => set((state) => ({ innovationPatentMonitor: { ...state.innovationPatentMonitor, ...updates } })),
       setFieldStationResearch: (updates) => set((state) => ({ fieldStationResearch: { ...state.fieldStationResearch, ...updates } })),
+      // Task 123: Financial & Banking Centers
+      setBankBranchTraffic: (updates) => set((state) => ({ bankBranchTraffic: { ...state.bankBranchTraffic, ...updates } })),
+      setStockExchangeMonitor: (updates) => set((state) => ({ stockExchangeMonitor: { ...state.stockExchangeMonitor, ...updates } })),
+      setAtmNetworkStatus: (updates) => set((state) => ({ atmNetworkStatus: { ...state.atmNetworkStatus, ...updates } })),
+      setCryptocurrencyMining: (updates) => set((state) => ({ cryptocurrencyMining: { ...state.cryptocurrencyMining, ...updates } })),
+      setInsuranceClaimCenter: (updates) => set((state) => ({ insuranceClaimCenter: { ...state.insuranceClaimCenter, ...updates } })),
+      setPaymentGatewayStatus: (updates) => set((state) => ({ paymentGatewayStatus: { ...state.paymentGatewayStatus, ...updates } })),
+      setFintechHubActivity: (updates) => set((state) => ({ fintechHubActivity: { ...state.fintechHubActivity, ...updates } })),
+      setGoldReserveVault: (updates) => set((state) => ({ goldReserveVault: { ...state.goldReserveVault, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

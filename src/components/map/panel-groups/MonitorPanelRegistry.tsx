@@ -432,6 +432,15 @@ export function MonitorPanelRegistry() {
   const academicCitationMonitor = useMapStore((s) => s.academicCitationMonitor)
   const innovationPatentMonitor = useMapStore((s) => s.innovationPatentMonitor)
   const fieldStationResearch = useMapStore((s) => s.fieldStationResearch)
+  // Task 123: Financial & Banking Centers
+  const bankBranchTraffic = useMapStore((s) => s.bankBranchTraffic)
+  const stockExchangeMonitor = useMapStore((s) => s.stockExchangeMonitor)
+  const atmNetworkStatus = useMapStore((s) => s.atmNetworkStatus)
+  const cryptocurrencyMining = useMapStore((s) => s.cryptocurrencyMining)
+  const insuranceClaimCenter = useMapStore((s) => s.insuranceClaimCenter)
+  const paymentGatewayStatus = useMapStore((s) => s.paymentGatewayStatus)
+  const fintechHubActivity = useMapStore((s) => s.fintechHubActivity)
+  const goldReserveVault = useMapStore((s) => s.goldReserveVault)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -1485,6 +1494,31 @@ export function MonitorPanelRegistry() {
       )}
       {fieldStationResearch.open && (
         <LazyPanel importFn={() => import('@/components/map/FieldStationResearchMonitor').then(m => ({ default: m.FieldStationResearchMonitor }))} exportName="FieldStationResearchMonitor" shouldLoad={fieldStationResearch.open} />
+      )}
+      {/* Task 123: Financial & Banking Centers */}
+      {bankBranchTraffic.open && (
+        <LazyPanel importFn={() => import('@/components/map/BankBranchTrafficMonitor').then(m => ({ default: m.BankBranchTrafficMonitor }))} exportName="BankBranchTrafficMonitor" shouldLoad={bankBranchTraffic.open} />
+      )}
+      {stockExchangeMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/StockExchangeMonitor').then(m => ({ default: m.StockExchangeMonitor }))} exportName="StockExchangeMonitor" shouldLoad={stockExchangeMonitor.open} />
+      )}
+      {atmNetworkStatus.open && (
+        <LazyPanel importFn={() => import('@/components/map/AtmNetworkStatusMonitor').then(m => ({ default: m.AtmNetworkStatusMonitor }))} exportName="AtmNetworkStatusMonitor" shouldLoad={atmNetworkStatus.open} />
+      )}
+      {cryptocurrencyMining.open && (
+        <LazyPanel importFn={() => import('@/components/map/CryptocurrencyMiningMonitor').then(m => ({ default: m.CryptocurrencyMiningMonitor }))} exportName="CryptocurrencyMiningMonitor" shouldLoad={cryptocurrencyMining.open} />
+      )}
+      {insuranceClaimCenter.open && (
+        <LazyPanel importFn={() => import('@/components/map/InsuranceClaimCenterMonitor').then(m => ({ default: m.InsuranceClaimCenterMonitor }))} exportName="InsuranceClaimCenterMonitor" shouldLoad={insuranceClaimCenter.open} />
+      )}
+      {paymentGatewayStatus.open && (
+        <LazyPanel importFn={() => import('@/components/map/PaymentGatewayStatusMonitor').then(m => ({ default: m.PaymentGatewayStatusMonitor }))} exportName="PaymentGatewayStatusMonitor" shouldLoad={paymentGatewayStatus.open} />
+      )}
+      {fintechHubActivity.open && (
+        <LazyPanel importFn={() => import('@/components/map/FintechHubActivityMonitor').then(m => ({ default: m.FintechHubActivityMonitor }))} exportName="FintechHubActivityMonitor" shouldLoad={fintechHubActivity.open} />
+      )}
+      {goldReserveVault.open && (
+        <LazyPanel importFn={() => import('@/components/map/GoldReserveVaultMonitor').then(m => ({ default: m.GoldReserveVaultMonitor }))} exportName="GoldReserveVaultMonitor" shouldLoad={goldReserveVault.open} />
       )}
     </>
   )

@@ -562,6 +562,14 @@ import {
   Brain as BrainIcon,
   Lightbulb as LightbulbIcon,
   PencilRuler as PencilRulerIcon,
+  // Task 123 icons
+  Landmark as LandmarkIcon3,
+  TrendingUp as TrendingUpIcon,
+  CreditCard as CreditCardIcon,
+  Pickaxe as PickaxeIcon,
+  Wallet as WalletIcon,
+  Rocket as RocketIcon,
+  Gem as GemIcon6,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -731,6 +739,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const academicCitationMonitorOpen = useMapStore((s) => s.academicCitationMonitor.open)
   const innovationPatentMonitorOpen = useMapStore((s) => s.innovationPatentMonitor.open)
   const fieldStationResearchOpen = useMapStore((s) => s.fieldStationResearch.open)
+  // Task 123: Financial & Banking Centers
+  const bankBranchTrafficOpen = useMapStore((s) => s.bankBranchTraffic.open)
+  const stockExchangeMonitorOpen = useMapStore((s) => s.stockExchangeMonitor.open)
+  const atmNetworkStatusOpen = useMapStore((s) => s.atmNetworkStatus.open)
+  const cryptocurrencyMiningOpen = useMapStore((s) => s.cryptocurrencyMining.open)
+  const insuranceClaimCenterOpen = useMapStore((s) => s.insuranceClaimCenter.open)
+  const paymentGatewayStatusOpen = useMapStore((s) => s.paymentGatewayStatus.open)
+  const fintechHubActivityOpen = useMapStore((s) => s.fintechHubActivity.open)
+  const goldReserveVaultOpen = useMapStore((s) => s.goldReserveVault.open)
 
   if (typeof window === 'undefined') return null
 
@@ -5569,6 +5586,71 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <PencilRulerIcon className="h-4 w-4" />
             {fieldStationResearchOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-400" />}
+          </button>
+          {/* Task 123: Financial & Banking Centers */}
+          <button
+            onClick={() => useMapStore.getState().setBankBranchTraffic({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${bankBranchTrafficOpen ? 'bg-emerald-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Bank Branch Traffic Monitor"
+          >
+            <LandmarkIcon3 className="h-4 w-4" />
+            {bankBranchTrafficOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setStockExchangeMonitor({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${stockExchangeMonitorOpen ? 'bg-rose-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Stock Exchange Monitor"
+          >
+            <TrendingUpIcon className="h-4 w-4" />
+            {stockExchangeMonitorOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setAtmNetworkStatus({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${atmNetworkStatusOpen ? 'bg-cyan-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="ATM Network Status Monitor"
+          >
+            <CreditCardIcon className="h-4 w-4" />
+            {atmNetworkStatusOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCryptocurrencyMining({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${cryptocurrencyMiningOpen ? 'bg-amber-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Cryptocurrency Mining Monitor"
+          >
+            <PickaxeIcon className="h-4 w-4" />
+            {cryptocurrencyMiningOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setInsuranceClaimCenter({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${insuranceClaimCenterOpen ? 'bg-violet-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Insurance Claim Center Monitor"
+          >
+            <ShieldCheckIcon className="h-4 w-4" />
+            {insuranceClaimCenterOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-violet-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setPaymentGatewayStatus({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${paymentGatewayStatusOpen ? 'bg-fuchsia-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Payment Gateway Status Monitor"
+          >
+            <WalletIcon className="h-4 w-4" />
+            {paymentGatewayStatusOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-fuchsia-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setFintechHubActivity({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${fintechHubActivityOpen ? 'bg-teal-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Fintech Hub Activity Monitor"
+          >
+            <RocketIcon className="h-4 w-4" />
+            {fintechHubActivityOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setGoldReserveVault({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${goldReserveVaultOpen ? 'bg-yellow-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Gold Reserve Vault Monitor"
+          >
+            <GemIcon6 className="h-4 w-4" />
+            {goldReserveVaultOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-yellow-400" />}
           </button>
         </div>
       </div>
