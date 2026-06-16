@@ -263,6 +263,15 @@ export function MonitorPanelRegistry() {
   const deepWaterFormation = useMapStore((s) => s.deepWaterFormation)
   const oceanGyre = useMapStore((s) => s.oceanGyre)
   const tropicalCurrent = useMapStore((s) => s.tropicalCurrent)
+  // Task 103
+  const jetStreamPosition = useMapStore((s) => s.jetStreamPosition)
+  const atmosphericPressureCell = useMapStore((s) => s.atmosphericPressureCell)
+  const tropopauseHeight = useMapStore((s) => s.tropopauseHeight)
+  const rossbyWaveAmplitude = useMapStore((s) => s.rossbyWaveAmplitude)
+  const hadleyCellCirculation = useMapStore((s) => s.hadleyCellCirculation)
+  const atmosphericRiverFlow = useMapStore((s) => s.atmosphericRiverFlow)
+  const polarFrontJet = useMapStore((s) => s.polarFrontJet)
+  const tradeWindBelt = useMapStore((s) => s.tradeWindBelt)
 
   return (
     <>
@@ -813,6 +822,31 @@ export function MonitorPanelRegistry() {
       )}
       {tropicalCurrent.open && (
         <LazyPanel importFn={() => import('@/components/map/TropicalCurrentMonitor')} exportName="TropicalCurrentMonitor" shouldLoad={true} />
+      )}
+      {/* Task 103: Atmospheric Dynamics and Weather */}
+      {jetStreamPosition.open && (
+        <LazyPanel importFn={() => import('@/components/map/JetStreamPositionMonitor')} exportName="JetStreamPositionMonitor" shouldLoad={true} />
+      )}
+      {atmosphericPressureCell.open && (
+        <LazyPanel importFn={() => import('@/components/map/AtmosphericPressureCellMonitor')} exportName="AtmosphericPressureCellMonitor" shouldLoad={true} />
+      )}
+      {tropopauseHeight.open && (
+        <LazyPanel importFn={() => import('@/components/map/TropopauseHeightMonitor')} exportName="TropopauseHeightMonitor" shouldLoad={true} />
+      )}
+      {rossbyWaveAmplitude.open && (
+        <LazyPanel importFn={() => import('@/components/map/RossbyWaveAmplitudeMonitor')} exportName="RossbyWaveAmplitudeMonitor" shouldLoad={true} />
+      )}
+      {hadleyCellCirculation.open && (
+        <LazyPanel importFn={() => import('@/components/map/HadleyCellCirculationMonitor')} exportName="HadleyCellCirculationMonitor" shouldLoad={true} />
+      )}
+      {atmosphericRiverFlow.open && (
+        <LazyPanel importFn={() => import('@/components/map/AtmosphericRiverFlowMonitor')} exportName="AtmosphericRiverFlowMonitor" shouldLoad={true} />
+      )}
+      {polarFrontJet.open && (
+        <LazyPanel importFn={() => import('@/components/map/PolarFrontJetMonitor')} exportName="PolarFrontJetMonitor" shouldLoad={true} />
+      )}
+      {tradeWindBelt.open && (
+        <LazyPanel importFn={() => import('@/components/map/TradeWindBeltMonitor')} exportName="TradeWindBeltMonitor" shouldLoad={true} />
       )}
     </>
   )

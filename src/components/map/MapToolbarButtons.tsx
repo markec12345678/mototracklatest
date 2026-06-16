@@ -384,6 +384,15 @@ import {
   ArrowDown as ArrowDownIcon6,
   RotateCcw as RotateCcwIcon2,
   Sun as SunIcon10,
+  // Task 103 icons
+  Wind as WindIcon15,
+  Gauge as GaugeIcon2,
+  ArrowUpFromLine as ArrowUpIcon6,
+  Activity as ActivityIcon7,
+  RotateCcw as RotateCcwIcon3,
+  CloudRain as CloudRainIcon7,
+  Snowflake as SnowflakeIcon14,
+  Ship as ShipIcon5,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -2645,6 +2654,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setDeepWaterFormation({ open: true })} title="Deep Water Formation" aria-label="Open deep water formation monitor"><ArrowDownIcon6 className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setOceanGyre({ open: true })} title="Ocean Gyre" aria-label="Open ocean gyre monitor"><RotateCcwIcon2 className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setTropicalCurrent({ open: true })} title="Tropical Current" aria-label="Open tropical current monitor"><SunIcon10 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setJetStreamPosition({ open: true })} title="Jet Stream Position" aria-label="Open jet stream position monitor"><WindIcon15 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setAtmosphericPressureCell({ open: true })} title="Atmospheric Pressure Cell" aria-label="Open atmospheric pressure cell monitor"><GaugeIcon2 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setTropopauseHeight({ open: true })} title="Tropopause Height" aria-label="Open tropopause height monitor"><ArrowUpIcon6 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setRossbyWaveAmplitude({ open: true })} title="Rossby Wave Amplitude" aria-label="Open rossby wave amplitude monitor"><ActivityIcon7 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setHadleyCellCirculation({ open: true })} title="Hadley Cell Circulation" aria-label="Open hadley cell circulation monitor"><RotateCcwIcon3 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setAtmosphericRiverFlow({ open: true })} title="Atmospheric River Flow" aria-label="Open atmospheric river flow monitor"><CloudRainIcon7 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setPolarFrontJet({ open: true })} title="Polar Front Jet" aria-label="Open polar front jet monitor"><SnowflakeIcon14 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setTradeWindBelt({ open: true })} title="Trade Wind Belt" aria-label="Open trade wind belt monitor"><ShipIcon5 className="h-4 w-4" /></Button>
           <Button
             variant="outline"
             size="icon"

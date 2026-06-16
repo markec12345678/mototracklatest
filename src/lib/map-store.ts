@@ -8789,6 +8789,24 @@ interface MapState {
   tropicalCurrent: TropicalCurrentState
   setTropicalCurrent: (state: Partial<TropicalCurrentState>) => void
 
+  // Task 103: Atmospheric Dynamics and Weather
+  jetStreamPosition: JetStreamPositionState
+  setJetStreamPosition: (state: Partial<JetStreamPositionState>) => void
+  atmosphericPressureCell: AtmosphericPressureCellState
+  setAtmosphericPressureCell: (state: Partial<AtmosphericPressureCellState>) => void
+  tropopauseHeight: TropopauseHeightState
+  setTropopauseHeight: (state: Partial<TropopauseHeightState>) => void
+  rossbyWaveAmplitude: RossbyWaveAmplitudeState
+  setRossbyWaveAmplitude: (state: Partial<RossbyWaveAmplitudeState>) => void
+  hadleyCellCirculation: HadleyCellCirculationState
+  setHadleyCellCirculation: (state: Partial<HadleyCellCirculationState>) => void
+  atmosphericRiverFlow: AtmosphericRiverFlowState
+  setAtmosphericRiverFlow: (state: Partial<AtmosphericRiverFlowState>) => void
+  polarFrontJet: PolarFrontJetState
+  setPolarFrontJet: (state: Partial<PolarFrontJetState>) => void
+  tradeWindBelt: TradeWindBeltState
+  setTradeWindBelt: (state: Partial<TradeWindBeltState>) => void
+
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
   setAddLocationDialogOpen: (open: boolean) => void
@@ -11478,6 +11496,183 @@ export interface TropicalCurrentState {
   showCurrentSpeed: boolean
   showTemperature: boolean
   showFreshwaterFlux: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 103: Atmospheric Dynamics and Weather
+export interface JetStreamPositionData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  latitudePosition: number  // degrees N/S
+  windSpeed: number         // m/s
+  meanderIndex: number      // dimensionless
+  status: 'amplified' | 'zonal' | 'blocked' | 'split'
+  description: string
+}
+
+export interface JetStreamPositionState {
+  open: boolean
+  data: JetStreamPositionData[]
+  showLatitudePosition: boolean
+  showWindSpeed: boolean
+  showMeanderIndex: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface AtmosphericPressureCellData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  centralPressure: number   // hPa
+  cellDiameter: number      // km
+  pressureGradient: number  // hPa/1000km
+  status: 'intense' | 'moderate' | 'weak' | 'dissipating'
+  description: string
+}
+
+export interface AtmosphericPressureCellState {
+  open: boolean
+  data: AtmosphericPressureCellData[]
+  showCentralPressure: boolean
+  showCellDiameter: boolean
+  showPressureGradient: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface TropopauseHeightData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  tropopauseHeight: number  // km
+  temperatureLapse: number  // C/km
+  tropopausePressure: number // hPa
+  status: 'elevated' | 'normal' | 'depressed' | 'folded'
+  description: string
+}
+
+export interface TropopauseHeightState {
+  open: boolean
+  data: TropopauseHeightData[]
+  showTropopauseHeight: boolean
+  showTemperatureLapse: boolean
+  showTropopausePressure: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface RossbyWaveAmplitudeData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  waveAmplitude: number     // degrees latitude
+  wavenumber: number        // zonal wavenumber
+  phaseSpeed: number        // m/s
+  status: 'amplified' | 'propagating' | 'damped' | 'stationary'
+  description: string
+}
+
+export interface RossbyWaveAmplitudeState {
+  open: boolean
+  data: RossbyWaveAmplitudeData[]
+  showWaveAmplitude: boolean
+  showWavenumber: boolean
+  showPhaseSpeed: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface HadleyCellCirculationData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  circulationStrength: number // Sv (10^9 kg/s)
+  updraftVelocity: number    // cm/s
+  outflowHeight: number      // km
+  status: 'intensified' | 'normal' | 'weakened' | 'expanding'
+  description: string
+}
+
+export interface HadleyCellCirculationState {
+  open: boolean
+  data: HadleyCellCirculationData[]
+  showCirculationStrength: boolean
+  showUpdraftVelocity: boolean
+  showOutflowHeight: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface AtmosphericRiverFlowData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  moistureFlux: number      // kg/m/s
+  integratedVapor: number   // cm
+  windSpeed: number         // m/s
+  status: 'extreme' | 'strong' | 'moderate' | 'weak'
+  description: string
+}
+
+export interface AtmosphericRiverFlowState {
+  open: boolean
+  data: AtmosphericRiverFlowData[]
+  showMoistureFlux: boolean
+  showIntegratedVapor: boolean
+  showWindSpeed: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface PolarFrontJetData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  jetSpeed: number          // m/s
+  frontalContrast: number   // C/100km
+  baroclinicity: number     // 10^-5 s^-1
+  status: 'intense' | 'active' | 'slack' | 'displaced'
+  description: string
+}
+
+export interface PolarFrontJetState {
+  open: boolean
+  data: PolarFrontJetData[]
+  showJetSpeed: boolean
+  showFrontalContrast: boolean
+  showBaroclinicity: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface TradeWindBeltData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  windSpeed: number          // m/s
+  convergenceZone: number    // degrees lat
+  consistency: number        // %
+  status: 'strong' | 'moderate' | 'variable' | 'collapsed'
+  description: string
+}
+
+export interface TradeWindBeltState {
+  open: boolean
+  data: TradeWindBeltData[]
+  showWindSpeed: boolean
+  showConvergenceZone: boolean
+  showConsistency: boolean
   statusFilter: string
   activeItemId: string | null
 }
@@ -16574,6 +16769,40 @@ export const useMapStore = create<MapState>()(
       },
       setTropicalCurrent: (updates) => set((state) => ({ tropicalCurrent: { ...state.tropicalCurrent, ...updates } })),
 
+      // Task 103: Atmospheric Dynamics and Weather
+      jetStreamPosition: {
+        data: [], activeItemId: null, showLatitudePosition: true, showWindSpeed: true, showMeanderIndex: false, open: false, statusFilter: '',
+      },
+      setJetStreamPosition: (updates) => set((state) => ({ jetStreamPosition: { ...state.jetStreamPosition, ...updates } })),
+      atmosphericPressureCell: {
+        data: [], activeItemId: null, showCentralPressure: true, showCellDiameter: true, showPressureGradient: false, open: false, statusFilter: '',
+      },
+      setAtmosphericPressureCell: (updates) => set((state) => ({ atmosphericPressureCell: { ...state.atmosphericPressureCell, ...updates } })),
+      tropopauseHeight: {
+        data: [], activeItemId: null, showTropopauseHeight: true, showTemperatureLapse: true, showTropopausePressure: false, open: false, statusFilter: '',
+      },
+      setTropopauseHeight: (updates) => set((state) => ({ tropopauseHeight: { ...state.tropopauseHeight, ...updates } })),
+      rossbyWaveAmplitude: {
+        data: [], activeItemId: null, showWaveAmplitude: true, showWavenumber: true, showPhaseSpeed: false, open: false, statusFilter: '',
+      },
+      setRossbyWaveAmplitude: (updates) => set((state) => ({ rossbyWaveAmplitude: { ...state.rossbyWaveAmplitude, ...updates } })),
+      hadleyCellCirculation: {
+        data: [], activeItemId: null, showCirculationStrength: true, showUpdraftVelocity: true, showOutflowHeight: false, open: false, statusFilter: '',
+      },
+      setHadleyCellCirculation: (updates) => set((state) => ({ hadleyCellCirculation: { ...state.hadleyCellCirculation, ...updates } })),
+      atmosphericRiverFlow: {
+        data: [], activeItemId: null, showMoistureFlux: true, showIntegratedVapor: true, showWindSpeed: false, open: false, statusFilter: '',
+      },
+      setAtmosphericRiverFlow: (updates) => set((state) => ({ atmosphericRiverFlow: { ...state.atmosphericRiverFlow, ...updates } })),
+      polarFrontJet: {
+        data: [], activeItemId: null, showJetSpeed: true, showFrontalContrast: true, showBaroclinicity: false, open: false, statusFilter: '',
+      },
+      setPolarFrontJet: (updates) => set((state) => ({ polarFrontJet: { ...state.polarFrontJet, ...updates } })),
+      tradeWindBelt: {
+        data: [], activeItemId: null, showWindSpeed: true, showConvergenceZone: true, showConsistency: false, open: false, statusFilter: '',
+      },
+      setTradeWindBelt: (updates) => set((state) => ({ tradeWindBelt: { ...state.tradeWindBelt, ...updates } })),
+
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
       setAddLocationDialogOpen: (open) => set({ addLocationDialogOpen: open }),
@@ -17074,6 +17303,15 @@ export const useMapStore = create<MapState>()(
         deepWaterFormation: state.deepWaterFormation,
         oceanGyre: state.oceanGyre,
         tropicalCurrent: state.tropicalCurrent,
+        // Task 103
+        jetStreamPosition: state.jetStreamPosition,
+        atmosphericPressureCell: state.atmosphericPressureCell,
+        tropopauseHeight: state.tropopauseHeight,
+        rossbyWaveAmplitude: state.rossbyWaveAmplitude,
+        hadleyCellCirculation: state.hadleyCellCirculation,
+        atmosphericRiverFlow: state.atmosphericRiverFlow,
+        polarFrontJet: state.polarFrontJet,
+        tradeWindBelt: state.tradeWindBelt,
         // Task 96
         karstSpringDischarge: state.karstSpringDischarge,
         caveDripMonitor: state.caveDripMonitor,
