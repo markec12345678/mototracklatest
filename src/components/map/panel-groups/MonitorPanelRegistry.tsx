@@ -548,6 +548,14 @@ export function MonitorPanelRegistry() {
   const glassManufacturing = useMapStore((s) => s.glassManufacturing)
   const chemicalProcessingPlant = useMapStore((s) => s.chemicalProcessingPlant)
   const textileMillOperation = useMapStore((s) => s.textileMillOperation)
+  const navalBaseOperation = useMapStore((s) => s.navalBaseOperation)
+  const airForceBase = useMapStore((s) => s.airForceBase)
+  const armyBaseReadiness = useMapStore((s) => s.armyBaseReadiness)
+  const missileDefenseBattery = useMapStore((s) => s.missileDefenseBattery)
+  const earlyWarningRadar = useMapStore((s) => s.earlyWarningRadar)
+  const militaryTrainingRange = useMapStore((s) => s.militaryTrainingRange)
+  const commandBunkerFacility = useMapStore((s) => s.commandBunkerFacility)
+  const defenseLogisticsDepot = useMapStore((s) => s.defenseLogisticsDepot)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -1925,6 +1933,30 @@ export function MonitorPanelRegistry() {
       )}
       {textileMillOperation.open && (
         <LazyPanel importFn={() => import('@/components/map/TextileMillOperationMonitor')} exportName="TextileMillOperationMonitor" shouldLoad={textileMillOperation.open} />
+      )}
+      {navalBaseOperation.open && (
+        <LazyPanel importFn={() => import('@/components/map/NavalBaseOperationMonitor')} exportName="NavalBaseOperationMonitor" shouldLoad={navalBaseOperation.open} />
+      )}
+      {airForceBase.open && (
+        <LazyPanel importFn={() => import('@/components/map/AirForceBaseMonitor')} exportName="AirForceBaseMonitor" shouldLoad={airForceBase.open} />
+      )}
+      {armyBaseReadiness.open && (
+        <LazyPanel importFn={() => import('@/components/map/ArmyBaseReadinessMonitor')} exportName="ArmyBaseReadinessMonitor" shouldLoad={armyBaseReadiness.open} />
+      )}
+      {missileDefenseBattery.open && (
+        <LazyPanel importFn={() => import('@/components/map/MissileDefenseBatteryMonitor')} exportName="MissileDefenseBatteryMonitor" shouldLoad={missileDefenseBattery.open} />
+      )}
+      {earlyWarningRadar.open && (
+        <LazyPanel importFn={() => import('@/components/map/EarlyWarningRadarMonitor')} exportName="EarlyWarningRadarMonitor" shouldLoad={earlyWarningRadar.open} />
+      )}
+      {militaryTrainingRange.open && (
+        <LazyPanel importFn={() => import('@/components/map/MilitaryTrainingRangeMonitor')} exportName="MilitaryTrainingRangeMonitor" shouldLoad={militaryTrainingRange.open} />
+      )}
+      {commandBunkerFacility.open && (
+        <LazyPanel importFn={() => import('@/components/map/CommandBunkerFacilityMonitor')} exportName="CommandBunkerFacilityMonitor" shouldLoad={commandBunkerFacility.open} />
+      )}
+      {defenseLogisticsDepot.open && (
+        <LazyPanel importFn={() => import('@/components/map/DefenseLogisticsDepotMonitor')} exportName="DefenseLogisticsDepotMonitor" shouldLoad={defenseLogisticsDepot.open} />
       )}
     </>
   )

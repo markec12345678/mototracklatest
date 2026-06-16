@@ -677,6 +677,14 @@ import {
   Sparkles as SparklesIcon10,
   FlaskConical as FlaskConicalIcon9,
   Shirt as ShirtIcon,
+  Anchor as AnchorIcon5,
+  Plane as PlaneIcon3,
+  Shield as ShieldIcon7,
+  Target as TargetIcon,
+  Radar as RadarIcon2,
+  Crosshair as CrosshairIcon,
+  Shield as ShieldIcon8,
+  Package as PackageIcon2,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -962,6 +970,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const glassManufacturingOpen = useMapStore((s) => s.glassManufacturing.open)
   const chemicalProcessingPlantOpen = useMapStore((s) => s.chemicalProcessingPlant.open)
   const textileMillOperationOpen = useMapStore((s) => s.textileMillOperation.open)
+  const navalBaseOperationOpen = useMapStore((s) => s.navalBaseOperation.open)
+  const airForceBaseOpen = useMapStore((s) => s.airForceBase.open)
+  const armyBaseReadinessOpen = useMapStore((s) => s.armyBaseReadiness.open)
+  const missileDefenseBatteryOpen = useMapStore((s) => s.missileDefenseBattery.open)
+  const earlyWarningRadarOpen = useMapStore((s) => s.earlyWarningRadar.open)
+  const militaryTrainingRangeOpen = useMapStore((s) => s.militaryTrainingRange.open)
+  const commandBunkerFacilityOpen = useMapStore((s) => s.commandBunkerFacility.open)
+  const defenseLogisticsDepotOpen = useMapStore((s) => s.defenseLogisticsDepot.open)
 
   if (typeof window === 'undefined') return null
 
@@ -6644,6 +6660,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <ShirtIcon className="h-4 w-4" />
             {textileMillOperationOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setNavalBaseOperation({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${navalBaseOperationOpen ? 'bg-blue-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Naval Base Operation Monitor"
+          >
+            <AnchorIcon5 className="h-4 w-4" />
+            {navalBaseOperationOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-blue-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setAirForceBase({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${airForceBaseOpen ? 'bg-sky-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Air Force Base Monitor"
+          >
+            <PlaneIcon3 className="h-4 w-4" />
+            {airForceBaseOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-sky-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setArmyBaseReadiness({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${armyBaseReadinessOpen ? 'bg-emerald-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Army Base Readiness Monitor"
+          >
+            <ShieldIcon7 className="h-4 w-4" />
+            {armyBaseReadinessOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setMissileDefenseBattery({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${missileDefenseBatteryOpen ? 'bg-rose-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Missile Defense Battery Monitor"
+          >
+            <TargetIcon className="h-4 w-4" />
+            {missileDefenseBatteryOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setEarlyWarningRadar({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${earlyWarningRadarOpen ? 'bg-cyan-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Early Warning Radar Monitor"
+          >
+            <RadarIcon2 className="h-4 w-4" />
+            {earlyWarningRadarOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setMilitaryTrainingRange({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${militaryTrainingRangeOpen ? 'bg-amber-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Military Training Range Monitor"
+          >
+            <CrosshairIcon className="h-4 w-4" />
+            {militaryTrainingRangeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCommandBunkerFacility({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${commandBunkerFacilityOpen ? 'bg-zinc-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Command Bunker Facility Monitor"
+          >
+            <ShieldIcon8 className="h-4 w-4" />
+            {commandBunkerFacilityOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-zinc-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setDefenseLogisticsDepot({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${defenseLogisticsDepotOpen ? 'bg-slate-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Defense Logistics Depot Monitor"
+          >
+            <PackageIcon2 className="h-4 w-4" />
+            {defenseLogisticsDepotOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-slate-400" />}
           </button>
         </div>
       </div>

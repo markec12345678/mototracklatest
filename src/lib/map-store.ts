@@ -4444,6 +4444,23 @@ interface MapState {
   setChemicalProcessingPlant: (state: Partial<MonitorState>) => void
   textileMillOperation: MonitorState
   setTextileMillOperation: (state: Partial<MonitorState>) => void
+  // Task 136: Defense & Military Infrastructure
+  navalBaseOperation: MonitorState
+  setNavalBaseOperation: (state: Partial<MonitorState>) => void
+  airForceBase: MonitorState
+  setAirForceBase: (state: Partial<MonitorState>) => void
+  armyBaseReadiness: MonitorState
+  setArmyBaseReadiness: (state: Partial<MonitorState>) => void
+  missileDefenseBattery: MonitorState
+  setMissileDefenseBattery: (state: Partial<MonitorState>) => void
+  earlyWarningRadar: MonitorState
+  setEarlyWarningRadar: (state: Partial<MonitorState>) => void
+  militaryTrainingRange: MonitorState
+  setMilitaryTrainingRange: (state: Partial<MonitorState>) => void
+  commandBunkerFacility: MonitorState
+  setCommandBunkerFacility: (state: Partial<MonitorState>) => void
+  defenseLogisticsDepot: MonitorState
+  setDefenseLogisticsDepot: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -8592,6 +8609,15 @@ export const useMapStore = create<MapState>()(
       glassManufacturing: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       chemicalProcessingPlant: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       textileMillOperation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 136: Defense & Military Infrastructure
+      navalBaseOperation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      airForceBase: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      armyBaseReadiness: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      missileDefenseBattery: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      earlyWarningRadar: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      militaryTrainingRange: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      commandBunkerFacility: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      defenseLogisticsDepot: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -8744,6 +8770,15 @@ export const useMapStore = create<MapState>()(
       setGlassManufacturing: (updates) => set((state) => ({ glassManufacturing: { ...state.glassManufacturing, ...updates } })),
       setChemicalProcessingPlant: (updates) => set((state) => ({ chemicalProcessingPlant: { ...state.chemicalProcessingPlant, ...updates } })),
       setTextileMillOperation: (updates) => set((state) => ({ textileMillOperation: { ...state.textileMillOperation, ...updates } })),
+      // Task 136: Defense & Military Infrastructure
+      setNavalBaseOperation: (updates) => set((state) => ({ navalBaseOperation: { ...state.navalBaseOperation, ...updates } })),
+      setAirForceBase: (updates) => set((state) => ({ airForceBase: { ...state.airForceBase, ...updates } })),
+      setArmyBaseReadiness: (updates) => set((state) => ({ armyBaseReadiness: { ...state.armyBaseReadiness, ...updates } })),
+      setMissileDefenseBattery: (updates) => set((state) => ({ missileDefenseBattery: { ...state.missileDefenseBattery, ...updates } })),
+      setEarlyWarningRadar: (updates) => set((state) => ({ earlyWarningRadar: { ...state.earlyWarningRadar, ...updates } })),
+      setMilitaryTrainingRange: (updates) => set((state) => ({ militaryTrainingRange: { ...state.militaryTrainingRange, ...updates } })),
+      setCommandBunkerFacility: (updates) => set((state) => ({ commandBunkerFacility: { ...state.commandBunkerFacility, ...updates } })),
+      setDefenseLogisticsDepot: (updates) => set((state) => ({ defenseLogisticsDepot: { ...state.defenseLogisticsDepot, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
