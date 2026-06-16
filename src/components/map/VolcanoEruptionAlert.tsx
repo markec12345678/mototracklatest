@@ -8,56 +8,56 @@ import { Label } from '@/components/ui/label'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
 import { useMapStore, type MonitorData } from '@/lib/map-store'
-import { Sun as SunIcon13, X, MapPin, Filter } from 'lucide-react'
+import { Flame as FlameIcon20, X, MapPin, Filter } from 'lucide-react'
 
 const SAMPLE_LOCATIONS: MonitorData[] = [
   {
-    id: 'ol-antarctic',
-    name: 'Antarctic Ozone Hole',
-    lat: -78.0,
-    lng: 0.0,
-    ozoneDu: 145,
-    holeAreaMm2: 24.8,
-    tempC: -78,
-    uvIndex: 3.2,
-    status: 'critical',
-    description: 'Annual springtime ozone hole over Antarctica showing severe stratospheric ozone depletion from chlorine activation',
-  },
-  {
-    id: 'ol-arctic',
-    name: 'Arctic Vortex',
-    lat: 78.0,
-    lng: 0.0,
-    ozoneDu: 305,
-    holeAreaMm2: 2.1,
-    tempC: -72,
-    uvIndex: 1.8,
+    id: 've-yellowstone',
+    name: 'Yellowstone Caldera',
+    lat: 44.430,
+    lng: -110.670,
+    alertLevel: 'Watch',
+    seismicity: 142,
+    so2Flux: 320,
+    deformation: 4.8,
     status: 'warning',
-    description: 'Polar vortex region over the Arctic with episodic ozone depletion during cold stratospheric winters',
+    description: 'Increased seismic swarm and ground deformation observed in the Yellowstone supervolcano caldera',
   },
   {
-    id: 'ol-midlat-n',
-    name: 'Midlatitude North',
-    lat: 45.0,
-    lng: 0.0,
-    ozoneDu: 340,
-    holeAreaMm2: 0,
-    tempC: -55,
-    uvIndex: 4.5,
-    status: 'stable',
-    description: 'Northern midlatitude stratospheric ozone column showing seasonal variation and gradual recovery trends',
-  },
-  {
-    id: 'ol-tropical',
-    name: 'Tropical Belt',
-    lat: 0.0,
-    lng: 0.0,
-    ozoneDu: 265,
-    holeAreaMm2: 0,
-    tempC: -78,
-    uvIndex: 11.2,
+    id: 've-vesuvius',
+    name: 'Mount Vesuvius',
+    lat: 40.820,
+    lng: 14.430,
+    alertLevel: 'Advisory',
+    seismicity: 87,
+    so2Flux: 180,
+    deformation: 2.1,
     status: 'moderate',
-    description: 'Equatorial tropical belt with naturally lower ozone column and very high surface UV exposure',
+    description: 'Elevated fumarolic activity and minor ground uplift detected on Vesuvius crater rim',
+  },
+  {
+    id: 've-krakatoa',
+    name: 'Krakatoa',
+    lat: -6.100,
+    lng: 105.420,
+    alertLevel: 'Warning',
+    seismicity: 215,
+    so2Flux: 540,
+    deformation: 7.3,
+    status: 'critical',
+    description: 'Active lava dome growth and explosive Strombolian activity at Anak Krakatau vent',
+  },
+  {
+    id: 've-mtsthelens',
+    name: 'Mount St Helens',
+    lat: 46.200,
+    lng: -122.180,
+    alertLevel: 'Normal',
+    seismicity: 28,
+    so2Flux: 45,
+    deformation: 0.6,
+    status: 'stable',
+    description: 'Background level activity with minor shallow seismicity in the St Helens crater',
   },
 ]
 
@@ -75,9 +75,9 @@ function TrendIcon({ status }: { status: string }) {
   )
 }
 
-export function OzoneLayerMonitor() {
-  const state = useMapStore((s) => s.ozoneLayerTrack119)
-  const setState = useMapStore((s) => s.setOzoneLayerTrack119)
+export function VolcanoEruptionAlert() {
+  const state = useMapStore((s) => s.volcanoEruptionAlertTrack)
+  const setState = useMapStore((s) => s.setVolcanoEruptionAlertTrack)
 
   const events = useMemo(
     () => (state.data.length > 0 ? state.data : SAMPLE_LOCATIONS),
@@ -93,17 +93,16 @@ export function OzoneLayerMonitor() {
 
   const summary = useMemo(() => {
     if (filteredItems.length === 0) {
-      return { avgOzone: 0, totalHole: 0, avgTemp: 0, avgUv: 0 }
+      return { activeVolcanoes: 0, avgSeismicity: 0, avgSo2: 0, avgDeformation: 0 }
     }
-    const avgOzone = filteredItems.reduce((sum, e) => sum + (e.ozoneDu as number), 0) / filteredItems.length
-    const totalHole = filteredItems.reduce((sum, e) => sum + (e.holeAreaMm2 as number), 0)
-    const avgTemp = filteredItems.reduce((sum, e) => sum + (e.tempC as number), 0) / filteredItems.length
-    const avgUv = filteredItems.reduce((sum, e) => sum + (e.uvIndex as number), 0) / filteredItems.length
+    const avgSeismicity = filteredItems.reduce((sum, e) => sum + (e.seismicity as number), 0) / filteredItems.length
+    const avgSo2 = filteredItems.reduce((sum, e) => sum + (e.so2Flux as number), 0) / filteredItems.length
+    const avgDeformation = filteredItems.reduce((sum, e) => sum + (e.deformation as number), 0) / filteredItems.length
     return {
-      avgOzone: avgOzone.toFixed(0),
-      totalHole: totalHole.toFixed(1),
-      avgTemp: avgTemp.toFixed(0),
-      avgUv: avgUv.toFixed(1),
+      activeVolcanoes: filteredItems.length,
+      avgSeismicity: Math.round(avgSeismicity),
+      avgSo2: Math.round(avgSo2),
+      avgDeformation: avgDeformation.toFixed(1),
     }
   }, [filteredItems])
 
@@ -114,7 +113,7 @@ export function OzoneLayerMonitor() {
 
   useEffect(() => {
     if (state.data.length === 0) {
-      useMapStore.getState().setOzoneLayerTrack119({ data: SAMPLE_LOCATIONS })
+      useMapStore.getState().setVolcanoEruptionAlertTrack({ data: SAMPLE_LOCATIONS })
     }
   }, [state.data.length])
 
@@ -123,12 +122,12 @@ export function OzoneLayerMonitor() {
 
   return (
     <div className="fixed right-4 top-16 z-[60] w-[420px] max-w-[calc(100vw-32px)] max-h-[calc(100vh-100px)]">
-      <Card className="bg-gradient-to-br from-blue-600/95 to-indigo-700/95 backdrop-blur-xl border border-slate-800/40 rounded-xl shadow-lg overflow-hidden">
+      <Card className="bg-gradient-to-br from-orange-600/95 to-red-700/95 backdrop-blur-xl border border-slate-800/40 rounded-xl shadow-lg overflow-hidden">
         <CardHeader className="pb-3 border-b border-slate-700/30">
           <div className="flex items-center justify-between">
             <CardTitle className="text-sm flex items-center gap-2 text-slate-100">
-              <SunIcon13 className="h-4 w-4 text-blue-200" />
-              Ozone Layer Monitor
+              <FlameIcon20 className="h-4 w-4 text-orange-200" />
+              Volcano Eruption Alert
             </CardTitle>
             <Button
               variant="ghost"
@@ -163,24 +162,24 @@ export function OzoneLayerMonitor() {
 
           <div className="grid grid-cols-2 gap-2">
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Ozone</div>
-              <div className="text-sm font-semibold text-blue-200">{summary.avgOzone}</div>
-              <div className="text-[9px] text-slate-400/60">DU avg</div>
+              <div className="text-[10px] text-slate-400/70">Volcanoes</div>
+              <div className="text-sm font-semibold text-orange-200">{summary.activeVolcanoes}</div>
+              <div className="text-[9px] text-slate-400/60">monitored</div>
             </div>
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Hole Area</div>
-              <div className="text-sm font-semibold text-indigo-200">{summary.totalHole}</div>
-              <div className="text-[9px] text-slate-400/60">Mm2 total</div>
+              <div className="text-[10px] text-slate-400/70">Seismicity</div>
+              <div className="text-sm font-semibold text-red-200">{summary.avgSeismicity}</div>
+              <div className="text-[9px] text-slate-400/60">avg events</div>
             </div>
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Temp</div>
-              <div className="text-sm font-semibold text-sky-200">{summary.avgTemp}C</div>
-              <div className="text-[9px] text-slate-400/60">avg stratosphere</div>
+              <div className="text-[10px] text-slate-400/70">SO2 Flux</div>
+              <div className="text-sm font-semibold text-amber-200">{summary.avgSo2}</div>
+              <div className="text-[9px] text-slate-400/60">avg t/day</div>
             </div>
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">UV Index</div>
-              <div className="text-sm font-semibold text-slate-200">{summary.avgUv}</div>
-              <div className="text-[9px] text-slate-400/60">avg surface</div>
+              <div className="text-[10px] text-slate-400/70">Deformation</div>
+              <div className="text-sm font-semibold text-slate-200">{summary.avgDeformation}</div>
+              <div className="text-[9px] text-slate-400/60">avg cm</div>
             </div>
           </div>
 
@@ -188,7 +187,7 @@ export function OzoneLayerMonitor() {
 
           <div className="space-y-1.5">
             <Label className="text-xs text-slate-300/80">
-              Ozone Stations ({filteredItems.length})
+              Volcano Sites ({filteredItems.length})
             </Label>
             <ScrollArea className="max-h-[260px]">
               <div className="space-y-2 pr-1">
@@ -221,16 +220,16 @@ export function OzoneLayerMonitor() {
                       </div>
                       <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10px] text-slate-300/60">
                         <div>
-                          Ozone: <span className="text-slate-100 font-medium">{e.ozoneDu as number} DU</span>
+                          Alert Level: <span className="text-slate-100 font-medium">{e.alertLevel}</span>
                         </div>
                         <div>
-                          Hole: <span className="text-slate-100 font-medium">{(e.holeAreaMm2 as number).toFixed(1)} Mm2</span>
+                          Seismicity: <span className="text-slate-100 font-medium">{e.seismicity}</span>
                         </div>
                         <div>
-                          Temp: <span className="text-slate-100 font-medium">{e.tempC as number}C</span>
+                          SO2 Flux: <span className="text-slate-100 font-medium">{e.so2Flux} t/d</span>
                         </div>
                         <div>
-                          UV: <span className="text-slate-100 font-medium">{e.uvIndex as number}</span>
+                          Deformation: <span className="text-slate-100 font-medium">{e.deformation} cm</span>
                         </div>
                       </div>
                     </div>
@@ -238,7 +237,7 @@ export function OzoneLayerMonitor() {
                 })}
                 {filteredItems.length === 0 && (
                   <div className="text-center text-xs text-slate-400/50 py-4">
-                    No stations match the current filter.
+                    No volcano sites match the current filter.
                   </div>
                 )}
               </div>
@@ -268,8 +267,8 @@ export function OzoneLayerMonitor() {
                     </span>
                   </div>
                   <div>
-                    <span className="text-slate-400/70">Ozone: </span>
-                    <span className="font-medium text-blue-200">{activeItem.ozoneDu as number} DU</span>
+                    <span className="text-slate-400/70">Alert Level: </span>
+                    <span className="font-medium text-orange-200">{activeItem.alertLevel as string}</span>
                   </div>
                 </div>
               </div>

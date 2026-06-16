@@ -8,56 +8,56 @@ import { Label } from '@/components/ui/label'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
 import { useMapStore, type MonitorData } from '@/lib/map-store'
-import { Sun as SunIcon13, X, MapPin, Filter } from 'lucide-react'
+import { Split as SplitIcon4, X, MapPin, Filter } from 'lucide-react'
 
 const SAMPLE_LOCATIONS: MonitorData[] = [
   {
-    id: 'ol-antarctic',
-    name: 'Antarctic Ozone Hole',
-    lat: -78.0,
-    lng: 0.0,
-    ozoneDu: 145,
-    holeAreaMm2: 24.8,
-    tempC: -78,
-    uvIndex: 3.2,
+    id: 'fl-sanandreas',
+    name: 'San Andreas Fault',
+    lat: 36.000,
+    lng: -120.000,
+    slipRate: 34,
+    creep: 28,
+    stress: 14.2,
+    recurrence: 220,
     status: 'critical',
-    description: 'Annual springtime ozone hole over Antarctica showing severe stratospheric ozone depletion from chlorine activation',
+    description: 'High stress accumulation and observed aseismic creep along the southern San Andreas transform fault',
   },
   {
-    id: 'ol-arctic',
-    name: 'Arctic Vortex',
-    lat: 78.0,
-    lng: 0.0,
-    ozoneDu: 305,
-    holeAreaMm2: 2.1,
-    tempC: -72,
-    uvIndex: 1.8,
+    id: 'fl-alpine',
+    name: 'Alpine Fault NZ',
+    lat: -43.500,
+    lng: 170.000,
+    slipRate: 27,
+    creep: 5,
+    stress: 18.5,
+    recurrence: 300,
+    status: 'critical',
+    description: 'Major plate boundary Alpine Fault in New Zealand nearing end of its seismic cycle with high stress',
+  },
+  {
+    id: 'fl-anatolian',
+    name: 'Anatolian Fault',
+    lat: 39.000,
+    lng: 33.000,
+    slipRate: 22,
+    creep: 12,
+    stress: 11.8,
+    recurrence: 250,
     status: 'warning',
-    description: 'Polar vortex region over the Arctic with episodic ozone depletion during cold stratospheric winters',
+    description: 'Active right lateral Anatolian Fault system showing creep and elevated stress near major population centers',
   },
   {
-    id: 'ol-midlat-n',
-    name: 'Midlatitude North',
-    lat: 45.0,
-    lng: 0.0,
-    ozoneDu: 340,
-    holeAreaMm2: 0,
-    tempC: -55,
-    uvIndex: 4.5,
-    status: 'stable',
-    description: 'Northern midlatitude stratospheric ozone column showing seasonal variation and gradual recovery trends',
-  },
-  {
-    id: 'ol-tropical',
-    name: 'Tropical Belt',
-    lat: 0.0,
-    lng: 0.0,
-    ozoneDu: 265,
-    holeAreaMm2: 0,
-    tempC: -78,
-    uvIndex: 11.2,
+    id: 'fl-riftvalley',
+    name: 'Rift Valley Fault',
+    lat: -3.000,
+    lng: 36.000,
+    slipRate: 8,
+    creep: 4,
+    stress: 6.4,
+    recurrence: 450,
     status: 'moderate',
-    description: 'Equatorial tropical belt with naturally lower ozone column and very high surface UV exposure',
+    description: 'East African Rift Valley normal fault system with slow extension and moderate seismic hazard potential',
   },
 ]
 
@@ -75,9 +75,9 @@ function TrendIcon({ status }: { status: string }) {
   )
 }
 
-export function OzoneLayerMonitor() {
-  const state = useMapStore((s) => s.ozoneLayerTrack119)
-  const setState = useMapStore((s) => s.setOzoneLayerTrack119)
+export function FaultLineActivity() {
+  const state = useMapStore((s) => s.faultLineActivity)
+  const setState = useMapStore((s) => s.setFaultLineActivity)
 
   const events = useMemo(
     () => (state.data.length > 0 ? state.data : SAMPLE_LOCATIONS),
@@ -93,17 +93,16 @@ export function OzoneLayerMonitor() {
 
   const summary = useMemo(() => {
     if (filteredItems.length === 0) {
-      return { avgOzone: 0, totalHole: 0, avgTemp: 0, avgUv: 0 }
+      return { faults: 0, avgSlip: 0, avgCreep: 0, maxStress: 0 }
     }
-    const avgOzone = filteredItems.reduce((sum, e) => sum + (e.ozoneDu as number), 0) / filteredItems.length
-    const totalHole = filteredItems.reduce((sum, e) => sum + (e.holeAreaMm2 as number), 0)
-    const avgTemp = filteredItems.reduce((sum, e) => sum + (e.tempC as number), 0) / filteredItems.length
-    const avgUv = filteredItems.reduce((sum, e) => sum + (e.uvIndex as number), 0) / filteredItems.length
+    const avgSlip = filteredItems.reduce((sum, e) => sum + (e.slipRate as number), 0) / filteredItems.length
+    const avgCreep = filteredItems.reduce((sum, e) => sum + (e.creep as number), 0) / filteredItems.length
+    const maxStress = Math.max(...filteredItems.map((e) => e.stress as number))
     return {
-      avgOzone: avgOzone.toFixed(0),
-      totalHole: totalHole.toFixed(1),
-      avgTemp: avgTemp.toFixed(0),
-      avgUv: avgUv.toFixed(1),
+      faults: filteredItems.length,
+      avgSlip: avgSlip.toFixed(1),
+      avgCreep: avgCreep.toFixed(1),
+      maxStress: maxStress.toFixed(1),
     }
   }, [filteredItems])
 
@@ -114,7 +113,7 @@ export function OzoneLayerMonitor() {
 
   useEffect(() => {
     if (state.data.length === 0) {
-      useMapStore.getState().setOzoneLayerTrack119({ data: SAMPLE_LOCATIONS })
+      useMapStore.getState().setFaultLineActivity({ data: SAMPLE_LOCATIONS })
     }
   }, [state.data.length])
 
@@ -123,12 +122,12 @@ export function OzoneLayerMonitor() {
 
   return (
     <div className="fixed right-4 top-16 z-[60] w-[420px] max-w-[calc(100vw-32px)] max-h-[calc(100vh-100px)]">
-      <Card className="bg-gradient-to-br from-blue-600/95 to-indigo-700/95 backdrop-blur-xl border border-slate-800/40 rounded-xl shadow-lg overflow-hidden">
+      <Card className="bg-gradient-to-br from-purple-600/95 to-violet-700/95 backdrop-blur-xl border border-slate-800/40 rounded-xl shadow-lg overflow-hidden">
         <CardHeader className="pb-3 border-b border-slate-700/30">
           <div className="flex items-center justify-between">
             <CardTitle className="text-sm flex items-center gap-2 text-slate-100">
-              <SunIcon13 className="h-4 w-4 text-blue-200" />
-              Ozone Layer Monitor
+              <SplitIcon4 className="h-4 w-4 text-purple-200" />
+              Fault Line Activity
             </CardTitle>
             <Button
               variant="ghost"
@@ -163,24 +162,24 @@ export function OzoneLayerMonitor() {
 
           <div className="grid grid-cols-2 gap-2">
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Ozone</div>
-              <div className="text-sm font-semibold text-blue-200">{summary.avgOzone}</div>
-              <div className="text-[9px] text-slate-400/60">DU avg</div>
+              <div className="text-[10px] text-slate-400/70">Faults</div>
+              <div className="text-sm font-semibold text-purple-200">{summary.faults}</div>
+              <div className="text-[9px] text-slate-400/60">monitored</div>
             </div>
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Hole Area</div>
-              <div className="text-sm font-semibold text-indigo-200">{summary.totalHole}</div>
-              <div className="text-[9px] text-slate-400/60">Mm2 total</div>
+              <div className="text-[10px] text-slate-400/70">Slip Rate</div>
+              <div className="text-sm font-semibold text-violet-200">{summary.avgSlip}</div>
+              <div className="text-[9px] text-slate-400/60">avg mm/yr</div>
             </div>
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Temp</div>
-              <div className="text-sm font-semibold text-sky-200">{summary.avgTemp}C</div>
-              <div className="text-[9px] text-slate-400/60">avg stratosphere</div>
+              <div className="text-[10px] text-slate-400/70">Creep</div>
+              <div className="text-sm font-semibold text-fuchsia-200">{summary.avgCreep}</div>
+              <div className="text-[9px] text-slate-400/60">avg mm</div>
             </div>
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">UV Index</div>
-              <div className="text-sm font-semibold text-slate-200">{summary.avgUv}</div>
-              <div className="text-[9px] text-slate-400/60">avg surface</div>
+              <div className="text-[10px] text-slate-400/70">Stress</div>
+              <div className="text-sm font-semibold text-slate-200">{summary.maxStress}</div>
+              <div className="text-[9px] text-slate-400/60">max MPa</div>
             </div>
           </div>
 
@@ -188,7 +187,7 @@ export function OzoneLayerMonitor() {
 
           <div className="space-y-1.5">
             <Label className="text-xs text-slate-300/80">
-              Ozone Stations ({filteredItems.length})
+              Fault Zones ({filteredItems.length})
             </Label>
             <ScrollArea className="max-h-[260px]">
               <div className="space-y-2 pr-1">
@@ -221,16 +220,16 @@ export function OzoneLayerMonitor() {
                       </div>
                       <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10px] text-slate-300/60">
                         <div>
-                          Ozone: <span className="text-slate-100 font-medium">{e.ozoneDu as number} DU</span>
+                          Slip Rate: <span className="text-slate-100 font-medium">{e.slipRate} mm/yr</span>
                         </div>
                         <div>
-                          Hole: <span className="text-slate-100 font-medium">{(e.holeAreaMm2 as number).toFixed(1)} Mm2</span>
+                          Creep: <span className="text-slate-100 font-medium">{e.creep} mm</span>
                         </div>
                         <div>
-                          Temp: <span className="text-slate-100 font-medium">{e.tempC as number}C</span>
+                          Stress: <span className="text-slate-100 font-medium">{e.stress} MPa</span>
                         </div>
                         <div>
-                          UV: <span className="text-slate-100 font-medium">{e.uvIndex as number}</span>
+                          Recurrence: <span className="text-slate-100 font-medium">{e.recurrence} yrs</span>
                         </div>
                       </div>
                     </div>
@@ -238,7 +237,7 @@ export function OzoneLayerMonitor() {
                 })}
                 {filteredItems.length === 0 && (
                   <div className="text-center text-xs text-slate-400/50 py-4">
-                    No stations match the current filter.
+                    No fault zones match the current filter.
                   </div>
                 )}
               </div>
@@ -268,8 +267,8 @@ export function OzoneLayerMonitor() {
                     </span>
                   </div>
                   <div>
-                    <span className="text-slate-400/70">Ozone: </span>
-                    <span className="font-medium text-blue-200">{activeItem.ozoneDu as number} DU</span>
+                    <span className="text-slate-400/70">Slip Rate: </span>
+                    <span className="font-medium text-purple-200">{activeItem.slipRate as number} mm/yr</span>
                   </div>
                 </div>
               </div>

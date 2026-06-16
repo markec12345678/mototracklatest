@@ -8,56 +8,56 @@ import { Label } from '@/components/ui/label'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
 import { useMapStore, type MonitorData } from '@/lib/map-store'
-import { Sun as SunIcon13, X, MapPin, Filter } from 'lucide-react'
+import { TriangleAlert as TriangleAlertIcon6, X, MapPin, Filter } from 'lucide-react'
 
 const SAMPLE_LOCATIONS: MonitorData[] = [
   {
-    id: 'ol-antarctic',
-    name: 'Antarctic Ozone Hole',
-    lat: -78.0,
-    lng: 0.0,
-    ozoneDu: 145,
-    holeAreaMm2: 24.8,
-    tempC: -78,
-    uvIndex: 3.2,
+    id: 'rr-deepmine-sa',
+    name: 'Deep Mine SA',
+    lat: -26.000,
+    lng: 28.000,
+    stress: 85,
+    depth: 3200,
+    riskLevel: 'Extreme',
+    history: 28,
     status: 'critical',
-    description: 'Annual springtime ozone hole over Antarctica showing severe stratospheric ozone depletion from chlorine activation',
+    description: 'Extremely high rockburst risk in deep South African gold mine at 3.2km depth with elevated stress',
   },
   {
-    id: 'ol-arctic',
-    name: 'Arctic Vortex',
-    lat: 78.0,
-    lng: 0.0,
-    ozoneDu: 305,
-    holeAreaMm2: 2.1,
-    tempC: -72,
-    uvIndex: 1.8,
+    id: 'rr-chinesemine',
+    name: 'Chinese Mine',
+    lat: 40.000,
+    lng: 113.000,
+    stress: 72,
+    depth: 2400,
+    riskLevel: 'High',
+    history: 18,
+    status: 'critical',
+    description: 'High rockburst hazard in deep Chinese coal mine due to compressive stress and brittle sandstone strata',
+  },
+  {
+    id: 'rr-canadianmine',
+    name: 'Canadian Mine',
+    lat: 47.000,
+    lng: -90.000,
+    stress: 58,
+    depth: 1800,
+    riskLevel: 'Moderate',
+    history: 9,
     status: 'warning',
-    description: 'Polar vortex region over the Arctic with episodic ozone depletion during cold stratospheric winters',
+    description: 'Moderate rockburst risk in Canadian hard rock mine with documented historical burst events',
   },
   {
-    id: 'ol-midlat-n',
-    name: 'Midlatitude North',
-    lat: 45.0,
-    lng: 0.0,
-    ozoneDu: 340,
-    holeAreaMm2: 0,
-    tempC: -55,
-    uvIndex: 4.5,
-    status: 'stable',
-    description: 'Northern midlatitude stratospheric ozone column showing seasonal variation and gradual recovery trends',
-  },
-  {
-    id: 'ol-tropical',
-    name: 'Tropical Belt',
-    lat: 0.0,
-    lng: 0.0,
-    ozoneDu: 265,
-    holeAreaMm2: 0,
-    tempC: -78,
-    uvIndex: 11.2,
+    id: 'rr-australianmine',
+    name: 'Australian Mine',
+    lat: -27.000,
+    lng: 117.000,
+    stress: 45,
+    depth: 1500,
+    riskLevel: 'Low',
+    history: 4,
     status: 'moderate',
-    description: 'Equatorial tropical belt with naturally lower ozone column and very high surface UV exposure',
+    description: 'Low to moderate rockburst risk in Australian underground mine with stable stress monitoring',
   },
 ]
 
@@ -75,9 +75,9 @@ function TrendIcon({ status }: { status: string }) {
   )
 }
 
-export function OzoneLayerMonitor() {
-  const state = useMapStore((s) => s.ozoneLayerTrack119)
-  const setState = useMapStore((s) => s.setOzoneLayerTrack119)
+export function RockburstRiskMonitor() {
+  const state = useMapStore((s) => s.rockburstRiskMonitor)
+  const setState = useMapStore((s) => s.setRockburstRiskMonitor)
 
   const events = useMemo(
     () => (state.data.length > 0 ? state.data : SAMPLE_LOCATIONS),
@@ -93,17 +93,16 @@ export function OzoneLayerMonitor() {
 
   const summary = useMemo(() => {
     if (filteredItems.length === 0) {
-      return { avgOzone: 0, totalHole: 0, avgTemp: 0, avgUv: 0 }
+      return { mines: 0, maxStress: 0, maxDepth: 0, totalEvents: 0 }
     }
-    const avgOzone = filteredItems.reduce((sum, e) => sum + (e.ozoneDu as number), 0) / filteredItems.length
-    const totalHole = filteredItems.reduce((sum, e) => sum + (e.holeAreaMm2 as number), 0)
-    const avgTemp = filteredItems.reduce((sum, e) => sum + (e.tempC as number), 0) / filteredItems.length
-    const avgUv = filteredItems.reduce((sum, e) => sum + (e.uvIndex as number), 0) / filteredItems.length
+    const maxStress = Math.max(...filteredItems.map((e) => e.stress as number))
+    const maxDepth = Math.max(...filteredItems.map((e) => e.depth as number))
+    const totalEvents = filteredItems.reduce((sum, e) => sum + (e.history as number), 0)
     return {
-      avgOzone: avgOzone.toFixed(0),
-      totalHole: totalHole.toFixed(1),
-      avgTemp: avgTemp.toFixed(0),
-      avgUv: avgUv.toFixed(1),
+      mines: filteredItems.length,
+      maxStress,
+      maxDepth,
+      totalEvents,
     }
   }, [filteredItems])
 
@@ -114,7 +113,7 @@ export function OzoneLayerMonitor() {
 
   useEffect(() => {
     if (state.data.length === 0) {
-      useMapStore.getState().setOzoneLayerTrack119({ data: SAMPLE_LOCATIONS })
+      useMapStore.getState().setRockburstRiskMonitor({ data: SAMPLE_LOCATIONS })
     }
   }, [state.data.length])
 
@@ -123,12 +122,12 @@ export function OzoneLayerMonitor() {
 
   return (
     <div className="fixed right-4 top-16 z-[60] w-[420px] max-w-[calc(100vw-32px)] max-h-[calc(100vh-100px)]">
-      <Card className="bg-gradient-to-br from-blue-600/95 to-indigo-700/95 backdrop-blur-xl border border-slate-800/40 rounded-xl shadow-lg overflow-hidden">
+      <Card className="bg-gradient-to-br from-rose-600/95 to-red-700/95 backdrop-blur-xl border border-slate-800/40 rounded-xl shadow-lg overflow-hidden">
         <CardHeader className="pb-3 border-b border-slate-700/30">
           <div className="flex items-center justify-between">
             <CardTitle className="text-sm flex items-center gap-2 text-slate-100">
-              <SunIcon13 className="h-4 w-4 text-blue-200" />
-              Ozone Layer Monitor
+              <TriangleAlertIcon6 className="h-4 w-4 text-rose-200" />
+              Rockburst Risk Monitor
             </CardTitle>
             <Button
               variant="ghost"
@@ -163,24 +162,24 @@ export function OzoneLayerMonitor() {
 
           <div className="grid grid-cols-2 gap-2">
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Ozone</div>
-              <div className="text-sm font-semibold text-blue-200">{summary.avgOzone}</div>
-              <div className="text-[9px] text-slate-400/60">DU avg</div>
+              <div className="text-[10px] text-slate-400/70">Mines</div>
+              <div className="text-sm font-semibold text-rose-200">{summary.mines}</div>
+              <div className="text-[9px] text-slate-400/60">monitored</div>
             </div>
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Hole Area</div>
-              <div className="text-sm font-semibold text-indigo-200">{summary.totalHole}</div>
-              <div className="text-[9px] text-slate-400/60">Mm2 total</div>
+              <div className="text-[10px] text-slate-400/70">Stress</div>
+              <div className="text-sm font-semibold text-red-200">{summary.maxStress}</div>
+              <div className="text-[9px] text-slate-400/60">max MPa</div>
             </div>
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Temp</div>
-              <div className="text-sm font-semibold text-sky-200">{summary.avgTemp}C</div>
-              <div className="text-[9px] text-slate-400/60">avg stratosphere</div>
+              <div className="text-[10px] text-slate-400/70">Depth</div>
+              <div className="text-sm font-semibold text-pink-200">{summary.maxDepth}</div>
+              <div className="text-[9px] text-slate-400/60">max m</div>
             </div>
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">UV Index</div>
-              <div className="text-sm font-semibold text-slate-200">{summary.avgUv}</div>
-              <div className="text-[9px] text-slate-400/60">avg surface</div>
+              <div className="text-[10px] text-slate-400/70">Total Events</div>
+              <div className="text-sm font-semibold text-slate-200">{summary.totalEvents}</div>
+              <div className="text-[9px] text-slate-400/60">historical</div>
             </div>
           </div>
 
@@ -188,7 +187,7 @@ export function OzoneLayerMonitor() {
 
           <div className="space-y-1.5">
             <Label className="text-xs text-slate-300/80">
-              Ozone Stations ({filteredItems.length})
+              Mine Sites ({filteredItems.length})
             </Label>
             <ScrollArea className="max-h-[260px]">
               <div className="space-y-2 pr-1">
@@ -221,16 +220,16 @@ export function OzoneLayerMonitor() {
                       </div>
                       <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10px] text-slate-300/60">
                         <div>
-                          Ozone: <span className="text-slate-100 font-medium">{e.ozoneDu as number} DU</span>
+                          Stress: <span className="text-slate-100 font-medium">{e.stress} MPa</span>
                         </div>
                         <div>
-                          Hole: <span className="text-slate-100 font-medium">{(e.holeAreaMm2 as number).toFixed(1)} Mm2</span>
+                          Depth: <span className="text-slate-100 font-medium">{e.depth} m</span>
                         </div>
                         <div>
-                          Temp: <span className="text-slate-100 font-medium">{e.tempC as number}C</span>
+                          Risk Level: <span className="text-slate-100 font-medium">{e.riskLevel}</span>
                         </div>
                         <div>
-                          UV: <span className="text-slate-100 font-medium">{e.uvIndex as number}</span>
+                          History: <span className="text-slate-100 font-medium">{e.history} events</span>
                         </div>
                       </div>
                     </div>
@@ -238,7 +237,7 @@ export function OzoneLayerMonitor() {
                 })}
                 {filteredItems.length === 0 && (
                   <div className="text-center text-xs text-slate-400/50 py-4">
-                    No stations match the current filter.
+                    No mine sites match the current filter.
                   </div>
                 )}
               </div>
@@ -268,8 +267,8 @@ export function OzoneLayerMonitor() {
                     </span>
                   </div>
                   <div>
-                    <span className="text-slate-400/70">Ozone: </span>
-                    <span className="font-medium text-blue-200">{activeItem.ozoneDu as number} DU</span>
+                    <span className="text-slate-400/70">Risk Level: </span>
+                    <span className="font-medium text-rose-200">{activeItem.riskLevel as string}</span>
                   </div>
                 </div>
               </div>

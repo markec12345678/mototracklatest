@@ -8,56 +8,56 @@ import { Label } from '@/components/ui/label'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
 import { useMapStore, type MonitorData } from '@/lib/map-store'
-import { Sun as SunIcon13, X, MapPin, Filter } from 'lucide-react'
+import { Waves as WavesIcon27, X, MapPin, Filter } from 'lucide-react'
 
 const SAMPLE_LOCATIONS: MonitorData[] = [
   {
-    id: 'ol-antarctic',
-    name: 'Antarctic Ozone Hole',
-    lat: -78.0,
-    lng: 0.0,
-    ozoneDu: 145,
-    holeAreaMm2: 24.8,
-    tempC: -78,
-    uvIndex: 3.2,
-    status: 'critical',
-    description: 'Annual springtime ozone hole over Antarctica showing severe stratospheric ozone depletion from chlorine activation',
-  },
-  {
-    id: 'ol-arctic',
-    name: 'Arctic Vortex',
-    lat: 78.0,
-    lng: 0.0,
-    ozoneDu: 305,
-    holeAreaMm2: 2.1,
-    tempC: -72,
-    uvIndex: 1.8,
+    id: 'tw-pacific',
+    name: 'Pacific Warning Center',
+    lat: 21.300,
+    lng: -157.860,
+    waveHeight: 3.2,
+    travelTime: 4.5,
+    impactCoast: 'Pacific Rim',
+    alertLevel: 'Advisory',
     status: 'warning',
-    description: 'Polar vortex region over the Arctic with episodic ozone depletion during cold stratospheric winters',
+    description: 'Tsunami advisory issued for Pacific Rim coastal areas following magnitude 7.8 earthquake near Aleutian Islands',
   },
   {
-    id: 'ol-midlat-n',
-    name: 'Midlatitude North',
-    lat: 45.0,
-    lng: 0.0,
-    ozoneDu: 340,
-    holeAreaMm2: 0,
-    tempC: -55,
-    uvIndex: 4.5,
-    status: 'stable',
-    description: 'Northern midlatitude stratospheric ozone column showing seasonal variation and gradual recovery trends',
-  },
-  {
-    id: 'ol-tropical',
-    name: 'Tropical Belt',
-    lat: 0.0,
-    lng: 0.0,
-    ozoneDu: 265,
-    holeAreaMm2: 0,
-    tempC: -78,
-    uvIndex: 11.2,
+    id: 'tw-indianocean',
+    name: 'Indian Ocean Center',
+    lat: 6.900,
+    lng: 79.850,
+    waveHeight: 1.8,
+    travelTime: 2.2,
+    impactCoast: 'South Asia',
+    alertLevel: 'Watch',
     status: 'moderate',
-    description: 'Equatorial tropical belt with naturally lower ozone column and very high surface UV exposure',
+    description: 'Tsunami watch active for South Asian coastlines after seismic event in the Bay of Bengal region',
+  },
+  {
+    id: 'tw-neatlantic',
+    name: 'NE Atlantic Center',
+    lat: 40.000,
+    lng: -25.000,
+    waveHeight: 0.6,
+    travelTime: 6.8,
+    impactCoast: 'Western Europe',
+    alertLevel: 'Information',
+    status: 'stable',
+    description: 'Information bulletin only for Western European coast with no significant tsunami wave amplitude expected',
+  },
+  {
+    id: 'tw-mediterranean',
+    name: 'Mediterranean Center',
+    lat: 38.000,
+    lng: 18.000,
+    waveHeight: 2.4,
+    travelTime: 1.5,
+    impactCoast: 'Southern Europe',
+    alertLevel: 'Warning',
+    status: 'critical',
+    description: 'Tsunami warning issued for Southern European and North African coastlines following Mediterranean seismic event',
   },
 ]
 
@@ -75,9 +75,9 @@ function TrendIcon({ status }: { status: string }) {
   )
 }
 
-export function OzoneLayerMonitor() {
-  const state = useMapStore((s) => s.ozoneLayerTrack119)
-  const setState = useMapStore((s) => s.setOzoneLayerTrack119)
+export function TsunamiWarningSystem() {
+  const state = useMapStore((s) => s.tsunamiWarningTrack)
+  const setState = useMapStore((s) => s.setTsunamiWarningTrack)
 
   const events = useMemo(
     () => (state.data.length > 0 ? state.data : SAMPLE_LOCATIONS),
@@ -93,17 +93,16 @@ export function OzoneLayerMonitor() {
 
   const summary = useMemo(() => {
     if (filteredItems.length === 0) {
-      return { avgOzone: 0, totalHole: 0, avgTemp: 0, avgUv: 0 }
+      return { activeCenters: 0, maxWave: 0, avgTravel: 0, alerts: 0 }
     }
-    const avgOzone = filteredItems.reduce((sum, e) => sum + (e.ozoneDu as number), 0) / filteredItems.length
-    const totalHole = filteredItems.reduce((sum, e) => sum + (e.holeAreaMm2 as number), 0)
-    const avgTemp = filteredItems.reduce((sum, e) => sum + (e.tempC as number), 0) / filteredItems.length
-    const avgUv = filteredItems.reduce((sum, e) => sum + (e.uvIndex as number), 0) / filteredItems.length
+    const maxWave = Math.max(...filteredItems.map((e) => e.waveHeight as number))
+    const avgTravel = filteredItems.reduce((sum, e) => sum + (e.travelTime as number), 0) / filteredItems.length
+    const alerts = filteredItems.filter((e) => (e.alertLevel as string) !== 'Information').length
     return {
-      avgOzone: avgOzone.toFixed(0),
-      totalHole: totalHole.toFixed(1),
-      avgTemp: avgTemp.toFixed(0),
-      avgUv: avgUv.toFixed(1),
+      activeCenters: filteredItems.length,
+      maxWave: maxWave.toFixed(1),
+      avgTravel: avgTravel.toFixed(1),
+      alerts,
     }
   }, [filteredItems])
 
@@ -114,7 +113,7 @@ export function OzoneLayerMonitor() {
 
   useEffect(() => {
     if (state.data.length === 0) {
-      useMapStore.getState().setOzoneLayerTrack119({ data: SAMPLE_LOCATIONS })
+      useMapStore.getState().setTsunamiWarningTrack({ data: SAMPLE_LOCATIONS })
     }
   }, [state.data.length])
 
@@ -127,8 +126,8 @@ export function OzoneLayerMonitor() {
         <CardHeader className="pb-3 border-b border-slate-700/30">
           <div className="flex items-center justify-between">
             <CardTitle className="text-sm flex items-center gap-2 text-slate-100">
-              <SunIcon13 className="h-4 w-4 text-blue-200" />
-              Ozone Layer Monitor
+              <WavesIcon27 className="h-4 w-4 text-blue-200" />
+              Tsunami Warning System
             </CardTitle>
             <Button
               variant="ghost"
@@ -163,24 +162,24 @@ export function OzoneLayerMonitor() {
 
           <div className="grid grid-cols-2 gap-2">
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Ozone</div>
-              <div className="text-sm font-semibold text-blue-200">{summary.avgOzone}</div>
-              <div className="text-[9px] text-slate-400/60">DU avg</div>
+              <div className="text-[10px] text-slate-400/70">Centers</div>
+              <div className="text-sm font-semibold text-blue-200">{summary.activeCenters}</div>
+              <div className="text-[9px] text-slate-400/60">monitoring</div>
             </div>
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Hole Area</div>
-              <div className="text-sm font-semibold text-indigo-200">{summary.totalHole}</div>
-              <div className="text-[9px] text-slate-400/60">Mm2 total</div>
+              <div className="text-[10px] text-slate-400/70">Wave Height</div>
+              <div className="text-sm font-semibold text-indigo-200">{summary.maxWave}</div>
+              <div className="text-[9px] text-slate-400/60">max m</div>
             </div>
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Temp</div>
-              <div className="text-sm font-semibold text-sky-200">{summary.avgTemp}C</div>
-              <div className="text-[9px] text-slate-400/60">avg stratosphere</div>
+              <div className="text-[10px] text-slate-400/70">Travel Time</div>
+              <div className="text-sm font-semibold text-sky-200">{summary.avgTravel}</div>
+              <div className="text-[9px] text-slate-400/60">avg hrs</div>
             </div>
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">UV Index</div>
-              <div className="text-sm font-semibold text-slate-200">{summary.avgUv}</div>
-              <div className="text-[9px] text-slate-400/60">avg surface</div>
+              <div className="text-[10px] text-slate-400/70">Active Alerts</div>
+              <div className="text-sm font-semibold text-slate-200">{summary.alerts}</div>
+              <div className="text-[9px] text-slate-400/60">issued</div>
             </div>
           </div>
 
@@ -188,7 +187,7 @@ export function OzoneLayerMonitor() {
 
           <div className="space-y-1.5">
             <Label className="text-xs text-slate-300/80">
-              Ozone Stations ({filteredItems.length})
+              Warning Centers ({filteredItems.length})
             </Label>
             <ScrollArea className="max-h-[260px]">
               <div className="space-y-2 pr-1">
@@ -221,16 +220,16 @@ export function OzoneLayerMonitor() {
                       </div>
                       <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10px] text-slate-300/60">
                         <div>
-                          Ozone: <span className="text-slate-100 font-medium">{e.ozoneDu as number} DU</span>
+                          Wave Height: <span className="text-slate-100 font-medium">{e.waveHeight} m</span>
                         </div>
                         <div>
-                          Hole: <span className="text-slate-100 font-medium">{(e.holeAreaMm2 as number).toFixed(1)} Mm2</span>
+                          Travel Time: <span className="text-slate-100 font-medium">{e.travelTime} hrs</span>
                         </div>
                         <div>
-                          Temp: <span className="text-slate-100 font-medium">{e.tempC as number}C</span>
+                          Impact Coast: <span className="text-slate-100 font-medium">{e.impactCoast}</span>
                         </div>
                         <div>
-                          UV: <span className="text-slate-100 font-medium">{e.uvIndex as number}</span>
+                          Alert Level: <span className="text-slate-100 font-medium">{e.alertLevel}</span>
                         </div>
                       </div>
                     </div>
@@ -238,7 +237,7 @@ export function OzoneLayerMonitor() {
                 })}
                 {filteredItems.length === 0 && (
                   <div className="text-center text-xs text-slate-400/50 py-4">
-                    No stations match the current filter.
+                    No warning centers match the current filter.
                   </div>
                 )}
               </div>
@@ -268,8 +267,8 @@ export function OzoneLayerMonitor() {
                     </span>
                   </div>
                   <div>
-                    <span className="text-slate-400/70">Ozone: </span>
-                    <span className="font-medium text-blue-200">{activeItem.ozoneDu as number} DU</span>
+                    <span className="text-slate-400/70">Wave Height: </span>
+                    <span className="font-medium text-blue-200">{activeItem.waveHeight as number} m</span>
                   </div>
                 </div>
               </div>

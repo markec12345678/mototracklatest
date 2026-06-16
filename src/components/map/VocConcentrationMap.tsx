@@ -8,56 +8,56 @@ import { Label } from '@/components/ui/label'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
 import { useMapStore, type MonitorData } from '@/lib/map-store'
-import { Sun as SunIcon13, X, MapPin, Filter } from 'lucide-react'
+import { FlaskConical as FlaskConicalIcon7, X, MapPin, Filter } from 'lucide-react'
 
 const SAMPLE_LOCATIONS: MonitorData[] = [
   {
-    id: 'ol-antarctic',
-    name: 'Antarctic Ozone Hole',
-    lat: -78.0,
-    lng: 0.0,
-    ozoneDu: 145,
-    holeAreaMm2: 24.8,
-    tempC: -78,
-    uvIndex: 3.2,
+    id: 'voc-houston',
+    name: 'Houston Petrochem',
+    lat: 29.76,
+    lng: -95.37,
+    benzene: 4.8,
+    toluene: 8.2,
+    xylene: 3.5,
+    totalVoc: 285,
     status: 'critical',
-    description: 'Annual springtime ozone hole over Antarctica showing severe stratospheric ozone depletion from chlorine activation',
+    description: 'Houston Ship Channel petrochemical complex with elevated VOCs from refineries and chemical plants',
   },
   {
-    id: 'ol-arctic',
-    name: 'Arctic Vortex',
-    lat: 78.0,
-    lng: 0.0,
-    ozoneDu: 305,
-    holeAreaMm2: 2.1,
-    tempC: -72,
-    uvIndex: 1.8,
+    id: 'voc-rotterdam',
+    name: 'Rotterdam Refinery',
+    lat: 51.95,
+    lng: 4.15,
+    benzene: 2.4,
+    toluene: 5.1,
+    xylene: 1.8,
+    totalVoc: 168,
     status: 'warning',
-    description: 'Polar vortex region over the Arctic with episodic ozone depletion during cold stratospheric winters',
+    description: 'Major European port and refinery cluster with persistent VOC emissions from fuel handling and processing',
   },
   {
-    id: 'ol-midlat-n',
-    name: 'Midlatitude North',
-    lat: 45.0,
-    lng: 0.0,
-    ozoneDu: 340,
-    holeAreaMm2: 0,
-    tempC: -55,
-    uvIndex: 4.5,
-    status: 'stable',
-    description: 'Northern midlatitude stratospheric ozone column showing seasonal variation and gradual recovery trends',
+    id: 'voc-shanghai',
+    name: 'Shanghai Industrial',
+    lat: 31.23,
+    lng: 121.49,
+    benzene: 3.6,
+    toluene: 6.8,
+    xylene: 2.9,
+    totalVoc: 212,
+    status: 'warning',
+    description: 'Shanghai industrial zone with mixed solvent, paint, and chemical manufacturing VOC emissions',
   },
   {
-    id: 'ol-tropical',
-    name: 'Tropical Belt',
-    lat: 0.0,
-    lng: 0.0,
-    ozoneDu: 265,
-    holeAreaMm2: 0,
-    tempC: -78,
-    uvIndex: 11.2,
-    status: 'moderate',
-    description: 'Equatorial tropical belt with naturally lower ozone column and very high surface UV exposure',
+    id: 'voc-ulsan',
+    name: 'Ulsan Petrochem',
+    lat: 35.53,
+    lng: 129.32,
+    benzene: 4.1,
+    toluene: 7.4,
+    xylene: 3.2,
+    totalVoc: 245,
+    status: 'warning',
+    description: 'Korean petrochemical industrial complex emitting benzene and aromatic VOCs from processing facilities',
   },
 ]
 
@@ -75,9 +75,9 @@ function TrendIcon({ status }: { status: string }) {
   )
 }
 
-export function OzoneLayerMonitor() {
-  const state = useMapStore((s) => s.ozoneLayerTrack119)
-  const setState = useMapStore((s) => s.setOzoneLayerTrack119)
+export function VocConcentrationMap() {
+  const state = useMapStore((s) => s.vocConcentrationMap)
+  const setState = useMapStore((s) => s.setVocConcentrationMap)
 
   const events = useMemo(
     () => (state.data.length > 0 ? state.data : SAMPLE_LOCATIONS),
@@ -93,17 +93,17 @@ export function OzoneLayerMonitor() {
 
   const summary = useMemo(() => {
     if (filteredItems.length === 0) {
-      return { avgOzone: 0, totalHole: 0, avgTemp: 0, avgUv: 0 }
+      return { avgBenzene: 0, avgToluene: 0, avgXylene: 0, avgTotal: 0 }
     }
-    const avgOzone = filteredItems.reduce((sum, e) => sum + (e.ozoneDu as number), 0) / filteredItems.length
-    const totalHole = filteredItems.reduce((sum, e) => sum + (e.holeAreaMm2 as number), 0)
-    const avgTemp = filteredItems.reduce((sum, e) => sum + (e.tempC as number), 0) / filteredItems.length
-    const avgUv = filteredItems.reduce((sum, e) => sum + (e.uvIndex as number), 0) / filteredItems.length
+    const avgBenzene = filteredItems.reduce((sum, e) => sum + (e.benzene as number), 0) / filteredItems.length
+    const avgToluene = filteredItems.reduce((sum, e) => sum + (e.toluene as number), 0) / filteredItems.length
+    const avgXylene = filteredItems.reduce((sum, e) => sum + (e.xylene as number), 0) / filteredItems.length
+    const avgTotal = filteredItems.reduce((sum, e) => sum + (e.totalVoc as number), 0) / filteredItems.length
     return {
-      avgOzone: avgOzone.toFixed(0),
-      totalHole: totalHole.toFixed(1),
-      avgTemp: avgTemp.toFixed(0),
-      avgUv: avgUv.toFixed(1),
+      avgBenzene: avgBenzene.toFixed(1),
+      avgToluene: avgToluene.toFixed(1),
+      avgXylene: avgXylene.toFixed(1),
+      avgTotal: avgTotal.toFixed(0),
     }
   }, [filteredItems])
 
@@ -114,7 +114,7 @@ export function OzoneLayerMonitor() {
 
   useEffect(() => {
     if (state.data.length === 0) {
-      useMapStore.getState().setOzoneLayerTrack119({ data: SAMPLE_LOCATIONS })
+      useMapStore.getState().setVocConcentrationMap({ data: SAMPLE_LOCATIONS })
     }
   }, [state.data.length])
 
@@ -123,12 +123,12 @@ export function OzoneLayerMonitor() {
 
   return (
     <div className="fixed right-4 top-16 z-[60] w-[420px] max-w-[calc(100vw-32px)] max-h-[calc(100vh-100px)]">
-      <Card className="bg-gradient-to-br from-blue-600/95 to-indigo-700/95 backdrop-blur-xl border border-slate-800/40 rounded-xl shadow-lg overflow-hidden">
+      <Card className="bg-gradient-to-br from-teal-600/95 to-cyan-700/95 backdrop-blur-xl border border-slate-800/40 rounded-xl shadow-lg overflow-hidden">
         <CardHeader className="pb-3 border-b border-slate-700/30">
           <div className="flex items-center justify-between">
             <CardTitle className="text-sm flex items-center gap-2 text-slate-100">
-              <SunIcon13 className="h-4 w-4 text-blue-200" />
-              Ozone Layer Monitor
+              <FlaskConicalIcon7 className="h-4 w-4 text-teal-200" />
+              VOC Concentration Map
             </CardTitle>
             <Button
               variant="ghost"
@@ -163,24 +163,24 @@ export function OzoneLayerMonitor() {
 
           <div className="grid grid-cols-2 gap-2">
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Ozone</div>
-              <div className="text-sm font-semibold text-blue-200">{summary.avgOzone}</div>
-              <div className="text-[9px] text-slate-400/60">DU avg</div>
+              <div className="text-[10px] text-slate-400/70">Benzene</div>
+              <div className="text-sm font-semibold text-teal-200">{summary.avgBenzene}</div>
+              <div className="text-[9px] text-slate-400/60">ppb avg</div>
             </div>
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Hole Area</div>
-              <div className="text-sm font-semibold text-indigo-200">{summary.totalHole}</div>
-              <div className="text-[9px] text-slate-400/60">Mm2 total</div>
+              <div className="text-[10px] text-slate-400/70">Toluene</div>
+              <div className="text-sm font-semibold text-cyan-200">{summary.avgToluene}</div>
+              <div className="text-[9px] text-slate-400/60">ppb avg</div>
             </div>
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Temp</div>
-              <div className="text-sm font-semibold text-sky-200">{summary.avgTemp}C</div>
-              <div className="text-[9px] text-slate-400/60">avg stratosphere</div>
+              <div className="text-[10px] text-slate-400/70">Xylene</div>
+              <div className="text-sm font-semibold text-sky-200">{summary.avgXylene}</div>
+              <div className="text-[9px] text-slate-400/60">ppb avg</div>
             </div>
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">UV Index</div>
-              <div className="text-sm font-semibold text-slate-200">{summary.avgUv}</div>
-              <div className="text-[9px] text-slate-400/60">avg surface</div>
+              <div className="text-[10px] text-slate-400/70">Total VOC</div>
+              <div className="text-sm font-semibold text-slate-200">{summary.avgTotal}</div>
+              <div className="text-[9px] text-slate-400/60">ppb avg</div>
             </div>
           </div>
 
@@ -188,7 +188,7 @@ export function OzoneLayerMonitor() {
 
           <div className="space-y-1.5">
             <Label className="text-xs text-slate-300/80">
-              Ozone Stations ({filteredItems.length})
+              VOC Sites ({filteredItems.length})
             </Label>
             <ScrollArea className="max-h-[260px]">
               <div className="space-y-2 pr-1">
@@ -221,16 +221,16 @@ export function OzoneLayerMonitor() {
                       </div>
                       <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10px] text-slate-300/60">
                         <div>
-                          Ozone: <span className="text-slate-100 font-medium">{e.ozoneDu as number} DU</span>
+                          Benzene: <span className="text-slate-100 font-medium">{e.benzene as number} ppb</span>
                         </div>
                         <div>
-                          Hole: <span className="text-slate-100 font-medium">{(e.holeAreaMm2 as number).toFixed(1)} Mm2</span>
+                          Toluene: <span className="text-slate-100 font-medium">{e.toluene as number} ppb</span>
                         </div>
                         <div>
-                          Temp: <span className="text-slate-100 font-medium">{e.tempC as number}C</span>
+                          Xylene: <span className="text-slate-100 font-medium">{e.xylene as number} ppb</span>
                         </div>
                         <div>
-                          UV: <span className="text-slate-100 font-medium">{e.uvIndex as number}</span>
+                          Total: <span className="text-slate-100 font-medium">{e.totalVoc as number} ppb</span>
                         </div>
                       </div>
                     </div>
@@ -238,7 +238,7 @@ export function OzoneLayerMonitor() {
                 })}
                 {filteredItems.length === 0 && (
                   <div className="text-center text-xs text-slate-400/50 py-4">
-                    No stations match the current filter.
+                    No sites match the current filter.
                   </div>
                 )}
               </div>
@@ -268,8 +268,8 @@ export function OzoneLayerMonitor() {
                     </span>
                   </div>
                   <div>
-                    <span className="text-slate-400/70">Ozone: </span>
-                    <span className="font-medium text-blue-200">{activeItem.ozoneDu as number} DU</span>
+                    <span className="text-slate-400/70">Benzene: </span>
+                    <span className="font-medium text-teal-200">{activeItem.benzene as number} ppb</span>
                   </div>
                 </div>
               </div>

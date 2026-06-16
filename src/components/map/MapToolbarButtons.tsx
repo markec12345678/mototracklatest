@@ -517,6 +517,24 @@ import {
   Grid3x3 as GridIcon,
   Flower as FlowerIcon,
   Route as RouteIcon5,
+  // Task 118 icons
+  Activity as ActivityIcon11,
+  Flame as FlameIcon20,
+  Waves as WavesIcon27,
+  Mountain as MountainIcon19,
+  ArrowDown as ArrowDownIcon8,
+  Split as SplitIcon4,
+  Droplet as DropletIcon16,
+  TriangleAlert as TriangleAlertIcon6,
+  // Task 119 icons
+  Sun as SunIcon13,
+  Flame as FlameIcon21,
+  Cloud as CloudIcon8,
+  CloudFog as CloudFogIcon3,
+  CloudCog as CloudCogIcon4,
+  Wind as WindIcon19,
+  CircleDot as CircleDotIcon4,
+  FlaskConical as FlaskConicalIcon7,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -641,6 +659,24 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const habitatFragmentationOpen = useMapStore((s) => s.habitatFragmentation.open)
   const biodiversityHotspotOpen = useMapStore((s) => s.biodiversityHotspot.open)
   const wildlifeCorridorMapTrackOpen = useMapStore((s) => s.wildlifeCorridorMapTrack.open)
+  // Task 118: Geological Hazards & Tectonic Activity
+  const earthquakeForecastTrackOpen = useMapStore((s) => s.earthquakeForecastTrack.open)
+  const volcanoEruptionAlertTrackOpen = useMapStore((s) => s.volcanoEruptionAlertTrack.open)
+  const tsunamiWarningTrackOpen = useMapStore((s) => s.tsunamiWarningTrack.open)
+  const landslideHazardMapTrackOpen = useMapStore((s) => s.landslideHazardMapTrack.open)
+  const subsidenceMonitorTrackOpen = useMapStore((s) => s.subsidenceMonitorTrack.open)
+  const faultLineActivityOpen = useMapStore((s) => s.faultLineActivity.open)
+  const geothermalActivityTrackOpen = useMapStore((s) => s.geothermalActivityTrack.open)
+  const rockburstRiskMonitorOpen = useMapStore((s) => s.rockburstRiskMonitor.open)
+  // Task 119: Atmospheric Chemistry & Air Quality
+  const ozoneLayerTrack119Open = useMapStore((s) => s.ozoneLayerTrack119.open)
+  const methaneEmissionSourceTrackOpen = useMapStore((s) => s.methaneEmissionSourceTrack.open)
+  const aerosolOpticalDepthOpen = useMapStore((s) => s.aerosolOpticalDepth.open)
+  const nitrogenDioxideColumnOpen = useMapStore((s) => s.nitrogenDioxideColumn.open)
+  const sulfurDioxideFluxOpen = useMapStore((s) => s.sulfurDioxideFlux.open)
+  const carbonMonoxideColumnOpen = useMapStore((s) => s.carbonMonoxideColumn.open)
+  const particulateMatterTrack119Open = useMapStore((s) => s.particulateMatterTrack119.open)
+  const vocConcentrationMapOpen = useMapStore((s) => s.vocConcentrationMap.open)
 
   if (typeof window === 'undefined') return null
 
@@ -4912,6 +4948,376 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
               </TooltipTrigger>
               <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
                 Wildlife Corridor Map
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          {/* Task 118: Geological Hazards & Tectonic Activity */}
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    earthquakeForecastTrackOpen
+                      ? 'bg-red-500 text-white shadow-md shadow-red-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setEarthquakeForecastTrack({ open: true })}
+                  aria-label="Earthquake Forecast Monitor"
+                >
+                  <ActivityIcon11 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Earthquake Forecast Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    volcanoEruptionAlertTrackOpen
+                      ? 'bg-orange-500 text-white shadow-md shadow-orange-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setVolcanoEruptionAlertTrack({ open: true })}
+                  aria-label="Volcano Eruption Alert"
+                >
+                  <FlameIcon20 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Volcano Eruption Alert
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    tsunamiWarningTrackOpen
+                      ? 'bg-blue-500 text-white shadow-md shadow-blue-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setTsunamiWarningTrack({ open: true })}
+                  aria-label="Tsunami Warning System"
+                >
+                  <WavesIcon27 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Tsunami Warning System
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    landslideHazardMapTrackOpen
+                      ? 'bg-amber-500 text-white shadow-md shadow-amber-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setLandslideHazardMapTrack({ open: true })}
+                  aria-label="Landslide Hazard Map"
+                >
+                  <MountainIcon19 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Landslide Hazard Map
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    subsidenceMonitorTrackOpen
+                      ? 'bg-stone-500 text-white shadow-md shadow-stone-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setSubsidenceMonitorTrack({ open: true })}
+                  aria-label="Subsidence Monitor"
+                >
+                  <ArrowDownIcon8 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Subsidence Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    faultLineActivityOpen
+                      ? 'bg-purple-500 text-white shadow-md shadow-purple-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setFaultLineActivity({ open: true })}
+                  aria-label="Fault Line Activity"
+                >
+                  <SplitIcon4 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Fault Line Activity
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    geothermalActivityTrackOpen
+                      ? 'bg-teal-500 text-white shadow-md shadow-teal-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setGeothermalActivityTrack({ open: true })}
+                  aria-label="Geothermal Activity Monitor"
+                >
+                  <DropletIcon16 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Geothermal Activity Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    rockburstRiskMonitorOpen
+                      ? 'bg-rose-500 text-white shadow-md shadow-rose-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setRockburstRiskMonitor({ open: true })}
+                  aria-label="Rockburst Risk Monitor"
+                >
+                  <TriangleAlertIcon6 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Rockburst Risk Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          {/* Task 119: Atmospheric Chemistry & Air Quality */}
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    ozoneLayerTrack119Open
+                      ? 'bg-blue-500 text-white shadow-md shadow-blue-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setOzoneLayerTrack119({ open: true })}
+                  aria-label="Ozone Layer Monitor"
+                >
+                  <SunIcon13 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Ozone Layer Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    methaneEmissionSourceTrackOpen
+                      ? 'bg-amber-500 text-white shadow-md shadow-amber-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setMethaneEmissionSourceTrack({ open: true })}
+                  aria-label="Methane Emission Source"
+                >
+                  <FlameIcon21 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Methane Emission Source
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    aerosolOpticalDepthOpen
+                      ? 'bg-slate-500 text-white shadow-md shadow-slate-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setAerosolOpticalDepth({ open: true })}
+                  aria-label="Aerosol Optical Depth"
+                >
+                  <CloudIcon8 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Aerosol Optical Depth
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    nitrogenDioxideColumnOpen
+                      ? 'bg-rose-500 text-white shadow-md shadow-rose-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setNitrogenDioxideColumn({ open: true })}
+                  aria-label="Nitrogen Dioxide Column"
+                >
+                  <CloudFogIcon3 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Nitrogen Dioxide Column
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    sulfurDioxideFluxOpen
+                      ? 'bg-yellow-500 text-white shadow-md shadow-yellow-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setSulfurDioxideFlux({ open: true })}
+                  aria-label="Sulfur Dioxide Flux"
+                >
+                  <CloudCogIcon4 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Sulfur Dioxide Flux
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    carbonMonoxideColumnOpen
+                      ? 'bg-violet-500 text-white shadow-md shadow-violet-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setCarbonMonoxideColumn({ open: true })}
+                  aria-label="Carbon Monoxide Column"
+                >
+                  <WindIcon19 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Carbon Monoxide Column
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    particulateMatterTrack119Open
+                      ? 'bg-stone-500 text-white shadow-md shadow-stone-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setParticulateMatterTrack119({ open: true })}
+                  aria-label="Particulate Matter Monitor"
+                >
+                  <CircleDotIcon4 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Particulate Matter Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    vocConcentrationMapOpen
+                      ? 'bg-teal-500 text-white shadow-md shadow-teal-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setVocConcentrationMap({ open: true })}
+                  aria-label="VOC Concentration Map"
+                >
+                  <FlaskConicalIcon7 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                VOC Concentration Map
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

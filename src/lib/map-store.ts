@@ -4138,6 +4138,40 @@ interface MapState {
   setBiodiversityHotspot: (state: Partial<MonitorState>) => void
   wildlifeCorridorMapTrack: MonitorState
   setWildlifeCorridorMapTrack: (state: Partial<MonitorState>) => void
+  // Task 118: Geological Hazards & Tectonic Activity
+  earthquakeForecastTrack: MonitorState
+  setEarthquakeForecastTrack: (state: Partial<MonitorState>) => void
+  volcanoEruptionAlertTrack: MonitorState
+  setVolcanoEruptionAlertTrack: (state: Partial<MonitorState>) => void
+  tsunamiWarningTrack: MonitorState
+  setTsunamiWarningTrack: (state: Partial<MonitorState>) => void
+  landslideHazardMapTrack: MonitorState
+  setLandslideHazardMapTrack: (state: Partial<MonitorState>) => void
+  subsidenceMonitorTrack: MonitorState
+  setSubsidenceMonitorTrack: (state: Partial<MonitorState>) => void
+  faultLineActivity: MonitorState
+  setFaultLineActivity: (state: Partial<MonitorState>) => void
+  geothermalActivityTrack: MonitorState
+  setGeothermalActivityTrack: (state: Partial<MonitorState>) => void
+  rockburstRiskMonitor: MonitorState
+  setRockburstRiskMonitor: (state: Partial<MonitorState>) => void
+  // Task 119: Atmospheric Chemistry & Air Quality
+  ozoneLayerTrack119: MonitorState
+  setOzoneLayerTrack119: (state: Partial<MonitorState>) => void
+  methaneEmissionSourceTrack: MonitorState
+  setMethaneEmissionSourceTrack: (state: Partial<MonitorState>) => void
+  aerosolOpticalDepth: MonitorState
+  setAerosolOpticalDepth: (state: Partial<MonitorState>) => void
+  nitrogenDioxideColumn: MonitorState
+  setNitrogenDioxideColumn: (state: Partial<MonitorState>) => void
+  sulfurDioxideFlux: MonitorState
+  setSulfurDioxideFlux: (state: Partial<MonitorState>) => void
+  carbonMonoxideColumn: MonitorState
+  setCarbonMonoxideColumn: (state: Partial<MonitorState>) => void
+  particulateMatterTrack119: MonitorState
+  setParticulateMatterTrack119: (state: Partial<MonitorState>) => void
+  vocConcentrationMap: MonitorState
+  setVocConcentrationMap: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -8114,6 +8148,42 @@ export const useMapStore = create<MapState>()(
       setHabitatFragmentation: (updates) => set((state) => ({ habitatFragmentation: { ...state.habitatFragmentation, ...updates } })),
       setBiodiversityHotspot: (updates) => set((state) => ({ biodiversityHotspot: { ...state.biodiversityHotspot, ...updates } })),
       setWildlifeCorridorMapTrack: (updates) => set((state) => ({ wildlifeCorridorMapTrack: { ...state.wildlifeCorridorMapTrack, ...updates } })),
+
+      // Task 118: Geological Hazards & Tectonic Activity
+      earthquakeForecastTrack: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      volcanoEruptionAlertTrack: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      tsunamiWarningTrack: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      landslideHazardMapTrack: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      subsidenceMonitorTrack: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      faultLineActivity: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      geothermalActivityTrack: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      rockburstRiskMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      setEarthquakeForecastTrack: (updates) => set((state) => ({ earthquakeForecastTrack: { ...state.earthquakeForecastTrack, ...updates } })),
+      setVolcanoEruptionAlertTrack: (updates) => set((state) => ({ volcanoEruptionAlertTrack: { ...state.volcanoEruptionAlertTrack, ...updates } })),
+      setTsunamiWarningTrack: (updates) => set((state) => ({ tsunamiWarningTrack: { ...state.tsunamiWarningTrack, ...updates } })),
+      setLandslideHazardMapTrack: (updates) => set((state) => ({ landslideHazardMapTrack: { ...state.landslideHazardMapTrack, ...updates } })),
+      setSubsidenceMonitorTrack: (updates) => set((state) => ({ subsidenceMonitorTrack: { ...state.subsidenceMonitorTrack, ...updates } })),
+      setFaultLineActivity: (updates) => set((state) => ({ faultLineActivity: { ...state.faultLineActivity, ...updates } })),
+      setGeothermalActivityTrack: (updates) => set((state) => ({ geothermalActivityTrack: { ...state.geothermalActivityTrack, ...updates } })),
+      setRockburstRiskMonitor: (updates) => set((state) => ({ rockburstRiskMonitor: { ...state.rockburstRiskMonitor, ...updates } })),
+
+      // Task 119: Atmospheric Chemistry & Air Quality
+      ozoneLayerTrack119: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      methaneEmissionSourceTrack: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      aerosolOpticalDepth: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      nitrogenDioxideColumn: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      sulfurDioxideFlux: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      carbonMonoxideColumn: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      particulateMatterTrack119: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      vocConcentrationMap: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
+      setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
+      setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
+      setNitrogenDioxideColumn: (updates) => set((state) => ({ nitrogenDioxideColumn: { ...state.nitrogenDioxideColumn, ...updates } })),
+      setSulfurDioxideFlux: (updates) => set((state) => ({ sulfurDioxideFlux: { ...state.sulfurDioxideFlux, ...updates } })),
+      setCarbonMonoxideColumn: (updates) => set((state) => ({ carbonMonoxideColumn: { ...state.carbonMonoxideColumn, ...updates } })),
+      setParticulateMatterTrack119: (updates) => set((state) => ({ particulateMatterTrack119: { ...state.particulateMatterTrack119, ...updates } })),
+      setVocConcentrationMap: (updates) => set((state) => ({ vocConcentrationMap: { ...state.vocConcentrationMap, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

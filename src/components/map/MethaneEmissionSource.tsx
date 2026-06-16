@@ -8,56 +8,56 @@ import { Label } from '@/components/ui/label'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
 import { useMapStore, type MonitorData } from '@/lib/map-store'
-import { Sun as SunIcon13, X, MapPin, Filter } from 'lucide-react'
+import { Flame as FlameIcon21, X, MapPin, Filter } from 'lucide-react'
 
 const SAMPLE_LOCATIONS: MonitorData[] = [
   {
-    id: 'ol-antarctic',
-    name: 'Antarctic Ozone Hole',
-    lat: -78.0,
-    lng: 0.0,
-    ozoneDu: 145,
-    holeAreaMm2: 24.8,
-    tempC: -78,
-    uvIndex: 3.2,
+    id: 'me-permian',
+    name: 'Permian Basin',
+    lat: 31.5,
+    lng: -103.0,
+    ch4Ppb: 1950,
+    fluxKgHr: 88000,
+    sourceType: 'Oil/Gas',
+    plumeKm: 42,
     status: 'critical',
-    description: 'Annual springtime ozone hole over Antarctica showing severe stratospheric ozone depletion from chlorine activation',
+    description: 'Major oil and gas production basin showing persistent methane super-emitter plumes from infrastructure leaks',
   },
   {
-    id: 'ol-arctic',
-    name: 'Arctic Vortex',
-    lat: 78.0,
-    lng: 0.0,
-    ozoneDu: 305,
-    holeAreaMm2: 2.1,
-    tempC: -72,
-    uvIndex: 1.8,
+    id: 'me-darvaza',
+    name: 'Turkmenistan Darvaza',
+    lat: 40.25,
+    lng: 58.43,
+    ch4Ppb: 2100,
+    fluxKgHr: 125000,
+    sourceType: 'Gas Crater',
+    plumeKm: 18,
+    status: 'critical',
+    description: 'Burning natural gas crater emitting large volumes of methane with continuous combustion for decades',
+  },
+  {
+    id: 'me-bangladesh',
+    name: 'Bangladesh Wetlands',
+    lat: 24.0,
+    lng: 90.0,
+    ch4Ppb: 2080,
+    fluxKgHr: 32000,
+    sourceType: 'Wetland',
+    plumeKm: 75,
     status: 'warning',
-    description: 'Polar vortex region over the Arctic with episodic ozone depletion during cold stratospheric winters',
+    description: 'Extensive flooded wetlands and rice paddies with anaerobic decomposition producing biological methane',
   },
   {
-    id: 'ol-midlat-n',
-    name: 'Midlatitude North',
-    lat: 45.0,
-    lng: 0.0,
-    ozoneDu: 340,
-    holeAreaMm2: 0,
-    tempC: -55,
-    uvIndex: 4.5,
-    status: 'stable',
-    description: 'Northern midlatitude stratospheric ozone column showing seasonal variation and gradual recovery trends',
-  },
-  {
-    id: 'ol-tropical',
-    name: 'Tropical Belt',
-    lat: 0.0,
-    lng: 0.0,
-    ozoneDu: 265,
-    holeAreaMm2: 0,
-    tempC: -78,
-    uvIndex: 11.2,
-    status: 'moderate',
-    description: 'Equatorial tropical belt with naturally lower ozone column and very high surface UV exposure',
+    id: 'me-siberia',
+    name: 'Siberian Lakes',
+    lat: 65.0,
+    lng: 100.0,
+    ch4Ppb: 1900,
+    fluxKgHr: 18500,
+    sourceType: 'Thermokarst',
+    plumeKm: 28,
+    status: 'warning',
+    description: 'Thawing permafrost lakes releasing ancient methane trapped in ice and organic sediments',
   },
 ]
 
@@ -75,9 +75,9 @@ function TrendIcon({ status }: { status: string }) {
   )
 }
 
-export function OzoneLayerMonitor() {
-  const state = useMapStore((s) => s.ozoneLayerTrack119)
-  const setState = useMapStore((s) => s.setOzoneLayerTrack119)
+export function MethaneEmissionSource() {
+  const state = useMapStore((s) => s.methaneEmissionSourceTrack)
+  const setState = useMapStore((s) => s.setMethaneEmissionSourceTrack)
 
   const events = useMemo(
     () => (state.data.length > 0 ? state.data : SAMPLE_LOCATIONS),
@@ -93,17 +93,16 @@ export function OzoneLayerMonitor() {
 
   const summary = useMemo(() => {
     if (filteredItems.length === 0) {
-      return { avgOzone: 0, totalHole: 0, avgTemp: 0, avgUv: 0 }
+      return { avgCh4: 0, totalFlux: 0, maxPlume: 0, sites: 0 }
     }
-    const avgOzone = filteredItems.reduce((sum, e) => sum + (e.ozoneDu as number), 0) / filteredItems.length
-    const totalHole = filteredItems.reduce((sum, e) => sum + (e.holeAreaMm2 as number), 0)
-    const avgTemp = filteredItems.reduce((sum, e) => sum + (e.tempC as number), 0) / filteredItems.length
-    const avgUv = filteredItems.reduce((sum, e) => sum + (e.uvIndex as number), 0) / filteredItems.length
+    const avgCh4 = filteredItems.reduce((sum, e) => sum + (e.ch4Ppb as number), 0) / filteredItems.length
+    const totalFlux = filteredItems.reduce((sum, e) => sum + (e.fluxKgHr as number), 0)
+    const maxPlume = Math.max(...filteredItems.map((e) => e.plumeKm as number))
     return {
-      avgOzone: avgOzone.toFixed(0),
-      totalHole: totalHole.toFixed(1),
-      avgTemp: avgTemp.toFixed(0),
-      avgUv: avgUv.toFixed(1),
+      avgCh4: avgCh4.toFixed(0),
+      totalFlux: totalFlux.toLocaleString(),
+      maxPlume: maxPlume,
+      sites: filteredItems.length,
     }
   }, [filteredItems])
 
@@ -114,7 +113,7 @@ export function OzoneLayerMonitor() {
 
   useEffect(() => {
     if (state.data.length === 0) {
-      useMapStore.getState().setOzoneLayerTrack119({ data: SAMPLE_LOCATIONS })
+      useMapStore.getState().setMethaneEmissionSourceTrack({ data: SAMPLE_LOCATIONS })
     }
   }, [state.data.length])
 
@@ -123,12 +122,12 @@ export function OzoneLayerMonitor() {
 
   return (
     <div className="fixed right-4 top-16 z-[60] w-[420px] max-w-[calc(100vw-32px)] max-h-[calc(100vh-100px)]">
-      <Card className="bg-gradient-to-br from-blue-600/95 to-indigo-700/95 backdrop-blur-xl border border-slate-800/40 rounded-xl shadow-lg overflow-hidden">
+      <Card className="bg-gradient-to-br from-amber-600/95 to-yellow-700/95 backdrop-blur-xl border border-slate-800/40 rounded-xl shadow-lg overflow-hidden">
         <CardHeader className="pb-3 border-b border-slate-700/30">
           <div className="flex items-center justify-between">
             <CardTitle className="text-sm flex items-center gap-2 text-slate-100">
-              <SunIcon13 className="h-4 w-4 text-blue-200" />
-              Ozone Layer Monitor
+              <FlameIcon21 className="h-4 w-4 text-amber-200" />
+              Methane Emission Source
             </CardTitle>
             <Button
               variant="ghost"
@@ -163,24 +162,24 @@ export function OzoneLayerMonitor() {
 
           <div className="grid grid-cols-2 gap-2">
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Ozone</div>
-              <div className="text-sm font-semibold text-blue-200">{summary.avgOzone}</div>
-              <div className="text-[9px] text-slate-400/60">DU avg</div>
+              <div className="text-[10px] text-slate-400/70">CH4</div>
+              <div className="text-sm font-semibold text-amber-200">{summary.avgCh4}</div>
+              <div className="text-[9px] text-slate-400/60">ppb avg</div>
             </div>
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Hole Area</div>
-              <div className="text-sm font-semibold text-indigo-200">{summary.totalHole}</div>
-              <div className="text-[9px] text-slate-400/60">Mm2 total</div>
+              <div className="text-[10px] text-slate-400/70">Flux</div>
+              <div className="text-sm font-semibold text-yellow-200">{summary.totalFlux}</div>
+              <div className="text-[9px] text-slate-400/60">kg/hr total</div>
             </div>
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Temp</div>
-              <div className="text-sm font-semibold text-sky-200">{summary.avgTemp}C</div>
-              <div className="text-[9px] text-slate-400/60">avg stratosphere</div>
+              <div className="text-[10px] text-slate-400/70">Max Plume</div>
+              <div className="text-sm font-semibold text-orange-200">{summary.maxPlume}</div>
+              <div className="text-[9px] text-slate-400/60">km extent</div>
             </div>
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">UV Index</div>
-              <div className="text-sm font-semibold text-slate-200">{summary.avgUv}</div>
-              <div className="text-[9px] text-slate-400/60">avg surface</div>
+              <div className="text-[10px] text-slate-400/70">Active Sites</div>
+              <div className="text-sm font-semibold text-slate-200">{summary.sites}</div>
+              <div className="text-[9px] text-slate-400/60">emitters</div>
             </div>
           </div>
 
@@ -188,7 +187,7 @@ export function OzoneLayerMonitor() {
 
           <div className="space-y-1.5">
             <Label className="text-xs text-slate-300/80">
-              Ozone Stations ({filteredItems.length})
+              Methane Sources ({filteredItems.length})
             </Label>
             <ScrollArea className="max-h-[260px]">
               <div className="space-y-2 pr-1">
@@ -221,16 +220,16 @@ export function OzoneLayerMonitor() {
                       </div>
                       <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10px] text-slate-300/60">
                         <div>
-                          Ozone: <span className="text-slate-100 font-medium">{e.ozoneDu as number} DU</span>
+                          CH4: <span className="text-slate-100 font-medium">{e.ch4Ppb as number} ppb</span>
                         </div>
                         <div>
-                          Hole: <span className="text-slate-100 font-medium">{(e.holeAreaMm2 as number).toFixed(1)} Mm2</span>
+                          Flux: <span className="text-slate-100 font-medium">{(e.fluxKgHr as number).toLocaleString()} kg/hr</span>
                         </div>
                         <div>
-                          Temp: <span className="text-slate-100 font-medium">{e.tempC as number}C</span>
+                          Type: <span className="text-slate-100 font-medium">{e.sourceType as string}</span>
                         </div>
                         <div>
-                          UV: <span className="text-slate-100 font-medium">{e.uvIndex as number}</span>
+                          Plume: <span className="text-slate-100 font-medium">{e.plumeKm as number} km</span>
                         </div>
                       </div>
                     </div>
@@ -238,7 +237,7 @@ export function OzoneLayerMonitor() {
                 })}
                 {filteredItems.length === 0 && (
                   <div className="text-center text-xs text-slate-400/50 py-4">
-                    No stations match the current filter.
+                    No sources match the current filter.
                   </div>
                 )}
               </div>
@@ -268,8 +267,8 @@ export function OzoneLayerMonitor() {
                     </span>
                   </div>
                   <div>
-                    <span className="text-slate-400/70">Ozone: </span>
-                    <span className="font-medium text-blue-200">{activeItem.ozoneDu as number} DU</span>
+                    <span className="text-slate-400/70">Flux: </span>
+                    <span className="font-medium text-amber-200">{(activeItem.fluxKgHr as number).toLocaleString()} kg/hr</span>
                   </div>
                 </div>
               </div>

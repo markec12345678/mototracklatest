@@ -396,6 +396,24 @@ export function MonitorPanelRegistry() {
   const habitatFragmentation = useMapStore((s) => s.habitatFragmentation)
   const biodiversityHotspot = useMapStore((s) => s.biodiversityHotspot)
   const wildlifeCorridorMapTrack = useMapStore((s) => s.wildlifeCorridorMapTrack)
+  // Task 119: Atmospheric Chemistry & Air Quality
+  const ozoneLayerTrack119 = useMapStore((s) => s.ozoneLayerTrack119)
+  const methaneEmissionSourceTrack = useMapStore((s) => s.methaneEmissionSourceTrack)
+  const aerosolOpticalDepth = useMapStore((s) => s.aerosolOpticalDepth)
+  const nitrogenDioxideColumn = useMapStore((s) => s.nitrogenDioxideColumn)
+  const sulfurDioxideFlux = useMapStore((s) => s.sulfurDioxideFlux)
+  const carbonMonoxideColumn = useMapStore((s) => s.carbonMonoxideColumn)
+  const particulateMatterTrack119 = useMapStore((s) => s.particulateMatterTrack119)
+  const vocConcentrationMap = useMapStore((s) => s.vocConcentrationMap)
+  // Task 118: Geological Hazards & Tectonic Activity
+  const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
+  const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
+  const tsunamiWarningTrack = useMapStore((s) => s.tsunamiWarningTrack)
+  const landslideHazardMapTrack = useMapStore((s) => s.landslideHazardMapTrack)
+  const subsidenceMonitorTrack = useMapStore((s) => s.subsidenceMonitorTrack)
+  const faultLineActivity = useMapStore((s) => s.faultLineActivity)
+  const geothermalActivityTrack = useMapStore((s) => s.geothermalActivityTrack)
+  const rockburstRiskMonitor = useMapStore((s) => s.rockburstRiskMonitor)
 
   return (
     <>
@@ -1315,6 +1333,56 @@ export function MonitorPanelRegistry() {
       )}
       {wildlifeCorridorMapTrack.open && (
         <LazyPanel importFn={() => import('@/components/map/WildlifeCorridorMapTrack')} exportName="WildlifeCorridorMapTrack" shouldLoad={true} />
+      )}
+      {/* Task 118: Geological Hazards & Tectonic Activity */}
+      {earthquakeForecastTrack.open && (
+        <LazyPanel importFn={() => import('@/components/map/EarthquakeForecastMonitor')} exportName="EarthquakeForecastMonitor" shouldLoad={true} />
+      )}
+      {volcanoEruptionAlertTrack.open && (
+        <LazyPanel importFn={() => import('@/components/map/VolcanoEruptionAlert')} exportName="VolcanoEruptionAlert" shouldLoad={true} />
+      )}
+      {tsunamiWarningTrack.open && (
+        <LazyPanel importFn={() => import('@/components/map/TsunamiWarningSystem')} exportName="TsunamiWarningSystem" shouldLoad={true} />
+      )}
+      {landslideHazardMapTrack.open && (
+        <LazyPanel importFn={() => import('@/components/map/LandslideHazardMap')} exportName="LandslideHazardMap" shouldLoad={true} />
+      )}
+      {subsidenceMonitorTrack.open && (
+        <LazyPanel importFn={() => import('@/components/map/SubsidenceMonitor')} exportName="SubsidenceMonitor" shouldLoad={true} />
+      )}
+      {faultLineActivity.open && (
+        <LazyPanel importFn={() => import('@/components/map/FaultLineActivity')} exportName="FaultLineActivity" shouldLoad={true} />
+      )}
+      {geothermalActivityTrack.open && (
+        <LazyPanel importFn={() => import('@/components/map/GeothermalActivityMonitor')} exportName="GeothermalActivityMonitor" shouldLoad={true} />
+      )}
+      {rockburstRiskMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/RockburstRiskMonitor')} exportName="RockburstRiskMonitor" shouldLoad={true} />
+      )}
+      {/* Task 119: Atmospheric Chemistry & Air Quality */}
+      {ozoneLayerTrack119.open && (
+        <LazyPanel importFn={() => import('@/components/map/OzoneLayerMonitor').then(m => ({ default: m.OzoneLayerMonitor }))} exportName="OzoneLayerMonitor" shouldLoad={ozoneLayerTrack119.open} />
+      )}
+      {methaneEmissionSourceTrack.open && (
+        <LazyPanel importFn={() => import('@/components/map/MethaneEmissionSource').then(m => ({ default: m.MethaneEmissionSource }))} exportName="MethaneEmissionSource" shouldLoad={methaneEmissionSourceTrack.open} />
+      )}
+      {aerosolOpticalDepth.open && (
+        <LazyPanel importFn={() => import('@/components/map/AerosolOpticalDepth').then(m => ({ default: m.AerosolOpticalDepth }))} exportName="AerosolOpticalDepth" shouldLoad={aerosolOpticalDepth.open} />
+      )}
+      {nitrogenDioxideColumn.open && (
+        <LazyPanel importFn={() => import('@/components/map/NitrogenDioxideColumn').then(m => ({ default: m.NitrogenDioxideColumn }))} exportName="NitrogenDioxideColumn" shouldLoad={nitrogenDioxideColumn.open} />
+      )}
+      {sulfurDioxideFlux.open && (
+        <LazyPanel importFn={() => import('@/components/map/SulfurDioxideFlux').then(m => ({ default: m.SulfurDioxideFlux }))} exportName="SulfurDioxideFlux" shouldLoad={sulfurDioxideFlux.open} />
+      )}
+      {carbonMonoxideColumn.open && (
+        <LazyPanel importFn={() => import('@/components/map/CarbonMonoxideColumn').then(m => ({ default: m.CarbonMonoxideColumn }))} exportName="CarbonMonoxideColumn" shouldLoad={carbonMonoxideColumn.open} />
+      )}
+      {particulateMatterTrack119.open && (
+        <LazyPanel importFn={() => import('@/components/map/ParticulateMatterMonitor').then(m => ({ default: m.ParticulateMatterMonitor }))} exportName="ParticulateMatterMonitor" shouldLoad={particulateMatterTrack119.open} />
+      )}
+      {vocConcentrationMap.open && (
+        <LazyPanel importFn={() => import('@/components/map/VocConcentrationMap').then(m => ({ default: m.VocConcentrationMap }))} exportName="VocConcentrationMap" shouldLoad={vocConcentrationMap.open} />
       )}
     </>
   )
