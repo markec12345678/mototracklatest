@@ -463,6 +463,15 @@ import {
   Bug as BugIcon6,
   Cherry as AppleIcon,
   Globe as GlobeIcon4,
+  // Task 112 icons
+  Plane as PlaneIcon,
+  Ship as ShipIcon6,
+  TrainFront as TrainIcon,
+  Route as RouteIcon3,
+  Container as ContainerIcon2,
+  Users as UsersIcon,
+  Fuel as FuelIcon,
+  Warehouse as WarehouseIcon,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -533,6 +542,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const vectorHabitatRiskOpen = useMapStore((s) => s.vectorHabitatRisk.open)
   const nutritionSecurityOpen = useMapStore((s) => s.nutritionSecurity.open)
   const pandemicSpreadRateOpen = useMapStore((s) => s.pandemicSpreadRate.open)
+  // Task 112: Transportation & Logistics
+  const flightPathTrackerOpen = useMapStore((s) => s.flightPathTracker.open)
+  const portCongestionMapOpen = useMapStore((s) => s.portCongestionMap.open)
+  const railNetworkStatusOpen = useMapStore((s) => s.railNetworkStatus.open)
+  const highwayBottleneckOpen = useMapStore((s) => s.highwayBottleneck.open)
+  const cargoShipTrackerOpen = useMapStore((s) => s.cargoShipTracker.open)
+  const transitRidershipOpen = useMapStore((s) => s.transitRidership.open)
+  const fuelStationNetworkOpen = useMapStore((s) => s.fuelStationNetwork.open)
+  const logisticsDepotStatusOpen = useMapStore((s) => s.logisticsDepotStatus.open)
 
   if (typeof window === 'undefined') return null
 
@@ -3694,6 +3712,191 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
               </TooltipTrigger>
               <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
                 Pandemic Spread Rate Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          {/* Task 112: Transportation & Logistics */}
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    flightPathTrackerOpen
+                      ? 'bg-sky-500 text-white shadow-md shadow-sky-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setFlightPathTracker({ open: true })}
+                  aria-label="Flight Path Tracker Monitor"
+                >
+                  <PlaneIcon className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Flight Path Tracker Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    portCongestionMapOpen
+                      ? 'bg-teal-500 text-white shadow-md shadow-teal-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setPortCongestionMap({ open: true })}
+                  aria-label="Port Congestion Map Monitor"
+                >
+                  <ShipIcon6 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Port Congestion Map Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    railNetworkStatusOpen
+                      ? 'bg-stone-500 text-white shadow-md shadow-stone-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setRailNetworkStatus({ open: true })}
+                  aria-label="Rail Network Status Monitor"
+                >
+                  <TrainIcon className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Rail Network Status Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    highwayBottleneckOpen
+                      ? 'bg-orange-500 text-white shadow-md shadow-orange-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setHighwayBottleneck({ open: true })}
+                  aria-label="Highway Bottleneck Monitor"
+                >
+                  <RouteIcon3 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Highway Bottleneck Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    cargoShipTrackerOpen
+                      ? 'bg-blue-500 text-white shadow-md shadow-blue-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setCargoShipTracker({ open: true })}
+                  aria-label="Cargo Ship Tracker Monitor"
+                >
+                  <ContainerIcon2 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Cargo Ship Tracker Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    transitRidershipOpen
+                      ? 'bg-purple-500 text-white shadow-md shadow-purple-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setTransitRidership({ open: true })}
+                  aria-label="Transit Ridership Monitor"
+                >
+                  <UsersIcon className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Transit Ridership Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    fuelStationNetworkOpen
+                      ? 'bg-amber-500 text-white shadow-md shadow-amber-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setFuelStationNetwork({ open: true })}
+                  aria-label="Fuel Station Network Monitor"
+                >
+                  <FuelIcon className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Fuel Station Network Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    logisticsDepotStatusOpen
+                      ? 'bg-emerald-500 text-white shadow-md shadow-emerald-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setLogisticsDepotStatus({ open: true })}
+                  aria-label="Logistics Depot Status Monitor"
+                >
+                  <WarehouseIcon className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Logistics Depot Status Monitor
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

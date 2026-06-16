@@ -8946,6 +8946,24 @@ interface MapState {
   pandemicSpreadRate: PandemicSpreadRateState
   setPandemicSpreadRate: (state: Partial<PandemicSpreadRateState>) => void
 
+  // Task 112: Transportation & Logistics
+  flightPathTracker: FlightPathTrackerState
+  setFlightPathTracker: (state: Partial<FlightPathTrackerState>) => void
+  portCongestionMap: PortCongestionMapState
+  setPortCongestionMap: (state: Partial<PortCongestionMapState>) => void
+  railNetworkStatus: RailNetworkStatusState
+  setRailNetworkStatus: (state: Partial<RailNetworkStatusState>) => void
+  highwayBottleneck: HighwayBottleneckState
+  setHighwayBottleneck: (state: Partial<HighwayBottleneckState>) => void
+  cargoShipTracker: CargoShipTrackerState
+  setCargoShipTracker: (state: Partial<CargoShipTrackerState>) => void
+  transitRidership: TransitRidershipState
+  setTransitRidership: (state: Partial<TransitRidershipState>) => void
+  fuelStationNetwork: FuelStationNetworkState
+  setFuelStationNetwork: (state: Partial<FuelStationNetworkState>) => void
+  logisticsDepotStatus: LogisticsDepotStatusState
+  setLogisticsDepotStatus: (state: Partial<LogisticsDepotStatusState>) => void
+
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
   setAddLocationDialogOpen: (open: boolean) => void
@@ -13438,6 +13456,199 @@ export interface PandemicSpreadRateState {
   showDoublingTime: boolean
   showTestPositivity: boolean
   showHospitalizationRate: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 112: Transportation & Logistics
+export interface FlightPathTrackerData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  altitude: number         // feet
+  speed: number            // knots
+  heading: number          // degrees
+  delayMinutes: number     // minutes
+  status: 'on-time' | 'delayed' | 'diverted' | 'cancelled'
+  description: string
+}
+
+export interface FlightPathTrackerState {
+  open: boolean
+  data: FlightPathTrackerData[]
+  showAltitude: boolean
+  showSpeed: boolean
+  showHeading: boolean
+  showDelayMinutes: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface PortCongestionMapData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  vesselCount: number      // ships in port
+  avgWaitTime: number      // hours
+  berthUtilization: number // 0-100%
+  throughputTEU: number    // daily TEU
+  status: 'clear' | 'moderate' | 'congested' | 'critical'
+  description: string
+}
+
+export interface PortCongestionMapState {
+  open: boolean
+  data: PortCongestionMapData[]
+  showVesselCount: boolean
+  showAvgWaitTime: boolean
+  showBerthUtilization: boolean
+  showThroughputTEU: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface RailNetworkStatusData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  trainCount: number       // active trains
+  avgSpeed: number         // km/h
+  delayIndex: number       // 0-100
+  trackUtilization: number // 0-100%
+  status: 'normal' | 'delayed' | 'disrupted' | 'suspended'
+  description: string
+}
+
+export interface RailNetworkStatusState {
+  open: boolean
+  data: RailNetworkStatusData[]
+  showTrainCount: boolean
+  showAvgSpeed: boolean
+  showDelayIndex: boolean
+  showTrackUtilization: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface HighwayBottleneckData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  congestionLevel: number  // 0-100%
+  avgSpeed: number         // km/h
+  queueLength: number      // km
+  incidentCount: number    // active incidents
+  status: 'free-flow' | 'moderate' | 'heavy' | 'gridlock'
+  description: string
+}
+
+export interface HighwayBottleneckState {
+  open: boolean
+  data: HighwayBottleneckData[]
+  showCongestionLevel: boolean
+  showAvgSpeed: boolean
+  showQueueLength: boolean
+  showIncidentCount: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface CargoShipTrackerData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  cargoCapacity: number    // TEU
+  currentLoad: number      // TEU
+  speed: number            // knots
+  etaHours: number         // hours to destination
+  status: 'docked' | 'loading' | 'transit' | 'anchored'
+  description: string
+}
+
+export interface CargoShipTrackerState {
+  open: boolean
+  data: CargoShipTrackerData[]
+  showCargoCapacity: boolean
+  showCurrentLoad: boolean
+  showSpeed: boolean
+  showEtaHours: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface TransitRidershipData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  dailyRiders: number      // thousands
+  onTimeRate: number       // 0-100%
+  routeCount: number       // active routes
+  crowdingIndex: number    // 0-100
+  status: 'low' | 'normal' | 'high' | 'overcrowded'
+  description: string
+}
+
+export interface TransitRidershipState {
+  open: boolean
+  data: TransitRidershipData[]
+  showDailyRiders: boolean
+  showOnTimeRate: boolean
+  showRouteCount: boolean
+  showCrowdingIndex: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface FuelStationNetworkData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  fuelPrice: number        // USD/gallon
+  availability: number     // 0-100%
+  stationCount: number     // nearby stations
+  avgWaitTime: number      // minutes
+  status: 'available' | 'limited' | 'scarce' | 'shortage'
+  description: string
+}
+
+export interface FuelStationNetworkState {
+  open: boolean
+  data: FuelStationNetworkData[]
+  showFuelPrice: boolean
+  showAvailability: boolean
+  showStationCount: boolean
+  showAvgWaitTime: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface LogisticsDepotStatusData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  warehouseCapacity: number // 0-100%
+  outboundShipments: number // daily count
+  inboundShipments: number  // daily count
+  avgProcessingTime: number // hours
+  status: 'operational' | 'busy' | 'overloaded' | 'offline'
+  description: string
+}
+
+export interface LogisticsDepotStatusState {
+  open: boolean
+  data: LogisticsDepotStatusData[]
+  showWarehouseCapacity: boolean
+  showOutboundShipments: boolean
+  showInboundShipments: boolean
+  showAvgProcessingTime: boolean
   statusFilter: string
   activeItemId: string | null
 }
@@ -18831,6 +19042,40 @@ export const useMapStore = create<MapState>()(
       },
       setPandemicSpreadRate: (updates) => set((state) => ({ pandemicSpreadRate: { ...state.pandemicSpreadRate, ...updates } })),
 
+      // Task 112: Transportation & Logistics
+      flightPathTracker: {
+        data: [], activeItemId: null, showAltitude: true, showSpeed: true, showHeading: false, showDelayMinutes: false, open: false, statusFilter: '',
+      },
+      setFlightPathTracker: (updates) => set((state) => ({ flightPathTracker: { ...state.flightPathTracker, ...updates } })),
+      portCongestionMap: {
+        data: [], activeItemId: null, showVesselCount: true, showAvgWaitTime: true, showBerthUtilization: false, showThroughputTEU: false, open: false, statusFilter: '',
+      },
+      setPortCongestionMap: (updates) => set((state) => ({ portCongestionMap: { ...state.portCongestionMap, ...updates } })),
+      railNetworkStatus: {
+        data: [], activeItemId: null, showTrainCount: true, showAvgSpeed: true, showDelayIndex: false, showTrackUtilization: false, open: false, statusFilter: '',
+      },
+      setRailNetworkStatus: (updates) => set((state) => ({ railNetworkStatus: { ...state.railNetworkStatus, ...updates } })),
+      highwayBottleneck: {
+        data: [], activeItemId: null, showCongestionLevel: true, showAvgSpeed: true, showQueueLength: false, showIncidentCount: false, open: false, statusFilter: '',
+      },
+      setHighwayBottleneck: (updates) => set((state) => ({ highwayBottleneck: { ...state.highwayBottleneck, ...updates } })),
+      cargoShipTracker: {
+        data: [], activeItemId: null, showCargoCapacity: true, showCurrentLoad: true, showSpeed: false, showEtaHours: false, open: false, statusFilter: '',
+      },
+      setCargoShipTracker: (updates) => set((state) => ({ cargoShipTracker: { ...state.cargoShipTracker, ...updates } })),
+      transitRidership: {
+        data: [], activeItemId: null, showDailyRiders: true, showOnTimeRate: true, showRouteCount: false, showCrowdingIndex: false, open: false, statusFilter: '',
+      },
+      setTransitRidership: (updates) => set((state) => ({ transitRidership: { ...state.transitRidership, ...updates } })),
+      fuelStationNetwork: {
+        data: [], activeItemId: null, showFuelPrice: true, showAvailability: true, showStationCount: false, showAvgWaitTime: false, open: false, statusFilter: '',
+      },
+      setFuelStationNetwork: (updates) => set((state) => ({ fuelStationNetwork: { ...state.fuelStationNetwork, ...updates } })),
+      logisticsDepotStatus: {
+        data: [], activeItemId: null, showWarehouseCapacity: true, showOutboundShipments: true, showInboundShipments: false, showAvgProcessingTime: false, open: false, statusFilter: '',
+      },
+      setLogisticsDepotStatus: (updates) => set((state) => ({ logisticsDepotStatus: { ...state.logisticsDepotStatus, ...updates } })),
+
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
       setAddLocationDialogOpen: (open) => set({ addLocationDialogOpen: open }),
@@ -19410,6 +19655,15 @@ export const useMapStore = create<MapState>()(
         vectorHabitatRisk: state.vectorHabitatRisk,
         nutritionSecurity: state.nutritionSecurity,
         pandemicSpreadRate: state.pandemicSpreadRate,
+        // Task 112: Transportation & Logistics
+        flightPathTracker: state.flightPathTracker,
+        portCongestionMap: state.portCongestionMap,
+        railNetworkStatus: state.railNetworkStatus,
+        highwayBottleneck: state.highwayBottleneck,
+        cargoShipTracker: state.cargoShipTracker,
+        transitRidership: state.transitRidership,
+        fuelStationNetwork: state.fuelStationNetwork,
+        logisticsDepotStatus: state.logisticsDepotStatus,
         // Task 96
         karstSpringDischarge: state.karstSpringDischarge,
         caveDripMonitor: state.caveDripMonitor,

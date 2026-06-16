@@ -342,6 +342,15 @@ export function MonitorPanelRegistry() {
   const vectorHabitatRisk = useMapStore((s) => s.vectorHabitatRisk)
   const nutritionSecurity = useMapStore((s) => s.nutritionSecurity)
   const pandemicSpreadRate = useMapStore((s) => s.pandemicSpreadRate)
+  // Task 112: Transportation & Logistics
+  const flightPathTracker = useMapStore((s) => s.flightPathTracker)
+  const portCongestionMap = useMapStore((s) => s.portCongestionMap)
+  const railNetworkStatus = useMapStore((s) => s.railNetworkStatus)
+  const highwayBottleneck = useMapStore((s) => s.highwayBottleneck)
+  const cargoShipTracker = useMapStore((s) => s.cargoShipTracker)
+  const transitRidership = useMapStore((s) => s.transitRidership)
+  const fuelStationNetwork = useMapStore((s) => s.fuelStationNetwork)
+  const logisticsDepotStatus = useMapStore((s) => s.logisticsDepotStatus)
 
   return (
     <>
@@ -1111,6 +1120,31 @@ export function MonitorPanelRegistry() {
       )}
       {pandemicSpreadRate.open && (
         <LazyPanel importFn={() => import('@/components/map/PandemicSpreadRateMonitor')} exportName="PandemicSpreadRateMonitor" shouldLoad={true} />
+      )}
+      {/* Task 112: Transportation & Logistics */}
+      {flightPathTracker.open && (
+        <LazyPanel importFn={() => import('@/components/map/FlightPathTrackerMonitor')} exportName="FlightPathTrackerMonitor" shouldLoad={true} />
+      )}
+      {portCongestionMap.open && (
+        <LazyPanel importFn={() => import('@/components/map/PortCongestionMapMonitor')} exportName="PortCongestionMapMonitor" shouldLoad={true} />
+      )}
+      {railNetworkStatus.open && (
+        <LazyPanel importFn={() => import('@/components/map/RailNetworkStatusMonitor')} exportName="RailNetworkStatusMonitor" shouldLoad={true} />
+      )}
+      {highwayBottleneck.open && (
+        <LazyPanel importFn={() => import('@/components/map/HighwayBottleneckMonitor')} exportName="HighwayBottleneckMonitor" shouldLoad={true} />
+      )}
+      {cargoShipTracker.open && (
+        <LazyPanel importFn={() => import('@/components/map/CargoShipTrackerMonitor')} exportName="CargoShipTrackerMonitor" shouldLoad={true} />
+      )}
+      {transitRidership.open && (
+        <LazyPanel importFn={() => import('@/components/map/TransitRidershipMonitor')} exportName="TransitRidershipMonitor" shouldLoad={true} />
+      )}
+      {fuelStationNetwork.open && (
+        <LazyPanel importFn={() => import('@/components/map/FuelStationNetworkMonitor')} exportName="FuelStationNetworkMonitor" shouldLoad={true} />
+      )}
+      {logisticsDepotStatus.open && (
+        <LazyPanel importFn={() => import('@/components/map/LogisticsDepotStatusMonitor')} exportName="LogisticsDepotStatusMonitor" shouldLoad={true} />
       )}
     </>
   )
