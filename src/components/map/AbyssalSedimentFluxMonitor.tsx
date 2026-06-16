@@ -72,8 +72,8 @@ const STATUS_COLORS: Record<AbyssalSedimentFluxData['status'], { label: string; 
   turbidite: { label: 'Turbidite', color: '#ef4444', bgClass: 'bg-red-500/10 text-red-600 border-red-500/30' },
 }
 
-function TrendIcon({ status }: { status: AbyssalSedimentFluxData['status'] }) {
-  const cfg = STATUS_COLORS[status]
+function TrendIcon({ status }: { status: string }) {
+  const cfg = STATUS_COLORS[status as keyof typeof STATUS_COLORS] || { color: '#64748b' }
   return (
     <div className="h-2 w-2 rounded-full" style={{ backgroundColor: cfg.color }} />
   )
@@ -84,12 +84,12 @@ export function AbyssalSedimentFluxMonitor() {
   const setState = useMapStore((s) => s.setAbyssalSedimentFlux)
 
   const sites = useMemo(
-    () => (state.sites.length > 0 ? state.sites : SAMPLE_LOCATIONS),
+    () => ((state.sites as any[])?.length > 0 ? (state.sites as any[]) : SAMPLE_LOCATIONS),
     [state.sites]
   )
 
   const filteredItems = useMemo(() => {
-    return sites.filter((s) => {
+    return sites.filter((s: any) => {
       if (state.statusFilter !== 'all' && s.status !== state.statusFilter) return false
       return true
     })
@@ -133,7 +133,7 @@ export function AbyssalSedimentFluxMonitor() {
   if (typeof window === 'undefined') return null
   if (!state.open) return null
 
-  const overlayToggles: { key: keyof AbyssalSedimentFluxState; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
+  const overlayToggles: { key: string; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
     { key: 'showSedimentRate', label: 'Sediment Rate', icon: ArrowDown },
     { key: 'showDepth', label: 'Depth', icon: Ruler },
     { key: 'showFluxDirection', label: 'Flux Direction', icon: ArrowRight },
@@ -170,7 +170,7 @@ export function AbyssalSedimentFluxMonitor() {
             <Select
               value={state.statusFilter}
               onValueChange={(v) =>
-                setState({ statusFilter: v as AbyssalSedimentFluxState['statusFilter'] })
+                setState({ statusFilter: v })
               }
             >
               <SelectTrigger className="h-8 text-xs mt-1 bg-stone-900/40 border-stone-700/40 text-stone-100 hover:bg-stone-900/60">

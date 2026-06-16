@@ -455,7 +455,7 @@ import {
   Activity as ActivityIcon9,
   BatteryMedium as BatteryIcon,
   // Task 111 icons
-  Virus as VirusIcon,
+  Biohazard as VirusIcon,
   Syringe as SyringeIcon,
   Droplets as DropletsIcon20,
   Building2 as Building2Icon2,

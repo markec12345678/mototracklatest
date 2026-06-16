@@ -932,73 +932,6 @@ export interface AtmosphericState {
   unitSystem: 'metric' | 'imperial'
   historyData: Array<{ time: number; temperature: number | null; humidity: number | null; pressure: number | null }>
 }
-
-// Wildlife Tracker types
-export interface WildlifeObservation {
-  id: string
-  species: string
-  commonName: string
-  latitude: number
-  longitude: number
-  count: number
-  date: string
-  time: string
-  habitat: string
-  behavior: string
-  notes: string
-  photo: string | null
-}
-
-export interface WildlifeTrackerState {
-  observations: WildlifeObservation[]
-  activeObservationId: string | null
-  showObservations: boolean
-  showHeatmap: boolean
-  showMigrationPaths: boolean
-  filterSpecies: string[]
-  open: boolean
-  totalSpecies: number
-  totalObservations: number
-}
-
-// Cultural Heritage Map types
-export interface HeritageSite {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  type: 'unesco' | 'national' | 'local' | 'archaeological' | 'monument' | 'museum' | 'religious'
-  era: string
-  description: string
-  protectionLevel: 'high' | 'medium' | 'low'
-  visitInfo: string
-  rating: number
-  photos: string[]
-}
-
-export interface CulturalHeritageState {
-  sites: HeritageSite[]
-  activeSiteId: string | null
-  showSites: boolean
-  filterType: string[]
-  filterEra: string[]
-  open: boolean
-  showProtectionZones: boolean
-}
-
-// Hydrology Analyzer types
-export interface HydrologyPoint {
-  id: string
-  latitude: number
-  longitude: number
-  type: 'spring' | 'well' | 'river' | 'lake' | 'dam' | 'gauge' | 'outlet'
-  name: string
-  flowRate: number | null
-  waterLevel: number | null
-  quality: 'excellent' | 'good' | 'moderate' | 'poor' | 'bad'
-  lastReading: string | null
-}
-
 export interface WatershedData {
   area: number
   perimeter: number
@@ -1006,144 +939,6 @@ export interface WatershedData {
   flowDirection: number[][] // grid of flow directions
   accumulation: number[][] // flow accumulation grid
 }
-
-export interface HydrologyState {
-  points: HydrologyPoint[]
-  watershed: WatershedData | null
-  activePointId: string | null
-  showFlowPaths: boolean
-  showWatersheds: boolean
-  showWaterBodies: boolean
-  showQualityOverlay: boolean
-  open: boolean
-  analysisMode: 'flow' | 'watershed' | 'quality' | 'flood'
-}
-
-
-// Glacier Monitor types
-export interface GlacierData {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  area: number // km2
-  length: number // km
-  elevation: number // meters
-  massBalance: number // meters water equivalent per year
-  velocity: number // meters per year
-  retreatRate: number // meters per year
-  type: 'valley' | 'icecap' | 'piedmont' | 'cirque' | 'tidewater'
-  status: 'advancing' | 'stable' | 'retreating' | 'surging'
-  lastSurvey: string
-}
-
-export interface GlacierMonitorState {
-  glaciers: GlacierData[]
-  activeGlacierId: string | null
-  showGlaciers: boolean
-  showRetreatOverlay: boolean
-  showMassBalance: boolean
-  showVelocityVectors: boolean
-  filterType: string[]
-  filterStatus: string[]
-  open: boolean
-  timelineYear: number
-  comparisonMode: boolean
-}
-
-// Seismic Activity types
-export interface SeismicEvent {
-  id: string
-  latitude: number
-  longitude: number
-  magnitude: number
-  depth: number // km
-  time: string
-  location: string
-  type: 'earthquake' | 'explosion' | 'quarry' | 'volcanic'
-  felt: boolean
-  tsunami: boolean
-  significance: number // 0-1000
-}
-
-export interface SeismicActivityState {
-  events: SeismicEvent[]
-  activeEventId: string | null
-  showEvents: boolean
-  showShakeMap: boolean
-  showFaultLines: boolean
-  showPlateBoundaries: boolean
-  filterMinMagnitude: number
-  filterTimeRange: 'hour' | 'day' | 'week' | 'month' | 'year'
-  filterType: string[]
-  open: boolean
-  autoRefresh: boolean
-  lastFetchTime: number | null
-}
-
-// Soil Analysis types
-export interface SoilSample {
-  id: string
-  latitude: number
-  longitude: number
-  soilType: 'clay' | 'sand' | 'silt' | 'loam' | 'peat' | 'chalk' | 'gravel'
-  ph: number
-  moisture: number // percentage
-  organicMatter: number // percentage
-  nitrogen: number // mg/kg
-  phosphorus: number // mg/kg
-  potassium: number // mg/kg
-  erosionRisk: 'none' | 'low' | 'medium' | 'high' | 'severe'
-  agriculturalSuitability: 'excellent' | 'good' | 'moderate' | 'poor' | 'unsuitable'
-  depth: number // cm
-  color: string
-  lastTested: string
-}
-
-export interface SoilAnalysisState {
-  samples: SoilSample[]
-  activeSampleId: string | null
-  showSamples: boolean
-  showTypeOverlay: boolean
-  showMoistureOverlay: boolean
-  showPHOverlay: boolean
-  showErosionRisk: boolean
-  showAgricultureSuitability: boolean
-  open: boolean
-  analysisMode: 'type' | 'moisture' | 'ph' | 'nutrients' | 'erosion'
-}
-
-// Urban Growth types
-export interface UrbanArea {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  currentArea: number // km2
-  population: number
-  density: number // per km2
-  growthRate: number // percentage per year
-  yearEstablished: number
-  historicalBoundaries: Array<{ year: number; area: number; boundary: [number, number][] }>
-  landUseBreakdown: { residential: number; commercial: number; industrial: number; green: number; other: number }
-  prediction2030: number
-  prediction2050: number
-}
-
-export interface UrbanGrowthState {
-  areas: UrbanArea[]
-  activeAreaId: string | null
-  showAreas: boolean
-  showHistoricalBoundaries: boolean
-  showPredictions: boolean
-  showDensityHeatmap: boolean
-  showLandUse: boolean
-  timelineYear: number
-  open: boolean
-  comparisonMode: boolean
-  animationSpeed: number
-}
-
 // Airspace Navigation types
 export interface AirspaceZone {
   id: string
@@ -1156,465 +951,6 @@ export interface AirspaceZone {
   controllingAuthority: string
   frequency: string | null
 }
-
-export interface AirportData {
-  id: string
-  icao: string
-  name: string
-  latitude: number
-  longitude: number
-  elevation: number
-  runways: Array<{ name: string; length: number; surface: string; heading: number }>
-  frequencies: Array<{ type: string; freq: string }>
-  type: 'international' | 'regional' | 'private' | 'military' | 'heliport'
-}
-
-export interface AirspaceNavState {
-  airspaces: AirspaceZone[]
-  airports: AirportData[]
-  activeAirspaceId: string | null
-  showAirspaces: boolean
-  showAirports: boolean
-  showFlightPaths: boolean
-  showSIDs: boolean // Standard Instrument Departures
-  showSTARs: boolean // Standard Terminal Arrival Routes
-  altitudeFilter: [number, number] // feet range
-  open: boolean
-  flightPlan: Array<{ lat: number; lng: number; alt: number; speed: number }> | null
-}
-
-// Reef Health Monitor types
-export interface ReefSite {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  healthIndex: number // 0-100
-  bleachingLevel: 'none' | 'low' | 'moderate' | 'severe' | 'extreme'
-  waterTemp: number // Celsius
-  salinity: number // PSU
-  turbidity: number // NTU
-  dissolvedOxygen: number // mg/L
-  coralCover: number // percentage
-  fishSpecies: number
-  lastSurvey: string
-  depth: number // meters
-  type: 'fringing' | 'barrier' | 'atoll' | 'patch' | 'deep'
-}
-
-export interface ReefHealthState {
-  sites: ReefSite[]
-  activeSiteId: string | null
-  showSites: boolean
-  showHealthOverlay: boolean
-  showBleachingAlert: boolean
-  showTemperature: boolean
-  showWaterQuality: boolean
-  filterType: string[]
-  filterBleaching: string[]
-  open: boolean
-  timelineDate: string
-}
-
-// Magnetic Field types
-export interface MagneticStation {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  declination: number // degrees
-  inclination: number // degrees
-  totalField: number // nanoTesla
-  horizontalField: number
-  verticalField: number
-  annualChange: number // arc-minutes per year
-  lastMeasurement: string
-}
-
-export interface MagneticFieldState {
-  stations: MagneticStation[]
-  activeStationId: string | null
-  showStations: boolean
-  showDeclinationLines: boolean
-  showInclinationMap: boolean
-  showFieldIntensity: boolean
-  showAnomalies: boolean
-  showGridLines: boolean
-  open: boolean
-  fieldComponent: 'declination' | 'inclination' | 'total' | 'horizontal' | 'vertical'
-  modelYear: number
-}
-
-// Flood Risk types
-export interface FloodZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  riskLevel: 'minimal' | 'low' | 'moderate' | 'high' | 'very_high'
-  floodDepth100yr: number // meters for 100-year flood
-  floodDepth500yr: number // meters for 500-year flood
-  area: number // km2
-  population: number
-  infrastructure: number // count of critical infrastructure
-  elevation: number // meters
-  drainageClass: 'excellent' | 'good' | 'moderate' | 'poor' | 'very_poor'
-  historicalFloods: Array<{ year: number; depth: number; duration: number }>
-  coordinates: [number, number][]
-}
-
-export interface FloodRiskState {
-  zones: FloodZone[]
-  activeZoneId: string | null
-  showZones: boolean
-  showRiskOverlay: boolean
-  showDepthOverlay: boolean
-  showDrainageMap: boolean
-  showHistoricalFloods: boolean
-  showEvacuationRoutes: boolean
-  open: boolean
-  scenarioYear: 100 | 500
-  animationPlaying: boolean
-}
-
-// Volcano Monitor types
-export interface VolcanoData {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  elevation: number // meters
-  type: 'stratovolcano' | 'shield' | 'caldera' | 'cinder_cone' | 'fissure' | 'submarine' | 'lava_dome'
-  status: 'extinct' | 'dormant' | 'active' | 'erupting'
-  lastEruption: string
-  vei: number // Volcanic Explosivity Index 0-8
-  alertLevel: 'normal' | 'advisory' | 'watch' | 'warning'
-  seismicActivity: number // events per day
-  gasEmission: number // tonnes/day SO2
-  deformation: number // mm/year
-  population5km: number
-  population10km: number
-  country: string
-}
-
-export interface VolcanoMonitorState {
-  volcanoes: VolcanoData[]
-  activeVolcanoId: string | null
-  showVolcanoes: boolean
-  showAlertZones: boolean
-  showSeismicOverlay: boolean
-  showGasPlumes: boolean
-  showDeformation: boolean
-  filterType: string[]
-  filterStatus: string[]
-  filterAlertLevel: string[]
-  open: boolean
-  autoRefresh: boolean
-  lastFetchTime: number | null
-}
-
-// Avalanche Risk types
-export interface AvalancheZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  riskLevel: 'low' | 'moderate' | 'considerable' | 'high' | 'extreme'
-  elevation: number
-  aspect: string // N, NE, E, SE, S, SW, W, NW
-  slopeAngle: number
-  snowDepth: number // cm
-  snowStability: 'good' | 'fair' | 'poor' | 'very_poor'
-  recentAvalanches: number
-  temperature: number
-  windSpeed: number
-  windDirection: number
-  lastAssessment: string
-  coordinates: [number, number][]
-}
-
-export interface AvalancheRiskState {
-  zones: AvalancheZone[]
-  activeZoneId: string | null
-  showZones: boolean
-  showRiskOverlay: boolean
-  showAspectMap: boolean
-  showSlopeAngles: boolean
-  showWindRose: boolean
-  open: boolean
-  forecastDate: string
-  comparisonMode: boolean
-}
-
-// Crop Health Analyzer types
-export interface CropField {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  cropType: 'wheat' | 'corn' | 'rice' | 'soybean' | 'cotton' | 'barley' | 'sugarcane' | 'potato' | 'tomato' | 'grape'
-  area: number // hectares
-  healthIndex: number // 0-100
-  ndvi: number // -1 to 1
-  growthStage: 'emergence' | 'vegetative' | 'flowering' | 'fruiting' | 'maturity' | 'harvest' | 'dormant'
-  moistureStress: 'none' | 'low' | 'moderate' | 'high' | 'severe'
-  pestRisk: 'none' | 'low' | 'moderate' | 'high'
-  diseaseRisk: 'none' | 'low' | 'moderate' | 'high'
-  yieldPrediction: number // tonnes/hectare
-  plantingDate: string
-  harvestDate: string
-  lastSatellitePass: string
-}
-
-export interface CropHealthState {
-  fields: CropField[]
-  activeFieldId: string | null
-  showFields: boolean
-  showHealthOverlay: boolean
-  showNDVI: boolean
-  showMoistureStress: boolean
-  showYieldPrediction: boolean
-  filterCropType: string[]
-  filterGrowthStage: string[]
-  open: boolean
-  timelineDate: string
-  comparisonMode: boolean
-}
-
-// Space Track Viewer types
-export interface SpaceObject {
-  id: string
-  name: string
-  noradId: string
-  type: 'satellite' | 'debris' | 'rocket_body' | 'space_station' | 'probe'
-  latitude: number
-  longitude: number
-  altitude: number // km
-  velocity: number // km/s
-  inclination: number
-  period: number // minutes
-  launchDate: string
-  country: string
-  status: 'operational' | 'non_operational' | 'decaying'
-  visibility: 'visible' | 'shadowed' | 'daylight'
-}
-
-export interface SpaceTrackState {
-  objects: SpaceObject[]
-  activeObjectId: string | null
-  showObjects: boolean
-  showOrbits: boolean
-  showGroundTracks: boolean
-  showFootprints: boolean
-  showDebris: boolean
-  filterType: string[]
-  filterCountry: string[]
-  altitudeRange: [number, number] // km
-  open: boolean
-  autoRefresh: boolean
-  selectedPassTime: string | null
-}
-
-// Archaeology Map types
-export interface ArchaeologicalSite {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  type: 'settlement' | 'burial' | 'temple' | 'fortification' | 'cave' | 'petroglyph' | 'megalith' | 'shipwreck' | 'industrial'
-  period: string
-  dating: string
-  culture: string
-  description: string
-  preservation: 'excellent' | 'good' | 'fair' | 'poor' | 'endangered'
-  excavationStatus: 'unexcavated' | 'partial' | 'ongoing' | 'completed'
-  significance: 'local' | 'regional' | 'national' | 'international'
-  area: number // hectares
-  depth: number | null // meters
-  artifacts: number
-  unescoListed: boolean
-  coordinates: [number, number][]
-}
-
-export interface ArchaeologyMapState {
-  sites: ArchaeologicalSite[]
-  activeSiteId: string | null
-  showSites: boolean
-  showPeriodOverlay: boolean
-  showSignificance: boolean
-  showExcavationStatus: boolean
-  showProtectionZones: boolean
-  filterType: string[]
-  filterPeriod: string[]
-  filterSignificance: string[]
-  open: boolean
-  timelinePeriod: string
-}
-
-// Pollution Tracker types
-export interface PollutionSource {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  type: 'industrial' | 'vehicle' | 'agricultural' | 'residential' | 'natural' | 'maritime' | 'energy'
-  pollutants: string[]
-  aqi: number // 0-500
-  aqiLevel: 'good' | 'moderate' | 'unhealthy_sensitive' | 'unhealthy' | 'very_unhealthy' | 'hazardous'
-  pm25: number // μg/m3
-  pm10: number
-  no2: number
-  so2: number
-  co: number
-  o3: number
-  emissionRate: number // tonnes/year
-  radius: number // meters - affected area
-  lastReading: string
-  trend: 'improving' | 'stable' | 'worsening'
-}
-
-export interface PollutionTrackerState {
-  sources: PollutionSource[]
-  activeSourceId: string | null
-  showSources: boolean
-  showAQIOverlay: boolean
-  showPM25: boolean
-  showDispersion: boolean
-  showTrends: boolean
-  filterType: string[]
-  filterAQILevel: string[]
-  open: boolean
-  autoRefresh: boolean
-  timelineDate: string
-}
-
-// Tidal Predictor types
-export interface TidalStation {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  type: 'primary' | 'secondary' | 'harmonic'
-  currentHeight: number // meters
-  nextHigh: string
-  nextLow: string
-  tidalRange: number
-  springRange: number
-  neapRange: number
-  harmonicConstants: Array<{ constituent: string; amplitude: number; phase: number }>
-  maxCurrent: number // knots
-  currentDirection: number
-  moonPhase: string
-  sunrise: string
-  sunset: string
-}
-
-export interface TidalPredictorState {
-  stations: TidalStation[]
-  activeStationId: string | null
-  showStations: boolean
-  showCurrentHeight: boolean
-  showTidalFlow: boolean
-  showMoonPhase: boolean
-  showCurrentVectors: boolean
-  open: boolean
-  predictionDate: string
-  predictionHours: number
-}
-
-// Wind Farm Optimizer types
-export interface WindTurbine {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  type: 'onshore' | 'offshore'
-  capacity: number // MW
-  hubHeight: number // meters
-  rotorDiameter: number // meters
-  windSpeed: number // m/s
-  windDirection: number
-  powerOutput: number // MW
-  capacityFactor: number // percentage
-  availability: number // percentage
-  wakeLoss: number // percentage
-  status: 'operational' | 'maintenance' | 'faulted' | 'curtailed'
-  commissioning: string
-}
-
-export interface WindFarmState {
-  turbines: WindTurbine[]
-  activeTurbineId: string | null
-  showTurbines: boolean
-  showWindRose: boolean
-  showWakeEffects: boolean
-  showPowerOutput: boolean
-  showOptimization: boolean
-  open: boolean
-  windScenario: 'current' | 'optimal' | 'conservative'
-  optimizationTarget: 'power' | 'cost' | 'lifetime'
-}
-
-export interface DesertificationState {
-  zones: DesertZone[]
-  activeZoneId: string | null
-  showDesertExpansion: boolean
-  showVegetationLoss: boolean
-  showSandDunes: boolean
-  showDroughtIndex: boolean
-  open: boolean
-  timelineYear: number
-  severityFilter: 'all' | 'low' | 'moderate' | 'high' | 'extreme'
-}
-
-export interface DesertZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  area: number
-  severity: 'low' | 'moderate' | 'high' | 'extreme'
-  expansionRate: number
-  vegetationIndex: number
-  droughtIndex: number
-}
-
-export interface MineralExplorationState {
-  deposits: MineralDeposit[]
-  activeDepositId: string | null
-  showDeposits: boolean
-  showGeologicalMap: boolean
-  showMiningClaims: boolean
-  showGeochemistry: boolean
-  open: boolean
-  mineralFilter: 'all' | 'gold' | 'copper' | 'iron' | 'rare_earth' | 'diamond'
-  surveyMode: 'surface' | 'subsurface' | 'geochemical' | 'geophysical'
-}
-
-export interface MineralDeposit {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  mineralType: string
-  estimatedTonnage: number
-  grade: number
-  depth: number
-  status: 'prospect' | 'exploration' | 'development' | 'production'
-}
-
-export interface OceanCurrentState {
-  currents: OceanCurrent[]
-  activeCurrentId: string | null
-  showCurrents: boolean
-  showSST: boolean
-  showThermohaline: boolean
-  showSalinity: boolean
-  open: boolean
-  depthLayer: 'surface' | '100m' | '500m' | '1000m' | 'deep'
-  season: 'winter' | 'spring' | 'summer' | 'autumn'
-}
-
 export interface OceanCurrent {
   id: string
   name: string
@@ -1624,205 +960,6 @@ export interface OceanCurrent {
   direction: number
   type: 'warm' | 'cold' | 'mixed'
 }
-
-export interface PermafrostState {
-  zones: PermafrostZone[]
-  activeZoneId: string | null
-  showPermafrostExtent: boolean
-  showActiveLayer: boolean
-  showThawRate: boolean
-  showGroundIce: boolean
-  open: boolean
-  yearFilter: number
-  temperatureScenario: 'rcp26' | 'rcp45' | 'rcp85'
-}
-
-export interface PermafrostZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  extent: number
-  activeLayerDepth: number
-  thawRate: number
-  groundIceContent: number
-  type: 'continuous' | 'discontinuous' | 'sporadic' | 'isolated'
-}
-
-export interface LightningState {
-  strikes: LightningStrike[]
-  showStrikes: boolean
-  showDensityMap: boolean
-  showStormTracks: boolean
-  showAlertZones: boolean
-  open: boolean
-  timeRange: '1h' | '6h' | '24h' | '7d'
-  intensityFilter: 'all' | 'cloud_to_ground' | 'cloud_to_cloud' | 'positive'
-}
-
-export interface LightningStrike {
-  id: string
-  latitude: number
-  longitude: number
-  timestamp: number
-  intensity: number
-  type: 'cloud_to_ground' | 'cloud_to_cloud' | 'positive'
-  peakCurrent: number
-}
-
-export interface BiomeState {
-  biomes: BiomeRegion[]
-  activeBiomeId: string | null
-  showBiomes: boolean
-  showBiodiversity: boolean
-  showTransitions: boolean
-  showEndangered: boolean
-  open: boolean
-  classification: 'whittaker' | 'holdridge' | 'olson'
-  focusRealm: 'all' | 'terrestrial' | 'aquatic' | 'transitional'
-}
-
-export interface BiomeRegion {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  type: string
-  biodiversityIndex: number
-  speciesCount: number
-  endangeredSpecies: number
-  area: number
-}
-
-export interface GroundwaterState {
-  aquifers: Aquifer[]
-  activeAquiferId: string | null
-  showAquifers: boolean
-  showWells: boolean
-  showRechargeZones: boolean
-  showFlowDirection: boolean
-  open: boolean
-  depthFilter: 'all' | 'shallow' | 'intermediate' | 'deep' | 'very_deep'
-  qualityFilter: 'all' | 'excellent' | 'good' | 'moderate' | 'poor'
-}
-
-export interface Aquifer {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  type: 'unconfined' | 'confined' | 'semi_confined' | 'karst'
-  depth: number
-  waterLevel: number
-  quality: 'excellent' | 'good' | 'moderate' | 'poor'
-  rechargeRate: number
-}
-
-export interface SolarPowerState {
-  sites: SolarSite[]
-  activeSiteId: string | null
-  showIrradiance: boolean
-  showOptimalZones: boolean
-  showExistingPlants: boolean
-  showGridConnection: boolean
-  open: boolean
-  panelType: 'monocrystalline' | 'polycrystalline' | 'thin_film' | 'bifacial'
-  calculationMode: 'annual' | 'monthly' | 'seasonal'
-}
-
-export interface SolarSite {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  irradiance: number
-  sunshineHours: number
-  optimalTilt: number
-  estimatedYield: number
-  area: number
-}
-
-export interface VolcanicAshState {
-  eruptions: VolcanicEruption[]
-  activeEruptionId: string | null
-  showAshClouds: boolean
-  showNoFlyZones: boolean
-  showDispersionModel: boolean
-  showHealthAdvisory: boolean
-  open: boolean
-  alertLevel: 'normal' | 'advisory' | 'watch' | 'warning'
-  dispersionModel: 'vaac' | 'hysplit' | 'fall3d'
-}
-
-export interface VolcanicEruption {
-  id: string
-  volcanoName: string
-  latitude: number
-  longitude: number
-  ashHeight: number
-  vei: number
-  startTime: string
-  status: 'ongoing' | 'declining' | 'ended'
-}
-
-export interface CoastalErosionState {
-  segments: CoastalSegment[]
-  activeSegmentId: string | null
-  showErosionZones: boolean
-  showShorelineChange: boolean
-  showSeaLevelRise: boolean
-  showProtection: boolean
-  open: boolean
-  timeHorizon: 'current' | '2050' | '2100'
-  scenario: 'rcp26' | 'rcp45' | 'rcp85'
-}
-
-export interface CoastalSegment {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  erosionRate: number
-  seaLevelEffect: number
-  vulnerability: 'very_low' | 'low' | 'moderate' | 'high' | 'very_high'
-  protectionType: string
-}
-
-export interface CarbonFootprintState {
-  sources: CarbonSource[]
-  activeSourceId: string | null
-  showEmissions: boolean
-  showHeatmap: boolean
-  showOffsetProjects: boolean
-  showTrends: boolean
-  open: boolean
-  gasType: 'co2' | 'methane' | 'n2o' | 'all'
-  sector: 'all' | 'energy' | 'transport' | 'industry' | 'agriculture'
-}
-
-export interface CarbonSource {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  emissions: number
-  sector: string
-  trend: 'increasing' | 'stable' | 'decreasing'
-  offsetAvailable: boolean
-}
-
-export interface WildlifeMigrationState {
-  routes: MigrationRoute[]
-  activeRouteId: string | null
-  showRoutes: boolean
-  showCorridors: boolean
-  showStopPoints: boolean
-  showBarriers: boolean
-  open: boolean
-  season: 'spring' | 'summer' | 'autumn' | 'winter'
-  species: 'all' | 'birds' | 'mammals' | 'fish' | 'insects'
-}
-
 export interface MigrationRoute {
   id: string
   species: string
@@ -1832,184 +969,6 @@ export interface MigrationRoute {
   duration: number
   status: 'active' | 'delayed' | 'blocked'
 }
-
-export interface IceSheetState {
-  sheets: IceSheet[]
-  activeSheetId: string | null
-  showIceExtent: boolean
-  showFlowVelocity: boolean
-  showMeltRate: boolean
-  showCalvingEvents: boolean
-  open: boolean
-  yearFilter: number
-  scenario: 'historical' | 'rcp26' | 'rcp45' | 'rcp85'
-}
-
-export interface IceSheet {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  area: number
-  volume: number
-  meltRate: number
-  flowVelocity: number
-  calvingRate: number
-}
-
-export interface DroughtMonitorState {
-  regions: DroughtRegion[]
-  activeRegionId: string | null
-  showDroughtZones: boolean
-  showSoilMoisture: boolean
-  showPrecipitationDeficit: boolean
-  showCropImpact: boolean
-  open: boolean
-  index: 'spi' | 'spei' | 'pdsi' | 'eddi'
-  timeScale: '1m' | '3m' | '6m' | '12m' | '24m'
-}
-
-export interface DroughtRegion {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  droughtLevel: 'none' | 'd0' | 'd1' | 'd2' | 'd3' | 'd4'
-  soilMoisture: number
-  precipitationDeficit: number
-  cropImpact: number
-}
-
-export interface LandSubsidenceState {
-  zones: SubsidenceZone[]
-  activeZoneId: string | null
-  showSubsidence: boolean
-  showGroundwaterDecline: boolean
-  showInfrastructure: boolean
-  showMonitoring: boolean
-  open: boolean
-  causeFilter: 'all' | 'groundwater' | 'mining' | 'oil_gas' | 'natural'
-  rateFilter: 'all' | 'minor' | 'moderate' | 'severe' | 'extreme'
-}
-
-export interface SubsidenceZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  subsidenceRate: number
-  totalSubsidence: number
-  cause: 'groundwater' | 'mining' | 'oil_gas' | 'natural'
-  severity: 'minor' | 'moderate' | 'severe' | 'extreme'
-}
-
-export interface CoralBleachingState {
-  sites: CoralSite[]
-  activeSiteId: string | null
-  showBleachingAlert: boolean
-  showSSTAnomaly: boolean
-  showReefExtent: boolean
-  showRecovery: boolean
-  open: boolean
-  alertLevel: 'all' | 'watch' | 'warning' | 'alert_level_1' | 'alert_level_2'
-  region: 'all' | 'pacific' | 'atlantic' | 'indian' | 'red_sea'
-}
-
-export interface CoralSite {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  bleachingLevel: 'none' | 'mild' | 'moderate' | 'severe' | 'extreme'
-  sstAnomaly: number
-  reefArea: number
-  recoveryPotential: number
-}
-
-export interface TsunamiAlertState {
-  alerts: TsunamiAlert[]
-  activeAlertId: string | null
-  showWavePropagation: boolean
-  showEvacuationZones: boolean
-  showBuoyData: boolean
-  showHistoricalEvents: boolean
-  open: boolean
-  alertLevel: 'all' | 'information' | 'advisory' | 'watch' | 'warning'
-  basin: 'all' | 'pacific' | 'atlantic' | 'indian' | 'mediterranean'
-}
-
-export interface TsunamiAlert {
-  id: string
-  sourceName: string
-  latitude: number
-  longitude: number
-  magnitude: number
-  waveHeight: number
-  arrivalTime: string
-  alertLevel: 'information' | 'advisory' | 'watch' | 'warning'
-  status: 'active' | 'expired' | 'canceled'
-}
-
-export interface SoilErosionState {
-  zones: SoilErosionZone[]
-  activeZoneId: string | null
-  showErosionRisk: boolean
-  showSedimentYield: boolean
-  showConservation: boolean
-  showRainfallIntensity: boolean
-  open: boolean
-  erosionType: 'all' | 'water' | 'wind' | 'tillage'
-  severityFilter: 'all' | 'low' | 'moderate' | 'high' | 'severe'
-}
-
-export interface SoilErosionZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  erosionRate: number
-  sedimentYield: number
-  type: 'water' | 'wind' | 'tillage'
-  severity: 'low' | 'moderate' | 'high' | 'severe'
-  conservationPractice: string
-}
-
-export interface WatershedManagerState {
-  watersheds: Watershed[]
-  activeWatershedId: string | null
-  showBoundaries: boolean
-  showFlowAccumulation: boolean
-  showDrainageNetwork: boolean
-  showWaterQuality: boolean
-  open: boolean
-  sizeFilter: 'all' | 'small' | 'medium' | 'large' | 'major'
-  qualityFilter: 'all' | 'good' | 'moderate' | 'poor'
-}
-
-export interface Watershed {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  area: number
-  streamOrder: number
-  discharge: number
-  waterQuality: 'good' | 'moderate' | 'poor'
-  landUse: string
-}
-
-export interface TectonicPlateState {
-  plates: TectonicPlate[]
-  activePlateId: string | null
-  showPlateBoundaries: boolean
-  showFaultLines: boolean
-  showEpicenters: boolean
-  showMovementVectors: boolean
-  open: boolean
-  boundaryType: 'all' | 'convergent' | 'divergent' | 'transform'
-  timeRange: 'recent' | 'historical' | 'all'
-}
-
 export interface TectonicPlate {
   id: string
   name: string
@@ -2020,67 +979,6 @@ export interface TectonicPlate {
   boundaryType: 'convergent' | 'divergent' | 'transform'
   earthquakeCount: number
 }
-
-export interface AirQualityForecasterState {
-  stations: AQStation[]
-  activeStationId: string | null
-  showAQI: boolean
-  showPM25: boolean
-  showPM10: boolean
-  showOzone: boolean
-  open: boolean
-  pollutant: 'aqi' | 'pm25' | 'pm10' | 'o3' | 'no2' | 'so2'
-  forecast: 'current' | '24h' | '48h' | '7d'
-}
-
-export interface AQStation {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  aqi: number
-  pm25: number
-  pm10: number
-  o3: number
-  category: 'good' | 'moderate' | 'unhealthy_sensitive' | 'unhealthy' | 'very_unhealthy' | 'hazardous'
-}
-
-export interface GlacialLakeState {
-  lakes: GlacialLake[]
-  activeLakeId: string | null
-  showLakeExtent: boolean
-  showGLOFRisk: boolean
-  showDamType: boolean
-  showMonitoring: boolean
-  open: boolean
-  riskLevel: 'all' | 'low' | 'medium' | 'high' | 'very_high'
-  region: 'all' | 'himalaya' | 'andes' | 'alps' | 'rockies' | 'iceland'
-}
-
-export interface GlacialLake {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  area: number
-  depth: number
-  damType: 'moraine' | 'ice' | 'bedrock'
-  glofRisk: 'low' | 'medium' | 'high' | 'very_high'
-  expansionRate: number
-}
-
-export interface SpaceWeatherState {
-  events: SpaceWeatherEvent[]
-  activeEventId: string | null
-  showSolarWind: boolean
-  showMagneticField: boolean
-  showAuroraForecast: boolean
-  showRadiationBelt: boolean
-  open: boolean
-  eventType: 'all' | 'cme' | 'flare' | 'geomagnetic_storm' | 'radiation'
-  alertLevel: 'all' | 'minor' | 'moderate' | 'strong' | 'severe' | 'extreme'
-}
-
 export interface SpaceWeatherEvent {
   id: string
   type: 'cme' | 'flare' | 'geomagnetic_storm' | 'radiation'
@@ -2090,1914 +988,6 @@ export interface SpaceWeatherEvent {
   alertLevel: 'minor' | 'moderate' | 'strong' | 'severe' | 'extreme'
   description: string
 }
-
-export interface PeatlandMonitorState {
-  peatlands: Peatland[]
-  activePeatlandId: string | null
-  showPeatExtent: boolean
-  showCarbonStock: boolean
-  showDegradation: boolean
-  showRestoration: boolean
-  open: boolean
-  statusFilter: 'all' | 'intact' | 'degraded' | 'restoring'
-  depthFilter: 'all' | 'shallow' | 'medium' | 'deep'
-}
-
-export interface Peatland {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  area: number
-  carbonStock: number
-  depth: number
-  status: 'intact' | 'degraded' | 'restoring'
-  waterTable: number
-}
-
-// Task 49: Mangrove Monitor
-export interface MangroveForest {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  area: number
-  carbonSequestration: number
-  species: string[]
-  healthIndex: number
-  restorationStatus: 'pristine' | 'degraded' | 'restoring' | 'lost'
-  tidalRange: number
-}
-
-export interface MangroveMonitorState {
-  mangroves: MangroveForest[]
-  activeMangroveId: string | null
-  showExtent: boolean
-  showCarbon: boolean
-  showRestoration: boolean
-  showSpecies: boolean
-  open: boolean
-  healthFilter: 'all' | 'pristine' | 'degraded' | 'restoring' | 'lost'
-}
-
-// Task 49: Sandstorm Tracker
-export interface SandstormEvent {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  intensity: 'minor' | 'moderate' | 'severe' | 'extreme'
-  pm10: number
-  pm25: number
-  visibility: number
-  windSpeed: number
-  direction: number
-  startTime: string
-  affectedArea: number
-}
-
-export interface SandstormTrackerState {
-  storms: SandstormEvent[]
-  activeStormId: string | null
-  showPlumes: boolean
-  showPM: boolean
-  showVisibility: boolean
-  showWind: boolean
-  open: boolean
-  intensityFilter: 'all' | 'minor' | 'moderate' | 'severe' | 'extreme'
-}
-
-// Task 49: Wetland Mapper
-export interface WetlandZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  area: number
-  type: 'marsh' | 'swamp' | 'bog' | 'fen' | 'estuary'
-  waterLevel: number
-  biodiversityIndex: number
-  plantSpecies: number
-  animalSpecies: number
-  protectionStatus: 'protected' | 'unprotected' | 'partial'
-}
-
-export interface WetlandMapperState {
-  wetlands: WetlandZone[]
-  activeWetlandId: string | null
-  showBoundaries: boolean
-  showWaterLevel: boolean
-  showBiodiversity: boolean
-  showProtection: boolean
-  open: boolean
-  typeFilter: 'all' | 'marsh' | 'swamp' | 'bog' | 'fen' | 'estuary'
-}
-
-// Task 49: Urban Heat Island
-export interface HeatZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  temperature: number
-  heatIndex: number
-  vegetationCover: number
-  albedo: number
-  population: number
-  coolZoneNearby: boolean
-}
-
-export interface UrbanHeatIslandState {
-  heatZones: HeatZone[]
-  activeHeatZoneId: string | null
-  showTemperature: boolean
-  showVegetation: boolean
-  showCoolZones: boolean
-  showPopulation: boolean
-  open: boolean
-  tempUnit: 'celsius' | 'fahrenheit'
-}
-
-// Task 49: Wildfire Risk Assessor
-export interface FireRiskZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  fireDangerRating: 'low' | 'moderate' | 'high' | 'very_high' | 'extreme'
-  fuelMoisture: number
-  windSpeed: number
-  temperature: number
-  humidity: number
-  vegetationType: string
-  lastFireDate: string | null
-}
-
-export interface WildfireRiskState {
-  fireZones: FireRiskZone[]
-  activeFireZoneId: string | null
-  showDangerRating: boolean
-  showFuelMoisture: boolean
-  showWind: boolean
-  showHistory: boolean
-  open: boolean
-  dangerFilter: 'all' | 'low' | 'moderate' | 'high' | 'very_high' | 'extreme'
-}
-
-// Task 49: Algal Bloom Tracker
-export interface AlgalBloomSite {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  bloomIntensity: 'none' | 'low' | 'moderate' | 'high' | 'severe'
-  chlorophyllA: number
-  waterTemperature: number
-  dissolvedOxygen: number
-  toxicity: boolean
-  species: string
-  detectedDate: string
-}
-
-export interface AlgalBloomState {
-  blooms: AlgalBloomSite[]
-  activeBloomId: string | null
-  showBloomExtent: boolean
-  showChlorophyll: boolean
-  showToxicity: boolean
-  showTemperature: boolean
-  open: boolean
-  intensityFilter: 'all' | 'none' | 'low' | 'moderate' | 'high' | 'severe'
-}
-
-// Task 49: Landslide Predictor
-export interface LandslideZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  susceptibility: 'very_low' | 'low' | 'moderate' | 'high' | 'very_high'
-  slope: number
-  rainfallThreshold: number
-  currentRainfall: number
-  soilType: string
-  vegetationCover: number
-  recentActivity: boolean
-}
-
-export interface LandslidePredictorState {
-  landslideZones: LandslideZone[]
-  activeLandslideId: string | null
-  showSusceptibility: boolean
-  showSlope: boolean
-  showRainfall: boolean
-  showActivity: boolean
-  open: boolean
-  susceptibilityFilter: 'all' | 'very_low' | 'low' | 'moderate' | 'high' | 'very_high'
-}
-
-// Task 49: Sea Ice Navigator
-export interface SeaIceZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  iceConcentration: number
-  iceThickness: number
-  iceType: 'new' | 'first_year' | 'multi_year' | 'fast_ice'
-  driftSpeed: number
-  driftDirection: number
-  navigable: boolean
-}
-
-export interface SeaIceNavigatorState {
-  iceZones: SeaIceZone[]
-  activeIceZoneId: string | null
-  showConcentration: boolean
-  showThickness: boolean
-  showDrift: boolean
-  showRoutes: boolean
-  open: boolean
-  iceTypeFilter: 'all' | 'new' | 'first_year' | 'multi_year' | 'fast_ice'
-}
-
-// Task 50: Cloud Cover Analyzer
-export interface CloudLayer {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  coverage: number
-  cloudType: 'cirrus' | 'cumulus' | 'stratus' | 'nimbus' | 'cumulonimbus'
-  altitude: number
-  temperature: number
-  precipitation: boolean
-}
-
-export interface CloudCoverState {
-  cloudLayers: CloudLayer[]
-  activeCloudId: string | null
-  showCoverage: boolean
-  showAltitude: boolean
-  showPrecipitation: boolean
-  showTemperature: boolean
-  open: boolean
-  cloudTypeFilter: 'all' | 'cirrus' | 'cumulus' | 'stratus' | 'nimbus' | 'cumulonimbus'
-}
-
-// Task 50: Soil Moisture Monitor
-export interface SoilMoistureZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  moistureLevel: number
-  fieldCapacity: number
-  wiltingPoint: number
-  soilType: string
-  depth: number
-  irrigationNeeded: boolean
-}
-
-export interface SoilMoistureState {
-  soilZones: SoilMoistureZone[]
-  activeSoilZoneId: string | null
-  showMoisture: boolean
-  showDepth: boolean
-  showIrrigation: boolean
-  showSoilType: boolean
-  open: boolean
-  moistureFilter: 'all' | 'dry' | 'moderate' | 'wet' | 'saturated'
-}
-
-// Task 50: Night Sky Light Pollution
-export interface LightPollutionZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  brightness: number
-  bortleClass: number
-  limitingMagnitude: number
-  lightSource: string
-  visibleStars: number
-  milkyWayVisible: boolean
-}
-
-export interface LightPollutionState {
-  lightZones: LightPollutionZone[]
-  activeLightZoneId: string | null
-  showBrightness: boolean
-  showBortle: boolean
-  showStars: boolean
-  showMilkyWay: boolean
-  open: boolean
-  bortleFilter: 'all' | 'excellent' | 'good' | 'moderate' | 'poor' | 'very_poor'
-}
-
-// Task 50: River Flow Monitor
-export interface RiverStation {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  flowRate: number
-  waterLevel: number
-  floodStage: number
-  floodStatus: 'normal' | 'watch' | 'warning' | 'flood'
-  temperature: number
-  dissolvedOxygen: number
-}
-
-export interface RiverFlowState {
-  stations: RiverStation[]
-  activeStationId: string | null
-  showFlowRate: boolean
-  showWaterLevel: boolean
-  showFloodStatus: boolean
-  showQuality: boolean
-  open: boolean
-  floodFilter: 'all' | 'normal' | 'watch' | 'warning' | 'flood'
-}
-
-// Task 50: Volcano Seismic Monitor
-export interface VolcanoSeismicStation {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  volcano: string
-  alertLevel: 'normal' | 'advisory' | 'watch' | 'warning'
-  seismicActivity: number
-  deformation: number
-  gasEmission: number
-  lastEruption: string | null
-  proximity: number
-}
-
-export interface VolcanoSeismicState {
-  seismicStations: VolcanoSeismicStation[]
-  activeStationId: string | null
-  showAlertLevel: boolean
-  showSeismic: boolean
-  showDeformation: boolean
-  showGas: boolean
-  open: boolean
-  alertFilter: 'all' | 'normal' | 'advisory' | 'watch' | 'warning'
-}
-
-// Task 50: Whale Migration Tracker
-export interface WhalePod {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  species: string
-  podSize: number
-  heading: number
-  speed: number
-  depth: number
-  vocalizing: boolean
-  lastSighting: string
-}
-
-export interface WhaleMigrationState {
-  whalePods: WhalePod[]
-  activePodId: string | null
-  showTracks: boolean
-  showDepth: boolean
-  showVocalization: boolean
-  showSpeed: boolean
-  open: boolean
-  speciesFilter: 'all' | string
-}
-
-// Task 50: Avalanche Forecaster
-export interface AvalancheZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  dangerLevel: 'low' | 'moderate' | 'considerable' | 'high' | 'extreme'
-  snowStability: number
-  recentSnowfall: number
-  windLoading: boolean
-  temperature: number
-  aspect: string
-  elevation: number
-}
-
-export interface AvalancheForecasterState {
-  avalancheZones: AvalancheZone[]
-  activeZoneId: string | null
-  showDanger: boolean
-  showStability: boolean
-  showSnowfall: boolean
-  showAspect: boolean
-  open: boolean
-  dangerFilter: 'all' | 'low' | 'moderate' | 'considerable' | 'high' | 'extreme'
-}
-
-// Task 50: Aurora Forecaster
-export interface AuroraViewingSite {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  kpIndex: number
-  cloudCover: number
-  lightPollution: number
-  visibility: 'excellent' | 'good' | 'fair' | 'poor' | 'none'
-  predictedIntensity: number
-  bestViewingTime: string
-}
-
-export interface AuroraForecasterState {
-  auroraSites: AuroraViewingSite[]
-  activeSiteId: string | null
-  showKpIndex: boolean
-  showCloudCover: boolean
-  showIntensity: boolean
-  showViewingTime: boolean
-  open: boolean
-  visibilityFilter: 'all' | 'excellent' | 'good' | 'fair' | 'poor' | 'none'
-}
-
-// Task 51: Ozone Layer Monitor
-export interface OzoneZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  ozoneDobson: number
-  trend: 'increasing' | 'stable' | 'decreasing'
-  uvIndex: number
-  season: string
-  satelliteSource: string
-}
-
-export interface OzoneLayerState {
-  ozoneZones: OzoneZone[]
-  activeOzoneId: string | null
-  showDobson: boolean
-  showTrend: boolean
-  showUV: boolean
-  showSeason: boolean
-  open: boolean
-  trendFilter: 'all' | 'increasing' | 'stable' | 'decreasing'
-}
-
-// Task 51: Deforestation Tracker
-export interface DeforestationZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  treeCoverLoss: number
-  remainingForest: number
-  rate: number
-  driver: string
-  protectedArea: boolean
-  restorationPotential: number
-}
-
-export interface DeforestationState {
-  deforestationZones: DeforestationZone[]
-  activeZoneId: string | null
-  showLoss: boolean
-  showRemaining: boolean
-  showRate: boolean
-  showDrivers: boolean
-  open: boolean
-  driverFilter: 'all' | string
-}
-
-// Task 51: Methane Emissions Tracker
-export interface MethaneSource {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  emissionRate: number
-  sourceType: 'agriculture' | 'energy' | 'waste' | 'natural' | 'industrial'
-  concentration: number
-  trend: 'rising' | 'stable' | 'falling'
-  verified: boolean
-}
-
-export interface MethaneEmissionsState {
-  methaneSources: MethaneSource[]
-  activeSourceId: string | null
-  showEmissionRate: boolean
-  showConcentration: boolean
-  showTrend: boolean
-  showVerified: boolean
-  open: boolean
-  sourceTypeFilter: 'all' | 'agriculture' | 'energy' | 'waste' | 'natural' | 'industrial'
-}
-
-// Task 51: Ocean Acidification Monitor
-export interface OceanAcidSite {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  ph: number
-  pCO2: number
-  aragoniteSaturation: number
-  coralImpact: 'none' | 'low' | 'moderate' | 'high' | 'severe'
-  trend: 'improving' | 'stable' | 'declining'
-  samplingDepth: number
-}
-
-export interface OceanAcidificationState {
-  acidSites: OceanAcidSite[]
-  activeSiteId: string | null
-  showPH: boolean
-  showCO2: boolean
-  showAragonite: boolean
-  showImpact: boolean
-  open: boolean
-  impactFilter: 'all' | 'none' | 'low' | 'moderate' | 'high' | 'severe'
-}
-
-// Task 51: Space Debris Tracker
-export interface DebrisObject {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  altitude: number
-  objectType: 'satellite' | 'debris' | 'rocket_body' | 'unknown'
-  size: number
-  velocity: number
-  inclination: number
-  decayRate: number
-}
-
-export interface SpaceDebrisState {
-  debrisObjects: DebrisObject[]
-  activeDebrisId: string | null
-  showAltitude: boolean
-  showVelocity: boolean
-  showDecay: boolean
-  showType: boolean
-  open: boolean
-  typeFilter: 'all' | 'satellite' | 'debris' | 'rocket_body' | 'unknown'
-}
-
-// Task 51: Tectonic Strain Monitor
-export interface StrainStation {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  strainRate: number
-  stressAccumulation: number
-  faultType: string
-  lastEvent: string | null
-  riskLevel: 'low' | 'moderate' | 'high' | 'critical'
-  displacement: number
-}
-
-export interface TectonicStrainState {
-  strainStations: StrainStation[]
-  activeStationId: string | null
-  showStrain: boolean
-  showStress: boolean
-  showFaults: boolean
-  showRisk: boolean
-  open: boolean
-  riskFilter: 'all' | 'low' | 'moderate' | 'high' | 'critical'
-}
-
-// Task 51: Phytoplankton Bloom Monitor
-export interface PhytoBloomSite {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  chlorophyllConc: number
-  bloomArea: number
-  dominantSpecies: string
-  toxicityRisk: boolean
-  seaSurfaceTemp: number
-  nutrientLevel: number
-}
-
-export interface PhytoBloomState {
-  bloomSites: PhytoBloomSite[]
-  activeBloomId: string | null
-  showChlorophyll: boolean
-  showArea: boolean
-  showToxicity: boolean
-  showNutrients: boolean
-  open: boolean
-  toxicityFilter: 'all' | 'toxic' | 'nontoxic'
-}
-
-// Task 51: Snow Cover Monitor
-export interface SnowCoverZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  snowDepth: number
-  snowWaterEquiv: number
-  coverage: number
-  meltRate: number
-  snowLine: number
-  seasonOnset: string
-}
-
-export interface SnowCoverState {
-  snowZones: SnowCoverZone[]
-  activeSnowZoneId: string | null
-  showDepth: boolean
-  showWaterEquiv: boolean
-  showCoverage: boolean
-  showMeltRate: boolean
-  open: boolean
-  depthFilter: 'all' | 'shallow' | 'moderate' | 'deep' | 'very_deep'
-}
-
-// Task 52: Geomagnetic Storm Tracker
-export interface GeomagneticStorm {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  kpIndex: number
-  gScale: 'G1' | 'G2' | 'G3' | 'G4' | 'G5'
-  powerGridImpact: 'none' | 'minor' | 'moderate' | 'severe' | 'extreme'
-  auroraVisibility: number
-  startTime: string
-  duration: number
-}
-
-export interface GeomagneticStormState {
-  storms: GeomagneticStorm[]
-  activeStormId: string | null
-  showKpIndex: boolean
-  showGScale: boolean
-  showGridImpact: boolean
-  showAurora: boolean
-  open: boolean
-  gScaleFilter: 'all' | 'G1' | 'G2' | 'G3' | 'G4' | 'G5'
-}
-
-// Task 52: Volcanic Gas Monitor
-export interface VolcanicGasSite {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  volcano: string
-  so2Emission: number
-  co2Emission: number
-  h2sEmission: number
-  hazardLevel: 'normal' | 'elevated' | 'high' | 'critical'
-  windDirection: number
-  affectedPopulation: number
-}
-
-export interface VolcanicGasState {
-  gasSites: VolcanicGasSite[]
-  activeSiteId: string | null
-  showSO2: boolean
-  showCO2: boolean
-  showHazard: boolean
-  showPopulation: boolean
-  open: boolean
-  hazardFilter: 'all' | 'normal' | 'elevated' | 'high' | 'critical'
-}
-
-// Task 52: Aquifer Depletion Monitor
-export interface AquiferSite {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  waterLevel: number
-  depletionRate: number
-  rechargeRate: number
-  storageVolume: number
-  wellDepth: number
-  status: 'stable' | 'declining' | 'critical' | 'recovering'
-}
-
-export interface AquiferDepletionState {
-  aquiferSites: AquiferSite[]
-  activeAquiferId: string | null
-  showWaterLevel: boolean
-  showDepletion: boolean
-  showRecharge: boolean
-  showStatus: boolean
-  open: boolean
-  statusFilter: 'all' | 'stable' | 'declining' | 'critical' | 'recovering'
-}
-
-// Task 52: Stratospheric Wind Monitor
-export interface StratosphericWindZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  windSpeed: number
-  windDirection: number
-  altitude: number
-  qboPhase: 'easterly' | 'westerly' | 'transition'
-  polarVortexStatus: 'strong' | 'normal' | 'weak' | 'disrupted'
-  temperature: number
-}
-
-export interface StratosphericWindState {
-  windZones: StratosphericWindZone[]
-  activeZoneId: string | null
-  showWindSpeed: boolean
-  showQBO: boolean
-  showPolarVortex: boolean
-  showTemperature: boolean
-  open: boolean
-  vortexFilter: 'all' | 'strong' | 'normal' | 'weak' | 'disrupted'
-}
-
-// Task 52: Marine Heatwave Tracker
-export interface MarineHeatwaveZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  sstAnomaly: number
-  intensity: 'moderate' | 'strong' | 'severe' | 'extreme'
-  duration: number
-  area: number
-  ecosystemImpact: 'low' | 'moderate' | 'high' | 'severe'
-  coralBleachingRisk: boolean
-}
-
-export interface MarineHeatwaveState {
-  heatwaveZones: MarineHeatwaveZone[]
-  activeZoneId: string | null
-  showSSTAnomaly: boolean
-  showIntensity: boolean
-  showEcosystem: boolean
-  showBleaching: boolean
-  open: boolean
-  intensityFilter: 'all' | 'moderate' | 'strong' | 'severe' | 'extreme'
-}
-
-// Task 52: Precipitation Analyzer
-export interface PrecipZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  annualPrecip: number
-  monthlyAverage: number
-  extremeEvents: number
-  droughtIndex: number
-  floodRisk: 'low' | 'moderate' | 'high' | 'very_high'
-  trend: 'increasing' | 'stable' | 'decreasing'
-}
-
-export interface PrecipitationState {
-  precipZones: PrecipZone[]
-  activeZoneId: string | null
-  showAnnual: boolean
-  showExtremes: boolean
-  showDrought: boolean
-  showFloodRisk: boolean
-  open: boolean
-  floodFilter: 'all' | 'low' | 'moderate' | 'high' | 'very_high'
-}
-
-// Task 52: Cosmic Ray Monitor
-export interface CosmicRayStation {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  neutronCount: number
-  fluxVariation: number
-  solarModulation: number
-  cutoffRigidity: number
-  altitude: number
-  status: 'normal' | 'forbush_decrease' | 'ground_level_enhancement'
-}
-
-export interface CosmicRayState {
-  stations: CosmicRayStation[]
-  activeStationId: string | null
-  showNeutronCount: boolean
-  showFluxVariation: boolean
-  showSolarModulation: boolean
-  showStatus: boolean
-  open: boolean
-  statusFilter: 'all' | 'normal' | 'forbush_decrease' | 'ground_level_enhancement'
-}
-
-// Task 52: Greenland Ice Tracker
-export interface GreenlandIceZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  iceThickness: number
-  massBalance: number
-  meltRate: number
-  surfaceVelocity: number
-  elevationChange: number
-  zone: 'accumulation' | 'percolation' | 'wet_snow' | 'bare_ice' | 'outlet_glacier'
-}
-
-export interface GreenlandIceState {
-  iceZones: GreenlandIceZone[]
-  activeZoneId: string | null
-  showThickness: boolean
-  showMassBalance: boolean
-  showMeltRate: boolean
-  showVelocity: boolean
-  open: boolean
-  zoneFilter: 'all' | 'accumulation' | 'percolation' | 'wet_snow' | 'bare_ice' | 'outlet_glacier'
-}
-
-// Task 53: Radiation Exposure Monitor
-export interface RadiationStation {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  doseRate: number
-  gammaRate: number
-  betaRate: number
-  alertLevel: 'normal' | 'elevated' | 'high' | 'critical'
-  source: string
-  lastReading: string
-}
-
-export interface RadiationExposureState {
-  stations: RadiationStation[]
-  activeStationId: string | null
-  showDoseRate: boolean
-  showGamma: boolean
-  showBeta: boolean
-  showAlert: boolean
-  open: boolean
-  alertFilter: 'all' | 'normal' | 'elevated' | 'high' | 'critical'
-}
-
-// Task 53: Peat Fire Tracker
-export interface PeatFireZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  fireStatus: 'active' | 'smoldering' | 'extinguished' | 'at_risk'
-  area: number
-  depth: number
-  carbonEmission: number
-  peatType: string
-  containmentProgress: number
-}
-
-export interface PeatFireState {
-  peatFires: PeatFireZone[]
-  activeFireId: string | null
-  showStatus: boolean
-  showArea: boolean
-  showCarbon: boolean
-  showContainment: boolean
-  open: boolean
-  statusFilter: 'all' | 'active' | 'smoldering' | 'extinguished' | 'at_risk'
-}
-
-// Task 53: Sea Level Rise Projector
-export interface SeaLevelStation {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  currentRise: number
-  projected2050: number
-  projected2100: number
-  trend: number
-  coastalImpact: 'minimal' | 'moderate' | 'significant' | 'severe'
-  population: number
-}
-
-export interface SeaLevelRiseState {
-  stations: SeaLevelStation[]
-  activeStationId: string | null
-  showCurrent: boolean
-  showProjection: boolean
-  showImpact: boolean
-  showPopulation: boolean
-  open: boolean
-  impactFilter: 'all' | 'minimal' | 'moderate' | 'significant' | 'severe'
-}
-
-// Task 53: Thermocline Mapper
-export interface ThermoclineProfile {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  thermoclineDepth: number
-  gradientStrength: number
-  sstSurface: number
-  sstDeep: number
-  season: string
-  elNinoPhase: 'neutral' | 'el_nino' | 'la_nina'
-}
-
-export interface ThermoclineState {
-  profiles: ThermoclineProfile[]
-  activeProfileId: string | null
-  showDepth: boolean
-  showGradient: boolean
-  showSST: boolean
-  showENSO: boolean
-  open: boolean
-  ensoFilter: 'all' | 'neutral' | 'el_nino' | 'la_nina'
-}
-
-// Task 53: Acid Rain Tracker
-export interface AcidRainStation {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  precipPH: number
-  sulfateConc: number
-  nitrateConc: number
-  ammoniumConc: number
-  severity: 'normal' | 'mild' | 'moderate' | 'severe'
-  trend: 'improving' | 'stable' | 'worsening'
-}
-
-export interface AcidRainState {
-  stations: AcidRainStation[]
-  activeStationId: string | null
-  showPH: boolean
-  showSulfate: boolean
-  showSeverity: boolean
-  showTrend: boolean
-  open: boolean
-  severityFilter: 'all' | 'normal' | 'mild' | 'moderate' | 'severe'
-}
-
-// Task 53: Methane Hydrate Monitor
-export interface HydrateZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  stabilityZone: 'stable' | 'marginal' | 'unstable' | 'dissociating'
-  depth: number
-  temperature: number
-  pressure: number
-  methaneConcentration: number
-  seafloorType: string
-}
-
-export interface MethaneHydrateState {
-  hydrateZones: HydrateZone[]
-  activeZoneId: string | null
-  showStability: boolean
-  showDepth: boolean
-  showTemperature: boolean
-  showConcentration: boolean
-  open: boolean
-  stabilityFilter: 'all' | 'stable' | 'marginal' | 'unstable' | 'dissociating'
-}
-
-// Task 53: Kelp Forest Monitor
-export interface KelpForestSite {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  canopyCoverage: number
-  healthIndex: number
-  species: string
-  waterTemp: number
-  nutrientLevel: number
-  urchinDensity: number
-  restorationStatus: 'pristine' | 'healthy' | 'declining' | 'barren'
-}
-
-export interface KelpForestState {
-  kelpSites: KelpForestSite[]
-  activeSiteId: string | null
-  showCoverage: boolean
-  showHealth: boolean
-  showSpecies: boolean
-  showRestoration: boolean
-  open: boolean
-  statusFilter: 'all' | 'pristine' | 'healthy' | 'declining' | 'barren'
-}
-
-// Task 53: Glacier Lake Outburst Tracker
-export interface GLOFSite {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  lakeVolume: number
-  damType: 'moraine' | 'ice' | 'bedrock'
-  damStability: 'stable' | 'weakening' | 'critical' | 'breached'
-  downstreamPopulation: number
-  lastOutburst: string | null
-  riskLevel: 'low' | 'moderate' | 'high' | 'very_high'
-}
-
-export interface GLOFState {
-  glofSites: GLOFSite[]
-  activeSiteId: string | null
-  showVolume: boolean
-  showStability: boolean
-  showRisk: boolean
-  showPopulation: boolean
-  open: boolean
-  riskFilter: 'all' | 'low' | 'moderate' | 'high' | 'very_high'
-}
-
-// Task 54: Dust Storm Tracker
-export interface DustStormEvent {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  severity: 'minor' | 'moderate' | 'major' | 'extreme'
-  windSpeed: number
-  visibility: number
-  dustConcentration: number
-  direction: number
-  area: number
-  origin: string
-  duration: string
-}
-
-export interface DustStormState {
-  storms: DustStormEvent[]
-  activeStormId: string | null
-  showSeverity: boolean
-  showWindSpeed: boolean
-  showVisibility: boolean
-  showConcentration: boolean
-  open: boolean
-  severityFilter: 'all' | 'minor' | 'moderate' | 'major' | 'extreme'
-}
-
-// Task 54: Bioluminescence Tracker
-export interface BioluminescenceSite {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  intensity: 'dim' | 'moderate' | 'bright' | 'spectacular'
-  organismType: string
-  waterTemp: number
-  lastObserved: string
-  area: number
-  seasonalPeak: string
-}
-
-export interface BioluminescenceState {
-  sites: BioluminescenceSite[]
-  activeSiteId: string | null
-  showIntensity: boolean
-  showOrganismType: boolean
-  showWaterTemp: boolean
-  showSeasonalPeak: boolean
-  open: boolean
-  intensityFilter: 'all' | 'dim' | 'moderate' | 'bright' | 'spectacular'
-}
-
-// Task 54: Urban Sprawl Monitor
-export interface UrbanSprawlZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  growthRate: number
-  populationDensity: number
-  landUseChange: number
-  greenSpaceLoss: number
-  infraStrain: 'low' | 'moderate' | 'high' | 'critical'
-  yearEstablished: number
-  sprawlArea: number
-}
-
-export interface UrbanSprawlState {
-  zones: UrbanSprawlZone[]
-  activeZoneId: string | null
-  showGrowthRate: boolean
-  showDensity: boolean
-  showGreenSpace: boolean
-  showInfraStrain: boolean
-  open: boolean
-  strainFilter: 'all' | 'low' | 'moderate' | 'high' | 'critical'
-}
-
-// Task 54: Viral Outbreak Mapper
-export interface ViralOutbreakZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  pathogen: string
-  caseCount: number
-  r0Value: number
-  severity: 'contained' | 'spreading' | 'epidemic' | 'pandemic'
-  vaccinationRate: number
-  mortalityRate: number
-  lastUpdated: string
-}
-
-export interface ViralOutbreakState {
-  outbreaks: ViralOutbreakZone[]
-  activeOutbreakId: string | null
-  showCaseCount: boolean
-  showR0: boolean
-  showVaccination: boolean
-  showMortality: boolean
-  open: boolean
-  severityFilter: 'all' | 'contained' | 'spreading' | 'epidemic' | 'pandemic'
-}
-
-// Task 54: Magnetosphere Monitor
-export interface MagnetosphereReading {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  bzComponent: number
-  solarWindSpeed: number
-  kpIndex: number
-  dstIndex: number
-  auroraProbability: number
-  status: 'quiet' | 'unsettled' | 'active' | 'storm' | 'severe_storm'
-}
-
-export interface MagnetosphereState {
-  readings: MagnetosphereReading[]
-  activeReadingId: string | null
-  showBz: boolean
-  showSolarWind: boolean
-  showKp: boolean
-  showAurora: boolean
-  open: boolean
-  statusFilter: 'all' | 'quiet' | 'unsettled' | 'active' | 'storm' | 'severe_storm'
-}
-
-// Task 54: Fog Density Mapper
-export interface FogDensityZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  density: 'light' | 'moderate' | 'dense' | 'super_dense'
-  visibility: number
-  humidity: number
-  duration: string
-  fogType: string
-  aviationImpact: 'none' | 'minor' | 'moderate' | 'severe'
-}
-
-export interface FogDensityState {
-  zones: FogDensityZone[]
-  activeZoneId: string | null
-  showDensity: boolean
-  showVisibility: boolean
-  showHumidity: boolean
-  showAviationImpact: boolean
-  open: boolean
-  densityFilter: 'all' | 'light' | 'moderate' | 'dense' | 'super_dense'
-}
-
-// Task 54: Carbon Capture Tracker
-export interface CarbonCaptureFacility {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  captureCapacity: number
-  currentCapture: number
-  technology: string
-  status: 'planned' | 'construction' | 'operational' | 'paused'
-  storageType: string
-  co2Stored: number
-}
-
-export interface CarbonCaptureState {
-  facilities: CarbonCaptureFacility[]
-  activeFacilityId: string | null
-  showCapacity: boolean
-  showTechnology: boolean
-  showStatus: boolean
-  showStorage: boolean
-  open: boolean
-  statusFilter: 'all' | 'planned' | 'construction' | 'operational' | 'paused'
-}
-
-// Task 54: Hail Storm Tracker
-export interface HailStormEvent {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  maxHailSize: number
-  windSpeed: number
-  duration: string
-  damage: 'none' | 'minor' | 'moderate' | 'severe' | 'catastrophic'
-  area: number
-  supercellType: string
-}
-
-export interface HailStormState {
-  events: HailStormEvent[]
-  activeEventId: string | null
-  showHailSize: boolean
-  showWindSpeed: boolean
-  showDamage: boolean
-  showArea: boolean
-  open: boolean
-  damageFilter: 'all' | 'none' | 'minor' | 'moderate' | 'severe' | 'catastrophic'
-}
-
-// Task 55: Sahara Reforestation Tracker
-export interface SaharaReforestationProject {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  areaRestored: number
-  treeCount: number
-  speciesDiversity: number
-  waterUsage: number
-  survivalRate: number
-  status: 'planned' | 'planting' | 'growing' | 'established' | 'threatened'
-  yearStarted: number
-}
-
-export interface SaharaReforestationState {
-  projects: SaharaReforestationProject[]
-  activeProjectId: string | null
-  showArea: boolean
-  showTreeCount: boolean
-  showSurvivalRate: boolean
-  showStatus: boolean
-  open: boolean
-  statusFilter: 'all' | 'planned' | 'planting' | 'growing' | 'established' | 'threatened'
-}
-
-// Task 55: Deep Sea Vents Monitor
-export interface DeepSeaVent {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  depth: number
-  temperature: number
-  ventType: 'black_smoker' | 'white_smoker' | 'diffuse_flow'
-  mineralType: string
-  biologicalActivity: 'low' | 'moderate' | 'high' | 'extreme'
-  discoveryYear: number
-}
-
-export interface DeepSeaVentState {
-  vents: DeepSeaVent[]
-  activeVentId: string | null
-  showTemperature: boolean
-  showDepth: boolean
-  showVentType: boolean
-  showBiology: boolean
-  open: boolean
-  biologyFilter: 'all' | 'low' | 'moderate' | 'high' | 'extreme'
-}
-
-// Task 55: Storm Surge Predictor
-export interface StormSurgeZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  surgeHeight: number
-  windSpeed: number
-  pressureDrop: number
-  coastalPopulation: number
-  evacuationLevel: 'none' | 'advisory' | 'watch' | 'warning' | 'emergency'
-  historicalMax: number
-}
-
-export interface StormSurgeState {
-  zones: StormSurgeZone[]
-  activeZoneId: string | null
-  showSurgeHeight: boolean
-  showWindSpeed: boolean
-  showPopulation: boolean
-  showEvacuation: boolean
-  open: boolean
-  evacuationFilter: 'all' | 'none' | 'advisory' | 'watch' | 'warning' | 'emergency'
-}
-
-// Task 55: Landfill Monitor
-export interface LandfillSite {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  capacity: number
-  currentFill: number
-  methaneOutput: number
-  leachateRisk: 'low' | 'moderate' | 'high' | 'critical'
-  wasteType: string
-  yearsRemaining: number
-  recyclingRate: number
-}
-
-export interface LandfillMonitorState {
-  sites: LandfillSite[]
-  activeSiteId: string | null
-  showFill: boolean
-  showMethane: boolean
-  showLeachate: boolean
-  showRecycling: boolean
-  open: boolean
-  leachateFilter: 'all' | 'low' | 'moderate' | 'high' | 'critical'
-}
-
-// Task 55: Salinity Gradient Mapper
-export interface SalinityGradientZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  salinity: number
-  depth: number
-  temperature: number
-  gradientType: 'estuary' | 'halocline' | 'salt_wedge' | 'hypersaline'
-  marineImpact: 'minimal' | 'moderate' | 'significant' | 'severe'
-  oxygenLevel: number
-}
-
-export interface SalinityGradientState {
-  zones: SalinityGradientZone[]
-  activeZoneId: string | null
-  showSalinity: boolean
-  showDepth: boolean
-  showGradientType: boolean
-  showOxygen: boolean
-  open: boolean
-  impactFilter: 'all' | 'minimal' | 'moderate' | 'significant' | 'severe'
-}
-
-// Task 55: Microplastics Tracker
-export interface MicroplasticsSample {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  concentration: number
-  particleSize: string
-  polymerType: string
-  source: string
-  severity: 'low' | 'moderate' | 'high' | 'extreme'
-  waterDepth: number
-}
-
-export interface MicroplasticsState {
-  samples: MicroplasticsSample[]
-  activeSampleId: string | null
-  showConcentration: boolean
-  showPolymerType: boolean
-  showSource: boolean
-  showSeverity: boolean
-  open: boolean
-  severityFilter: 'all' | 'low' | 'moderate' | 'high' | 'extreme'
-}
-
-// Task 55: Radio Signal Mapper
-export interface RadioSignalStation {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  frequency: number
-  signalStrength: number
-  modulationType: string
-  coverageRadius: number
-  interferenceLevel: 'none' | 'low' | 'moderate' | 'high'
-  bandType: string
-}
-
-export interface RadioSignalState {
-  stations: RadioSignalStation[]
-  activeStationId: string | null
-  showStrength: boolean
-  showFrequency: boolean
-  showCoverage: boolean
-  showInterference: boolean
-  open: boolean
-  interferenceFilter: 'all' | 'none' | 'low' | 'moderate' | 'high'
-}
-
-// Task 55: Volcanic Island Monitor
-export interface VolcanicIsland {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  islandAge: number
-  lastEruption: string
-  eruptionType: 'effusive' | 'explosive' | 'phreatomagmatic' | 'strombolian'
-  area: number
-  elevation: number
-  activityLevel: 'dormant' | 'fumarolic' | 'unrest' | 'erupting'
-  population: number
-}
-
-export interface VolcanicIslandState {
-  islands: VolcanicIsland[]
-  activeIslandId: string | null
-  showActivity: boolean
-  showEruptionType: boolean
-  showElevation: boolean
-  showPopulation: boolean
-  open: boolean
-  activityFilter: 'all' | 'dormant' | 'fumarolic' | 'unrest' | 'erupting'
-}
-
-// Task 56: Permafrost Thaw Monitor
-export interface PermafrostThawZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  thawRate: number
-  activeLayerDepth: number
-  groundTemp: number
-  carbonRelease: number
-  infrastructure: 'none' | 'minor' | 'moderate' | 'severe'
-  permafrostType: string
-}
-
-export interface PermafrostThawState {
-  zones: PermafrostThawZone[]
-  activeZoneId: string | null
-  showThawRate: boolean
-  showActiveLayer: boolean
-  showGroundTemp: boolean
-  showInfrastructure: boolean
-  open: boolean
-  infrastructureFilter: 'all' | 'none' | 'minor' | 'moderate' | 'severe'
-}
-
-// Task 56: Ocean Current Tracker
-export interface OceanCurrentZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  speed: number
-  direction: number
-  temperature: number
-  salinity: number
-  currentType: 'surface' | 'deep' | 'thermohaline' | 'coastal'
-  ecosystemImpact: 'minimal' | 'moderate' | 'significant' | 'severe'
-}
-
-export interface OceanCurrentTrackerState {
-  currents: OceanCurrentZone[]
-  activeCurrentId: string | null
-  showSpeed: boolean
-  showTemperature: boolean
-  showSalinity: boolean
-  showImpact: boolean
-  open: boolean
-  impactFilter: 'all' | 'minimal' | 'moderate' | 'significant' | 'severe'
-}
-
-// Task 56: Space Weather Alert
-export interface SpaceWeatherAlert {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  alertType: 'solar_flare' | 'cme' | 'radiation_storm' | 'geomagnetic'
-  severity: 'minor' | 'moderate' | 'strong' | 'severe' | 'extreme'
-  kpIndex: number
-  hfAbsorption: number
-  gnssImpact: 'none' | 'minor' | 'moderate' | 'severe'
-  startTime: string
-}
-
-export interface SpaceWeatherAlertState {
-  alerts: SpaceWeatherAlert[]
-  activeAlertId: string | null
-  showSeverity: boolean
-  showKpIndex: boolean
-  showHfImpact: boolean
-  showGnssImpact: boolean
-  open: boolean
-  severityFilter: 'all' | 'minor' | 'moderate' | 'strong' | 'severe' | 'extreme'
-}
-
-// Task 56: Desert Monitor
-export interface DesertZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  area: number
-  expansionRate: number
-  avgTemperature: number
-  rainfall: number
-  vegetationIndex: number
-  status: 'stable' | 'expanding' | 'recovering' | 'critical'
-}
-
-export interface DesertMonitorState {
-  zones: DesertZone[]
-  activeZoneId: string | null
-  showExpansion: boolean
-  showTemperature: boolean
-  showRainfall: boolean
-  showVegetation: boolean
-  open: boolean
-  statusFilter: 'all' | 'stable' | 'expanding' | 'recovering' | 'critical'
-}
-
-// Task 56: Tsunami Buoy Tracker
-export interface TsunamiBuoy {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  waterHeight: number
-  pressure: number
-  wavePeriod: number
-  status: 'normal' | 'watch' | 'advisory' | 'warning'
-  detectionType: 'dart' | 'coastal' | 'tide_gauge'
-  lastReading: string
-}
-
-export interface TsunamiBuoyState {
-  buoys: TsunamiBuoy[]
-  activeBuoyId: string | null
-  showWaterHeight: boolean
-  showPressure: boolean
-  showWavePeriod: boolean
-  showStatus: boolean
-  open: boolean
-  statusFilter: 'all' | 'normal' | 'watch' | 'advisory' | 'warning'
-}
-
-// Task 56: Glacier Velocity Tracker
-export interface GlacierVelocityZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  velocity: number
-  thickness: number
-  massBalance: number
-  calvingRate: number
-  flowDirection: number
-  status: 'stable' | 'accelerating' | 'surging' | 'retreating'
-}
-
-export interface GlacierVelocityState {
-  zones: GlacierVelocityZone[]
-  activeZoneId: string | null
-  showVelocity: boolean
-  showThickness: boolean
-  showMassBalance: boolean
-  showCalving: boolean
-  open: boolean
-  statusFilter: 'all' | 'stable' | 'accelerating' | 'surging' | 'retreating'
-}
-
-// Task 56: Earthquake Swarm Monitor
-export interface EarthquakeSwarmEvent {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  magnitude: number
-  depth: number
-  frequency: number
-  swarmSize: number
-  faultType: string
-  alertLevel: 'background' | 'advisory' | 'watch' | 'warning'
-}
-
-export interface EarthquakeSwarmState {
-  events: EarthquakeSwarmEvent[]
-  activeEventId: string | null
-  showMagnitude: boolean
-  showDepth: boolean
-  showFrequency: boolean
-  showAlertLevel: boolean
-  open: boolean
-  alertFilter: 'all' | 'background' | 'advisory' | 'watch' | 'warning'
-}
-
-// Task 56: Mangrove Restoration Tracker
-export interface MangroveRestorationSite {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  area: number
-  speciesCount: number
-  carbonSequestration: number
-  coastalProtection: number
-  fisheryBoost: number
-  restorationStage: 'planned' | 'nursery' | 'planting' | 'established' | 'mature'
-}
-
-export interface MangroveRestorationState {
-  sites: MangroveRestorationSite[]
-  activeSiteId: string | null
-  showArea: boolean
-  showCarbon: boolean
-  showCoastalProtection: boolean
-  showFishery: boolean
-  open: boolean
-  stageFilter: 'all' | 'planned' | 'nursery' | 'planting' | 'established' | 'mature'
-}
-
-// Task 57: Coral Bleaching Monitor
-export interface CoralBleachingEvent {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  bleachingPercent: number
-  seaSurfaceTemp: number
-  heatStress: number
-  recoveryPotential: 'high' | 'moderate' | 'low' | 'none'
-  reefType: 'fringing' | 'barrier' | 'atoll' | 'patch'
-  lastSurveyed: string
-}
-
-export interface CoralBleachingMonitorState {
-  events: CoralBleachingEvent[]
-  activeEventId: string | null
-  showBleachingPercent: boolean
-  showHeatStress: boolean
-  showSeaTemp: boolean
-  showRecoveryPotential: boolean
-  open: boolean
-  reefFilter: 'all' | 'fringing' | 'barrier' | 'atoll' | 'patch'
-}
-
-// Task 57: Arctic Sea Ice Monitor
-export interface ArcticSeaIceZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  iceExtent: number
-  iceThickness: number
-  iceConcentration: number
-  trend: 'growing' | 'stable' | 'declining' | 'rapid_decline'
-  iceType: 'multiyear' | 'firstyear' | 'newice' | 'mixed'
-}
-
-export interface ArcticSeaIceState {
-  zones: ArcticSeaIceZone[]
-  activeZoneId: string | null
-  showExtent: boolean
-  showThickness: boolean
-  showConcentration: boolean
-  showTrend: boolean
-  open: boolean
-  iceFilter: 'all' | 'multiyear' | 'firstyear' | 'newice' | 'mixed'
-}
-
-// Task 57: Landslide Predictor
-export interface LandslideRiskZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  riskLevel: 'very_low' | 'low' | 'moderate' | 'high' | 'very_high'
-  slopeAngle: number
-  soilMoisture: number
-  rainfallRate: number
-  vegetationCover: number
-  triggerType: 'rainfall' | 'earthquake' | 'erosion' | 'human_activity'
-}
-
-export interface LandslideRiskState {
-  zones: LandslideRiskZone[]
-  activeZoneId: string | null
-  showRiskLevel: boolean
-  showSlope: boolean
-  showMoisture: boolean
-  showVegetation: boolean
-  open: boolean
-  riskFilter: 'all' | 'very_low' | 'low' | 'moderate' | 'high' | 'very_high'
-}
-
-// Task 57: Air Quality Monitor
-export interface AirQualityStation {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  aqi: number
-  pm25: number
-  pm10: number
-  o3: number
-  no2: number
-  category: 'good' | 'moderate' | 'unhealthy_sensitive' | 'unhealthy' | 'very_unhealthy' | 'hazardous'
-  dominantPollutant: string
-}
-
-export interface AirQualityState {
-  stations: AirQualityStation[]
-  activeStationId: string | null
-  showAQI: boolean
-  showPM25: boolean
-  showO3: boolean
-  showDominantPollutant: boolean
-  open: boolean
-  categoryFilter: 'all' | 'good' | 'moderate' | 'unhealthy_sensitive' | 'unhealthy' | 'very_unhealthy' | 'hazardous'
-}
-
-// Task 57: Soil Moisture Mapper (Agricultural)
-export interface SoilMoistureAgZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  moisturePercent: number
-  soilType: 'clay' | 'silt' | 'sand' | 'loam' | 'peat'
-  temperature: number
-  precipitation: number
-  droughtIndex: number
-  landUse: 'agriculture' | 'forest' | 'urban' | 'grassland' | 'wetland'
-}
-
-export interface SoilMoistureAgState {
-  zones: SoilMoistureAgZone[]
-  activeZoneId: string | null
-  showMoisture: boolean
-  showTemperature: boolean
-  showDroughtIndex: boolean
-  showSoilType: boolean
-  open: boolean
-  landUseFilter: 'all' | 'agriculture' | 'forest' | 'urban' | 'grassland' | 'wetland'
-}
-
-// Task 57: Noise Pollution Mapper
-export interface NoisePollutionZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  decibels: number
-  noiseType: 'traffic' | 'industrial' | 'construction' | 'aircraft' | 'entertainment' | 'mixed'
-  timeOfDay: 'day' | 'evening' | 'night'
-  affectedPopulation: number
-  compliance: 'compliant' | 'marginal' | 'non_compliant'
-}
-
-export interface NoisePollutionState {
-  zones: NoisePollutionZone[]
-  activeZoneId: string | null
-  showDecibels: boolean
-  showNoiseType: boolean
-  showAffectedPopulation: boolean
-  showCompliance: boolean
-  open: boolean
-  typeFilter: 'all' | 'traffic' | 'industrial' | 'construction' | 'aircraft' | 'entertainment' | 'mixed'
-}
-
-// Task 57: Light Pollution Mapper (Sky Quality)
-export interface LightPollutionSkyZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  skyBrightness: number
-  bortleScale: number
-  lightSourceType: 'urban' | 'industrial' | 'commercial' | 'residential' | 'mixed'
-  visibleStars: number
-  impactRadius: number
-  energyWaste: number
-}
-
-export interface LightPollutionSkyState {
-  zones: LightPollutionSkyZone[]
-  activeZoneId: string | null
-  showBortleScale: boolean
-  showSkyBrightness: boolean
-  showVisibleStars: boolean
-  showEnergyWaste: boolean
-  open: boolean
-  sourceFilter: 'all' | 'urban' | 'industrial' | 'commercial' | 'residential' | 'mixed'
-}
-
-// Task 57: Groundwater Recharge Tracker
-export interface GroundwaterRechargeZone {
-  id: string
-  name: string
-  latitude: number
-  longitude: number
-  rechargeRate: number
-  waterTableDepth: number
-  aquiferType: 'unconfined' | 'confined' | 'semi_confined' | 'karst'
-  extractionRate: number
-  sustainability: 'sustainable' | 'marginal' | 'overexploited' | 'critical'
-  qualityIndex: number
-}
-
-export interface GroundwaterRechargeState {
-  zones: GroundwaterRechargeZone[]
-  activeZoneId: string | null
-  showRechargeRate: boolean
-  showWaterTable: boolean
-  showSustainability: boolean
-  showQuality: boolean
-  open: boolean
-  aquiferFilter: 'all' | 'unconfined' | 'confined' | 'semi_confined' | 'karst'
-}
-
-// Task 65: Subglacial Lake Explorer
-export interface SubglacialLake {
-  id: string
-  name: string
-  depth: number
-  waterTemp: number
-  iceThickness: number
-  dissolvedOxygen: number
-  status: 'active_research' | 'dormant' | 'unexplored'
-  latitude: number
-  longitude: number
-}
-
-export interface SubglacialLakeState {
-  lakes: SubglacialLake[]
-  activeLakeId: string | null
-  showDepth: boolean
-  showWaterTemp: boolean
-  showIceThickness: boolean
-  showDissolvedOxygen: boolean
-  open: boolean
-  statusFilter: 'all' | 'active_research' | 'dormant' | 'unexplored'
-}
-
-// Task 65: Thermokarst Lake Monitor
-export interface ThermokarstLake {
-  id: string
-  name: string
-  expansionRate: number
-  methaneEmission: number
-  shorelineErosion: number
-  area: number
-  riskLevel: 'low' | 'medium' | 'high' | 'critical'
-  latitude: number
-  longitude: number
-}
-
-export interface ThermokarstLakeState {
-  lakes: ThermokarstLake[]
-  activeLakeId: string | null
-  showExpansionRate: boolean
-  showMethaneEmission: boolean
-  showShorelineErosion: boolean
-  showArea: boolean
-  open: boolean
-  riskFilter: 'all' | 'low' | 'medium' | 'high' | 'critical'
-}
-
-// Task 65: Paleoclimate Proxy Explorer
-export interface PaleoclimateProxy {
-  id: string
-  type: 'ice_core' | 'tree_ring' | 'sediment' | 'coral' | 'speleothem'
-  ageRange: string
-  resolution: string
-  tempReconstruction: number
-  latitude: number
-  longitude: number
-}
-
-export interface PaleoclimateProxyState {
-  proxies: PaleoclimateProxy[]
-  activeProxyId: string | null
-  showAgeRange: boolean
-  showResolution: boolean
-  showTempReconstruction: boolean
-  open: boolean
-  typeFilter: 'all' | 'ice_core' | 'tree_ring' | 'sediment' | 'coral' | 'speleothem'
-}
-
 // Task 65: Geomagnetically Induced Current Monitor
 export interface GICReading {
   id: string
@@ -4007,40 +997,6 @@ export interface GICReading {
   riskLevel: 'normal' | 'elevated' | 'high' | 'critical'
   timestamp: string
 }
-
-export interface GICMonitorState {
-  readings: GICReading[]
-  activeReadingId: string | null
-  showIntensity: boolean
-  showVoltage: boolean
-  showRiskLevel: boolean
-  open: boolean
-  riskFilter: 'all' | 'normal' | 'elevated' | 'high' | 'critical'
-}
-
-// Task 65: Sabkha Environment Monitor
-export interface SabkhaZone {
-  id: string
-  name: string
-  salinity: number
-  evaporationRate: number
-  crustThickness: number
-  mineralType: string
-  latitude: number
-  longitude: number
-}
-
-export interface SabkhaEnvironmentState {
-  zones: SabkhaZone[]
-  activeZoneId: string | null
-  showSalinity: boolean
-  showEvaporationRate: boolean
-  showCrustThickness: boolean
-  showMineralType: boolean
-  open: boolean
-  mineralFilter: 'all' | 'halite' | 'gypsum' | 'anhydrite' | 'dolomite'
-}
-
 // Task 65: Cryosphere Change Tracker
 export interface CryosphereRegion {
   id: string
@@ -4052,3007 +1008,957 @@ export interface CryosphereRegion {
   seaLevelContribution: number
 }
 
-export interface CryosphereChangeState {
-  regions: CryosphereRegion[]
-  activeRegionId: string | null
-  showMassBalance: boolean
-  showExtentChange: boolean
-  showAlbedoShift: boolean
-  showSeaLevelContribution: boolean
-  open: boolean
-  typeFilter: 'all' | 'ice_sheet' | 'glacier' | 'sea_ice' | 'permafrost' | 'snow'
-}
-
-// Task 65: Abyssal Plain Mapper
-export interface AbyssalFeature {
-  id: string
-  name: string
-  depth: number
-  sedimentType: string
-  noduleDensity: number
-  biodiversityIndex: number
-  latitude: number
-  longitude: number
-}
-
-export interface AbyssalPlainState {
-  features: AbyssalFeature[]
-  activeFeatureId: string | null
-  showDepth: boolean
-  showSedimentType: boolean
-  showNoduleDensity: boolean
-  showBiodiversityIndex: boolean
-  open: boolean
-  sedimentFilter: 'all' | 'clay' | 'ooze' | 'turbidite' | 'diatomaceous'
-}
-
-// Task 65: Fjord Ecosystem Monitor
-export interface FjordSystem {
-  id: string
-  name: string
-  stratification: number
-  oxygenLevel: number
-  biodiversity: number
-  glacialInput: number
-  healthScore: number
-  latitude: number
-  longitude: number
-}
-
-export interface FjordEcosystemState {
-  fjords: FjordSystem[]
-  activeFjordId: string | null
-  showStratification: boolean
-  showOxygenLevel: boolean
-  showBiodiversity: boolean
-  showGlacialInput: boolean
-  showHealthScore: boolean
-  open: boolean
-  healthFilter: 'all' | 'excellent' | 'good' | 'moderate' | 'poor'
-}
-
-// Task 67: Geothermal Spring Monitor
-export interface GeothermalSpring {
-  id: string
-  name: string
-  temperature: number
-  ph: number
-  flowRate: number
-  mineralContent: number
-  seismicActivity: number
-  latitude: number
-  longitude: number
-}
-
-export interface GeothermalSpringState {
-  springs: GeothermalSpring[]
-  activeSpringId: string | null
-  showTemperature: boolean
-  showFlowRate: boolean
-  showMineralContent: boolean
-  showSeismicActivity: boolean
-  open: boolean
-  tempFilter: 'all' | 'low' | 'medium' | 'high' | 'extreme'
-}
-
-// Task 67: Asteroid Impact Risk Mapper
-export interface NearEarthObject {
-  id: string
-  name: string
-  diameter: number
-  velocity: number
-  missDistance: number
-  hazardScore: number
-  approachDate: string
-  latitude: number
-  longitude: number
-}
-
-export interface AsteroidImpactState {
-  objects: NearEarthObject[]
-  activeObjectId: string | null
-  showTrajectory: boolean
-  showHazardScore: boolean
-  showSizeComparison: boolean
-  open: boolean
-  hazardFilter: 'all' | 'low' | 'moderate' | 'high' | 'critical'
-}
-
-// Task 67: Desert Oasis Monitor
-export interface DesertOasis {
-  id: string
-  name: string
-  waterLevel: number
-  salinity: number
-  vegetationIndex: number
-  areaChange: number
-  temperature: number
-  latitude: number
-  longitude: number
-}
-
-export interface DesertOasisState {
-  oases: DesertOasis[]
-  activeOasisId: string | null
-  showWaterLevel: boolean
-  showSalinity: boolean
-  showVegetation: boolean
-  showAreaChange: boolean
-  open: boolean
-  healthFilter: 'all' | 'thriving' | 'stable' | 'declining' | 'critical'
-}
-
-// Task 67: Volcanic Lightning Tracker
-export interface VolcanicLightning {
-  id: string
-  volcanoName: string
-  strikeCount: number
-  frequency: number
-  ashCloudHeight: number
-  eruptionIntensity: number
-  lastStrike: string
-  latitude: number
-  longitude: number
-}
-
-export interface VolcanicLightningState {
-  strikes: VolcanicLightning[]
-  activeStrikeId: string | null
-  showFrequency: boolean
-  showAshHeight: boolean
-  showEruptionIntensity: boolean
-  showStrikeCount: boolean
-  open: boolean
-  intensityFilter: 'all' | 'low' | 'moderate' | 'high' | 'extreme'
-}
-
-// Task 67: Ice Core Data Explorer
-export interface IceCoreSample {
-  id: string
-  name: string
-  depth: number
-  age: number
-  co2Level: number
-  temperature: number
-  dustConcentration: number
-  latitude: number
-  longitude: number
-}
-
-export interface IceCoreDataState {
-  samples: IceCoreSample[]
-  activeSampleId: string | null
-  showCO2: boolean
-  showTemperature: boolean
-  showDust: boolean
-  showDepth: boolean
-  open: boolean
-  ageFilter: 'all' | 'holocene' | 'pleistocene' | 'pliocene' | 'miocene'
-}
-
-// Task 67: Stratospheric Aerosol Monitor
-export interface AerosolLayer {
-  id: string
-  name: string
-  altitude: number
-  opticalDepth: number
-  composition: string
-  coverage: number
-  radiativeEffect: number
-  latitude: number
-  longitude: number
-}
-
-export interface StratosphericAerosolState {
-  layers: AerosolLayer[]
-  activeLayerId: string | null
-  showOpticalDepth: boolean
-  showAltitude: boolean
-  showCoverage: boolean
-  showRadiativeEffect: boolean
-  open: boolean
-  compositionFilter: 'all' | 'sulfate' | 'volcanic' | 'dust' | 'biomass'
-}
-
-// Task 67: Megacity Carbon Footprint
-export interface MegacityEmission {
-  id: string
-  name: string
-  population: number
-  co2Emissions: number
-  methaneEmissions: number
-  transportShare: number
-  energyShare: number
-  industrialShare: number
-  latitude: number
-  longitude: number
-}
-
-export interface MegacityCarbonState {
-  cities: MegacityEmission[]
-  activeCityId: string | null
-  showCO2: boolean
-  showMethane: boolean
-  showTransportShare: boolean
-  showEnergyShare: boolean
-  open: boolean
-  emissionFilter: 'all' | 'low' | 'moderate' | 'high' | 'very-high'
-}
-
-// Task 67: Ocean Mesoscale Eddy Tracker
-export interface MesoscaleEddy {
-  id: string
-  name: string
-  eddyType: 'cyclonic' | 'anticyclonic'
-  radius: number
-  maxVelocity: number
-  temperatureAnomaly: number
-  lifetime: number
-  latitude: number
-  longitude: number
-}
-
-export interface OceanEddyState {
-  eddies: MesoscaleEddy[]
-  activeEddyId: string | null
-  showRadius: boolean
-  showVelocity: boolean
-  showTempAnomaly: boolean
-  showLifetime: boolean
-  open: boolean
-  typeFilter: 'all' | 'cyclonic' | 'anticyclonic'
-}
-
-// Task 68: New monitoring interfaces
-export interface SupervolcanoState {
-  volcanoes: SupervolcanoData[]
-  activeVolcanoId: string | null
-  showCaldera: boolean
-  showMagmaChamber: boolean
-  showGroundDeformation: boolean
-  showThermalAnomaly: boolean
-  open: boolean
-  statusFilter: 'all' | 'dormant' | 'unrest' | 'elevated' | 'critical'
-}
-
-export interface SupervolcanoData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  calderaDiameter: number
-  magmaChamberDepth: number
-  groundDeformation: number
-  thermalAnomaly: number
-  lastEruption: string
-  vei: number
-  status: 'dormant' | 'unrest' | 'elevated' | 'critical'
-  description: string
-}
-
-export interface PolarVortexState {
-  vortices: PolarVortexData[]
-  activeVortexId: string | null
-  showWindSpeed: boolean
-  showTemperature: boolean
-  showOzoneLevel: boolean
-  showJetStream: boolean
-  open: boolean
-  hemisphereFilter: 'all' | 'arctic' | 'antarctic'
-}
-
-export interface PolarVortexData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  windSpeed: number
-  temperature: number
-  ozoneLevel: number
-  jetStreamSpeed: number
-  vortexStrength: number
-  displacement: number
-  status: 'stable' | 'weakening' | 'displaced' | 'split' | 'collapsed'
-  description: string
-}
-
-export interface KarstAquiferState {
-  aquifers: KarstAquiferData[]
-  activeAquiferId: string | null
-  showWaterTable: boolean
-  showConduitFlow: boolean
-  showRechargeZone: boolean
-  showWaterQuality: boolean
-  open: boolean
-  typeFilter: 'all' | 'carbonate' | 'evaporite' | 'volcanic' | 'silicate'
-}
-
-export interface KarstAquiferData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  waterTableDepth: number
-  conduitFlowRate: number
-  rechargeRate: number
-  waterQualityIndex: number
-  saturationIndex: number
-  status: 'pristine' | 'good' | 'moderate' | 'degraded' | 'critical'
-  description: string
-}
-
-export interface SubductionZoneState {
-  zones: SubductionZoneData[]
-  activeZoneId: string | null
-  showSeismicity: boolean
-  showSlipRate: boolean
-  showCoupling: boolean
-  showTremorActivity: boolean
-  open: boolean
-  typeFilter: 'all' | 'oceanic_oceanic' | 'oceanic_continental' | 'continental_continental'
-}
-
-export interface SubductionZoneData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  seismicity: number
-  slipRate: number
-  couplingRatio: number
-  tremorCount: number
-  maxDepth: number
-  convergenceRate: number
-  status: 'locked' | 'creeping' | 'partial_lock' | 'tremor_swarm' | 'megathrust'
-  description: string
-}
-
-export interface TropopauseState {
-  stations: TropopauseData[]
-  activeStationId: string | null
-  showHeight: boolean
-  showTemperature: boolean
-  showOzoneConcentration: boolean
-  showPressure: boolean
-  open: boolean
-  regionFilter: 'all' | 'tropical' | 'midlatitude' | 'polar'
-}
-
-export interface TropopauseData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  height: number
-  temperature: number
-  ozoneConcentration: number
-  pressure: number
-  lapseRateTropopause: number
-  status: 'normal' | 'elevated' | 'depressed' | 'fold' | 'double'
-  description: string
-}
-
-export interface InvasiveSpeciesState {
-  species: InvasiveSpeciesData[]
-  activeSpeciesId: string | null
-  showSpread: boolean
-  showImpact: boolean
-  showControlEffort: boolean
-  showNativeDecline: boolean
-  open: boolean
-  categoryFilter: 'all' | 'plant' | 'animal' | 'aquatic' | 'insect' | 'pathogen'
-}
-
-export interface InvasiveSpeciesData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  spreadRate: number
-  impactScore: number
-  controlEffort: number
-  nativeDecline: number
-  introductionYear: number
-  status: 'contained' | 'spreading' | 'established' | 'widespread' | 'intractable'
-  description: string
-}
-
-export interface TundraCarbonState {
-  sites: TundraCarbonData[]
-  activeSiteId: string | null
-  showCarbonFlux: boolean
-  showPermafrostDepth: boolean
-  showVegetationIndex: boolean
-  showMethaneRelease: boolean
-  open: boolean
-  regionFilter: 'all' | 'arctic' | 'alpine' | 'antarctic'
-}
-
-export interface TundraCarbonData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  carbonFlux: number
-  permafrostDepth: number
-  vegetationIndex: number
-  methaneRelease: number
-  soilTemperature: number
-  status: 'sink' | 'neutral' | 'source' | 'accelerating' | 'runaway'
-  description: string
-}
-
-export interface MonsoonState {
-  systems: MonsoonData[]
-  activeSystemId: string | null
-  showPrecipitation: boolean
-  showWindPattern: boolean
-  showHumidity: boolean
-  showCloudCover: boolean
-  open: boolean
-  regionFilter: 'all' | 'asian' | 'african' | 'american' | 'australian'
-}
-
-export interface MonsoonData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  precipitation: number
-  windSpeed: number
-  humidity: number
-  cloudCover: number
-  onsetDate: string
-  status: 'pre_onset' | 'onset' | 'active' | 'break' | 'withdrawal'
-  description: string
-}
-
-// Task 69: New monitoring interfaces
-export interface LavaFlowState {
-  flows: LavaFlowData[]
-  activeFlowId: string | null
-  showFlowArea: boolean
-  showTemperature: boolean
-  showVelocity: boolean
-  showEffusionRate: boolean
-  open: boolean
-  typeFilter: 'all' | 'pahoehoe' | 'aa' | 'block' | 'pillow'
-}
-
-export interface LavaFlowData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  flowArea: number
-  temperature: number
-  velocity: number
-  effusionRate: number
-  viscosity: number
-  status: 'active' | 'creeping' | 'stalled' | 'cooling' | 'dormant'
-  description: string
-}
-
-export interface TidalEnergyState {
-  sites: TidalEnergyData[]
-  activeSiteId: string | null
-  showTidalRange: boolean
-  showCurrentSpeed: boolean
-  showPowerPotential: boolean
-  showEnvironmentalImpact: boolean
-  open: boolean
-  typeFilter: 'all' | 'barrage' | 'stream' | 'lagoon' | 'dynamic'
-}
-
-export interface TidalEnergyData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  tidalRange: number
-  currentSpeed: number
-  powerPotential: number
-  environmentalImpact: number
-  capacityFactor: number
-  status: 'operational' | 'pilot' | 'planned' | 'potential' | 'unsuitable'
-  description: string
-}
-
-export interface PeatFireState {
-  fires: PeatFireData[]
-  activeFireId: string | null
-  showBurnArea: boolean
-  showFireDepth: boolean
-  showEmissionRate: boolean
-  showSoilMoisture: boolean
-  open: boolean
-  typeFilter: 'all' | 'surface' | 'ground' | 'deep' | 'smoldering'
-}
-
-export interface PeatFireData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  burnArea: number
-  fireDepth: number
-  emissionRate: number
-  soilMoisture: number
-  peatDepth: number
-  status: 'active' | 'smoldering' | 'suppressed' | 'monitoring' | 'extinguished'
-  description: string
-}
-
-export interface CoralSpawnState {
-  reefs: CoralSpawnData[]
-  activeReefId: string | null
-  showSpawnIntensity: boolean
-  showWaterTemp: boolean
-  showLunarPhase: boolean
-  showLarvalDispersion: boolean
-  open: boolean
-  regionFilter: 'all' | 'pacific' | 'atlantic' | 'indian' | 'red_sea'
-}
-
-export interface CoralSpawnData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  spawnIntensity: number
-  waterTemp: number
-  lunarPhase: number
-  larvalDispersion: number
-  syncIndex: number
-  status: 'peak_spawn' | 'spawning' | 'pre_spawn' | 'post_spawn' | 'failed'
-  description: string
-}
-
-export interface GlacierCalvingState {
-  glaciers: GlacierCalvingData[]
-  activeGlacierId: string | null
-  showCalvingRate: boolean
-  showIceVelocity: boolean
-  showIceThickness: boolean
-  showSeismicActivity: boolean
-  open: boolean
-  typeFilter: 'all' | 'tidewater' | 'lake_terminating' | 'ice_shelf' | 'grounding_line'
-}
-
-export interface GlacierCalvingData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  calvingRate: number
-  iceVelocity: number
-  iceThickness: number
-  seismicActivity: number
-  retreatRate: number
-  status: 'advancing' | 'stable' | 'retreating' | 'rapid_retreat' | 'collapsing'
-  description: string
-}
-
-export interface SoilCarbonState {
-  sites: SoilCarbonData[]
-  activeSiteId: string | null
-  showCarbonStock: boolean
-  showOrganicMatter: boolean
-  showMicrobialActivity: boolean
-  showSequestrationRate: boolean
-  open: boolean
-  typeFilter: 'all' | 'agricultural' | 'forest' | 'grassland' | 'wetland'
-}
-
-export interface SoilCarbonData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  carbonStock: number
-  organicMatter: number
-  microbialActivity: number
-  sequestrationRate: number
-  bulkDensity: number
-  status: 'high_sequestration' | 'stable' | 'depleting' | 'degraded' | 'critical'
-  description: string
-}
-
-export interface UrbanTreeCanopyState {
-  zones: UrbanTreeCanopyData[]
-  activeZoneId: string | null
-  showCanopyCoverage: boolean
-  showTreeDensity: boolean
-  showAirQualityBenefit: boolean
-  showHeatReduction: boolean
-  open: boolean
-  typeFilter: 'all' | 'park' | 'street' | 'residential' | 'industrial'
-}
-
-export interface UrbanTreeCanopyData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  canopyCoverage: number
-  treeDensity: number
-  airQualityBenefit: number
-  heatReduction: number
-  biodiversityIndex: number
-  status: 'excellent' | 'good' | 'moderate' | 'poor' | 'critical'
-  description: string
-}
-
-export interface GeomagneticPoleState {
-  poles: GeomagneticPoleData[]
-  activePoleId: string | null
-  showDriftRate: boolean
-  showFieldStrength: boolean
-  showInclination: boolean
-  showDeclination: boolean
-  open: boolean
-  poleFilter: 'all' | 'north' | 'south'
-}
-
-export interface GeomagneticPoleData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  driftRate: number
-  fieldStrength: number
-  inclination: number
-  declination: number
-  historicalShift: number
-  status: 'stable' | 'shifting' | 'accelerating' | 'excursion' | 'reversal'
-  description: string
-}
-
-// Task 70: New monitoring interfaces
-export interface HydrothermalVentState {
-  vents: HydrothermalVentData[]
-  activeVentId: string | null
-  showTemperature: boolean
-  showFlowRate: boolean
-  showMineralDeposit: boolean
-  showBiodiversity: boolean
-  open: boolean
-  typeFilter: 'all' | 'black_smoker' | 'white_smoker' | 'diffuse' | 'shallow'
-}
-
-export interface HydrothermalVentData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  temperature: number
-  flowRate: number
-  mineralDeposit: number
-  biodiversity: number
-  depth: number
-  status: 'active' | 'waning' | 'dormant' | 'eruptive' | 'extinct'
-  description: string
-}
-
-export interface WatershedHealthState {
-  basins: WatershedHealthData[]
-  activeBasinId: string | null
-  showWaterQuality: boolean
-  showFlowRate: boolean
-  showSedimentLoad: boolean
-  showEcologicalHealth: boolean
-  open: boolean
-  typeFilter: 'all' | 'mountain' | 'plain' | 'coastal' | 'urban'
-}
-
-export interface WatershedHealthData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  waterQuality: number
-  flowRate: number
-  sedimentLoad: number
-  ecologicalHealth: number
-  drainageArea: number
-  status: 'pristine' | 'good' | 'moderate' | 'degraded' | 'critical'
-  description: string
-}
-
-export interface MigratoryFlywayState {
-  flyways: MigratoryFlywayData[]
-  activeFlywayId: string | null
-  showPopulation: boolean
-  showArrivalDate: boolean
-  showThreatLevel: boolean
-  showHabitatQuality: boolean
-  open: boolean
-  typeFilter: 'all' | 'land_bird' | 'waterfowl' | 'shorebird' | 'raptor'
-}
-
-export interface MigratoryFlywayData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  population: number
-  arrivalDate: string
-  threatLevel: number
-  habitatQuality: number
-  migrationDistance: number
-  status: 'peak' | 'active' | 'arriving' | 'departing' | 'declining'
-  description: string
-}
-
-export interface SeagrassMeadowState {
-  meadows: SeagrassMeadowData[]
-  activeMeadowId: string | null
-  showCoverage: boolean
-  showCarbonStock: boolean
-  showWaterClarity: boolean
-  showHealthStatus: boolean
-  open: boolean
-  speciesFilter: 'all' | 'posidonia' | 'zostera' | 'thalassia' | 'cymodocea'
-}
-
-export interface SeagrassMeadowData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  coverage: number
-  carbonStock: number
-  waterClarity: number
-  shootDensity: number
-  depthRange: number
-  status: 'excellent' | 'good' | 'moderate' | 'declining' | 'critical'
-  description: string
-}
-
-export interface UrbanHeatIslandDetailState {
-  zones: UrbanHeatIslandDetailData[]
-  activeZoneId: string | null
-  showTemperatureDelta: boolean
-  showVegetationCover: boolean
-  showAlbedo: boolean
-  showVulnerability: boolean
-  open: boolean
-  zoneFilter: 'all' | 'downtown' | 'industrial' | 'residential' | 'suburban'
-}
-
-export interface UrbanHeatIslandDetailData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  temperatureDelta: number
-  vegetationCover: number
-  albedo: number
-  vulnerability: number
-  populationDensity: number
-  status: 'severe' | 'high' | 'moderate' | 'low' | 'minimal'
-  description: string
-}
-
-export interface OceanAcidificationDetailState {
-  stations: OceanAcidificationDetailData[]
-  activeStationId: string | null
-  showPH: boolean
-  showAragonite: boolean
-  showPCO2: boolean
-  showSaturationState: boolean
-  open: boolean
-  regionFilter: 'all' | 'pacific' | 'atlantic' | 'arctic' | 'coastal'
-}
-
-export interface OceanAcidificationDetailData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  ph: number
-  aragonite: number
-  pco2: number
-  saturationState: number
-  shellGrowthRate: number
-  status: 'critical' | 'severe' | 'elevated' | 'moderate' | 'normal'
-  description: string
-}
-
-export interface DesertificationDetailState {
-  regions: DesertificationDetailData[]
-  activeRegionId: string | null
-  showVegetationIndex: boolean
-  showSoilMoisture: boolean
-  showWindErosion: boolean
-  showDroughtIndex: boolean
-  open: boolean
-  severityFilter: 'all' | 'slight' | 'moderate' | 'severe' | 'very_severe'
-}
-
-export interface DesertificationDetailData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  vegetationIndex: number
-  soilMoisture: number
-  windErosion: number
-  droughtIndex: number
-  landDegradation: number
-  status: 'slight' | 'moderate' | 'severe' | 'very_severe' | 'extreme'
-  description: string
-}
-
-export interface VolcanicGasTrackerState {
-  volcanoes: VolcanicGasTrackerData[]
-  activeVolcanoId: string | null
-  showSO2: boolean
-  showCO2: boolean
-  showH2S: boolean
-  showPlumeHeight: boolean
-  open: boolean
-  gasFilter: 'all' | 'so2_dominated' | 'co2_dominated' | 'h2s_dominated' | 'mixed'
-}
-
-export interface VolcanicGasTrackerData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  so2: number
-  co2: number
-  h2s: number
-  plumeHeight: number
-  hazardLevel: number
-  status: 'normal' | 'elevated' | 'high' | 'critical' | 'eruptive'
-  description: string
-}
-
-// Task 71: New monitoring interfaces
-
-export interface DeepOceanCurrentState {
-  currents: DeepOceanCurrentData[]
-  activeCurrentId: string | null
-  showTemperature: boolean
-  showSalinity: boolean
-  showVelocity: boolean
-  showVolume: boolean
-  open: boolean
-  typeFilter: 'all' | 'thermohaline' | 'wind_driven' | 'tidal' | 'boundary'
-}
-
-export interface DeepOceanCurrentData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  temperature: number
-  salinity: number
-  velocity: number
-  volume: number
-  depth: number
-  status: 'strong' | 'moderate' | 'weakening' | 'slowing' | 'collapsed'
-  description: string
-}
-
-export interface StratosphericOzoneState {
-  regions: StratosphericOzoneData[]
-  activeRegionId: string | null
-  showOzoneColumn: boolean
-  showUVIndex: boolean
-  showTemperature: boolean
-  showTrend: boolean
-  open: boolean
-  regionFilter: 'all' | 'polar' | 'mid_latitude' | 'tropical' | 'subpolar'
-}
-
-export interface StratosphericOzoneData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  ozoneColumn: number
-  uvIndex: number
-  temperature: number
-  trend: number
-  chlorofluorocarbon: number
-  status: 'recovering' | 'stable' | 'declining' | 'severe' | 'critical'
-  description: string
-}
-
-export interface SeismicHarmonicState {
-  stations: SeismicHarmonicData[]
-  activeStationId: string | null
-  showAmplitude: boolean
-  showFrequency: boolean
-  showDuration: boolean
-  showDepth: boolean
-  open: boolean
-  typeFilter: 'all' | 'volcanic' | 'tectonic' | 'hydrothermal' | 'induced'
-}
-
-export interface SeismicHarmonicData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  amplitude: number
-  frequency: number
-  duration: number
-  depth: number
-  eventCount: number
-  status: 'quiet' | 'low' | 'elevated' | 'harmonic' | 'eruptive'
-  description: string
-}
-
-export interface WildfireSmokeState {
-  plumes: WildfireSmokeData[]
-  activePlumeId: string | null
-  showAOD: boolean
-  showPM25: boolean
-  showPlumeHeight: boolean
-  showDispersion: boolean
-  open: boolean
-  severityFilter: 'all' | 'clear' | 'light' | 'moderate' | 'heavy' | 'hazardous'
-}
-
-export interface WildfireSmokeData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  aod: number
-  pm25: number
-  plumeHeight: number
-  dispersion: number
-  fireArea: number
-  status: 'clear' | 'light' | 'moderate' | 'heavy' | 'hazardous'
-  description: string
-}
-
-export interface EstuaryHealthState {
-  estuaries: EstuaryHealthData[]
-  activeEstuaryId: string | null
-  showWaterQuality: boolean
-  showBiodiversity: boolean
-  showSediment: boolean
-  showNutrientLoad: boolean
-  open: boolean
-  typeFilter: 'all' | 'drowned_valley' | 'bar_built' | 'tectonic' | 'fjord'
-}
-
-export interface EstuaryHealthData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  waterQuality: number
-  biodiversity: number
-  sediment: number
-  nutrientLoad: number
-  tidalRange: number
-  status: 'pristine' | 'good' | 'moderate' | 'degraded' | 'critical'
-  description: string
-}
-
-export interface AlpineGlacierState {
-  glaciers: AlpineGlacierData[]
-  activeGlacierId: string | null
-  showMassBalance: boolean
-  showVelocity: boolean
-  showArea: boolean
-  showLength: boolean
-  open: boolean
-  typeFilter: 'all' | 'valley' | 'cirque' | 'hanging' | 'piedmont'
-}
-
-export interface AlpineGlacierData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  massBalance: number
-  velocity: number
-  area: number
-  length: number
-  elevation: number
-  status: 'advancing' | 'stable' | 'retreating' | 'rapid_retreat' | 'gone'
-  description: string
-}
-
-export interface OceanAnoxicZoneState {
-  zones: OceanAnoxicZoneData[]
-  activeZoneId: string | null
-  showOxygenLevel: boolean
-  showNitrate: boolean
-  showSulfide: boolean
-  showThickness: boolean
-  open: boolean
-  severityFilter: 'all' | 'healthy' | 'mild_depletion' | 'moderate' | 'severe' | 'anoxic'
-}
-
-export interface OceanAnoxicZoneData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  oxygenLevel: number
-  nitrate: number
-  sulfide: number
-  thickness: number
-  depth: number
-  status: 'healthy' | 'mild_depletion' | 'moderate' | 'severe' | 'anoxic'
-  description: string
-}
-
-export interface PermafrostCarbonFeedbackState {
-  sites: PermafrostCarbonFeedbackData[]
-  activeSiteId: string | null
-  showThawDepth: boolean
-  showCarbonStock: boolean
-  showMethaneRelease: boolean
-  showTemperature: boolean
-  open: boolean
-  severityFilter: 'all' | 'frozen' | 'thawing' | 'active_thaw' | 'accelerating' | 'runaway'
-}
-
-export interface PermafrostCarbonFeedbackData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  thawDepth: number
-  carbonStock: number
-  methaneRelease: number
-  temperature: number
-  iceContent: number
-  status: 'frozen' | 'thawing' | 'active_thaw' | 'accelerating' | 'runaway'
-  description: string
-}
-
-// Task 72: New monitoring interfaces
-
-export interface TropicalCycloneState {
-  cyclones: TropicalCycloneData[]
-  activeCycloneId: string | null
-  showWindSpeed: boolean
-  showPressure: boolean
-  showRainfall: boolean
-  showStormSurge: boolean
-  open: boolean
-  categoryFilter: 'all' | 'tropical_depression' | 'tropical_storm' | 'category_1_2' | 'category_3_5'
-}
-
-export interface TropicalCycloneData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  windSpeed: number
-  pressure: number
-  rainfall: number
-  stormSurge: number
-  forwardSpeed: number
-  status: 'forming' | 'strengthening' | 'peak' | 'weakening' | 'dissipating'
-  description: string
-}
-
-export interface VolcanicDeformationState {
-  volcanoes: VolcanicDeformationData[]
-  activeVolcanoId: string | null
-  showUplift: boolean
-  showHorizontal: boolean
-  showTilt: boolean
-  showStrainRate: boolean
-  open: boolean
-  typeFilter: 'all' | 'inflation' | 'deflation' | 'complex' | 'stable'
-}
-
-export interface VolcanicDeformationData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  uplift: number
-  horizontal: number
-  tilt: number
-  strainRate: number
-  magmaDepth: number
-  status: 'inflating' | 'deflating' | 'complex' | 'stable' | 'erupting'
-  description: string
-}
-
-export interface CoralReefBleachingDetailState {
-  reefs: CoralReefBleachingDetailData[]
-  activeReefId: string | null
-  showBleachingPercent: boolean
-  showSST: boolean
-  showRecovery: boolean
-  showStressLevel: boolean
-  open: boolean
-  severityFilter: 'all' | 'mild' | 'moderate' | 'severe' | 'extreme'
-}
-
-export interface CoralReefBleachingDetailData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  bleachingPercent: number
-  sst: number
-  recovery: number
-  stressLevel: number
-  diversity: number
-  status: 'healthy' | 'mild' | 'moderate' | 'severe' | 'extreme'
-  description: string
-}
-
-export interface ArcticPermafrostLakesState {
-  lakes: ArcticPermafrostLakesData[]
-  activeLakeId: string | null
-  showArea: boolean
-  showDepth: boolean
-  showThawRate: boolean
-  showMethane: boolean
-  open: boolean
-  typeFilter: 'all' | 'thermokarst' | 'ice_wedge' | 'oriented' | 'drained'
-}
-
-export interface ArcticPermafrostLakesData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  area: number
-  depth: number
-  thawRate: number
-  methane: number
-  iceContent: number
-  status: 'stable' | 'expanding' | 'draining' | 'shrinking' | 'collapsed'
-  description: string
-}
-
-export interface MethaneEmissionHotspotState {
-  hotspots: MethaneEmissionHotspotData[]
-  activeHotspotId: string | null
-  showEmissionRate: boolean
-  showConcentration: boolean
-  showSource: boolean
-  showTrend: boolean
-  open: boolean
-  sourceFilter: 'all' | 'wetland' | 'fossil_fuel' | 'agriculture' | 'landfill'
-}
-
-export interface MethaneEmissionHotspotData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  emissionRate: number
-  concentration: number
-  source: number
-  trend: number
-  uncertainty: number
-  status: 'low' | 'moderate' | 'elevated' | 'high' | 'critical'
-  description: string
-}
-
-export interface CoastalUpwellingState {
-  zones: CoastalUpwellingData[]
-  activeZoneId: string | null
-  showSST: boolean
-  showNutrientLevel: boolean
-  showProductivity: boolean
-  showWindStress: boolean
-  open: boolean
-  typeFilter: 'all' | 'eastern_boundary' | 'equatorial' | 'coastal_jet' | 'wind_driven'
-}
-
-export interface CoastalUpwellingData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  sst: number
-  nutrientLevel: number
-  productivity: number
-  windStress: number
-  chlorophyll: number
-  status: 'strong' | 'moderate' | 'weak' | 'fading' | 'absent'
-  description: string
-}
-
-export interface SpaceDebrisOrbitState {
-  objects: SpaceDebrisOrbitData[]
-  activeObjectId: string | null
-  showAltitude: boolean
-  showVelocity: boolean
-  showCollisionRisk: boolean
-  showDecayRate: boolean
-  open: boolean
-  typeFilter: 'all' | 'debris' | 'defunct_satellite' | 'rocket_body' | 'fragment'
-}
-
-export interface SpaceDebrisOrbitData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  altitude: number
-  velocity: number
-  collisionRisk: number
-  decayRate: number
-  size: number
-  status: 'stable' | 'drifting' | 'decaying' | 'high_risk' | 'reentry_imminent'
-  description: string
-}
-
-export interface TectonicPlateBoundaryState {
-  boundaries: TectonicPlateBoundaryData[]
-  activeBoundaryId: string | null
-  showVelocity: boolean
-  showStress: boolean
-  showSeismicity: boolean
-  showSlipRate: boolean
-  open: boolean
-  typeFilter: 'all' | 'convergent' | 'divergent' | 'transform' | 'complex'
-}
-
-export interface TectonicPlateBoundaryData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  velocity: number
-  stress: number
-  seismicity: number
-  slipRate: number
-  maxDepth: number
-  status: 'locked' | 'creeping' | 'partial_lock' | 'tremor_swarm' | 'rupturing'
-  description: string
-}
-
-// Task 73: New monitoring interfaces
-
-export interface LandslideSusceptibilityState {
-  zones: LandslideSusceptibilityData[]
-  activeZoneId: string | null
-  showSlopeAngle: boolean
-  showSoilMoisture: boolean
-  showVegetation: boolean
-  showRainfall: boolean
-  open: boolean
-  riskFilter: 'all' | 'very_low' | 'low' | 'moderate' | 'high' | 'very_high'
-}
-
-export interface LandslideSusceptibilityData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  slopeAngle: number
-  soilMoisture: number
-  vegetation: number
-  rainfall: number
-  population: number
-  status: 'very_low' | 'low' | 'moderate' | 'high' | 'very_high'
-  description: string
-}
-
-export interface SolarFlareActivityState {
-  events: SolarFlareActivityData[]
-  activeEventId: string | null
-  showXRay: boolean
-  showProton: boolean
-  showRadio: boolean
-  showCoronalMass: boolean
-  open: boolean
-  classFilter: 'all' | 'A_B' | 'C' | 'M' | 'X'
-}
-
-export interface SolarFlareActivityData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  xRay: number
-  proton: number
-  radio: number
-  coronalMass: number
-  sunspotArea: number
-  status: 'quiet' | 'minor' | 'moderate' | 'strong' | 'extreme'
-  description: string
-}
-
-export interface RiverDeltaErosionState {
-  deltas: RiverDeltaErosionData[]
-  activeDeltaId: string | null
-  showErosionRate: boolean
-  showSedimentSupply: boolean
-  showSeaLevel: boolean
-  showLandLoss: boolean
-  open: boolean
-  severityFilter: 'all' | 'stable' | 'slow' | 'moderate' | 'rapid' | 'critical'
-}
-
-export interface RiverDeltaErosionData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  erosionRate: number
-  sedimentSupply: number
-  seaLevel: number
-  landLoss: number
-  subsidence: number
-  status: 'stable' | 'slow' | 'moderate' | 'rapid' | 'critical'
-  description: string
-}
-
-export interface SeaIceThicknessState {
-  regions: SeaIceThicknessData[]
-  activeRegionId: string | null
-  showThickness: boolean
-  showConcentration: boolean
-  showExtent: boolean
-  showAge: boolean
-  open: boolean
-  typeFilter: 'all' | 'first_year' | 'multi_year' | 'fast_ice' | 'pack_ice'
-}
-
-export interface SeaIceThicknessData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  thickness: number
-  concentration: number
-  extent: number
-  age: number
-  snowDepth: number
-  status: 'growing' | 'stable' | 'thinning' | 'rapid_thinning' | 'gone'
-  description: string
-}
-
-export interface UrbanAirQualityState {
-  cities: UrbanAirQualityData[]
-  activeCityId: string | null
-  showAQI: boolean
-  showPM25: boolean
-  showNO2: boolean
-  showO3: boolean
-  open: boolean
-  qualityFilter: 'all' | 'good' | 'moderate' | 'unhealthy' | 'very_unhealthy' | 'hazardous'
-}
-
-export interface UrbanAirQualityData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  aqi: number
-  pm25: number
-  no2: number
-  o3: number
-  so2: number
-  status: 'good' | 'moderate' | 'unhealthy' | 'very_unhealthy' | 'hazardous'
-  description: string
-}
-
-export interface GeothermalEnergyState {
-  plants: GeothermalEnergyData[]
-  activePlantId: string | null
-  showOutput: boolean
-  showTemperature: boolean
-  showFlowRate: boolean
-  showEfficiency: boolean
-  open: boolean
-  typeFilter: 'all' | 'dry_steam' | 'flash' | 'binary' | 'enhanced'
-}
-
-export interface GeothermalEnergyData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  output: number
-  temperature: number
-  flowRate: number
-  efficiency: number
-  reservoirDepth: number
-  status: 'optimal' | 'good' | 'moderate' | 'declining' | 'depleted'
-  description: string
-}
-
-export interface AquiferSalinizationState {
-  aquifers: AquiferSalinizationData[]
-  activeAquiferId: string | null
-  showSalinity: boolean
-  showChloride: boolean
-  showWaterLevel: boolean
-  showIntrusion: boolean
-  open: boolean
-  severityFilter: 'all' | 'fresh' | 'slight' | 'moderate' | 'severe' | 'hypersaline'
-}
-
-export interface AquiferSalinizationData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  salinity: number
-  chloride: number
-  waterLevel: number
-  intrusion: number
-  depth: number
-  status: 'fresh' | 'slight' | 'moderate' | 'severe' | 'hypersaline'
-  description: string
-}
-
-export interface BiomassBurningState {
-  regions: BiomassBurningData[]
-  activeRegionId: string | null
-  showFireCount: boolean
-  showBurnedArea: boolean
-  showEmissions: boolean
-  showSmoke: boolean
-  open: boolean
-  typeFilter: 'all' | 'forest' | 'savanna' | 'agricultural' | 'peat'
-}
-
-export interface BiomassBurningData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  fireCount: number
-  burnedArea: number
-  emissions: number
-  smoke: number
-  intensity: number
-  status: 'minimal' | 'low' | 'moderate' | 'high' | 'extreme'
-  description: string
-}
-
-// Task 74: New monitoring interfaces
-
-export interface GlacialLakeOutburstState {
-  lakes: GlacialLakeOutburstData[]
-  activeLakeId: string | null
-  showWaterLevel: boolean
-  showDamStability: boolean
-  showFloodPotential: boolean
-  showDownstreamRisk: boolean
-  open: boolean
-  riskFilter: 'all' | 'low' | 'moderate' | 'high' | 'very_high' | 'imminent'
-}
-
-export interface GlacialLakeOutburstData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  waterLevel: number
-  damStability: number
-  floodPotential: number
-  downstreamRisk: number
-  lakeArea: number
-  status: 'low' | 'moderate' | 'high' | 'very_high' | 'imminent'
-  description: string
-}
-
-export interface OceanMicroplasticState {
-  zones: OceanMicroplasticData[]
-  activeZoneId: string | null
-  showConcentration: boolean
-  showParticleSize: boolean
-  showDepth: boolean
-  showAccumulation: boolean
-  open: boolean
-  typeFilter: 'all' | 'gyre' | 'coastal' | 'river_mouth' | 'deep_ocean'
-}
-
-export interface OceanMicroplasticData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  concentration: number
-  particleSize: number
-  depth: number
-  accumulation: number
-  sourceDistance: number
-  status: 'low' | 'moderate' | 'elevated' | 'high' | 'extreme'
-  description: string
-}
-
-export interface VolcanicAshDispersionState {
-  clouds: VolcanicAshDispersionData[]
-  activeCloudId: string | null
-  showAshColumn: boolean
-  showDispersion: boolean
-  showAviationRisk: boolean
-  showFallout: boolean
-  open: boolean
-  severityFilter: 'all' | 'advisory' | 'warning' | 'critical' | 'catastrophic'
-}
-
-export interface VolcanicAshDispersionData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  ashColumn: number
-  dispersion: number
-  aviationRisk: number
-  fallout: number
-  so2Mass: number
-  status: 'advisory' | 'warning' | 'critical' | 'catastrophic'
-  description: string
-}
-
-export interface DroughtSeverityState {
-  regions: DroughtSeverityData[]
-  activeRegionId: string | null
-  showSPI: boolean
-  showSoilMoisture: boolean
-  showVegetation: boolean
-  showWaterStress: boolean
-  open: boolean
-  severityFilter: 'all' | 'abnormally_dry' | 'moderate' | 'severe' | 'extreme' | 'exceptional'
-}
-
-export interface DroughtSeverityData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  spi: number
-  soilMoisture: number
-  vegetation: number
-  waterStress: number
-  reservoirLevel: number
-  status: 'abnormally_dry' | 'moderate' | 'severe' | 'extreme' | 'exceptional'
-  description: string
-}
-
-export interface TsunamiWaveHeightState {
-  events: TsunamiWaveHeightData[]
-  activeEventId: string | null
-  showWaveHeight: boolean
-  showArrivalTime: boolean
-  showInundation: boolean
-  showCurrentSpeed: boolean
-  open: boolean
-  severityFilter: 'all' | 'advisory' | 'watch' | 'warning' | 'major'
-}
-
-export interface TsunamiWaveHeightData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  waveHeight: number
-  arrivalTime: number
-  inundation: number
-  currentSpeed: number
-  magnitude: number
-  status: 'advisory' | 'watch' | 'warning' | 'major'
-  description: string
-}
-
-export interface CaveEcosystemState {
-  caves: CaveEcosystemData[]
-  activeCaveId: string | null
-  showBiodiversity: boolean
-  showTemperature: boolean
-  showHumidity: boolean
-  showWaterQuality: boolean
-  open: boolean
-  typeFilter: 'all' | 'limestone' | 'lava_tube' | 'ice' | 'sea'
-}
-
-export interface CaveEcosystemData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  biodiversity: number
-  temperature: number
-  humidity: number
-  waterQuality: number
-  depth: number
-  status: 'pristine' | 'good' | 'moderate' | 'degraded' | 'critical'
-  description: string
-}
-
-export interface SolarIrradianceState {
-  stations: SolarIrradianceData[]
-  activeStationId: string | null
-  showGHI: boolean
-  showDNI: boolean
-  showDHI: boolean
-  showUVIndex: boolean
-  open: boolean
-  regionFilter: 'all' | 'desert' | 'tropical' | 'temperate' | 'polar'
-}
-
-export interface SolarIrradianceData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  ghi: number
-  dni: number
-  dhi: number
-  uvIndex: number
-  cloudCover: number
-  status: 'excellent' | 'good' | 'moderate' | 'low' | 'minimal'
-  description: string
-}
-
-export interface PeatlandRestorationState {
-  sites: PeatlandRestorationData[]
-  activeSiteId: string | null
-  showWaterTable: boolean
-  showVegetation: boolean
-  showCarbonStock: boolean
-  showRestorationProgress: boolean
-  open: boolean
-  statusFilter: 'all' | 'pristine' | 'degraded' | 'restoring' | 'restored' | 'failed'
-}
-
-export interface PeatlandRestorationData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  waterTable: number
-  vegetation: number
-  carbonStock: number
-  restorationProgress: number
-  area: number
-  status: 'pristine' | 'degraded' | 'restoring' | 'restored' | 'failed'
-  description: string
-}
-
-// Task 75: New monitoring interfaces
-
-export interface MangroveCarbonState {
-  forests: MangroveCarbonData[]
-  activeForestId: string | null
-  showCarbonStock: boolean
-  showArea: boolean
-  showDegradation: boolean
-  showRestoration: boolean
-  open: boolean
-  speciesFilter: 'all' | 'rhizophora' | 'avicennia' | 'sonneratia' | 'mixed'
-}
-
-export interface MangroveCarbonData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  carbonStock: number
-  area: number
-  degradation: number
-  restoration: number
-  biodiversity: number
-  status: 'excellent' | 'good' | 'moderate' | 'degraded' | 'critical'
-  description: string
-}
-
-export interface OceanHeatContentState {
-  basins: OceanHeatContentData[]
-  activeBasinId: string | null
-  showHeatContent: boolean
-  showTemperature: boolean
-  showSalinity: boolean
-  showTrend: boolean
-  open: boolean
-  depthFilter: 'all' | 'surface' | 'thermocline' | 'intermediate' | 'deep'
-}
-
-export interface OceanHeatContentData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  heatContent: number
-  temperature: number
-  salinity: number
-  trend: number
-  stratification: number
-  status: 'cooling' | 'stable' | 'warming' | 'rapid_warming' | 'extreme_warming'
-  description: string
-}
-
-export interface DustStormTrackerState {
-  storms: DustStormTrackerData[]
-  activeStormId: string | null
-  showAOD: boolean
-  showWindSpeed: boolean
-  showVisibility: boolean
-  showPM10: boolean
-  open: boolean
-  severityFilter: 'all' | 'light' | 'moderate' | 'heavy' | 'severe' | 'catastrophic'
-}
-
-export interface DustStormTrackerData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  aod: number
-  windSpeed: number
-  visibility: number
-  pm10: number
-  duration: number
-  status: 'light' | 'moderate' | 'heavy' | 'severe' | 'catastrophic'
-  description: string
-}
-
-export interface CoralDiseaseMonitorState {
-  reefs: CoralDiseaseMonitorData[]
-  activeReefId: string | null
-  showPrevalence: boolean
-  showWhiteSyndrome: boolean
-  showBlackBand: boolean
-  showRecoveryRate: boolean
-  open: boolean
-  diseaseFilter: 'all' | 'white_syndrome' | 'black_band' | 'yellow_band' | 'tumor'
-}
-
-export interface CoralDiseaseMonitorData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  prevalence: number
-  whiteSyndrome: number
-  blackBand: number
-  recoveryRate: number
-  waterTemp: number
-  status: 'healthy' | 'low' | 'moderate' | 'high' | 'epidemic'
-  description: string
-}
-
-export interface IceShelfCollapseState {
-  shelves: IceShelfCollapseData[]
-  activeShelfId: string | null
-  showArea: boolean
-  showThickness: boolean
-  showFracture: boolean
-  showMeltRate: boolean
-  open: boolean
-  stabilityFilter: 'all' | 'stable' | 'weakening' | 'fracturing' | 'collapsing' | 'collapsed'
-}
-
-export interface IceShelfCollapseData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  area: number
-  thickness: number
-  fracture: number
-  meltRate: number
-  buttressing: number
-  status: 'stable' | 'weakening' | 'fracturing' | 'collapsing' | 'collapsed'
-  description: string
-}
-
-export interface UrbanFloodRiskState {
-  zones: UrbanFloodRiskData[]
-  activeZoneId: string | null
-  showImpervious: boolean
-  showDrainage: boolean
-  showElevation: boolean
-  showHistorical: boolean
-  open: boolean
-  riskFilter: 'all' | 'minimal' | 'low' | 'moderate' | 'high' | 'extreme'
-}
-
-export interface UrbanFloodRiskData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  impervious: number
-  drainage: number
-  elevation: number
-  historical: number
-  population: number
-  status: 'minimal' | 'low' | 'moderate' | 'high' | 'extreme'
-  description: string
-}
-
-export interface PhytoplanktonBloomState {
-  blooms: PhytoplanktonBloomData[]
-  activeBloomId: string | null
-  showChlorophyll: boolean
-  showToxicity: boolean
-  showExtent: boolean
-  showDuration: boolean
-  open: boolean
-  speciesFilter: 'all' | 'karenia' | 'alexandrium' | 'pseudo_nitzschia' | 'microcystis'
-}
-
-export interface PhytoplanktonBloomData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  chlorophyll: number
-  toxicity: number
-  extent: number
-  duration: number
-  species: number
-  status: 'background' | 'bloom' | 'dense_bloom' | 'harmful' | 'severe_hab'
-  description: string
-}
-
-export interface SubmarineCanyonState {
-  canyons: SubmarineCanyonData[]
-  activeCanyonId: string | null
-  showDepth: boolean
-  showCurrentSpeed: boolean
-  showSediment: boolean
-  showBiodiversity: boolean
-  open: boolean
-  typeFilter: 'all' | 'river_originated' | 'shelf_incised' | 'slope' | 'blind'
-}
-
-export interface SubmarineCanyonData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  depth: number
-  currentSpeed: number
-  sediment: number
-  biodiversity: number
-  length: number
-  status: 'active' | 'moderate' | 'quiet' | 'dormant' | 'buried'
-  description: string
-}
-
-// Task 76: New monitoring interfaces
-
-export interface KelpForestMonitorState {
-  forests: KelpForestMonitorData[]
-  activeForestId: string | null
-  showCoverage: boolean
-  showBiomass: boolean
-  showWaterTemp: boolean
-  showBiodiversity: boolean
-  open: boolean
-  speciesFilter: 'all' | 'macrocystis' | 'laminaria' | 'ecklonia' | 'saccharina'
-}
-
-export interface KelpForestMonitorData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  coverage: number
-  biomass: number
-  waterTemp: number
-  biodiversity: number
-  depth: number
-  status: 'thriving' | 'stable' | 'declining' | 'severely_declining' | 'collapsed'
-  description: string
-}
-
-export interface VolcanicIslandFormationState {
-  islands: VolcanicIslandFormationData[]
-  activeIslandId: string | null
-  showElevation: boolean
-  showEruptionRate: boolean
-  showArea: boolean
-  showSubsidence: boolean
-  open: boolean
-  stageFilter: 'all' | 'emerging' | 'growing' | 'mature' | 'eroding' | 'submerged'
-}
-
-export interface VolcanicIslandFormationData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  elevation: number
-  eruptionRate: number
-  area: number
-  subsidence: number
-  age: number
-  status: 'emerging' | 'growing' | 'mature' | 'eroding' | 'submerged'
-  description: string
-}
-
-export interface SaltwaterIntrusionState {
-  zones: SaltwaterIntrusionData[]
-  activeZoneId: string | null
-  showChloride: boolean
-  showConductivity: boolean
-  showWaterTable: boolean
-  showIntrusionRate: boolean
-  open: boolean
-  severityFilter: 'all' | 'fresh' | 'slight' | 'moderate' | 'severe' | 'extreme'
-}
-
-export interface SaltwaterIntrusionData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  chloride: number
-  conductivity: number
-  waterTable: number
-  intrusionRate: number
-  pumpingRate: number
-  status: 'fresh' | 'slight' | 'moderate' | 'severe' | 'extreme'
-  description: string
-}
-
-export interface ArcticShippingRouteState {
-  routes: ArcticShippingRouteData[]
-  activeRouteId: string | null
-  showIceThickness: boolean
-  showNavigability: boolean
-  showTransitTime: boolean
-  showTraffic: boolean
-  open: boolean
-  routeFilter: 'all' | 'northern_sea' | 'northwest_passage' | 'transpolar' | 'coastal'
-}
-
-export interface ArcticShippingRouteData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  iceThickness: number
-  navigability: number
-  transitTime: number
-  traffic: number
-  iceFreeDays: number
-  status: 'closed' | 'restricted' | 'partial' | 'open' | 'increasing'
-  description: string
-}
-
-export interface ThermoclineDepthState {
-  stations: ThermoclineDepthData[]
-  activeStationId: string | null
-  showDepth: boolean
-  showGradient: boolean
-  showSST: boolean
-  showTrend: boolean
-  open: boolean
-  regionFilter: 'all' | 'tropical' | 'subtropical' | 'temperate' | 'polar'
-}
-
-export interface ThermoclineDepthData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  depth: number
-  gradient: number
-  sst: number
-  trend: number
-  stratification: number
-  status: 'deepening' | 'stable' | 'shallowing' | 'rapid_shallowing' | 'eroded'
-  description: string
-}
-
-export interface BioluminescentBayState {
-  bays: BioluminescentBayData[]
-  activeBayId: string | null
-  showBrightness: boolean
-  showDinoflagellate: boolean
-  showWaterQuality: boolean
-  showTourism: boolean
-  open: boolean
-  qualityFilter: 'all' | 'spectacular' | 'excellent' | 'good' | 'fading' | 'lost'
-}
-
-export interface BioluminescentBayData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  brightness: number
-  dinoflagellate: number
-  waterQuality: number
-  tourism: number
-  area: number
-  status: 'spectacular' | 'excellent' | 'good' | 'fading' | 'lost'
-  description: string
-}
-
-export interface OrographicRainfallState {
-  regions: OrographicRainfallData[]
-  activeRegionId: string | null
-  showRainfall: boolean
-  showElevation: boolean
-  showWindSpeed: boolean
-  showRunoff: boolean
-  open: boolean
-  typeFilter: 'all' | 'windward' | 'leeward' | 'valley' | 'peak'
-}
-
-export interface OrographicRainfallData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  rainfall: number
-  elevation: number
-  windSpeed: number
-  runoff: number
-  landslideRisk: number
-  status: 'light' | 'moderate' | 'heavy' | 'extreme' | 'catastrophic'
-  description: string
-}
-
-export interface HydrothermalPlumeState {
-  vents: HydrothermalPlumeData[]
-  activeVentId: string | null
-  showPlumeHeight: boolean
-  showTemperature: boolean
-  showChemical: boolean
-  showDispersion: boolean
-  open: boolean
-  typeFilter: 'all' | 'black_smoker' | 'white_smoker' | 'diffuse' | 'megaplume'
-}
-
-export interface HydrothermalPlumeData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  plumeHeight: number
-  temperature: number
-  chemical: number
-  dispersion: number
-  particleDensity: number
-  status: 'dormant' | 'low' | 'moderate' | 'active' | 'eruptive'
-  description: string
-}
-
-// Task 77: New monitoring interfaces
-
-export interface SeamountEcosystemState {
-  seamounts: SeamountEcosystemData[]
-  activeSeamountId: string | null
-  showElevation: boolean
-  showBiodiversity: boolean
-  showCurrentSpeed: boolean
-  showFishingPressure: boolean
-  open: boolean
-  typeFilter: 'all' | 'guyot' | 'conical' | 'rift_zone' | 'caldera'
-}
-
-export interface SeamountEcosystemData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  elevation: number
-  biodiversity: number
-  currentSpeed: number
-  fishingPressure: number
-  depth: number
-  status: 'pristine' | 'good' | 'moderate' | 'degraded' | 'heavily_fished'
-  description: string
-}
-
-export interface GroundSubsidenceState {
-  zones: GroundSubsidenceData[]
-  activeZoneId: string | null
-  showSubsidenceRate: boolean
-  showGroundwater: boolean
-  showInfrastructure: boolean
-  showRisk: boolean
-  open: boolean
-  causeFilter: 'all' | 'groundwater_extraction' | 'mining' | 'oil_gas' | 'natural'
-}
-
-export interface GroundSubsidenceData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  subsidenceRate: number
-  groundwater: number
-  infrastructure: number
-  risk: number
-  totalSubsidence: number
-  status: 'stable' | 'slow' | 'moderate' | 'rapid' | 'catastrophic'
-  description: string
-}
-
-export interface OceanStratificationState {
-  basins: OceanStratificationData[]
-  activeBasinId: string | null
-  showPycnocline: boolean
-  showTemperature: boolean
-  showSalinity: boolean
-  showMixing: boolean
-  open: boolean
-  regionFilter: 'all' | 'tropical' | 'subtropical' | 'temperate' | 'high_latitude'
-}
-
-export interface OceanStratificationData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  pycnocline: number
-  temperature: number
-  salinity: number
-  mixing: number
-  oxygen: number
-  status: 'weak' | 'moderate' | 'strong' | 'very_strong' | 'extreme'
-  description: string
-}
-
-export interface SnowCoverExtentState {
-  regions: SnowCoverExtentData[]
-  activeRegionId: string | null
-  showExtent: boolean
-  showDepth: boolean
-  showWaterEquivalent: boolean
-  showMeltRate: boolean
-  open: boolean
-  seasonFilter: 'all' | 'early_winter' | 'mid_winter' | 'late_winter' | 'spring_melt'
-}
-
-export interface SnowCoverExtentData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  extent: number
-  depth: number
-  waterEquivalent: number
-  meltRate: number
-  albedo: number
-  status: 'expanding' | 'stable' | 'declining' | 'rapid_decline' | 'minimal'
-  description: string
-}
-
-export interface CoastalErosionDetailState {
-  segments: CoastalErosionDetailData[]
-  activeSegmentId: string | null
-  showErosionRate: boolean
-  showSeaLevel: boolean
-  showSediment: boolean
-  showProtection: boolean
-  open: boolean
-  severityFilter: 'all' | 'accretion' | 'stable' | 'slow_erosion' | 'rapid_erosion' | 'critical'
-}
-
-export interface CoastalErosionDetailData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  erosionRate: number
-  seaLevel: number
-  sediment: number
-  protection: number
-  population: number
-  status: 'accretion' | 'stable' | 'slow_erosion' | 'rapid_erosion' | 'critical'
-  description: string
-}
-
-export interface EcosystemServiceValueState {
-  ecosystems: EcosystemServiceValueData[]
-  activeEcosystemId: string | null
-  showCarbonValue: boolean
-  showWaterValue: boolean
-  showBiodiversityValue: boolean
-  showRecreationValue: boolean
-  open: boolean
-  typeFilter: 'all' | 'forest' | 'wetland' | 'coral_reef' | 'grassland'
-}
-
-export interface EcosystemServiceValueData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  carbonValue: number
-  waterValue: number
-  biodiversityValue: number
-  recreationValue: number
-  totalValue: number
-  status: 'intact' | 'good' | 'degraded' | 'heavily_degraded' | 'lost'
-  description: string
-}
-
-export interface TidalFlatMonitorState {
-  flats: TidalFlatMonitorData[]
-  activeFlatId: string | null
-  showArea: boolean
-  showBiodiversity: boolean
-  showSedimentQuality: boolean
-  showBirdPopulation: boolean
-  open: boolean
-  typeFilter: 'all' | 'mudflat' | 'sandflat' | 'salt_marsh' | 'seagrass'
-}
-
-export interface TidalFlatMonitorData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  area: number
-  biodiversity: number
-  sedimentQuality: number
-  birdPopulation: number
-  tidalRange: number
-  status: 'expanding' | 'stable' | 'shrinking' | 'rapid_loss' | 'critical'
-  description: string
-}
-
-export interface WildfireRiskAssessmentState {
-  zones: WildfireRiskAssessmentData[]
-  activeZoneId: string | null
-  showFireWeather: boolean
-  showFuelLoad: boolean
-  showTerrain: boolean
-  showExposure: boolean
-  open: boolean
-  riskFilter: 'all' | 'low' | 'moderate' | 'high' | 'very_high' | 'extreme'
-}
-
-export interface WildfireRiskAssessmentData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  fireWeather: number
-  fuelLoad: number
-  terrain: number
-  exposure: number
-  population: number
-  status: 'low' | 'moderate' | 'high' | 'very_high' | 'extreme'
-  description: string
-}
-
-export interface KarstSinkholeState {
-  sinkholes: KarstSinkholeData[]
-  activeSinkholeId: string | null
-  showDepth: boolean
-  showRisk: boolean
-  showSubsidence: boolean
-  open: boolean
-  riskFilter: 'all' | 'low' | 'moderate' | 'high' | 'critical'
-}
-
-export interface KarstSinkholeData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  depth: number
-  diameter: number
-  subsidenceRate: number
-  waterTableDepth: number
-  risk: 'low' | 'moderate' | 'high' | 'critical'
-  description: string
-}
-
-export interface VolcanicSO2State {
-  sources: VolcanicSO2Data[]
-  activeSourceId: string | null
-  showConcentration: boolean
-  showPlume: boolean
-  showAlerts: boolean
-  open: boolean
-  alertFilter: 'all' | 'low' | 'moderate' | 'high' | 'severe'
-}
-
-export interface VolcanicSO2Data {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  so2Concentration: number
-  plumeHeight: number
-  emissionRate: number
-  alertLevel: 'low' | 'moderate' | 'high' | 'severe'
-  description: string
-}
-
-export interface IcebergTrackerState {
-  icebergs: IcebergTrackerData[]
-  activeIcebergId: string | null
-  showTrajectory: boolean
-  showSize: boolean
-  showDrift: boolean
-  open: boolean
-  sizeFilter: 'all' | 'small' | 'medium' | 'large' | 'giant'
-}
-
-export interface IcebergTrackerData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  length: number
-  width: number
-  driftSpeed: number
-  thickness: number
-  size: 'small' | 'medium' | 'large' | 'giant'
-  description: string
-}
-
-export interface CaveMineralState {
-  formations: CaveMineralData[]
-  activeFormationId: string | null
-  showMineralType: boolean
-  showAge: boolean
-  showPurity: boolean
-  open: boolean
-  typeFilter: 'all' | 'stalactite' | 'stalagmite' | 'flowstone' | 'crystal'
-}
-
-export interface CaveMineralData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  mineralType: 'stalactite' | 'stalagmite' | 'flowstone' | 'crystal'
-  growthRate: number
-  age: number
-  purity: number
-  description: string
-}
-
-export interface SeafloorHydrateState {
-  deposits: SeafloorHydrateData[]
-  activeDepositId: string | null
-  showVolume: boolean
-  showStability: boolean
-  showDepth: boolean
-  open: boolean
-  stabilityFilter: 'all' | 'stable' | 'unstable' | 'dissociating' | 'critical'
-}
-
-export interface SeafloorHydrateData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  volume: number
-  stability: 'stable' | 'unstable' | 'dissociating' | 'critical'
-  seafloorDepth: number
-  temperature: number
-  description: string
-}
-
-export interface MangroveLossState {
-  regions: MangroveLossData[]
-  activeRegionId: string | null
-  showLossRate: boolean
-  showRecovery: boolean
-  showBiodiversity: boolean
-  open: boolean
-  lossFilter: 'all' | 'stable' | 'declining' | 'rapid_loss' | 'critical'
-}
-
-export interface MangroveLossData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  lossRate: number
-  recoveryRate: number
-  biodiversityIndex: number
-  area: number
-  status: 'stable' | 'declining' | 'rapid_loss' | 'critical'
-  description: string
-}
-
-export interface UrbanNoiseCorridorState {
-  corridors: UrbanNoiseCorridorData[]
-  activeCorridorId: string | null
-  showLevel: boolean
-  showSources: boolean
-  showHealthImpact: boolean
-  open: boolean
-  levelFilter: 'all' | 'low' | 'moderate' | 'high' | 'extreme'
-}
-
-export interface UrbanNoiseCorridorData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  noiseLevel: number
-  population: number
-  healthImpact: number
-  sourceType: 'traffic' | 'industrial' | 'aircraft' | 'railway'
-  level: 'low' | 'moderate' | 'high' | 'extreme'
-  description: string
-}
-
-export interface StratosphericWarmingState {
-  events: StratosphericWarmingData[]
-  activeEventId: string | null
-  showTemperature: boolean
-  showWindReversal: boolean
-  showImpact: boolean
-  open: boolean
-  intensityFilter: 'all' | 'minor' | 'moderate' | 'major' | 'extreme'
-}
-
-export interface StratosphericWarmingData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  temperatureRise: number
-  windSpeed: number
-  altitude: number
-  surfaceImpact: number
-  intensity: 'minor' | 'moderate' | 'major' | 'extreme'
-  description: string
-}
-
-export interface SubmarineGroundwaterState {
-  discharges: SubmarineGroundwaterData[]
-  activeDischargeId: string | null
-  showFlowRate: boolean
-  showSalinity: boolean
-  showNutrients: boolean
-  open: boolean
-  typeFilter: 'all' | 'coastal' | 'offshore' | 'volcanic' | 'karst'
-}
-
-export interface SubmarineGroundwaterData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  flowRate: number
-  salinity: number
-  nutrientLoad: number
-  dischargeType: 'coastal' | 'offshore' | 'volcanic' | 'karst'
-  temperature: number
-  description: string
-}
-
-export interface HydrothermalSulfideState {
-  vents: HydrothermalSulfideData[]
-  activeVentId: string | null
-  showMineralContent: boolean
-  showTemperature: boolean
-  showActivity: boolean
-  open: boolean
-  activityFilter: 'all' | 'active' | 'dormant' | 'extinct' | 'pulsing'
-}
-
-export interface HydrothermalSulfideData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  mineralContent: number
-  temperature: number
-  activity: 'active' | 'dormant' | 'extinct' | 'pulsing'
-  sulfideDeposit: number
-  depth: number
-  description: string
-}
-
-export interface LunarTidalForceState {
-  stations: LunarTidalForceData[]
-  activeStationId: string | null
-  showTidalRange: boolean
-  showLunarPhase: boolean
-  showCurrentSpeed: boolean
-  open: boolean
-  phaseFilter: 'all' | 'spring' | 'neap' | 'perigee' | 'apogee'
-}
-
-export interface LunarTidalForceData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  tidalRange: number
-  lunarPhase: 'spring' | 'neap' | 'perigee' | 'apogee'
-  currentSpeed: number
-  gravitationalPull: number
-  description: string
-}
-
-export interface RipCurrentState {
-  zones: RipCurrentData[]
-  activeZoneId: string | null
-  showRisk: boolean
-  showSpeed: boolean
-  showFrequency: boolean
-  open: boolean
-  riskFilter: 'all' | 'low' | 'moderate' | 'high' | 'extreme'
-}
-
-export interface RipCurrentData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  risk: 'low' | 'moderate' | 'high' | 'extreme'
-  speed: number
-  frequency: number
-  beachType: 'sandy' | 'rocky' | 'barred' | 'headland'
-  description: string
-}
-
-export interface AvalancheDebrisFlowState {
-  events: AvalancheDebrisFlowData[]
-  activeEventId: string | null
-  showVolume: boolean
-  showVelocity: boolean
-  showRunout: boolean
-  open: boolean
-  typeFilter: 'all' | 'snow_avalanche' | 'debris_flow' | 'rockfall' | 'mudslide'
-}
-
-export interface AvalancheDebrisFlowData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  volume: number
-  velocity: number
-  runoutDistance: number
-  eventType: 'snow_avalanche' | 'debris_flow' | 'rockfall' | 'mudslide'
-  slope: number
-  description: string
-}
-
-export interface CoastalAcidificationState {
-  sites: CoastalAcidificationData[]
-  activeSiteId: string | null
-  showPH: boolean
-  showCarbonDioxide: boolean
-  showSaturation: boolean
-  open: boolean
-  severityFilter: 'all' | 'mild' | 'moderate' | 'severe' | 'extreme'
-}
-
-export interface CoastalAcidificationData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  ph: number
-  carbonDioxide: number
-  aragoniteSaturation: number
-  severity: 'mild' | 'moderate' | 'severe' | 'extreme'
-  shellfishImpact: number
-  description: string
-}
-
-export interface DesertSandSeaState {
-  regions: DesertSandSeaData[]
-  activeRegionId: string | null
-  showDuneHeight: boolean
-  showMigration: boolean
-  showArea: boolean
-  open: boolean
-  typeFilter: 'all' | 'barchan' | 'seif' | 'star' | 'transverse'
-}
-
-export interface DesertSandSeaData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  duneHeight: number
-  migrationRate: number
-  area: number
-  duneType: 'barchan' | 'seif' | 'star' | 'transverse'
-  windDirection: string
-  description: string
-}
-
-export interface SubsidenceHazardState {
-  zones: SubsidenceHazardData[]
-  activeZoneId: string | null
-  showRate: boolean
-  showRisk: boolean
-  showInfrastructure: boolean
-  open: boolean
-  riskFilter: 'all' | 'low' | 'moderate' | 'high' | 'critical'
-}
-
-export interface SubsidenceHazardData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  subsidenceRate: number
-  totalSubsidence: number
-  infrastructureRisk: number
-  cause: 'groundwater' | 'mining' | 'oil_extraction' | 'natural_compaction'
-  risk: 'low' | 'moderate' | 'high' | 'critical'
-  description: string
-}
-
-export interface VolcanicLaharState {
-  flows: VolcanicLaharData[]
-  activeFlowId: string | null
-  showVolume: boolean
-  showVelocity: boolean
-  showRisk: boolean
-  open: boolean
-  riskFilter: 'all' | 'low' | 'moderate' | 'high' | 'extreme'
-}
-
-export interface VolcanicLaharData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  volume: number
-  velocity: number
-  reachDistance: number
-  triggerType: 'rainfall' | 'glacial_melt' | 'pyroclastic' | 'dam_break'
-  risk: 'low' | 'moderate' | 'high' | 'extreme'
-  description: string
-}
-
-export interface DeepWaterCoralState {
-  reefs: DeepWaterCoralData[]
-  activeReefId: string | null
-  showDepth: boolean
-  showHealth: boolean
-  showSpecies: boolean
-  open: boolean
-  healthFilter: 'all' | 'pristine' | 'good' | 'stressed' | 'degraded'
-}
-
-export interface DeepWaterCoralData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  depth: number
-  healthIndex: number
-  speciesCount: number
-  status: 'pristine' | 'good' | 'stressed' | 'degraded'
-  area: number
-  description: string
-}
-
-export interface PolarBearHabitatState {
-  regions: PolarBearHabitatData[]
-  activeRegionId: string | null
-  showIceCover: boolean
-  showPopulation: boolean
-  showMigration: boolean
-  open: boolean
-  statusFilter: 'all' | 'stable' | 'declining' | 'critical' | 'recovering'
-}
-
-export interface PolarBearHabitatData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  iceCoverPercent: number
-  population: number
-  migrationDistance: number
-  status: 'stable' | 'declining' | 'critical' | 'recovering'
-  seaIceLoss: number
-  description: string
-}
-
-export interface SoilSalinizationState {
-  zones: SoilSalinizationData[]
-  activeZoneId: string | null
-  showSalinity: boolean
-  showCropImpact: boolean
-  showArea: boolean
-  open: boolean
-  severityFilter: 'all' | 'slight' | 'moderate' | 'severe' | 'very_severe'
-}
-
-export interface SoilSalinizationData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  salinityLevel: number
-  cropYieldLoss: number
-  affectedArea: number
-  severity: 'slight' | 'moderate' | 'severe' | 'very_severe'
-  irrigationType: 'flood' | 'drip' | 'sprinkler' | 'rainfed'
-  description: string
-}
-
-export interface TsunamiRunupState {
-  sites: TsunamiRunupData[]
-  activeSiteId: string | null
-  showRunup: boolean
-  showInundation: boolean
-  showRisk: boolean
-  open: boolean
-  riskFilter: 'all' | 'low' | 'moderate' | 'high' | 'extreme'
-}
-
-export interface TsunamiRunupData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  maxRunup: number
-  inundationDistance: number
-  recurrenceInterval: number
-  risk: 'low' | 'moderate' | 'high' | 'extreme'
-  lastEvent: string
-  description: string
-}
-
-export interface UrbanHeatVentilationState {
-  corridors: UrbanHeatVentilationData[]
-  activeCorridorId: string | null
-  showAirflow: boolean
-  showTemperature: boolean
-  showPollution: boolean
-  open: boolean
-  efficiencyFilter: 'all' | 'excellent' | 'good' | 'poor' | 'stagnant'
-}
-
-export interface UrbanHeatVentilationData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  airflowRate: number
-  temperatureReduction: number
-  pollutionRemoval: number
-  efficiency: 'excellent' | 'good' | 'poor' | 'stagnant'
-  buildingHeight: number
-  description: string
-}
-
-export interface BrinePoolState {
-  pools: BrinePoolData[]
-  activePoolId: string | null
-  showSalinity: boolean
-  showDepth: boolean
-  showBiology: boolean
-  open: boolean
-  activityFilter: 'all' | 'active' | 'dormant' | 'fossil' | 'forming'
-}
-
-export interface BrinePoolData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  salinity: number
-  poolDepth: number
-  biodiversityIndex: number
-  activity: 'active' | 'dormant' | 'fossil' | 'forming'
-  seafloorDepth: number
-  description: string
-}
-
-export interface SupraglacialStreamState {
-  streams: SupraglacialStreamData[]
-  activeStreamId: string | null
-  showFlowRate: boolean
-  showTemperature: boolean
-  showMeltRate: boolean
-  open: boolean
-  statusFilter: 'all' | 'flowing' | 'seasonal' | 'frozen' | 'draining'
-}
-
-export interface SupraglacialStreamData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  flowRate: number
-  waterTemperature: number
-  meltRate: number
-  status: 'flowing' | 'seasonal' | 'frozen' | 'draining'
-  channelWidth: number
-  description: string
-}
-
-export interface MethaneHydrateStabilityState {
-  zones: MethaneHydrateStabilityData[]
-  activeZoneId: string | null
-  showStability: boolean
-  showTemperature: boolean
-  showPressure: boolean
-  open: boolean
-  stabilityFilter: 'all' | 'stable' | 'transitional' | 'unstable' | 'dissociating'
-}
-
-export interface MethaneHydrateStabilityData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  stability: 'stable' | 'transitional' | 'unstable' | 'dissociating'
-  temperature: number
-  pressure: number
-  depth: number
-  methaneConcentration: number
-  description: string
-}
-
-export interface VolcanicAshCloudState {
-  clouds: VolcanicAshCloudData[]
-  activeCloudId: string | null
-  showAltitude: boolean
-  showDispersion: boolean
-  showConcentration: boolean
-  open: boolean
-  alertFilter: 'all' | 'advisory' | 'warning' | 'critical' | 'severe'
-}
-
-export interface VolcanicAshCloudData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  altitude: number
-  dispersionRadius: number
-  concentration: number
-  alertLevel: 'advisory' | 'warning' | 'critical' | 'severe'
-  windDirection: string
-  description: string
-}
-
-export interface GeothermalGradientState {
-  sites: GeothermalGradientData[]
-  activeSiteId: string | null
-  showGradient: boolean
-  showTemperature: boolean
-  showFlow: boolean
-  open: boolean
-  potentialFilter: 'all' | 'low' | 'moderate' | 'high' | 'exceptional'
-}
-
-export interface GeothermalGradientData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  gradient: number
-  temperature: number
-  flowRate: number
-  potential: 'low' | 'moderate' | 'high' | 'exceptional'
-  depth: number
-  description: string
-}
-
-export interface OceanDeoxygenationState {
-  zones: OceanDeoxygenationData[]
-  activeZoneId: string | null
-  showOxygen: boolean
-  showArea: boolean
-  showImpact: boolean
-  open: boolean
-  severityFilter: 'all' | 'mild' | 'moderate' | 'severe' | 'anoxic'
-}
-
-export interface OceanDeoxygenationData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  oxygenLevel: number
-  affectedArea: number
-  marineImpact: number
-  severity: 'mild' | 'moderate' | 'severe' | 'anoxic'
-  depthRange: string
-  description: string
-}
-
-export interface RockGlacierState {
-  glaciers: RockGlacierData[]
-  activeGlacierId: string | null
-  showVelocity: boolean
-  showTemperature: boolean
-  showIceContent: boolean
-  open: boolean
-  activityFilter: 'all' | 'active' | 'transitional' | 'inactive' | 'relict'
-}
-
-export interface RockGlacierData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  velocity: number
-  temperature: number
-  iceContent: number
-  activity: 'active' | 'transitional' | 'inactive' | 'relict'
-  area: number
-  description: string
-}
-
-export interface DustHemisphereState {
-  events: DustHemisphereData[]
-  activeEventId: string | null
-  showConcentration: boolean
-  showTransport: boolean
-  showDeposition: boolean
-  open: boolean
-  intensityFilter: 'all' | 'minor' | 'moderate' | 'major' | 'extreme'
-}
-
-export interface DustHemisphereData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  concentration: number
-  transportDistance: number
-  depositionRate: number
-  intensity: 'minor' | 'moderate' | 'major' | 'extreme'
-  sourceRegion: string
-  description: string
-}
-
-export interface MicroplasticOceanState {
-  zones: MicroplasticOceanData[]
-  activeZoneId: string | null
-  showConcentration: boolean
-  showSize: boolean
-  showSourceType: boolean
-  open: boolean
-  densityFilter: 'all' | 'low' | 'moderate' | 'high' | 'extreme'
-}
-
-export interface MicroplasticOceanData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  concentration: number
-  avgSize: number
-  sourceType: 'river_input' | 'coastal_runoff' | 'fishing_debris' | 'atmospheric'
-  density: 'low' | 'moderate' | 'high' | 'extreme'
-  depth: number
-  description: string
-}
-
-export interface GlacierBasalSlideState {
-  glaciers: GlacierBasalSlideData[]
-  activeGlacierId: string | null
-  showVelocity: boolean
-  showBasalTemp: boolean
-  showSlideRisk: boolean
-  open: boolean
-  riskFilter: 'all' | 'low' | 'moderate' | 'high' | 'critical'
-}
-
-export interface GlacierBasalSlideData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  velocity: number
-  basalTemperature: number
-  slideRisk: number
-  risk: 'low' | 'moderate' | 'high' | 'critical'
-  iceThickness: number
-  description: string
-}
+// Generic Monitor Types (replaces 300+ individual interfaces)
+export interface MonitorData {
+  id: string
+  name: string
+  [key: string]: any
+}
+
+export interface MonitorState {
+  open: boolean
+  data: MonitorData[]
+  statusFilter: string
+  activeItemId: string | null
+  [key: string]: any
+}
+
+
+// Type aliases for backwards compatibility (removed monitor types)
+// All monitor State types are now MonitorState, all Data/supporting types are MonitorData
+export type AbyssalPlainState = MonitorState
+export type AbyssalSedimentFluxState = MonitorState
+export type AcidMineDrainageState = MonitorState
+export type AcidRainState = MonitorState
+export type AeolianDustDepositionState = MonitorState
+export type AirPollutionDispersionState = MonitorState
+export type AirPollutionHealthState = MonitorState
+export type AirQualityState = MonitorState
+export type AirQualityUrbanState = MonitorState
+export type AlgalBloomState = MonitorState
+export type AlpineGlacierState = MonitorState
+export type AquacultureState = MonitorState
+export type AquiferDepletionState = MonitorState
+export type AquiferRechargeRateState = MonitorState
+export type AquiferSalinizationState = MonitorState
+export type ArchaeologyMapState = MonitorState
+export type ArcticPermafrostLakesState = MonitorState
+export type ArcticSeaIceState = MonitorState
+export type ArcticShippingRouteState = MonitorState
+export type AsteroidImpactState = MonitorState
+export type AtmosphericPressureCellState = MonitorState
+export type AtmosphericRiverFlowState = MonitorState
+export type AuroraForecasterState = MonitorState
+export type AuroraOvalPositionState = MonitorState
+export type AvalancheDebrisFlowState = MonitorState
+export type AvalancheForecasterState = MonitorState
+export type AvalancheRiskState = MonitorState
+export type AvalancheTerrainState = MonitorState
+export type BaseflowIndexState = MonitorState
+export type BeachNourishmentState = MonitorState
+export type BioluminescenceState = MonitorState
+export type BioluminescentBayState = MonitorState
+export type BiomassBurningState = MonitorState
+export type BiomassEnergyYieldState = MonitorState
+export type BiomeTransitionState = MonitorState
+export type BreakwaterIntegrityState = MonitorState
+export type BridgeStructuralHealthState = MonitorState
+export type BrinePoolState = MonitorState
+export type CalcicHorizonState = MonitorState
+export type CarbonCaptureState = MonitorState
+export type CargoShipTrackerState = MonitorState
+export type CationExchangeState = MonitorState
+export type CaveDripMonitorState = MonitorState
+export type CaveEcosystemState = MonitorState
+export type CaveMineralState = MonitorState
+export type CaveSystemState = MonitorState
+export type ClayMineralState = MonitorState
+export type CloudCoverState = MonitorState
+export type CoastalAcidificationState = MonitorState
+export type CoastalAquiferState = MonitorState
+export type CoastalArmorState = MonitorState
+export type CoastalDuneSystemState = MonitorState
+export type CoastalErosionDetailState = MonitorState
+export type CoastalErosionPredictorState = MonitorState
+export type CoastalUpwellingState = MonitorState
+export type CoastalWetlandLossState = MonitorState
+export type ColdWaterCoralReefState = MonitorState
+export type ContinentalDriftState = MonitorState
+export type CoralBleachingMonitorState = MonitorState
+export type CoralDiseaseMonitorState = MonitorState
+export type CoralGenomicsState = MonitorState
+export type CoralReefBleachingDetailState = MonitorState
+export type CoralReefRecoveryState = MonitorState
+export type CoralRestorationState = MonitorState
+export type CoralSpawnPredictionState = MonitorState
+export type CoralSpawnState = MonitorState
+export type CosmicRayFluxState = MonitorState
+export type CosmicRayState = MonitorState
+export type CropHealthIndexState = MonitorState
+export type CropHealthState = MonitorState
+export type CropYieldState = MonitorState
+export type CryoconiteGranuleState = MonitorState
+export type CryoconiteHoleState = MonitorState
+export type CryosphereChangeState = MonitorState
+export type DebrisFlowSurgeState = MonitorState
+export type DeepBiosphereState = MonitorState
+export type DeepOceanCurrentState = MonitorState
+export type DeepSeaVentState = MonitorState
+export type DeepWaterCoralState = MonitorState
+export type DeepWaterFormationState = MonitorState
+export type DeforestationState = MonitorState
+export type DesertFlashFloodState = MonitorState
+export type DesertOasisState = MonitorState
+export type DesertSandSeaState = MonitorState
+export type DesertificationDetailState = MonitorState
+export type DesertificationFrontState = MonitorState
+export type DesertificationRiskState = MonitorState
+export type DesertificationState = MonitorState
+export type DiseaseOutbreakMapState = MonitorState
+export type DroughtSeverityState = MonitorState
+export type DustAerosolState = MonitorState
+export type DustHemisphereState = MonitorState
+export type DustStormState = MonitorState
+export type DustStormTrackerState = MonitorState
+export type EarthflowDisplacementState = MonitorState
+export type EarthquakeSwarmState = MonitorState
+export type EcosystemServiceValueState = MonitorState
+export type EkmanTransportState = MonitorState
+export type ElectromagneticFieldState = MonitorState
+export type EndemicHotspotState = MonitorState
+export type EnergyStorageLevelState = MonitorState
+export type EstuaryAcidificationState = MonitorState
+export type EstuaryHealthState = MonitorState
+export type FertilizerRunoffState = MonitorState
+export type FjordEcosystemState = MonitorState
+export type FlightPathTrackerState = MonitorState
+export type FloodInundationMapState = MonitorState
+export type FogDensityState = MonitorState
+export type ForestCanopyCoverState = MonitorState
+export type FrostHeaveMonitorState = MonitorState
+export type FrostThawCycleState = MonitorState
+export type FuelStationNetworkState = MonitorState
+export type GLOFState = MonitorState
+export type GeoThermalEnergyState = MonitorState
+export type GeomagneticPoleState = MonitorState
+export type GeomagneticReversalState = MonitorState
+export type GeomagneticStormState = MonitorState
+export type GeostrophicCurrentState = MonitorState
+export type GeothermalEnergyState = MonitorState
+export type GeothermalGradientState = MonitorState
+export type GeothermalSpringState = MonitorState
+export type GlacialLakeOutburstState = MonitorState
+export type GlacialMoulinState = MonitorState
+export type GlacierBasalSlideState = MonitorState
+export type GlacierCalvingState = MonitorState
+export type GlacierMassBalanceState = MonitorState
+export type GlacierMonitorState = MonitorState
+export type GlacierRetreatState = MonitorState
+export type GlacierSurgeEventState = MonitorState
+export type GlacierVelocityState = MonitorState
+export type GleyRedoxState = MonitorState
+export type GreenhouseClimateState = MonitorState
+export type GreenlandIceState = MonitorState
+export type GridStabilityIndexState = MonitorState
+export type GroinSedimentState = MonitorState
+export type GroundSubsidenceState = MonitorState
+export type GroundwaterRechargeState = MonitorState
+export type GroundwaterTableLevelState = MonitorState
+export type HabitatCorridorState = MonitorState
+export type HadleyCellCirculationState = MonitorState
+export type HailStormState = MonitorState
+export type HarvestYieldPredictState = MonitorState
+export type HighwayBottleneckState = MonitorState
+export type HospitalCapacityState = MonitorState
+export type HydroclimateExtremesState = MonitorState
+export type HydroelectricFlowState = MonitorState
+export type HydroelectricPotentialState = MonitorState
+export type HydroseismicActivityState = MonitorState
+export type HydrothermalDiffuseFlowState = MonitorState
+export type HydrothermalPlumeState = MonitorState
+export type HydrothermalSulfideState = MonitorState
+export type HydrothermalVentState = MonitorState
+export type HyporheicZoneState = MonitorState
+export type IceCoreDataState = MonitorState
+export type IceCoreRecordState = MonitorState
+export type IcePenitentMonitorState = MonitorState
+export type IceSheetVelocityState = MonitorState
+export type IceShelfCalvingState = MonitorState
+export type IceShelfCollapseState = MonitorState
+export type IceShelfThicknessState = MonitorState
+export type IceStreamVelocityState = MonitorState
+export type IceWedgePolygonState = MonitorState
+export type IcebergCalvingState = MonitorState
+export type IcebergTrackerState = MonitorState
+export type IntertidalZoneState = MonitorState
+export type InvasiveSpeciesState = MonitorState
+export type IonosphereState = MonitorState
+export type IonosphericDisturbanceState = MonitorState
+export type IrrigationEfficiencyState = MonitorState
+export type JetStreamPositionState = MonitorState
+export type JettyCurrentState = MonitorState
+export type KarstAquiferState = MonitorState
+export type KarstGroundwaterState = MonitorState
+export type KarstSinkholeState = MonitorState
+export type KarstSpringDischargeState = MonitorState
+export type KatabaticWindMonitorState = MonitorState
+export type KelpForestMonitorState = MonitorState
+export type KeystonePopulationState = MonitorState
+export type LaharFlowTrackerState = MonitorState
+export type LandfillMonitorState = MonitorState
+export type LandslideRiskState = MonitorState
+export type LandslideSusceptibilityState = MonitorState
+export type LandslideVelocityState = MonitorState
+export type LavaFlowState = MonitorState
+export type LavaTubeCaveState = MonitorState
+export type LightPollutionSkyState = MonitorState
+export type LightPollutionState = MonitorState
+export type LimnicEruptionMonitorState = MonitorState
+export type LivestockMovementState = MonitorState
+export type LogisticsDepotStatusState = MonitorState
+export type LunarTidalForceState = MonitorState
+export type LunarTideState = MonitorState
+export type MagneticAnomalyState = MonitorState
+export type MagneticFieldState = MonitorState
+export type MagnetopauseStandoffState = MonitorState
+export type MagnetosphereState = MonitorState
+export type MangroveCarbonState = MonitorState
+export type MangroveLossState = MonitorState
+export type MangroveMonitorState = MonitorState
+export type MangroveRestorationProgressState = MonitorState
+export type MangroveRestorationState = MonitorState
+export type MangroveRootSystemState = MonitorState
+export type MarineHeatwaveState = MonitorState
+export type MegacityCarbonState = MonitorState
+export type MegafaunaTrackingState = MonitorState
+export type MeteorShowerState = MonitorState
+export type MethaneCraterState = MonitorState
+export type MethaneEmissionHotspotState = MonitorState
+export type MethaneEmissionTrackerState = MonitorState
+export type MethaneEmissionsState = MonitorState
+export type MethaneHydrateStabilityState = MonitorState
+export type MethaneHydrateState = MonitorState
+export type MethaneSeepState = MonitorState
+export type MicroplasticOceanState = MonitorState
+export type MicroplasticsState = MonitorState
+export type MigratoryFlywayState = MonitorState
+export type MineTailingsDamState = MonitorState
+export type MineralDepositGradeState = MonitorState
+export type MineralExplorationState = MonitorState
+export type MineralVeinThicknessState = MonitorState
+export type MonsoonState = MonitorState
+export type MudVolcanoActivityState = MonitorState
+export type NoiseLevelMapperState = MonitorState
+export type NoisePollutionState = MonitorState
+export type NutritionSecurityState = MonitorState
+export type OceanAcidificationDetailState = MonitorState
+export type OceanAcidificationState = MonitorState
+export type OceanAlkalinityState = MonitorState
+export type OceanAnoxicZoneState = MonitorState
+export type OceanCurrentProfilerState = MonitorState
+export type OceanCurrentTrackerState = MonitorState
+export type OceanDeoxygenationState = MonitorState
+export type OceanEddyState = MonitorState
+export type OceanGyreState = MonitorState
+export type OceanHeatContentState = MonitorState
+export type OceanMicroplasticState = MonitorState
+export type OceanStratificationState = MonitorState
+export type OpalPaleoMonitorState = MonitorState
+export type OreGradeAssayState = MonitorState
+export type OreReserveEstimateState = MonitorState
+export type OrographicRainfallState = MonitorState
+export type OzoneLayerState = MonitorState
+export type PaleoclimateProxyState = MonitorState
+export type PaleoshorelineTrackerState = MonitorState
+export type PandemicSpreadRateState = MonitorState
+export type PeatFireState = MonitorState
+export type PeatlandCarbonSinkState = MonitorState
+export type PeatlandCarbonState = MonitorState
+export type PeatlandRestorationState = MonitorState
+export type PelagicZoneState = MonitorState
+export type PermafrostActiveLayerState = MonitorState
+export type PermafrostCarbonFeedbackState = MonitorState
+export type PermafrostCarbonPipelineState = MonitorState
+export type PermafrostState = MonitorState
+export type PermafrostThawState = MonitorState
+export type PestOutbreakTrackerState = MonitorState
+export type PhenologyState = MonitorState
+export type PhytoBloomState = MonitorState
+export type PhytoplanktonBloomState = MonitorState
+export type PolarBearHabitatState = MonitorState
+export type PolarFrontJetState = MonitorState
+export type PolarIceSheetState = MonitorState
+export type PolarVortexState = MonitorState
+export type PollutionTrackerState = MonitorState
+export type PolynyaIceState = MonitorState
+export type PolynyaState = MonitorState
+export type PortCongestionMapState = MonitorState
+export type PowerGridLoadState = MonitorState
+export type PrecipitationState = MonitorState
+export type PumiceRaftDriftState = MonitorState
+export type RadiationExposureState = MonitorState
+export type RadioSignalState = MonitorState
+export type RailNetworkStatusState = MonitorState
+export type RainfallPatternState = MonitorState
+export type ReservoirStorageLevelState = MonitorState
+export type RevetmentStabilityState = MonitorState
+export type RiftValleyVolcanoState = MonitorState
+export type RipCurrentState = MonitorState
+export type RiverDeltaErosionState = MonitorState
+export type RiverDeltaState = MonitorState
+export type RiverFlowState = MonitorState
+export type RiverSedimentLoadState = MonitorState
+export type RockGlacierState = MonitorState
+export type RockfallHazardState = MonitorState
+export type RockfallImpactState = MonitorState
+export type RossbyWaveAmplitudeState = MonitorState
+export type SabkhaEnvironmentState = MonitorState
+export type SaharaReforestationState = MonitorState
+export type SalinityGradientState = MonitorState
+export type SaltFlatCrustState = MonitorState
+export type SaltMarshCarbonState = MonitorState
+export type SaltMarshState = MonitorState
+export type SaltwaterIntrusionState = MonitorState
+export type SandDuneMigrationState = MonitorState
+export type SapFlowState = MonitorState
+export type SatelliteDragState = MonitorState
+export type SeaIceExtentState = MonitorState
+export type SeaIceThicknessState = MonitorState
+export type SeaLevelRiseState = MonitorState
+export type SeaSurfaceTemperatureState = MonitorState
+export type SeafloorHydrateState = MonitorState
+export type SeafloorMappingState = MonitorState
+export type SeagrassMeadowState = MonitorState
+export type SeamountBiodiversityState = MonitorState
+export type SeamountEcosystemState = MonitorState
+export type SeawallErosionState = MonitorState
+export type SeicheWaveOscillationState = MonitorState
+export type SeismicActivityState = MonitorState
+export type SeismicHarmonicState = MonitorState
+export type SeismicHazardState = MonitorState
+export type ShorelineRetreatState = MonitorState
+export type SlumpFailureState = MonitorState
+export type SmartParkingCapacityState = MonitorState
+export type SnowAvalancheTrackerState = MonitorState
+export type SnowCoverDurationState = MonitorState
+export type SnowCoverExtentState = MonitorState
+export type SnowCoverState = MonitorState
+export type SnowpackWaterEquivalentState = MonitorState
+export type SoilAnalysisState = MonitorState
+export type SoilCarbonState = MonitorState
+export type SoilCompactionState = MonitorState
+export type SoilCreepRateState = MonitorState
+export type SoilMoistureAgState = MonitorState
+export type SoilMoistureFieldState = MonitorState
+export type SoilMoistureState = MonitorState
+export type SoilOrganicCarbonState = MonitorState
+export type SoilPhosphorusState = MonitorState
+export type SoilSalinizationState = MonitorState
+export type SolarFlareActivityState = MonitorState
+export type SolarFlareState = MonitorState
+export type SolarFluxIndexState = MonitorState
+export type SolarIrradianceState = MonitorState
+export type SolarWindState = MonitorState
+export type SolifluctionLobeState = MonitorState
+export type SpaceDebrisOrbitState = MonitorState
+export type SpaceDebrisState = MonitorState
+export type SpaceRadiationDoseState = MonitorState
+export type SpaceTrackState = MonitorState
+export type SpaceWeatherAlertState = MonitorState
+export type SpaceWeatherImpactState = MonitorState
+export type SpeciesMigrationRouteState = MonitorState
+export type StormSurgeState = MonitorState
+export type StratosphericAerosolState = MonitorState
+export type StratosphericWarmingState = MonitorState
+export type StreamBankErosionState = MonitorState
+export type StripMineRatioState = MonitorState
+export type SubaqueousLavaFlowState = MonitorState
+export type SubductionZoneState = MonitorState
+export type SubglacialLakeState = MonitorState
+export type SubglacialVolcanoState = MonitorState
+export type SubglacialWaterSystemState = MonitorState
+export type SubmarineCanyonFisheriesState = MonitorState
+export type SubmarineCanyonState = MonitorState
+export type SubmarineFanState = MonitorState
+export type SubmarineGroundwaterState = MonitorState
+export type SubmarineLandslideState = MonitorState
+export type SubsidenceHazardState = MonitorState
+export type SubsurfaceFluidState = MonitorState
+export type SupervolcanoState = MonitorState
+export type SupraglacialStreamState = MonitorState
+export type TalusAccumulationState = MonitorState
+export type TectonicPlateBoundaryState = MonitorState
+export type TectonicStrainState = MonitorState
+export type TectonicSubductionState = MonitorState
+export type ThermoclineDepthState = MonitorState
+export type ThermoclineState = MonitorState
+export type ThermohalineCellState = MonitorState
+export type ThermohalineCirculationState = MonitorState
+export type ThermokarstLakeState = MonitorState
+export type TidalCreekMonitorState = MonitorState
+export type TidalEnergyPotentialState = MonitorState
+export type TidalEnergyState = MonitorState
+export type TidalFlatMonitorState = MonitorState
+export type TidalPredictorState = MonitorState
+export type TornadoActivityState = MonitorState
+export type TradeWindBeltState = MonitorState
+export type TrafficFlowState = MonitorState
+export type TransitRidershipState = MonitorState
+export type TropicalCurrentState = MonitorState
+export type TropicalCycloneState = MonitorState
+export type TropopauseHeightState = MonitorState
+export type TropopauseState = MonitorState
+export type TsunamiBuoyState = MonitorState
+export type TsunamiRunupState = MonitorState
+export type TsunamiWaveHeightState = MonitorState
+export type TundraCarbonState = MonitorState
+export type TundraPermafrostThawState = MonitorState
+export type UndergroundMineVentState = MonitorState
+export type UndergroundWaterwayState = MonitorState
+export type UpwellingIntensityState = MonitorState
+export type UrbanAirQualityState = MonitorState
+export type UrbanFloodRiskState = MonitorState
+export type UrbanGrowthState = MonitorState
+export type UrbanHeatIslandDetailState = MonitorState
+export type UrbanHeatIslandProfilerState = MonitorState
+export type UrbanHeatIslandState = MonitorState
+export type UrbanHeatVentilationState = MonitorState
+export type UrbanMicroclimateState = MonitorState
+export type UrbanNoiseCorridorState = MonitorState
+export type UrbanSprawlState = MonitorState
+export type UrbanTreeCanopyState = MonitorState
+export type VaccinationCoverageState = MonitorState
+export type VanAllenRadiationState = MonitorState
+export type VectorHabitatRiskState = MonitorState
+export type VegetationIndexState = MonitorState
+export type ViralOutbreakState = MonitorState
+export type VolcanicAshCloudState = MonitorState
+export type VolcanicAshDispersionState = MonitorState
+export type VolcanicDeformationState = MonitorState
+export type VolcanicDomeGrowthState = MonitorState
+export type VolcanicFumaroleState = MonitorState
+export type VolcanicGasPlumeState = MonitorState
+export type VolcanicGasState = MonitorState
+export type VolcanicGasTrackerState = MonitorState
+export type VolcanicIslandFormationState = MonitorState
+export type VolcanicIslandState = MonitorState
+export type VolcanicLaharState = MonitorState
+export type VolcanicLavaFlowState = MonitorState
+export type VolcanicLightningState = MonitorState
+export type VolcanicPlumeState = MonitorState
+export type VolcanicSO2State = MonitorState
+export type VolcanicTremorState = MonitorState
+export type VolcanoMonitorState = MonitorState
+export type VolcanoSeismicState = MonitorState
+export type VolcanoThermalState = MonitorState
+export type WasteCollectionRouteState = MonitorState
+export type WaterPipeNetworkState = MonitorState
+export type WaterQualityIndexState = MonitorState
+export type WatershedDischargeState = MonitorState
+export type WatershedHealthState = MonitorState
+export type WesternBoundaryState = MonitorState
+export type WetlandBiodiversityIndexState = MonitorState
+export type WetlandMapperState = MonitorState
+export type WhaleMigrationState = MonitorState
+export type WildfireRiskAssessmentState = MonitorState
+export type WildfireRiskState = MonitorState
+export type WildfireSmokeState = MonitorState
+export type WildfireSpreadState = MonitorState
+export type WildlifeCorridorState = MonitorState
+export type WindFarmOutputState = MonitorState
+export type WindFarmState = MonitorState
+export type WindPatternState = MonitorState
+export type AbyssalSedimentFluxData = MonitorData
+export type AcidMineDrainageData = MonitorData
+export type AeolianDustDepositionData = MonitorData
+export type AirPollutionHealthData = MonitorData
+export type AirQualityUrbanData = MonitorData
+export type AirportData = MonitorData
+export type AlpineGlacierData = MonitorData
+export type AquiferRechargeRateData = MonitorData
+export type AquiferSalinizationData = MonitorData
+export type ArcticPermafrostLakesData = MonitorData
+export type ArcticShippingRouteData = MonitorData
+export type AtmosphericPressureCellData = MonitorData
+export type AtmosphericRiverFlowData = MonitorData
+export type AuroraOvalPositionData = MonitorData
+export type AvalancheDebrisFlowData = MonitorData
+export type BaseflowIndexData = MonitorData
+export type BeachNourishmentData = MonitorData
+export type BioluminescentBayData = MonitorData
+export type BiomassBurningData = MonitorData
+export type BiomassEnergyYieldData = MonitorData
+export type BiomeTransitionData = MonitorData
+export type BreakwaterIntegrityData = MonitorData
+export type BridgeStructuralHealthData = MonitorData
+export type BrinePoolData = MonitorData
+export type CalcicHorizonData = MonitorData
+export type CargoShipTrackerData = MonitorData
+export type CationExchangeData = MonitorData
+export type CaveDripMonitorData = MonitorData
+export type CaveEcosystemData = MonitorData
+export type CaveMineralData = MonitorData
+export type ClayMineralData = MonitorData
+export type CoastalAcidificationData = MonitorData
+export type CoastalAquiferData = MonitorData
+export type CoastalArmorData = MonitorData
+export type CoastalDuneSystemData = MonitorData
+export type CoastalErosionDetailData = MonitorData
+export type CoastalUpwellingData = MonitorData
+export type CoastalWetlandLossData = MonitorData
+export type ColdWaterCoralReefData = MonitorData
+export type CoralDiseaseMonitorData = MonitorData
+export type CoralReefBleachingDetailData = MonitorData
+export type CoralReefRecoveryData = MonitorData
+export type CoralSpawnData = MonitorData
+export type CoralSpawnPredictionData = MonitorData
+export type CosmicRayFluxData = MonitorData
+export type CropHealthIndexData = MonitorData
+export type CryoconiteGranuleData = MonitorData
+export type CryoconiteHoleData = MonitorData
+export type DebrisFlowSurgeData = MonitorData
+export type DeepOceanCurrentData = MonitorData
+export type DeepWaterCoralData = MonitorData
+export type DeepWaterFormationData = MonitorData
+export type DesertFlashFloodData = MonitorData
+export type DesertSandSeaData = MonitorData
+export type DesertificationDetailData = MonitorData
+export type DesertificationFrontData = MonitorData
+export type DiseaseOutbreakMapData = MonitorData
+export type DroughtSeverityData = MonitorData
+export type DustHemisphereData = MonitorData
+export type DustStormTrackerData = MonitorData
+export type EarthflowDisplacementData = MonitorData
+export type EcosystemServiceValueData = MonitorData
+export type EkmanTransportData = MonitorData
+export type EndemicHotspotData = MonitorData
+export type EnergyStorageLevelData = MonitorData
+export type EstuaryAcidificationData = MonitorData
+export type EstuaryHealthData = MonitorData
+export type FertilizerRunoffData = MonitorData
+export type FlightPathTrackerData = MonitorData
+export type FloodInundationMapData = MonitorData
+export type ForestCanopyCoverData = MonitorData
+export type FrostHeaveMonitorData = MonitorData
+export type FrostThawCycleData = MonitorData
+export type FuelStationNetworkData = MonitorData
+export type GeomagneticPoleData = MonitorData
+export type GeostrophicCurrentData = MonitorData
+export type GeothermalEnergyData = MonitorData
+export type GeothermalGradientData = MonitorData
+export type GlacialLakeOutburstData = MonitorData
+export type GlacialMoulinData = MonitorData
+export type GlacierBasalSlideData = MonitorData
+export type GlacierCalvingData = MonitorData
+export type GlacierData = MonitorData
+export type GlacierMassBalanceData = MonitorData
+export type GlacierSurgeEventData = MonitorData
+export type GleyRedoxData = MonitorData
+export type GreenhouseClimateData = MonitorData
+export type GridStabilityIndexData = MonitorData
+export type GroinSedimentData = MonitorData
+export type GroundSubsidenceData = MonitorData
+export type GroundwaterTableLevelData = MonitorData
+export type HabitatCorridorData = MonitorData
+export type HadleyCellCirculationData = MonitorData
+export type HarvestYieldPredictData = MonitorData
+export type HighwayBottleneckData = MonitorData
+export type HospitalCapacityData = MonitorData
+export type HydroclimateExtremesData = MonitorData
+export type HydroelectricFlowData = MonitorData
+export type HydroseismicActivityData = MonitorData
+export type HydrothermalDiffuseFlowData = MonitorData
+export type HydrothermalPlumeData = MonitorData
+export type HydrothermalSulfideData = MonitorData
+export type HydrothermalVentData = MonitorData
+export type HyporheicZoneData = MonitorData
+export type IceCoreRecordData = MonitorData
+export type IcePenitentMonitorData = MonitorData
+export type IceShelfCalvingData = MonitorData
+export type IceShelfCollapseData = MonitorData
+export type IceShelfThicknessData = MonitorData
+export type IceStreamVelocityData = MonitorData
+export type IceWedgePolygonData = MonitorData
+export type IcebergCalvingData = MonitorData
+export type IcebergTrackerData = MonitorData
+export type IntertidalZoneData = MonitorData
+export type InvasiveSpeciesData = MonitorData
+export type IonosphericDisturbanceData = MonitorData
+export type IrrigationEfficiencyData = MonitorData
+export type JetStreamPositionData = MonitorData
+export type JettyCurrentData = MonitorData
+export type KarstAquiferData = MonitorData
+export type KarstSinkholeData = MonitorData
+export type KarstSpringDischargeData = MonitorData
+export type KatabaticWindMonitorData = MonitorData
+export type KelpForestMonitorData = MonitorData
+export type KeystonePopulationData = MonitorData
+export type LaharFlowTrackerData = MonitorData
+export type LandslideSusceptibilityData = MonitorData
+export type LandslideVelocityData = MonitorData
+export type LavaFlowData = MonitorData
+export type LavaTubeCaveData = MonitorData
+export type LimnicEruptionMonitorData = MonitorData
+export type LivestockMovementData = MonitorData
+export type LogisticsDepotStatusData = MonitorData
+export type LunarTidalForceData = MonitorData
+export type MagnetopauseStandoffData = MonitorData
+export type MangroveCarbonData = MonitorData
+export type MangroveLossData = MonitorData
+export type MangroveRootSystemData = MonitorData
+export type MegafaunaTrackingData = MonitorData
+export type MethaneCraterData = MonitorData
+export type MethaneEmissionHotspotData = MonitorData
+export type MethaneHydrateStabilityData = MonitorData
+export type MicroplasticOceanData = MonitorData
+export type MigratoryFlywayData = MonitorData
+export type MineTailingsDamData = MonitorData
+export type MineralDepositGradeData = MonitorData
+export type MineralVeinThicknessData = MonitorData
+export type MonsoonData = MonitorData
+export type MudVolcanoActivityData = MonitorData
+export type NoiseLevelMapperData = MonitorData
+export type NutritionSecurityData = MonitorData
+export type OceanAcidificationDetailData = MonitorData
+export type OceanAnoxicZoneData = MonitorData
+export type OceanCurrentProfilerData = MonitorData
+export type OceanDeoxygenationData = MonitorData
+export type OceanGyreData = MonitorData
+export type OceanHeatContentData = MonitorData
+export type OceanMicroplasticData = MonitorData
+export type OceanStratificationData = MonitorData
+export type OpalPaleoMonitorData = MonitorData
+export type OreGradeAssayData = MonitorData
+export type OreReserveEstimateData = MonitorData
+export type OrographicRainfallData = MonitorData
+export type PaleoshorelineTrackerData = MonitorData
+export type PandemicSpreadRateData = MonitorData
+export type PeatFireData = MonitorData
+export type PeatlandCarbonSinkData = MonitorData
+export type PeatlandRestorationData = MonitorData
+export type PermafrostActiveLayerData = MonitorData
+export type PermafrostCarbonFeedbackData = MonitorData
+export type PermafrostCarbonPipelineData = MonitorData
+export type PestOutbreakTrackerData = MonitorData
+export type PhytoplanktonBloomData = MonitorData
+export type PodzolProfileData = MonitorData
+export type PolarBearHabitatData = MonitorData
+export type PolarFrontJetData = MonitorData
+export type PolarVortexData = MonitorData
+export type PolynyaIceData = MonitorData
+export type PortCongestionMapData = MonitorData
+export type PowerGridLoadData = MonitorData
+export type PumiceRaftDriftData = MonitorData
+export type RailNetworkStatusData = MonitorData
+export type ReservoirStorageLevelData = MonitorData
+export type RevetmentStabilityData = MonitorData
+export type RiftValleyVolcanoData = MonitorData
+export type RipCurrentData = MonitorData
+export type RiverDeltaErosionData = MonitorData
+export type RiverSedimentLoadData = MonitorData
+export type RockGlacierData = MonitorData
+export type RockfallHazardData = MonitorData
+export type RockfallImpactData = MonitorData
+export type RossbyWaveAmplitudeData = MonitorData
+export type SaltFlatCrustData = MonitorData
+export type SaltMarshCarbonData = MonitorData
+export type SaltwaterIntrusionData = MonitorData
+export type SapFlowData = MonitorData
+export type SatelliteDragData = MonitorData
+export type SeaIceExtentData = MonitorData
+export type SeaIceThicknessData = MonitorData
+export type SeafloorHydrateData = MonitorData
+export type SeagrassMeadowData = MonitorData
+export type SeamountBiodiversityData = MonitorData
+export type SeamountEcosystemData = MonitorData
+export type SeawallErosionData = MonitorData
+export type SeicheWaveOscillationData = MonitorData
+export type SeismicHarmonicData = MonitorData
+export type ShorelineRetreatData = MonitorData
+export type SlumpFailureData = MonitorData
+export type SmartParkingCapacityData = MonitorData
+export type SnowAvalancheTrackerData = MonitorData
+export type SnowCoverDurationData = MonitorData
+export type SnowCoverExtentData = MonitorData
+export type SnowpackWaterEquivalentData = MonitorData
+export type SoilCarbonData = MonitorData
+export type SoilCompactionData = MonitorData
+export type SoilCreepRateData = MonitorData
+export type SoilMoistureFieldData = MonitorData
+export type SoilOrganicCarbonData = MonitorData
+export type SoilPhosphorusData = MonitorData
+export type SoilSalinizationData = MonitorData
+export type SolarFlareActivityData = MonitorData
+export type SolarFluxIndexData = MonitorData
+export type SolarIrradianceData = MonitorData
+export type SolifluctionLobeData = MonitorData
+export type SpaceDebrisOrbitData = MonitorData
+export type SpaceRadiationDoseData = MonitorData
+export type SpeciesMigrationRouteData = MonitorData
+export type StratosphericOzoneData = MonitorData
+export type StratosphericWarmingData = MonitorData
+export type StreamBankErosionData = MonitorData
+export type StripMineRatioData = MonitorData
+export type SubaqueousLavaFlowData = MonitorData
+export type SubductionZoneData = MonitorData
+export type SubglacialVolcanoData = MonitorData
+export type SubglacialWaterSystemData = MonitorData
+export type SubmarineCanyonData = MonitorData
+export type SubmarineCanyonFisheriesData = MonitorData
+export type SubmarineFanData = MonitorData
+export type SubmarineGroundwaterData = MonitorData
+export type SubmarineLandslideData = MonitorData
+export type SubsidenceHazardData = MonitorData
+export type SupervolcanoData = MonitorData
+export type SupraglacialStreamData = MonitorData
+export type TalusAccumulationData = MonitorData
+export type TectonicPlateBoundaryData = MonitorData
+export type ThermoclineDepthData = MonitorData
+export type ThermohalineCellData = MonitorData
+export type ThermohalineCirculationData = MonitorData
+export type TidalCreekMonitorData = MonitorData
+export type TidalEnergyData = MonitorData
+export type TidalEnergyPotentialData = MonitorData
+export type TidalFlatMonitorData = MonitorData
+export type TradeWindBeltData = MonitorData
+export type TrafficFlowData = MonitorData
+export type TransitRidershipData = MonitorData
+export type TropicalCurrentData = MonitorData
+export type TropicalCycloneData = MonitorData
+export type TropopauseData = MonitorData
+export type TropopauseHeightData = MonitorData
+export type TsunamiRunupData = MonitorData
+export type TsunamiWaveHeightData = MonitorData
+export type TundraCarbonData = MonitorData
+export type TundraPermafrostThawData = MonitorData
+export type UndergroundMineVentData = MonitorData
+export type UpwellingIntensityData = MonitorData
+export type UrbanAirQualityData = MonitorData
+export type UrbanFloodRiskData = MonitorData
+export type UrbanHeatIslandDetailData = MonitorData
+export type UrbanHeatVentilationData = MonitorData
+export type UrbanNoiseCorridorData = MonitorData
+export type UrbanTreeCanopyData = MonitorData
+export type VaccinationCoverageData = MonitorData
+export type VanAllenRadiationData = MonitorData
+export type VectorHabitatRiskData = MonitorData
+export type VolcanicAshCloudData = MonitorData
+export type VolcanicAshDispersionData = MonitorData
+export type VolcanicDeformationData = MonitorData
+export type VolcanicDomeGrowthData = MonitorData
+export type VolcanicFumaroleData = MonitorData
+export type VolcanicGasPlumeData = MonitorData
+export type VolcanicGasTrackerData = MonitorData
+export type VolcanicIslandFormationData = MonitorData
+export type VolcanicLaharData = MonitorData
+export type VolcanicSO2Data = MonitorData
+export type VolcanicTremorData = MonitorData
+export type VolcanoData = MonitorData
+export type WasteCollectionRouteData = MonitorData
+export type WaterPipeNetworkData = MonitorData
+export type WaterQualityIndexData = MonitorData
+export type WatershedDischargeData = MonitorData
+export type WesternBoundaryData = MonitorData
+export type WetlandBiodiversityIndexData = MonitorData
+export type WildfireRiskAssessmentData = MonitorData
+export type WildfireSmokeData = MonitorData
+export type WildlifeCorridorData = MonitorData
+export type WindFarmOutputData = MonitorData
+export type AQStation = MonitorData
+export type AbyssalFeature = MonitorData
+export type AcidRainStation = MonitorData
+export type AerosolLayer = MonitorData
+export type AirQualityStation = MonitorData
+export type AlgalBloomSite = MonitorData
+export type AlkalinityStation = MonitorData
+export type AquacultureZone = MonitorData
+export type Aquifer = MonitorData
+export type AquiferSite = MonitorData
+export type ArchaeologicalSite = MonitorData
+export type ArcticSeaIceZone = MonitorData
+export type AshDispersionPlume = MonitorData
+export type AtmosphericRiver = MonitorData
+export type AuroraViewingSite = MonitorData
+export type AvalancheTerrain = MonitorData
+export type AvalancheZone = MonitorData
+export type BioluminescenceSite = MonitorData
+export type BiomeRegion = MonitorData
+export type CarbonCaptureFacility = MonitorData
+export type CarbonSequestrationSite = MonitorData
+export type CarbonSource = MonitorData
+export type CaveSystem = MonitorData
+export type CloudLayer = MonitorData
+export type CoastalErosionZone = MonitorData
+export type CoastalSegment = MonitorData
+export type CoralBleachingEvent = MonitorData
+export type CoralGenomicsSite = MonitorData
+export type CoralRestoration = MonitorData
+export type CoralSite = MonitorData
+export type CosmicRayStation = MonitorData
+export type CropField = MonitorData
+export type CropYieldZone = MonitorData
+export type DebrisObject = MonitorData
+export type DeepBiosphereSite = MonitorData
+export type DeepSeaVent = MonitorData
+export type DeforestationZone = MonitorData
+export type DeformationPoint = MonitorData
+export type DesertOasis = MonitorData
+export type DesertZone = MonitorData
+export type DesertificationZone = MonitorData
+export type DroughtRegion = MonitorData
+export type DustAerosolSource = MonitorData
+export type DustStormEvent = MonitorData
+export type EarthquakeSwarmEvent = MonitorData
+export type ElectromagneticFieldPoint = MonitorData
+export type FireRiskZone = MonitorData
+export type FjordSystem = MonitorData
+export type FloodZone = MonitorData
+export type FluidFlowZone = MonitorData
+export type FogDensityZone = MonitorData
+export type GLOFSite = MonitorData
+export type GeoThermalSite = MonitorData
+export type GeomagneticStation = MonitorData
+export type GeomagneticStorm = MonitorData
+export type GeothermalSpring = MonitorData
+export type GlacialLake = MonitorData
+export type GlacierSystem = MonitorData
+export type GlacierVelocityZone = MonitorData
+export type GreenlandIceZone = MonitorData
+export type GroundwaterRechargeZone = MonitorData
+export type HailStormEvent = MonitorData
+export type HeatIslandZone = MonitorData
+export type HeatZone = MonitorData
+export type HeritageSite = MonitorData
+export type HydrateZone = MonitorData
+export type HydroelectricSite = MonitorData
+export type HydrologyPoint = MonitorData
+export type HydrothermalPlume = MonitorData
+export type HydrothermalVent = MonitorData
+export type IceCoreSample = MonitorData
+export type IceSheet = MonitorData
+export type IceVelocityPoint = MonitorData
+export type IonosphereStation = MonitorData
+export type KarstSystem = MonitorData
+export type LandfillSite = MonitorData
+export type LandslideRiskZone = MonitorData
+export type LavaFlow = MonitorData
+export type LightPollutionSkyZone = MonitorData
+export type LightPollutionZone = MonitorData
+export type LightningStrike = MonitorData
+export type MagneticAnomaly = MonitorData
+export type MagneticStation = MonitorData
+export type MagnetosphereReading = MonitorData
+export type MangroveCarbonZone = MonitorData
+export type MangroveForest = MonitorData
+export type MangroveRestorationSite = MonitorData
+export type MarineHeatwaveZone = MonitorData
+export type MegacityEmission = MonitorData
+export type MesoscaleEddy = MonitorData
+export type MeteorShower = MonitorData
+export type MethaneSeep = MonitorData
+export type MethaneSource = MonitorData
+export type MicroclimateZone = MonitorData
+export type MicroplasticsSample = MonitorData
+export type MineralDeposit = MonitorData
+export type NearEarthObject = MonitorData
+export type NoisePollutionZone = MonitorData
+export type OceanAcidSite = MonitorData
+export type OzoneMeasurement = MonitorData
+export type OzoneZone = MonitorData
+export type PaleoclimateProxy = MonitorData
+export type PeatFireZone = MonitorData
+export type Peatland = MonitorData
+export type PeatlandSite = MonitorData
+export type PelagicZone = MonitorData
+export type PermafrostThawZone = MonitorData
+export type PermafrostZone = MonitorData
+export type PhenologyEvent = MonitorData
+export type PhytoBloomSite = MonitorData
+export type PolarIceSheet = MonitorData
+export type PollutionSource = MonitorData
+export type Polynya = MonitorData
+export type PrecipZone = MonitorData
+export type RadiationStation = MonitorData
+export type RadioSignalStation = MonitorData
+export type RainfallRegion = MonitorData
+export type ReefSite = MonitorData
+export type RiverDelta = MonitorData
+export type RiverStation = MonitorData
+export type SSTMeasurement = MonitorData
+export type SabkhaZone = MonitorData
+export type SaharaReforestationProject = MonitorData
+export type SalinityGradientZone = MonitorData
+export type SaltMarsh = MonitorData
+export type SandDune = MonitorData
+export type SandstormEvent = MonitorData
+export type SeaIceZone = MonitorData
+export type SeaLevelStation = MonitorData
+export type SeafloorFeature = MonitorData
+export type SeagrassMeadow = MonitorData
+export type SeismicEvent = MonitorData
+export type SeismicHazardZone = MonitorData
+export type SmokePlume = MonitorData
+export type SnowCoverZone = MonitorData
+export type SoilErosionZone = MonitorData
+export type SoilMoistureAgZone = MonitorData
+export type SoilMoistureZone = MonitorData
+export type SoilSample = MonitorData
+export type SolarFlare = MonitorData
+export type SolarIrradianceStation = MonitorData
+export type SolarSite = MonitorData
+export type SolarWindStation = MonitorData
+export type SpaceObject = MonitorData
+export type SpaceWeatherImpact = MonitorData
+export type StormSurgeZone = MonitorData
+export type StrainStation = MonitorData
+export type StratosphericWindZone = MonitorData
+export type SubductionZone = MonitorData
+export type SubglacialLake = MonitorData
+export type SubmarineCanyon = MonitorData
+export type SubsidenceZone = MonitorData
+export type TectonicPlateBoundary = MonitorData
+export type ThermalAnomaly = MonitorData
+export type ThermoclineProfile = MonitorData
+export type ThermokarstLake = MonitorData
+export type TidalEnergySite = MonitorData
+export type TidalStation = MonitorData
+export type TideStation = MonitorData
+export type TornadoEvent = MonitorData
+export type TsunamiAlert = MonitorData
+export type TsunamiBuoy = MonitorData
+export type UndergroundWaterway = MonitorData
+export type UrbanArea = MonitorData
+export type UrbanFloodZone = MonitorData
+export type UrbanSprawlZone = MonitorData
+export type UrbanTreeZone = MonitorData
+export type VegetationZone = MonitorData
+export type ViralOutbreakZone = MonitorData
+export type Virus = MonitorData
+export type VolcanicEruption = MonitorData
+export type VolcanicGasSite = MonitorData
+export type VolcanicGasSource = MonitorData
+export type VolcanicIsland = MonitorData
+export type VolcanicLightning = MonitorData
+export type VolcanicPlume = MonitorData
+export type VolcanoSeismicStation = MonitorData
+export type Watershed = MonitorData
+export type WetlandZone = MonitorData
+export type WhalePod = MonitorData
+export type WildfireSpread = MonitorData
+export type WildlifeObservation = MonitorData
+export type WindPattern = MonitorData
+export type WindTurbine = MonitorData
+// Additional missing type names (from TS2724 suggestions)
+export type AtmosphericRiverState = MonitorState
+export type DesertMonitorState = MonitorState
+export type GICMonitorState = MonitorState
+export type OceanCurrentState = MonitorState
+export type OceanCurrentZone = MonitorData
+export type PodzolProfileState = MonitorState
+export type SpaceWeatherAlert = MonitorData
+export type StratosphericOzoneState = MonitorState
+export type StratosphericWindState = MonitorState
+export type WatershedHealthData = MonitorData
 
 interface MapState {
   // Map view state
@@ -7085,6 +1991,7 @@ interface MapState {
 
   // Route drawing
   routePoints: RoutePoint[]
+  setRoutePoints: (points: RoutePoint[]) => void
   currentRouteColor: string
   routes: MapRoute[]
   osrmDistance: number | null
@@ -7789,1180 +2696,1294 @@ interface MapState {
   setAtmospheric: (state: Partial<AtmosphericState>) => void
 
   // Wildlife Tracker
-  wildlifeTracker: WildlifeTrackerState
-  setWildlifeTracker: (state: Partial<WildlifeTrackerState>) => void
+  wildlifeTracker: MonitorState
+  setWildlifeTracker: (state: Partial<MonitorState>) => void
 
   // Cultural Heritage Map
-  culturalHeritage: CulturalHeritageState
-  setCulturalHeritage: (state: Partial<CulturalHeritageState>) => void
+  culturalHeritage: MonitorState
+  setCulturalHeritage: (state: Partial<MonitorState>) => void
 
   // Hydrology Analyzer
-  hydrology: HydrologyState
-  setHydrology: (state: Partial<HydrologyState>) => void
+  hydrology: MonitorState
+  setHydrology: (state: Partial<MonitorState>) => void
 
   // Glacier Monitor
-  glacierMonitor: GlacierMonitorState
-  setGlacierMonitor: (state: Partial<GlacierMonitorState>) => void
+  glacierMonitor: MonitorState
+  setGlacierMonitor: (state: Partial<MonitorState>) => void
 
   // Seismic Activity
-  seismicActivity: SeismicActivityState
-  setSeismicActivity: (state: Partial<SeismicActivityState>) => void
+  seismicActivity: MonitorState
+  setSeismicActivity: (state: Partial<MonitorState>) => void
 
   // Soil Analysis
-  soilAnalysis: SoilAnalysisState
-  setSoilAnalysis: (state: Partial<SoilAnalysisState>) => void
+  soilAnalysis: MonitorState
+  setSoilAnalysis: (state: Partial<MonitorState>) => void
 
   // Urban Growth
-  urbanGrowth: UrbanGrowthState
-  setUrbanGrowth: (state: Partial<UrbanGrowthState>) => void
+  urbanGrowth: MonitorState
+  setUrbanGrowth: (state: Partial<MonitorState>) => void
 
   // Airspace Navigation
-  airspaceNav: AirspaceNavState
-  setAirspaceNav: (state: Partial<AirspaceNavState>) => void
+  airspaceNav: MonitorState
+  setAirspaceNav: (state: Partial<MonitorState>) => void
 
   // Reef Health Monitor
-  reefHealth: ReefHealthState
-  setReefHealth: (state: Partial<ReefHealthState>) => void
+  reefHealth: MonitorState
+  setReefHealth: (state: Partial<MonitorState>) => void
 
   // Magnetic Field Mapper
-  magneticField: MagneticFieldState
-  setMagneticField: (state: Partial<MagneticFieldState>) => void
+  magneticField: MonitorState
+  setMagneticField: (state: Partial<MonitorState>) => void
 
   // Flood Risk Analyzer
-  floodRisk: FloodRiskState
-  setFloodRisk: (state: Partial<FloodRiskState>) => void
+  floodRisk: MonitorState
+  setFloodRisk: (state: Partial<MonitorState>) => void
 
   // Volcano Monitor
-  volcanoMonitor: VolcanoMonitorState
-  setVolcanoMonitor: (state: Partial<VolcanoMonitorState>) => void
+  volcanoMonitor: MonitorState
+  setVolcanoMonitor: (state: Partial<MonitorState>) => void
 
   // Avalanche Risk
-  avalancheRisk: AvalancheRiskState
-  setAvalancheRisk: (state: Partial<AvalancheRiskState>) => void
+  avalancheRisk: MonitorState
+  setAvalancheRisk: (state: Partial<MonitorState>) => void
 
   // Crop Health
-  cropHealth: CropHealthState
-  setCropHealth: (state: Partial<CropHealthState>) => void
+  cropHealth: MonitorState
+  setCropHealth: (state: Partial<MonitorState>) => void
 
   // Space Track
-  spaceTrack: SpaceTrackState
-  setSpaceTrack: (state: Partial<SpaceTrackState>) => void
+  spaceTrack: MonitorState
+  setSpaceTrack: (state: Partial<MonitorState>) => void
 
   // Archaeology Map
-  archaeologyMap: ArchaeologyMapState
-  setArchaeologyMap: (state: Partial<ArchaeologyMapState>) => void
+  archaeologyMap: MonitorState
+  setArchaeologyMap: (state: Partial<MonitorState>) => void
 
   // Pollution Tracker
-  pollutionTracker: PollutionTrackerState
-  setPollutionTracker: (state: Partial<PollutionTrackerState>) => void
+  pollutionTracker: MonitorState
+  setPollutionTracker: (state: Partial<MonitorState>) => void
 
   // Tidal Predictor
-  tidalPredictor: TidalPredictorState
-  setTidalPredictor: (state: Partial<TidalPredictorState>) => void
+  tidalPredictor: MonitorState
+  setTidalPredictor: (state: Partial<MonitorState>) => void
 
   // Wind Farm Optimizer
-  windFarm: WindFarmState
-  setWindFarm: (state: Partial<WindFarmState>) => void
+  windFarm: MonitorState
+  setWindFarm: (state: Partial<MonitorState>) => void
 
   // Desertification Monitor
-  desertification: DesertificationState
-  setDesertification: (state: Partial<DesertificationState>) => void
+  desertification: MonitorState
+  setDesertification: (state: Partial<MonitorState>) => void
 
   // Mineral Exploration
-  mineralExploration: MineralExplorationState
-  setMineralExploration: (state: Partial<MineralExplorationState>) => void
+  mineralExploration: MonitorState
+  setMineralExploration: (state: Partial<MonitorState>) => void
 
   // Ocean Current Mapper
-  oceanCurrent: OceanCurrentState
-  setOceanCurrent: (state: Partial<OceanCurrentState>) => void
+  oceanCurrent: MonitorState
+  setOceanCurrent: (state: Partial<MonitorState>) => void
 
   // Permafrost Thaw Tracker
-  permafrost: PermafrostState
-  setPermafrost: (state: Partial<PermafrostState>) => void
+  permafrost: MonitorState
+  setPermafrost: (state: Partial<MonitorState>) => void
 
   // Lightning Strike Map
-  lightning: LightningState
-  setLightning: (state: Partial<LightningState>) => void
+  lightning: MonitorState
+  setLightning: (state: Partial<MonitorState>) => void
 
   // Biome Classifier
-  biome: BiomeState
-  setBiome: (state: Partial<BiomeState>) => void
+  biome: MonitorState
+  setBiome: (state: Partial<MonitorState>) => void
 
   // Groundwater Explorer
-  groundwater: GroundwaterState
-  setGroundwater: (state: Partial<GroundwaterState>) => void
+  groundwater: MonitorState
+  setGroundwater: (state: Partial<MonitorState>) => void
 
   // Solar Power Planner
-  solarPower: SolarPowerState
-  setSolarPower: (state: Partial<SolarPowerState>) => void
+  solarPower: MonitorState
+  setSolarPower: (state: Partial<MonitorState>) => void
 
   // Volcanic Ash Tracker
-  volcanicAsh: VolcanicAshState
-  setVolcanicAsh: (state: Partial<VolcanicAshState>) => void
+  volcanicAsh: MonitorState
+  setVolcanicAsh: (state: Partial<MonitorState>) => void
 
   // Coastal Erosion Monitor
-  coastalErosion: CoastalErosionState
-  setCoastalErosion: (state: Partial<CoastalErosionState>) => void
+  coastalErosion: MonitorState
+  setCoastalErosion: (state: Partial<MonitorState>) => void
 
   // Carbon Footprint Mapper
-  carbonFootprint: CarbonFootprintState
-  setCarbonFootprint: (state: Partial<CarbonFootprintState>) => void
+  carbonFootprint: MonitorState
+  setCarbonFootprint: (state: Partial<MonitorState>) => void
 
   // Wildlife Migration Tracker
-  wildlifeMigration: WildlifeMigrationState
-  setWildlifeMigration: (state: Partial<WildlifeMigrationState>) => void
+  wildlifeMigration: MonitorState
+  setWildlifeMigration: (state: Partial<MonitorState>) => void
 
   // Ice Sheet Monitor
-  iceSheet: IceSheetState
-  setIceSheet: (state: Partial<IceSheetState>) => void
+  iceSheet: MonitorState
+  setIceSheet: (state: Partial<MonitorState>) => void
 
   // Drought Monitor
-  droughtMonitor: DroughtMonitorState
-  setDroughtMonitor: (state: Partial<DroughtMonitorState>) => void
+  droughtMonitor: MonitorState
+  setDroughtMonitor: (state: Partial<MonitorState>) => void
 
   // Land Subsidence Tracker
-  landSubsidence: LandSubsidenceState
-  setLandSubsidence: (state: Partial<LandSubsidenceState>) => void
+  landSubsidence: MonitorState
+  setLandSubsidence: (state: Partial<MonitorState>) => void
 
   // Coral Bleaching Alert
-  coralBleaching: CoralBleachingState
-  setCoralBleaching: (state: Partial<CoralBleachingState>) => void
+  coralBleaching: MonitorState
+  setCoralBleaching: (state: Partial<MonitorState>) => void
 
   // Tsunami Alert System
-  tsunamiAlert: TsunamiAlertState
-  setTsunamiAlert: (state: Partial<TsunamiAlertState>) => void
+  tsunamiAlert: MonitorState
+  setTsunamiAlert: (state: Partial<MonitorState>) => void
 
   // Soil Erosion Monitor
-  soilErosion: SoilErosionState
-  setSoilErosion: (state: Partial<SoilErosionState>) => void
+  soilErosion: MonitorState
+  setSoilErosion: (state: Partial<MonitorState>) => void
 
   // Watershed Manager
-  watershedManager: WatershedManagerState
-  setWatershedManager: (state: Partial<WatershedManagerState>) => void
+  watershedManager: MonitorState
+  setWatershedManager: (state: Partial<MonitorState>) => void
 
   // Tectonic Plate Viewer
-  tectonicPlate: TectonicPlateState
-  setTectonicPlate: (state: Partial<TectonicPlateState>) => void
+  tectonicPlate: MonitorState
+  setTectonicPlate: (state: Partial<MonitorState>) => void
 
   // Air Quality Forecaster
-  airQualityForecaster: AirQualityForecasterState
-  setAirQualityForecaster: (state: Partial<AirQualityForecasterState>) => void
+  airQualityForecaster: MonitorState
+  setAirQualityForecaster: (state: Partial<MonitorState>) => void
 
   // Glacial Lake Monitor
-  glacialLake: GlacialLakeState
-  setGlacialLake: (state: Partial<GlacialLakeState>) => void
+  glacialLake: MonitorState
+  setGlacialLake: (state: Partial<MonitorState>) => void
 
   // Space Weather Monitor
-  spaceWeather: SpaceWeatherState
-  setSpaceWeather: (state: Partial<SpaceWeatherState>) => void
+  spaceWeather: MonitorState
+  setSpaceWeather: (state: Partial<MonitorState>) => void
 
   // Peatland Monitor
-  peatlandMonitor: PeatlandMonitorState
-  setPeatlandMonitor: (state: Partial<PeatlandMonitorState>) => void
+  peatlandMonitor: MonitorState
+  setPeatlandMonitor: (state: Partial<MonitorState>) => void
 
   // Mangrove Monitor
-  mangroveMonitor: MangroveMonitorState
-  setMangroveMonitor: (state: Partial<MangroveMonitorState>) => void
+  mangroveMonitor: MonitorState
+  setMangroveMonitor: (state: Partial<MonitorState>) => void
 
   // Sandstorm Tracker
-  sandstormTracker: SandstormTrackerState
-  setSandstormTracker: (state: Partial<SandstormTrackerState>) => void
+  sandstormTracker: MonitorState
+  setSandstormTracker: (state: Partial<MonitorState>) => void
 
   // Wetland Mapper
-  wetlandMapper: WetlandMapperState
-  setWetlandMapper: (state: Partial<WetlandMapperState>) => void
+  wetlandMapper: MonitorState
+  setWetlandMapper: (state: Partial<MonitorState>) => void
 
   // Urban Heat Island
-  urbanHeatIsland: UrbanHeatIslandState
-  setUrbanHeatIsland: (state: Partial<UrbanHeatIslandState>) => void
+  urbanHeatIsland: MonitorState
+  setUrbanHeatIsland: (state: Partial<MonitorState>) => void
 
   // Wildfire Risk Assessor
-  wildfireRisk: WildfireRiskState
-  setWildfireRisk: (state: Partial<WildfireRiskState>) => void
+  wildfireRisk: MonitorState
+  setWildfireRisk: (state: Partial<MonitorState>) => void
 
   // Algal Bloom Tracker
-  algalBloom: AlgalBloomState
-  setAlgalBloom: (state: Partial<AlgalBloomState>) => void
+  algalBloom: MonitorState
+  setAlgalBloom: (state: Partial<MonitorState>) => void
 
   // Landslide Predictor
-  landslidePredictor: LandslidePredictorState
-  setLandslidePredictor: (state: Partial<LandslidePredictorState>) => void
+  landslidePredictor: MonitorState
+  setLandslidePredictor: (state: Partial<MonitorState>) => void
 
   // Sea Ice Navigator
-  seaIceNavigator: SeaIceNavigatorState
-  setSeaIceNavigator: (state: Partial<SeaIceNavigatorState>) => void
+  seaIceNavigator: MonitorState
+  setSeaIceNavigator: (state: Partial<MonitorState>) => void
 
   // Cloud Cover Analyzer
-  cloudCover: CloudCoverState
-  setCloudCover: (state: Partial<CloudCoverState>) => void
+  cloudCover: MonitorState
+  setCloudCover: (state: Partial<MonitorState>) => void
 
   // Soil Moisture Monitor
-  soilMoisture: SoilMoistureState
-  setSoilMoisture: (state: Partial<SoilMoistureState>) => void
+  soilMoisture: MonitorState
+  setSoilMoisture: (state: Partial<MonitorState>) => void
 
   // Light Pollution Monitor
-  lightPollution: LightPollutionState
-  setLightPollution: (state: Partial<LightPollutionState>) => void
+  lightPollution: MonitorState
+  setLightPollution: (state: Partial<MonitorState>) => void
 
   // River Flow Monitor
-  riverFlow: RiverFlowState
-  setRiverFlow: (state: Partial<RiverFlowState>) => void
+  riverFlow: MonitorState
+  setRiverFlow: (state: Partial<MonitorState>) => void
 
   // Volcano Seismic Monitor
-  volcanoSeismic: VolcanoSeismicState
-  setVolcanoSeismic: (state: Partial<VolcanoSeismicState>) => void
+  volcanoSeismic: MonitorState
+  setVolcanoSeismic: (state: Partial<MonitorState>) => void
 
   // Whale Migration Tracker
-  whaleMigration: WhaleMigrationState
-  setWhaleMigration: (state: Partial<WhaleMigrationState>) => void
+  whaleMigration: MonitorState
+  setWhaleMigration: (state: Partial<MonitorState>) => void
 
   // Avalanche Forecaster
-  avalancheForecaster: AvalancheForecasterState
-  setAvalancheForecaster: (state: Partial<AvalancheForecasterState>) => void
+  avalancheForecaster: MonitorState
+  setAvalancheForecaster: (state: Partial<MonitorState>) => void
 
   // Aurora Forecaster
-  auroraForecaster: AuroraForecasterState
-  setAuroraForecaster: (state: Partial<AuroraForecasterState>) => void
+  auroraForecaster: MonitorState
+  setAuroraForecaster: (state: Partial<MonitorState>) => void
 
   // Ozone Layer Monitor
-  ozoneLayer: OzoneLayerState
-  setOzoneLayer: (state: Partial<OzoneLayerState>) => void
+  ozoneLayer: MonitorState
+  setOzoneLayer: (state: Partial<MonitorState>) => void
 
   // Deforestation Tracker
-  deforestation: DeforestationState
-  setDeforestation: (state: Partial<DeforestationState>) => void
+  deforestation: MonitorState
+  setDeforestation: (state: Partial<MonitorState>) => void
 
   // Methane Emissions Tracker
-  methaneEmissions: MethaneEmissionsState
-  setMethaneEmissions: (state: Partial<MethaneEmissionsState>) => void
+  methaneEmissions: MonitorState
+  setMethaneEmissions: (state: Partial<MonitorState>) => void
 
   // Ocean Acidification Monitor
-  oceanAcidification: OceanAcidificationState
-  setOceanAcidification: (state: Partial<OceanAcidificationState>) => void
+  oceanAcidification: MonitorState
+  setOceanAcidification: (state: Partial<MonitorState>) => void
 
   // Space Debris Tracker
-  spaceDebris: SpaceDebrisState
-  setSpaceDebris: (state: Partial<SpaceDebrisState>) => void
+  spaceDebris: MonitorState
+  setSpaceDebris: (state: Partial<MonitorState>) => void
 
   // Tectonic Strain Monitor
-  tectonicStrain: TectonicStrainState
-  setTectonicStrain: (state: Partial<TectonicStrainState>) => void
+  tectonicStrain: MonitorState
+  setTectonicStrain: (state: Partial<MonitorState>) => void
 
   // Phytoplankton Bloom Monitor
-  phytoBloom: PhytoBloomState
-  setPhytoBloom: (state: Partial<PhytoBloomState>) => void
+  phytoBloom: MonitorState
+  setPhytoBloom: (state: Partial<MonitorState>) => void
 
   // Snow Cover Monitor
-  snowCover: SnowCoverState
-  setSnowCover: (state: Partial<SnowCoverState>) => void
+  snowCover: MonitorState
+  setSnowCover: (state: Partial<MonitorState>) => void
 
   // Geomagnetic Storm Tracker
-  geomagneticStorm: GeomagneticStormState
-  setGeomagneticStorm: (state: Partial<GeomagneticStormState>) => void
+  geomagneticStorm: MonitorState
+  setGeomagneticStorm: (state: Partial<MonitorState>) => void
 
   // Volcanic Gas Monitor
-  volcanicGas: VolcanicGasState
-  setVolcanicGas: (state: Partial<VolcanicGasState>) => void
+  volcanicGas: MonitorState
+  setVolcanicGas: (state: Partial<MonitorState>) => void
 
   // Aquifer Depletion Monitor
-  aquiferDepletion: AquiferDepletionState
-  setAquiferDepletion: (state: Partial<AquiferDepletionState>) => void
+  aquiferDepletion: MonitorState
+  setAquiferDepletion: (state: Partial<MonitorState>) => void
 
   // Stratospheric Wind Monitor
-  stratosphericWind: StratosphericWindState
-  setStratosphericWind: (state: Partial<StratosphericWindState>) => void
+  stratosphericWind: MonitorState
+  setStratosphericWind: (state: Partial<MonitorState>) => void
 
   // Marine Heatwave Tracker
-  marineHeatwave: MarineHeatwaveState
-  setMarineHeatwave: (state: Partial<MarineHeatwaveState>) => void
+  marineHeatwave: MonitorState
+  setMarineHeatwave: (state: Partial<MonitorState>) => void
 
   // Precipitation Analyzer
-  precipitation: PrecipitationState
-  setPrecipitation: (state: Partial<PrecipitationState>) => void
+  precipitation: MonitorState
+  setPrecipitation: (state: Partial<MonitorState>) => void
 
   // Cosmic Ray Monitor
-  cosmicRay: CosmicRayState
-  setCosmicRay: (state: Partial<CosmicRayState>) => void
+  cosmicRay: MonitorState
+  setCosmicRay: (state: Partial<MonitorState>) => void
 
   // Greenland Ice Tracker
-  greenlandIce: GreenlandIceState
-  setGreenlandIce: (state: Partial<GreenlandIceState>) => void
+  greenlandIce: MonitorState
+  setGreenlandIce: (state: Partial<MonitorState>) => void
 
   // Radiation Exposure Monitor
-  radiationExposure: RadiationExposureState
-  setRadiationExposure: (state: Partial<RadiationExposureState>) => void
+  radiationExposure: MonitorState
+  setRadiationExposure: (state: Partial<MonitorState>) => void
 
   // Peat Fire Tracker
-  peatFire: PeatFireState
-  setPeatFire: (state: Partial<PeatFireState>) => void
+  peatFire: MonitorState
+  setPeatFire: (state: Partial<MonitorState>) => void
 
   // Sea Level Rise Projector
-  seaLevelRise: SeaLevelRiseState
-  setSeaLevelRise: (state: Partial<SeaLevelRiseState>) => void
+  seaLevelRise: MonitorState
+  setSeaLevelRise: (state: Partial<MonitorState>) => void
 
   // Thermocline Mapper
-  thermocline: ThermoclineState
-  setThermocline: (state: Partial<ThermoclineState>) => void
+  thermocline: MonitorState
+  setThermocline: (state: Partial<MonitorState>) => void
 
   // Acid Rain Tracker
-  acidRain: AcidRainState
-  setAcidRain: (state: Partial<AcidRainState>) => void
+  acidRain: MonitorState
+  setAcidRain: (state: Partial<MonitorState>) => void
 
   // Methane Hydrate Monitor
-  methaneHydrate: MethaneHydrateState
-  setMethaneHydrate: (state: Partial<MethaneHydrateState>) => void
+  methaneHydrate: MonitorState
+  setMethaneHydrate: (state: Partial<MonitorState>) => void
 
   // Kelp Forest Monitor
-  kelpForest: KelpForestState
-  setKelpForest: (state: Partial<KelpForestState>) => void
+  kelpForest: MonitorState
+  setKelpForest: (state: Partial<MonitorState>) => void
 
   // Glacier Lake Outburst Tracker
-  glof: GLOFState
-  setGLOF: (state: Partial<GLOFState>) => void
+  glof: MonitorState
+  setGLOF: (state: Partial<MonitorState>) => void
 
   // Dust Storm Tracker
-  dustStorm: DustStormState
-  setDustStorm: (state: Partial<DustStormState>) => void
+  dustStorm: MonitorState
+  setDustStorm: (state: Partial<MonitorState>) => void
 
   // Bioluminescence Tracker
-  bioluminescence: BioluminescenceState
-  setBioluminescence: (state: Partial<BioluminescenceState>) => void
+  bioluminescence: MonitorState
+  setBioluminescence: (state: Partial<MonitorState>) => void
 
   // Urban Sprawl Monitor
-  urbanSprawl: UrbanSprawlState
-  setUrbanSprawl: (state: Partial<UrbanSprawlState>) => void
+  urbanSprawl: MonitorState
+  setUrbanSprawl: (state: Partial<MonitorState>) => void
 
   // Viral Outbreak Mapper
-  viralOutbreak: ViralOutbreakState
-  setViralOutbreak: (state: Partial<ViralOutbreakState>) => void
+  viralOutbreak: MonitorState
+  setViralOutbreak: (state: Partial<MonitorState>) => void
 
   // Magnetosphere Monitor
-  magnetosphere: MagnetosphereState
-  setMagnetosphere: (state: Partial<MagnetosphereState>) => void
+  magnetosphere: MonitorState
+  setMagnetosphere: (state: Partial<MonitorState>) => void
 
   // Fog Density Mapper
-  fogDensity: FogDensityState
-  setFogDensity: (state: Partial<FogDensityState>) => void
+  fogDensity: MonitorState
+  setFogDensity: (state: Partial<MonitorState>) => void
 
   // Carbon Capture Tracker
-  carbonCapture: CarbonCaptureState
-  setCarbonCapture: (state: Partial<CarbonCaptureState>) => void
+  carbonCapture: MonitorState
+  setCarbonCapture: (state: Partial<MonitorState>) => void
 
   // Hail Storm Tracker
-  hailStorm: HailStormState
-  setHailStorm: (state: Partial<HailStormState>) => void
+  hailStorm: MonitorState
+  setHailStorm: (state: Partial<MonitorState>) => void
 
   // Sahara Reforestation Tracker
-  saharaReforestation: SaharaReforestationState
-  setSaharaReforestation: (state: Partial<SaharaReforestationState>) => void
+  saharaReforestation: MonitorState
+  setSaharaReforestation: (state: Partial<MonitorState>) => void
 
   // Deep Sea Vents Monitor
-  deepSeaVent: DeepSeaVentState
-  setDeepSeaVent: (state: Partial<DeepSeaVentState>) => void
+  deepSeaVent: MonitorState
+  setDeepSeaVent: (state: Partial<MonitorState>) => void
 
   // Storm Surge Predictor
-  stormSurge: StormSurgeState
-  setStormSurge: (state: Partial<StormSurgeState>) => void
+  stormSurge: MonitorState
+  setStormSurge: (state: Partial<MonitorState>) => void
 
   // Landfill Monitor
-  landfillMonitor: LandfillMonitorState
-  setLandfillMonitor: (state: Partial<LandfillMonitorState>) => void
+  landfillMonitor: MonitorState
+  setLandfillMonitor: (state: Partial<MonitorState>) => void
 
   // Salinity Gradient Mapper
-  salinityGradient: SalinityGradientState
-  setSalinityGradient: (state: Partial<SalinityGradientState>) => void
+  salinityGradient: MonitorState
+  setSalinityGradient: (state: Partial<MonitorState>) => void
 
   // Microplastics Tracker
-  microplastics: MicroplasticsState
-  setMicroplastics: (state: Partial<MicroplasticsState>) => void
+  microplastics: MonitorState
+  setMicroplastics: (state: Partial<MonitorState>) => void
 
   // Radio Signal Mapper
-  radioSignal: RadioSignalState
-  setRadioSignal: (state: Partial<RadioSignalState>) => void
+  radioSignal: MonitorState
+  setRadioSignal: (state: Partial<MonitorState>) => void
 
   // Volcanic Island Monitor
-  volcanicIsland: VolcanicIslandState
-  setVolcanicIsland: (state: Partial<VolcanicIslandState>) => void
+  volcanicIsland: MonitorState
+  setVolcanicIsland: (state: Partial<MonitorState>) => void
 
   // Permafrost Thaw Monitor
-  permafrostThaw: PermafrostThawState
-  setPermafrostThaw: (state: Partial<PermafrostThawState>) => void
+  permafrostThaw: MonitorState
+  setPermafrostThaw: (state: Partial<MonitorState>) => void
 
   // Ocean Current Tracker
-  oceanCurrentTracker: OceanCurrentTrackerState
-  setOceanCurrentTracker: (state: Partial<OceanCurrentTrackerState>) => void
+  oceanCurrentTracker: MonitorState
+  setOceanCurrentTracker: (state: Partial<MonitorState>) => void
 
   // Space Weather Alert
-  spaceWeatherAlert: SpaceWeatherAlertState
-  setSpaceWeatherAlert: (state: Partial<SpaceWeatherAlertState>) => void
+  spaceWeatherAlert: MonitorState
+  setSpaceWeatherAlert: (state: Partial<MonitorState>) => void
 
   // Desert Monitor
-  desertMonitor: DesertMonitorState
-  setDesertMonitor: (state: Partial<DesertMonitorState>) => void
+  desertMonitor: MonitorState
+  setDesertMonitor: (state: Partial<MonitorState>) => void
 
   // Tsunami Buoy Tracker
-  tsunamiBuoy: TsunamiBuoyState
-  setTsunamiBuoy: (state: Partial<TsunamiBuoyState>) => void
+  tsunamiBuoy: MonitorState
+  setTsunamiBuoy: (state: Partial<MonitorState>) => void
 
   // Glacier Velocity Tracker
-  glacierVelocity: GlacierVelocityState
-  setGlacierVelocity: (state: Partial<GlacierVelocityState>) => void
+  glacierVelocity: MonitorState
+  setGlacierVelocity: (state: Partial<MonitorState>) => void
 
   // Earthquake Swarm Monitor
-  earthquakeSwarm: EarthquakeSwarmState
-  setEarthquakeSwarm: (state: Partial<EarthquakeSwarmState>) => void
+  earthquakeSwarm: MonitorState
+  setEarthquakeSwarm: (state: Partial<MonitorState>) => void
 
   // Mangrove Restoration Tracker
-  mangroveRestoration: MangroveRestorationState
-  setMangroveRestoration: (state: Partial<MangroveRestorationState>) => void
+  mangroveRestoration: MonitorState
+  setMangroveRestoration: (state: Partial<MonitorState>) => void
 
   // Task 57: Coral Bleaching Monitor
-  coralBleachingMonitor: CoralBleachingMonitorState
-  setCoralBleachingMonitor: (state: Partial<CoralBleachingMonitorState>) => void
+  coralBleachingMonitor: MonitorState
+  setCoralBleachingMonitor: (state: Partial<MonitorState>) => void
 
   // Task 57: Arctic Sea Ice Monitor
-  arcticSeaIce: ArcticSeaIceState
-  setArcticSeaIce: (state: Partial<ArcticSeaIceState>) => void
+  arcticSeaIce: MonitorState
+  setArcticSeaIce: (state: Partial<MonitorState>) => void
 
   // Task 57: Landslide Risk Monitor
-  landslideRisk: LandslideRiskState
-  setLandslideRisk: (state: Partial<LandslideRiskState>) => void
+  landslideRisk: MonitorState
+  setLandslideRisk: (state: Partial<MonitorState>) => void
 
   // Task 57: Air Quality Monitor
-  airQuality: AirQualityState
-  setAirQuality: (state: Partial<AirQualityState>) => void
+  airQuality: MonitorState
+  setAirQuality: (state: Partial<MonitorState>) => void
 
   // Task 57: Soil Moisture Ag Mapper
-  soilMoistureAg: SoilMoistureAgState
-  setSoilMoistureAg: (state: Partial<SoilMoistureAgState>) => void
+  soilMoistureAg: MonitorState
+  setSoilMoistureAg: (state: Partial<MonitorState>) => void
 
   // Task 57: Noise Pollution Mapper
-  noisePollution: NoisePollutionState
-  setNoisePollution: (state: Partial<NoisePollutionState>) => void
+  noisePollution: MonitorState
+  setNoisePollution: (state: Partial<MonitorState>) => void
 
   // Task 57: Light Pollution Sky Mapper
-  lightPollutionSky: LightPollutionSkyState
-  setLightPollutionSky: (state: Partial<LightPollutionSkyState>) => void
+  lightPollutionSky: MonitorState
+  setLightPollutionSky: (state: Partial<MonitorState>) => void
 
   // Task 57: Groundwater Recharge Tracker
-  groundwaterRecharge: GroundwaterRechargeState
-  setGroundwaterRecharge: (state: Partial<GroundwaterRechargeState>) => void
+  groundwaterRecharge: MonitorState
+  setGroundwaterRecharge: (state: Partial<MonitorState>) => void
 
   // Task 65: Subglacial Lake Explorer
-  subglacialLake: SubglacialLakeState
-  setSubglacialLake: (state: Partial<SubglacialLakeState>) => void
+  subglacialLake: MonitorState
+  setSubglacialLake: (state: Partial<MonitorState>) => void
 
   // Task 65: Thermokarst Lake Monitor
-  thermokarstLake: ThermokarstLakeState
-  setThermokarstLake: (state: Partial<ThermokarstLakeState>) => void
+  thermokarstLake: MonitorState
+  setThermokarstLake: (state: Partial<MonitorState>) => void
 
   // Task 65: Paleoclimate Proxy Explorer
-  paleoclimateProxy: PaleoclimateProxyState
-  setPaleoclimateProxy: (state: Partial<PaleoclimateProxyState>) => void
+  paleoclimateProxy: MonitorState
+  setPaleoclimateProxy: (state: Partial<MonitorState>) => void
 
   // Task 65: Geomagnetically Induced Current Monitor
-  gicMonitor: GICMonitorState
-  setGicMonitor: (state: Partial<GICMonitorState>) => void
+  gicMonitor: MonitorState
+  setGicMonitor: (state: Partial<MonitorState>) => void
 
   // Task 65: Sabkha Environment Monitor
-  sabkhaEnvironment: SabkhaEnvironmentState
-  setSabkhaEnvironment: (state: Partial<SabkhaEnvironmentState>) => void
+  sabkhaEnvironment: MonitorState
+  setSabkhaEnvironment: (state: Partial<MonitorState>) => void
 
   // Task 65: Cryosphere Change Tracker
-  cryosphereChange: CryosphereChangeState
-  setCryosphereChange: (state: Partial<CryosphereChangeState>) => void
+  cryosphereChange: MonitorState
+  setCryosphereChange: (state: Partial<MonitorState>) => void
 
   // Task 65: Abyssal Plain Mapper
-  abyssalPlain: AbyssalPlainState
-  setAbyssalPlain: (state: Partial<AbyssalPlainState>) => void
+  abyssalPlain: MonitorState
+  setAbyssalPlain: (state: Partial<MonitorState>) => void
 
   // Task 65: Fjord Ecosystem Monitor
-  fjordEcosystem: FjordEcosystemState
-  setFjordEcosystem: (state: Partial<FjordEcosystemState>) => void
+  fjordEcosystem: MonitorState
+  setFjordEcosystem: (state: Partial<MonitorState>) => void
 
   // Task 67: Geothermal Spring Monitor
-  geothermalSpring: GeothermalSpringState
-  setGeothermalSpring: (state: Partial<GeothermalSpringState>) => void
+  geothermalSpring: MonitorState
+  setGeothermalSpring: (state: Partial<MonitorState>) => void
 
   // Task 67: Asteroid Impact Risk Mapper
-  asteroidImpact: AsteroidImpactState
-  setAsteroidImpact: (state: Partial<AsteroidImpactState>) => void
+  asteroidImpact: MonitorState
+  setAsteroidImpact: (state: Partial<MonitorState>) => void
 
   // Task 67: Desert Oasis Monitor
-  desertOasis: DesertOasisState
-  setDesertOasis: (state: Partial<DesertOasisState>) => void
+  desertOasis: MonitorState
+  setDesertOasis: (state: Partial<MonitorState>) => void
 
   // Task 67: Volcanic Lightning Tracker
-  volcanicLightning: VolcanicLightningState
-  setVolcanicLightning: (state: Partial<VolcanicLightningState>) => void
+  volcanicLightning: MonitorState
+  setVolcanicLightning: (state: Partial<MonitorState>) => void
 
   // Task 67: Ice Core Data Explorer
-  iceCoreData: IceCoreDataState
-  setIceCoreData: (state: Partial<IceCoreDataState>) => void
+  iceCoreData: MonitorState
+  setIceCoreData: (state: Partial<MonitorState>) => void
 
   // Task 67: Stratospheric Aerosol Monitor
-  stratosphericAerosol: StratosphericAerosolState
-  setStratosphericAerosol: (state: Partial<StratosphericAerosolState>) => void
+  stratosphericAerosol: MonitorState
+  setStratosphericAerosol: (state: Partial<MonitorState>) => void
 
   // Task 67: Megacity Carbon Footprint
-  megacityCarbon: MegacityCarbonState
-  setMegacityCarbon: (state: Partial<MegacityCarbonState>) => void
+  megacityCarbon: MonitorState
+  setMegacityCarbon: (state: Partial<MonitorState>) => void
 
   // Task 67: Ocean Mesoscale Eddy Tracker
-  oceanEddy: OceanEddyState
-  setOceanEddy: (state: Partial<OceanEddyState>) => void
+  oceanEddy: MonitorState
+  setOceanEddy: (state: Partial<MonitorState>) => void
 
   // Task 68: New monitoring states
-  supervolcano: SupervolcanoState
-  setSupervolcano: (state: Partial<SupervolcanoState>) => void
-  polarVortex: PolarVortexState
-  setPolarVortex: (state: Partial<PolarVortexState>) => void
-  karstAquifer: KarstAquiferState
-  setKarstAquifer: (state: Partial<KarstAquiferState>) => void
-  subductionZone: SubductionZoneState
-  setSubductionZone: (state: Partial<SubductionZoneState>) => void
-  tropopause: TropopauseState
-  setTropopause: (state: Partial<TropopauseState>) => void
-  invasiveSpecies: InvasiveSpeciesState
-  setInvasiveSpecies: (state: Partial<InvasiveSpeciesState>) => void
-  tundraCarbon: TundraCarbonState
-  setTundraCarbon: (state: Partial<TundraCarbonState>) => void
-  monsoon: MonsoonState
-  setMonsoon: (state: Partial<MonsoonState>) => void
+  supervolcano: MonitorState
+  setSupervolcano: (state: Partial<MonitorState>) => void
+  polarVortex: MonitorState
+  setPolarVortex: (state: Partial<MonitorState>) => void
+  karstAquifer: MonitorState
+  setKarstAquifer: (state: Partial<MonitorState>) => void
+  subductionZone: MonitorState
+  setSubductionZone: (state: Partial<MonitorState>) => void
+  tropopause: MonitorState
+  setTropopause: (state: Partial<MonitorState>) => void
+  invasiveSpecies: MonitorState
+  setInvasiveSpecies: (state: Partial<MonitorState>) => void
+  tundraCarbon: MonitorState
+  setTundraCarbon: (state: Partial<MonitorState>) => void
+  monsoon: MonitorState
+  setMonsoon: (state: Partial<MonitorState>) => void
 
   // Task 69: New monitoring states
-  lavaFlow: LavaFlowState
-  setLavaFlow: (state: Partial<LavaFlowState>) => void
-  tidalEnergy: TidalEnergyState
-  setTidalEnergy: (state: Partial<TidalEnergyState>) => void
-  peatFire: PeatFireState
-  setPeatFire: (state: Partial<PeatFireState>) => void
-  coralSpawn: CoralSpawnState
-  setCoralSpawn: (state: Partial<CoralSpawnState>) => void
-  glacierCalving: GlacierCalvingState
-  setGlacierCalving: (state: Partial<GlacierCalvingState>) => void
-  soilCarbon: SoilCarbonState
-  setSoilCarbon: (state: Partial<SoilCarbonState>) => void
-  urbanTreeCanopy: UrbanTreeCanopyState
-  setUrbanTreeCanopy: (state: Partial<UrbanTreeCanopyState>) => void
-  geomagneticPole: GeomagneticPoleState
-  setGeomagneticPole: (state: Partial<GeomagneticPoleState>) => void
+  lavaFlow: MonitorState
+  setLavaFlow: (state: Partial<MonitorState>) => void
+  tidalEnergy: MonitorState
+  setTidalEnergy: (state: Partial<MonitorState>) => void
+  peatFire: MonitorState
+  setPeatFire: (state: Partial<MonitorState>) => void
+  coralSpawn: MonitorState
+  setCoralSpawn: (state: Partial<MonitorState>) => void
+  glacierCalving: MonitorState
+  setGlacierCalving: (state: Partial<MonitorState>) => void
+  soilCarbon: MonitorState
+  setSoilCarbon: (state: Partial<MonitorState>) => void
+  urbanTreeCanopy: MonitorState
+  setUrbanTreeCanopy: (state: Partial<MonitorState>) => void
+  geomagneticPole: MonitorState
+  setGeomagneticPole: (state: Partial<MonitorState>) => void
 
   // Task 70: New monitoring states
-  hydrothermalVent: HydrothermalVentState
-  setHydrothermalVent: (state: Partial<HydrothermalVentState>) => void
-  watershedHealth: WatershedHealthState
-  setWatershedHealth: (state: Partial<WatershedHealthState>) => void
-  migratoryFlyway: MigratoryFlywayState
-  setMigratoryFlyway: (state: Partial<MigratoryFlywayState>) => void
-  seagrassMeadow: SeagrassMeadowState
-  setSeagrassMeadow: (state: Partial<SeagrassMeadowState>) => void
-  urbanHeatIslandDetail: UrbanHeatIslandDetailState
-  setUrbanHeatIslandDetail: (state: Partial<UrbanHeatIslandDetailState>) => void
-  oceanAcidificationDetail: OceanAcidificationDetailState
-  setOceanAcidificationDetail: (state: Partial<OceanAcidificationDetailState>) => void
-  desertificationDetail: DesertificationDetailState
-  setDesertificationDetail: (state: Partial<DesertificationDetailState>) => void
-  volcanicGasTracker: VolcanicGasTrackerState
-  setVolcanicGasTracker: (state: Partial<VolcanicGasTrackerState>) => void
+  hydrothermalVent: MonitorState
+  setHydrothermalVent: (state: Partial<MonitorState>) => void
+  watershedHealth: MonitorState
+  setWatershedHealth: (state: Partial<MonitorState>) => void
+  migratoryFlyway: MonitorState
+  setMigratoryFlyway: (state: Partial<MonitorState>) => void
+  seagrassMeadow: MonitorState
+  setSeagrassMeadow: (state: Partial<MonitorState>) => void
+  urbanHeatIslandDetail: MonitorState
+  setUrbanHeatIslandDetail: (state: Partial<MonitorState>) => void
+  oceanAcidificationDetail: MonitorState
+  setOceanAcidificationDetail: (state: Partial<MonitorState>) => void
+  desertificationDetail: MonitorState
+  setDesertificationDetail: (state: Partial<MonitorState>) => void
+  volcanicGasTracker: MonitorState
+  setVolcanicGasTracker: (state: Partial<MonitorState>) => void
   // Task 71: New monitoring states
-  deepOceanCurrent: DeepOceanCurrentState
-  setDeepOceanCurrent: (state: Partial<DeepOceanCurrentState>) => void
-  stratosphericOzone: StratosphericOzoneState
-  setStratosphericOzone: (state: Partial<StratosphericOzoneState>) => void
-  seismicHarmonic: SeismicHarmonicState
-  setSeismicHarmonic: (state: Partial<SeismicHarmonicState>) => void
-  wildfireSmoke: WildfireSmokeState
-  setWildfireSmoke: (state: Partial<WildfireSmokeState>) => void
-  estuaryHealth: EstuaryHealthState
-  setEstuaryHealth: (state: Partial<EstuaryHealthState>) => void
-  alpineGlacier: AlpineGlacierState
-  setAlpineGlacier: (state: Partial<AlpineGlacierState>) => void
-  oceanAnoxicZone: OceanAnoxicZoneState
-  setOceanAnoxicZone: (state: Partial<OceanAnoxicZoneState>) => void
-  permafrostCarbonFeedback: PermafrostCarbonFeedbackState
-  setPermafrostCarbonFeedback: (state: Partial<PermafrostCarbonFeedbackState>) => void
+  deepOceanCurrent: MonitorState
+  setDeepOceanCurrent: (state: Partial<MonitorState>) => void
+  stratosphericOzone: MonitorState
+  setStratosphericOzone: (state: Partial<MonitorState>) => void
+  seismicHarmonic: MonitorState
+  setSeismicHarmonic: (state: Partial<MonitorState>) => void
+  wildfireSmoke: MonitorState
+  setWildfireSmoke: (state: Partial<MonitorState>) => void
+  estuaryHealth: MonitorState
+  setEstuaryHealth: (state: Partial<MonitorState>) => void
+  alpineGlacier: MonitorState
+  setAlpineGlacier: (state: Partial<MonitorState>) => void
+  oceanAnoxicZone: MonitorState
+  setOceanAnoxicZone: (state: Partial<MonitorState>) => void
+  permafrostCarbonFeedback: MonitorState
+  setPermafrostCarbonFeedback: (state: Partial<MonitorState>) => void
 
   // Task 72: New monitoring states
-  tropicalCyclone: TropicalCycloneState
-  setTropicalCyclone: (state: Partial<TropicalCycloneState>) => void
-  volcanicDeformation: VolcanicDeformationState
-  setVolcanicDeformation: (state: Partial<VolcanicDeformationState>) => void
-  coralReefBleachingDetail: CoralReefBleachingDetailState
-  setCoralReefBleachingDetail: (state: Partial<CoralReefBleachingDetailState>) => void
-  arcticPermafrostLakes: ArcticPermafrostLakesState
-  setArcticPermafrostLakes: (state: Partial<ArcticPermafrostLakesState>) => void
-  methaneEmissionHotspot: MethaneEmissionHotspotState
-  setMethaneEmissionHotspot: (state: Partial<MethaneEmissionHotspotState>) => void
-  coastalUpwelling: CoastalUpwellingState
-  setCoastalUpwelling: (state: Partial<CoastalUpwellingState>) => void
-  spaceDebrisOrbit: SpaceDebrisOrbitState
-  setSpaceDebrisOrbit: (state: Partial<SpaceDebrisOrbitState>) => void
-  tectonicPlateBoundary: TectonicPlateBoundaryState
-  setTectonicPlateBoundary: (state: Partial<TectonicPlateBoundaryState>) => void
+  tropicalCyclone: MonitorState
+  setTropicalCyclone: (state: Partial<MonitorState>) => void
+  volcanicDeformation: MonitorState
+  setVolcanicDeformation: (state: Partial<MonitorState>) => void
+  coralReefBleachingDetail: MonitorState
+  setCoralReefBleachingDetail: (state: Partial<MonitorState>) => void
+  arcticPermafrostLakes: MonitorState
+  setArcticPermafrostLakes: (state: Partial<MonitorState>) => void
+  methaneEmissionHotspot: MonitorState
+  setMethaneEmissionHotspot: (state: Partial<MonitorState>) => void
+  coastalUpwelling: MonitorState
+  setCoastalUpwelling: (state: Partial<MonitorState>) => void
+  spaceDebrisOrbit: MonitorState
+  setSpaceDebrisOrbit: (state: Partial<MonitorState>) => void
+  tectonicPlateBoundary: MonitorState
+  setTectonicPlateBoundary: (state: Partial<MonitorState>) => void
 
   // Task 73: New monitoring states
-  landslideSusceptibility: LandslideSusceptibilityState
-  setLandslideSusceptibility: (state: Partial<LandslideSusceptibilityState>) => void
-  solarFlareActivity: SolarFlareActivityState
-  setSolarFlareActivity: (state: Partial<SolarFlareActivityState>) => void
-  riverDeltaErosion: RiverDeltaErosionState
-  setRiverDeltaErosion: (state: Partial<RiverDeltaErosionState>) => void
-  seaIceThickness: SeaIceThicknessState
-  setSeaIceThickness: (state: Partial<SeaIceThicknessState>) => void
-  urbanAirQuality: UrbanAirQualityState
-  setUrbanAirQuality: (state: Partial<UrbanAirQualityState>) => void
-  geothermalEnergy: GeothermalEnergyState
-  setGeothermalEnergy: (state: Partial<GeothermalEnergyState>) => void
-  aquiferSalinization: AquiferSalinizationState
-  setAquiferSalinization: (state: Partial<AquiferSalinizationState>) => void
-  biomassBurning: BiomassBurningState
-  setBiomassBurning: (state: Partial<BiomassBurningState>) => void
+  landslideSusceptibility: MonitorState
+  setLandslideSusceptibility: (state: Partial<MonitorState>) => void
+  solarFlareActivity: MonitorState
+  setSolarFlareActivity: (state: Partial<MonitorState>) => void
+  riverDeltaErosion: MonitorState
+  setRiverDeltaErosion: (state: Partial<MonitorState>) => void
+  seaIceThickness: MonitorState
+  setSeaIceThickness: (state: Partial<MonitorState>) => void
+  urbanAirQuality: MonitorState
+  setUrbanAirQuality: (state: Partial<MonitorState>) => void
+  geothermalEnergy: MonitorState
+  setGeothermalEnergy: (state: Partial<MonitorState>) => void
+  aquiferSalinization: MonitorState
+  setAquiferSalinization: (state: Partial<MonitorState>) => void
+  biomassBurning: MonitorState
+  setBiomassBurning: (state: Partial<MonitorState>) => void
 
   // Task 74: New monitoring states
-  glacialLakeOutburst: GlacialLakeOutburstState
-  setGlacialLakeOutburst: (state: Partial<GlacialLakeOutburstState>) => void
-  oceanMicroplastic: OceanMicroplasticState
-  setOceanMicroplastic: (state: Partial<OceanMicroplasticState>) => void
-  volcanicAshDispersion: VolcanicAshDispersionState
-  setVolcanicAshDispersion: (state: Partial<VolcanicAshDispersionState>) => void
-  droughtSeverity: DroughtSeverityState
-  setDroughtSeverity: (state: Partial<DroughtSeverityState>) => void
-  tsunamiWaveHeight: TsunamiWaveHeightState
-  setTsunamiWaveHeight: (state: Partial<TsunamiWaveHeightState>) => void
-  caveEcosystem: CaveEcosystemState
-  setCaveEcosystem: (state: Partial<CaveEcosystemState>) => void
-  solarIrradiance: SolarIrradianceState
-  setSolarIrradiance: (state: Partial<SolarIrradianceState>) => void
-  peatlandRestoration: PeatlandRestorationState
-  setPeatlandRestoration: (state: Partial<PeatlandRestorationState>) => void
+  glacialLakeOutburst: MonitorState
+  setGlacialLakeOutburst: (state: Partial<MonitorState>) => void
+  oceanMicroplastic: MonitorState
+  setOceanMicroplastic: (state: Partial<MonitorState>) => void
+  volcanicAshDispersion: MonitorState
+  setVolcanicAshDispersion: (state: Partial<MonitorState>) => void
+  droughtSeverity: MonitorState
+  setDroughtSeverity: (state: Partial<MonitorState>) => void
+  tsunamiWaveHeight: MonitorState
+  setTsunamiWaveHeight: (state: Partial<MonitorState>) => void
+  caveEcosystem: MonitorState
+  setCaveEcosystem: (state: Partial<MonitorState>) => void
+  solarIrradiance: MonitorState
+  setSolarIrradiance: (state: Partial<MonitorState>) => void
+  peatlandRestoration: MonitorState
+  setPeatlandRestoration: (state: Partial<MonitorState>) => void
 
   // Task 75: New monitoring states
-  mangroveCarbon: MangroveCarbonState
-  setMangroveCarbon: (state: Partial<MangroveCarbonState>) => void
-  oceanHeatContent: OceanHeatContentState
-  setOceanHeatContent: (state: Partial<OceanHeatContentState>) => void
-  dustStormTracker: DustStormTrackerState
-  setDustStormTracker: (state: Partial<DustStormTrackerState>) => void
-  coralDiseaseMonitor: CoralDiseaseMonitorState
-  setCoralDiseaseMonitor: (state: Partial<CoralDiseaseMonitorState>) => void
-  iceShelfCollapse: IceShelfCollapseState
-  setIceShelfCollapse: (state: Partial<IceShelfCollapseState>) => void
-  urbanFloodRisk: UrbanFloodRiskState
-  setUrbanFloodRisk: (state: Partial<UrbanFloodRiskState>) => void
-  phytoplanktonBloom: PhytoplanktonBloomState
-  setPhytoplanktonBloom: (state: Partial<PhytoplanktonBloomState>) => void
-  submarineCanyon: SubmarineCanyonState
-  setSubmarineCanyon: (state: Partial<SubmarineCanyonState>) => void
+  mangroveCarbon: MonitorState
+  setMangroveCarbon: (state: Partial<MonitorState>) => void
+  oceanHeatContent: MonitorState
+  setOceanHeatContent: (state: Partial<MonitorState>) => void
+  dustStormTracker: MonitorState
+  setDustStormTracker: (state: Partial<MonitorState>) => void
+  coralDiseaseMonitor: MonitorState
+  setCoralDiseaseMonitor: (state: Partial<MonitorState>) => void
+  iceShelfCollapse: MonitorState
+  setIceShelfCollapse: (state: Partial<MonitorState>) => void
+  urbanFloodRisk: MonitorState
+  setUrbanFloodRisk: (state: Partial<MonitorState>) => void
+  phytoplanktonBloom: MonitorState
+  setPhytoplanktonBloom: (state: Partial<MonitorState>) => void
+  submarineCanyon: MonitorState
+  setSubmarineCanyon: (state: Partial<MonitorState>) => void
   // Task 76: New monitoring states
-  kelpForestMonitor: KelpForestMonitorState
-  setKelpForestMonitor: (state: Partial<KelpForestMonitorState>) => void
-  volcanicIslandFormation: VolcanicIslandFormationState
-  setVolcanicIslandFormation: (state: Partial<VolcanicIslandFormationState>) => void
-  saltwaterIntrusion: SaltwaterIntrusionState
-  setSaltwaterIntrusion: (state: Partial<SaltwaterIntrusionState>) => void
-  arcticShippingRoute: ArcticShippingRouteState
-  setArcticShippingRoute: (state: Partial<ArcticShippingRouteState>) => void
-  thermoclineDepth: ThermoclineDepthState
-  setThermoclineDepth: (state: Partial<ThermoclineDepthState>) => void
-  bioluminescentBay: BioluminescentBayState
-  setBioluminescentBay: (state: Partial<BioluminescentBayState>) => void
-  orographicRainfall: OrographicRainfallState
-  setOrographicRainfall: (state: Partial<OrographicRainfallState>) => void
-  hydrothermalPlume: HydrothermalPlumeState
-  setHydrothermalPlume: (state: Partial<HydrothermalPlumeState>) => void
+  kelpForestMonitor: MonitorState
+  setKelpForestMonitor: (state: Partial<MonitorState>) => void
+  volcanicIslandFormation: MonitorState
+  setVolcanicIslandFormation: (state: Partial<MonitorState>) => void
+  saltwaterIntrusion: MonitorState
+  setSaltwaterIntrusion: (state: Partial<MonitorState>) => void
+  arcticShippingRoute: MonitorState
+  setArcticShippingRoute: (state: Partial<MonitorState>) => void
+  thermoclineDepth: MonitorState
+  setThermoclineDepth: (state: Partial<MonitorState>) => void
+  bioluminescentBay: MonitorState
+  setBioluminescentBay: (state: Partial<MonitorState>) => void
+  orographicRainfall: MonitorState
+  setOrographicRainfall: (state: Partial<MonitorState>) => void
+  hydrothermalPlume: MonitorState
+  setHydrothermalPlume: (state: Partial<MonitorState>) => void
   // Task 77: New monitoring states
-  seamountEcosystem: SeamountEcosystemState
-  setSeamountEcosystem: (state: Partial<SeamountEcosystemState>) => void
-  groundSubsidence: GroundSubsidenceState
-  setGroundSubsidence: (state: Partial<GroundSubsidenceState>) => void
-  oceanStratification: OceanStratificationState
-  setOceanStratification: (state: Partial<OceanStratificationState>) => void
-  snowCoverExtent: SnowCoverExtentState
-  setSnowCoverExtent: (state: Partial<SnowCoverExtentState>) => void
-  coastalErosionDetail: CoastalErosionDetailState
-  setCoastalErosionDetail: (state: Partial<CoastalErosionDetailState>) => void
-  ecosystemServiceValue: EcosystemServiceValueState
-  setEcosystemServiceValue: (state: Partial<EcosystemServiceValueState>) => void
-  tidalFlatMonitor: TidalFlatMonitorState
-  setTidalFlatMonitor: (state: Partial<TidalFlatMonitorState>) => void
-  wildfireRiskAssessment: WildfireRiskAssessmentState
-  setWildfireRiskAssessment: (state: Partial<WildfireRiskAssessmentState>) => void
-  karstSinkhole: KarstSinkholeState
-  setKarstSinkhole: (state: Partial<KarstSinkholeState>) => void
-  volcanicSO2: VolcanicSO2State
-  setVolcanicSO2: (state: Partial<VolcanicSO2State>) => void
-  icebergTracker: IcebergTrackerState
-  setIcebergTracker: (state: Partial<IcebergTrackerState>) => void
-  caveMineral: CaveMineralState
-  setCaveMineral: (state: Partial<CaveMineralState>) => void
-  seafloorHydrate: SeafloorHydrateState
-  setSeafloorHydrate: (state: Partial<SeafloorHydrateState>) => void
-  mangroveLoss: MangroveLossState
-  setMangroveLoss: (state: Partial<MangroveLossState>) => void
-  urbanNoiseCorridor: UrbanNoiseCorridorState
-  setUrbanNoiseCorridor: (state: Partial<UrbanNoiseCorridorState>) => void
-  stratosphericWarming: StratosphericWarmingState
-  setStratosphericWarming: (state: Partial<StratosphericWarmingState>) => void
-  submarineGroundwater: SubmarineGroundwaterState
-  setSubmarineGroundwater: (state: Partial<SubmarineGroundwaterState>) => void
-  hydrothermalSulfide: HydrothermalSulfideState
-  setHydrothermalSulfide: (state: Partial<HydrothermalSulfideState>) => void
-  lunarTidalForce: LunarTidalForceState
-  setLunarTidalForce: (state: Partial<LunarTidalForceState>) => void
-  ripCurrent: RipCurrentState
-  setRipCurrent: (state: Partial<RipCurrentState>) => void
-  avalancheDebrisFlow: AvalancheDebrisFlowState
-  setAvalancheDebrisFlow: (state: Partial<AvalancheDebrisFlowState>) => void
-  coastalAcidification: CoastalAcidificationState
-  setCoastalAcidification: (state: Partial<CoastalAcidificationState>) => void
-  desertSandSea: DesertSandSeaState
-  setDesertSandSea: (state: Partial<DesertSandSeaState>) => void
-  subsidenceHazard: SubsidenceHazardState
-  setSubsidenceHazard: (state: Partial<SubsidenceHazardState>) => void
-  volcanicLahar: VolcanicLaharState
-  setVolcanicLahar: (state: Partial<VolcanicLaharState>) => void
-  deepWaterCoral: DeepWaterCoralState
-  setDeepWaterCoral: (state: Partial<DeepWaterCoralState>) => void
-  polarBearHabitat: PolarBearHabitatState
-  setPolarBearHabitat: (state: Partial<PolarBearHabitatState>) => void
-  soilSalinization: SoilSalinizationState
-  setSoilSalinization: (state: Partial<SoilSalinizationState>) => void
-  tsunamiRunup: TsunamiRunupState
-  setTsunamiRunup: (state: Partial<TsunamiRunupState>) => void
-  urbanHeatVentilation: UrbanHeatVentilationState
-  setUrbanHeatVentilation: (state: Partial<UrbanHeatVentilationState>) => void
-  brinePool: BrinePoolState
-  setBrinePool: (state: Partial<BrinePoolState>) => void
-  supraglacialStream: SupraglacialStreamState
-  setSupraglacialStream: (state: Partial<SupraglacialStreamState>) => void
-  methaneHydrateStability: MethaneHydrateStabilityState
-  setMethaneHydrateStability: (state: Partial<MethaneHydrateStabilityState>) => void
-  volcanicAshCloud: VolcanicAshCloudState
-  setVolcanicAshCloud: (state: Partial<VolcanicAshCloudState>) => void
-  geothermalGradient: GeothermalGradientState
-  setGeothermalGradient: (state: Partial<GeothermalGradientState>) => void
-  oceanDeoxygenation: OceanDeoxygenationState
-  setOceanDeoxygenation: (state: Partial<OceanDeoxygenationState>) => void
-  rockGlacier: RockGlacierState
-  setRockGlacier: (state: Partial<RockGlacierState>) => void
-  dustHemisphere: DustHemisphereState
-  setDustHemisphere: (state: Partial<DustHemisphereState>) => void
-  microplasticOcean: MicroplasticOceanState
-  setMicroplasticOcean: (state: Partial<MicroplasticOceanState>) => void
-  glacierBasalSlide: GlacierBasalSlideState
-  setGlacierBasalSlide: (state: Partial<GlacierBasalSlideState>) => void
-  volcanicFumarole: VolcanicFumaroleState
-  setVolcanicFumarole: (state: Partial<VolcanicFumaroleState>) => void
-  hydroclimateExtremes: HydroclimateExtremesState
-  setHydroclimateExtremes: (state: Partial<HydroclimateExtremesState>) => void
-  megafaunaTracking: MegafaunaTrackingState
-  setMegafaunaTracking: (state: Partial<MegafaunaTrackingState>) => void
-  cryoconiteHole: CryoconiteHoleState
-  setCryoconiteHole: (state: Partial<CryoconiteHoleState>) => void
-  sapFlow: SapFlowState
-  setSapFlow: (state: Partial<SapFlowState>) => void
-  rockfallHazard: RockfallHazardState
-  setRockfallHazard: (state: Partial<RockfallHazardState>) => void
-  thermohalineCirculation: ThermohalineCirculationState
-  setThermohalineCirculation: (state: Partial<ThermohalineCirculationState>) => void
-  hydroseismicActivity: HydroseismicActivityState
-  setHydroseismicActivity: (state: Partial<HydroseismicActivityState>) => void
-  lavaTubeCave: LavaTubeCaveState
-  setLavaTubeCave: (state: Partial<LavaTubeCaveState>) => void
-  submarineCanyonFisheries: SubmarineCanyonFisheriesState
-  setSubmarineCanyonFisheries: (state: Partial<SubmarineCanyonFisheriesState>) => void
-  polynyaIce: PolynyaIceState
-  setPolynyaIce: (state: Partial<PolynyaIceState>) => void
-  volcanicDomeGrowth: VolcanicDomeGrowthState
-  setVolcanicDomeGrowth: (state: Partial<VolcanicDomeGrowthState>) => void
-  seamountBiodiversity: SeamountBiodiversityState
-  setSeamountBiodiversity: (state: Partial<SeamountBiodiversityState>) => void
-  estuaryAcidification: EstuaryAcidificationState
-  setEstuaryAcidification: (state: Partial<EstuaryAcidificationState>) => void
-  abyssalSedimentFlux: AbyssalSedimentFluxState
-  setAbyssalSedimentFlux: (state: Partial<AbyssalSedimentFluxState>) => void
-  glacialMoulin: GlacialMoulinState
-  setGlacialMoulin: (state: Partial<GlacialMoulinState>) => void
-  iceShelfCalving: IceShelfCalvingState
-  setIceShelfCalving: (state: Partial<IceShelfCalvingState>) => void
-  volcanicGasPlume: VolcanicGasPlumeState
-  setVolcanicGasPlume: (state: Partial<VolcanicGasPlumeState>) => void
-  submarineLandslide: SubmarineLandslideState
-  setSubmarineLandslide: (state: Partial<SubmarineLandslideState>) => void
-  coastalWetlandLoss: CoastalWetlandLossState
-  setCoastalWetlandLoss: (state: Partial<CoastalWetlandLossState>) => void
-  tundraPermafrostThaw: TundraPermafrostThawState
-  setTundraPermafrostThaw: (state: Partial<TundraPermafrostThawState>) => void
-  oceanCurrentProfiler: OceanCurrentProfilerState
-  setOceanCurrentProfiler: (state: Partial<OceanCurrentProfilerState>) => void
-  desertificationFront: DesertificationFrontState
-  setDesertificationFront: (state: Partial<DesertificationFrontState>) => void
-  coralReefRecovery: CoralReefRecoveryState
-  setCoralReefRecovery: (state: Partial<CoralReefRecoveryState>) => void
-  methaneCrater: MethaneCraterState
-  setMethaneCrater: (state: Partial<MethaneCraterState>) => void
-  subglacialVolcano: SubglacialVolcanoState
-  setSubglacialVolcano: (state: Partial<SubglacialVolcanoState>) => void
-  coralSpawnPrediction: CoralSpawnPredictionState
-  setCoralSpawnPrediction: (state: Partial<CoralSpawnPredictionState>) => void
-  hydrothermalDiffuseFlow: HydrothermalDiffuseFlowState
-  setHydrothermalDiffuseFlow: (state: Partial<HydrothermalDiffuseFlowState>) => void
-  permafrostCarbonPipeline: PermafrostCarbonPipelineState
-  setPermafrostCarbonPipeline: (state: Partial<PermafrostCarbonPipelineState>) => void
-  subaqueousLavaFlow: SubaqueousLavaFlowState
-  setSubaqueousLavaFlow: (state: Partial<SubaqueousLavaFlowState>) => void
-  intertidalZone: IntertidalZoneState
-  setIntertidalZone: (state: Partial<IntertidalZoneState>) => void
-  desertFlashFlood: DesertFlashFloodState
-  setDesertFlashFlood: (state: Partial<DesertFlashFloodState>) => void
-  mudVolcanoActivity: MudVolcanoActivityState
-  setMudVolcanoActivity: (state: Partial<MudVolcanoActivityState>) => void
-  glacierSurgeEvent: GlacierSurgeEventState
-  setGlacierSurgeEvent: (state: Partial<GlacierSurgeEventState>) => void
-  seicheWaveOscillation: SeicheWaveOscillationState
-  setSeicheWaveOscillation: (state: Partial<SeicheWaveOscillationState>) => void
-  laharFlowTracker: LaharFlowTrackerState
-  setLaharFlowTracker: (state: Partial<LaharFlowTrackerState>) => void
-  icePenitentMonitor: IcePenitentMonitorState
-  setIcePenitentMonitor: (state: Partial<IcePenitentMonitorState>) => void
-  frostHeaveMonitor: FrostHeaveMonitorState
-  setFrostHeaveMonitor: (state: Partial<FrostHeaveMonitorState>) => void
-  pumiceRaftDrift: PumiceRaftDriftState
-  setPumiceRaftDrift: (state: Partial<PumiceRaftDriftState>) => void
-  limnicEruptionMonitor: LimnicEruptionMonitorState
-  setLimnicEruptionMonitor: (state: Partial<LimnicEruptionMonitorState>) => void
+  seamountEcosystem: MonitorState
+  setSeamountEcosystem: (state: Partial<MonitorState>) => void
+  groundSubsidence: MonitorState
+  setGroundSubsidence: (state: Partial<MonitorState>) => void
+  oceanStratification: MonitorState
+  setOceanStratification: (state: Partial<MonitorState>) => void
+  snowCoverExtent: MonitorState
+  setSnowCoverExtent: (state: Partial<MonitorState>) => void
+  coastalErosionDetail: MonitorState
+  setCoastalErosionDetail: (state: Partial<MonitorState>) => void
+  ecosystemServiceValue: MonitorState
+  setEcosystemServiceValue: (state: Partial<MonitorState>) => void
+  tidalFlatMonitor: MonitorState
+  setTidalFlatMonitor: (state: Partial<MonitorState>) => void
+  wildfireRiskAssessment: MonitorState
+  setWildfireRiskAssessment: (state: Partial<MonitorState>) => void
+  karstSinkhole: MonitorState
+  setKarstSinkhole: (state: Partial<MonitorState>) => void
+  volcanicSO2: MonitorState
+  setVolcanicSO2: (state: Partial<MonitorState>) => void
+  icebergTracker: MonitorState
+  setIcebergTracker: (state: Partial<MonitorState>) => void
+  caveMineral: MonitorState
+  setCaveMineral: (state: Partial<MonitorState>) => void
+  seafloorHydrate: MonitorState
+  setSeafloorHydrate: (state: Partial<MonitorState>) => void
+  mangroveLoss: MonitorState
+  setMangroveLoss: (state: Partial<MonitorState>) => void
+  urbanNoiseCorridor: MonitorState
+  setUrbanNoiseCorridor: (state: Partial<MonitorState>) => void
+  stratosphericWarming: MonitorState
+  setStratosphericWarming: (state: Partial<MonitorState>) => void
+  submarineGroundwater: MonitorState
+  setSubmarineGroundwater: (state: Partial<MonitorState>) => void
+  hydrothermalSulfide: MonitorState
+  setHydrothermalSulfide: (state: Partial<MonitorState>) => void
+  lunarTidalForce: MonitorState
+  setLunarTidalForce: (state: Partial<MonitorState>) => void
+  ripCurrent: MonitorState
+  setRipCurrent: (state: Partial<MonitorState>) => void
+  avalancheDebrisFlow: MonitorState
+  setAvalancheDebrisFlow: (state: Partial<MonitorState>) => void
+  coastalAcidification: MonitorState
+  setCoastalAcidification: (state: Partial<MonitorState>) => void
+  desertSandSea: MonitorState
+  setDesertSandSea: (state: Partial<MonitorState>) => void
+  subsidenceHazard: MonitorState
+  setSubsidenceHazard: (state: Partial<MonitorState>) => void
+  volcanicLahar: MonitorState
+  setVolcanicLahar: (state: Partial<MonitorState>) => void
+  deepWaterCoral: MonitorState
+  setDeepWaterCoral: (state: Partial<MonitorState>) => void
+  polarBearHabitat: MonitorState
+  setPolarBearHabitat: (state: Partial<MonitorState>) => void
+  soilSalinization: MonitorState
+  setSoilSalinization: (state: Partial<MonitorState>) => void
+  tsunamiRunup: MonitorState
+  setTsunamiRunup: (state: Partial<MonitorState>) => void
+  urbanHeatVentilation: MonitorState
+  setUrbanHeatVentilation: (state: Partial<MonitorState>) => void
+  brinePool: MonitorState
+  setBrinePool: (state: Partial<MonitorState>) => void
+  supraglacialStream: MonitorState
+  setSupraglacialStream: (state: Partial<MonitorState>) => void
+  methaneHydrateStability: MonitorState
+  setMethaneHydrateStability: (state: Partial<MonitorState>) => void
+  volcanicAshCloud: MonitorState
+  setVolcanicAshCloud: (state: Partial<MonitorState>) => void
+  geothermalGradient: MonitorState
+  setGeothermalGradient: (state: Partial<MonitorState>) => void
+  oceanDeoxygenation: MonitorState
+  setOceanDeoxygenation: (state: Partial<MonitorState>) => void
+  rockGlacier: MonitorState
+  setRockGlacier: (state: Partial<MonitorState>) => void
+  dustHemisphere: MonitorState
+  setDustHemisphere: (state: Partial<MonitorState>) => void
+  microplasticOcean: MonitorState
+  setMicroplasticOcean: (state: Partial<MonitorState>) => void
+  glacierBasalSlide: MonitorState
+  setGlacierBasalSlide: (state: Partial<MonitorState>) => void
+  volcanicFumarole: MonitorState
+  setVolcanicFumarole: (state: Partial<MonitorState>) => void
+  hydroclimateExtremes: MonitorState
+  setHydroclimateExtremes: (state: Partial<MonitorState>) => void
+  megafaunaTracking: MonitorState
+  setMegafaunaTracking: (state: Partial<MonitorState>) => void
+  cryoconiteHole: MonitorState
+  setCryoconiteHole: (state: Partial<MonitorState>) => void
+  sapFlow: MonitorState
+  setSapFlow: (state: Partial<MonitorState>) => void
+  rockfallHazard: MonitorState
+  setRockfallHazard: (state: Partial<MonitorState>) => void
+  thermohalineCirculation: MonitorState
+  setThermohalineCirculation: (state: Partial<MonitorState>) => void
+  hydroseismicActivity: MonitorState
+  setHydroseismicActivity: (state: Partial<MonitorState>) => void
+  lavaTubeCave: MonitorState
+  setLavaTubeCave: (state: Partial<MonitorState>) => void
+  submarineCanyonFisheries: MonitorState
+  setSubmarineCanyonFisheries: (state: Partial<MonitorState>) => void
+  polynyaIce: MonitorState
+  setPolynyaIce: (state: Partial<MonitorState>) => void
+  volcanicDomeGrowth: MonitorState
+  setVolcanicDomeGrowth: (state: Partial<MonitorState>) => void
+  seamountBiodiversity: MonitorState
+  setSeamountBiodiversity: (state: Partial<MonitorState>) => void
+  estuaryAcidification: MonitorState
+  setEstuaryAcidification: (state: Partial<MonitorState>) => void
+  abyssalSedimentFlux: MonitorState
+  setAbyssalSedimentFlux: (state: Partial<MonitorState>) => void
+  glacialMoulin: MonitorState
+  setGlacialMoulin: (state: Partial<MonitorState>) => void
+  iceShelfCalving: MonitorState
+  setIceShelfCalving: (state: Partial<MonitorState>) => void
+  volcanicGasPlume: MonitorState
+  setVolcanicGasPlume: (state: Partial<MonitorState>) => void
+  submarineLandslide: MonitorState
+  setSubmarineLandslide: (state: Partial<MonitorState>) => void
+  coastalWetlandLoss: MonitorState
+  setCoastalWetlandLoss: (state: Partial<MonitorState>) => void
+  tundraPermafrostThaw: MonitorState
+  setTundraPermafrostThaw: (state: Partial<MonitorState>) => void
+  oceanCurrentProfiler: MonitorState
+  setOceanCurrentProfiler: (state: Partial<MonitorState>) => void
+  desertificationFront: MonitorState
+  setDesertificationFront: (state: Partial<MonitorState>) => void
+  coralReefRecovery: MonitorState
+  setCoralReefRecovery: (state: Partial<MonitorState>) => void
+  methaneCrater: MonitorState
+  setMethaneCrater: (state: Partial<MonitorState>) => void
+  subglacialVolcano: MonitorState
+  setSubglacialVolcano: (state: Partial<MonitorState>) => void
+  coralSpawnPrediction: MonitorState
+  setCoralSpawnPrediction: (state: Partial<MonitorState>) => void
+  hydrothermalDiffuseFlow: MonitorState
+  setHydrothermalDiffuseFlow: (state: Partial<MonitorState>) => void
+  permafrostCarbonPipeline: MonitorState
+  setPermafrostCarbonPipeline: (state: Partial<MonitorState>) => void
+  subaqueousLavaFlow: MonitorState
+  setSubaqueousLavaFlow: (state: Partial<MonitorState>) => void
+  intertidalZone: MonitorState
+  setIntertidalZone: (state: Partial<MonitorState>) => void
+  desertFlashFlood: MonitorState
+  setDesertFlashFlood: (state: Partial<MonitorState>) => void
+  mudVolcanoActivity: MonitorState
+  setMudVolcanoActivity: (state: Partial<MonitorState>) => void
+  glacierSurgeEvent: MonitorState
+  setGlacierSurgeEvent: (state: Partial<MonitorState>) => void
+  seicheWaveOscillation: MonitorState
+  setSeicheWaveOscillation: (state: Partial<MonitorState>) => void
+  laharFlowTracker: MonitorState
+  setLaharFlowTracker: (state: Partial<MonitorState>) => void
+  icePenitentMonitor: MonitorState
+  setIcePenitentMonitor: (state: Partial<MonitorState>) => void
+  frostHeaveMonitor: MonitorState
+  setFrostHeaveMonitor: (state: Partial<MonitorState>) => void
+  pumiceRaftDrift: MonitorState
+  setPumiceRaftDrift: (state: Partial<MonitorState>) => void
+  limnicEruptionMonitor: MonitorState
+  setLimnicEruptionMonitor: (state: Partial<MonitorState>) => void
 
   // Task 95: Volcanic Tremor Monitor
-  volcanicTremor: VolcanicTremorState
-  setVolcanicTremor: (state: Partial<VolcanicTremorState>) => void
+  volcanicTremor: MonitorState
+  setVolcanicTremor: (state: Partial<MonitorState>) => void
 
   // Task 95: Ice Wedge Polygon Monitor
-  iceWedgePolygon: IceWedgePolygonState
-  setIceWedgePolygon: (state: Partial<IceWedgePolygonState>) => void
+  iceWedgePolygon: MonitorState
+  setIceWedgePolygon: (state: Partial<MonitorState>) => void
 
   // Task 95: Salt Flat Crust Monitor
-  saltFlatCrust: SaltFlatCrustState
-  setSaltFlatCrust: (state: Partial<SaltFlatCrustState>) => void
+  saltFlatCrust: MonitorState
+  setSaltFlatCrust: (state: Partial<MonitorState>) => void
 
   // Task 95: Cold Water Coral Reef Monitor
-  coldWaterCoralReef: ColdWaterCoralReefState
-  setColdWaterCoralReef: (state: Partial<ColdWaterCoralReefState>) => void
+  coldWaterCoralReef: MonitorState
+  setColdWaterCoralReef: (state: Partial<MonitorState>) => void
 
   // Task 95: Peatland Carbon Sink Monitor
-  peatlandCarbonSink: PeatlandCarbonSinkState
-  setPeatlandCarbonSink: (state: Partial<PeatlandCarbonSinkState>) => void
+  peatlandCarbonSink: MonitorState
+  setPeatlandCarbonSink: (state: Partial<MonitorState>) => void
 
   // Task 95: Hyporheic Zone Monitor
-  hyporheicZone: HyporheicZoneState
-  setHyporheicZone: (state: Partial<HyporheicZoneState>) => void
+  hyporheicZone: MonitorState
+  setHyporheicZone: (state: Partial<MonitorState>) => void
 
   // Task 95: Submarine Fan Monitor
-  submarineFan: SubmarineFanState
-  setSubmarineFan: (state: Partial<SubmarineFanState>) => void
+  submarineFan: MonitorState
+  setSubmarineFan: (state: Partial<MonitorState>) => void
 
   // Task 95: Coastal Dune System Monitor
-  coastalDuneSystem: CoastalDuneSystemState
-  setCoastalDuneSystem: (state: Partial<CoastalDuneSystemState>) => void
+  coastalDuneSystem: MonitorState
+  setCoastalDuneSystem: (state: Partial<MonitorState>) => void
 
   // Task 96: New Monitors
-  karstSpringDischarge: KarstSpringDischargeState
-  setKarstSpringDischarge: (state: Partial<KarstSpringDischargeState>) => void
-  caveDripMonitor: CaveDripMonitorState
-  setCaveDripMonitor: (state: Partial<CaveDripMonitorState>) => void
-  tidalCreekMonitor: TidalCreekMonitorState
-  setTidalCreekMonitor: (state: Partial<TidalCreekMonitorState>) => void
-  saltMarshCarbon: SaltMarshCarbonState
-  setSaltMarshCarbon: (state: Partial<SaltMarshCarbonState>) => void
-  opalPaleoMonitor: OpalPaleoMonitorState
-  setOpalPaleoMonitor: (state: Partial<OpalPaleoMonitorState>) => void
-  aeolianDustDeposition: AeolianDustDepositionState
-  setAeolianDustDeposition: (state: Partial<AeolianDustDepositionState>) => void
-  katabaticWindMonitor: KatabaticWindMonitorState
-  setKatabaticWindMonitor: (state: Partial<KatabaticWindMonitorState>) => void
-  snowAvalancheTracker: SnowAvalancheTrackerState
-  setSnowAvalancheTracker: (state: Partial<SnowAvalancheTrackerState>) => void
-  riftValleyVolcano: RiftValleyVolcanoState
-  setRiftValleyVolcano: (state: Partial<RiftValleyVolcanoState>) => void
-  streamBankErosion: StreamBankErosionState
-  setStreamBankErosion: (state: Partial<StreamBankErosionState>) => void
-  iceStreamVelocity: IceStreamVelocityState
-  setIceStreamVelocity: (state: Partial<IceStreamVelocityState>) => void
-  coastalAquifer: CoastalAquiferState
-  setCoastalAquifer: (state: Partial<CoastalAquiferState>) => void
-  mangroveRootSystem: MangroveRootSystemState
-  setMangroveRootSystem: (state: Partial<MangroveRootSystemState>) => void
-  paleoshorelineTracker: PaleoshorelineTrackerState
-  setPaleoshorelineTracker: (state: Partial<PaleoshorelineTrackerState>) => void
-  cryoconiteGranule: CryoconiteGranuleState
-  setCryoconiteGranule: (state: Partial<CryoconiteGranuleState>) => void
-  subglacialWaterSystem: SubglacialWaterSystemState
-  setSubglacialWaterSystem: (state: Partial<SubglacialWaterSystemState>) => void
+  karstSpringDischarge: MonitorState
+  setKarstSpringDischarge: (state: Partial<MonitorState>) => void
+  caveDripMonitor: MonitorState
+  setCaveDripMonitor: (state: Partial<MonitorState>) => void
+  tidalCreekMonitor: MonitorState
+  setTidalCreekMonitor: (state: Partial<MonitorState>) => void
+  saltMarshCarbon: MonitorState
+  setSaltMarshCarbon: (state: Partial<MonitorState>) => void
+  opalPaleoMonitor: MonitorState
+  setOpalPaleoMonitor: (state: Partial<MonitorState>) => void
+  aeolianDustDeposition: MonitorState
+  setAeolianDustDeposition: (state: Partial<MonitorState>) => void
+  katabaticWindMonitor: MonitorState
+  setKatabaticWindMonitor: (state: Partial<MonitorState>) => void
+  snowAvalancheTracker: MonitorState
+  setSnowAvalancheTracker: (state: Partial<MonitorState>) => void
+  riftValleyVolcano: MonitorState
+  setRiftValleyVolcano: (state: Partial<MonitorState>) => void
+  streamBankErosion: MonitorState
+  setStreamBankErosion: (state: Partial<MonitorState>) => void
+  iceStreamVelocity: MonitorState
+  setIceStreamVelocity: (state: Partial<MonitorState>) => void
+  coastalAquifer: MonitorState
+  setCoastalAquifer: (state: Partial<MonitorState>) => void
+  mangroveRootSystem: MonitorState
+  setMangroveRootSystem: (state: Partial<MonitorState>) => void
+  paleoshorelineTracker: MonitorState
+  setPaleoshorelineTracker: (state: Partial<MonitorState>) => void
+  cryoconiteGranule: MonitorState
+  setCryoconiteGranule: (state: Partial<MonitorState>) => void
+  subglacialWaterSystem: MonitorState
+  setSubglacialWaterSystem: (state: Partial<MonitorState>) => void
 
   // Task 98: Mass Wasting and Slope Processes
-  landslideVelocity: LandslideVelocityState
-  setLandslideVelocity: (state: Partial<LandslideVelocityState>) => void
-  debrisFlowSurge: DebrisFlowSurgeState
-  setDebrisFlowSurge: (state: Partial<DebrisFlowSurgeState>) => void
-  rockfallImpact: RockfallImpactState
-  setRockfallImpact: (state: Partial<RockfallImpactState>) => void
-  soilCreepRate: SoilCreepRateState
-  setSoilCreepRate: (state: Partial<SoilCreepRateState>) => void
-  solifluctionLobe: SolifluctionLobeState
-  setSolifluctionLobe: (state: Partial<SolifluctionLobeState>) => void
-  earthflowDisplacement: EarthflowDisplacementState
-  setEarthflowDisplacement: (state: Partial<EarthflowDisplacementState>) => void
-  slumpFailure: SlumpFailureState
-  setSlumpFailure: (state: Partial<SlumpFailureState>) => void
-  talusAccumulation: TalusAccumulationState
-  setTalusAccumulation: (state: Partial<TalusAccumulationState>) => void
+  landslideVelocity: MonitorState
+  setLandslideVelocity: (state: Partial<MonitorState>) => void
+  debrisFlowSurge: MonitorState
+  setDebrisFlowSurge: (state: Partial<MonitorState>) => void
+  rockfallImpact: MonitorState
+  setRockfallImpact: (state: Partial<MonitorState>) => void
+  soilCreepRate: MonitorState
+  setSoilCreepRate: (state: Partial<MonitorState>) => void
+  solifluctionLobe: MonitorState
+  setSolifluctionLobe: (state: Partial<MonitorState>) => void
+  earthflowDisplacement: MonitorState
+  setEarthflowDisplacement: (state: Partial<MonitorState>) => void
+  slumpFailure: MonitorState
+  setSlumpFailure: (state: Partial<MonitorState>) => void
+  talusAccumulation: MonitorState
+  setTalusAccumulation: (state: Partial<MonitorState>) => void
 
   // Task 99: Coastal Engineering and Shore Protection
-  breakwaterIntegrity: BreakwaterIntegrityState
-  setBreakwaterIntegrity: (state: Partial<BreakwaterIntegrityState>) => void
-  seawallErosion: SeawallErosionState
-  setSeawallErosion: (state: Partial<SeawallErosionState>) => void
-  groinSediment: GroinSedimentState
-  setGroinSediment: (state: Partial<GroinSedimentState>) => void
-  revetmentStability: RevetmentStabilityState
-  setRevetmentStability: (state: Partial<RevetmentStabilityState>) => void
-  jettyCurrent: JettyCurrentState
-  setJettyCurrent: (state: Partial<JettyCurrentState>) => void
-  beachNourishment: BeachNourishmentState
-  setBeachNourishment: (state: Partial<BeachNourishmentState>) => void
-  coastalArmor: CoastalArmorState
-  setCoastalArmor: (state: Partial<CoastalArmorState>) => void
-  shorelineRetreat: ShorelineRetreatState
-  setShorelineRetreat: (state: Partial<ShorelineRetreatState>) => void
+  breakwaterIntegrity: MonitorState
+  setBreakwaterIntegrity: (state: Partial<MonitorState>) => void
+  seawallErosion: MonitorState
+  setSeawallErosion: (state: Partial<MonitorState>) => void
+  groinSediment: MonitorState
+  setGroinSediment: (state: Partial<MonitorState>) => void
+  revetmentStability: MonitorState
+  setRevetmentStability: (state: Partial<MonitorState>) => void
+  jettyCurrent: MonitorState
+  setJettyCurrent: (state: Partial<MonitorState>) => void
+  beachNourishment: MonitorState
+  setBeachNourishment: (state: Partial<MonitorState>) => void
+  coastalArmor: MonitorState
+  setCoastalArmor: (state: Partial<MonitorState>) => void
+  shorelineRetreat: MonitorState
+  setShorelineRetreat: (state: Partial<MonitorState>) => void
 
   // Task 100: Soil Science and Pedology
-  soilOrganicCarbon: SoilOrganicCarbonState
-  setSoilOrganicCarbon: (state: Partial<SoilOrganicCarbonState>) => void
-  cationExchange: CationExchangeState
-  setCationExchange: (state: Partial<CationExchangeState>) => void
-  soilPhosphorus: SoilPhosphorusState
-  setSoilPhosphorus: (state: Partial<SoilPhosphorusState>) => void
-  soilCompaction: SoilCompactionState
-  setSoilCompaction: (state: Partial<SoilCompactionState>) => void
-  clayMineral: ClayMineralState
-  setClayMineral: (state: Partial<ClayMineralState>) => void
-  podzolProfile: PodzolProfileState
-  setPodzolProfile: (state: Partial<PodzolProfileState>) => void
-  gleyRedox: GleyRedoxState
-  setGleyRedox: (state: Partial<GleyRedoxState>) => void
-  calcicHorizon: CalcicHorizonState
-  setCalcicHorizon: (state: Partial<CalcicHorizonState>) => void
+  soilOrganicCarbon: MonitorState
+  setSoilOrganicCarbon: (state: Partial<MonitorState>) => void
+  cationExchange: MonitorState
+  setCationExchange: (state: Partial<MonitorState>) => void
+  soilPhosphorus: MonitorState
+  setSoilPhosphorus: (state: Partial<MonitorState>) => void
+  soilCompaction: MonitorState
+  setSoilCompaction: (state: Partial<MonitorState>) => void
+  clayMineral: MonitorState
+  setClayMineral: (state: Partial<MonitorState>) => void
+  podzolProfile: MonitorState
+  setPodzolProfile: (state: Partial<MonitorState>) => void
+  gleyRedox: MonitorState
+  setGleyRedox: (state: Partial<MonitorState>) => void
+  calcicHorizon: MonitorState
+  setCalcicHorizon: (state: Partial<MonitorState>) => void
 
   // Task 101: Mineral Resources and Mining
-  oreGradeAssay: OreGradeAssayState
-  setOreGradeAssay: (state: Partial<OreGradeAssayState>) => void
-  mineTailingsDam: MineTailingsDamState
-  setMineTailingsDam: (state: Partial<MineTailingsDamState>) => void
-  mineralVeinThickness: MineralVeinThicknessState
-  setMineralVeinThickness: (state: Partial<MineralVeinThicknessState>) => void
-  stripMineRatio: StripMineRatioState
-  setStripMineRatio: (state: Partial<StripMineRatioState>) => void
-  undergroundMineVent: UndergroundMineVentState
-  setUndergroundMineVent: (state: Partial<UndergroundMineVentState>) => void
-  acidMineDrainage: AcidMineDrainageState
-  setAcidMineDrainage: (state: Partial<AcidMineDrainageState>) => void
-  oreReserveEstimate: OreReserveEstimateState
-  setOreReserveEstimate: (state: Partial<OreReserveEstimateState>) => void
-  mineralDepositGrade: MineralDepositGradeState
-  setMineralDepositGrade: (state: Partial<MineralDepositGradeState>) => void
+  oreGradeAssay: MonitorState
+  setOreGradeAssay: (state: Partial<MonitorState>) => void
+  mineTailingsDam: MonitorState
+  setMineTailingsDam: (state: Partial<MonitorState>) => void
+  mineralVeinThickness: MonitorState
+  setMineralVeinThickness: (state: Partial<MonitorState>) => void
+  stripMineRatio: MonitorState
+  setStripMineRatio: (state: Partial<MonitorState>) => void
+  undergroundMineVent: MonitorState
+  setUndergroundMineVent: (state: Partial<MonitorState>) => void
+  acidMineDrainage: MonitorState
+  setAcidMineDrainage: (state: Partial<MonitorState>) => void
+  oreReserveEstimate: MonitorState
+  setOreReserveEstimate: (state: Partial<MonitorState>) => void
+  mineralDepositGrade: MonitorState
+  setMineralDepositGrade: (state: Partial<MonitorState>) => void
 
   // Task 102: Ocean Circulation and Currents
-  thermohalineCell: ThermohalineCellState
-  setThermohalineCell: (state: Partial<ThermohalineCellState>) => void
-  ekmanTransport: EkmanTransportState
-  setEkmanTransport: (state: Partial<EkmanTransportState>) => void
-  geostrophicCurrent: GeostrophicCurrentState
-  setGeostrophicCurrent: (state: Partial<GeostrophicCurrentState>) => void
-  upwellingIntensity: UpwellingIntensityState
-  setUpwellingIntensity: (state: Partial<UpwellingIntensityState>) => void
-  westernBoundary: WesternBoundaryState
-  setWesternBoundary: (state: Partial<WesternBoundaryState>) => void
-  deepWaterFormation: DeepWaterFormationState
-  setDeepWaterFormation: (state: Partial<DeepWaterFormationState>) => void
-  oceanGyre: OceanGyreState
-  setOceanGyre: (state: Partial<OceanGyreState>) => void
-  tropicalCurrent: TropicalCurrentState
-  setTropicalCurrent: (state: Partial<TropicalCurrentState>) => void
+  thermohalineCell: MonitorState
+  setThermohalineCell: (state: Partial<MonitorState>) => void
+  ekmanTransport: MonitorState
+  setEkmanTransport: (state: Partial<MonitorState>) => void
+  geostrophicCurrent: MonitorState
+  setGeostrophicCurrent: (state: Partial<MonitorState>) => void
+  upwellingIntensity: MonitorState
+  setUpwellingIntensity: (state: Partial<MonitorState>) => void
+  westernBoundary: MonitorState
+  setWesternBoundary: (state: Partial<MonitorState>) => void
+  deepWaterFormation: MonitorState
+  setDeepWaterFormation: (state: Partial<MonitorState>) => void
+  oceanGyre: MonitorState
+  setOceanGyre: (state: Partial<MonitorState>) => void
+  tropicalCurrent: MonitorState
+  setTropicalCurrent: (state: Partial<MonitorState>) => void
 
   // Task 103: Atmospheric Dynamics and Weather
-  jetStreamPosition: JetStreamPositionState
-  setJetStreamPosition: (state: Partial<JetStreamPositionState>) => void
-  atmosphericPressureCell: AtmosphericPressureCellState
-  setAtmosphericPressureCell: (state: Partial<AtmosphericPressureCellState>) => void
-  tropopauseHeight: TropopauseHeightState
-  setTropopauseHeight: (state: Partial<TropopauseHeightState>) => void
-  rossbyWaveAmplitude: RossbyWaveAmplitudeState
-  setRossbyWaveAmplitude: (state: Partial<RossbyWaveAmplitudeState>) => void
-  hadleyCellCirculation: HadleyCellCirculationState
-  setHadleyCellCirculation: (state: Partial<HadleyCellCirculationState>) => void
-  atmosphericRiverFlow: AtmosphericRiverFlowState
-  setAtmosphericRiverFlow: (state: Partial<AtmosphericRiverFlowState>) => void
-  polarFrontJet: PolarFrontJetState
-  setPolarFrontJet: (state: Partial<PolarFrontJetState>) => void
-  tradeWindBelt: TradeWindBeltState
-  setTradeWindBelt: (state: Partial<TradeWindBeltState>) => void
+  jetStreamPosition: MonitorState
+  setJetStreamPosition: (state: Partial<MonitorState>) => void
+  atmosphericPressureCell: MonitorState
+  setAtmosphericPressureCell: (state: Partial<MonitorState>) => void
+  tropopauseHeight: MonitorState
+  setTropopauseHeight: (state: Partial<MonitorState>) => void
+  rossbyWaveAmplitude: MonitorState
+  setRossbyWaveAmplitude: (state: Partial<MonitorState>) => void
+  hadleyCellCirculation: MonitorState
+  setHadleyCellCirculation: (state: Partial<MonitorState>) => void
+  atmosphericRiverFlow: MonitorState
+  setAtmosphericRiverFlow: (state: Partial<MonitorState>) => void
+  polarFrontJet: MonitorState
+  setPolarFrontJet: (state: Partial<MonitorState>) => void
+  tradeWindBelt: MonitorState
+  setTradeWindBelt: (state: Partial<MonitorState>) => void
 
   // Task 104: Biogeography and Ecosystem
-  speciesMigrationRoute: SpeciesMigrationRouteState
-  setSpeciesMigrationRoute: (state: Partial<SpeciesMigrationRouteState>) => void
-  habitatCorridor: HabitatCorridorState
-  setHabitatCorridor: (state: Partial<HabitatCorridorState>) => void
-  endemicHotspot: EndemicHotspotState
-  setEndemicHotspot: (state: Partial<EndemicHotspotState>) => void
-  keystonePopulation: KeystonePopulationState
-  setKeystonePopulation: (state: Partial<KeystonePopulationState>) => void
-  wildlifeCorridor: WildlifeCorridorState
-  setWildlifeCorridor: (state: Partial<WildlifeCorridorState>) => void
-  biomeTransition: BiomeTransitionState
-  setBiomeTransition: (state: Partial<BiomeTransitionState>) => void
-  forestCanopyCover: ForestCanopyCoverState
-  setForestCanopyCover: (state: Partial<ForestCanopyCoverState>) => void
-  wetlandBiodiversityIndex: WetlandBiodiversityIndexState
-  setWetlandBiodiversityIndex: (state: Partial<WetlandBiodiversityIndexState>) => void
+  speciesMigrationRoute: MonitorState
+  setSpeciesMigrationRoute: (state: Partial<MonitorState>) => void
+  habitatCorridor: MonitorState
+  setHabitatCorridor: (state: Partial<MonitorState>) => void
+  endemicHotspot: MonitorState
+  setEndemicHotspot: (state: Partial<MonitorState>) => void
+  keystonePopulation: MonitorState
+  setKeystonePopulation: (state: Partial<MonitorState>) => void
+  wildlifeCorridor: MonitorState
+  setWildlifeCorridor: (state: Partial<MonitorState>) => void
+  biomeTransition: MonitorState
+  setBiomeTransition: (state: Partial<MonitorState>) => void
+  forestCanopyCover: MonitorState
+  setForestCanopyCover: (state: Partial<MonitorState>) => void
+  wetlandBiodiversityIndex: MonitorState
+  setWetlandBiodiversityIndex: (state: Partial<MonitorState>) => void
 
   // Task 105: Hydrology and Watershed
-  watershedDischarge: WatershedDischargeState
-  setWatershedDischarge: (state: Partial<WatershedDischargeState>) => void
-  aquiferRechargeRate: AquiferRechargeRateState
-  setAquiferRechargeRate: (state: Partial<AquiferRechargeRateState>) => void
-  floodInundationMap: FloodInundationMapState
-  setFloodInundationMap: (state: Partial<FloodInundationMapState>) => void
-  riverSedimentLoad: RiverSedimentLoadState
-  setRiverSedimentLoad: (state: Partial<RiverSedimentLoadState>) => void
-  groundwaterTableLevel: GroundwaterTableLevelState
-  setGroundwaterTableLevel: (state: Partial<GroundwaterTableLevelState>) => void
-  snowpackWaterEquivalent: SnowpackWaterEquivalentState
-  setSnowpackWaterEquivalent: (state: Partial<SnowpackWaterEquivalentState>) => void
-  reservoirStorageLevel: ReservoirStorageLevelState
-  setReservoirStorageLevel: (state: Partial<ReservoirStorageLevelState>) => void
-  baseflowIndex: BaseflowIndexState
-  setBaseflowIndex: (state: Partial<BaseflowIndexState>) => void
+  watershedDischarge: MonitorState
+  setWatershedDischarge: (state: Partial<MonitorState>) => void
+  aquiferRechargeRate: MonitorState
+  setAquiferRechargeRate: (state: Partial<MonitorState>) => void
+  floodInundationMap: MonitorState
+  setFloodInundationMap: (state: Partial<MonitorState>) => void
+  riverSedimentLoad: MonitorState
+  setRiverSedimentLoad: (state: Partial<MonitorState>) => void
+  groundwaterTableLevel: MonitorState
+  setGroundwaterTableLevel: (state: Partial<MonitorState>) => void
+  snowpackWaterEquivalent: MonitorState
+  setSnowpackWaterEquivalent: (state: Partial<MonitorState>) => void
+  reservoirStorageLevel: MonitorState
+  setReservoirStorageLevel: (state: Partial<MonitorState>) => void
+  baseflowIndex: MonitorState
+  setBaseflowIndex: (state: Partial<MonitorState>) => void
 
   // Task 106: Cryosphere Dynamics
-  iceShelfThickness: IceShelfThicknessState
-  setIceShelfThickness: (state: Partial<IceShelfThicknessState>) => void
-  seaIceExtent: SeaIceExtentState
-  setSeaIceExtent: (state: Partial<SeaIceExtentState>) => void
-  glacierMassBalance: GlacierMassBalanceState
-  setGlacierMassBalance: (state: Partial<GlacierMassBalanceState>) => void
-  permafrostActiveLayer: PermafrostActiveLayerState
-  setPermafrostActiveLayer: (state: Partial<PermafrostActiveLayerState>) => void
-  iceCoreRecord: IceCoreRecordState
-  setIceCoreRecord: (state: Partial<IceCoreRecordState>) => void
-  snowCoverDuration: SnowCoverDurationState
-  setSnowCoverDuration: (state: Partial<SnowCoverDurationState>) => void
-  frostThawCycle: FrostThawCycleState
-  setFrostThawCycle: (state: Partial<FrostThawCycleState>) => void
-  icebergCalving: IcebergCalvingState
-  setIcebergCalving: (state: Partial<IcebergCalvingState>) => void
+  iceShelfThickness: MonitorState
+  setIceShelfThickness: (state: Partial<MonitorState>) => void
+  seaIceExtent: MonitorState
+  setSeaIceExtent: (state: Partial<MonitorState>) => void
+  glacierMassBalance: MonitorState
+  setGlacierMassBalance: (state: Partial<MonitorState>) => void
+  permafrostActiveLayer: MonitorState
+  setPermafrostActiveLayer: (state: Partial<MonitorState>) => void
+  iceCoreRecord: MonitorState
+  setIceCoreRecord: (state: Partial<MonitorState>) => void
+  snowCoverDuration: MonitorState
+  setSnowCoverDuration: (state: Partial<MonitorState>) => void
+  frostThawCycle: MonitorState
+  setFrostThawCycle: (state: Partial<MonitorState>) => void
+  icebergCalving: MonitorState
+  setIcebergCalving: (state: Partial<MonitorState>) => void
 
   // Task 107: Space Weather and Geomagnetism
-  magnetopauseStandoff: MagnetopauseStandoffState
-  setMagnetopauseStandoff: (state: Partial<MagnetopauseStandoffState>) => void
-  auroraOvalPosition: AuroraOvalPositionState
-  setAuroraOvalPosition: (state: Partial<AuroraOvalPositionState>) => void
-  vanAllenRadiation: VanAllenRadiationState
-  setVanAllenRadiation: (state: Partial<VanAllenRadiationState>) => void
-  ionosphericDisturbance: IonosphericDisturbanceState
-  setIonosphericDisturbance: (state: Partial<IonosphericDisturbanceState>) => void
-  cosmicRayFlux: CosmicRayFluxState
-  setCosmicRayFlux: (state: Partial<CosmicRayFluxState>) => void
-  solarFluxIndex: SolarFluxIndexState
-  setSolarFluxIndex: (state: Partial<SolarFluxIndexState>) => void
-  spaceRadiationDose: SpaceRadiationDoseState
-  setSpaceRadiationDose: (state: Partial<SpaceRadiationDoseState>) => void
-  satelliteDrag: SatelliteDragState
-  setSatelliteDrag: (state: Partial<SatelliteDragState>) => void
+  magnetopauseStandoff: MonitorState
+  setMagnetopauseStandoff: (state: Partial<MonitorState>) => void
+  auroraOvalPosition: MonitorState
+  setAuroraOvalPosition: (state: Partial<MonitorState>) => void
+  vanAllenRadiation: MonitorState
+  setVanAllenRadiation: (state: Partial<MonitorState>) => void
+  ionosphericDisturbance: MonitorState
+  setIonosphericDisturbance: (state: Partial<MonitorState>) => void
+  cosmicRayFlux: MonitorState
+  setCosmicRayFlux: (state: Partial<MonitorState>) => void
+  solarFluxIndex: MonitorState
+  setSolarFluxIndex: (state: Partial<MonitorState>) => void
+  spaceRadiationDose: MonitorState
+  setSpaceRadiationDose: (state: Partial<MonitorState>) => void
+  satelliteDrag: MonitorState
+  setSatelliteDrag: (state: Partial<MonitorState>) => void
 
   // Task 108: Urban Infrastructure & Smart City
-  trafficFlowMonitor: TrafficFlowState
-  setTrafficFlowMonitor: (state: Partial<TrafficFlowState>) => void
-  bridgeStructuralHealth: BridgeStructuralHealthState
-  setBridgeStructuralHealth: (state: Partial<BridgeStructuralHealthState>) => void
-  waterPipeNetwork: WaterPipeNetworkState
-  setWaterPipeNetwork: (state: Partial<WaterPipeNetworkState>) => void
-  powerGridLoad: PowerGridLoadState
-  setPowerGridLoad: (state: Partial<PowerGridLoadState>) => void
-  wasteCollectionRoute: WasteCollectionRouteState
-  setWasteCollectionRoute: (state: Partial<WasteCollectionRouteState>) => void
-  airQualityUrban: AirQualityUrbanState
-  setAirQualityUrban: (state: Partial<AirQualityUrbanState>) => void
-  noiseLevelMapper: NoiseLevelMapperState
-  setNoiseLevelMapper: (state: Partial<NoiseLevelMapperState>) => void
-  smartParkingCapacity: SmartParkingCapacityState
-  setSmartParkingCapacity: (state: Partial<SmartParkingCapacityState>) => void
+  trafficFlowMonitor: MonitorState
+  setTrafficFlowMonitor: (state: Partial<MonitorState>) => void
+  bridgeStructuralHealth: MonitorState
+  setBridgeStructuralHealth: (state: Partial<MonitorState>) => void
+  waterPipeNetwork: MonitorState
+  setWaterPipeNetwork: (state: Partial<MonitorState>) => void
+  powerGridLoad: MonitorState
+  setPowerGridLoad: (state: Partial<MonitorState>) => void
+  wasteCollectionRoute: MonitorState
+  setWasteCollectionRoute: (state: Partial<MonitorState>) => void
+  airQualityUrban: MonitorState
+  setAirQualityUrban: (state: Partial<MonitorState>) => void
+  noiseLevelMapper: MonitorState
+  setNoiseLevelMapper: (state: Partial<MonitorState>) => void
+  smartParkingCapacity: MonitorState
+  setSmartParkingCapacity: (state: Partial<MonitorState>) => void
 
   // Task 109: Agricultural Monitoring & Precision Farming
-  cropHealthIndex: CropHealthIndexState
-  setCropHealthIndex: (state: Partial<CropHealthIndexState>) => void
-  soilMoistureField: SoilMoistureFieldState
-  setSoilMoistureField: (state: Partial<SoilMoistureFieldState>) => void
-  irrigationEfficiency: IrrigationEfficiencyState
-  setIrrigationEfficiency: (state: Partial<IrrigationEfficiencyState>) => void
-  pestOutbreakTracker: PestOutbreakTrackerState
-  setPestOutbreakTracker: (state: Partial<PestOutbreakTrackerState>) => void
-  fertilizerRunoff: FertilizerRunoffState
-  setFertilizerRunoff: (state: Partial<FertilizerRunoffState>) => void
-  harvestYieldPredict: HarvestYieldPredictState
-  setHarvestYieldPredict: (state: Partial<HarvestYieldPredictState>) => void
-  greenhouseClimate: GreenhouseClimateState
-  setGreenhouseClimate: (state: Partial<GreenhouseClimateState>) => void
-  livestockMovement: LivestockMovementState
-  setLivestockMovement: (state: Partial<LivestockMovementState>) => void
+  cropHealthIndex: MonitorState
+  setCropHealthIndex: (state: Partial<MonitorState>) => void
+  soilMoistureField: MonitorState
+  setSoilMoistureField: (state: Partial<MonitorState>) => void
+  irrigationEfficiency: MonitorState
+  setIrrigationEfficiency: (state: Partial<MonitorState>) => void
+  pestOutbreakTracker: MonitorState
+  setPestOutbreakTracker: (state: Partial<MonitorState>) => void
+  fertilizerRunoff: MonitorState
+  setFertilizerRunoff: (state: Partial<MonitorState>) => void
+  harvestYieldPredict: MonitorState
+  setHarvestYieldPredict: (state: Partial<MonitorState>) => void
+  greenhouseClimate: MonitorState
+  setGreenhouseClimate: (state: Partial<MonitorState>) => void
+  livestockMovement: MonitorState
+  setLivestockMovement: (state: Partial<MonitorState>) => void
 
   // Task 110: Renewable Energy & Grid Monitoring
-  windFarmOutput: WindFarmOutputState
-  setWindFarmOutput: (state: Partial<WindFarmOutputState>) => void
-  hydroelectricFlow: HydroelectricFlowState
-  setHydroelectricFlow: (state: Partial<HydroelectricFlowState>) => void
-  biomassEnergyYield: BiomassEnergyYieldState
-  setBiomassEnergyYield: (state: Partial<BiomassEnergyYieldState>) => void
-  tidalEnergyPotential: TidalEnergyPotentialState
-  setTidalEnergyPotential: (state: Partial<TidalEnergyPotentialState>) => void
-  gridStabilityIndex: GridStabilityIndexState
-  setGridStabilityIndex: (state: Partial<GridStabilityIndexState>) => void
-  energyStorageLevel: EnergyStorageLevelState
-  setEnergyStorageLevel: (state: Partial<EnergyStorageLevelState>) => void
+  windFarmOutput: MonitorState
+  setWindFarmOutput: (state: Partial<MonitorState>) => void
+  hydroelectricFlow: MonitorState
+  setHydroelectricFlow: (state: Partial<MonitorState>) => void
+  biomassEnergyYield: MonitorState
+  setBiomassEnergyYield: (state: Partial<MonitorState>) => void
+  tidalEnergyPotential: MonitorState
+  setTidalEnergyPotential: (state: Partial<MonitorState>) => void
+  gridStabilityIndex: MonitorState
+  setGridStabilityIndex: (state: Partial<MonitorState>) => void
+  energyStorageLevel: MonitorState
+  setEnergyStorageLevel: (state: Partial<MonitorState>) => void
   // Task 111: Public Health & Epidemiology
-  diseaseOutbreakMap: DiseaseOutbreakMapState
-  setDiseaseOutbreakMap: (state: Partial<DiseaseOutbreakMapState>) => void
-  vaccinationCoverage: VaccinationCoverageState
-  setVaccinationCoverage: (state: Partial<VaccinationCoverageState>) => void
-  waterQualityIndex: WaterQualityIndexState
-  setWaterQualityIndex: (state: Partial<WaterQualityIndexState>) => void
-  hospitalCapacity: HospitalCapacityState
-  setHospitalCapacity: (state: Partial<HospitalCapacityState>) => void
-  airPollutionHealth: AirPollutionHealthState
-  setAirPollutionHealth: (state: Partial<AirPollutionHealthState>) => void
-  vectorHabitatRisk: VectorHabitatRiskState
-  setVectorHabitatRisk: (state: Partial<VectorHabitatRiskState>) => void
-  nutritionSecurity: NutritionSecurityState
-  setNutritionSecurity: (state: Partial<NutritionSecurityState>) => void
-  pandemicSpreadRate: PandemicSpreadRateState
-  setPandemicSpreadRate: (state: Partial<PandemicSpreadRateState>) => void
+  diseaseOutbreakMap: MonitorState
+  setDiseaseOutbreakMap: (state: Partial<MonitorState>) => void
+  vaccinationCoverage: MonitorState
+  setVaccinationCoverage: (state: Partial<MonitorState>) => void
+  waterQualityIndex: MonitorState
+  setWaterQualityIndex: (state: Partial<MonitorState>) => void
+  hospitalCapacity: MonitorState
+  setHospitalCapacity: (state: Partial<MonitorState>) => void
+  airPollutionHealth: MonitorState
+  setAirPollutionHealth: (state: Partial<MonitorState>) => void
+  vectorHabitatRisk: MonitorState
+  setVectorHabitatRisk: (state: Partial<MonitorState>) => void
+  nutritionSecurity: MonitorState
+  setNutritionSecurity: (state: Partial<MonitorState>) => void
+  pandemicSpreadRate: MonitorState
+  setPandemicSpreadRate: (state: Partial<MonitorState>) => void
 
   // Task 112: Transportation & Logistics
-  flightPathTracker: FlightPathTrackerState
-  setFlightPathTracker: (state: Partial<FlightPathTrackerState>) => void
-  portCongestionMap: PortCongestionMapState
-  setPortCongestionMap: (state: Partial<PortCongestionMapState>) => void
-  railNetworkStatus: RailNetworkStatusState
-  setRailNetworkStatus: (state: Partial<RailNetworkStatusState>) => void
-  highwayBottleneck: HighwayBottleneckState
-  setHighwayBottleneck: (state: Partial<HighwayBottleneckState>) => void
-  cargoShipTracker: CargoShipTrackerState
-  setCargoShipTracker: (state: Partial<CargoShipTrackerState>) => void
-  transitRidership: TransitRidershipState
-  setTransitRidership: (state: Partial<TransitRidershipState>) => void
-  fuelStationNetwork: FuelStationNetworkState
-  setFuelStationNetwork: (state: Partial<FuelStationNetworkState>) => void
-  logisticsDepotStatus: LogisticsDepotStatusState
-  setLogisticsDepotStatus: (state: Partial<LogisticsDepotStatusState>) => void
+  flightPathTracker: MonitorState
+  setFlightPathTracker: (state: Partial<MonitorState>) => void
+  portCongestionMap: MonitorState
+  setPortCongestionMap: (state: Partial<MonitorState>) => void
+  railNetworkStatus: MonitorState
+  setRailNetworkStatus: (state: Partial<MonitorState>) => void
+  highwayBottleneck: MonitorState
+  setHighwayBottleneck: (state: Partial<MonitorState>) => void
+  cargoShipTracker: MonitorState
+  setCargoShipTracker: (state: Partial<MonitorState>) => void
+  transitRidership: MonitorState
+  setTransitRidership: (state: Partial<MonitorState>) => void
+  fuelStationNetwork: MonitorState
+  setFuelStationNetwork: (state: Partial<MonitorState>) => void
+  logisticsDepotStatus: MonitorState
+  setLogisticsDepotStatus: (state: Partial<MonitorState>) => void
+
+  // Missing monitor states (re-added)
+  airPollutionDispersion: MonitorState
+  setAirPollutionDispersion: (state: Partial<MonitorState>) => void
+  aquaculture: MonitorState
+  setAquaculture: (state: Partial<MonitorState>) => void
+  atmosphericRiver: MonitorState
+  setAtmosphericRiver: (state: Partial<MonitorState>) => void
+  avalancheTerrain: MonitorState
+  setAvalancheTerrain: (state: Partial<MonitorState>) => void
+  caveSystem: MonitorState
+  setCaveSystem: (state: Partial<MonitorState>) => void
+  coastalErosionPredictor: MonitorState
+  setCoastalErosionPredictor: (state: Partial<MonitorState>) => void
+  continentalDrift: MonitorState
+  setContinentalDrift: (state: Partial<MonitorState>) => void
+  coralGenomics: MonitorState
+  setCoralGenomics: (state: Partial<MonitorState>) => void
+  coralRestoration: MonitorState
+  setCoralRestoration: (state: Partial<MonitorState>) => void
+  cropYield: MonitorState
+  setCropYield: (state: Partial<MonitorState>) => void
+  deepBiosphere: MonitorState
+  setDeepBiosphere: (state: Partial<MonitorState>) => void
+  desertificationRisk: MonitorState
+  setDesertificationRisk: (state: Partial<MonitorState>) => void
+  dustAerosol: MonitorState
+  setDustAerosol: (state: Partial<MonitorState>) => void
+  electromagneticField: MonitorState
+  setElectromagneticField: (state: Partial<MonitorState>) => void
+  geoThermalEnergy: MonitorState
+  setGeoThermalEnergy: (state: Partial<MonitorState>) => void
+  geomagneticReversal: MonitorState
+  setGeomagneticReversal: (state: Partial<MonitorState>) => void
+  glacierRetreat: MonitorState
+  setGlacierRetreat: (state: Partial<MonitorState>) => void
+  hydroelectricPotential: MonitorState
+  setHydroelectricPotential: (state: Partial<MonitorState>) => void
+  iceSheetVelocity: MonitorState
+  setIceSheetVelocity: (state: Partial<MonitorState>) => void
+  ionosphere: MonitorState
+  setIonosphere: (state: Partial<MonitorState>) => void
+  karstGroundwater: MonitorState
+  setKarstGroundwater: (state: Partial<MonitorState>) => void
+  lunarTide: MonitorState
+  setLunarTide: (state: Partial<MonitorState>) => void
+  magneticAnomaly: MonitorState
+  setMagneticAnomaly: (state: Partial<MonitorState>) => void
+  mangroveRestorationProgress: MonitorState
+  setMangroveRestorationProgress: (state: Partial<MonitorState>) => void
+  meteorShower: MonitorState
+  setMeteorShower: (state: Partial<MonitorState>) => void
+  methaneEmission: MonitorState
+  setMethaneEmission: (state: Partial<MonitorState>) => void
+  methaneSeep: MonitorState
+  setMethaneSeep: (state: Partial<MonitorState>) => void
+  oceanAlkalinity: MonitorState
+  setOceanAlkalinity: (state: Partial<MonitorState>) => void
+  peatlandCarbon: MonitorState
+  setPeatlandCarbon: (state: Partial<MonitorState>) => void
+  pelagicZone: MonitorState
+  setPelagicZone: (state: Partial<MonitorState>) => void
+  phenology: MonitorState
+  setPhenology: (state: Partial<MonitorState>) => void
+  polarIceSheet: MonitorState
+  setPolarIceSheet: (state: Partial<MonitorState>) => void
+  polynya: MonitorState
+  setPolynya: (state: Partial<MonitorState>) => void
+  rainfallPattern: MonitorState
+  setRainfallPattern: (state: Partial<MonitorState>) => void
+  riverDelta: MonitorState
+  setRiverDelta: (state: Partial<MonitorState>) => void
+  saltMarsh: MonitorState
+  setSaltMarsh: (state: Partial<MonitorState>) => void
+  sandDuneMigration: MonitorState
+  setSandDuneMigration: (state: Partial<MonitorState>) => void
+  seaSurfaceTemperature: MonitorState
+  setSeaSurfaceTemperature: (state: Partial<MonitorState>) => void
+  seafloorMapping: MonitorState
+  setSeafloorMapping: (state: Partial<MonitorState>) => void
+  seismicHazard: MonitorState
+  setSeismicHazard: (state: Partial<MonitorState>) => void
+  solarFlare: MonitorState
+  setSolarFlare: (state: Partial<MonitorState>) => void
+  solarWind: MonitorState
+  setSolarWind: (state: Partial<MonitorState>) => void
+  spaceWeatherImpact: MonitorState
+  setSpaceWeatherImpact: (state: Partial<MonitorState>) => void
+  subsurfaceFluid: MonitorState
+  setSubsurfaceFluid: (state: Partial<MonitorState>) => void
+  tectonicSubduction: MonitorState
+  setTectonicSubduction: (state: Partial<MonitorState>) => void
+  tornadoActivity: MonitorState
+  setTornadoActivity: (state: Partial<MonitorState>) => void
+  undergroundWaterway: MonitorState
+  setUndergroundWaterway: (state: Partial<MonitorState>) => void
+  urbanHeatIslandProfiler: MonitorState
+  setUrbanHeatIslandProfiler: (state: Partial<MonitorState>) => void
+  urbanMicroclimate: MonitorState
+  setUrbanMicroclimate: (state: Partial<MonitorState>) => void
+  vegetationIndex: MonitorState
+  setVegetationIndex: (state: Partial<MonitorState>) => void
+  volcanicGasEmission: MonitorState
+  setVolcanicGasEmission: (state: Partial<MonitorState>) => void
+  volcanicLavaFlow: MonitorState
+  setVolcanicLavaFlow: (state: Partial<MonitorState>) => void
+  volcanicPlume: MonitorState
+  setVolcanicPlume: (state: Partial<MonitorState>) => void
+  volcanoThermal: MonitorState
+  setVolcanoThermal: (state: Partial<MonitorState>) => void
+  wildfireSpread: MonitorState
+  setWildfireSpread: (state: Partial<MonitorState>) => void
+  windPattern: MonitorState
+  setWindPattern: (state: Partial<MonitorState>) => void
 
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
@@ -9331,4328 +4352,6 @@ export interface MapOverlay {
   isTms?: boolean
   description?: string
 }
-
-// Task 91: Volcanic Fumarole Monitor
-export interface VolcanicFumaroleData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  temperature: number
-  gasComposition: string
-  pressure: number
-  status: 'active' | 'dormant' | 'intensifying'
-  description: string
-}
-
-export interface VolcanicFumaroleState {
-  open: boolean
-  fumaroles: VolcanicFumaroleData[]
-  activeFumaroleId: string | null
-  statusFilter: 'all' | 'active' | 'dormant' | 'intensifying'
-  showTemperature: boolean
-  showGasComposition: boolean
-  showPressure: boolean
-}
-
-// Task 91: Hydroclimate Extremes Monitor
-export interface HydroclimateExtremesData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  eventType: 'drought' | 'flood' | 'heatwave' | 'coldwave'
-  severity: number
-  duration: number
-  description: string
-}
-
-export interface HydroclimateExtremesState {
-  open: boolean
-  events: HydroclimateExtremesData[]
-  activeEventId: string | null
-  typeFilter: 'all' | 'drought' | 'flood' | 'heatwave' | 'coldwave'
-  showSeverity: boolean
-  showDuration: boolean
-  showTrend: boolean
-}
-
-// Task 91: Megafauna Tracker
-export interface MegafaunaTrackingData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  species: string
-  population: number
-  trend: 'increasing' | 'stable' | 'declining'
-  habitatStatus: 'optimal' | 'stressed' | 'critical'
-  description: string
-}
-
-export interface MegafaunaTrackingState {
-  open: boolean
-  animals: MegafaunaTrackingData[]
-  activeAnimalId: string | null
-  speciesFilter: 'all' | string
-  showPopulation: boolean
-  showTrend: boolean
-  showHabitat: boolean
-}
-
-// Task 91: Cryoconite Hole Monitor
-export interface CryoconiteHoleData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  depth: number
-  diameter: number
-  organicContent: number
-  status: 'active' | 'frozen' | 'draining'
-  description: string
-}
-
-export interface CryoconiteHoleState {
-  open: boolean
-  holes: CryoconiteHoleData[]
-  activeHoleId: string | null
-  statusFilter: 'all' | 'active' | 'frozen' | 'draining'
-  showDepth: boolean
-  showOrganicContent: boolean
-  showDiameter: boolean
-}
-
-// Task 91: Sap Flow Monitor
-export interface SapFlowData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  species: string
-  flowRate: number
-  treeDiameter: number
-  status: 'normal' | 'stress' | 'dormant'
-  description: string
-}
-
-export interface SapFlowState {
-  open: boolean
-  sensors: SapFlowData[]
-  activeSensorId: string | null
-  statusFilter: 'all' | 'normal' | 'stress' | 'dormant'
-  showFlowRate: boolean
-  showTreeDiameter: boolean
-  showTrend: boolean
-}
-
-// Task 91: Rockfall Hazard Monitor
-export interface RockfallHazardData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  hazardLevel: 'low' | 'moderate' | 'high' | 'extreme'
-  slopeAngle: number
-  rockVolume: number
-  triggerType: string
-  description: string
-}
-
-export interface RockfallHazardState {
-  open: boolean
-  zones: RockfallHazardData[]
-  activeZoneId: string | null
-  hazardFilter: 'all' | 'low' | 'moderate' | 'high' | 'extreme'
-  showSlopeAngle: boolean
-  showRockVolume: boolean
-  showTriggerType: boolean
-}
-
-// Task 91: Thermohaline Circulation Monitor
-export interface ThermohalineCirculationData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  waterMass: string
-  temperature: number
-  salinity: number
-  velocity: number
-  status: 'strong' | 'weakening' | 'stalled'
-  description: string
-}
-
-export interface ThermohalineCirculationState {
-  open: boolean
-  currents: ThermohalineCirculationData[]
-  activeCurrentId: string | null
-  statusFilter: 'all' | 'strong' | 'weakening' | 'stalled'
-  showTemperature: boolean
-  showSalinity: boolean
-  showVelocity: boolean
-}
-
-export interface HydroseismicActivityData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  magnitude: number
-  depth: number
-  waterLevel: number
-  activityType: 'reservoir_induced' | 'geothermal' | 'submarine' | 'glacial'
-  status: 'active' | 'quiet' | 'swarming'
-  description: string
-}
-
-export interface HydroseismicActivityState {
-  open: boolean
-  events: HydroseismicActivityData[]
-  activeEventId: string | null
-  typeFilter: 'all' | 'reservoir_induced' | 'geothermal' | 'submarine' | 'glacial'
-  showMagnitude: boolean
-  showDepth: boolean
-  showWaterLevel: boolean
-}
-
-export interface LavaTubeCaveData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  length: number
-  temperature: number
-  lavaType: string
-  status: 'active' | 'cooling' | 'dormant' | 'collapsed'
-  description: string
-}
-
-export interface LavaTubeCaveState {
-  open: boolean
-  caves: LavaTubeCaveData[]
-  activeCaveId: string | null
-  statusFilter: 'all' | 'active' | 'cooling' | 'dormant' | 'collapsed'
-  showLength: boolean
-  showTemperature: boolean
-  showLavaType: boolean
-}
-
-export interface SubmarineCanyonFisheriesData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  depth: number
-  fishSpecies: string
-  catchVolume: number
-  status: 'productive' | 'depleted' | 'recovering' | 'protected'
-  description: string
-}
-
-export interface SubmarineCanyonFisheriesState {
-  open: boolean
-  fisheries: SubmarineCanyonFisheriesData[]
-  activeFisheryId: string | null
-  statusFilter: 'all' | 'productive' | 'depleted' | 'recovering' | 'protected'
-  showDepth: boolean
-  showCatchVolume: boolean
-  showFishSpecies: boolean
-}
-
-export interface PolynyaIceData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  area: number
-  iceThickness: number
-  waterTemperature: number
-  status: 'open' | 'refreezing' | 'seasonal' | 'permanent'
-  description: string
-}
-
-export interface PolynyaIceState {
-  open: boolean
-  polynyas: PolynyaIceData[]
-  activePolynyaId: string | null
-  statusFilter: 'all' | 'open' | 'refreezing' | 'seasonal' | 'permanent'
-  showArea: boolean
-  showIceThickness: boolean
-  showWaterTemperature: boolean
-}
-
-export interface VolcanicDomeGrowthData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  growthRate: number
-  domeVolume: number
-  temperature: number
-  status: 'growing' | 'stable' | 'collapsing' | 'exploding'
-  description: string
-}
-
-export interface VolcanicDomeGrowthState {
-  open: boolean
-  domes: VolcanicDomeGrowthData[]
-  activeDomeId: string | null
-  statusFilter: 'all' | 'growing' | 'stable' | 'collapsing' | 'exploding'
-  showGrowthRate: boolean
-  showDomeVolume: boolean
-  showTemperature: boolean
-}
-
-export interface SeamountBiodiversityData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  depth: number
-  speciesCount: number
-  endemismRate: number
-  status: 'pristine' | 'threatened' | 'impacted' | 'protected'
-  description: string
-}
-
-export interface SeamountBiodiversityState {
-  open: boolean
-  seamounts: SeamountBiodiversityData[]
-  activeSeamountId: string | null
-  statusFilter: 'all' | 'pristine' | 'threatened' | 'impacted' | 'protected'
-  showDepth: boolean
-  showSpeciesCount: boolean
-  showEndemismRate: boolean
-}
-
-export interface EstuaryAcidificationData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  pH: number
-  alkalinity: number
-  salinity: number
-  status: 'healthy' | 'moderate' | 'acidified' | 'critical'
-  description: string
-}
-
-export interface EstuaryAcidificationState {
-  open: boolean
-  estuaries: EstuaryAcidificationData[]
-  activeEstuaryId: string | null
-  statusFilter: 'all' | 'healthy' | 'moderate' | 'acidified' | 'critical'
-  showPH: boolean
-  showAlkalinity: boolean
-  showSalinity: boolean
-}
-
-export interface AbyssalSedimentFluxData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  sedimentRate: number
-  depth: number
-  fluxDirection: string
-  status: 'depositing' | 'eroding' | 'stable' | 'turbidite'
-  description: string
-}
-
-export interface AbyssalSedimentFluxState {
-  open: boolean
-  sites: AbyssalSedimentFluxData[]
-  activeSiteId: string | null
-  statusFilter: 'all' | 'depositing' | 'eroding' | 'stable' | 'turbidite'
-  showSedimentRate: boolean
-  showDepth: boolean
-  showFluxDirection: boolean
-}
-
-export interface GlacialMoulinData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  depth: number
-  flowRate: number
-  diameter: number
-  status: 'active' | 'seasonal' | 'frozen' | 'draining'
-  description: string
-}
-
-export interface GlacialMoulinState {
-  open: boolean
-  moulins: GlacialMoulinData[]
-  activeMoulinId: string | null
-  statusFilter: 'all' | 'active' | 'seasonal' | 'frozen' | 'draining'
-  showDepth: boolean
-  showFlowRate: boolean
-  showDiameter: boolean
-}
-
-export interface IceShelfCalvingData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  area: number
-  calvingRate: number
-  thickness: number
-  status: 'stable' | 'retreating' | 'accelerating' | 'collapsing'
-  description: string
-}
-
-export interface IceShelfCalvingState {
-  open: boolean
-  shelves: IceShelfCalvingData[]
-  activeShelfId: string | null
-  statusFilter: 'all' | 'stable' | 'retreating' | 'accelerating' | 'collapsing'
-  showArea: boolean
-  showCalvingRate: boolean
-  showThickness: boolean
-}
-
-export interface VolcanicGasPlumeData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  so2Concentration: number
-  plumeHeight: number
-  gasType: string
-  status: 'emitting' | 'elevated' | 'declining' | 'quiet'
-  description: string
-}
-
-export interface VolcanicGasPlumeState {
-  open: boolean
-  plumes: VolcanicGasPlumeData[]
-  activePlumeId: string | null
-  statusFilter: 'all' | 'emitting' | 'elevated' | 'declining' | 'quiet'
-  showSO2: boolean
-  showPlumeHeight: boolean
-  showGasType: boolean
-}
-
-export interface SubmarineLandslideData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  volume: number
-  depth: number
-  slopeAngle: number
-  status: 'susceptible' | 'creeping' | 'triggered' | 'post_failure'
-  description: string
-}
-
-export interface SubmarineLandslideState {
-  open: boolean
-  slides: SubmarineLandslideData[]
-  activeSlideId: string | null
-  statusFilter: 'all' | 'susceptible' | 'creeping' | 'triggered' | 'post_failure'
-  showVolume: boolean
-  showDepth: boolean
-  showSlopeAngle: boolean
-}
-
-export interface CoastalWetlandLossData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  areaLost: number
-  remainingArea: number
-  lossRate: number
-  status: 'intact' | 'degrading' | 'critical' | 'restored'
-  description: string
-}
-
-export interface CoastalWetlandLossState {
-  open: boolean
-  wetlands: CoastalWetlandLossData[]
-  activeWetlandId: string | null
-  statusFilter: 'all' | 'intact' | 'degrading' | 'critical' | 'restored'
-  showAreaLost: boolean
-  showRemainingArea: boolean
-  showLossRate: boolean
-}
-
-export interface TundraPermafrostThawData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  activeLayerDepth: number
-  groundTemperature: number
-  thawRate: number
-  status: 'frozen' | 'thawing' | 'degraded' | 'thermokarst'
-  description: string
-}
-
-export interface TundraPermafrostThawState {
-  open: boolean
-  sites: TundraPermafrostThawData[]
-  activeSiteId: string | null
-  statusFilter: 'all' | 'frozen' | 'thawing' | 'degraded' | 'thermokarst'
-  showActiveLayerDepth: boolean
-  showGroundTemperature: boolean
-  showThawRate: boolean
-}
-
-export interface OceanCurrentProfilerData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  currentSpeed: number
-  direction: number
-  depth: number
-  status: 'strong' | 'moderate' | 'weak' | 'reversed'
-  description: string
-}
-
-export interface OceanCurrentProfilerState {
-  open: boolean
-  profiles: OceanCurrentProfilerData[]
-  activeProfileId: string | null
-  statusFilter: 'all' | 'strong' | 'moderate' | 'weak' | 'reversed'
-  showCurrentSpeed: boolean
-  showDirection: boolean
-  showDepth: boolean
-}
-
-export interface DesertificationFrontData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  advanceRate: number
-  vegetationIndex: number
-  soilMoisture: number
-  status: 'advancing' | 'stable' | 'retreating' | 'severe'
-  description: string
-}
-
-export interface DesertificationFrontState {
-  open: boolean
-  fronts: DesertificationFrontData[]
-  activeFrontId: string | null
-  statusFilter: 'all' | 'advancing' | 'stable' | 'retreating' | 'severe'
-  showAdvanceRate: boolean
-  showVegetationIndex: boolean
-  showSoilMoisture: boolean
-}
-
-export interface CoralReefRecoveryData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  liveCoralCover: number
-  recoveryRate: number
-  bleachingHistory: number
-  status: 'recovering' | 'stable' | 'declining' | 'bleached'
-  description: string
-}
-
-export interface CoralReefRecoveryState {
-  open: boolean
-  reefs: CoralReefRecoveryData[]
-  activeReefId: string | null
-  statusFilter: 'all' | 'recovering' | 'stable' | 'declining' | 'bleached'
-  showLiveCoralCover: boolean
-  showRecoveryRate: boolean
-  showBleachingHistory: boolean
-}
-
-export interface MethaneCraterData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  diameter: number
-  depth: number
-  methaneConcentration: number
-  status: 'growing' | 'stable' | 'erupting' | 'dormant'
-  description: string
-}
-
-export interface MethaneCraterState {
-  open: boolean
-  craters: MethaneCraterData[]
-  activeCraterId: string | null
-  statusFilter: 'all' | 'growing' | 'stable' | 'erupting' | 'dormant'
-  showDiameter: boolean
-  showDepth: boolean
-  showMethaneConcentration: boolean
-}
-
-export interface SubglacialVolcanoData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  iceThickness: number
-  heatFlux: number
-  eruptionProbability: number
-  status: 'active' | 'unrest' | 'dormant' | 'monitoring'
-  description: string
-}
-
-export interface SubglacialVolcanoState {
-  open: boolean
-  volcanoes: SubglacialVolcanoData[]
-  activeVolcanoId: string | null
-  statusFilter: 'all' | 'active' | 'unrest' | 'dormant' | 'monitoring'
-  showIceThickness: boolean
-  showHeatFlux: boolean
-  showEruptionProbability: boolean
-}
-
-export interface CoralSpawnPredictionData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  spawnDate: string
-  waterTemperature: number
-  moonPhase: string
-  status: 'predicted' | 'spawning' | 'post_spawn' | 'delayed'
-  description: string
-}
-
-export interface CoralSpawnPredictionState {
-  open: boolean
-  predictions: CoralSpawnPredictionData[]
-  activePredictionId: string | null
-  statusFilter: 'all' | 'predicted' | 'spawning' | 'post_spawn' | 'delayed'
-  showSpawnDate: boolean
-  showWaterTemperature: boolean
-  showMoonPhase: boolean
-}
-
-export interface HydrothermalDiffuseFlowData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  flowRate: number
-  temperature: number
-  chemosynthesisRate: number
-  status: 'active' | 'waning' | 'pulsing' | 'extinct'
-  description: string
-}
-
-export interface HydrothermalDiffuseFlowState {
-  open: boolean
-  flows: HydrothermalDiffuseFlowData[]
-  activeFlowId: string | null
-  statusFilter: 'all' | 'active' | 'waning' | 'pulsing' | 'extinct'
-  showFlowRate: boolean
-  showTemperature: boolean
-  showChemosynthesisRate: boolean
-}
-
-export interface PermafrostCarbonPipelineData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  carbonStock: number
-  thawDepth: number
-  pipelineRisk: number
-  status: 'safe' | 'moderate' | 'high_risk' | 'critical'
-  description: string
-}
-
-export interface PermafrostCarbonPipelineState {
-  open: boolean
-  segments: PermafrostCarbonPipelineData[]
-  activeSegmentId: string | null
-  statusFilter: 'all' | 'safe' | 'moderate' | 'high_risk' | 'critical'
-  showCarbonStock: boolean
-  showThawDepth: boolean
-  showPipelineRisk: boolean
-}
-
-export interface SubaqueousLavaFlowData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  flowLength: number
-  depth: number
-  lavaTemperature: number
-  status: 'active' | 'inflating' | 'cooling' | 'solidified'
-  description: string
-}
-
-export interface SubaqueousLavaFlowState {
-  open: boolean
-  flows: SubaqueousLavaFlowData[]
-  activeFlowId: string | null
-  statusFilter: 'all' | 'active' | 'inflating' | 'cooling' | 'solidified'
-  showFlowLength: boolean
-  showDepth: boolean
-  showLavaTemperature: boolean
-}
-
-export interface IntertidalZoneData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  tidalRange: number
-  biodiversityIndex: number
-  seaLevelRise: number
-  status: 'healthy' | 'stressed' | 'degraded' | 'restored'
-  description: string
-}
-
-export interface IntertidalZoneState {
-  open: boolean
-  zones: IntertidalZoneData[]
-  activeZoneId: string | null
-  statusFilter: 'all' | 'healthy' | 'stressed' | 'degraded' | 'restored'
-  showTidalRange: boolean
-  showBiodiversityIndex: boolean
-  showSeaLevelRise: boolean
-}
-
-export interface DesertFlashFloodData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  rainfallIntensity: number
-  floodVolume: number
-  catchmentArea: number
-  status: 'watch' | 'warning' | 'active' | 'receding'
-  description: string
-}
-
-export interface DesertFlashFloodState {
-  open: boolean
-  events: DesertFlashFloodData[]
-  activeEventId: string | null
-  statusFilter: 'all' | 'watch' | 'warning' | 'active' | 'receding'
-  showRainfallIntensity: boolean
-  showFloodVolume: boolean
-  showCatchmentArea: boolean
-}
-
-export interface MudVolcanoActivityData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  eruptionRate: number
-  flowTemperature: number
-  mudViscosity: number
-  status: 'erupting' | 'flowing' | 'dormant' | 'monitoring'
-  description: string
-}
-
-export interface MudVolcanoActivityState {
-  open: boolean
-  volcanoes: MudVolcanoActivityData[]
-  activeVolcanoId: string | null
-  statusFilter: 'all' | 'erupting' | 'flowing' | 'dormant' | 'monitoring'
-  showEruptionRate: boolean
-  showFlowTemperature: boolean
-  showMudViscosity: boolean
-}
-
-export interface GlacierSurgeEventData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  surgeVelocity: number
-  iceDisplacement: number
-  surgeDuration: number
-  status: 'surging' | 'slowing' | 'stable' | 'post_surge'
-  description: string
-}
-
-export interface GlacierSurgeEventState {
-  open: boolean
-  events: GlacierSurgeEventData[]
-  activeEventId: string | null
-  statusFilter: 'all' | 'surging' | 'slowing' | 'stable' | 'post_surge'
-  showSurgeVelocity: boolean
-  showIceDisplacement: boolean
-  showSurgeDuration: boolean
-}
-
-export interface SeicheWaveOscillationData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  waveAmplitude: number
-  oscillationPeriod: number
-  waterLevelChange: number
-  status: 'active' | 'subsiding' | 'standing' | 'calm'
-  description: string
-}
-
-export interface SeicheWaveOscillationState {
-  open: boolean
-  oscillations: SeicheWaveOscillationData[]
-  activeOscillationId: string | null
-  statusFilter: 'all' | 'active' | 'subsiding' | 'standing' | 'calm'
-  showWaveAmplitude: boolean
-  showOscillationPeriod: boolean
-  showWaterLevelChange: boolean
-}
-
-export interface LaharFlowTrackerData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  flowVelocity: number
-  sedimentConcentration: number
-  flowVolume: number
-  status: 'active' | 'advancing' | 'channelized' | 'deposited'
-  description: string
-}
-
-export interface LaharFlowTrackerState {
-  open: boolean
-  flows: LaharFlowTrackerData[]
-  activeFlowId: string | null
-  statusFilter: 'all' | 'active' | 'advancing' | 'channelized' | 'deposited'
-  showFlowVelocity: boolean
-  showSedimentConcentration: boolean
-  showFlowVolume: boolean
-}
-
-export interface IcePenitentMonitorData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  spikeHeight: number
-  formationDensity: number
-  surfaceTemperature: number
-  status: 'forming' | 'stable' | 'melting' | 'degraded'
-  description: string
-}
-
-export interface IcePenitentMonitorState {
-  open: boolean
-  formations: IcePenitentMonitorData[]
-  activeFormationId: string | null
-  statusFilter: 'all' | 'forming' | 'stable' | 'melting' | 'degraded'
-  showSpikeHeight: boolean
-  showFormationDensity: boolean
-  showSurfaceTemperature: boolean
-}
-
-export interface FrostHeaveMonitorData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  heaveAmount: number
-  groundTemperature: number
-  soilMoistureContent: number
-  status: 'heaving' | 'frozen' | 'thawing' | 'stable'
-  description: string
-}
-
-export interface FrostHeaveMonitorState {
-  open: boolean
-  sites: FrostHeaveMonitorData[]
-  activeSiteId: string | null
-  statusFilter: 'all' | 'heaving' | 'frozen' | 'thawing' | 'stable'
-  showHeaveAmount: boolean
-  showGroundTemperature: boolean
-  showSoilMoistureContent: boolean
-}
-
-export interface PumiceRaftDriftData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  raftArea: number
-  driftSpeed: number
-  pumiceDensity: number
-  status: 'drifting' | 'dispersing' | 'beaching' | 'sinking'
-  description: string
-}
-
-export interface PumiceRaftDriftState {
-  open: boolean
-  rafts: PumiceRaftDriftData[]
-  activeRaftId: string | null
-  statusFilter: 'all' | 'drifting' | 'dispersing' | 'beaching' | 'sinking'
-  showRaftArea: boolean
-  showDriftSpeed: boolean
-  showPumiceDensity: boolean
-}
-
-export interface LimnicEruptionMonitorData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  co2Concentration: number
-  gasReleaseRate: number
-  waterDepth: number
-  status: 'critical' | 'elevated' | 'monitoring' | 'stable'
-  description: string
-}
-
-export interface LimnicEruptionMonitorState {
-  open: boolean
-  lakes: LimnicEruptionMonitorData[]
-  activeLakeId: string | null
-  statusFilter: 'all' | 'critical' | 'elevated' | 'monitoring' | 'stable'
-  showCO2Concentration: boolean
-  showGasReleaseRate: boolean
-  showWaterDepth: boolean
-}
-
-// Task 95: Volcanic Tremor Monitor
-export interface VolcanicTremorData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  amplitude: number
-  frequency: number
-  duration: number
-  status: 'harmonic' | 'spasmodic' | 'continuous' | 'tremor_free'
-  description: string
-}
-
-export interface VolcanicTremorState {
-  open: boolean
-  data: VolcanicTremorData[]
-  showAmplitude: boolean
-  showFrequency: boolean
-  showDuration: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 95: Ice Wedge Polygon Monitor
-export interface IceWedgePolygonData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  polygonArea: number
-  wedgeDepth: number
-  degradationRate: number
-  status: 'intact' | 'degrading' | 'thawed' | 'thermokarst'
-  description: string
-}
-
-export interface IceWedgePolygonState {
-  open: boolean
-  data: IceWedgePolygonData[]
-  showPolygonArea: boolean
-  showWedgeDepth: boolean
-  showDegradationRate: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 95: Salt Flat Crust Monitor
-export interface SaltFlatCrustData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  crustThickness: number
-  salinity: number
-  moistureContent: number
-  status: 'crystalline' | 'deliquescent' | 'eroding' | 'submerged'
-  description: string
-}
-
-export interface SaltFlatCrustState {
-  open: boolean
-  data: SaltFlatCrustData[]
-  showCrustThickness: boolean
-  showSalinity: boolean
-  showMoistureContent: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 95: Cold Water Coral Reef Monitor
-export interface ColdWaterCoralReefData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  depth: number
-  temperature: number
-  coralCover: number
-  status: 'thriving' | 'stressed' | 'bleached' | 'protected'
-  description: string
-}
-
-export interface ColdWaterCoralReefState {
-  open: boolean
-  data: ColdWaterCoralReefData[]
-  showDepth: boolean
-  showTemperature: boolean
-  showCoralCover: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 95: Peatland Carbon Sink Monitor
-export interface PeatlandCarbonSinkData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  carbonStock: number
-  sequestrationRate: number
-  waterTableDepth: number
-  status: 'accumulating' | 'stable' | 'emitting' | 'degraded'
-  description: string
-}
-
-export interface PeatlandCarbonSinkState {
-  open: boolean
-  data: PeatlandCarbonSinkData[]
-  showCarbonStock: boolean
-  showSequestrationRate: boolean
-  showWaterTableDepth: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 95: Hyporheic Zone Monitor
-export interface HyporheicZoneData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  exchangeRate: number
-  residenceTime: number
-  temperature: number
-  status: 'active' | 'restricted' | 'stagnant' | 'flowing'
-  description: string
-}
-
-export interface HyporheicZoneState {
-  open: boolean
-  data: HyporheicZoneData[]
-  showExchangeRate: boolean
-  showResidenceTime: boolean
-  showTemperature: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 95: Submarine Fan Monitor
-export interface SubmarineFanData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  sedimentationRate: number
-  channelDepth: number
-  fanArea: number
-  status: 'active' | 'abandoned' | 'channelized' | 'hemipelagic'
-  description: string
-}
-
-export interface SubmarineFanState {
-  open: boolean
-  data: SubmarineFanData[]
-  showSedimentationRate: boolean
-  showChannelDepth: boolean
-  showFanArea: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 95: Coastal Dune System Monitor
-export interface CoastalDuneSystemData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  duneHeight: number
-  erosionRate: number
-  vegetationCover: number
-  status: 'accreting' | 'stable' | 'eroding' | 'breached'
-  description: string
-}
-
-export interface CoastalDuneSystemState {
-  open: boolean
-  data: CoastalDuneSystemData[]
-  showDuneHeight: boolean
-  showErosionRate: boolean
-  showVegetationCover: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 96: Karst Spring Discharge Monitor
-export interface KarstSpringDischargeData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  dischargeRate: number
-  waterTemperature: number
-  conductivity: number
-  status: 'flowing' | 'seasonal' | 'dry' | 'flooding'
-  description: string
-}
-
-export interface KarstSpringDischargeState {
-  open: boolean
-  data: KarstSpringDischargeData[]
-  showDischargeRate: boolean
-  showWaterTemperature: boolean
-  showConductivity: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 96: Cave Drip Monitor
-export interface CaveDripMonitorData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  dripRate: number
-  calciumConcentration: number
-  pHDrip: number
-  status: 'active' | 'slow' | 'dry' | 'contaminated'
-  description: string
-}
-
-export interface CaveDripMonitorState {
-  open: boolean
-  data: CaveDripMonitorData[]
-  showDripRate: boolean
-  showCalciumConcentration: boolean
-  showPHDrip: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 96: Tidal Creek Monitor
-export interface TidalCreekMonitorData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  tidalRange: number
-  creekDepth: number
-  salinity: number
-  status: 'flooding' | 'ebbing' | 'neap' | 'spring'
-  description: string
-}
-
-export interface TidalCreekMonitorState {
-  open: boolean
-  data: TidalCreekMonitorData[]
-  showTidalRange: boolean
-  showCreekDepth: boolean
-  showSalinity: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 96: Salt Marsh Carbon Monitor
-export interface SaltMarshCarbonData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  carbonStock: number
-  accretionRate: number
-  vegetationCover: number
-  status: 'sequestering' | 'stable' | 'emitting' | 'eroding'
-  description: string
-}
-
-export interface SaltMarshCarbonState {
-  open: boolean
-  data: SaltMarshCarbonData[]
-  showCarbonStock: boolean
-  showAccretionRate: boolean
-  showVegetationCover: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 96: Opal Paleo Monitor
-export interface OpalPaleoMonitorData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  opalConcentration: number
-  diatomCount: number
-  sedimentAge: number
-  status: 'pristine' | 'processed' | 'degraded' | 'archived'
-  description: string
-}
-
-export interface OpalPaleoMonitorState {
-  open: boolean
-  data: OpalPaleoMonitorData[]
-  showOpalConcentration: boolean
-  showDiatomCount: boolean
-  showSedimentAge: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 96: Aeolian Dust Deposition Monitor
-export interface AeolianDustDepositionData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  depositionRate: number
-  particleSize: number
-  dustOrigin: number
-  status: 'heavy' | 'moderate' | 'light' | 'settled'
-  description: string
-}
-
-export interface AeolianDustDepositionState {
-  open: boolean
-  data: AeolianDustDepositionData[]
-  showDepositionRate: boolean
-  showParticleSize: boolean
-  showDustOrigin: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 96: Katabatic Wind Monitor
-export interface KatabaticWindMonitorData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  windSpeed: number
-  temperature: number
-  windChill: number
-  status: 'gale' | 'strong' | 'moderate' | 'calm'
-  description: string
-}
-
-export interface KatabaticWindMonitorState {
-  open: boolean
-  data: KatabaticWindMonitorData[]
-  showWindSpeed: boolean
-  showTemperature: boolean
-  showWindChill: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 96: Snow Avalanche Tracker
-export interface SnowAvalancheTrackerData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  slopeAngle: number
-  snowDepth: number
-  avalancheSize: number
-  status: 'recent' | 'likely' | 'possible' | 'unlikely'
-  description: string
-}
-
-export interface SnowAvalancheTrackerState {
-  open: boolean
-  data: SnowAvalancheTrackerData[]
-  showSlopeAngle: boolean
-  showSnowDepth: boolean
-  showAvalancheSize: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 97: Rift Valley Volcano
-export interface RiftValleyVolcanoData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  magmaChamberDepth: number
-  deformationRate: number
-  so2Emission: number
-  status: 'active' | 'dormant' | 'fissuring' | 'caldera_formation'
-  description: string
-}
-
-export interface RiftValleyVolcanoState {
-  open: boolean
-  data: RiftValleyVolcanoData[]
-  showMagmaChamberDepth: boolean
-  showDeformationRate: boolean
-  showSo2Emission: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 97: Stream Bank Erosion
-export interface StreamBankErosionData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  erosionRate: number
-  bankAngle: number
-  vegetationCover: number
-  status: 'severe' | 'moderate' | 'minimal' | 'stabilized'
-  description: string
-}
-
-export interface StreamBankErosionState {
-  open: boolean
-  data: StreamBankErosionData[]
-  showErosionRate: boolean
-  showBankAngle: boolean
-  showVegetationCover: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 97: Ice Stream Velocity
-export interface IceStreamVelocityData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  flowVelocity: number
-  iceThickness: number
-  basalShearStress: number
-  status: 'accelerating' | 'stable' | 'decelerating' | 'stagnant'
-  description: string
-}
-
-export interface IceStreamVelocityState {
-  open: boolean
-  data: IceStreamVelocityData[]
-  showFlowVelocity: boolean
-  showIceThickness: boolean
-  showBasalShearStress: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 97: Coastal Aquifer
-export interface CoastalAquiferData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  saltwaterFront: number
-  waterTableDepth: number
-  chlorideConcentration: number
-  status: 'intruded' | 'advancing' | 'stable' | 'protected'
-  description: string
-}
-
-export interface CoastalAquiferState {
-  open: boolean
-  data: CoastalAquiferData[]
-  showSaltwaterFront: boolean
-  showWaterTableDepth: boolean
-  showChlorideConcentration: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 97: Mangrove Root System
-export interface MangroveRootSystemData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  rootDensity: number
-  sedimentAccretion: number
-  carbonStock: number
-  status: 'healthy' | 'stressed' | 'declining' | 'restored'
-  description: string
-}
-
-export interface MangroveRootSystemState {
-  open: boolean
-  data: MangroveRootSystemData[]
-  showRootDensity: boolean
-  showSedimentAccretion: boolean
-  showCarbonStock: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 97: Paleoshoreline Tracker
-export interface PaleoshorelineTrackerData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  shorelineAge: number
-  elevation: number
-  seaLevelIndicator: number
-  status: 'preserved' | 'exposed' | 'eroding' | 'submerged'
-  description: string
-}
-
-export interface PaleoshorelineTrackerState {
-  open: boolean
-  data: PaleoshorelineTrackerData[]
-  showShorelineAge: boolean
-  showElevation: boolean
-  showSeaLevelIndicator: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 97: Cryoconite Granule
-export interface CryoconiteGranuleData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  granuleDiameter: number
-  organicContent: number
-  albedoEffect: number
-  status: 'forming' | 'active' | 'melting' | 'deposited'
-  description: string
-}
-
-export interface CryoconiteGranuleState {
-  open: boolean
-  data: CryoconiteGranuleData[]
-  showGranuleDiameter: boolean
-  showOrganicContent: boolean
-  showAlbedoEffect: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 97: Subglacial Water System
-export interface SubglacialWaterSystemData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  waterPressure: number
-  flowRate: number
-  channelDiameter: number
-  status: 'active' | 'drainage' | 'pressure_building' | 'quiescent'
-  description: string
-}
-
-export interface SubglacialWaterSystemState {
-  open: boolean
-  data: SubglacialWaterSystemData[]
-  showWaterPressure: boolean
-  showFlowRate: boolean
-  showChannelDiameter: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 98: Mass Wasting and Slope Processes
-export interface LandslideVelocityData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  velocity: number        // mm/day
-  displacement: number    // mm total
-  depth: number           // m (slide surface depth)
-  status: 'active' | 'slow' | 'dormant' | 'accelerating'
-  description: string
-}
-
-export interface LandslideVelocityState {
-  open: boolean
-  data: LandslideVelocityData[]
-  showVelocity: boolean
-  showDisplacement: boolean
-  showDepth: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface DebrisFlowSurgeData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  surgeVolume: number     // m³
-  flowVelocity: number    // m/s
-  sedimentConcentration: number // %
-  status: 'surging' | 'flowing' | 'waning' | 'deposited'
-  description: string
-}
-
-export interface DebrisFlowSurgeState {
-  open: boolean
-  data: DebrisFlowSurgeData[]
-  showSurgeVolume: boolean
-  showFlowVelocity: boolean
-  showSedimentConcentration: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface RockfallImpactData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  impactEnergy: number    // kJ
-  blockVolume: number     // m³
-  frequency: number       // events/month
-  status: 'frequent' | 'moderate' | 'rare' | 'stable'
-  description: string
-}
-
-export interface RockfallImpactState {
-  open: boolean
-  data: RockfallImpactData[]
-  showImpactEnergy: boolean
-  showBlockVolume: boolean
-  showFrequency: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface SoilCreepRateData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  creepRate: number       // mm/year
-  soilMoisture: number    // %
-  slopeAngle: number      // degrees
-  status: 'rapid' | 'moderate' | 'slow' | 'negligible'
-  description: string
-}
-
-export interface SoilCreepRateState {
-  open: boolean
-  data: SoilCreepRateData[]
-  showCreepRate: boolean
-  showSoilMoisture: boolean
-  showSlopeAngle: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface SolifluctionLobeData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  lobeVelocity: number    // cm/year
-  lobeWidth: number       // m
-  activeLayerDepth: number // cm
-  status: 'active' | 'paused' | 'seasonal' | 'stable'
-  description: string
-}
-
-export interface SolifluctionLobeState {
-  open: boolean
-  data: SolifluctionLobeData[]
-  showLobeVelocity: boolean
-  showLobeWidth: boolean
-  showActiveLayerDepth: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface EarthflowDisplacementData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  displacement: number    // cm
-  flowRate: number        // cm/day
-  moistureContent: number // %
-  status: 'rapid' | 'moderate' | 'slow' | 'stabilized'
-  description: string
-}
-
-export interface EarthflowDisplacementState {
-  open: boolean
-  data: EarthflowDisplacementData[]
-  showDisplacement: boolean
-  showFlowRate: boolean
-  showMoistureContent: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface SlumpFailureData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  scarpHeight: number     // m
-  rotationAngle: number   // degrees
-  porePressure: number    // kPa
-  status: 'failing' | 'creeping' | 'remodeling' | 'stabilized'
-  description: string
-}
-
-export interface SlumpFailureState {
-  open: boolean
-  data: SlumpFailureData[]
-  showScarpHeight: boolean
-  showRotationAngle: boolean
-  showPorePressure: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface TalusAccumulationData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  accumulationRate: number // cm/year
-  talusVolume: number      // m³
-  slopeAngle: number       // degrees
-  status: 'accumulating' | 'redistributing' | 'weathering' | 'stable'
-  description: string
-}
-
-export interface TalusAccumulationState {
-  open: boolean
-  data: TalusAccumulationData[]
-  showAccumulationRate: boolean
-  showTalusVolume: boolean
-  showSlopeAngle: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 99: Coastal Engineering and Shore Protection
-export interface BreakwaterIntegrityData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  structuralHealth: number  // %
-  waveForce: number         // kN/m
-  overtoppingRate: number   // l/s/m
-  status: 'critical' | 'degraded' | 'fair' | 'intact'
-  description: string
-}
-
-export interface BreakwaterIntegrityState {
-  open: boolean
-  data: BreakwaterIntegrityData[]
-  showStructuralHealth: boolean
-  showWaveForce: boolean
-  showOvertoppingRate: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface SeawallErosionData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  erosionRate: number       // mm/year
-  scourDepth: number        // m
-  wallDisplacement: number  // mm
-  status: 'failing' | 'eroding' | 'stable' | 'reinforced'
-  description: string
-}
-
-export interface SeawallErosionState {
-  open: boolean
-  data: SeawallErosionData[]
-  showErosionRate: boolean
-  showScourDepth: boolean
-  showWallDisplacement: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface GroinSedimentData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  accretionRate: number     // m³/year
-  bypassRate: number        // m³/year
-  updriftWidth: number      // m
-  status: 'accreting' | 'bypassing' | 'equilibrium' | 'eroding'
-  description: string
-}
-
-export interface GroinSedimentState {
-  open: boolean
-  data: GroinSedimentData[]
-  showAccretionRate: boolean
-  showBypassRate: boolean
-  showUpdriftWidth: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface RevetmentStabilityData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  armorIntegrity: number    // %
-  slopeDisplacement: number // mm
-  underpressure: number     // kPa
-  status: 'breached' | 'shifting' | 'settling' | 'stable'
-  description: string
-}
-
-export interface RevetmentStabilityState {
-  open: boolean
-  data: RevetmentStabilityData[]
-  showArmorIntegrity: boolean
-  showSlopeDisplacement: boolean
-  showUnderpressure: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface JettyCurrentData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  currentSpeed: number      // m/s
-  eddyIntensity: number     // %
-  sedimentDeposition: number // m³/year
-  status: 'dangerous' | 'moderate' | 'calm' | 'navigable'
-  description: string
-}
-
-export interface JettyCurrentState {
-  open: boolean
-  data: JettyCurrentData[]
-  showCurrentSpeed: boolean
-  showEddyIntensity: boolean
-  showSedimentDeposition: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface BeachNourishmentData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  fillVolume: number        // m³
-  retentionRate: number     // %
-  shorelineChange: number   // m/year
-  status: 'losing' | 'depleting' | 'retaining' | 'gaining'
-  description: string
-}
-
-export interface BeachNourishmentState {
-  open: boolean
-  data: BeachNourishmentData[]
-  showFillVolume: boolean
-  showRetentionRate: boolean
-  showShorelineChange: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface CoastalArmorData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  armorWeight: number       // tonnes
-  displacementRate: number  // m/year
-  waveRunup: number         // m
-  status: 'displaced' | 'settling' | 'stable' | 'reinforced'
-  description: string
-}
-
-export interface CoastalArmorState {
-  open: boolean
-  data: CoastalArmorData[]
-  showArmorWeight: boolean
-  showDisplacementRate: boolean
-  showWaveRunup: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface ShorelineRetreatData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  retreatRate: number       // m/year
-  cliffHeight: number       // m
-  waveEnergy: number        // kJ/m
-  status: 'rapid' | 'moderate' | 'slow' | 'accreting'
-  description: string
-}
-
-export interface ShorelineRetreatState {
-  open: boolean
-  data: ShorelineRetreatData[]
-  showRetreatRate: boolean
-  showCliffHeight: boolean
-  showWaveEnergy: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 100: Soil Science and Pedology
-export interface SoilOrganicCarbonData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  carbonContent: number   // g/kg
-  bulkDensity: number     // g/cm³
-  decompositionRate: number // mg CO2/kg/day
-  status: 'rich' | 'moderate' | 'depleted' | 'critical'
-  description: string
-}
-
-export interface SoilOrganicCarbonState {
-  open: boolean
-  data: SoilOrganicCarbonData[]
-  showCarbonContent: boolean
-  showBulkDensity: boolean
-  showDecompositionRate: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface CationExchangeData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  cec: number              // cmol/kg
-  baseSaturation: number   // %
-  phLevel: number
-  status: 'fertile' | 'adequate' | 'low' | 'degraded'
-  description: string
-}
-
-export interface CationExchangeState {
-  open: boolean
-  data: CationExchangeData[]
-  showCec: boolean
-  showBaseSaturation: boolean
-  showPhLevel: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface SoilPhosphorusData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  availableP: number      // mg/kg
-  totalP: number          // mg/kg
-  retentionCapacity: number // %
-  status: 'optimal' | 'adequate' | 'deficient' | 'locked'
-  description: string
-}
-
-export interface SoilPhosphorusState {
-  open: boolean
-  data: SoilPhosphorusData[]
-  showAvailableP: boolean
-  showTotalP: boolean
-  showRetentionCapacity: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface SoilCompactionData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  penetrationResistance: number // MPa
-  bulkDensity: number           // g/cm³
-  porosity: number              // %
-  status: 'severe' | 'moderate' | 'slight' | 'loose'
-  description: string
-}
-
-export interface SoilCompactionState {
-  open: boolean
-  data: SoilCompactionData[]
-  showPenetrationResistance: boolean
-  showBulkDensity: boolean
-  showPorosity: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface ClayMineralData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  swellPotential: number  // %
-  plasticityIndex: number
-  shrinkageLimit: number  // %
-  status: 'expansive' | 'moderate' | 'low' | 'stable'
-  description: string
-}
-
-export interface ClayMineralState {
-  open: boolean
-  data: ClayMineralData[]
-  showSwellPotential: boolean
-  showPlasticityIndex: boolean
-  showShrinkageLimit: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface PodzolProfileData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  eluviationDepth: number // cm
-  illuviationDepth: number // cm
-  organicLayer: number    // cm
-  status: 'active' | 'developing' | 'degraded' | 'buried'
-  description: string
-}
-
-export interface PodzolProfileState {
-  open: boolean
-  data: PodzolProfileData[]
-  showEluviationDepth: boolean
-  showIlluviationDepth: boolean
-  showOrganicLayer: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface GleyRedoxData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  redoxPotential: number  // mV
-  waterTableDepth: number // cm
-  ironReduction: number   // %
-  status: 'reduced' | 'transitional' | 'oxidized' | 'fluctuating'
-  description: string
-}
-
-export interface GleyRedoxState {
-  open: boolean
-  data: GleyRedoxData[]
-  showRedoxPotential: boolean
-  showWaterTableDepth: boolean
-  showIronReduction: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface CalcicHorizonData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  caco3Content: number    // %
-  horizonDepth: number    // cm
-  noduleDensity: number   // per m²
-  status: 'indurated' | 'cemented' | 'developing' | 'incipient'
-  description: string
-}
-
-export interface CalcicHorizonState {
-  open: boolean
-  data: CalcicHorizonData[]
-  showCaco3Content: boolean
-  showHorizonDepth: boolean
-  showNoduleDensity: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 101: Mineral Resources and Mining
-export interface OreGradeAssayData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  metalGrade: number        // g/t or %
-  cutoffGrade: number       // g/t or %
-  recoveryRate: number      // %
-  status: 'high_grade' | 'economic' | 'marginal' | 'subeconomic'
-  description: string
-}
-
-export interface OreGradeAssayState {
-  open: boolean
-  data: OreGradeAssayData[]
-  showMetalGrade: boolean
-  showCutoffGrade: boolean
-  showRecoveryRate: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface MineTailingsDamData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  damHeight: number         // m
-  storageVolume: number     // million m³
-  phreaticLevel: number     // m from base
-  status: 'critical' | 'elevated' | 'normal' | 'draining'
-  description: string
-}
-
-export interface MineTailingsDamState {
-  open: boolean
-  data: MineTailingsDamData[]
-  showDamHeight: boolean
-  showStorageVolume: boolean
-  showPhreaticLevel: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface MineralVeinThicknessData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  veinWidth: number         // cm
-  oreMineral: number        // %
-  depthExtent: number       // m
-  status: 'thick' | 'moderate' | 'thin' | 'pinching'
-  description: string
-}
-
-export interface MineralVeinThicknessState {
-  open: boolean
-  data: MineralVeinThicknessData[]
-  showVeinWidth: boolean
-  showOreMineral: boolean
-  showDepthExtent: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface StripMineRatioData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  stripRatio: number        // waste:ore
-  overburdenDepth: number   // m
-  oreThickness: number      // m
-  status: 'favorable' | 'marginal' | 'high' | 'uneconomic'
-  description: string
-}
-
-export interface StripMineRatioState {
-  open: boolean
-  data: StripMineRatioData[]
-  showStripRatio: boolean
-  showOverburdenDepth: boolean
-  showOreThickness: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface UndergroundMineVentData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  airflowRate: number       // m³/s
-  methaneLevel: number      // %
-  temperature: number       // °C
-  status: 'dangerous' | 'alert' | 'adequate' | 'optimal'
-  description: string
-}
-
-export interface UndergroundMineVentState {
-  open: boolean
-  data: UndergroundMineVentData[]
-  showAirflowRate: boolean
-  showMethaneLevel: boolean
-  showTemperature: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface AcidMineDrainageData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  pH: number
-  ironConcentration: number // mg/L
-  sulfateLevel: number      // mg/L
-  status: 'severe' | 'moderate' | 'mild' | 'neutral'
-  description: string
-}
-
-export interface AcidMineDrainageState {
-  open: boolean
-  data: AcidMineDrainageData[]
-  showPH: boolean
-  showIronConcentration: boolean
-  showSulfateLevel: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface OreReserveEstimateData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  provenReserve: number     // Mt
-  probableReserve: number   // Mt
-  resourceGrade: number     // g/t
-  status: 'proven' | 'probable' | 'inferred' | 'exploration'
-  description: string
-}
-
-export interface OreReserveEstimateState {
-  open: boolean
-  data: OreReserveEstimateData[]
-  showProvenReserve: boolean
-  showProbableReserve: boolean
-  showResourceGrade: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface MineralDepositGradeData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  depositTonnes: number     // Mt
-  averageGrade: number      // %
-  containedMetal: number    // kt
-  status: 'giant' | 'major' | 'moderate' | 'small'
-  description: string
-}
-
-export interface MineralDepositGradeState {
-  open: boolean
-  data: MineralDepositGradeData[]
-  showDepositTonnes: boolean
-  showAverageGrade: boolean
-  showContainedMetal: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 102: Ocean Circulation and Currents
-export interface ThermohalineCellData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  overturningRate: number   // Sv (Sverdrups)
-  temperature: number       // °C
-  salinity: number          // PSU
-  status: 'strong' | 'moderate' | 'weakening' | 'collapsed'
-  description: string
-}
-
-export interface ThermohalineCellState {
-  open: boolean
-  data: ThermohalineCellData[]
-  showOverturningRate: boolean
-  showTemperature: boolean
-  showSalinity: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface EkmanTransportData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  transportAngle: number    // degrees
-  windSpeed: number         // m/s
-  surfaceVelocity: number   // m/s
-  status: 'aligned' | 'deflected' | 'reversed' | 'calm'
-  description: string
-}
-
-export interface EkmanTransportState {
-  open: boolean
-  data: EkmanTransportData[]
-  showTransportAngle: boolean
-  showWindSpeed: boolean
-  showSurfaceVelocity: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface GeostrophicCurrentData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  currentSpeed: number      // m/s
-  pressureGradient: number  // Pa/km
-  coriolisEffect: number    // 10^-4 s^-1
-  status: 'intense' | 'moderate' | 'weak' | 'stagnant'
-  description: string
-}
-
-export interface GeostrophicCurrentState {
-  open: boolean
-  data: GeostrophicCurrentData[]
-  showCurrentSpeed: boolean
-  showPressureGradient: boolean
-  showCoriolisEffect: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface UpwellingIntensityData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  upwellingVelocity: number // m/day
-  sstAnomaly: number        // °C
-  chlorophyllConcentration: number // mg/m³
-  status: 'strong' | 'moderate' | 'weak' | 'suppressed'
-  description: string
-}
-
-export interface UpwellingIntensityState {
-  open: boolean
-  data: UpwellingIntensityData[]
-  showUpwellingVelocity: boolean
-  showSstAnomaly: boolean
-  showChlorophyllConcentration: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface WesternBoundaryData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  peakVelocity: number      // m/s
-  transportVolume: number   // Sv
-  meanderAmplitude: number  // km
-  status: 'intensified' | 'normal' | 'weakened' | 'detached'
-  description: string
-}
-
-export interface WesternBoundaryState {
-  open: boolean
-  data: WesternBoundaryData[]
-  showPeakVelocity: boolean
-  showTransportVolume: boolean
-  showMeanderAmplitude: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface DeepWaterFormationData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  convectionDepth: number   // m
-  densityAnomaly: number    // kg/m³
-  formationRate: number     // Sv
-  status: 'active' | 'seasonal' | 'reduced' | 'absent'
-  description: string
-}
-
-export interface DeepWaterFormationState {
-  open: boolean
-  data: DeepWaterFormationData[]
-  showConvectionDepth: boolean
-  showDensityAnomaly: boolean
-  showFormationRate: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface OceanGyreData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  rotationPeriod: number    // days
-  diameter: number          // km
-  eddyKineticEnergy: number // cm²/s²
-  status: 'energetic' | 'stable' | 'shrinking' | 'expanding'
-  description: string
-}
-
-export interface OceanGyreState {
-  open: boolean
-  data: OceanGyreData[]
-  showRotationPeriod: boolean
-  showDiameter: boolean
-  showEddyKineticEnergy: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface TropicalCurrentData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  currentSpeed: number      // m/s
-  temperature: number       // °C
-  freshwaterFlux: number    // m/year
-  status: 'surging' | 'flowing' | 'slack' | 'reversed'
-  description: string
-}
-
-export interface TropicalCurrentState {
-  open: boolean
-  data: TropicalCurrentData[]
-  showCurrentSpeed: boolean
-  showTemperature: boolean
-  showFreshwaterFlux: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 103: Atmospheric Dynamics and Weather
-export interface JetStreamPositionData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  latitudePosition: number  // degrees N/S
-  windSpeed: number         // m/s
-  meanderIndex: number      // dimensionless
-  status: 'amplified' | 'zonal' | 'blocked' | 'split'
-  description: string
-}
-
-export interface JetStreamPositionState {
-  open: boolean
-  data: JetStreamPositionData[]
-  showLatitudePosition: boolean
-  showWindSpeed: boolean
-  showMeanderIndex: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface AtmosphericPressureCellData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  centralPressure: number   // hPa
-  cellDiameter: number      // km
-  pressureGradient: number  // hPa/1000km
-  status: 'intense' | 'moderate' | 'weak' | 'dissipating'
-  description: string
-}
-
-export interface AtmosphericPressureCellState {
-  open: boolean
-  data: AtmosphericPressureCellData[]
-  showCentralPressure: boolean
-  showCellDiameter: boolean
-  showPressureGradient: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface TropopauseHeightData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  tropopauseHeight: number  // km
-  temperatureLapse: number  // C/km
-  tropopausePressure: number // hPa
-  status: 'elevated' | 'normal' | 'depressed' | 'folded'
-  description: string
-}
-
-export interface TropopauseHeightState {
-  open: boolean
-  data: TropopauseHeightData[]
-  showTropopauseHeight: boolean
-  showTemperatureLapse: boolean
-  showTropopausePressure: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface RossbyWaveAmplitudeData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  waveAmplitude: number     // degrees latitude
-  wavenumber: number        // zonal wavenumber
-  phaseSpeed: number        // m/s
-  status: 'amplified' | 'propagating' | 'damped' | 'stationary'
-  description: string
-}
-
-export interface RossbyWaveAmplitudeState {
-  open: boolean
-  data: RossbyWaveAmplitudeData[]
-  showWaveAmplitude: boolean
-  showWavenumber: boolean
-  showPhaseSpeed: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface HadleyCellCirculationData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  circulationStrength: number // Sv (10^9 kg/s)
-  updraftVelocity: number    // cm/s
-  outflowHeight: number      // km
-  status: 'intensified' | 'normal' | 'weakened' | 'expanding'
-  description: string
-}
-
-export interface HadleyCellCirculationState {
-  open: boolean
-  data: HadleyCellCirculationData[]
-  showCirculationStrength: boolean
-  showUpdraftVelocity: boolean
-  showOutflowHeight: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface AtmosphericRiverFlowData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  moistureFlux: number      // kg/m/s
-  integratedVapor: number   // cm
-  windSpeed: number         // m/s
-  status: 'extreme' | 'strong' | 'moderate' | 'weak'
-  description: string
-}
-
-export interface AtmosphericRiverFlowState {
-  open: boolean
-  data: AtmosphericRiverFlowData[]
-  showMoistureFlux: boolean
-  showIntegratedVapor: boolean
-  showWindSpeed: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface PolarFrontJetData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  jetSpeed: number          // m/s
-  frontalContrast: number   // C/100km
-  baroclinicity: number     // 10^-5 s^-1
-  status: 'intense' | 'active' | 'slack' | 'displaced'
-  description: string
-}
-
-export interface PolarFrontJetState {
-  open: boolean
-  data: PolarFrontJetData[]
-  showJetSpeed: boolean
-  showFrontalContrast: boolean
-  showBaroclinicity: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface TradeWindBeltData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  windSpeed: number          // m/s
-  convergenceZone: number    // degrees lat
-  consistency: number        // %
-  status: 'strong' | 'moderate' | 'variable' | 'collapsed'
-  description: string
-}
-
-export interface TradeWindBeltState {
-  open: boolean
-  data: TradeWindBeltData[]
-  showWindSpeed: boolean
-  showConvergenceZone: boolean
-  showConsistency: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 104: Biogeography and Ecosystem
-export interface SpeciesMigrationRouteData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  migratoryDistance: number  // km
-  populationSize: number     // individuals
-  timingShift: number        // days (deviation from historical)
-  status: 'active' | 'delayed' | 'disrupted' | 'collapsed'
-  description: string
-}
-
-export interface SpeciesMigrationRouteState {
-  open: boolean
-  data: SpeciesMigrationRouteData[]
-  showMigratoryDistance: boolean
-  showPopulationSize: boolean
-  showTimingShift: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface HabitatCorridorData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  corridorWidth: number     // km
-  connectivityIndex: number  // 0-1
-  barrierCount: number      // count
-  status: 'intact' | 'degraded' | 'fragmented' | 'severed'
-  description: string
-}
-
-export interface HabitatCorridorState {
-  open: boolean
-  data: HabitatCorridorData[]
-  showCorridorWidth: boolean
-  showConnectivityIndex: boolean
-  showBarrierCount: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface EndemicHotspotData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  endemicSpeciesCount: number
-  threatLevel: number        // 1-10
-  protectionCoverage: number // %
-  status: 'protected' | 'vulnerable' | 'threatened' | 'critical'
-  description: string
-}
-
-export interface EndemicHotspotState {
-  open: boolean
-  data: EndemicHotspotData[]
-  showEndemicSpeciesCount: boolean
-  showThreatLevel: boolean
-  showProtectionCoverage: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface KeystonePopulationData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  populationDensity: number  // per km²
-  reproductionRate: number   // offspring/year
-  ecosystemImpact: number    // 0-1
-  status: 'thriving' | 'stable' | 'declining' | 'critical'
-  description: string
-}
-
-export interface KeystonePopulationState {
-  open: boolean
-  data: KeystonePopulationData[]
-  showPopulationDensity: boolean
-  showReproductionRate: boolean
-  showEcosystemImpact: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface WildlifeCorridorData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  corridorLength: number    // km
-  speciesUsing: number      // count
-  crossingEvents: number    // per month
-  status: 'functional' | 'partial' | 'bottleneck' | 'blocked'
-  description: string
-}
-
-export interface WildlifeCorridorState {
-  open: boolean
-  data: WildlifeCorridorData[]
-  showCorridorLength: boolean
-  showSpeciesUsing: boolean
-  showCrossingEvents: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface BiomeTransitionData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  transitionWidth: number   // km
-  speciesTurnover: number   // %
-  shiftRate: number         // km/decade
-  status: 'stable' | 'shifting' | 'expanding' | 'contracting'
-  description: string
-}
-
-export interface BiomeTransitionState {
-  open: boolean
-  data: BiomeTransitionData[]
-  showTransitionWidth: boolean
-  showSpeciesTurnover: boolean
-  showShiftRate: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface ForestCanopyCoverData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  canopyDensity: number     // %
-  leafAreaIndex: number     // m²/m²
-  carbonStock: number       // tonnes/ha
-  status: 'dense' | 'moderate' | 'open' | 'degraded'
-  description: string
-}
-
-export interface ForestCanopyCoverState {
-  open: boolean
-  data: ForestCanopyCoverData[]
-  showCanopyDensity: boolean
-  showLeafAreaIndex: boolean
-  showCarbonStock: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface WetlandBiodiversityIndexData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  speciesRichness: number   // count
-  shannonIndex: number      // H
-  waterQuality: number      // 0-100
-  status: 'pristine' | 'good' | 'moderate' | 'degraded'
-  description: string
-}
-
-export interface WetlandBiodiversityIndexState {
-  open: boolean
-  data: WetlandBiodiversityIndexData[]
-  showSpeciesRichness: boolean
-  showShannonIndex: boolean
-  showWaterQuality: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 105: Hydrology and Watershed
-export interface WatershedDischargeData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  dischargeRate: number     // m³/s
-  drainageArea: number      // km²
-  runoffCoefficient: number // 0-1
-  status: 'flooding' | 'high' | 'normal' | 'low'
-  description: string
-}
-
-export interface WatershedDischargeState {
-  open: boolean
-  data: WatershedDischargeData[]
-  showDischargeRate: boolean
-  showDrainageArea: boolean
-  showRunoffCoefficient: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface AquiferRechargeRateData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  rechargeRate: number      // mm/year
-  waterTableDepth: number   // m
-  permeability: number      // m/day
-  status: 'surplus' | 'balanced' | 'deficit' | 'depleted'
-  description: string
-}
-
-export interface AquiferRechargeRateState {
-  open: boolean
-  data: AquiferRechargeRateData[]
-  showRechargeRate: boolean
-  showWaterTableDepth: boolean
-  showPermeability: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface FloodInundationMapData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  floodDepth: number        // m
-  returnPeriod: number      // years
-  affectedArea: number      // km²
-  status: 'active' | 'warning' | 'receding' | 'dry'
-  description: string
-}
-
-export interface FloodInundationMapState {
-  open: boolean
-  data: FloodInundationMapData[]
-  showFloodDepth: boolean
-  showReturnPeriod: boolean
-  showAffectedArea: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface RiverSedimentLoadData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  suspendedLoad: number     // mg/L
-  bedloadTransport: number  // kg/s
-  turbidity: number         // NTU
-  status: 'heavy' | 'elevated' | 'normal' | 'clear'
-  description: string
-}
-
-export interface RiverSedimentLoadState {
-  open: boolean
-  data: RiverSedimentLoadData[]
-  showSuspendedLoad: boolean
-  showBedloadTransport: boolean
-  showTurbidity: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface GroundwaterTableLevelData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  waterLevel: number        // m below surface
-  trendRate: number         // m/year
-  aquiferType: number       // classification code
-  status: 'rising' | 'stable' | 'declining' | 'critical'
-  description: string
-}
-
-export interface GroundwaterTableLevelState {
-  open: boolean
-  data: GroundwaterTableLevelData[]
-  showWaterLevel: boolean
-  showTrendRate: boolean
-  showAquiferType: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface SnowpackWaterEquivalentData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  sweValue: number          // mm
-  snowDepth: number         // cm
-  meltRate: number          // mm/day
-  status: 'above_normal' | 'normal' | 'below_normal' | 'deficit'
-  description: string
-}
-
-export interface SnowpackWaterEquivalentState {
-  open: boolean
-  data: SnowpackWaterEquivalentData[]
-  showSweValue: boolean
-  showSnowDepth: boolean
-  showMeltRate: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface ReservoirStorageLevelData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  storageLevel: number      // % capacity
-  inflowRate: number        // m³/s
-  outflowRate: number       // m³/s
-  status: 'overflow' | 'full' | 'adequate' | 'low'
-  description: string
-}
-
-export interface ReservoirStorageLevelState {
-  open: boolean
-  data: ReservoirStorageLevelData[]
-  showStorageLevel: boolean
-  showInflowRate: boolean
-  showOutflowRate: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface BaseflowIndexData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  baseflowRatio: number     // 0-1
-  totalFlow: number         // m³/s
-  groundwaterContribution: number // %
-  status: 'groundwater_dominated' | 'mixed' | 'runoff_dominated' | 'intermittent'
-  description: string
-}
-
-export interface BaseflowIndexState {
-  open: boolean
-  data: BaseflowIndexData[]
-  showBaseflowRatio: boolean
-  showTotalFlow: boolean
-  showGroundwaterContribution: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 106: Cryosphere Dynamics
-export interface IceShelfThicknessData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  shelfThickness: number   // m
-  basalMeltRate: number    // m/year
-  riftLength: number       // km
-  status: 'thickening' | 'stable' | 'thinning' | 'fracturing'
-  description: string
-}
-
-export interface IceShelfThicknessState {
-  open: boolean
-  data: IceShelfThicknessData[]
-  showShelfThickness: boolean
-  showBasalMeltRate: boolean
-  showRiftLength: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface SeaIceExtentData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  iceConcentration: number // %
-  extentAnomaly: number    // million km²
-  iceAge: number           // years
-  status: 'expanding' | 'stable' | 'declining' | 'record_low'
-  description: string
-}
-
-export interface SeaIceExtentState {
-  open: boolean
-  data: SeaIceExtentData[]
-  showIceConcentration: boolean
-  showExtentAnomaly: boolean
-  showIceAge: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface GlacierMassBalanceData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  massBalance: number      // m w.e./year
-  equilibriumLine: number  // m altitude
-  accumulationRatio: number // 0-1
-  status: 'gaining' | 'stable' | 'losing' | 'collapsing'
-  description: string
-}
-
-export interface GlacierMassBalanceState {
-  open: boolean
-  data: GlacierMassBalanceData[]
-  showMassBalance: boolean
-  showEquilibriumLine: boolean
-  showAccumulationRatio: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface PermafrostActiveLayerData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  activeLayerDepth: number  // cm
-  groundTemperature: number // °C
-  thawRate: number          // cm/year
-  status: 'deepening' | 'stable' | 'shallow' | 'absent'
-  description: string
-}
-
-export interface PermafrostActiveLayerState {
-  open: boolean
-  data: PermafrostActiveLayerData[]
-  showActiveLayerDepth: boolean
-  showGroundTemperature: boolean
-  showThawRate: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface IceCoreRecordData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  coreDepth: number        // m
-  oldestIceAge: number     // kyr BP
-  co2Concentration: number // ppm
-  status: 'recovering' | 'drilling' | 'completed' | 'archived'
-  description: string
-}
-
-export interface IceCoreRecordState {
-  open: boolean
-  data: IceCoreRecordData[]
-  showCoreDepth: boolean
-  showOldestIceAge: boolean
-  showCo2Concentration: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface SnowCoverDurationData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  snowDays: number          // days/year
-  snowOnsetDate: number     // day of year
-  snowMeltDate: number      // day of year
-  status: 'prolonged' | 'normal' | 'shortened' | 'absent'
-  description: string
-}
-
-export interface SnowCoverDurationState {
-  open: boolean
-  data: SnowCoverDurationData[]
-  showSnowDays: boolean
-  showSnowOnsetDate: boolean
-  showSnowMeltDate: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface FrostThawCycleData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  freezeThawCycles: number  // per year
-  frostDepth: number        // cm
-  heaveMagnitude: number    // mm
-  status: 'frequent' | 'moderate' | 'rare' | 'permafrost'
-  description: string
-}
-
-export interface FrostThawCycleState {
-  open: boolean
-  data: FrostThawCycleData[]
-  showFreezeThawCycles: boolean
-  showFrostDepth: boolean
-  showHeaveMagnitude: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface IcebergCalvingData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  calvingRate: number       // km²/year
-  icebergSize: number       // km²
-  driftSpeed: number        // km/day
-  status: 'intense' | 'active' | 'moderate' | 'minimal'
-  description: string
-}
-
-export interface IcebergCalvingState {
-  open: boolean
-  data: IcebergCalvingData[]
-  showCalvingRate: boolean
-  showIcebergSize: boolean
-  showDriftSpeed: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 107: Space Weather and Geomagnetism
-export interface MagnetopauseStandoffData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  standoffDistance: number // Earth radii
-  solarWindPressure: number // nPa
-  magneticFieldBz: number  // nT
-  status: 'compressed' | 'normal' | 'expanded' | 'eroded'
-  description: string
-}
-
-export interface MagnetopauseStandoffState {
-  open: boolean
-  data: MagnetopauseStandoffData[]
-  showStandoffDistance: boolean
-  showSolarWindPressure: boolean
-  showMagneticFieldBz: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface AuroraOvalPositionData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  ovalLatitude: number   // degrees
-  kpIndex: number         // 0-9
-  visibilityProbability: number // %
-  status: 'storm' | 'active' | 'quiet' | 'substorm'
-  description: string
-}
-
-export interface AuroraOvalPositionState {
-  open: boolean
-  data: AuroraOvalPositionData[]
-  showOvalLatitude: boolean
-  showKpIndex: boolean
-  showVisibilityProbability: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface VanAllenRadiationData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  protonFlux: number     // particles/cm2/s
-  electronFlux: number   // particles/cm2/s
-  beltAltitude: number   // km
-  status: 'enhanced' | 'elevated' | 'normal' | 'depleted'
-  description: string
-}
-
-export interface VanAllenRadiationState {
-  open: boolean
-  data: VanAllenRadiationData[]
-  showProtonFlux: boolean
-  showElectronFlux: boolean
-  showBeltAltitude: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface IonosphericDisturbanceData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  tecValue: number        // TECU
-  scintillationIndex: number // S4
-  f2LayerFrequency: number // MHz
-  status: 'disturbed' | 'moderate' | 'quiet' | 'blackout'
-  description: string
-}
-
-export interface IonosphericDisturbanceState {
-  open: boolean
-  data: IonosphericDisturbanceData[]
-  showTecValue: boolean
-  showScintillationIndex: boolean
-  showF2LayerFrequency: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface CosmicRayFluxData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  neutronCount: number    // counts/min
-  muonFlux: number        // counts/min
-  solarModulation: number // GV
-  status: 'forbush_decrease' | 'depressed' | 'normal' | 'ground_level'
-  description: string
-}
-
-export interface CosmicRayFluxState {
-  open: boolean
-  data: CosmicRayFluxData[]
-  showNeutronCount: boolean
-  showMuonFlux: boolean
-  showSolarModulation: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface SolarFluxIndexData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  f107Index: number        // sfu
-  sunspotNumber: number
-  solarCyclePhase: number  // 0-1
-  status: 'solar_max' | 'rising' | 'declining' | 'solar_min'
-  description: string
-}
-
-export interface SolarFluxIndexState {
-  open: boolean
-  data: SolarFluxIndexData[]
-  showF107Index: boolean
-  showSunspotNumber: boolean
-  showSolarCyclePhase: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface SpaceRadiationDoseData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  doseRate: number         // mSv/hr
-  particleEnergy: number   // MeV
-  shieldingEffectiveness: number // %
-  status: 'dangerous' | 'elevated' | 'moderate' | 'safe'
-  description: string
-}
-
-export interface SpaceRadiationDoseState {
-  open: boolean
-  data: SpaceRadiationDoseData[]
-  showDoseRate: boolean
-  showParticleEnergy: boolean
-  showShieldingEffectiveness: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface SatelliteDragData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  orbitalDecay: number    // m/day
-  atmosphericDensity: number // kg/m3
-  altitude: number        // km
-  status: 'critical' | 'elevated' | 'normal' | 'low'
-  description: string
-}
-
-export interface SatelliteDragState {
-  open: boolean
-  data: SatelliteDragData[]
-  showOrbitalDecay: boolean
-  showAtmosphericDensity: boolean
-  showAltitude: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 108: Urban Infrastructure & Smart City
-export interface TrafficFlowData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  averageSpeed: number     // km/h
-  congestionIndex: number  // 0-100
-  vehicleCount: number     // vehicles/hour
-  travelTime: number       // minutes
-  status: 'congested' | 'moderate' | 'flowing' | 'clear'
-  description: string
-}
-
-export interface TrafficFlowState {
-  open: boolean
-  data: TrafficFlowData[]
-  showAverageSpeed: boolean
-  showCongestionIndex: boolean
-  showVehicleCount: boolean
-  showTravelTime: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface BridgeStructuralHealthData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  structuralStress: number // MPa
-  vibrationLevel: number   // mm/s
-  loadCapacity: number     // tonnes
-  corrosionIndex: number   // 0-100
-  status: 'critical' | 'warning' | 'stable' | 'optimal'
-  description: string
-}
-
-export interface BridgeStructuralHealthState {
-  open: boolean
-  data: BridgeStructuralHealthData[]
-  showStructuralStress: boolean
-  showVibrationLevel: boolean
-  showLoadCapacity: boolean
-  showCorrosionIndex: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface WaterPipeNetworkData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  pressureLevel: number  // bar
-  flowRate: number       // L/s
-  leakDetection: number  // leaks/km
-  waterQuality: number   // 0-100
-  status: 'burst' | 'leaking' | 'normal' | 'optimal'
-  description: string
-}
-
-export interface WaterPipeNetworkState {
-  open: boolean
-  data: WaterPipeNetworkData[]
-  showPressureLevel: boolean
-  showFlowRate: boolean
-  showLeakDetection: boolean
-  showWaterQuality: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface PowerGridLoadData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  gridLoad: number       // %
-  peakDemand: number     // GW
-  frequency: number      // Hz
-  reserveMargin: number  // %
-  status: 'overloaded' | 'high' | 'normal' | 'low'
-  description: string
-}
-
-export interface PowerGridLoadState {
-  open: boolean
-  data: PowerGridLoadData[]
-  showGridLoad: boolean
-  showPeakDemand: boolean
-  showFrequency: boolean
-  showReserveMargin: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface WasteCollectionRouteData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  collectionRate: number   // %
-  routeEfficiency: number  // %
-  fillLevel: number        // %
-  recyclingRate: number    // %
-  status: 'overflow' | 'delayed' | 'ontrack' | 'efficient'
-  description: string
-}
-
-export interface WasteCollectionRouteState {
-  open: boolean
-  data: WasteCollectionRouteData[]
-  showCollectionRate: boolean
-  showRouteEfficiency: boolean
-  showFillLevel: boolean
-  showRecyclingRate: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface AirQualityUrbanData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  aqiIndex: number      // 0-500
-  pm25Level: number     // ug/m3
-  no2Level: number      // ppb
-  o3Level: number       // ppb
-  status: 'hazardous' | 'unhealthy' | 'moderate' | 'good'
-  description: string
-}
-
-export interface AirQualityUrbanState {
-  open: boolean
-  data: AirQualityUrbanData[]
-  showAqiIndex: boolean
-  showPm25Level: boolean
-  showNo2Level: boolean
-  showO3Level: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface NoiseLevelMapperData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  avgDecibels: number    // dB
-  peakLevel: number      // dB
-  quietZonePercent: number // %
-  nightLevel: number     // dB
-  status: 'extreme' | 'high' | 'moderate' | 'quiet'
-  description: string
-}
-
-export interface NoiseLevelMapperState {
-  open: boolean
-  data: NoiseLevelMapperData[]
-  showAvgDecibels: boolean
-  showPeakLevel: boolean
-  showQuietZonePercent: boolean
-  showNightLevel: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface SmartParkingCapacityData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  occupancyRate: number  // %
-  availableSpots: number // count
-  avgDuration: number    // minutes
-  turnoverRate: number   // vehicles/spot/day
-  status: 'full' | 'crowded' | 'available' | 'empty'
-  description: string
-}
-
-export interface SmartParkingCapacityState {
-  open: boolean
-  data: SmartParkingCapacityData[]
-  showOccupancyRate: boolean
-  showAvailableSpots: boolean
-  showAvgDuration: boolean
-  showTurnoverRate: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 109: Agricultural Monitoring & Precision Farming
-export interface CropHealthIndexData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  healthScore: number      // 0-100
-  ndvi: number             // -1 to 1
-  stressLevel: number      // 0-10
-  diseaseRisk: number      // %
-  growthStage: string
-  status: 'healthy' | 'stressed' | 'diseased' | 'critical'
-  description: string
-}
-
-export interface CropHealthIndexState {
-  open: boolean
-  data: CropHealthIndexData[]
-  showHealthScore: boolean
-  showNdvi: boolean
-  showStressLevel: boolean
-  showDiseaseRisk: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface SoilMoistureFieldData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  moisturePercent: number  // %
-  depthCm: number          // cm
-  fieldCapacity: number    // %
-  wiltingPoint: number     // %
-  status: 'saturated' | 'optimal' | 'dry' | 'critical'
-  description: string
-}
-
-export interface SoilMoistureFieldState {
-  open: boolean
-  data: SoilMoistureFieldData[]
-  showMoisturePercent: boolean
-  showDepthCm: boolean
-  showFieldCapacity: boolean
-  showWiltingPoint: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface IrrigationEfficiencyData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  efficiency: number       // %
-  waterApplied: number     // mm
-  waterAbsorbed: number    // mm
-  runoffLoss: number       // mm
-  status: 'excellent' | 'good' | 'moderate' | 'poor'
-  description: string
-}
-
-export interface IrrigationEfficiencyState {
-  open: boolean
-  data: IrrigationEfficiencyData[]
-  showEfficiency: boolean
-  showWaterApplied: boolean
-  showWaterAbsorbed: boolean
-  showRunoffLoss: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface PestOutbreakTrackerData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  pestType: string
-  severity: number         // 1-10
-  affectedArea: number     // hectares
-  spreadRate: number       // km/week
-  status: 'monitoring' | 'alert' | 'outbreak' | 'controlled'
-  description: string
-}
-
-export interface PestOutbreakTrackerState {
-  open: boolean
-  data: PestOutbreakTrackerData[]
-  showSeverity: boolean
-  showAffectedArea: boolean
-  showSpreadRate: boolean
-  showPestType: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface FertilizerRunoffData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  nitrogenLevel: number    // mg/L
-  phosphorusLevel: number  // mg/L
-  runoffVolume: number     // m3
-  contaminationIndex: number // 0-100
-  status: 'safe' | 'elevated' | 'high' | 'critical'
-  description: string
-}
-
-export interface FertilizerRunoffState {
-  open: boolean
-  data: FertilizerRunoffData[]
-  showNitrogenLevel: boolean
-  showPhosphorusLevel: boolean
-  showRunoffVolume: boolean
-  showContaminationIndex: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface HarvestYieldPredictData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  predictedYield: number   // tonnes/hectare
-  confidence: number       // %
-  historicalAvg: number    // tonnes/hectare
-  variancePercent: number  // %
-  status: 'above_average' | 'average' | 'below_average' | 'failed'
-  description: string
-}
-
-export interface HarvestYieldPredictState {
-  open: boolean
-  data: HarvestYieldPredictData[]
-  showPredictedYield: boolean
-  showConfidence: boolean
-  showHistoricalAvg: boolean
-  showVariancePercent: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface GreenhouseClimateData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  temperature: number      // C
-  humidity: number         // %
-  co2Level: number         // ppm
-  lightIntensity: number   // lux
-  status: 'optimal' | 'warm' | 'humid' | 'critical'
-  description: string
-}
-
-export interface GreenhouseClimateState {
-  open: boolean
-  data: GreenhouseClimateData[]
-  showTemperature: boolean
-  showHumidity: boolean
-  showCo2Level: boolean
-  showLightIntensity: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface LivestockMovementData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  animalCount: number
-  avgSpeed: number         // km/h
-  grazingDuration: number  // hours
-  distanceTraveled: number // km
-  status: 'grazing' | 'moving' | 'resting' | 'alert'
-  description: string
-}
-
-export interface LivestockMovementState {
-  open: boolean
-  data: LivestockMovementData[]
-  showAnimalCount: boolean
-  showAvgSpeed: boolean
-  showGrazingDuration: boolean
-  showDistanceTraveled: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 109: Agricultural Monitoring & Precision Farming
-export interface CropHealthIndexData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  ndviIndex: number         // 0-1
-  cropStress: number        // 0-100
-  growthStage: number       // 1-12
-  coveragePercent: number   // 0-100
-  status: 'critical' | 'stressed' | 'healthy' | 'optimal'
-  description: string
-}
-
-export interface CropHealthIndexState {
-  open: boolean
-  data: CropHealthIndexData[]
-  showNdviIndex: boolean
-  showCropStress: boolean
-  showGrowthStage: boolean
-  showCoveragePercent: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface SoilMoistureFieldData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  moisturePercent: number   // 0-100
-  fieldCapacity: number     // 0-100
-  wiltingPoint: number      // 0-100
-  availableWater: number    // mm
-  status: 'drought' | 'dry' | 'adequate' | 'saturated'
-  description: string
-}
-
-export interface SoilMoistureFieldState {
-  open: boolean
-  data: SoilMoistureFieldData[]
-  showMoisturePercent: boolean
-  showFieldCapacity: boolean
-  showWiltingPoint: boolean
-  showAvailableWater: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface IrrigationEfficiencyData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  applicationRate: number     // mm/h
-  distributionPercent: number // 0-100
-  conveyancePercent: number   // 0-100
-  overallEfficiency: number   // 0-100
-  status: 'poor' | 'fair' | 'good' | 'excellent'
-  description: string
-}
-
-export interface IrrigationEfficiencyState {
-  open: boolean
-  data: IrrigationEfficiencyData[]
-  showApplicationRate: boolean
-  showDistributionPercent: boolean
-  showConveyancePercent: boolean
-  showOverallEfficiency: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface PestOutbreakTrackerData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  riskLevel: number        // 0-100
-  spreadRate: number       // km/month
-  affectedArea: number     // km2
-  controlEfficiency: number // 0-100
-  status: 'epidemic' | 'outbreak' | 'monitored' | 'contained'
-  description: string
-}
-
-export interface PestOutbreakTrackerState {
-  open: boolean
-  data: PestOutbreakTrackerData[]
-  showRiskLevel: boolean
-  showSpreadRate: boolean
-  showAffectedArea: boolean
-  showControlEfficiency: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface FertilizerRunoffData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  nitrogenLoad: number      // kg/ha/yr
-  phosphorusLoad: number    // kg/ha/yr
-  nitrateLevel: number      // mg/L
-  eutrophicationIndex: number // 0-100
-  status: 'severe' | 'elevated' | 'moderate' | 'low'
-  description: string
-}
-
-export interface FertilizerRunoffState {
-  open: boolean
-  data: FertilizerRunoffData[]
-  showNitrogenLoad: boolean
-  showPhosphorusLoad: boolean
-  showNitrateLevel: boolean
-  showEutrophicationIndex: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface HarvestYieldPredictData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  yieldForecast: number      // tonnes/ha
-  areaHarvested: number      // million ha
-  productionEst: number      // million tonnes
-  yieldGap: number           // %
-  status: 'failed' | 'below' | 'average' | 'record'
-  description: string
-}
-
-export interface HarvestYieldPredictState {
-  open: boolean
-  data: HarvestYieldPredictData[]
-  showYieldForecast: boolean
-  showAreaHarvested: boolean
-  showProductionEst: boolean
-  showYieldGap: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface GreenhouseClimateData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  temperature: number     // Celsius
-  humidity: number        // 0-100
-  co2Level: number        // ppm
-  lightPAR: number        // umol/m2/s
-  status: 'critical' | 'warning' | 'normal' | 'optimal'
-  description: string
-}
-
-export interface GreenhouseClimateState {
-  open: boolean
-  data: GreenhouseClimateData[]
-  showTemperature: boolean
-  showHumidity: boolean
-  showCo2Level: boolean
-  showLightPAR: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface LivestockMovementData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  herdCount: number       // count
-  avgSpeed: number        // km/h
-  grazingArea: number     // km2
-  healthIndex: number     // 0-100
-  status: 'critical' | 'alert' | 'normal' | 'healthy'
-  description: string
-}
-
-export interface LivestockMovementState {
-  open: boolean
-  data: LivestockMovementData[]
-  showHerdCount: boolean
-  showAvgSpeed: boolean
-  showGrazingArea: boolean
-  showHealthIndex: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 110: Renewable Energy & Grid Monitoring
-export interface WindFarmOutputData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  windSpeed: number          // m/s
-  powerOutput: number        // MW
-  capacityFactor: number     // 0-100
-  rotorRpm: number           // rpm
-  status: 'offline' | 'low' | 'optimal' | 'curtailed'
-  description: string
-}
-
-export interface WindFarmOutputState {
-  open: boolean
-  data: WindFarmOutputData[]
-  showWindSpeed: boolean
-  showPowerOutput: boolean
-  showCapacityFactor: boolean
-  showRotorRpm: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface HydroelectricFlowData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  flowRate: number           // m3/s
-  reservoirLevel: number     // 0-100
-  turbineEfficiency: number  // 0-100
-  powerOutput: number        // MW
-  status: 'drought' | 'low' | 'normal' | 'flood'
-  description: string
-}
-
-export interface HydroelectricFlowState {
-  open: boolean
-  data: HydroelectricFlowData[]
-  showFlowRate: boolean
-  showReservoirLevel: boolean
-  showTurbineEfficiency: boolean
-  showPowerOutput: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface BiomassEnergyYieldData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  feedstockSupply: number    // tonnes/day
-  biogasOutput: number       // m3/h
-  conversionEfficiency: number // 0-100
-  carbonOffset: number       // tonnes CO2/yr
-  status: 'inactive' | 'low' | 'normal' | 'peak'
-  description: string
-}
-
-export interface BiomassEnergyYieldState {
-  open: boolean
-  data: BiomassEnergyYieldData[]
-  showFeedstockSupply: boolean
-  showBiogasOutput: boolean
-  showConversionEfficiency: boolean
-  showCarbonOffset: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface TidalEnergyPotentialData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  tidalRange: number         // m
-  currentSpeed: number       // m/s
-  powerDensity: number       // kW/m2
-  predictability: number     // 0-100
-  status: 'weak' | 'moderate' | 'strong' | 'exceptional'
-  description: string
-}
-
-export interface TidalEnergyPotentialState {
-  open: boolean
-  data: TidalEnergyPotentialData[]
-  showTidalRange: boolean
-  showCurrentSpeed: boolean
-  showPowerDensity: boolean
-  showPredictability: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface GridStabilityIndexData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  frequency: number          // Hz
-  voltageDeviation: number   // 0-100
-  loadBalance: number        // 0-100
-  reserveMargin: number      // 0-100
-  status: 'critical' | 'warning' | 'stable' | 'optimal'
-  description: string
-}
-
-export interface GridStabilityIndexState {
-  open: boolean
-  data: GridStabilityIndexData[]
-  showFrequency: boolean
-  showVoltageDeviation: boolean
-  showLoadBalance: boolean
-  showReserveMargin: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface EnergyStorageLevelData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  storageCapacity: number    // MWh
-  chargeLevel: number        // 0-100
-  dischargeRate: number      // MW
-  roundTripEfficiency: number // 0-100
-  status: 'depleted' | 'low' | 'charged' | 'full'
-  description: string
-}
-
-export interface EnergyStorageLevelState {
-  open: boolean
-  data: EnergyStorageLevelData[]
-  showStorageCapacity: boolean
-  showChargeLevel: boolean
-  showDischargeRate: boolean
-  showRoundTripEfficiency: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 111: Public Health & Epidemiology
-export interface DiseaseOutbreakMapData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  caseCount: number           // active cases
-  incidenceRate: number       // per 100k population
-  transmissionRate: number    // R0 value
-  mortalityRate: number       // 0-100
-  status: 'contained' | 'spreading' | 'epidemic' | 'pandemic'
-  description: string
-}
-
-export interface DiseaseOutbreakMapState {
-  open: boolean
-  data: DiseaseOutbreakMapData[]
-  showCaseCount: boolean
-  showIncidenceRate: boolean
-  showTransmissionRate: boolean
-  showMortalityRate: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface VaccinationCoverageData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  coverageRate: number        // 0-100%
-  doseCompletion: number      // 0-100%
-  boosterUptake: number       // 0-100%
-  hesitancyIndex: number      // 0-100
-  status: 'critical' | 'below_target' | 'on_track' | 'achieved'
-  description: string
-}
-
-export interface VaccinationCoverageState {
-  open: boolean
-  data: VaccinationCoverageData[]
-  showCoverageRate: boolean
-  showDoseCompletion: boolean
-  showBoosterUptake: boolean
-  showHesitancyIndex: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface WaterQualityIndexData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  wqiScore: number            // 0-100
-  phLevel: number             // 0-14
-  dissolvedOxygen: number     // mg/L
-  contaminantLevel: number    // 0-100
-  status: 'hazardous' | 'poor' | 'moderate' | 'good' | 'excellent'
-  description: string
-}
-
-export interface WaterQualityIndexState {
-  open: boolean
-  data: WaterQualityIndexData[]
-  showWqiScore: boolean
-  showPhLevel: boolean
-  showDissolvedOxygen: boolean
-  showContaminantLevel: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface HospitalCapacityData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  bedOccupancy: number        // 0-100%
-  icuUtilization: number      // 0-100%
-  ventilatorUsage: number     // 0-100%
-  staffAvailability: number   // 0-100%
-  status: 'overwhelmed' | 'critical' | 'stable' | 'optimal'
-  description: string
-}
-
-export interface HospitalCapacityState {
-  open: boolean
-  data: HospitalCapacityData[]
-  showBedOccupancy: boolean
-  showIcuUtilization: boolean
-  showVentilatorUsage: boolean
-  showStaffAvailability: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface AirPollutionHealthData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  aqiValue: number            // 0-500
-  pm25Concentration: number   // ug/m3
-  respiratoryRisk: number     // 0-100
-  cardiovascularImpact: number // 0-100
-  status: 'good' | 'moderate' | 'unhealthy' | 'hazardous'
-  description: string
-}
-
-export interface AirPollutionHealthState {
-  open: boolean
-  data: AirPollutionHealthData[]
-  showAqiValue: boolean
-  showPm25Concentration: boolean
-  showRespiratoryRisk: boolean
-  showCardiovascularImpact: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface VectorHabitatRiskData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  habitatSuitability: number  // 0-100
-  vectorDensity: number       // per trap/night
-  diseasePrevalence: number   // 0-100
-  seasonalityIndex: number    // 0-100
-  status: 'minimal' | 'low' | 'moderate' | 'high' | 'extreme'
-  description: string
-}
-
-export interface VectorHabitatRiskState {
-  open: boolean
-  data: VectorHabitatRiskData[]
-  showHabitatSuitability: boolean
-  showVectorDensity: boolean
-  showDiseasePrevalence: boolean
-  showSeasonalityIndex: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface NutritionSecurityData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  foodSecurityIndex: number   // 0-100
-  malnutritionRate: number    // 0-100%
-  stuntingPrevalence: number  // 0-100%
-  dietaryDiversity: number    // 0-10
-  status: 'critical' | 'severe' | 'moderate' | 'adequate' | 'optimal'
-  description: string
-}
-
-export interface NutritionSecurityState {
-  open: boolean
-  data: NutritionSecurityData[]
-  showFoodSecurityIndex: boolean
-  showMalnutritionRate: boolean
-  showStuntingPrevalence: boolean
-  showDietaryDiversity: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface PandemicSpreadRateData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  reproductionNumber: number  // R-value
-  doublingTime: number        // days
-  testPositivity: number      // 0-100%
-  hospitalizationRate: number // per 100k
-  status: 'declining' | 'stable' | 'accelerating' | 'exponential'
-  description: string
-}
-
-export interface PandemicSpreadRateState {
-  open: boolean
-  data: PandemicSpreadRateData[]
-  showReproductionNumber: boolean
-  showDoublingTime: boolean
-  showTestPositivity: boolean
-  showHospitalizationRate: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-// Task 112: Transportation & Logistics
-export interface FlightPathTrackerData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  altitude: number         // feet
-  speed: number            // knots
-  heading: number          // degrees
-  delayMinutes: number     // minutes
-  status: 'on-time' | 'delayed' | 'diverted' | 'cancelled'
-  description: string
-}
-
-export interface FlightPathTrackerState {
-  open: boolean
-  data: FlightPathTrackerData[]
-  showAltitude: boolean
-  showSpeed: boolean
-  showHeading: boolean
-  showDelayMinutes: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface PortCongestionMapData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  vesselCount: number      // ships in port
-  avgWaitTime: number      // hours
-  berthUtilization: number // 0-100%
-  throughputTEU: number    // daily TEU
-  status: 'clear' | 'moderate' | 'congested' | 'critical'
-  description: string
-}
-
-export interface PortCongestionMapState {
-  open: boolean
-  data: PortCongestionMapData[]
-  showVesselCount: boolean
-  showAvgWaitTime: boolean
-  showBerthUtilization: boolean
-  showThroughputTEU: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface RailNetworkStatusData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  trainCount: number       // active trains
-  avgSpeed: number         // km/h
-  delayIndex: number       // 0-100
-  trackUtilization: number // 0-100%
-  status: 'normal' | 'delayed' | 'disrupted' | 'suspended'
-  description: string
-}
-
-export interface RailNetworkStatusState {
-  open: boolean
-  data: RailNetworkStatusData[]
-  showTrainCount: boolean
-  showAvgSpeed: boolean
-  showDelayIndex: boolean
-  showTrackUtilization: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface HighwayBottleneckData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  congestionLevel: number  // 0-100%
-  avgSpeed: number         // km/h
-  queueLength: number      // km
-  incidentCount: number    // active incidents
-  status: 'free-flow' | 'moderate' | 'heavy' | 'gridlock'
-  description: string
-}
-
-export interface HighwayBottleneckState {
-  open: boolean
-  data: HighwayBottleneckData[]
-  showCongestionLevel: boolean
-  showAvgSpeed: boolean
-  showQueueLength: boolean
-  showIncidentCount: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface CargoShipTrackerData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  cargoCapacity: number    // TEU
-  currentLoad: number      // TEU
-  speed: number            // knots
-  etaHours: number         // hours to destination
-  status: 'docked' | 'loading' | 'transit' | 'anchored'
-  description: string
-}
-
-export interface CargoShipTrackerState {
-  open: boolean
-  data: CargoShipTrackerData[]
-  showCargoCapacity: boolean
-  showCurrentLoad: boolean
-  showSpeed: boolean
-  showEtaHours: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface TransitRidershipData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  dailyRiders: number      // thousands
-  onTimeRate: number       // 0-100%
-  routeCount: number       // active routes
-  crowdingIndex: number    // 0-100
-  status: 'low' | 'normal' | 'high' | 'overcrowded'
-  description: string
-}
-
-export interface TransitRidershipState {
-  open: boolean
-  data: TransitRidershipData[]
-  showDailyRiders: boolean
-  showOnTimeRate: boolean
-  showRouteCount: boolean
-  showCrowdingIndex: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface FuelStationNetworkData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  fuelPrice: number        // USD/gallon
-  availability: number     // 0-100%
-  stationCount: number     // nearby stations
-  avgWaitTime: number      // minutes
-  status: 'available' | 'limited' | 'scarce' | 'shortage'
-  description: string
-}
-
-export interface FuelStationNetworkState {
-  open: boolean
-  data: FuelStationNetworkData[]
-  showFuelPrice: boolean
-  showAvailability: boolean
-  showStationCount: boolean
-  showAvgWaitTime: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
-export interface LogisticsDepotStatusData {
-  id: string
-  name: string
-  lat: number
-  lng: number
-  warehouseCapacity: number // 0-100%
-  outboundShipments: number // daily count
-  inboundShipments: number  // daily count
-  avgProcessingTime: number // hours
-  status: 'operational' | 'busy' | 'overloaded' | 'offline'
-  description: string
-}
-
-export interface LogisticsDepotStatusState {
-  open: boolean
-  data: LogisticsDepotStatusData[]
-  showWarehouseCapacity: boolean
-  showOutboundShipments: boolean
-  showInboundShipments: boolean
-  showAvgProcessingTime: boolean
-  statusFilter: string
-  activeItemId: string | null
-}
-
 export const useMapStore = create<MapState>()(
   persist(
     (set) => ({
@@ -14092,6 +4791,8 @@ export const useMapStore = create<MapState>()(
           })
         }
       },
+
+      setRoutePoints: (points) => set({ routePoints: points }),
 
       setCurrentRouteColor: (currentRouteColor) => set({ currentRouteColor }),
 
@@ -15753,3328 +6454,1489 @@ export const useMapStore = create<MapState>()(
       })),
 
       // Wildlife Tracker
-      wildlifeTracker: {
-        observations: [],
-        activeObservationId: null,
-        showObservations: true,
-        showHeatmap: false,
-        showMigrationPaths: false,
-        filterSpecies: [],
-        open: false,
-        totalSpecies: 0,
-        totalObservations: 0,
-      },
+      wildlifeTracker: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setWildlifeTracker: (updates) => set((state) => ({
         wildlifeTracker: { ...state.wildlifeTracker, ...updates },
       })),
 
       // Cultural Heritage Map
-      culturalHeritage: {
-        sites: [],
-        activeSiteId: null,
-        showSites: true,
-        filterType: [],
-        filterEra: [],
-        open: false,
-        showProtectionZones: false,
-      },
+      culturalHeritage: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setCulturalHeritage: (updates) => set((state) => ({
         culturalHeritage: { ...state.culturalHeritage, ...updates },
       })),
 
       // Hydrology Analyzer
-      hydrology: {
-        points: [],
-        watershed: null,
-        activePointId: null,
-        showFlowPaths: false,
-        showWatersheds: false,
-        showWaterBodies: true,
-        showQualityOverlay: false,
-        open: false,
-        analysisMode: 'flow',
-      },
+      hydrology: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setHydrology: (updates) => set((state) => ({
         hydrology: { ...state.hydrology, ...updates },
       })),
 
       // Glacier Monitor defaults
-      glacierMonitor: {
-        glaciers: [],
-        activeGlacierId: null,
-        showGlaciers: true,
-        showRetreatOverlay: false,
-        showMassBalance: false,
-        showVelocityVectors: false,
-        filterType: [],
-        filterStatus: [],
-        open: false,
-        timelineYear: new Date().getFullYear(),
-        comparisonMode: false,
-      },
+      glacierMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setGlacierMonitor: (updates) => set((state) => ({
         glacierMonitor: { ...state.glacierMonitor, ...updates },
       })),
 
       // Seismic Activity defaults
-      seismicActivity: {
-        events: [],
-        activeEventId: null,
-        showEvents: true,
-        showShakeMap: false,
-        showFaultLines: false,
-        showPlateBoundaries: false,
-        filterMinMagnitude: 2.5,
-        filterTimeRange: 'week',
-        filterType: [],
-        open: false,
-        autoRefresh: false,
-        lastFetchTime: null,
-      },
+      seismicActivity: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSeismicActivity: (updates) => set((state) => ({
         seismicActivity: { ...state.seismicActivity, ...updates },
       })),
 
       // Soil Analysis defaults
-      soilAnalysis: {
-        samples: [],
-        activeSampleId: null,
-        showSamples: true,
-        showTypeOverlay: false,
-        showMoistureOverlay: false,
-        showPHOverlay: false,
-        showErosionRisk: false,
-        showAgricultureSuitability: false,
-        open: false,
-        analysisMode: 'type',
-      },
+      soilAnalysis: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSoilAnalysis: (updates) => set((state) => ({
         soilAnalysis: { ...state.soilAnalysis, ...updates },
       })),
 
       // Urban Growth defaults
-      urbanGrowth: {
-        areas: [],
-        activeAreaId: null,
-        showAreas: true,
-        showHistoricalBoundaries: true,
-        showPredictions: false,
-        showDensityHeatmap: false,
-        showLandUse: false,
-        timelineYear: new Date().getFullYear(),
-        open: false,
-        comparisonMode: false,
-        animationSpeed: 1,
-      },
+      urbanGrowth: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setUrbanGrowth: (updates) => set((state) => ({
         urbanGrowth: { ...state.urbanGrowth, ...updates },
       })),
 
       // Airspace Navigation defaults
-      airspaceNav: {
-        airspaces: [],
-        airports: [],
-        activeAirspaceId: null,
-        showAirspaces: true,
-        showAirports: true,
-        showFlightPaths: false,
-        showSIDs: false,
-        showSTARs: false,
-        altitudeFilter: [0, 60000],
-        open: false,
-        flightPlan: null,
-      },
+      airspaceNav: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setAirspaceNav: (updates) => set((state) => ({
         airspaceNav: { ...state.airspaceNav, ...updates },
       })),
 
       // Reef Health Monitor defaults
-      reefHealth: {
-        sites: [],
-        activeSiteId: null,
-        showSites: true,
-        showHealthOverlay: false,
-        showBleachingAlert: false,
-        showTemperature: false,
-        showWaterQuality: false,
-        filterType: [],
-        filterBleaching: [],
-        open: false,
-        timelineDate: new Date().toISOString().split('T')[0],
-      },
+      reefHealth: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setReefHealth: (updates) => set((state) => ({
         reefHealth: { ...state.reefHealth, ...updates },
       })),
 
       // Magnetic Field Mapper defaults
-      magneticField: {
-        stations: [],
-        activeStationId: null,
-        showStations: true,
-        showDeclinationLines: true,
-        showInclinationMap: false,
-        showFieldIntensity: false,
-        showAnomalies: false,
-        showGridLines: false,
-        open: false,
-        fieldComponent: 'declination',
-        modelYear: new Date().getFullYear(),
-      },
+      magneticField: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setMagneticField: (updates) => set((state) => ({
         magneticField: { ...state.magneticField, ...updates },
       })),
 
       // Flood Risk Analyzer defaults
-      floodRisk: {
-        zones: [],
-        activeZoneId: null,
-        showZones: true,
-        showRiskOverlay: false,
-        showDepthOverlay: false,
-        showDrainageMap: false,
-        showHistoricalFloods: false,
-        showEvacuationRoutes: false,
-        open: false,
-        scenarioYear: 100,
-        animationPlaying: false,
-      },
+      floodRisk: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setFloodRisk: (updates) => set((state) => ({
         floodRisk: { ...state.floodRisk, ...updates },
       })),
 
       // Volcano Monitor defaults
-      volcanoMonitor: {
-        volcanoes: [],
-        activeVolcanoId: null,
-        showVolcanoes: true,
-        showAlertZones: false,
-        showSeismicOverlay: false,
-        showGasPlumes: false,
-        showDeformation: false,
-        filterType: [],
-        filterStatus: [],
-        filterAlertLevel: [],
-        open: false,
-        autoRefresh: false,
-        lastFetchTime: null,
-      },
+      volcanoMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setVolcanoMonitor: (updates) => set((state) => ({
         volcanoMonitor: { ...state.volcanoMonitor, ...updates },
       })),
 
       // Avalanche Risk defaults
-      avalancheRisk: {
-        zones: [],
-        activeZoneId: null,
-        showZones: true,
-        showRiskOverlay: false,
-        showAspectMap: false,
-        showSlopeAngles: false,
-        showWindRose: false,
-        open: false,
-        forecastDate: new Date().toISOString().split('T')[0],
-        comparisonMode: false,
-      },
+      avalancheRisk: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setAvalancheRisk: (updates) => set((state) => ({
         avalancheRisk: { ...state.avalancheRisk, ...updates },
       })),
 
       // Crop Health defaults
-      cropHealth: {
-        fields: [],
-        activeFieldId: null,
-        showFields: true,
-        showHealthOverlay: false,
-        showNDVI: false,
-        showMoistureStress: false,
-        showYieldPrediction: false,
-        filterCropType: [],
-        filterGrowthStage: [],
-        open: false,
-        timelineDate: new Date().toISOString().split('T')[0],
-        comparisonMode: false,
-      },
+      cropHealth: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setCropHealth: (updates) => set((state) => ({
         cropHealth: { ...state.cropHealth, ...updates },
       })),
 
       // Space Track defaults
-      spaceTrack: {
-        objects: [],
-        activeObjectId: null,
-        showObjects: true,
-        showOrbits: false,
-        showGroundTracks: false,
-        showFootprints: false,
-        showDebris: false,
-        filterType: [],
-        filterCountry: [],
-        altitudeRange: [160, 36000],
-        open: false,
-        autoRefresh: false,
-        selectedPassTime: null,
-      },
+      spaceTrack: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSpaceTrack: (updates) => set((state) => ({
         spaceTrack: { ...state.spaceTrack, ...updates },
       })),
 
       // Archaeology Map defaults
-      archaeologyMap: {
-        sites: [],
-        activeSiteId: null,
-        showSites: true,
-        showPeriodOverlay: false,
-        showSignificance: false,
-        showExcavationStatus: false,
-        showProtectionZones: false,
-        filterType: [],
-        filterPeriod: [],
-        filterSignificance: [],
-        open: false,
-        timelinePeriod: 'all',
-      },
+      archaeologyMap: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setArchaeologyMap: (updates) => set((state) => ({
         archaeologyMap: { ...state.archaeologyMap, ...updates },
       })),
 
       // Pollution Tracker defaults
-      pollutionTracker: {
-        sources: [],
-        activeSourceId: null,
-        showSources: true,
-        showAQIOverlay: false,
-        showPM25: false,
-        showDispersion: false,
-        showTrends: false,
-        filterType: [],
-        filterAQILevel: [],
-        open: false,
-        autoRefresh: false,
-        timelineDate: new Date().toISOString().split('T')[0],
-      },
+      pollutionTracker: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setPollutionTracker: (updates) => set((state) => ({
         pollutionTracker: { ...state.pollutionTracker, ...updates },
       })),
 
       // Tidal Predictor defaults
-      tidalPredictor: {
-        stations: [],
-        activeStationId: null,
-        showStations: true,
-        showCurrentHeight: true,
-        showTidalFlow: false,
-        showMoonPhase: false,
-        showCurrentVectors: false,
-        open: false,
-        predictionDate: new Date().toISOString().split('T')[0],
-        predictionHours: 24,
-      },
+      tidalPredictor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setTidalPredictor: (updates) => set((state) => ({
         tidalPredictor: { ...state.tidalPredictor, ...updates },
       })),
 
       // Wind Farm Optimizer defaults
-      windFarm: {
-        turbines: [],
-        activeTurbineId: null,
-        showTurbines: true,
-        showWindRose: false,
-        showWakeEffects: false,
-        showPowerOutput: false,
-        showOptimization: false,
-        open: false,
-        windScenario: 'current',
-        optimizationTarget: 'power',
-      },
+      windFarm: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setWindFarm: (updates) => set((state) => ({
         windFarm: { ...state.windFarm, ...updates },
       })),
 
       // Desertification Monitor defaults
-      desertification: {
-        zones: [],
-        activeZoneId: null,
-        showDesertExpansion: true,
-        showVegetationLoss: false,
-        showSandDunes: false,
-        showDroughtIndex: false,
-        open: false,
-        timelineYear: 2024,
-        severityFilter: 'all',
-      },
+      desertification: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setDesertification: (updates) => set((state) => ({
         desertification: { ...state.desertification, ...updates },
       })),
 
       // Mineral Exploration defaults
-      mineralExploration: {
-        deposits: [],
-        activeDepositId: null,
-        showDeposits: true,
-        showGeologicalMap: false,
-        showMiningClaims: false,
-        showGeochemistry: false,
-        open: false,
-        mineralFilter: 'all',
-        surveyMode: 'surface',
-      },
+      mineralExploration: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setMineralExploration: (updates) => set((state) => ({
         mineralExploration: { ...state.mineralExploration, ...updates },
       })),
 
       // Ocean Current Mapper defaults
-      oceanCurrent: {
-        currents: [],
-        activeCurrentId: null,
-        showCurrents: true,
-        showSST: false,
-        showThermohaline: false,
-        showSalinity: false,
-        open: false,
-        depthLayer: 'surface',
-        season: 'summer',
-      },
+      oceanCurrent: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOceanCurrent: (updates) => set((state) => ({
         oceanCurrent: { ...state.oceanCurrent, ...updates },
       })),
 
       // Permafrost Thaw Tracker defaults
-      permafrost: {
-        zones: [],
-        activeZoneId: null,
-        showPermafrostExtent: true,
-        showActiveLayer: false,
-        showThawRate: false,
-        showGroundIce: false,
-        open: false,
-        yearFilter: 2024,
-        temperatureScenario: 'rcp45',
-      },
+      permafrost: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setPermafrost: (updates) => set((state) => ({
         permafrost: { ...state.permafrost, ...updates },
       })),
 
       // Lightning Strike Map defaults
-      lightning: {
-        strikes: [],
-        showStrikes: true,
-        showDensityMap: false,
-        showStormTracks: false,
-        showAlertZones: false,
-        open: false,
-        timeRange: '24h',
-        intensityFilter: 'all',
-      },
+      lightning: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setLightning: (updates) => set((state) => ({
         lightning: { ...state.lightning, ...updates },
       })),
 
       // Biome Classifier defaults
-      biome: {
-        biomes: [],
-        activeBiomeId: null,
-        showBiomes: true,
-        showBiodiversity: false,
-        showTransitions: false,
-        showEndangered: false,
-        open: false,
-        classification: 'olson',
-        focusRealm: 'all',
-      },
+      biome: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setBiome: (updates) => set((state) => ({
         biome: { ...state.biome, ...updates },
       })),
 
       // Groundwater Explorer defaults
-      groundwater: {
-        aquifers: [],
-        activeAquiferId: null,
-        showAquifers: true,
-        showWells: false,
-        showRechargeZones: false,
-        showFlowDirection: false,
-        open: false,
-        depthFilter: 'all',
-        qualityFilter: 'all',
-      },
+      groundwater: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setGroundwater: (updates) => set((state) => ({
         groundwater: { ...state.groundwater, ...updates },
       })),
 
       // Solar Power Planner defaults
-      solarPower: {
-        sites: [],
-        activeSiteId: null,
-        showIrradiance: true,
-        showOptimalZones: false,
-        showExistingPlants: false,
-        showGridConnection: false,
-        open: false,
-        panelType: 'monocrystalline',
-        calculationMode: 'annual',
-      },
+      solarPower: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSolarPower: (updates) => set((state) => ({
         solarPower: { ...state.solarPower, ...updates },
       })),
 
       // Volcanic Ash Tracker defaults
-      volcanicAsh: {
-        eruptions: [],
-        activeEruptionId: null,
-        showAshClouds: true,
-        showNoFlyZones: false,
-        showDispersionModel: false,
-        showHealthAdvisory: false,
-        open: false,
-        alertLevel: 'normal',
-        dispersionModel: 'vaac',
-      },
+      volcanicAsh: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setVolcanicAsh: (updates) => set((state) => ({
         volcanicAsh: { ...state.volcanicAsh, ...updates },
       })),
 
       // Coastal Erosion Monitor defaults
-      coastalErosion: {
-        segments: [],
-        activeSegmentId: null,
-        showErosionZones: true,
-        showShorelineChange: false,
-        showSeaLevelRise: false,
-        showProtection: false,
-        open: false,
-        timeHorizon: 'current',
-        scenario: 'rcp45',
-      },
+      coastalErosion: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setCoastalErosion: (updates) => set((state) => ({
         coastalErosion: { ...state.coastalErosion, ...updates },
       })),
 
       // Carbon Footprint Mapper defaults
-      carbonFootprint: {
-        sources: [],
-        activeSourceId: null,
-        showEmissions: true,
-        showHeatmap: false,
-        showOffsetProjects: false,
-        showTrends: false,
-        open: false,
-        gasType: 'all',
-        sector: 'all',
-      },
+      carbonFootprint: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setCarbonFootprint: (updates) => set((state) => ({
         carbonFootprint: { ...state.carbonFootprint, ...updates },
       })),
 
       // Wildlife Migration Tracker defaults
-      wildlifeMigration: {
-        routes: [],
-        activeRouteId: null,
-        showRoutes: true,
-        showCorridors: false,
-        showStopPoints: false,
-        showBarriers: false,
-        open: false,
-        season: 'spring',
-        species: 'all',
-      },
+      wildlifeMigration: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setWildlifeMigration: (updates) => set((state) => ({
         wildlifeMigration: { ...state.wildlifeMigration, ...updates },
       })),
 
       // Ice Sheet Monitor defaults
-      iceSheet: {
-        sheets: [],
-        activeSheetId: null,
-        showIceExtent: true,
-        showFlowVelocity: false,
-        showMeltRate: false,
-        showCalvingEvents: false,
-        open: false,
-        yearFilter: 2024,
-        scenario: 'historical',
-      },
+      iceSheet: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setIceSheet: (updates) => set((state) => ({
         iceSheet: { ...state.iceSheet, ...updates },
       })),
 
       // Drought Monitor defaults
-      droughtMonitor: {
-        regions: [],
-        activeRegionId: null,
-        showDroughtZones: true,
-        showSoilMoisture: false,
-        showPrecipitationDeficit: false,
-        showCropImpact: false,
-        open: false,
-        index: 'pdsi',
-        timeScale: '6m',
-      },
+      droughtMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setDroughtMonitor: (updates) => set((state) => ({
         droughtMonitor: { ...state.droughtMonitor, ...updates },
       })),
 
       // Land Subsidence Tracker defaults
-      landSubsidence: {
-        zones: [],
-        activeZoneId: null,
-        showSubsidence: true,
-        showGroundwaterDecline: false,
-        showInfrastructure: false,
-        showMonitoring: false,
-        open: false,
-        causeFilter: 'all',
-        rateFilter: 'all',
-      },
+      landSubsidence: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setLandSubsidence: (updates) => set((state) => ({
         landSubsidence: { ...state.landSubsidence, ...updates },
       })),
 
       // Coral Bleaching Alert defaults
-      coralBleaching: {
-        sites: [],
-        activeSiteId: null,
-        showBleachingAlert: true,
-        showSSTAnomaly: false,
-        showReefExtent: false,
-        showRecovery: false,
-        open: false,
-        alertLevel: 'all',
-        region: 'all',
-      },
+      coralBleaching: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setCoralBleaching: (updates) => set((state) => ({
         coralBleaching: { ...state.coralBleaching, ...updates },
       })),
 
       // Tsunami Alert System defaults
-      tsunamiAlert: {
-        alerts: [],
-        activeAlertId: null,
-        showWavePropagation: true,
-        showEvacuationZones: false,
-        showBuoyData: false,
-        showHistoricalEvents: false,
-        open: false,
-        alertLevel: 'all',
-        basin: 'all',
-      },
+      tsunamiAlert: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setTsunamiAlert: (updates) => set((state) => ({
         tsunamiAlert: { ...state.tsunamiAlert, ...updates },
       })),
 
       // Soil Erosion Monitor defaults
-      soilErosion: {
-        zones: [],
-        activeZoneId: null,
-        showErosionRisk: true,
-        showSedimentYield: false,
-        showConservation: false,
-        showRainfallIntensity: false,
-        open: false,
-        erosionType: 'all',
-        severityFilter: 'all',
-      },
+      soilErosion: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSoilErosion: (updates) => set((state) => ({
         soilErosion: { ...state.soilErosion, ...updates },
       })),
 
       // Watershed Manager defaults
-      watershedManager: {
-        watersheds: [],
-        activeWatershedId: null,
-        showBoundaries: true,
-        showFlowAccumulation: false,
-        showDrainageNetwork: false,
-        showWaterQuality: false,
-        open: false,
-        sizeFilter: 'all',
-        qualityFilter: 'all',
-      },
+      watershedManager: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setWatershedManager: (updates) => set((state) => ({
         watershedManager: { ...state.watershedManager, ...updates },
       })),
 
       // Tectonic Plate Viewer defaults
-      tectonicPlate: {
-        plates: [],
-        activePlateId: null,
-        showPlateBoundaries: true,
-        showFaultLines: false,
-        showEpicenters: false,
-        showMovementVectors: false,
-        open: false,
-        boundaryType: 'all',
-        timeRange: 'recent',
-      },
+      tectonicPlate: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setTectonicPlate: (updates) => set((state) => ({
         tectonicPlate: { ...state.tectonicPlate, ...updates },
       })),
 
       // Air Quality Forecaster defaults
-      airQualityForecaster: {
-        stations: [],
-        activeStationId: null,
-        showAQI: true,
-        showPM25: false,
-        showPM10: false,
-        showOzone: false,
-        open: false,
-        pollutant: 'aqi',
-        forecast: 'current',
-      },
+      airQualityForecaster: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setAirQualityForecaster: (updates) => set((state) => ({
         airQualityForecaster: { ...state.airQualityForecaster, ...updates },
       })),
 
       // Glacial Lake Monitor defaults
-      glacialLake: {
-        lakes: [],
-        activeLakeId: null,
-        showLakeExtent: true,
-        showGLOFRisk: false,
-        showDamType: false,
-        showMonitoring: false,
-        open: false,
-        riskLevel: 'all',
-        region: 'all',
-      },
+      glacialLake: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setGlacialLake: (updates) => set((state) => ({
         glacialLake: { ...state.glacialLake, ...updates },
       })),
 
       // Space Weather Monitor defaults
-      spaceWeather: {
-        events: [],
-        activeEventId: null,
-        showSolarWind: true,
-        showMagneticField: false,
-        showAuroraForecast: false,
-        showRadiationBelt: false,
-        open: false,
-        eventType: 'all',
-        alertLevel: 'all',
-      },
+      spaceWeather: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSpaceWeather: (updates) => set((state) => ({
         spaceWeather: { ...state.spaceWeather, ...updates },
       })),
 
       // Peatland Monitor defaults
-      peatlandMonitor: {
-        peatlands: [],
-        activePeatlandId: null,
-        showPeatExtent: true,
-        showCarbonStock: false,
-        showDegradation: false,
-        showRestoration: false,
-        open: false,
-        statusFilter: 'all',
-        depthFilter: 'all',
-      },
+      peatlandMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setPeatlandMonitor: (updates) => set((state) => ({
         peatlandMonitor: { ...state.peatlandMonitor, ...updates },
       })),
 
-      mangroveMonitor: {
-        mangroves: [],
-        activeMangroveId: null,
-        showExtent: true,
-        showCarbon: false,
-        showRestoration: false,
-        showSpecies: false,
-        open: false,
-        healthFilter: 'all',
-      },
+      mangroveMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setMangroveMonitor: (updates) => set((state) => ({
         mangroveMonitor: { ...state.mangroveMonitor, ...updates },
       })),
 
-      sandstormTracker: {
-        storms: [],
-        activeStormId: null,
-        showPlumes: true,
-        showPM: false,
-        showVisibility: false,
-        showWind: false,
-        open: false,
-        intensityFilter: 'all',
-      },
+      sandstormTracker: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSandstormTracker: (updates) => set((state) => ({
         sandstormTracker: { ...state.sandstormTracker, ...updates },
       })),
 
-      wetlandMapper: {
-        wetlands: [],
-        activeWetlandId: null,
-        showBoundaries: true,
-        showWaterLevel: false,
-        showBiodiversity: false,
-        showProtection: false,
-        open: false,
-        typeFilter: 'all',
-      },
+      wetlandMapper: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setWetlandMapper: (updates) => set((state) => ({
         wetlandMapper: { ...state.wetlandMapper, ...updates },
       })),
 
-      urbanHeatIsland: {
-        heatZones: [],
-        activeHeatZoneId: null,
-        showTemperature: true,
-        showVegetation: false,
-        showCoolZones: false,
-        showPopulation: false,
-        open: false,
-        tempUnit: 'celsius',
-      },
+      urbanHeatIsland: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setUrbanHeatIsland: (updates) => set((state) => ({
         urbanHeatIsland: { ...state.urbanHeatIsland, ...updates },
       })),
 
-      wildfireRisk: {
-        fireZones: [],
-        activeFireZoneId: null,
-        showDangerRating: true,
-        showFuelMoisture: false,
-        showWind: false,
-        showHistory: false,
-        open: false,
-        dangerFilter: 'all',
-      },
+      wildfireRisk: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setWildfireRisk: (updates) => set((state) => ({
         wildfireRisk: { ...state.wildfireRisk, ...updates },
       })),
 
-      algalBloom: {
-        blooms: [],
-        activeBloomId: null,
-        showBloomExtent: true,
-        showChlorophyll: false,
-        showToxicity: false,
-        showTemperature: false,
-        open: false,
-        intensityFilter: 'all',
-      },
+      algalBloom: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setAlgalBloom: (updates) => set((state) => ({
         algalBloom: { ...state.algalBloom, ...updates },
       })),
 
-      landslidePredictor: {
-        landslideZones: [],
-        activeLandslideId: null,
-        showSusceptibility: true,
-        showSlope: false,
-        showRainfall: false,
-        showActivity: false,
-        open: false,
-        susceptibilityFilter: 'all',
-      },
+      landslidePredictor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setLandslidePredictor: (updates) => set((state) => ({
         landslidePredictor: { ...state.landslidePredictor, ...updates },
       })),
 
-      seaIceNavigator: {
-        iceZones: [],
-        activeIceZoneId: null,
-        showConcentration: true,
-        showThickness: false,
-        showDrift: false,
-        showRoutes: false,
-        open: false,
-        iceTypeFilter: 'all',
-      },
+      seaIceNavigator: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSeaIceNavigator: (updates) => set((state) => ({
         seaIceNavigator: { ...state.seaIceNavigator, ...updates },
       })),
 
-      cloudCover: {
-        cloudLayers: [],
-        activeCloudId: null,
-        showCoverage: true,
-        showAltitude: false,
-        showPrecipitation: false,
-        showTemperature: false,
-        open: false,
-        cloudTypeFilter: 'all',
-      },
+      cloudCover: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setCloudCover: (updates) => set((state) => ({
         cloudCover: { ...state.cloudCover, ...updates },
       })),
 
-      soilMoisture: {
-        soilZones: [],
-        activeSoilZoneId: null,
-        showMoisture: true,
-        showDepth: false,
-        showIrrigation: false,
-        showSoilType: false,
-        open: false,
-        moistureFilter: 'all',
-      },
+      soilMoisture: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSoilMoisture: (updates) => set((state) => ({
         soilMoisture: { ...state.soilMoisture, ...updates },
       })),
 
-      lightPollution: {
-        lightZones: [],
-        activeLightZoneId: null,
-        showBrightness: true,
-        showBortle: false,
-        showStars: false,
-        showMilkyWay: false,
-        open: false,
-        bortleFilter: 'all',
-      },
+      lightPollution: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setLightPollution: (updates) => set((state) => ({
         lightPollution: { ...state.lightPollution, ...updates },
       })),
 
-      riverFlow: {
-        stations: [],
-        activeStationId: null,
-        showFlowRate: true,
-        showWaterLevel: false,
-        showFloodStatus: false,
-        showQuality: false,
-        open: false,
-        floodFilter: 'all',
-      },
+      riverFlow: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setRiverFlow: (updates) => set((state) => ({
         riverFlow: { ...state.riverFlow, ...updates },
       })),
 
-      volcanoSeismic: {
-        seismicStations: [],
-        activeStationId: null,
-        showAlertLevel: true,
-        showSeismic: false,
-        showDeformation: false,
-        showGas: false,
-        open: false,
-        alertFilter: 'all',
-      },
+      volcanoSeismic: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setVolcanoSeismic: (updates) => set((state) => ({
         volcanoSeismic: { ...state.volcanoSeismic, ...updates },
       })),
 
-      whaleMigration: {
-        whalePods: [],
-        activePodId: null,
-        showTracks: true,
-        showDepth: false,
-        showVocalization: false,
-        showSpeed: false,
-        open: false,
-        speciesFilter: 'all',
-      },
+      whaleMigration: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setWhaleMigration: (updates) => set((state) => ({
         whaleMigration: { ...state.whaleMigration, ...updates },
       })),
 
-      avalancheForecaster: {
-        avalancheZones: [],
-        activeZoneId: null,
-        showDanger: true,
-        showStability: false,
-        showSnowfall: false,
-        showAspect: false,
-        open: false,
-        dangerFilter: 'all',
-      },
+      avalancheForecaster: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setAvalancheForecaster: (updates) => set((state) => ({
         avalancheForecaster: { ...state.avalancheForecaster, ...updates },
       })),
 
-      auroraForecaster: {
-        auroraSites: [],
-        activeSiteId: null,
-        showKpIndex: true,
-        showCloudCover: false,
-        showIntensity: false,
-        showViewingTime: false,
-        open: false,
-        visibilityFilter: 'all',
-      },
+      auroraForecaster: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setAuroraForecaster: (updates) => set((state) => ({
         auroraForecaster: { ...state.auroraForecaster, ...updates },
       })),
 
-      ozoneLayer: {
-        ozoneZones: [],
-        activeOzoneId: null,
-        showDobson: true,
-        showTrend: false,
-        showUV: false,
-        showSeason: false,
-        open: false,
-        trendFilter: 'all',
-      },
+      ozoneLayer: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayer: (updates) => set((state) => ({
         ozoneLayer: { ...state.ozoneLayer, ...updates },
       })),
 
-      deforestation: {
-        deforestationZones: [],
-        activeZoneId: null,
-        showLoss: true,
-        showRemaining: false,
-        showRate: false,
-        showDrivers: false,
-        open: false,
-        driverFilter: 'all',
-      },
+      deforestation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setDeforestation: (updates) => set((state) => ({
         deforestation: { ...state.deforestation, ...updates },
       })),
 
-      methaneEmissions: {
-        methaneSources: [],
-        activeSourceId: null,
-        showEmissionRate: true,
-        showConcentration: false,
-        showTrend: false,
-        showVerified: false,
-        open: false,
-        sourceTypeFilter: 'all',
-      },
+      methaneEmissions: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setMethaneEmissions: (updates) => set((state) => ({
         methaneEmissions: { ...state.methaneEmissions, ...updates },
       })),
 
-      oceanAcidification: {
-        acidSites: [],
-        activeSiteId: null,
-        showPH: true,
-        showCO2: false,
-        showAragonite: false,
-        showImpact: false,
-        open: false,
-        impactFilter: 'all',
-      },
+      oceanAcidification: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOceanAcidification: (updates) => set((state) => ({
         oceanAcidification: { ...state.oceanAcidification, ...updates },
       })),
 
-      spaceDebris: {
-        debrisObjects: [],
-        activeDebrisId: null,
-        showAltitude: true,
-        showVelocity: false,
-        showDecay: false,
-        showType: false,
-        open: false,
-        typeFilter: 'all',
-      },
+      spaceDebris: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSpaceDebris: (updates) => set((state) => ({
         spaceDebris: { ...state.spaceDebris, ...updates },
       })),
 
-      tectonicStrain: {
-        strainStations: [],
-        activeStationId: null,
-        showStrain: true,
-        showStress: false,
-        showFaults: false,
-        showRisk: false,
-        open: false,
-        riskFilter: 'all',
-      },
+      tectonicStrain: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setTectonicStrain: (updates) => set((state) => ({
         tectonicStrain: { ...state.tectonicStrain, ...updates },
       })),
 
-      phytoBloom: {
-        bloomSites: [],
-        activeBloomId: null,
-        showChlorophyll: true,
-        showArea: false,
-        showToxicity: false,
-        showNutrients: false,
-        open: false,
-        toxicityFilter: 'all',
-      },
+      phytoBloom: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setPhytoBloom: (updates) => set((state) => ({
         phytoBloom: { ...state.phytoBloom, ...updates },
       })),
 
-      snowCover: {
-        snowZones: [],
-        activeSnowZoneId: null,
-        showDepth: true,
-        showWaterEquiv: false,
-        showCoverage: false,
-        showMeltRate: false,
-        open: false,
-        depthFilter: 'all',
-      },
+      snowCover: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSnowCover: (updates) => set((state) => ({
         snowCover: { ...state.snowCover, ...updates },
       })),
 
-      geomagneticStorm: {
-        storms: [],
-        activeStormId: null,
-        showKpIndex: true,
-        showGScale: false,
-        showGridImpact: false,
-        showAurora: false,
-        open: false,
-        gScaleFilter: 'all',
-      },
+      geomagneticStorm: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setGeomagneticStorm: (updates) => set((state) => ({
         geomagneticStorm: { ...state.geomagneticStorm, ...updates },
       })),
 
-      volcanicGas: {
-        gasSites: [],
-        activeSiteId: null,
-        showSO2: true,
-        showCO2: false,
-        showHazard: false,
-        showPopulation: false,
-        open: false,
-        hazardFilter: 'all',
-      },
+      volcanicGas: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setVolcanicGas: (updates) => set((state) => ({
         volcanicGas: { ...state.volcanicGas, ...updates },
       })),
 
-      aquiferDepletion: {
-        aquiferSites: [],
-        activeAquiferId: null,
-        showWaterLevel: true,
-        showDepletion: false,
-        showRecharge: false,
-        showStatus: false,
-        open: false,
-        statusFilter: 'all',
-      },
+      aquiferDepletion: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setAquiferDepletion: (updates) => set((state) => ({
         aquiferDepletion: { ...state.aquiferDepletion, ...updates },
       })),
 
-      stratosphericWind: {
-        windZones: [],
-        activeZoneId: null,
-        showWindSpeed: true,
-        showQBO: false,
-        showPolarVortex: false,
-        showTemperature: false,
-        open: false,
-        vortexFilter: 'all',
-      },
+      stratosphericWind: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setStratosphericWind: (updates) => set((state) => ({
         stratosphericWind: { ...state.stratosphericWind, ...updates },
       })),
 
-      marineHeatwave: {
-        heatwaveZones: [],
-        activeZoneId: null,
-        showSSTAnomaly: true,
-        showIntensity: false,
-        showEcosystem: false,
-        showBleaching: false,
-        open: false,
-        intensityFilter: 'all',
-      },
+      marineHeatwave: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setMarineHeatwave: (updates) => set((state) => ({
         marineHeatwave: { ...state.marineHeatwave, ...updates },
       })),
 
-      precipitation: {
-        precipZones: [],
-        activeZoneId: null,
-        showAnnual: true,
-        showExtremes: false,
-        showDrought: false,
-        showFloodRisk: false,
-        open: false,
-        floodFilter: 'all',
-      },
+      precipitation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setPrecipitation: (updates) => set((state) => ({
         precipitation: { ...state.precipitation, ...updates },
       })),
 
-      cosmicRay: {
-        stations: [],
-        activeStationId: null,
-        showNeutronCount: true,
-        showFluxVariation: false,
-        showSolarModulation: false,
-        showStatus: false,
-        open: false,
-        statusFilter: 'all',
-      },
+      cosmicRay: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setCosmicRay: (updates) => set((state) => ({
         cosmicRay: { ...state.cosmicRay, ...updates },
       })),
 
-      greenlandIce: {
-        iceZones: [],
-        activeZoneId: null,
-        showThickness: true,
-        showMassBalance: false,
-        showMeltRate: false,
-        showVelocity: false,
-        open: false,
-        zoneFilter: 'all',
-      },
+      greenlandIce: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setGreenlandIce: (updates) => set((state) => ({
         greenlandIce: { ...state.greenlandIce, ...updates },
       })),
 
-      radiationExposure: {
-        stations: [],
-        activeStationId: null,
-        showDoseRate: true,
-        showGamma: false,
-        showBeta: false,
-        showAlert: false,
-        open: false,
-        alertFilter: 'all',
-      },
+      radiationExposure: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setRadiationExposure: (updates) => set((state) => ({
         radiationExposure: { ...state.radiationExposure, ...updates },
       })),
 
-      peatFire: {
-        peatFires: [],
-        activeFireId: null,
-        showStatus: true,
-        showArea: false,
-        showCarbon: false,
-        showContainment: false,
-        open: false,
-        statusFilter: 'all',
-      },
+      peatFire: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setPeatFire: (updates) => set((state) => ({
-        peatFire: { ...state.peatFire, ...updates },
+        peatFire: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       })),
 
-      seaLevelRise: {
-        stations: [],
-        activeStationId: null,
-        showCurrent: true,
-        showProjection: false,
-        showImpact: false,
-        showPopulation: false,
-        open: false,
-        impactFilter: 'all',
-      },
+      seaLevelRise: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSeaLevelRise: (updates) => set((state) => ({
         seaLevelRise: { ...state.seaLevelRise, ...updates },
       })),
 
-      thermocline: {
-        profiles: [],
-        activeProfileId: null,
-        showDepth: true,
-        showGradient: false,
-        showSST: false,
-        showENSO: false,
-        open: false,
-        ensoFilter: 'all',
-      },
+      thermocline: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setThermocline: (updates) => set((state) => ({
         thermocline: { ...state.thermocline, ...updates },
       })),
 
-      acidRain: {
-        stations: [],
-        activeStationId: null,
-        showPH: true,
-        showSulfate: false,
-        showSeverity: false,
-        showTrend: false,
-        open: false,
-        severityFilter: 'all',
-      },
+      acidRain: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setAcidRain: (updates) => set((state) => ({
         acidRain: { ...state.acidRain, ...updates },
       })),
 
-      methaneHydrate: {
-        hydrateZones: [],
-        activeZoneId: null,
-        showStability: true,
-        showDepth: false,
-        showTemperature: false,
-        showConcentration: false,
-        open: false,
-        stabilityFilter: 'all',
-      },
+      methaneHydrate: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setMethaneHydrate: (updates) => set((state) => ({
         methaneHydrate: { ...state.methaneHydrate, ...updates },
       })),
 
-      kelpForest: {
-        kelpSites: [],
-        activeSiteId: null,
-        showCoverage: true,
-        showHealth: false,
-        showSpecies: false,
-        showRestoration: false,
-        open: false,
-        statusFilter: 'all',
-      },
+      kelpForest: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setKelpForest: (updates) => set((state) => ({
         kelpForest: { ...state.kelpForest, ...updates },
       })),
 
-      glof: {
-        glofSites: [],
-        activeSiteId: null,
-        showVolume: true,
-        showStability: false,
-        showRisk: false,
-        showPopulation: false,
-        open: false,
-        riskFilter: 'all',
-      },
+      glof: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setGLOF: (updates) => set((state) => ({
         glof: { ...state.glof, ...updates },
       })),
 
-      dustStorm: {
-        storms: [],
-        activeStormId: null,
-        showSeverity: true,
-        showWindSpeed: false,
-        showVisibility: false,
-        showConcentration: false,
-        open: false,
-        severityFilter: 'all',
-      },
+      dustStorm: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setDustStorm: (updates) => set((state) => ({
         dustStorm: { ...state.dustStorm, ...updates },
       })),
 
-      bioluminescence: {
-        sites: [],
-        activeSiteId: null,
-        showIntensity: true,
-        showOrganismType: false,
-        showWaterTemp: false,
-        showSeasonalPeak: false,
-        open: false,
-        intensityFilter: 'all',
-      },
+      bioluminescence: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setBioluminescence: (updates) => set((state) => ({
         bioluminescence: { ...state.bioluminescence, ...updates },
       })),
 
-      urbanSprawl: {
-        zones: [],
-        activeZoneId: null,
-        showGrowthRate: true,
-        showDensity: false,
-        showGreenSpace: false,
-        showInfraStrain: false,
-        open: false,
-        strainFilter: 'all',
-      },
+      urbanSprawl: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setUrbanSprawl: (updates) => set((state) => ({
         urbanSprawl: { ...state.urbanSprawl, ...updates },
       })),
 
-      viralOutbreak: {
-        outbreaks: [],
-        activeOutbreakId: null,
-        showCaseCount: true,
-        showR0: false,
-        showVaccination: false,
-        showMortality: false,
-        open: false,
-        severityFilter: 'all',
-      },
+      viralOutbreak: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setViralOutbreak: (updates) => set((state) => ({
         viralOutbreak: { ...state.viralOutbreak, ...updates },
       })),
 
-      magnetosphere: {
-        readings: [],
-        activeReadingId: null,
-        showBz: true,
-        showSolarWind: false,
-        showKp: false,
-        showAurora: false,
-        open: false,
-        statusFilter: 'all',
-      },
+      magnetosphere: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setMagnetosphere: (updates) => set((state) => ({
         magnetosphere: { ...state.magnetosphere, ...updates },
       })),
 
-      fogDensity: {
-        zones: [],
-        activeZoneId: null,
-        showDensity: true,
-        showVisibility: false,
-        showHumidity: false,
-        showAviationImpact: false,
-        open: false,
-        densityFilter: 'all',
-      },
+      fogDensity: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setFogDensity: (updates) => set((state) => ({
         fogDensity: { ...state.fogDensity, ...updates },
       })),
 
-      carbonCapture: {
-        facilities: [],
-        activeFacilityId: null,
-        showCapacity: true,
-        showTechnology: false,
-        showStatus: false,
-        showStorage: false,
-        open: false,
-        statusFilter: 'all',
-      },
+      carbonCapture: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setCarbonCapture: (updates) => set((state) => ({
         carbonCapture: { ...state.carbonCapture, ...updates },
       })),
 
-      hailStorm: {
-        events: [],
-        activeEventId: null,
-        showHailSize: true,
-        showWindSpeed: false,
-        showDamage: false,
-        showArea: false,
-        open: false,
-        damageFilter: 'all',
-      },
+      hailStorm: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setHailStorm: (updates) => set((state) => ({
         hailStorm: { ...state.hailStorm, ...updates },
       })),
 
-      saharaReforestation: {
-        projects: [],
-        activeProjectId: null,
-        showArea: true,
-        showTreeCount: false,
-        showSurvivalRate: false,
-        showStatus: false,
-        open: false,
-        statusFilter: 'all',
-      },
+      saharaReforestation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSaharaReforestation: (updates) => set((state) => ({
         saharaReforestation: { ...state.saharaReforestation, ...updates },
       })),
 
-      deepSeaVent: {
-        vents: [],
-        activeVentId: null,
-        showTemperature: true,
-        showDepth: false,
-        showVentType: false,
-        showBiology: false,
-        open: false,
-        biologyFilter: 'all',
-      },
+      deepSeaVent: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setDeepSeaVent: (updates) => set((state) => ({
         deepSeaVent: { ...state.deepSeaVent, ...updates },
       })),
 
-      stormSurge: {
-        zones: [],
-        activeZoneId: null,
-        showSurgeHeight: true,
-        showWindSpeed: false,
-        showPopulation: false,
-        showEvacuation: false,
-        open: false,
-        evacuationFilter: 'all',
-      },
+      stormSurge: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setStormSurge: (updates) => set((state) => ({
         stormSurge: { ...state.stormSurge, ...updates },
       })),
 
-      landfillMonitor: {
-        sites: [],
-        activeSiteId: null,
-        showFill: true,
-        showMethane: false,
-        showLeachate: false,
-        showRecycling: false,
-        open: false,
-        leachateFilter: 'all',
-      },
+      landfillMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setLandfillMonitor: (updates) => set((state) => ({
         landfillMonitor: { ...state.landfillMonitor, ...updates },
       })),
 
-      salinityGradient: {
-        zones: [],
-        activeZoneId: null,
-        showSalinity: true,
-        showDepth: false,
-        showGradientType: false,
-        showOxygen: false,
-        open: false,
-        impactFilter: 'all',
-      },
+      salinityGradient: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSalinityGradient: (updates) => set((state) => ({
         salinityGradient: { ...state.salinityGradient, ...updates },
       })),
 
-      microplastics: {
-        samples: [],
-        activeSampleId: null,
-        showConcentration: true,
-        showPolymerType: false,
-        showSource: false,
-        showSeverity: false,
-        open: false,
-        severityFilter: 'all',
-      },
+      microplastics: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setMicroplastics: (updates) => set((state) => ({
         microplastics: { ...state.microplastics, ...updates },
       })),
 
-      radioSignal: {
-        stations: [],
-        activeStationId: null,
-        showStrength: true,
-        showFrequency: false,
-        showCoverage: false,
-        showInterference: false,
-        open: false,
-        interferenceFilter: 'all',
-      },
+      radioSignal: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setRadioSignal: (updates) => set((state) => ({
         radioSignal: { ...state.radioSignal, ...updates },
       })),
 
-      volcanicIsland: {
-        islands: [],
-        activeIslandId: null,
-        showActivity: true,
-        showEruptionType: false,
-        showElevation: false,
-        showPopulation: false,
-        open: false,
-        activityFilter: 'all',
-      },
+      volcanicIsland: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setVolcanicIsland: (updates) => set((state) => ({
         volcanicIsland: { ...state.volcanicIsland, ...updates },
       })),
 
-      permafrostThaw: {
-        zones: [],
-        activeZoneId: null,
-        showThawRate: true,
-        showActiveLayer: false,
-        showGroundTemp: false,
-        showInfrastructure: false,
-        open: false,
-        infrastructureFilter: 'all',
-      },
+      permafrostThaw: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setPermafrostThaw: (updates) => set((state) => ({
         permafrostThaw: { ...state.permafrostThaw, ...updates },
       })),
 
-      oceanCurrentTracker: {
-        currents: [],
-        activeCurrentId: null,
-        showSpeed: true,
-        showTemperature: false,
-        showSalinity: false,
-        showImpact: false,
-        open: false,
-        impactFilter: 'all',
-      },
+      oceanCurrentTracker: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOceanCurrentTracker: (updates) => set((state) => ({
         oceanCurrentTracker: { ...state.oceanCurrentTracker, ...updates },
       })),
 
-      spaceWeatherAlert: {
-        alerts: [],
-        activeAlertId: null,
-        showSeverity: true,
-        showKpIndex: false,
-        showHfImpact: false,
-        showGnssImpact: false,
-        open: false,
-        severityFilter: 'all',
-      },
+      spaceWeatherAlert: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSpaceWeatherAlert: (updates) => set((state) => ({
         spaceWeatherAlert: { ...state.spaceWeatherAlert, ...updates },
       })),
 
-      desertMonitor: {
-        zones: [],
-        activeZoneId: null,
-        showExpansion: true,
-        showTemperature: false,
-        showRainfall: false,
-        showVegetation: false,
-        open: false,
-        statusFilter: 'all',
-      },
+      desertMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setDesertMonitor: (updates) => set((state) => ({
         desertMonitor: { ...state.desertMonitor, ...updates },
       })),
 
-      tsunamiBuoy: {
-        buoys: [],
-        activeBuoyId: null,
-        showWaterHeight: true,
-        showPressure: false,
-        showWavePeriod: false,
-        showStatus: false,
-        open: false,
-        statusFilter: 'all',
-      },
+      tsunamiBuoy: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setTsunamiBuoy: (updates) => set((state) => ({
         tsunamiBuoy: { ...state.tsunamiBuoy, ...updates },
       })),
 
-      glacierVelocity: {
-        zones: [],
-        activeZoneId: null,
-        showVelocity: true,
-        showThickness: false,
-        showMassBalance: false,
-        showCalving: false,
-        open: false,
-        statusFilter: 'all',
-      },
+      glacierVelocity: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setGlacierVelocity: (updates) => set((state) => ({
         glacierVelocity: { ...state.glacierVelocity, ...updates },
       })),
 
-      earthquakeSwarm: {
-        events: [],
-        activeEventId: null,
-        showMagnitude: true,
-        showDepth: false,
-        showFrequency: false,
-        showAlertLevel: false,
-        open: false,
-        alertFilter: 'all',
-      },
+      earthquakeSwarm: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setEarthquakeSwarm: (updates) => set((state) => ({
         earthquakeSwarm: { ...state.earthquakeSwarm, ...updates },
       })),
 
-      mangroveRestoration: {
-        sites: [],
-        activeSiteId: null,
-        showArea: true,
-        showCarbon: false,
-        showCoastalProtection: false,
-        showFishery: false,
-        open: false,
-        stageFilter: 'all',
-      },
+      mangroveRestoration: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setMangroveRestoration: (updates) => set((state) => ({
         mangroveRestoration: { ...state.mangroveRestoration, ...updates },
       })),
 
-      coralBleachingMonitor: {
-        events: [],
-        activeEventId: null,
-        showBleachingPercent: true,
-        showHeatStress: false,
-        showSeaTemp: false,
-        showRecoveryPotential: false,
-        open: false,
-        reefFilter: 'all',
-      },
+      coralBleachingMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setCoralBleachingMonitor: (updates) => set((state) => ({
         coralBleachingMonitor: { ...state.coralBleachingMonitor, ...updates },
       })),
 
-      arcticSeaIce: {
-        zones: [],
-        activeZoneId: null,
-        showExtent: true,
-        showThickness: false,
-        showConcentration: false,
-        showTrend: false,
-        open: false,
-        iceFilter: 'all',
-      },
+      arcticSeaIce: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setArcticSeaIce: (updates) => set((state) => ({
         arcticSeaIce: { ...state.arcticSeaIce, ...updates },
       })),
 
-      landslideRisk: {
-        zones: [],
-        activeZoneId: null,
-        showRiskLevel: true,
-        showSlope: false,
-        showMoisture: false,
-        showVegetation: false,
-        open: false,
-        riskFilter: 'all',
-      },
+      landslideRisk: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setLandslideRisk: (updates) => set((state) => ({
         landslideRisk: { ...state.landslideRisk, ...updates },
       })),
 
-      airQuality: {
-        stations: [],
-        activeStationId: null,
-        showAQI: true,
-        showPM25: false,
-        showO3: false,
-        showDominantPollutant: false,
-        open: false,
-        categoryFilter: 'all',
-      },
+      airQuality: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setAirQuality: (updates) => set((state) => ({
         airQuality: { ...state.airQuality, ...updates },
       })),
 
-      soilMoistureAg: {
-        zones: [],
-        activeZoneId: null,
-        showMoisture: true,
-        showTemperature: false,
-        showDroughtIndex: false,
-        showSoilType: false,
-        open: false,
-        landUseFilter: 'all',
-      },
+      soilMoistureAg: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSoilMoistureAg: (updates) => set((state) => ({
         soilMoistureAg: { ...state.soilMoistureAg, ...updates },
       })),
 
-      noisePollution: {
-        zones: [],
-        activeZoneId: null,
-        showDecibels: true,
-        showNoiseType: false,
-        showAffectedPopulation: false,
-        showCompliance: false,
-        open: false,
-        typeFilter: 'all',
-      },
+      noisePollution: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setNoisePollution: (updates) => set((state) => ({
         noisePollution: { ...state.noisePollution, ...updates },
       })),
 
-      lightPollutionSky: {
-        zones: [],
-        activeZoneId: null,
-        showBortleScale: true,
-        showSkyBrightness: false,
-        showVisibleStars: false,
-        showEnergyWaste: false,
-        open: false,
-        sourceFilter: 'all',
-      },
+      lightPollutionSky: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setLightPollutionSky: (updates) => set((state) => ({
         lightPollutionSky: { ...state.lightPollutionSky, ...updates },
       })),
 
-      groundwaterRecharge: {
-        zones: [],
-        activeZoneId: null,
-        showRechargeRate: true,
-        showWaterTable: false,
-        showSustainability: false,
-        showQuality: false,
-        open: false,
-        aquiferFilter: 'all',
-      },
+      groundwaterRecharge: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setGroundwaterRecharge: (updates) => set((state) => ({
         groundwaterRecharge: { ...state.groundwaterRecharge, ...updates },
       })),
 
-      subglacialLake: {
-        lakes: [],
-        activeLakeId: null,
-        showDepth: true,
-        showWaterTemp: true,
-        showIceThickness: true,
-        showDissolvedOxygen: false,
-        open: false,
-        statusFilter: 'all',
-      },
+      subglacialLake: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSubglacialLake: (updates) => set((state) => ({
         subglacialLake: { ...state.subglacialLake, ...updates },
       })),
 
-      thermokarstLake: {
-        lakes: [],
-        activeLakeId: null,
-        showExpansionRate: true,
-        showMethaneEmission: true,
-        showShorelineErosion: false,
-        showArea: false,
-        open: false,
-        riskFilter: 'all',
-      },
+      thermokarstLake: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setThermokarstLake: (updates) => set((state) => ({
         thermokarstLake: { ...state.thermokarstLake, ...updates },
       })),
 
-      paleoclimateProxy: {
-        proxies: [],
-        activeProxyId: null,
-        showAgeRange: true,
-        showResolution: true,
-        showTempReconstruction: true,
-        open: false,
-        typeFilter: 'all',
-      },
+      paleoclimateProxy: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setPaleoclimateProxy: (updates) => set((state) => ({
         paleoclimateProxy: { ...state.paleoclimateProxy, ...updates },
       })),
 
-      gicMonitor: {
-        readings: [],
-        activeReadingId: null,
-        showIntensity: true,
-        showVoltage: true,
-        showRiskLevel: true,
-        open: false,
-        riskFilter: 'all',
-      },
+      gicMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setGicMonitor: (updates) => set((state) => ({
         gicMonitor: { ...state.gicMonitor, ...updates },
       })),
 
-      sabkhaEnvironment: {
-        zones: [],
-        activeZoneId: null,
-        showSalinity: true,
-        showEvaporationRate: true,
-        showCrustThickness: false,
-        showMineralType: false,
-        open: false,
-        mineralFilter: 'all',
-      },
+      sabkhaEnvironment: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSabkhaEnvironment: (updates) => set((state) => ({
         sabkhaEnvironment: { ...state.sabkhaEnvironment, ...updates },
       })),
 
-      cryosphereChange: {
-        regions: [],
-        activeRegionId: null,
-        showMassBalance: true,
-        showExtentChange: true,
-        showAlbedoShift: false,
-        showSeaLevelContribution: true,
-        open: false,
-        typeFilter: 'all',
-      },
+      cryosphereChange: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setCryosphereChange: (updates) => set((state) => ({
         cryosphereChange: { ...state.cryosphereChange, ...updates },
       })),
 
-      abyssalPlain: {
-        features: [],
-        activeFeatureId: null,
-        showDepth: true,
-        showSedimentType: true,
-        showNoduleDensity: true,
-        showBiodiversityIndex: false,
-        open: false,
-        sedimentFilter: 'all',
-      },
+      abyssalPlain: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setAbyssalPlain: (updates) => set((state) => ({
         abyssalPlain: { ...state.abyssalPlain, ...updates },
       })),
 
-      fjordEcosystem: {
-        fjords: [],
-        activeFjordId: null,
-        showStratification: true,
-        showOxygenLevel: true,
-        showBiodiversity: true,
-        showGlacialInput: false,
-        showHealthScore: true,
-        open: false,
-        healthFilter: 'all',
-      },
+      fjordEcosystem: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setFjordEcosystem: (updates) => set((state) => ({
         fjordEcosystem: { ...state.fjordEcosystem, ...updates },
       })),
 
-      geothermalSpring: {
-        springs: [],
-        activeSpringId: null,
-        showTemperature: true,
-        showFlowRate: true,
-        showMineralContent: false,
-        showSeismicActivity: true,
-        open: false,
-        tempFilter: 'all',
-      },
+      geothermalSpring: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setGeothermalSpring: (updates) => set((state) => ({
         geothermalSpring: { ...state.geothermalSpring, ...updates },
       })),
 
-      asteroidImpact: {
-        objects: [],
-        activeObjectId: null,
-        showTrajectory: true,
-        showHazardScore: true,
-        showSizeComparison: false,
-        open: false,
-        hazardFilter: 'all',
-      },
+      asteroidImpact: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setAsteroidImpact: (updates) => set((state) => ({
         asteroidImpact: { ...state.asteroidImpact, ...updates },
       })),
 
-      desertOasis: {
-        oases: [],
-        activeOasisId: null,
-        showWaterLevel: true,
-        showSalinity: true,
-        showVegetation: true,
-        showAreaChange: false,
-        open: false,
-        healthFilter: 'all',
-      },
+      desertOasis: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setDesertOasis: (updates) => set((state) => ({
         desertOasis: { ...state.desertOasis, ...updates },
       })),
 
-      volcanicLightning: {
-        strikes: [],
-        activeStrikeId: null,
-        showFrequency: true,
-        showAshHeight: true,
-        showEruptionIntensity: true,
-        showStrikeCount: false,
-        open: false,
-        intensityFilter: 'all',
-      },
+      volcanicLightning: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setVolcanicLightning: (updates) => set((state) => ({
         volcanicLightning: { ...state.volcanicLightning, ...updates },
       })),
 
-      iceCoreData: {
-        samples: [],
-        activeSampleId: null,
-        showCO2: true,
-        showTemperature: true,
-        showDust: false,
-        showDepth: true,
-        open: false,
-        ageFilter: 'all',
-      },
+      iceCoreData: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setIceCoreData: (updates) => set((state) => ({
         iceCoreData: { ...state.iceCoreData, ...updates },
       })),
 
-      stratosphericAerosol: {
-        layers: [],
-        activeLayerId: null,
-        showOpticalDepth: true,
-        showAltitude: true,
-        showCoverage: false,
-        showRadiativeEffect: true,
-        open: false,
-        compositionFilter: 'all',
-      },
+      stratosphericAerosol: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setStratosphericAerosol: (updates) => set((state) => ({
         stratosphericAerosol: { ...state.stratosphericAerosol, ...updates },
       })),
 
-      megacityCarbon: {
-        cities: [],
-        activeCityId: null,
-        showCO2: true,
-        showMethane: false,
-        showTransportShare: true,
-        showEnergyShare: true,
-        open: false,
-        emissionFilter: 'all',
-      },
+      megacityCarbon: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setMegacityCarbon: (updates) => set((state) => ({
         megacityCarbon: { ...state.megacityCarbon, ...updates },
       })),
 
-      oceanEddy: {
-        eddies: [],
-        activeEddyId: null,
-        showRadius: true,
-        showVelocity: true,
-        showTempAnomaly: true,
-        showLifetime: false,
-        open: false,
-        typeFilter: 'all',
-      },
+      oceanEddy: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOceanEddy: (updates) => set((state) => ({
         oceanEddy: { ...state.oceanEddy, ...updates },
       })),
 
       // Task 68: New monitoring defaults and setters
-      supervolcano: {
-        volcanoes: [],
-        activeVolcanoId: null,
-        showCaldera: true,
-        showMagmaChamber: true,
-        showGroundDeformation: true,
-        showThermalAnomaly: false,
-        open: false,
-        statusFilter: 'all',
-      },
+      supervolcano: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSupervolcano: (updates) => set((state) => ({
         supervolcano: { ...state.supervolcano, ...updates },
       })),
-      polarVortex: {
-        vortices: [],
-        activeVortexId: null,
-        showWindSpeed: true,
-        showTemperature: true,
-        showOzoneLevel: true,
-        showJetStream: false,
-        open: false,
-        hemisphereFilter: 'all',
-      },
+      polarVortex: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setPolarVortex: (updates) => set((state) => ({
         polarVortex: { ...state.polarVortex, ...updates },
       })),
-      karstAquifer: {
-        aquifers: [],
-        activeAquiferId: null,
-        showWaterTable: true,
-        showConduitFlow: true,
-        showRechargeZone: true,
-        showWaterQuality: false,
-        open: false,
-        typeFilter: 'all',
-      },
+      karstAquifer: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setKarstAquifer: (updates) => set((state) => ({
         karstAquifer: { ...state.karstAquifer, ...updates },
       })),
-      subductionZone: {
-        zones: [],
-        activeZoneId: null,
-        showSeismicity: true,
-        showSlipRate: true,
-        showCoupling: true,
-        showTremorActivity: false,
-        open: false,
-        typeFilter: 'all',
-      },
+      subductionZone: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSubductionZone: (updates) => set((state) => ({
         subductionZone: { ...state.subductionZone, ...updates },
       })),
-      tropopause: {
-        stations: [],
-        activeStationId: null,
-        showHeight: true,
-        showTemperature: true,
-        showOzoneConcentration: true,
-        showPressure: false,
-        open: false,
-        regionFilter: 'all',
-      },
+      tropopause: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setTropopause: (updates) => set((state) => ({
         tropopause: { ...state.tropopause, ...updates },
       })),
-      invasiveSpecies: {
-        species: [],
-        activeSpeciesId: null,
-        showSpread: true,
-        showImpact: true,
-        showControlEffort: true,
-        showNativeDecline: false,
-        open: false,
-        categoryFilter: 'all',
-      },
+      invasiveSpecies: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setInvasiveSpecies: (updates) => set((state) => ({
         invasiveSpecies: { ...state.invasiveSpecies, ...updates },
       })),
-      tundraCarbon: {
-        sites: [],
-        activeSiteId: null,
-        showCarbonFlux: true,
-        showPermafrostDepth: true,
-        showVegetationIndex: true,
-        showMethaneRelease: false,
-        open: false,
-        regionFilter: 'all',
-      },
+      tundraCarbon: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setTundraCarbon: (updates) => set((state) => ({
         tundraCarbon: { ...state.tundraCarbon, ...updates },
       })),
-      monsoon: {
-        systems: [],
-        activeSystemId: null,
-        showPrecipitation: true,
-        showWindPattern: true,
-        showHumidity: true,
-        showCloudCover: false,
-        open: false,
-        regionFilter: 'all',
-      },
+      monsoon: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setMonsoon: (updates) => set((state) => ({
         monsoon: { ...state.monsoon, ...updates },
       })),
 
       // Task 69: New monitoring defaults and setters
-      lavaFlow: {
-        flows: [],
-        activeFlowId: null,
-        showFlowArea: true,
-        showTemperature: true,
-        showVelocity: true,
-        showEffusionRate: false,
-        open: false,
-        typeFilter: 'all',
-      },
+      lavaFlow: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setLavaFlow: (updates) => set((state) => ({
         lavaFlow: { ...state.lavaFlow, ...updates },
       })),
-      tidalEnergy: {
-        sites: [],
-        activeSiteId: null,
-        showTidalRange: true,
-        showCurrentSpeed: true,
-        showPowerPotential: true,
-        showEnvironmentalImpact: false,
-        open: false,
-        typeFilter: 'all',
-      },
+      tidalEnergy: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setTidalEnergy: (updates) => set((state) => ({
         tidalEnergy: { ...state.tidalEnergy, ...updates },
       })),
-      peatFire: {
-        fires: [],
-        activeFireId: null,
-        showBurnArea: true,
-        showFireDepth: true,
-        showEmissionRate: true,
-        showSoilMoisture: false,
-        open: false,
-        typeFilter: 'all',
-      },
+      peatFire: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setPeatFire: (updates) => set((state) => ({
         peatFire: { ...state.peatFire, ...updates },
       })),
-      coralSpawn: {
-        reefs: [],
-        activeReefId: null,
-        showSpawnIntensity: true,
-        showWaterTemp: true,
-        showLunarPhase: true,
-        showLarvalDispersion: false,
-        open: false,
-        regionFilter: 'all',
-      },
+      coralSpawn: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setCoralSpawn: (updates) => set((state) => ({
         coralSpawn: { ...state.coralSpawn, ...updates },
       })),
-      glacierCalving: {
-        glaciers: [],
-        activeGlacierId: null,
-        showCalvingRate: true,
-        showIceVelocity: true,
-        showIceThickness: true,
-        showSeismicActivity: false,
-        open: false,
-        typeFilter: 'all',
-      },
+      glacierCalving: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setGlacierCalving: (updates) => set((state) => ({
         glacierCalving: { ...state.glacierCalving, ...updates },
       })),
-      soilCarbon: {
-        sites: [],
-        activeSiteId: null,
-        showCarbonStock: true,
-        showOrganicMatter: true,
-        showMicrobialActivity: true,
-        showSequestrationRate: false,
-        open: false,
-        typeFilter: 'all',
-      },
+      soilCarbon: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSoilCarbon: (updates) => set((state) => ({
         soilCarbon: { ...state.soilCarbon, ...updates },
       })),
-      urbanTreeCanopy: {
-        zones: [],
-        activeZoneId: null,
-        showCanopyCoverage: true,
-        showTreeDensity: true,
-        showAirQualityBenefit: true,
-        showHeatReduction: false,
-        open: false,
-        typeFilter: 'all',
-      },
+      urbanTreeCanopy: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setUrbanTreeCanopy: (updates) => set((state) => ({
         urbanTreeCanopy: { ...state.urbanTreeCanopy, ...updates },
       })),
-      geomagneticPole: {
-        poles: [],
-        activePoleId: null,
-        showDriftRate: true,
-        showFieldStrength: true,
-        showInclination: true,
-        showDeclination: false,
-        open: false,
-        poleFilter: 'all',
-      },
+      geomagneticPole: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setGeomagneticPole: (updates) => set((state) => ({
-        geomagneticPole: { ...state.geomagneticPole, ...updates },
+        geomagneticPole: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       })),
 
       // Task 70: New monitoring defaults and setters
-      hydrothermalVent: {
-        vents: [], activeVentId: null, showTemperature: true, showFlowRate: true, showMineralDeposit: true, showBiodiversity: false, open: false, typeFilter: 'all',
-      },
+      hydrothermalVent: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setHydrothermalVent: (updates) => set((state) => ({ hydrothermalVent: { ...state.hydrothermalVent, ...updates } })),
-      watershedHealth: {
-        basins: [], activeBasinId: null, showWaterQuality: true, showFlowRate: true, showSedimentLoad: true, showEcologicalHealth: false, open: false, typeFilter: 'all',
-      },
+      watershedHealth: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setWatershedHealth: (updates) => set((state) => ({ watershedHealth: { ...state.watershedHealth, ...updates } })),
-      migratoryFlyway: {
-        flyways: [], activeFlywayId: null, showPopulation: true, showArrivalDate: true, showThreatLevel: true, showHabitatQuality: false, open: false, typeFilter: 'all',
-      },
+      migratoryFlyway: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setMigratoryFlyway: (updates) => set((state) => ({ migratoryFlyway: { ...state.migratoryFlyway, ...updates } })),
-      seagrassMeadow: {
-        meadows: [], activeMeadowId: null, showCoverage: true, showCarbonStock: true, showWaterClarity: true, showHealthStatus: false, open: false, speciesFilter: 'all',
-      },
+      seagrassMeadow: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSeagrassMeadow: (updates) => set((state) => ({ seagrassMeadow: { ...state.seagrassMeadow, ...updates } })),
-      urbanHeatIslandDetail: {
-        zones: [], activeZoneId: null, showTemperatureDelta: true, showVegetationCover: true, showAlbedo: true, showVulnerability: false, open: false, zoneFilter: 'all',
-      },
+      urbanHeatIslandDetail: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setUrbanHeatIslandDetail: (updates) => set((state) => ({ urbanHeatIslandDetail: { ...state.urbanHeatIslandDetail, ...updates } })),
-      oceanAcidificationDetail: {
-        stations: [], activeStationId: null, showPH: true, showAragonite: true, showPCO2: true, showSaturationState: false, open: false, regionFilter: 'all',
-      },
+      oceanAcidificationDetail: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOceanAcidificationDetail: (updates) => set((state) => ({ oceanAcidificationDetail: { ...state.oceanAcidificationDetail, ...updates } })),
-      desertificationDetail: {
-        regions: [], activeRegionId: null, showVegetationIndex: true, showSoilMoisture: true, showWindErosion: true, showDroughtIndex: false, open: false, severityFilter: 'all',
-      },
+      desertificationDetail: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setDesertificationDetail: (updates) => set((state) => ({ desertificationDetail: { ...state.desertificationDetail, ...updates } })),
-      volcanicGasTracker: {
-        volcanoes: [], activeVolcanoId: null, showSO2: true, showCO2: true, showH2S: true, showPlumeHeight: false, open: false, gasFilter: 'all',
-      },
+      volcanicGasTracker: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setVolcanicGasTracker: (updates) => set((state) => ({ volcanicGasTracker: { ...state.volcanicGasTracker, ...updates } })),
-      deepOceanCurrent: {
-        currents: [], activeCurrentId: null, showTemperature: true, showSalinity: true, showVelocity: true, showVolume: false, open: false, typeFilter: 'all',
-      },
+      deepOceanCurrent: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setDeepOceanCurrent: (updates) => set((state) => ({ deepOceanCurrent: { ...state.deepOceanCurrent, ...updates } })),
-      stratosphericOzone: {
-        regions: [], activeRegionId: null, showOzoneColumn: true, showUVIndex: true, showTemperature: true, showTrend: false, open: false, regionFilter: 'all',
-      },
+      stratosphericOzone: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setStratosphericOzone: (updates) => set((state) => ({ stratosphericOzone: { ...state.stratosphericOzone, ...updates } })),
-      seismicHarmonic: {
-        stations: [], activeStationId: null, showAmplitude: true, showFrequency: true, showDuration: true, showDepth: false, open: false, typeFilter: 'all',
-      },
+      seismicHarmonic: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSeismicHarmonic: (updates) => set((state) => ({ seismicHarmonic: { ...state.seismicHarmonic, ...updates } })),
-      wildfireSmoke: {
-        plumes: [], activePlumeId: null, showAOD: true, showPM25: true, showPlumeHeight: true, showDispersion: false, open: false, severityFilter: 'all',
-      },
+      wildfireSmoke: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setWildfireSmoke: (updates) => set((state) => ({ wildfireSmoke: { ...state.wildfireSmoke, ...updates } })),
-      estuaryHealth: {
-        estuaries: [], activeEstuaryId: null, showWaterQuality: true, showBiodiversity: true, showSediment: true, showNutrientLoad: false, open: false, typeFilter: 'all',
-      },
+      estuaryHealth: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setEstuaryHealth: (updates) => set((state) => ({ estuaryHealth: { ...state.estuaryHealth, ...updates } })),
-      alpineGlacier: {
-        glaciers: [], activeGlacierId: null, showMassBalance: true, showVelocity: true, showArea: true, showLength: false, open: false, typeFilter: 'all',
-      },
+      alpineGlacier: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setAlpineGlacier: (updates) => set((state) => ({ alpineGlacier: { ...state.alpineGlacier, ...updates } })),
-      oceanAnoxicZone: {
-        zones: [], activeZoneId: null, showOxygenLevel: true, showNitrate: true, showSulfide: true, showThickness: false, open: false, severityFilter: 'all',
-      },
+      oceanAnoxicZone: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOceanAnoxicZone: (updates) => set((state) => ({ oceanAnoxicZone: { ...state.oceanAnoxicZone, ...updates } })),
-      permafrostCarbonFeedback: {
-        sites: [], activeSiteId: null, showThawDepth: true, showCarbonStock: true, showMethaneRelease: true, showTemperature: false, open: false, severityFilter: 'all',
-      },
+      permafrostCarbonFeedback: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setPermafrostCarbonFeedback: (updates) => set((state) => ({ permafrostCarbonFeedback: { ...state.permafrostCarbonFeedback, ...updates } })),
-      tropicalCyclone: {
-        cyclones: [], activeCycloneId: null, showWindSpeed: true, showPressure: true, showRainfall: true, showStormSurge: false, open: false, categoryFilter: 'all',
-      },
+      tropicalCyclone: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setTropicalCyclone: (updates) => set((state) => ({ tropicalCyclone: { ...state.tropicalCyclone, ...updates } })),
-      volcanicDeformation: {
-        volcanoes: [], activeVolcanoId: null, showUplift: true, showHorizontal: true, showTilt: true, showStrainRate: false, open: false, typeFilter: 'all',
-      },
+      volcanicDeformation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setVolcanicDeformation: (updates) => set((state) => ({ volcanicDeformation: { ...state.volcanicDeformation, ...updates } })),
-      coralReefBleachingDetail: {
-        reefs: [], activeReefId: null, showBleachingPercent: true, showSST: true, showRecovery: true, showStressLevel: false, open: false, severityFilter: 'all',
-      },
+      coralReefBleachingDetail: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setCoralReefBleachingDetail: (updates) => set((state) => ({ coralReefBleachingDetail: { ...state.coralReefBleachingDetail, ...updates } })),
-      arcticPermafrostLakes: {
-        lakes: [], activeLakeId: null, showArea: true, showDepth: true, showThawRate: true, showMethane: false, open: false, typeFilter: 'all',
-      },
+      arcticPermafrostLakes: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setArcticPermafrostLakes: (updates) => set((state) => ({ arcticPermafrostLakes: { ...state.arcticPermafrostLakes, ...updates } })),
-      methaneEmissionHotspot: {
-        hotspots: [], activeHotspotId: null, showEmissionRate: true, showConcentration: true, showSource: true, showTrend: false, open: false, sourceFilter: 'all',
-      },
+      methaneEmissionHotspot: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setMethaneEmissionHotspot: (updates) => set((state) => ({ methaneEmissionHotspot: { ...state.methaneEmissionHotspot, ...updates } })),
-      coastalUpwelling: {
-        zones: [], activeZoneId: null, showSST: true, showNutrientLevel: true, showProductivity: true, showWindStress: false, open: false, typeFilter: 'all',
-      },
+      coastalUpwelling: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setCoastalUpwelling: (updates) => set((state) => ({ coastalUpwelling: { ...state.coastalUpwelling, ...updates } })),
-      spaceDebrisOrbit: {
-        objects: [], activeObjectId: null, showAltitude: true, showVelocity: true, showCollisionRisk: true, showDecayRate: false, open: false, typeFilter: 'all',
-      },
+      spaceDebrisOrbit: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSpaceDebrisOrbit: (updates) => set((state) => ({ spaceDebrisOrbit: { ...state.spaceDebrisOrbit, ...updates } })),
-      tectonicPlateBoundary: {
-        boundaries: [], activeBoundaryId: null, showVelocity: true, showStress: true, showSeismicity: true, showSlipRate: false, open: false, typeFilter: 'all',
-      },
+      tectonicPlateBoundary: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setTectonicPlateBoundary: (updates) => set((state) => ({ tectonicPlateBoundary: { ...state.tectonicPlateBoundary, ...updates } })),
-      landslideSusceptibility: {
-        zones: [], activeZoneId: null, showSlopeAngle: true, showSoilMoisture: true, showVegetation: true, showRainfall: false, open: false, riskFilter: 'all',
-      },
+      landslideSusceptibility: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setLandslideSusceptibility: (updates) => set((state) => ({ landslideSusceptibility: { ...state.landslideSusceptibility, ...updates } })),
-      solarFlareActivity: {
-        events: [], activeEventId: null, showXRay: true, showProton: true, showRadio: true, showCoronalMass: false, open: false, classFilter: 'all',
-      },
+      solarFlareActivity: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSolarFlareActivity: (updates) => set((state) => ({ solarFlareActivity: { ...state.solarFlareActivity, ...updates } })),
-      riverDeltaErosion: {
-        deltas: [], activeDeltaId: null, showErosionRate: true, showSedimentSupply: true, showSeaLevel: true, showLandLoss: false, open: false, severityFilter: 'all',
-      },
+      riverDeltaErosion: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setRiverDeltaErosion: (updates) => set((state) => ({ riverDeltaErosion: { ...state.riverDeltaErosion, ...updates } })),
-      seaIceThickness: {
-        regions: [], activeRegionId: null, showThickness: true, showConcentration: true, showExtent: true, showAge: false, open: false, typeFilter: 'all',
-      },
+      seaIceThickness: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSeaIceThickness: (updates) => set((state) => ({ seaIceThickness: { ...state.seaIceThickness, ...updates } })),
-      urbanAirQuality: {
-        cities: [], activeCityId: null, showAQI: true, showPM25: true, showNO2: true, showO3: false, open: false, qualityFilter: 'all',
-      },
+      urbanAirQuality: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setUrbanAirQuality: (updates) => set((state) => ({ urbanAirQuality: { ...state.urbanAirQuality, ...updates } })),
-      geothermalEnergy: {
-        plants: [], activePlantId: null, showOutput: true, showTemperature: true, showFlowRate: true, showEfficiency: false, open: false, typeFilter: 'all',
-      },
+      geothermalEnergy: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setGeothermalEnergy: (updates) => set((state) => ({ geothermalEnergy: { ...state.geothermalEnergy, ...updates } })),
-      aquiferSalinization: {
-        aquifers: [], activeAquiferId: null, showSalinity: true, showChloride: true, showWaterLevel: true, showIntrusion: false, open: false, severityFilter: 'all',
-      },
+      aquiferSalinization: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setAquiferSalinization: (updates) => set((state) => ({ aquiferSalinization: { ...state.aquiferSalinization, ...updates } })),
-      biomassBurning: {
-        regions: [], activeRegionId: null, showFireCount: true, showBurnedArea: true, showEmissions: true, showSmoke: false, open: false, typeFilter: 'all',
-      },
+      biomassBurning: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setBiomassBurning: (updates) => set((state) => ({ biomassBurning: { ...state.biomassBurning, ...updates } })),
-      glacialLakeOutburst: {
-        lakes: [], activeLakeId: null, showWaterLevel: true, showDamStability: true, showFloodPotential: true, showDownstreamRisk: false, open: false, riskFilter: 'all',
-      },
+      glacialLakeOutburst: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setGlacialLakeOutburst: (updates) => set((state) => ({ glacialLakeOutburst: { ...state.glacialLakeOutburst, ...updates } })),
-      oceanMicroplastic: {
-        zones: [], activeZoneId: null, showConcentration: true, showParticleSize: true, showDepth: true, showAccumulation: false, open: false, typeFilter: 'all',
-      },
+      oceanMicroplastic: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOceanMicroplastic: (updates) => set((state) => ({ oceanMicroplastic: { ...state.oceanMicroplastic, ...updates } })),
-      volcanicAshDispersion: {
-        clouds: [], activeCloudId: null, showAshColumn: true, showDispersion: true, showAviationRisk: true, showFallout: false, open: false, severityFilter: 'all',
-      },
+      volcanicAshDispersion: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setVolcanicAshDispersion: (updates) => set((state) => ({ volcanicAshDispersion: { ...state.volcanicAshDispersion, ...updates } })),
-      droughtSeverity: {
-        regions: [], activeRegionId: null, showSPI: true, showSoilMoisture: true, showVegetation: true, showWaterStress: false, open: false, severityFilter: 'all',
-      },
+      droughtSeverity: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setDroughtSeverity: (updates) => set((state) => ({ droughtSeverity: { ...state.droughtSeverity, ...updates } })),
-      tsunamiWaveHeight: {
-        events: [], activeEventId: null, showWaveHeight: true, showArrivalTime: true, showInundation: true, showCurrentSpeed: false, open: false, severityFilter: 'all',
-      },
+      tsunamiWaveHeight: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setTsunamiWaveHeight: (updates) => set((state) => ({ tsunamiWaveHeight: { ...state.tsunamiWaveHeight, ...updates } })),
-      caveEcosystem: {
-        caves: [], activeCaveId: null, showBiodiversity: true, showTemperature: true, showHumidity: true, showWaterQuality: false, open: false, typeFilter: 'all',
-      },
+      caveEcosystem: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setCaveEcosystem: (updates) => set((state) => ({ caveEcosystem: { ...state.caveEcosystem, ...updates } })),
-      solarIrradiance: {
-        stations: [], activeStationId: null, showGHI: true, showDNI: true, showDHI: true, showUVIndex: false, open: false, regionFilter: 'all',
-      },
+      solarIrradiance: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSolarIrradiance: (updates) => set((state) => ({ solarIrradiance: { ...state.solarIrradiance, ...updates } })),
-      peatlandRestoration: {
-        sites: [], activeSiteId: null, showWaterTable: true, showVegetation: true, showCarbonStock: true, showRestorationProgress: false, open: false, statusFilter: 'all',
-      },
+      peatlandRestoration: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setPeatlandRestoration: (updates) => set((state) => ({ peatlandRestoration: { ...state.peatlandRestoration, ...updates } })),
-      mangroveCarbon: {
-        forests: [], activeForestId: null, showCarbonStock: true, showArea: true, showDegradation: true, showRestoration: false, open: false, speciesFilter: 'all',
-      },
+      mangroveCarbon: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setMangroveCarbon: (updates) => set((state) => ({ mangroveCarbon: { ...state.mangroveCarbon, ...updates } })),
-      oceanHeatContent: {
-        basins: [], activeBasinId: null, showHeatContent: true, showTemperature: true, showSalinity: true, showTrend: false, open: false, depthFilter: 'all',
-      },
+      oceanHeatContent: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOceanHeatContent: (updates) => set((state) => ({ oceanHeatContent: { ...state.oceanHeatContent, ...updates } })),
-      dustStormTracker: {
-        storms: [], activeStormId: null, showAOD: true, showWindSpeed: true, showVisibility: true, showPM10: false, open: false, severityFilter: 'all',
-      },
+      dustStormTracker: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setDustStormTracker: (updates) => set((state) => ({ dustStormTracker: { ...state.dustStormTracker, ...updates } })),
-      coralDiseaseMonitor: {
-        reefs: [], activeReefId: null, showPrevalence: true, showWhiteSyndrome: true, showBlackBand: true, showRecoveryRate: false, open: false, diseaseFilter: 'all',
-      },
+      coralDiseaseMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setCoralDiseaseMonitor: (updates) => set((state) => ({ coralDiseaseMonitor: { ...state.coralDiseaseMonitor, ...updates } })),
-      iceShelfCollapse: {
-        shelves: [], activeShelfId: null, showArea: true, showThickness: true, showFracture: true, showMeltRate: false, open: false, stabilityFilter: 'all',
-      },
+      iceShelfCollapse: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setIceShelfCollapse: (updates) => set((state) => ({ iceShelfCollapse: { ...state.iceShelfCollapse, ...updates } })),
-      urbanFloodRisk: {
-        zones: [], activeZoneId: null, showImpervious: true, showDrainage: true, showElevation: true, showHistorical: false, open: false, riskFilter: 'all',
-      },
+      urbanFloodRisk: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setUrbanFloodRisk: (updates) => set((state) => ({ urbanFloodRisk: { ...state.urbanFloodRisk, ...updates } })),
-      phytoplanktonBloom: {
-        blooms: [], activeBloomId: null, showChlorophyll: true, showToxicity: true, showExtent: true, showDuration: false, open: false, speciesFilter: 'all',
-      },
+      phytoplanktonBloom: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setPhytoplanktonBloom: (updates) => set((state) => ({ phytoplanktonBloom: { ...state.phytoplanktonBloom, ...updates } })),
-      submarineCanyon: {
-        canyons: [], activeCanyonId: null, showDepth: true, showCurrentSpeed: true, showSediment: true, showBiodiversity: false, open: false, typeFilter: 'all',
-      },
+      submarineCanyon: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSubmarineCanyon: (updates) => set((state) => ({ submarineCanyon: { ...state.submarineCanyon, ...updates } })),
-      kelpForestMonitor: {
-        forests: [], activeForestId: null, showCoverage: true, showBiomass: true, showWaterTemp: true, showBiodiversity: false, open: false, speciesFilter: 'all',
-      },
+      kelpForestMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setKelpForestMonitor: (updates) => set((state) => ({ kelpForestMonitor: { ...state.kelpForestMonitor, ...updates } })),
-      volcanicIslandFormation: {
-        islands: [], activeIslandId: null, showElevation: true, showEruptionRate: true, showArea: true, showSubsidence: false, open: false, stageFilter: 'all',
-      },
+      volcanicIslandFormation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setVolcanicIslandFormation: (updates) => set((state) => ({ volcanicIslandFormation: { ...state.volcanicIslandFormation, ...updates } })),
-      saltwaterIntrusion: {
-        zones: [], activeZoneId: null, showChloride: true, showConductivity: true, showWaterTable: true, showIntrusionRate: false, open: false, severityFilter: 'all',
-      },
+      saltwaterIntrusion: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSaltwaterIntrusion: (updates) => set((state) => ({ saltwaterIntrusion: { ...state.saltwaterIntrusion, ...updates } })),
-      arcticShippingRoute: {
-        routes: [], activeRouteId: null, showIceThickness: true, showNavigability: true, showTransitTime: true, showTraffic: false, open: false, routeFilter: 'all',
-      },
+      arcticShippingRoute: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setArcticShippingRoute: (updates) => set((state) => ({ arcticShippingRoute: { ...state.arcticShippingRoute, ...updates } })),
-      thermoclineDepth: {
-        stations: [], activeStationId: null, showDepth: true, showGradient: true, showSST: true, showTrend: false, open: false, regionFilter: 'all',
-      },
+      thermoclineDepth: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setThermoclineDepth: (updates) => set((state) => ({ thermoclineDepth: { ...state.thermoclineDepth, ...updates } })),
-      bioluminescentBay: {
-        bays: [], activeBayId: null, showBrightness: true, showDinoflagellate: true, showWaterQuality: true, showTourism: false, open: false, qualityFilter: 'all',
-      },
+      bioluminescentBay: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setBioluminescentBay: (updates) => set((state) => ({ bioluminescentBay: { ...state.bioluminescentBay, ...updates } })),
-      orographicRainfall: {
-        regions: [], activeRegionId: null, showRainfall: true, showElevation: true, showWindSpeed: true, showRunoff: false, open: false, typeFilter: 'all',
-      },
+      orographicRainfall: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOrographicRainfall: (updates) => set((state) => ({ orographicRainfall: { ...state.orographicRainfall, ...updates } })),
-      hydrothermalPlume: {
-        vents: [], activeVentId: null, showPlumeHeight: true, showTemperature: true, showChemical: true, showDispersion: false, open: false, typeFilter: 'all',
-      },
+      hydrothermalPlume: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setHydrothermalPlume: (updates) => set((state) => ({ hydrothermalPlume: { ...state.hydrothermalPlume, ...updates } })),
-      seamountEcosystem: {
-        seamounts: [], activeSeamountId: null, showElevation: true, showBiodiversity: true, showCurrentSpeed: true, showFishingPressure: false, open: false, typeFilter: 'all',
-      },
+      seamountEcosystem: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSeamountEcosystem: (updates) => set((state) => ({ seamountEcosystem: { ...state.seamountEcosystem, ...updates } })),
-      groundSubsidence: {
-        zones: [], activeZoneId: null, showSubsidenceRate: true, showGroundwater: true, showInfrastructure: true, showRisk: false, open: false, causeFilter: 'all',
-      },
+      groundSubsidence: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setGroundSubsidence: (updates) => set((state) => ({ groundSubsidence: { ...state.groundSubsidence, ...updates } })),
-      oceanStratification: {
-        basins: [], activeBasinId: null, showPycnocline: true, showTemperature: true, showSalinity: true, showMixing: false, open: false, regionFilter: 'all',
-      },
+      oceanStratification: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOceanStratification: (updates) => set((state) => ({ oceanStratification: { ...state.oceanStratification, ...updates } })),
-      snowCoverExtent: {
-        regions: [], activeRegionId: null, showExtent: true, showDepth: true, showWaterEquivalent: true, showMeltRate: false, open: false, seasonFilter: 'all',
-      },
+      snowCoverExtent: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSnowCoverExtent: (updates) => set((state) => ({ snowCoverExtent: { ...state.snowCoverExtent, ...updates } })),
-      coastalErosionDetail: {
-        segments: [], activeSegmentId: null, showErosionRate: true, showSeaLevel: true, showSediment: true, showProtection: false, open: false, severityFilter: 'all',
-      },
+      coastalErosionDetail: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setCoastalErosionDetail: (updates) => set((state) => ({ coastalErosionDetail: { ...state.coastalErosionDetail, ...updates } })),
-      ecosystemServiceValue: {
-        ecosystems: [], activeEcosystemId: null, showCarbonValue: true, showWaterValue: true, showBiodiversityValue: true, showRecreationValue: false, open: false, typeFilter: 'all',
-      },
+      ecosystemServiceValue: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setEcosystemServiceValue: (updates) => set((state) => ({ ecosystemServiceValue: { ...state.ecosystemServiceValue, ...updates } })),
-      tidalFlatMonitor: {
-        flats: [], activeFlatId: null, showArea: true, showBiodiversity: true, showSedimentQuality: true, showBirdPopulation: false, open: false, typeFilter: 'all',
-      },
+      tidalFlatMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setTidalFlatMonitor: (updates) => set((state) => ({ tidalFlatMonitor: { ...state.tidalFlatMonitor, ...updates } })),
-      wildfireRiskAssessment: {
-        zones: [], activeZoneId: null, showFireWeather: true, showFuelLoad: true, showTerrain: true, showExposure: false, open: false, riskFilter: 'all',
-      },
+      wildfireRiskAssessment: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setWildfireRiskAssessment: (updates) => set((state) => ({ wildfireRiskAssessment: { ...state.wildfireRiskAssessment, ...updates } })),
-      karstSinkhole: {
-        sinkholes: [], activeSinkholeId: null, showDepth: true, showRisk: true, showSubsidence: false, open: false, riskFilter: 'all',
-      },
+      karstSinkhole: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setKarstSinkhole: (updates) => set((state) => ({ karstSinkhole: { ...state.karstSinkhole, ...updates } })),
-      volcanicSO2: {
-        sources: [], activeSourceId: null, showConcentration: true, showPlume: true, showAlerts: false, open: false, alertFilter: 'all',
-      },
+      volcanicSO2: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setVolcanicSO2: (updates) => set((state) => ({ volcanicSO2: { ...state.volcanicSO2, ...updates } })),
-      icebergTracker: {
-        icebergs: [], activeIcebergId: null, showTrajectory: true, showSize: true, showDrift: false, open: false, sizeFilter: 'all',
-      },
+      icebergTracker: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setIcebergTracker: (updates) => set((state) => ({ icebergTracker: { ...state.icebergTracker, ...updates } })),
-      caveMineral: {
-        formations: [], activeFormationId: null, showMineralType: true, showAge: true, showPurity: false, open: false, typeFilter: 'all',
-      },
+      caveMineral: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setCaveMineral: (updates) => set((state) => ({ caveMineral: { ...state.caveMineral, ...updates } })),
-      seafloorHydrate: {
-        deposits: [], activeDepositId: null, showVolume: true, showStability: true, showDepth: false, open: false, stabilityFilter: 'all',
-      },
+      seafloorHydrate: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSeafloorHydrate: (updates) => set((state) => ({ seafloorHydrate: { ...state.seafloorHydrate, ...updates } })),
-      mangroveLoss: {
-        regions: [], activeRegionId: null, showLossRate: true, showRecovery: true, showBiodiversity: false, open: false, lossFilter: 'all',
-      },
+      mangroveLoss: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setMangroveLoss: (updates) => set((state) => ({ mangroveLoss: { ...state.mangroveLoss, ...updates } })),
-      urbanNoiseCorridor: {
-        corridors: [], activeCorridorId: null, showLevel: true, showSources: true, showHealthImpact: false, open: false, levelFilter: 'all',
-      },
+      urbanNoiseCorridor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setUrbanNoiseCorridor: (updates) => set((state) => ({ urbanNoiseCorridor: { ...state.urbanNoiseCorridor, ...updates } })),
-      stratosphericWarming: {
-        events: [], activeEventId: null, showTemperature: true, showWindReversal: true, showImpact: false, open: false, intensityFilter: 'all',
-      },
+      stratosphericWarming: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setStratosphericWarming: (updates) => set((state) => ({ stratosphericWarming: { ...state.stratosphericWarming, ...updates } })),
-      submarineGroundwater: {
-        discharges: [], activeDischargeId: null, showFlowRate: true, showSalinity: true, showNutrients: false, open: false, typeFilter: 'all',
-      },
+      submarineGroundwater: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSubmarineGroundwater: (updates) => set((state) => ({ submarineGroundwater: { ...state.submarineGroundwater, ...updates } })),
-      hydrothermalSulfide: {
-        vents: [], activeVentId: null, showMineralContent: true, showTemperature: true, showActivity: false, open: false, activityFilter: 'all',
-      },
+      hydrothermalSulfide: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setHydrothermalSulfide: (updates) => set((state) => ({ hydrothermalSulfide: { ...state.hydrothermalSulfide, ...updates } })),
-      lunarTidalForce: {
-        stations: [], activeStationId: null, showTidalRange: true, showLunarPhase: true, showCurrentSpeed: false, open: false, phaseFilter: 'all',
-      },
+      lunarTidalForce: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setLunarTidalForce: (updates) => set((state) => ({ lunarTidalForce: { ...state.lunarTidalForce, ...updates } })),
-      ripCurrent: {
-        zones: [], activeZoneId: null, showRisk: true, showSpeed: true, showFrequency: false, open: false, riskFilter: 'all',
-      },
+      ripCurrent: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setRipCurrent: (updates) => set((state) => ({ ripCurrent: { ...state.ripCurrent, ...updates } })),
-      avalancheDebrisFlow: {
-        events: [], activeEventId: null, showVolume: true, showVelocity: true, showRunout: false, open: false, typeFilter: 'all',
-      },
+      avalancheDebrisFlow: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setAvalancheDebrisFlow: (updates) => set((state) => ({ avalancheDebrisFlow: { ...state.avalancheDebrisFlow, ...updates } })),
-      coastalAcidification: {
-        sites: [], activeSiteId: null, showPH: true, showCarbonDioxide: true, showSaturation: false, open: false, severityFilter: 'all',
-      },
+      coastalAcidification: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setCoastalAcidification: (updates) => set((state) => ({ coastalAcidification: { ...state.coastalAcidification, ...updates } })),
-      desertSandSea: {
-        regions: [], activeRegionId: null, showDuneHeight: true, showMigration: true, showArea: false, open: false, typeFilter: 'all',
-      },
+      desertSandSea: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setDesertSandSea: (updates) => set((state) => ({ desertSandSea: { ...state.desertSandSea, ...updates } })),
-      subsidenceHazard: {
-        zones: [], activeZoneId: null, showRate: true, showRisk: true, showInfrastructure: false, open: false, riskFilter: 'all',
-      },
+      subsidenceHazard: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSubsidenceHazard: (updates) => set((state) => ({ subsidenceHazard: { ...state.subsidenceHazard, ...updates } })),
-      volcanicLahar: {
-        flows: [], activeFlowId: null, showVolume: true, showVelocity: true, showRisk: false, open: false, riskFilter: 'all',
-      },
+      volcanicLahar: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setVolcanicLahar: (updates) => set((state) => ({ volcanicLahar: { ...state.volcanicLahar, ...updates } })),
-      deepWaterCoral: {
-        reefs: [], activeReefId: null, showDepth: true, showHealth: true, showSpecies: false, open: false, healthFilter: 'all',
-      },
+      deepWaterCoral: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setDeepWaterCoral: (updates) => set((state) => ({ deepWaterCoral: { ...state.deepWaterCoral, ...updates } })),
-      polarBearHabitat: {
-        regions: [], activeRegionId: null, showIceCover: true, showPopulation: true, showMigration: false, open: false, statusFilter: 'all',
-      },
+      polarBearHabitat: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setPolarBearHabitat: (updates) => set((state) => ({ polarBearHabitat: { ...state.polarBearHabitat, ...updates } })),
-      soilSalinization: {
-        zones: [], activeZoneId: null, showSalinity: true, showCropImpact: true, showArea: false, open: false, severityFilter: 'all',
-      },
+      soilSalinization: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSoilSalinization: (updates) => set((state) => ({ soilSalinization: { ...state.soilSalinization, ...updates } })),
-      tsunamiRunup: {
-        sites: [], activeSiteId: null, showRunup: true, showInundation: true, showRisk: false, open: false, riskFilter: 'all',
-      },
+      tsunamiRunup: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setTsunamiRunup: (updates) => set((state) => ({ tsunamiRunup: { ...state.tsunamiRunup, ...updates } })),
-      urbanHeatVentilation: {
-        corridors: [], activeCorridorId: null, showAirflow: true, showTemperature: true, showPollution: false, open: false, efficiencyFilter: 'all',
-      },
+      urbanHeatVentilation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setUrbanHeatVentilation: (updates) => set((state) => ({ urbanHeatVentilation: { ...state.urbanHeatVentilation, ...updates } })),
-      brinePool: {
-        pools: [], activePoolId: null, showSalinity: true, showDepth: true, showBiology: false, open: false, activityFilter: 'all',
-      },
+      brinePool: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setBrinePool: (updates) => set((state) => ({ brinePool: { ...state.brinePool, ...updates } })),
-      supraglacialStream: {
-        streams: [], activeStreamId: null, showFlowRate: true, showTemperature: true, showMeltRate: false, open: false, statusFilter: 'all',
-      },
+      supraglacialStream: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSupraglacialStream: (updates) => set((state) => ({ supraglacialStream: { ...state.supraglacialStream, ...updates } })),
-      methaneHydrateStability: {
-        zones: [], activeZoneId: null, showStability: true, showTemperature: true, showPressure: false, open: false, stabilityFilter: 'all',
-      },
+      methaneHydrateStability: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setMethaneHydrateStability: (updates) => set((state) => ({ methaneHydrateStability: { ...state.methaneHydrateStability, ...updates } })),
-      volcanicAshCloud: {
-        clouds: [], activeCloudId: null, showAltitude: true, showDispersion: true, showConcentration: false, open: false, alertFilter: 'all',
-      },
+      volcanicAshCloud: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setVolcanicAshCloud: (updates) => set((state) => ({ volcanicAshCloud: { ...state.volcanicAshCloud, ...updates } })),
-      geothermalGradient: {
-        sites: [], activeSiteId: null, showGradient: true, showTemperature: true, showFlow: false, open: false, potentialFilter: 'all',
-      },
+      geothermalGradient: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setGeothermalGradient: (updates) => set((state) => ({ geothermalGradient: { ...state.geothermalGradient, ...updates } })),
-      oceanDeoxygenation: {
-        zones: [], activeZoneId: null, showOxygen: true, showArea: true, showImpact: false, open: false, severityFilter: 'all',
-      },
+      oceanDeoxygenation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOceanDeoxygenation: (updates) => set((state) => ({ oceanDeoxygenation: { ...state.oceanDeoxygenation, ...updates } })),
-      rockGlacier: {
-        glaciers: [], activeGlacierId: null, showVelocity: true, showTemperature: true, showIceContent: false, open: false, activityFilter: 'all',
-      },
+      rockGlacier: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setRockGlacier: (updates) => set((state) => ({ rockGlacier: { ...state.rockGlacier, ...updates } })),
-      dustHemisphere: {
-        events: [], activeEventId: null, showConcentration: true, showTransport: true, showDeposition: false, open: false, intensityFilter: 'all',
-      },
+      dustHemisphere: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setDustHemisphere: (updates) => set((state) => ({ dustHemisphere: { ...state.dustHemisphere, ...updates } })),
-      microplasticOcean: {
-        zones: [], activeZoneId: null, showConcentration: true, showSize: true, showSourceType: false, open: false, densityFilter: 'all',
-      },
+      microplasticOcean: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setMicroplasticOcean: (updates) => set((state) => ({ microplasticOcean: { ...state.microplasticOcean, ...updates } })),
-      glacierBasalSlide: {
-        glaciers: [], activeGlacierId: null, showVelocity: true, showBasalTemp: true, showSlideRisk: false, open: false, riskFilter: 'all',
-      },
+      glacierBasalSlide: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setGlacierBasalSlide: (updates) => set((state) => ({ glacierBasalSlide: { ...state.glacierBasalSlide, ...updates } })),
-      volcanicFumarole: {
-        fumaroles: [], activeFumaroleId: null, showTemperature: true, showGasComposition: true, showPressure: false, open: false, statusFilter: 'all',
-      },
+      volcanicFumarole: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setVolcanicFumarole: (updates) => set((state) => ({ volcanicFumarole: { ...state.volcanicFumarole, ...updates } })),
-      hydroclimateExtremes: {
-        events: [], activeEventId: null, showSeverity: true, showDuration: true, showTrend: false, open: false, typeFilter: 'all',
-      },
+      hydroclimateExtremes: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setHydroclimateExtremes: (updates) => set((state) => ({ hydroclimateExtremes: { ...state.hydroclimateExtremes, ...updates } })),
-      megafaunaTracking: {
-        animals: [], activeAnimalId: null, showPopulation: true, showTrend: true, showHabitat: false, open: false, speciesFilter: 'all',
-      },
+      megafaunaTracking: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setMegafaunaTracking: (updates) => set((state) => ({ megafaunaTracking: { ...state.megafaunaTracking, ...updates } })),
-      cryoconiteHole: {
-        holes: [], activeHoleId: null, showDepth: true, showOrganicContent: true, showDiameter: false, open: false, statusFilter: 'all',
-      },
+      cryoconiteHole: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setCryoconiteHole: (updates) => set((state) => ({ cryoconiteHole: { ...state.cryoconiteHole, ...updates } })),
-      sapFlow: {
-        sensors: [], activeSensorId: null, showFlowRate: true, showTreeDiameter: true, showTrend: false, open: false, statusFilter: 'all',
-      },
+      sapFlow: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSapFlow: (updates) => set((state) => ({ sapFlow: { ...state.sapFlow, ...updates } })),
-      rockfallHazard: {
-        zones: [], activeZoneId: null, showSlopeAngle: true, showRockVolume: true, showTriggerType: false, open: false, hazardFilter: 'all',
-      },
+      rockfallHazard: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setRockfallHazard: (updates) => set((state) => ({ rockfallHazard: { ...state.rockfallHazard, ...updates } })),
-      thermohalineCirculation: {
-        currents: [], activeCurrentId: null, showTemperature: true, showSalinity: true, showVelocity: false, open: false, statusFilter: 'all',
-      },
+      thermohalineCirculation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setThermohalineCirculation: (updates) => set((state) => ({ thermohalineCirculation: { ...state.thermohalineCirculation, ...updates } })),
-      hydroseismicActivity: {
-        events: [], activeEventId: null, showMagnitude: true, showDepth: true, showWaterLevel: false, open: false, typeFilter: 'all',
-      },
+      hydroseismicActivity: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setHydroseismicActivity: (updates) => set((state) => ({ hydroseismicActivity: { ...state.hydroseismicActivity, ...updates } })),
-      lavaTubeCave: {
-        caves: [], activeCaveId: null, showLength: true, showTemperature: true, showLavaType: false, open: false, statusFilter: 'all',
-      },
+      lavaTubeCave: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setLavaTubeCave: (updates) => set((state) => ({ lavaTubeCave: { ...state.lavaTubeCave, ...updates } })),
-      submarineCanyonFisheries: {
-        fisheries: [], activeFisheryId: null, showDepth: true, showCatchVolume: true, showFishSpecies: false, open: false, statusFilter: 'all',
-      },
+      submarineCanyonFisheries: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSubmarineCanyonFisheries: (updates) => set((state) => ({ submarineCanyonFisheries: { ...state.submarineCanyonFisheries, ...updates } })),
-      polynyaIce: {
-        polynyas: [], activePolynyaId: null, showArea: true, showIceThickness: true, showWaterTemperature: false, open: false, statusFilter: 'all',
-      },
+      polynyaIce: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setPolynyaIce: (updates) => set((state) => ({ polynyaIce: { ...state.polynyaIce, ...updates } })),
-      volcanicDomeGrowth: {
-        domes: [], activeDomeId: null, showGrowthRate: true, showDomeVolume: true, showTemperature: false, open: false, statusFilter: 'all',
-      },
+      volcanicDomeGrowth: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setVolcanicDomeGrowth: (updates) => set((state) => ({ volcanicDomeGrowth: { ...state.volcanicDomeGrowth, ...updates } })),
-      seamountBiodiversity: {
-        seamounts: [], activeSeamountId: null, showDepth: true, showSpeciesCount: true, showEndemismRate: false, open: false, statusFilter: 'all',
-      },
+      seamountBiodiversity: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSeamountBiodiversity: (updates) => set((state) => ({ seamountBiodiversity: { ...state.seamountBiodiversity, ...updates } })),
-      estuaryAcidification: {
-        estuaries: [], activeEstuaryId: null, showPH: true, showAlkalinity: true, showSalinity: false, open: false, statusFilter: 'all',
-      },
+      estuaryAcidification: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setEstuaryAcidification: (updates) => set((state) => ({ estuaryAcidification: { ...state.estuaryAcidification, ...updates } })),
-      abyssalSedimentFlux: {
-        sites: [], activeSiteId: null, showSedimentRate: true, showDepth: true, showFluxDirection: false, open: false, statusFilter: 'all',
-      },
+      abyssalSedimentFlux: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setAbyssalSedimentFlux: (updates) => set((state) => ({ abyssalSedimentFlux: { ...state.abyssalSedimentFlux, ...updates } })),
-      glacialMoulin: {
-        moulins: [], activeMoulinId: null, showDepth: true, showFlowRate: true, showDiameter: false, open: false, statusFilter: 'all',
-      },
+      glacialMoulin: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setGlacialMoulin: (updates) => set((state) => ({ glacialMoulin: { ...state.glacialMoulin, ...updates } })),
-      iceShelfCalving: {
-        shelves: [], activeShelfId: null, showArea: true, showCalvingRate: true, showThickness: false, open: false, statusFilter: 'all',
-      },
+      iceShelfCalving: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setIceShelfCalving: (updates) => set((state) => ({ iceShelfCalving: { ...state.iceShelfCalving, ...updates } })),
-      volcanicGasPlume: {
-        plumes: [], activePlumeId: null, showSO2: true, showPlumeHeight: true, showGasType: false, open: false, statusFilter: 'all',
-      },
+      volcanicGasPlume: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setVolcanicGasPlume: (updates) => set((state) => ({ volcanicGasPlume: { ...state.volcanicGasPlume, ...updates } })),
-      submarineLandslide: {
-        slides: [], activeSlideId: null, showVolume: true, showDepth: true, showSlopeAngle: false, open: false, statusFilter: 'all',
-      },
+      submarineLandslide: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSubmarineLandslide: (updates) => set((state) => ({ submarineLandslide: { ...state.submarineLandslide, ...updates } })),
-      coastalWetlandLoss: {
-        wetlands: [], activeWetlandId: null, showAreaLost: true, showRemainingArea: true, showLossRate: false, open: false, statusFilter: 'all',
-      },
+      coastalWetlandLoss: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setCoastalWetlandLoss: (updates) => set((state) => ({ coastalWetlandLoss: { ...state.coastalWetlandLoss, ...updates } })),
-      tundraPermafrostThaw: {
-        sites: [], activeSiteId: null, showActiveLayerDepth: true, showGroundTemperature: true, showThawRate: false, open: false, statusFilter: 'all',
-      },
+      tundraPermafrostThaw: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setTundraPermafrostThaw: (updates) => set((state) => ({ tundraPermafrostThaw: { ...state.tundraPermafrostThaw, ...updates } })),
-      oceanCurrentProfiler: {
-        profiles: [], activeProfileId: null, showCurrentSpeed: true, showDirection: true, showDepth: false, open: false, statusFilter: 'all',
-      },
+      oceanCurrentProfiler: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOceanCurrentProfiler: (updates) => set((state) => ({ oceanCurrentProfiler: { ...state.oceanCurrentProfiler, ...updates } })),
-      desertificationFront: {
-        fronts: [], activeFrontId: null, showAdvanceRate: true, showVegetationIndex: true, showSoilMoisture: false, open: false, statusFilter: 'all',
-      },
+      desertificationFront: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setDesertificationFront: (updates) => set((state) => ({ desertificationFront: { ...state.desertificationFront, ...updates } })),
-      coralReefRecovery: {
-        reefs: [], activeReefId: null, showLiveCoralCover: true, showRecoveryRate: true, showBleachingHistory: false, open: false, statusFilter: 'all',
-      },
+      coralReefRecovery: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setCoralReefRecovery: (updates) => set((state) => ({ coralReefRecovery: { ...state.coralReefRecovery, ...updates } })),
-      methaneCrater: {
-        craters: [], activeCraterId: null, showDiameter: true, showDepth: true, showMethaneConcentration: false, open: false, statusFilter: 'all',
-      },
+      methaneCrater: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setMethaneCrater: (updates) => set((state) => ({ methaneCrater: { ...state.methaneCrater, ...updates } })),
-      subglacialVolcano: {
-        volcanoes: [], activeVolcanoId: null, showIceThickness: true, showHeatFlux: true, showEruptionProbability: false, open: false, statusFilter: 'all',
-      },
+      subglacialVolcano: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSubglacialVolcano: (updates) => set((state) => ({ subglacialVolcano: { ...state.subglacialVolcano, ...updates } })),
-      coralSpawnPrediction: {
-        predictions: [], activePredictionId: null, showSpawnDate: true, showWaterTemperature: true, showMoonPhase: false, open: false, statusFilter: 'all',
-      },
+      coralSpawnPrediction: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setCoralSpawnPrediction: (updates) => set((state) => ({ coralSpawnPrediction: { ...state.coralSpawnPrediction, ...updates } })),
-      hydrothermalDiffuseFlow: {
-        flows: [], activeFlowId: null, showFlowRate: true, showTemperature: true, showChemosynthesisRate: false, open: false, statusFilter: 'all',
-      },
+      hydrothermalDiffuseFlow: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setHydrothermalDiffuseFlow: (updates) => set((state) => ({ hydrothermalDiffuseFlow: { ...state.hydrothermalDiffuseFlow, ...updates } })),
-      permafrostCarbonPipeline: {
-        segments: [], activeSegmentId: null, showCarbonStock: true, showThawDepth: true, showPipelineRisk: false, open: false, statusFilter: 'all',
-      },
+      permafrostCarbonPipeline: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setPermafrostCarbonPipeline: (updates) => set((state) => ({ permafrostCarbonPipeline: { ...state.permafrostCarbonPipeline, ...updates } })),
-      subaqueousLavaFlow: {
-        flows: [], activeFlowId: null, showFlowLength: true, showDepth: true, showLavaTemperature: false, open: false, statusFilter: 'all',
-      },
+      subaqueousLavaFlow: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSubaqueousLavaFlow: (updates) => set((state) => ({ subaqueousLavaFlow: { ...state.subaqueousLavaFlow, ...updates } })),
-      intertidalZone: {
-        zones: [], activeZoneId: null, showTidalRange: true, showBiodiversityIndex: true, showSeaLevelRise: false, open: false, statusFilter: 'all',
-      },
+      intertidalZone: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setIntertidalZone: (updates) => set((state) => ({ intertidalZone: { ...state.intertidalZone, ...updates } })),
-      desertFlashFlood: {
-        events: [], activeEventId: null, showRainfallIntensity: true, showFloodVolume: true, showCatchmentArea: false, open: false, statusFilter: 'all',
-      },
+      desertFlashFlood: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setDesertFlashFlood: (updates) => set((state) => ({ desertFlashFlood: { ...state.desertFlashFlood, ...updates } })),
-      mudVolcanoActivity: {
-        volcanoes: [], activeVolcanoId: null, showEruptionRate: true, showFlowTemperature: true, showMudViscosity: false, open: false, statusFilter: 'all',
-      },
+      mudVolcanoActivity: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setMudVolcanoActivity: (updates) => set((state) => ({ mudVolcanoActivity: { ...state.mudVolcanoActivity, ...updates } })),
-      glacierSurgeEvent: {
-        events: [], activeEventId: null, showSurgeVelocity: true, showIceDisplacement: true, showSurgeDuration: false, open: false, statusFilter: 'all',
-      },
+      glacierSurgeEvent: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setGlacierSurgeEvent: (updates) => set((state) => ({ glacierSurgeEvent: { ...state.glacierSurgeEvent, ...updates } })),
-      seicheWaveOscillation: {
-        oscillations: [], activeOscillationId: null, showWaveAmplitude: true, showOscillationPeriod: true, showWaterLevelChange: false, open: false, statusFilter: 'all',
-      },
+      seicheWaveOscillation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSeicheWaveOscillation: (updates) => set((state) => ({ seicheWaveOscillation: { ...state.seicheWaveOscillation, ...updates } })),
-      laharFlowTracker: {
-        flows: [], activeFlowId: null, showFlowVelocity: true, showSedimentConcentration: true, showFlowVolume: false, open: false, statusFilter: 'all',
-      },
+      laharFlowTracker: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setLaharFlowTracker: (updates) => set((state) => ({ laharFlowTracker: { ...state.laharFlowTracker, ...updates } })),
-      icePenitentMonitor: {
-        formations: [], activeFormationId: null, showSpikeHeight: true, showFormationDensity: true, showSurfaceTemperature: false, open: false, statusFilter: 'all',
-      },
+      icePenitentMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setIcePenitentMonitor: (updates) => set((state) => ({ icePenitentMonitor: { ...state.icePenitentMonitor, ...updates } })),
-      frostHeaveMonitor: {
-        sites: [], activeSiteId: null, showHeaveAmount: true, showGroundTemperature: true, showSoilMoistureContent: false, open: false, statusFilter: 'all',
-      },
+      frostHeaveMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setFrostHeaveMonitor: (updates) => set((state) => ({ frostHeaveMonitor: { ...state.frostHeaveMonitor, ...updates } })),
-      pumiceRaftDrift: {
-        rafts: [], activeRaftId: null, showRaftArea: true, showDriftSpeed: true, showPumiceDensity: false, open: false, statusFilter: 'all',
-      },
+      pumiceRaftDrift: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setPumiceRaftDrift: (updates) => set((state) => ({ pumiceRaftDrift: { ...state.pumiceRaftDrift, ...updates } })),
-      limnicEruptionMonitor: {
-        lakes: [], activeLakeId: null, showCO2Concentration: true, showGasReleaseRate: true, showWaterDepth: false, open: false, statusFilter: 'all',
-      },
+      limnicEruptionMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setLimnicEruptionMonitor: (updates) => set((state) => ({ limnicEruptionMonitor: { ...state.limnicEruptionMonitor, ...updates } })),
 
       // Task 95: Volcanic Tremor Monitor
-      volcanicTremor: {
-        data: [], activeItemId: null, showAmplitude: true, showFrequency: true, showDuration: false, open: false, statusFilter: '',
-      },
+      volcanicTremor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setVolcanicTremor: (updates) => set((state) => ({ volcanicTremor: { ...state.volcanicTremor, ...updates } })),
 
       // Task 95: Ice Wedge Polygon Monitor
-      iceWedgePolygon: {
-        data: [], activeItemId: null, showPolygonArea: true, showWedgeDepth: true, showDegradationRate: false, open: false, statusFilter: '',
-      },
+      iceWedgePolygon: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setIceWedgePolygon: (updates) => set((state) => ({ iceWedgePolygon: { ...state.iceWedgePolygon, ...updates } })),
 
       // Task 95: Salt Flat Crust Monitor
-      saltFlatCrust: {
-        data: [], activeItemId: null, showCrustThickness: true, showSalinity: true, showMoistureContent: false, open: false, statusFilter: '',
-      },
+      saltFlatCrust: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSaltFlatCrust: (updates) => set((state) => ({ saltFlatCrust: { ...state.saltFlatCrust, ...updates } })),
 
       // Task 95: Cold Water Coral Reef Monitor
-      coldWaterCoralReef: {
-        data: [], activeItemId: null, showDepth: true, showTemperature: true, showCoralCover: false, open: false, statusFilter: '',
-      },
+      coldWaterCoralReef: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setColdWaterCoralReef: (updates) => set((state) => ({ coldWaterCoralReef: { ...state.coldWaterCoralReef, ...updates } })),
 
       // Task 95: Peatland Carbon Sink Monitor
-      peatlandCarbonSink: {
-        data: [], activeItemId: null, showCarbonStock: true, showSequestrationRate: true, showWaterTableDepth: false, open: false, statusFilter: '',
-      },
+      peatlandCarbonSink: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setPeatlandCarbonSink: (updates) => set((state) => ({ peatlandCarbonSink: { ...state.peatlandCarbonSink, ...updates } })),
 
       // Task 95: Hyporheic Zone Monitor
-      hyporheicZone: {
-        data: [], activeItemId: null, showExchangeRate: true, showResidenceTime: true, showTemperature: false, open: false, statusFilter: '',
-      },
+      hyporheicZone: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setHyporheicZone: (updates) => set((state) => ({ hyporheicZone: { ...state.hyporheicZone, ...updates } })),
 
       // Task 95: Submarine Fan Monitor
-      submarineFan: {
-        data: [], activeItemId: null, showSedimentationRate: true, showChannelDepth: true, showFanArea: false, open: false, statusFilter: '',
-      },
+      submarineFan: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSubmarineFan: (updates) => set((state) => ({ submarineFan: { ...state.submarineFan, ...updates } })),
 
       // Task 95: Coastal Dune System Monitor
-      coastalDuneSystem: {
-        data: [], activeItemId: null, showDuneHeight: true, showErosionRate: true, showVegetationCover: false, open: false, statusFilter: '',
-      },
+      coastalDuneSystem: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setCoastalDuneSystem: (updates) => set((state) => ({ coastalDuneSystem: { ...state.coastalDuneSystem, ...updates } })),
 
       // Task 96: New Monitors
-      karstSpringDischarge: {
-        data: [], activeItemId: null, showDischargeRate: true, showWaterTemperature: true, showConductivity: false, open: false, statusFilter: '',
-      },
+      karstSpringDischarge: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setKarstSpringDischarge: (updates) => set((state) => ({ karstSpringDischarge: { ...state.karstSpringDischarge, ...updates } })),
-      caveDripMonitor: {
-        data: [], activeItemId: null, showDripRate: true, showCalciumConcentration: true, showPHDrip: false, open: false, statusFilter: '',
-      },
+      caveDripMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setCaveDripMonitor: (updates) => set((state) => ({ caveDripMonitor: { ...state.caveDripMonitor, ...updates } })),
-      tidalCreekMonitor: {
-        data: [], activeItemId: null, showTidalRange: true, showCreekDepth: true, showSalinity: false, open: false, statusFilter: '',
-      },
+      tidalCreekMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setTidalCreekMonitor: (updates) => set((state) => ({ tidalCreekMonitor: { ...state.tidalCreekMonitor, ...updates } })),
-      saltMarshCarbon: {
-        data: [], activeItemId: null, showCarbonStock: true, showAccretionRate: true, showVegetationCover: false, open: false, statusFilter: '',
-      },
+      saltMarshCarbon: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSaltMarshCarbon: (updates) => set((state) => ({ saltMarshCarbon: { ...state.saltMarshCarbon, ...updates } })),
-      opalPaleoMonitor: {
-        data: [], activeItemId: null, showOpalConcentration: true, showDiatomCount: true, showSedimentAge: false, open: false, statusFilter: '',
-      },
+      opalPaleoMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOpalPaleoMonitor: (updates) => set((state) => ({ opalPaleoMonitor: { ...state.opalPaleoMonitor, ...updates } })),
-      aeolianDustDeposition: {
-        data: [], activeItemId: null, showDepositionRate: true, showParticleSize: true, showDustOrigin: false, open: false, statusFilter: '',
-      },
+      aeolianDustDeposition: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setAeolianDustDeposition: (updates) => set((state) => ({ aeolianDustDeposition: { ...state.aeolianDustDeposition, ...updates } })),
-      katabaticWindMonitor: {
-        data: [], activeItemId: null, showWindSpeed: true, showTemperature: true, showWindChill: false, open: false, statusFilter: '',
-      },
+      katabaticWindMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setKatabaticWindMonitor: (updates) => set((state) => ({ katabaticWindMonitor: { ...state.katabaticWindMonitor, ...updates } })),
-      snowAvalancheTracker: {
-        data: [], activeItemId: null, showSlopeAngle: true, showSnowDepth: true, showAvalancheSize: false, open: false, statusFilter: '',
-      },
+      snowAvalancheTracker: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSnowAvalancheTracker: (updates) => set((state) => ({ snowAvalancheTracker: { ...state.snowAvalancheTracker, ...updates } })),
-      riftValleyVolcano: {
-        data: [], activeItemId: null, showMagmaChamberDepth: true, showDeformationRate: true, showSo2Emission: false, open: false, statusFilter: '',
-      },
+      riftValleyVolcano: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setRiftValleyVolcano: (updates) => set((state) => ({ riftValleyVolcano: { ...state.riftValleyVolcano, ...updates } })),
-      streamBankErosion: {
-        data: [], activeItemId: null, showErosionRate: true, showBankAngle: true, showVegetationCover: false, open: false, statusFilter: '',
-      },
+      streamBankErosion: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setStreamBankErosion: (updates) => set((state) => ({ streamBankErosion: { ...state.streamBankErosion, ...updates } })),
-      iceStreamVelocity: {
-        data: [], activeItemId: null, showFlowVelocity: true, showIceThickness: true, showBasalShearStress: false, open: false, statusFilter: '',
-      },
+      iceStreamVelocity: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setIceStreamVelocity: (updates) => set((state) => ({ iceStreamVelocity: { ...state.iceStreamVelocity, ...updates } })),
-      coastalAquifer: {
-        data: [], activeItemId: null, showSaltwaterFront: true, showWaterTableDepth: true, showChlorideConcentration: false, open: false, statusFilter: '',
-      },
+      coastalAquifer: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setCoastalAquifer: (updates) => set((state) => ({ coastalAquifer: { ...state.coastalAquifer, ...updates } })),
-      mangroveRootSystem: {
-        data: [], activeItemId: null, showRootDensity: true, showSedimentAccretion: true, showCarbonStock: false, open: false, statusFilter: '',
-      },
+      mangroveRootSystem: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setMangroveRootSystem: (updates) => set((state) => ({ mangroveRootSystem: { ...state.mangroveRootSystem, ...updates } })),
-      paleoshorelineTracker: {
-        data: [], activeItemId: null, showShorelineAge: true, showElevation: true, showSeaLevelIndicator: false, open: false, statusFilter: '',
-      },
+      paleoshorelineTracker: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setPaleoshorelineTracker: (updates) => set((state) => ({ paleoshorelineTracker: { ...state.paleoshorelineTracker, ...updates } })),
-      cryoconiteGranule: {
-        data: [], activeItemId: null, showGranuleDiameter: true, showOrganicContent: true, showAlbedoEffect: false, open: false, statusFilter: '',
-      },
+      cryoconiteGranule: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setCryoconiteGranule: (updates) => set((state) => ({ cryoconiteGranule: { ...state.cryoconiteGranule, ...updates } })),
-      subglacialWaterSystem: {
-        data: [], activeItemId: null, showWaterPressure: true, showFlowRate: true, showChannelDiameter: false, open: false, statusFilter: '',
-      },
+      subglacialWaterSystem: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSubglacialWaterSystem: (updates) => set((state) => ({ subglacialWaterSystem: { ...state.subglacialWaterSystem, ...updates } })),
 
       // Task 98: Mass Wasting and Slope Processes
-      landslideVelocity: {
-        data: [], activeItemId: null, showVelocity: true, showDisplacement: true, showDepth: false, open: false, statusFilter: '',
-      },
+      landslideVelocity: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setLandslideVelocity: (updates) => set((state) => ({ landslideVelocity: { ...state.landslideVelocity, ...updates } })),
-      debrisFlowSurge: {
-        data: [], activeItemId: null, showSurgeVolume: true, showFlowVelocity: true, showSedimentConcentration: false, open: false, statusFilter: '',
-      },
+      debrisFlowSurge: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setDebrisFlowSurge: (updates) => set((state) => ({ debrisFlowSurge: { ...state.debrisFlowSurge, ...updates } })),
-      rockfallImpact: {
-        data: [], activeItemId: null, showImpactEnergy: true, showBlockVolume: true, showFrequency: false, open: false, statusFilter: '',
-      },
+      rockfallImpact: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setRockfallImpact: (updates) => set((state) => ({ rockfallImpact: { ...state.rockfallImpact, ...updates } })),
-      soilCreepRate: {
-        data: [], activeItemId: null, showCreepRate: true, showSoilMoisture: true, showSlopeAngle: false, open: false, statusFilter: '',
-      },
+      soilCreepRate: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSoilCreepRate: (updates) => set((state) => ({ soilCreepRate: { ...state.soilCreepRate, ...updates } })),
-      solifluctionLobe: {
-        data: [], activeItemId: null, showLobeVelocity: true, showLobeWidth: true, showActiveLayerDepth: false, open: false, statusFilter: '',
-      },
+      solifluctionLobe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSolifluctionLobe: (updates) => set((state) => ({ solifluctionLobe: { ...state.solifluctionLobe, ...updates } })),
-      earthflowDisplacement: {
-        data: [], activeItemId: null, showDisplacement: true, showFlowRate: true, showMoistureContent: false, open: false, statusFilter: '',
-      },
+      earthflowDisplacement: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setEarthflowDisplacement: (updates) => set((state) => ({ earthflowDisplacement: { ...state.earthflowDisplacement, ...updates } })),
-      slumpFailure: {
-        data: [], activeItemId: null, showScarpHeight: true, showRotationAngle: true, showPorePressure: false, open: false, statusFilter: '',
-      },
+      slumpFailure: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSlumpFailure: (updates) => set((state) => ({ slumpFailure: { ...state.slumpFailure, ...updates } })),
-      talusAccumulation: {
-        data: [], activeItemId: null, showAccumulationRate: true, showTalusVolume: true, showSlopeAngle: false, open: false, statusFilter: '',
-      },
+      talusAccumulation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setTalusAccumulation: (updates) => set((state) => ({ talusAccumulation: { ...state.talusAccumulation, ...updates } })),
 
       // Task 99: Coastal Engineering and Shore Protection
-      breakwaterIntegrity: {
-        data: [], activeItemId: null, showStructuralHealth: true, showWaveForce: true, showOvertoppingRate: false, open: false, statusFilter: '',
-      },
+      breakwaterIntegrity: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setBreakwaterIntegrity: (updates) => set((state) => ({ breakwaterIntegrity: { ...state.breakwaterIntegrity, ...updates } })),
-      seawallErosion: {
-        data: [], activeItemId: null, showErosionRate: true, showScourDepth: true, showWallDisplacement: false, open: false, statusFilter: '',
-      },
+      seawallErosion: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSeawallErosion: (updates) => set((state) => ({ seawallErosion: { ...state.seawallErosion, ...updates } })),
-      groinSediment: {
-        data: [], activeItemId: null, showAccretionRate: true, showBypassRate: true, showUpdriftWidth: false, open: false, statusFilter: '',
-      },
+      groinSediment: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setGroinSediment: (updates) => set((state) => ({ groinSediment: { ...state.groinSediment, ...updates } })),
-      revetmentStability: {
-        data: [], activeItemId: null, showArmorIntegrity: true, showSlopeDisplacement: true, showUnderpressure: false, open: false, statusFilter: '',
-      },
+      revetmentStability: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setRevetmentStability: (updates) => set((state) => ({ revetmentStability: { ...state.revetmentStability, ...updates } })),
-      jettyCurrent: {
-        data: [], activeItemId: null, showCurrentSpeed: true, showEddyIntensity: true, showSedimentDeposition: false, open: false, statusFilter: '',
-      },
+      jettyCurrent: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setJettyCurrent: (updates) => set((state) => ({ jettyCurrent: { ...state.jettyCurrent, ...updates } })),
-      beachNourishment: {
-        data: [], activeItemId: null, showFillVolume: true, showRetentionRate: true, showShorelineChange: false, open: false, statusFilter: '',
-      },
+      beachNourishment: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setBeachNourishment: (updates) => set((state) => ({ beachNourishment: { ...state.beachNourishment, ...updates } })),
-      coastalArmor: {
-        data: [], activeItemId: null, showArmorWeight: true, showDisplacementRate: true, showWaveRunup: false, open: false, statusFilter: '',
-      },
+      coastalArmor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setCoastalArmor: (updates) => set((state) => ({ coastalArmor: { ...state.coastalArmor, ...updates } })),
-      shorelineRetreat: {
-        data: [], activeItemId: null, showRetreatRate: true, showCliffHeight: true, showWaveEnergy: false, open: false, statusFilter: '',
-      },
+      shorelineRetreat: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setShorelineRetreat: (updates) => set((state) => ({ shorelineRetreat: { ...state.shorelineRetreat, ...updates } })),
 
       // Task 100: Soil Science and Pedology
-      soilOrganicCarbon: {
-        data: [], activeItemId: null, showCarbonContent: true, showBulkDensity: true, showDecompositionRate: false, open: false, statusFilter: '',
-      },
+      soilOrganicCarbon: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSoilOrganicCarbon: (updates) => set((state) => ({ soilOrganicCarbon: { ...state.soilOrganicCarbon, ...updates } })),
-      cationExchange: {
-        data: [], activeItemId: null, showCec: true, showBaseSaturation: true, showPhLevel: false, open: false, statusFilter: '',
-      },
+      cationExchange: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setCationExchange: (updates) => set((state) => ({ cationExchange: { ...state.cationExchange, ...updates } })),
-      soilPhosphorus: {
-        data: [], activeItemId: null, showAvailableP: true, showTotalP: true, showRetentionCapacity: false, open: false, statusFilter: '',
-      },
+      soilPhosphorus: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSoilPhosphorus: (updates) => set((state) => ({ soilPhosphorus: { ...state.soilPhosphorus, ...updates } })),
-      soilCompaction: {
-        data: [], activeItemId: null, showPenetrationResistance: true, showBulkDensity: true, showPorosity: false, open: false, statusFilter: '',
-      },
+      soilCompaction: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSoilCompaction: (updates) => set((state) => ({ soilCompaction: { ...state.soilCompaction, ...updates } })),
-      clayMineral: {
-        data: [], activeItemId: null, showSwellPotential: true, showPlasticityIndex: true, showShrinkageLimit: false, open: false, statusFilter: '',
-      },
+      clayMineral: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setClayMineral: (updates) => set((state) => ({ clayMineral: { ...state.clayMineral, ...updates } })),
-      podzolProfile: {
-        data: [], activeItemId: null, showEluviationDepth: true, showIlluviationDepth: true, showOrganicLayer: false, open: false, statusFilter: '',
-      },
+      podzolProfile: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setPodzolProfile: (updates) => set((state) => ({ podzolProfile: { ...state.podzolProfile, ...updates } })),
-      gleyRedox: {
-        data: [], activeItemId: null, showRedoxPotential: true, showWaterTableDepth: true, showIronReduction: false, open: false, statusFilter: '',
-      },
+      gleyRedox: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setGleyRedox: (updates) => set((state) => ({ gleyRedox: { ...state.gleyRedox, ...updates } })),
-      calcicHorizon: {
-        data: [], activeItemId: null, showCaco3Content: true, showHorizonDepth: true, showNoduleDensity: false, open: false, statusFilter: '',
-      },
+      calcicHorizon: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setCalcicHorizon: (updates) => set((state) => ({ calcicHorizon: { ...state.calcicHorizon, ...updates } })),
 
       // Task 101: Mineral Resources and Mining
-      oreGradeAssay: {
-        data: [], activeItemId: null, showMetalGrade: true, showCutoffGrade: true, showRecoveryRate: false, open: false, statusFilter: '',
-      },
+      oreGradeAssay: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOreGradeAssay: (updates) => set((state) => ({ oreGradeAssay: { ...state.oreGradeAssay, ...updates } })),
-      mineTailingsDam: {
-        data: [], activeItemId: null, showDamHeight: true, showStorageVolume: true, showPhreaticLevel: false, open: false, statusFilter: '',
-      },
+      mineTailingsDam: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setMineTailingsDam: (updates) => set((state) => ({ mineTailingsDam: { ...state.mineTailingsDam, ...updates } })),
-      mineralVeinThickness: {
-        data: [], activeItemId: null, showVeinWidth: true, showOreMineral: true, showDepthExtent: false, open: false, statusFilter: '',
-      },
+      mineralVeinThickness: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setMineralVeinThickness: (updates) => set((state) => ({ mineralVeinThickness: { ...state.mineralVeinThickness, ...updates } })),
-      stripMineRatio: {
-        data: [], activeItemId: null, showStripRatio: true, showOverburdenDepth: true, showOreThickness: false, open: false, statusFilter: '',
-      },
+      stripMineRatio: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setStripMineRatio: (updates) => set((state) => ({ stripMineRatio: { ...state.stripMineRatio, ...updates } })),
-      undergroundMineVent: {
-        data: [], activeItemId: null, showAirflowRate: true, showMethaneLevel: true, showTemperature: false, open: false, statusFilter: '',
-      },
+      undergroundMineVent: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setUndergroundMineVent: (updates) => set((state) => ({ undergroundMineVent: { ...state.undergroundMineVent, ...updates } })),
-      acidMineDrainage: {
-        data: [], activeItemId: null, showPH: true, showIronConcentration: true, showSulfateLevel: false, open: false, statusFilter: '',
-      },
+      acidMineDrainage: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setAcidMineDrainage: (updates) => set((state) => ({ acidMineDrainage: { ...state.acidMineDrainage, ...updates } })),
-      oreReserveEstimate: {
-        data: [], activeItemId: null, showProvenReserve: true, showProbableReserve: true, showResourceGrade: false, open: false, statusFilter: '',
-      },
+      oreReserveEstimate: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOreReserveEstimate: (updates) => set((state) => ({ oreReserveEstimate: { ...state.oreReserveEstimate, ...updates } })),
-      mineralDepositGrade: {
-        data: [], activeItemId: null, showDepositTonnes: true, showAverageGrade: true, showContainedMetal: false, open: false, statusFilter: '',
-      },
+      mineralDepositGrade: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setMineralDepositGrade: (updates) => set((state) => ({ mineralDepositGrade: { ...state.mineralDepositGrade, ...updates } })),
 
       // Task 102: Ocean Circulation and Currents
-      thermohalineCell: {
-        data: [], activeItemId: null, showOverturningRate: true, showTemperature: true, showSalinity: false, open: false, statusFilter: '',
-      },
+      thermohalineCell: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setThermohalineCell: (updates) => set((state) => ({ thermohalineCell: { ...state.thermohalineCell, ...updates } })),
-      ekmanTransport: {
-        data: [], activeItemId: null, showTransportAngle: true, showWindSpeed: true, showSurfaceVelocity: false, open: false, statusFilter: '',
-      },
+      ekmanTransport: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setEkmanTransport: (updates) => set((state) => ({ ekmanTransport: { ...state.ekmanTransport, ...updates } })),
-      geostrophicCurrent: {
-        data: [], activeItemId: null, showCurrentSpeed: true, showPressureGradient: true, showCoriolisEffect: false, open: false, statusFilter: '',
-      },
+      geostrophicCurrent: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setGeostrophicCurrent: (updates) => set((state) => ({ geostrophicCurrent: { ...state.geostrophicCurrent, ...updates } })),
-      upwellingIntensity: {
-        data: [], activeItemId: null, showUpwellingVelocity: true, showSstAnomaly: true, showChlorophyllConcentration: false, open: false, statusFilter: '',
-      },
+      upwellingIntensity: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setUpwellingIntensity: (updates) => set((state) => ({ upwellingIntensity: { ...state.upwellingIntensity, ...updates } })),
-      westernBoundary: {
-        data: [], activeItemId: null, showPeakVelocity: true, showTransportVolume: true, showMeanderAmplitude: false, open: false, statusFilter: '',
-      },
+      westernBoundary: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setWesternBoundary: (updates) => set((state) => ({ westernBoundary: { ...state.westernBoundary, ...updates } })),
-      deepWaterFormation: {
-        data: [], activeItemId: null, showConvectionDepth: true, showDensityAnomaly: true, showFormationRate: false, open: false, statusFilter: '',
-      },
+      deepWaterFormation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setDeepWaterFormation: (updates) => set((state) => ({ deepWaterFormation: { ...state.deepWaterFormation, ...updates } })),
-      oceanGyre: {
-        data: [], activeItemId: null, showRotationPeriod: true, showDiameter: true, showEddyKineticEnergy: false, open: false, statusFilter: '',
-      },
+      oceanGyre: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOceanGyre: (updates) => set((state) => ({ oceanGyre: { ...state.oceanGyre, ...updates } })),
-      tropicalCurrent: {
-        data: [], activeItemId: null, showCurrentSpeed: true, showTemperature: true, showFreshwaterFlux: false, open: false, statusFilter: '',
-      },
+      tropicalCurrent: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setTropicalCurrent: (updates) => set((state) => ({ tropicalCurrent: { ...state.tropicalCurrent, ...updates } })),
 
       // Task 103: Atmospheric Dynamics and Weather
-      jetStreamPosition: {
-        data: [], activeItemId: null, showLatitudePosition: true, showWindSpeed: true, showMeanderIndex: false, open: false, statusFilter: '',
-      },
+      jetStreamPosition: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setJetStreamPosition: (updates) => set((state) => ({ jetStreamPosition: { ...state.jetStreamPosition, ...updates } })),
-      atmosphericPressureCell: {
-        data: [], activeItemId: null, showCentralPressure: true, showCellDiameter: true, showPressureGradient: false, open: false, statusFilter: '',
-      },
+      atmosphericPressureCell: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setAtmosphericPressureCell: (updates) => set((state) => ({ atmosphericPressureCell: { ...state.atmosphericPressureCell, ...updates } })),
-      tropopauseHeight: {
-        data: [], activeItemId: null, showTropopauseHeight: true, showTemperatureLapse: true, showTropopausePressure: false, open: false, statusFilter: '',
-      },
+      tropopauseHeight: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setTropopauseHeight: (updates) => set((state) => ({ tropopauseHeight: { ...state.tropopauseHeight, ...updates } })),
-      rossbyWaveAmplitude: {
-        data: [], activeItemId: null, showWaveAmplitude: true, showWavenumber: true, showPhaseSpeed: false, open: false, statusFilter: '',
-      },
+      rossbyWaveAmplitude: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setRossbyWaveAmplitude: (updates) => set((state) => ({ rossbyWaveAmplitude: { ...state.rossbyWaveAmplitude, ...updates } })),
-      hadleyCellCirculation: {
-        data: [], activeItemId: null, showCirculationStrength: true, showUpdraftVelocity: true, showOutflowHeight: false, open: false, statusFilter: '',
-      },
+      hadleyCellCirculation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setHadleyCellCirculation: (updates) => set((state) => ({ hadleyCellCirculation: { ...state.hadleyCellCirculation, ...updates } })),
-      atmosphericRiverFlow: {
-        data: [], activeItemId: null, showMoistureFlux: true, showIntegratedVapor: true, showWindSpeed: false, open: false, statusFilter: '',
-      },
+      atmosphericRiverFlow: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setAtmosphericRiverFlow: (updates) => set((state) => ({ atmosphericRiverFlow: { ...state.atmosphericRiverFlow, ...updates } })),
-      polarFrontJet: {
-        data: [], activeItemId: null, showJetSpeed: true, showFrontalContrast: true, showBaroclinicity: false, open: false, statusFilter: '',
-      },
+      polarFrontJet: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setPolarFrontJet: (updates) => set((state) => ({ polarFrontJet: { ...state.polarFrontJet, ...updates } })),
-      tradeWindBelt: {
-        data: [], activeItemId: null, showWindSpeed: true, showConvergenceZone: true, showConsistency: false, open: false, statusFilter: '',
-      },
+      tradeWindBelt: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setTradeWindBelt: (updates) => set((state) => ({ tradeWindBelt: { ...state.tradeWindBelt, ...updates } })),
 
       // Task 104: Biogeography and Ecosystem
-      speciesMigrationRoute: {
-        data: [], activeItemId: null, showMigratoryDistance: true, showPopulationSize: true, showTimingShift: false, open: false, statusFilter: '',
-      },
+      speciesMigrationRoute: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSpeciesMigrationRoute: (updates) => set((state) => ({ speciesMigrationRoute: { ...state.speciesMigrationRoute, ...updates } })),
-      habitatCorridor: {
-        data: [], activeItemId: null, showCorridorWidth: true, showConnectivityIndex: true, showBarrierCount: false, open: false, statusFilter: '',
-      },
+      habitatCorridor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setHabitatCorridor: (updates) => set((state) => ({ habitatCorridor: { ...state.habitatCorridor, ...updates } })),
-      endemicHotspot: {
-        data: [], activeItemId: null, showEndemicSpeciesCount: true, showThreatLevel: true, showProtectionCoverage: false, open: false, statusFilter: '',
-      },
+      endemicHotspot: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setEndemicHotspot: (updates) => set((state) => ({ endemicHotspot: { ...state.endemicHotspot, ...updates } })),
-      keystonePopulation: {
-        data: [], activeItemId: null, showPopulationDensity: true, showReproductionRate: true, showEcosystemImpact: false, open: false, statusFilter: '',
-      },
+      keystonePopulation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setKeystonePopulation: (updates) => set((state) => ({ keystonePopulation: { ...state.keystonePopulation, ...updates } })),
-      wildlifeCorridor: {
-        data: [], activeItemId: null, showCorridorLength: true, showSpeciesUsing: true, showCrossingEvents: false, open: false, statusFilter: '',
-      },
+      wildlifeCorridor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setWildlifeCorridor: (updates) => set((state) => ({ wildlifeCorridor: { ...state.wildlifeCorridor, ...updates } })),
-      biomeTransition: {
-        data: [], activeItemId: null, showTransitionWidth: true, showSpeciesTurnover: true, showShiftRate: false, open: false, statusFilter: '',
-      },
+      biomeTransition: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setBiomeTransition: (updates) => set((state) => ({ biomeTransition: { ...state.biomeTransition, ...updates } })),
-      forestCanopyCover: {
-        data: [], activeItemId: null, showCanopyDensity: true, showLeafAreaIndex: true, showCarbonStock: false, open: false, statusFilter: '',
-      },
+      forestCanopyCover: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setForestCanopyCover: (updates) => set((state) => ({ forestCanopyCover: { ...state.forestCanopyCover, ...updates } })),
-      wetlandBiodiversityIndex: {
-        data: [], activeItemId: null, showSpeciesRichness: true, showShannonIndex: true, showWaterQuality: false, open: false, statusFilter: '',
-      },
+      wetlandBiodiversityIndex: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setWetlandBiodiversityIndex: (updates) => set((state) => ({ wetlandBiodiversityIndex: { ...state.wetlandBiodiversityIndex, ...updates } })),
 
       // Task 105: Hydrology and Watershed
-      watershedDischarge: {
-        data: [], activeItemId: null, showDischargeRate: true, showDrainageArea: true, showRunoffCoefficient: false, open: false, statusFilter: '',
-      },
+      watershedDischarge: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setWatershedDischarge: (updates) => set((state) => ({ watershedDischarge: { ...state.watershedDischarge, ...updates } })),
-      aquiferRechargeRate: {
-        data: [], activeItemId: null, showRechargeRate: true, showWaterTableDepth: true, showPermeability: false, open: false, statusFilter: '',
-      },
+      aquiferRechargeRate: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setAquiferRechargeRate: (updates) => set((state) => ({ aquiferRechargeRate: { ...state.aquiferRechargeRate, ...updates } })),
-      floodInundationMap: {
-        data: [], activeItemId: null, showFloodDepth: true, showReturnPeriod: true, showAffectedArea: false, open: false, statusFilter: '',
-      },
+      floodInundationMap: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setFloodInundationMap: (updates) => set((state) => ({ floodInundationMap: { ...state.floodInundationMap, ...updates } })),
-      riverSedimentLoad: {
-        data: [], activeItemId: null, showSuspendedLoad: true, showBedloadTransport: true, showTurbidity: false, open: false, statusFilter: '',
-      },
+      riverSedimentLoad: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setRiverSedimentLoad: (updates) => set((state) => ({ riverSedimentLoad: { ...state.riverSedimentLoad, ...updates } })),
-      groundwaterTableLevel: {
-        data: [], activeItemId: null, showWaterLevel: true, showTrendRate: true, showAquiferType: false, open: false, statusFilter: '',
-      },
+      groundwaterTableLevel: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setGroundwaterTableLevel: (updates) => set((state) => ({ groundwaterTableLevel: { ...state.groundwaterTableLevel, ...updates } })),
-      snowpackWaterEquivalent: {
-        data: [], activeItemId: null, showSweValue: true, showSnowDepth: true, showMeltRate: false, open: false, statusFilter: '',
-      },
+      snowpackWaterEquivalent: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSnowpackWaterEquivalent: (updates) => set((state) => ({ snowpackWaterEquivalent: { ...state.snowpackWaterEquivalent, ...updates } })),
-      reservoirStorageLevel: {
-        data: [], activeItemId: null, showStorageLevel: true, showInflowRate: true, showOutflowRate: false, open: false, statusFilter: '',
-      },
+      reservoirStorageLevel: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setReservoirStorageLevel: (updates) => set((state) => ({ reservoirStorageLevel: { ...state.reservoirStorageLevel, ...updates } })),
-      baseflowIndex: {
-        data: [], activeItemId: null, showBaseflowRatio: true, showTotalFlow: true, showGroundwaterContribution: false, open: false, statusFilter: '',
-      },
+      baseflowIndex: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setBaseflowIndex: (updates) => set((state) => ({ baseflowIndex: { ...state.baseflowIndex, ...updates } })),
 
       // Task 106: Cryosphere Dynamics
-      iceShelfThickness: {
-        data: [], activeItemId: null, showShelfThickness: true, showBasalMeltRate: true, showRiftLength: false, open: false, statusFilter: '',
-      },
+      iceShelfThickness: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setIceShelfThickness: (updates) => set((state) => ({ iceShelfThickness: { ...state.iceShelfThickness, ...updates } })),
-      seaIceExtent: {
-        data: [], activeItemId: null, showIceConcentration: true, showExtentAnomaly: true, showIceAge: false, open: false, statusFilter: '',
-      },
+      seaIceExtent: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSeaIceExtent: (updates) => set((state) => ({ seaIceExtent: { ...state.seaIceExtent, ...updates } })),
-      glacierMassBalance: {
-        data: [], activeItemId: null, showMassBalance: true, showEquilibriumLine: true, showAccumulationRatio: false, open: false, statusFilter: '',
-      },
+      glacierMassBalance: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setGlacierMassBalance: (updates) => set((state) => ({ glacierMassBalance: { ...state.glacierMassBalance, ...updates } })),
-      permafrostActiveLayer: {
-        data: [], activeItemId: null, showActiveLayerDepth: true, showGroundTemperature: true, showThawRate: false, open: false, statusFilter: '',
-      },
+      permafrostActiveLayer: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setPermafrostActiveLayer: (updates) => set((state) => ({ permafrostActiveLayer: { ...state.permafrostActiveLayer, ...updates } })),
-      iceCoreRecord: {
-        data: [], activeItemId: null, showCoreDepth: true, showOldestIceAge: true, showCo2Concentration: false, open: false, statusFilter: '',
-      },
+      iceCoreRecord: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setIceCoreRecord: (updates) => set((state) => ({ iceCoreRecord: { ...state.iceCoreRecord, ...updates } })),
-      snowCoverDuration: {
-        data: [], activeItemId: null, showSnowDays: true, showSnowOnsetDate: true, showSnowMeltDate: false, open: false, statusFilter: '',
-      },
+      snowCoverDuration: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSnowCoverDuration: (updates) => set((state) => ({ snowCoverDuration: { ...state.snowCoverDuration, ...updates } })),
-      frostThawCycle: {
-        data: [], activeItemId: null, showFreezeThawCycles: true, showFrostDepth: true, showHeaveMagnitude: false, open: false, statusFilter: '',
-      },
+      frostThawCycle: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setFrostThawCycle: (updates) => set((state) => ({ frostThawCycle: { ...state.frostThawCycle, ...updates } })),
-      icebergCalving: {
-        data: [], activeItemId: null, showCalvingRate: true, showIcebergSize: true, showDriftSpeed: false, open: false, statusFilter: '',
-      },
+      icebergCalving: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setIcebergCalving: (updates) => set((state) => ({ icebergCalving: { ...state.icebergCalving, ...updates } })),
 
       // Task 107: Space Weather and Geomagnetism
-      magnetopauseStandoff: {
-        data: [], activeItemId: null, showStandoffDistance: true, showSolarWindPressure: true, showMagneticFieldBz: false, open: false, statusFilter: '',
-      },
+      magnetopauseStandoff: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setMagnetopauseStandoff: (updates) => set((state) => ({ magnetopauseStandoff: { ...state.magnetopauseStandoff, ...updates } })),
-      auroraOvalPosition: {
-        data: [], activeItemId: null, showOvalLatitude: true, showKpIndex: true, showVisibilityProbability: false, open: false, statusFilter: '',
-      },
+      auroraOvalPosition: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setAuroraOvalPosition: (updates) => set((state) => ({ auroraOvalPosition: { ...state.auroraOvalPosition, ...updates } })),
-      vanAllenRadiation: {
-        data: [], activeItemId: null, showProtonFlux: true, showElectronFlux: true, showBeltAltitude: false, open: false, statusFilter: '',
-      },
+      vanAllenRadiation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setVanAllenRadiation: (updates) => set((state) => ({ vanAllenRadiation: { ...state.vanAllenRadiation, ...updates } })),
-      ionosphericDisturbance: {
-        data: [], activeItemId: null, showTecValue: true, showScintillationIndex: true, showF2LayerFrequency: false, open: false, statusFilter: '',
-      },
+      ionosphericDisturbance: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setIonosphericDisturbance: (updates) => set((state) => ({ ionosphericDisturbance: { ...state.ionosphericDisturbance, ...updates } })),
-      cosmicRayFlux: {
-        data: [], activeItemId: null, showNeutronCount: true, showMuonFlux: true, showSolarModulation: false, open: false, statusFilter: '',
-      },
+      cosmicRayFlux: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setCosmicRayFlux: (updates) => set((state) => ({ cosmicRayFlux: { ...state.cosmicRayFlux, ...updates } })),
-      solarFluxIndex: {
-        data: [], activeItemId: null, showF107Index: true, showSunspotNumber: true, showSolarCyclePhase: false, open: false, statusFilter: '',
-      },
+      solarFluxIndex: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSolarFluxIndex: (updates) => set((state) => ({ solarFluxIndex: { ...state.solarFluxIndex, ...updates } })),
-      spaceRadiationDose: {
-        data: [], activeItemId: null, showDoseRate: true, showParticleEnergy: true, showShieldingEffectiveness: false, open: false, statusFilter: '',
-      },
+      spaceRadiationDose: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSpaceRadiationDose: (updates) => set((state) => ({ spaceRadiationDose: { ...state.spaceRadiationDose, ...updates } })),
-      satelliteDrag: {
-        data: [], activeItemId: null, showOrbitalDecay: true, showAtmosphericDensity: true, showAltitude: false, open: false, statusFilter: '',
-      },
+      satelliteDrag: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSatelliteDrag: (updates) => set((state) => ({ satelliteDrag: { ...state.satelliteDrag, ...updates } })),
 
       // Task 108: Urban Infrastructure & Smart City
-      trafficFlowMonitor: {
-        data: [], activeItemId: null, showAverageSpeed: true, showCongestionIndex: true, showVehicleCount: false, showTravelTime: false, open: false, statusFilter: '',
-      },
+      trafficFlowMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setTrafficFlowMonitor: (updates) => set((state) => ({ trafficFlowMonitor: { ...state.trafficFlowMonitor, ...updates } })),
-      bridgeStructuralHealth: {
-        data: [], activeItemId: null, showStructuralStress: true, showVibrationLevel: true, showLoadCapacity: false, showCorrosionIndex: false, open: false, statusFilter: '',
-      },
+      bridgeStructuralHealth: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setBridgeStructuralHealth: (updates) => set((state) => ({ bridgeStructuralHealth: { ...state.bridgeStructuralHealth, ...updates } })),
-      waterPipeNetwork: {
-        data: [], activeItemId: null, showPressureLevel: true, showFlowRate: true, showLeakDetection: false, showWaterQuality: false, open: false, statusFilter: '',
-      },
+      waterPipeNetwork: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setWaterPipeNetwork: (updates) => set((state) => ({ waterPipeNetwork: { ...state.waterPipeNetwork, ...updates } })),
-      powerGridLoad: {
-        data: [], activeItemId: null, showGridLoad: true, showPeakDemand: true, showFrequency: false, showReserveMargin: false, open: false, statusFilter: '',
-      },
+      powerGridLoad: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setPowerGridLoad: (updates) => set((state) => ({ powerGridLoad: { ...state.powerGridLoad, ...updates } })),
-      wasteCollectionRoute: {
-        data: [], activeItemId: null, showCollectionRate: true, showRouteEfficiency: true, showFillLevel: false, showRecyclingRate: false, open: false, statusFilter: '',
-      },
+      wasteCollectionRoute: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setWasteCollectionRoute: (updates) => set((state) => ({ wasteCollectionRoute: { ...state.wasteCollectionRoute, ...updates } })),
-      airQualityUrban: {
-        data: [], activeItemId: null, showAqiIndex: true, showPm25Level: true, showNo2Level: false, showO3Level: false, open: false, statusFilter: '',
-      },
+      airQualityUrban: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setAirQualityUrban: (updates) => set((state) => ({ airQualityUrban: { ...state.airQualityUrban, ...updates } })),
-      noiseLevelMapper: {
-        data: [], activeItemId: null, showAvgDecibels: true, showPeakLevel: true, showQuietZonePercent: false, showNightLevel: false, open: false, statusFilter: '',
-      },
+      noiseLevelMapper: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setNoiseLevelMapper: (updates) => set((state) => ({ noiseLevelMapper: { ...state.noiseLevelMapper, ...updates } })),
-      smartParkingCapacity: {
-        data: [], activeItemId: null, showOccupancyRate: true, showAvailableSpots: true, showAvgDuration: false, showTurnoverRate: false, open: false, statusFilter: '',
-      },
+      smartParkingCapacity: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSmartParkingCapacity: (updates) => set((state) => ({ smartParkingCapacity: { ...state.smartParkingCapacity, ...updates } })),
 
       // Task 109: Agricultural Monitoring & Precision Farming
-      cropHealthIndex: {
-        data: [], activeItemId: null, showNdviIndex: true, showCropStress: true, showGrowthStage: false, showCoveragePercent: false, open: false, statusFilter: '',
-      },
+      cropHealthIndex: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setCropHealthIndex: (updates) => set((state) => ({ cropHealthIndex: { ...state.cropHealthIndex, ...updates } })),
-      soilMoistureField: {
-        data: [], activeItemId: null, showMoisturePercent: true, showFieldCapacity: true, showWiltingPoint: false, showAvailableWater: false, open: false, statusFilter: '',
-      },
+      soilMoistureField: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSoilMoistureField: (updates) => set((state) => ({ soilMoistureField: { ...state.soilMoistureField, ...updates } })),
-      irrigationEfficiency: {
-        data: [], activeItemId: null, showApplicationRate: true, showDistributionPercent: true, showConveyancePercent: false, showOverallEfficiency: false, open: false, statusFilter: '',
-      },
+      irrigationEfficiency: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setIrrigationEfficiency: (updates) => set((state) => ({ irrigationEfficiency: { ...state.irrigationEfficiency, ...updates } })),
-      pestOutbreakTracker: {
-        data: [], activeItemId: null, showRiskLevel: true, showSpreadRate: true, showAffectedArea: false, showControlEfficiency: false, open: false, statusFilter: '',
-      },
+      pestOutbreakTracker: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setPestOutbreakTracker: (updates) => set((state) => ({ pestOutbreakTracker: { ...state.pestOutbreakTracker, ...updates } })),
-      fertilizerRunoff: {
-        data: [], activeItemId: null, showNitrogenLoad: true, showPhosphorusLoad: true, showNitrateLevel: false, showEutrophicationIndex: false, open: false, statusFilter: '',
-      },
+      fertilizerRunoff: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setFertilizerRunoff: (updates) => set((state) => ({ fertilizerRunoff: { ...state.fertilizerRunoff, ...updates } })),
-      harvestYieldPredict: {
-        data: [], activeItemId: null, showYieldForecast: true, showAreaHarvested: true, showProductionEst: false, showYieldGap: false, open: false, statusFilter: '',
-      },
+      harvestYieldPredict: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setHarvestYieldPredict: (updates) => set((state) => ({ harvestYieldPredict: { ...state.harvestYieldPredict, ...updates } })),
-      greenhouseClimate: {
-        data: [], activeItemId: null, showTemperature: true, showHumidity: true, showCo2Level: false, showLightPAR: false, open: false, statusFilter: '',
-      },
+      greenhouseClimate: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setGreenhouseClimate: (updates) => set((state) => ({ greenhouseClimate: { ...state.greenhouseClimate, ...updates } })),
-      livestockMovement: {
-        data: [], activeItemId: null, showHerdCount: true, showAvgSpeed: true, showGrazingArea: false, showHealthIndex: false, open: false, statusFilter: '',
-      },
+      livestockMovement: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setLivestockMovement: (updates) => set((state) => ({ livestockMovement: { ...state.livestockMovement, ...updates } })),
 
       // Task 110: Renewable Energy & Grid Monitoring
-      windFarmOutput: {
-        data: [], activeItemId: null, showWindSpeed: true, showPowerOutput: true, showCapacityFactor: false, showRotorRpm: false, open: false, statusFilter: '',
-      },
+      windFarmOutput: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setWindFarmOutput: (updates) => set((state) => ({ windFarmOutput: { ...state.windFarmOutput, ...updates } })),
-      hydroelectricFlow: {
-        data: [], activeItemId: null, showFlowRate: true, showReservoirLevel: true, showTurbineEfficiency: false, showPowerOutput: false, open: false, statusFilter: '',
-      },
+      hydroelectricFlow: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setHydroelectricFlow: (updates) => set((state) => ({ hydroelectricFlow: { ...state.hydroelectricFlow, ...updates } })),
-      biomassEnergyYield: {
-        data: [], activeItemId: null, showFeedstockSupply: true, showBiogasOutput: true, showConversionEfficiency: false, showCarbonOffset: false, open: false, statusFilter: '',
-      },
+      biomassEnergyYield: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setBiomassEnergyYield: (updates) => set((state) => ({ biomassEnergyYield: { ...state.biomassEnergyYield, ...updates } })),
-      tidalEnergyPotential: {
-        data: [], activeItemId: null, showTidalRange: true, showCurrentSpeed: true, showPowerDensity: false, showPredictability: false, open: false, statusFilter: '',
-      },
+      tidalEnergyPotential: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setTidalEnergyPotential: (updates) => set((state) => ({ tidalEnergyPotential: { ...state.tidalEnergyPotential, ...updates } })),
-      gridStabilityIndex: {
-        data: [], activeItemId: null, showFrequency: true, showVoltageDeviation: true, showLoadBalance: false, showReserveMargin: false, open: false, statusFilter: '',
-      },
+      gridStabilityIndex: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setGridStabilityIndex: (updates) => set((state) => ({ gridStabilityIndex: { ...state.gridStabilityIndex, ...updates } })),
-      energyStorageLevel: {
-        data: [], activeItemId: null, showStorageCapacity: true, showChargeLevel: true, showDischargeRate: false, showRoundTripEfficiency: false, open: false, statusFilter: '',
-      },
+      energyStorageLevel: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setEnergyStorageLevel: (updates) => set((state) => ({ energyStorageLevel: { ...state.energyStorageLevel, ...updates } })),
       // Task 111: Public Health & Epidemiology
-      diseaseOutbreakMap: {
-        data: [], activeItemId: null, showCaseCount: true, showIncidenceRate: true, showTransmissionRate: false, showMortalityRate: false, open: false, statusFilter: '',
-      },
+      diseaseOutbreakMap: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setDiseaseOutbreakMap: (updates) => set((state) => ({ diseaseOutbreakMap: { ...state.diseaseOutbreakMap, ...updates } })),
-      vaccinationCoverage: {
-        data: [], activeItemId: null, showCoverageRate: true, showDoseCompletion: true, showBoosterUptake: false, showHesitancyIndex: false, open: false, statusFilter: '',
-      },
+      vaccinationCoverage: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setVaccinationCoverage: (updates) => set((state) => ({ vaccinationCoverage: { ...state.vaccinationCoverage, ...updates } })),
-      waterQualityIndex: {
-        data: [], activeItemId: null, showWqiScore: true, showPhLevel: true, showDissolvedOxygen: false, showContaminantLevel: false, open: false, statusFilter: '',
-      },
+      waterQualityIndex: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setWaterQualityIndex: (updates) => set((state) => ({ waterQualityIndex: { ...state.waterQualityIndex, ...updates } })),
-      hospitalCapacity: {
-        data: [], activeItemId: null, showBedOccupancy: true, showIcuUtilization: true, showVentilatorUsage: false, showStaffAvailability: false, open: false, statusFilter: '',
-      },
+      hospitalCapacity: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setHospitalCapacity: (updates) => set((state) => ({ hospitalCapacity: { ...state.hospitalCapacity, ...updates } })),
-      airPollutionHealth: {
-        data: [], activeItemId: null, showAqiValue: true, showPm25Concentration: true, showRespiratoryRisk: false, showCardiovascularImpact: false, open: false, statusFilter: '',
-      },
+      airPollutionHealth: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setAirPollutionHealth: (updates) => set((state) => ({ airPollutionHealth: { ...state.airPollutionHealth, ...updates } })),
-      vectorHabitatRisk: {
-        data: [], activeItemId: null, showHabitatSuitability: true, showVectorDensity: true, showDiseasePrevalence: false, showSeasonalityIndex: false, open: false, statusFilter: '',
-      },
+      vectorHabitatRisk: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setVectorHabitatRisk: (updates) => set((state) => ({ vectorHabitatRisk: { ...state.vectorHabitatRisk, ...updates } })),
-      nutritionSecurity: {
-        data: [], activeItemId: null, showFoodSecurityIndex: true, showMalnutritionRate: true, showStuntingPrevalence: false, showDietaryDiversity: false, open: false, statusFilter: '',
-      },
+      nutritionSecurity: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setNutritionSecurity: (updates) => set((state) => ({ nutritionSecurity: { ...state.nutritionSecurity, ...updates } })),
-      pandemicSpreadRate: {
-        data: [], activeItemId: null, showReproductionNumber: true, showDoublingTime: true, showTestPositivity: false, showHospitalizationRate: false, open: false, statusFilter: '',
-      },
+      pandemicSpreadRate: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setPandemicSpreadRate: (updates) => set((state) => ({ pandemicSpreadRate: { ...state.pandemicSpreadRate, ...updates } })),
 
       // Task 112: Transportation & Logistics
-      flightPathTracker: {
-        data: [], activeItemId: null, showAltitude: true, showSpeed: true, showHeading: false, showDelayMinutes: false, open: false, statusFilter: '',
-      },
+      flightPathTracker: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setFlightPathTracker: (updates) => set((state) => ({ flightPathTracker: { ...state.flightPathTracker, ...updates } })),
-      portCongestionMap: {
-        data: [], activeItemId: null, showVesselCount: true, showAvgWaitTime: true, showBerthUtilization: false, showThroughputTEU: false, open: false, statusFilter: '',
-      },
+      portCongestionMap: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setPortCongestionMap: (updates) => set((state) => ({ portCongestionMap: { ...state.portCongestionMap, ...updates } })),
-      railNetworkStatus: {
-        data: [], activeItemId: null, showTrainCount: true, showAvgSpeed: true, showDelayIndex: false, showTrackUtilization: false, open: false, statusFilter: '',
-      },
+      railNetworkStatus: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setRailNetworkStatus: (updates) => set((state) => ({ railNetworkStatus: { ...state.railNetworkStatus, ...updates } })),
-      highwayBottleneck: {
-        data: [], activeItemId: null, showCongestionLevel: true, showAvgSpeed: true, showQueueLength: false, showIncidentCount: false, open: false, statusFilter: '',
-      },
+      highwayBottleneck: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setHighwayBottleneck: (updates) => set((state) => ({ highwayBottleneck: { ...state.highwayBottleneck, ...updates } })),
-      cargoShipTracker: {
-        data: [], activeItemId: null, showCargoCapacity: true, showCurrentLoad: true, showSpeed: false, showEtaHours: false, open: false, statusFilter: '',
-      },
+      cargoShipTracker: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setCargoShipTracker: (updates) => set((state) => ({ cargoShipTracker: { ...state.cargoShipTracker, ...updates } })),
-      transitRidership: {
-        data: [], activeItemId: null, showDailyRiders: true, showOnTimeRate: true, showRouteCount: false, showCrowdingIndex: false, open: false, statusFilter: '',
-      },
+      transitRidership: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setTransitRidership: (updates) => set((state) => ({ transitRidership: { ...state.transitRidership, ...updates } })),
-      fuelStationNetwork: {
-        data: [], activeItemId: null, showFuelPrice: true, showAvailability: true, showStationCount: false, showAvgWaitTime: false, open: false, statusFilter: '',
-      },
+      fuelStationNetwork: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setFuelStationNetwork: (updates) => set((state) => ({ fuelStationNetwork: { ...state.fuelStationNetwork, ...updates } })),
-      logisticsDepotStatus: {
-        data: [], activeItemId: null, showWarehouseCapacity: true, showOutboundShipments: true, showInboundShipments: false, showAvgProcessingTime: false, open: false, statusFilter: '',
-      },
+      logisticsDepotStatus: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Missing monitor defaults (re-added)
+      airPollutionDispersion: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      aquaculture: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      atmosphericRiver: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      avalancheTerrain: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      caveSystem: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      coastalErosionPredictor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      continentalDrift: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      coralGenomics: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      coralRestoration: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      cropYield: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      deepBiosphere: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      desertificationRisk: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      dustAerosol: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      electromagneticField: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      geoThermalEnergy: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      geomagneticReversal: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      glacierRetreat: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      hydroelectricPotential: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      iceSheetVelocity: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      ionosphere: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      karstGroundwater: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      lunarTide: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      magneticAnomaly: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      mangroveRestorationProgress: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      meteorShower: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      methaneEmission: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      methaneSeep: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      oceanAlkalinity: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      peatlandCarbon: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      pelagicZone: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      phenology: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      polarIceSheet: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      polynya: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      rainfallPattern: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      riverDelta: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      saltMarsh: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      sandDuneMigration: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      seaSurfaceTemperature: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      seafloorMapping: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      seismicHazard: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      solarFlare: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      solarWind: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      spaceWeatherImpact: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      subsurfaceFluid: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      tectonicSubduction: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      tornadoActivity: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      undergroundWaterway: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      urbanHeatIslandProfiler: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      urbanMicroclimate: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      vegetationIndex: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      volcanicGasEmission: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      volcanicLavaFlow: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      volcanicPlume: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      volcanoThermal: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      wildfireSpread: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      windPattern: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setLogisticsDepotStatus: (updates) => set((state) => ({ logisticsDepotStatus: { ...state.logisticsDepotStatus, ...updates } })),
+      // Missing monitor setters (re-added)
+      setAirPollutionDispersion: (updates) => set((state) => ({ airPollutionDispersion: { ...state.airPollutionDispersion, ...updates } })),
+      setAquaculture: (updates) => set((state) => ({ aquaculture: { ...state.aquaculture, ...updates } })),
+      setAtmosphericRiver: (updates) => set((state) => ({ atmosphericRiver: { ...state.atmosphericRiver, ...updates } })),
+      setAvalancheTerrain: (updates) => set((state) => ({ avalancheTerrain: { ...state.avalancheTerrain, ...updates } })),
+      setCaveSystem: (updates) => set((state) => ({ caveSystem: { ...state.caveSystem, ...updates } })),
+      setCoastalErosionPredictor: (updates) => set((state) => ({ coastalErosionPredictor: { ...state.coastalErosionPredictor, ...updates } })),
+      setContinentalDrift: (updates) => set((state) => ({ continentalDrift: { ...state.continentalDrift, ...updates } })),
+      setCoralGenomics: (updates) => set((state) => ({ coralGenomics: { ...state.coralGenomics, ...updates } })),
+      setCoralRestoration: (updates) => set((state) => ({ coralRestoration: { ...state.coralRestoration, ...updates } })),
+      setCropYield: (updates) => set((state) => ({ cropYield: { ...state.cropYield, ...updates } })),
+      setDeepBiosphere: (updates) => set((state) => ({ deepBiosphere: { ...state.deepBiosphere, ...updates } })),
+      setDesertificationRisk: (updates) => set((state) => ({ desertificationRisk: { ...state.desertificationRisk, ...updates } })),
+      setDustAerosol: (updates) => set((state) => ({ dustAerosol: { ...state.dustAerosol, ...updates } })),
+      setElectromagneticField: (updates) => set((state) => ({ electromagneticField: { ...state.electromagneticField, ...updates } })),
+      setGeoThermalEnergy: (updates) => set((state) => ({ geoThermalEnergy: { ...state.geoThermalEnergy, ...updates } })),
+      setGeomagneticReversal: (updates) => set((state) => ({ geomagneticReversal: { ...state.geomagneticReversal, ...updates } })),
+      setGlacierRetreat: (updates) => set((state) => ({ glacierRetreat: { ...state.glacierRetreat, ...updates } })),
+      setHydroelectricPotential: (updates) => set((state) => ({ hydroelectricPotential: { ...state.hydroelectricPotential, ...updates } })),
+      setIceSheetVelocity: (updates) => set((state) => ({ iceSheetVelocity: { ...state.iceSheetVelocity, ...updates } })),
+      setIonosphere: (updates) => set((state) => ({ ionosphere: { ...state.ionosphere, ...updates } })),
+      setKarstGroundwater: (updates) => set((state) => ({ karstGroundwater: { ...state.karstGroundwater, ...updates } })),
+      setLunarTide: (updates) => set((state) => ({ lunarTide: { ...state.lunarTide, ...updates } })),
+      setMagneticAnomaly: (updates) => set((state) => ({ magneticAnomaly: { ...state.magneticAnomaly, ...updates } })),
+      setMangroveRestorationProgress: (updates) => set((state) => ({ mangroveRestorationProgress: { ...state.mangroveRestorationProgress, ...updates } })),
+      setMeteorShower: (updates) => set((state) => ({ meteorShower: { ...state.meteorShower, ...updates } })),
+      setMethaneEmission: (updates) => set((state) => ({ methaneEmission: { ...state.methaneEmission, ...updates } })),
+      setMethaneSeep: (updates) => set((state) => ({ methaneSeep: { ...state.methaneSeep, ...updates } })),
+      setOceanAlkalinity: (updates) => set((state) => ({ oceanAlkalinity: { ...state.oceanAlkalinity, ...updates } })),
+      setPeatlandCarbon: (updates) => set((state) => ({ peatlandCarbon: { ...state.peatlandCarbon, ...updates } })),
+      setPelagicZone: (updates) => set((state) => ({ pelagicZone: { ...state.pelagicZone, ...updates } })),
+      setPhenology: (updates) => set((state) => ({ phenology: { ...state.phenology, ...updates } })),
+      setPolarIceSheet: (updates) => set((state) => ({ polarIceSheet: { ...state.polarIceSheet, ...updates } })),
+      setPolynya: (updates) => set((state) => ({ polynya: { ...state.polynya, ...updates } })),
+      setRainfallPattern: (updates) => set((state) => ({ rainfallPattern: { ...state.rainfallPattern, ...updates } })),
+      setRiverDelta: (updates) => set((state) => ({ riverDelta: { ...state.riverDelta, ...updates } })),
+      setSaltMarsh: (updates) => set((state) => ({ saltMarsh: { ...state.saltMarsh, ...updates } })),
+      setSandDuneMigration: (updates) => set((state) => ({ sandDuneMigration: { ...state.sandDuneMigration, ...updates } })),
+      setSeaSurfaceTemperature: (updates) => set((state) => ({ seaSurfaceTemperature: { ...state.seaSurfaceTemperature, ...updates } })),
+      setSeafloorMapping: (updates) => set((state) => ({ seafloorMapping: { ...state.seafloorMapping, ...updates } })),
+      setSeismicHazard: (updates) => set((state) => ({ seismicHazard: { ...state.seismicHazard, ...updates } })),
+      setSolarFlare: (updates) => set((state) => ({ solarFlare: { ...state.solarFlare, ...updates } })),
+      setSolarWind: (updates) => set((state) => ({ solarWind: { ...state.solarWind, ...updates } })),
+      setSpaceWeatherImpact: (updates) => set((state) => ({ spaceWeatherImpact: { ...state.spaceWeatherImpact, ...updates } })),
+      setSubsurfaceFluid: (updates) => set((state) => ({ subsurfaceFluid: { ...state.subsurfaceFluid, ...updates } })),
+      setTectonicSubduction: (updates) => set((state) => ({ tectonicSubduction: { ...state.tectonicSubduction, ...updates } })),
+      setTornadoActivity: (updates) => set((state) => ({ tornadoActivity: { ...state.tornadoActivity, ...updates } })),
+      setUndergroundWaterway: (updates) => set((state) => ({ undergroundWaterway: { ...state.undergroundWaterway, ...updates } })),
+      setUrbanHeatIslandProfiler: (updates) => set((state) => ({ urbanHeatIslandProfiler: { ...state.urbanHeatIslandProfiler, ...updates } })),
+      setUrbanMicroclimate: (updates) => set((state) => ({ urbanMicroclimate: { ...state.urbanMicroclimate, ...updates } })),
+      setVegetationIndex: (updates) => set((state) => ({ vegetationIndex: { ...state.vegetationIndex, ...updates } })),
+      setVolcanicGasEmission: (updates) => set((state) => ({ volcanicGasEmission: { ...state.volcanicGasEmission, ...updates } })),
+      setVolcanicLavaFlow: (updates) => set((state) => ({ volcanicLavaFlow: { ...state.volcanicLavaFlow, ...updates } })),
+      setVolcanicPlume: (updates) => set((state) => ({ volcanicPlume: { ...state.volcanicPlume, ...updates } })),
+      setVolcanoThermal: (updates) => set((state) => ({ volcanoThermal: { ...state.volcanoThermal, ...updates } })),
+      setWildfireSpread: (updates) => set((state) => ({ wildfireSpread: { ...state.wildfireSpread, ...updates } })),
+      setWindPattern: (updates) => set((state) => ({ windPattern: { ...state.windPattern, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
@@ -19140,557 +8002,94 @@ export const useMapStore = create<MapState>()(
     }),
     {
       name: 'maplibre-explorer-prefs',
+      // Only persist essential user preferences — monitor data is loaded fresh from APIs each session
       partialize: (state) => ({
+        // UI preferences
         sidebarOpen: state.sidebarOpen,
         clusteringEnabled: state.clusteringEnabled,
-        weatherEnabled: state.weatherEnabled,
-        trafficEnabled: state.trafficEnabled,
-        earthquakesEnabled: state.earthquakesEnabled,
-        sunPositionEnabled: state.sunPositionEnabled,
-        isochroneEnabled: state.isochroneEnabled,
-        isochroneMinutes: state.isochroneMinutes,
-        isochroneMode: state.isochroneMode,
-        terrainEnabled: state.terrainEnabled,
-        buildingExtrusion: state.buildingExtrusion,
-        buildings3DEnabled: state.buildings3DEnabled,
-        selectedMarkerIcon: state.selectedMarkerIcon,
-        terrainExaggeration: state.terrainExaggeration,
         layerVisibility: state.layerVisibility,
         drawColor: state.drawColor,
         drawWidth: state.drawWidth,
+        // Heatmap
         heatmapEnabled: state.heatmapEnabled,
         heatmapIntensity: state.heatmapIntensity,
         heatmapRadius: state.heatmapRadius,
+        // Comparison
         comparisonEnabled: state.comparisonEnabled,
         comparisonStyle: state.comparisonStyle,
+        // Bookmarks & annotations
         bookmarkFolders: state.bookmarkFolders,
         annotations: state.annotations,
+        // Offline & tile sources
         offlineModeEnabled: state.offlineModeEnabled,
         customTileSources: state.customTileSources,
         wmsTileSources: state.wmsTileSources,
-        trackStatsPanelOpen: state.trackStatsPanelOpen,
+        // Voice
         voiceNavigationEnabled: state.voiceNavigationEnabled,
         voiceLanguage: state.voiceLanguage,
+        // Drawing
         drawingTool: state.drawingTool,
         drawingColor: state.drawingColor,
         drawingLineWidth: state.drawingLineWidth,
         drawnFeatures: state.drawnFeatures,
+        // Routes & geofences
         routeProfile: state.routeProfile,
         savedTracks: state.savedTracks,
         geofences: state.geofences,
+        // Language
         language: state.language,
-        appNotifications: state.appNotifications,
-        snapshots: state.snapshots,
-        comparedRoutes: state.comparedRoutes,
+        // Accessibility
         highContrastMode: state.highContrastMode,
         largeTextMode: state.largeTextMode,
         reducedMotionMode: state.reducedMotionMode,
         screenReaderMode: state.screenReaderMode,
         colorBlindMode: state.colorBlindMode,
+        // Theme
         mapThemeOverrides: state.mapThemeOverrides,
         mapThemePreset: state.mapThemePreset,
+        // Overlays & results
         imageOverlays: state.imageOverlays,
         spatialResults: state.spatialResults,
         collapsedSections: state.collapsedSections,
+        // History & timeline
         mapHistory: state.mapHistory,
         timelineOpen: state.timelineOpen,
         searchHistory: state.searchHistory,
-        routeOptimized: state.routeOptimized,
-        originalRoutePoints: state.originalRoutePoints,
+        // Tools & session
         toolUsageHistory: state.toolUsageHistory,
         sessionStartTime: state.sessionStartTime,
         tripPlans: state.tripPlans,
+        // GPS & notes
         gpsSimulation: state.gpsSimulation,
         mapNotes: state.mapNotes,
+        // POI & markers
         poiFilters: state.poiFilters,
         poiFilterPresets: state.poiFilterPresets,
         markerCategories: state.markerCategories,
+        // Style & speed
         styleMixLayers: state.styleMixLayers,
         speedZones: state.speedZones,
         speedLimit: state.speedLimit,
+        // Route playback & stories
         routePlayback: state.routePlayback,
         mapStories: state.mapStories,
         activeStoryId: state.activeStoryId,
-        terrainProfile3D: state.terrainProfile3D,
-        importExportState: state.importExportState,
-        geofenceEvents: state.geofenceEvents,
-        geofenceAlertsEnabled: state.geofenceAlertsEnabled,
+        // Units
+        temperatureUnit: state.temperatureUnit,
+        // Snapshots & comparisons
+        snapshots: state.snapshots,
+        comparedRoutes: state.comparedRoutes,
+        appNotifications: state.appNotifications,
+        // Grid & overlays
         coordinateGrid: state.coordinateGrid,
         mapOverlays: state.mapOverlays,
-        timelineEvents: state.timelineEvents,
-        weatherCompareLocations: state.weatherCompareLocations,
-        measurementSuite: state.measurementSuite,
-        savedScreenshots: state.savedScreenshots,
-        pedometer: state.pedometer,
+        // Geofence alerts
+        geofenceAlertsEnabled: state.geofenceAlertsEnabled,
+        // Stats & search
         usageStats: state.usageStats,
-        mapCollage: state.mapCollage,
         eventSearchRadius: state.eventSearchRadius,
-        altitudeState: state.altitudeState,
-        compassRose: state.compassRose,
-        multiStopRoute: state.multiStopRoute,
-        temperatureUnit: state.temperatureUnit,
-        sunShadowState: state.sunShadowState,
-        svgMarkerDesigns: state.svgMarkerDesigns,
-        activeMarkerDesign: state.activeMarkerDesign,
-        shareCardState: state.shareCardState,
-        wallpaperState: state.wallpaperState,
+        // Chat
         chatMessages: state.chatMessages,
-        poiHeatmap: state.poiHeatmap,
-        animationStudio: state.animationStudio,
-        smartRoute: state.smartRoute,
-        dataVisualizer: state.dataVisualizer,
-        fieldSurvey: state.fieldSurvey,
-        emergencyRoute: state.emergencyRoute,
-        comparisonSlider: state.comparisonSlider,
-        noiseHeatmap: state.noiseHeatmap,
-        solarExposure: state.solarExposure,
-        styleForge: state.styleForge,
-        topoProfiler: state.topoProfiler,
-        maritimeNav: state.maritimeNav,
-        geocaching: state.geocaching,
-        atmospheric: state.atmospheric,
-        wildlifeTracker: state.wildlifeTracker,
-        culturalHeritage: state.culturalHeritage,
-        hydrology: state.hydrology,
-        glacierMonitor: state.glacierMonitor,
-        seismicActivity: state.seismicActivity,
-        soilAnalysis: state.soilAnalysis,
-        urbanGrowth: state.urbanGrowth,
-        airspaceNav: state.airspaceNav,
-        reefHealth: state.reefHealth,
-        magneticField: state.magneticField,
-        floodRisk: state.floodRisk,
-        volcanoMonitor: state.volcanoMonitor,
-        avalancheRisk: state.avalancheRisk,
-        cropHealth: state.cropHealth,
-        spaceTrack: state.spaceTrack,
-        archaeologyMap: state.archaeologyMap,
-        pollutionTracker: state.pollutionTracker,
-        tidalPredictor: state.tidalPredictor,
-        windFarm: state.windFarm,
-        desertification: state.desertification,
-        mineralExploration: state.mineralExploration,
-        oceanCurrent: state.oceanCurrent,
-        permafrost: state.permafrost,
-        lightning: state.lightning,
-        biome: state.biome,
-        groundwater: state.groundwater,
-        solarPower: state.solarPower,
-        volcanicAsh: state.volcanicAsh,
-        coastalErosion: state.coastalErosion,
-        carbonFootprint: state.carbonFootprint,
-        wildlifeMigration: state.wildlifeMigration,
-        iceSheet: state.iceSheet,
-        droughtMonitor: state.droughtMonitor,
-        landSubsidence: state.landSubsidence,
-        coralBleachingMonitor: state.coralBleachingMonitor,
-        tsunamiAlert: state.tsunamiAlert,
-        soilErosion: state.soilErosion,
-        watershedManager: state.watershedManager,
-        tectonicPlate: state.tectonicPlate,
-        airQualityForecaster: state.airQualityForecaster,
-        glacialLake: state.glacialLake,
-        spaceWeather: state.spaceWeather,
-        peatlandMonitor: state.peatlandMonitor,
-        mangroveMonitor: state.mangroveMonitor,
-        sandstormTracker: state.sandstormTracker,
-        wetlandMapper: state.wetlandMapper,
-        urbanHeatIsland: state.urbanHeatIsland,
-        wildfireRisk: state.wildfireRisk,
-        algalBloom: state.algalBloom,
-        landslideRisk: state.landslideRisk,
-        seaIceNavigator: state.seaIceNavigator,
-        cloudCover: state.cloudCover,
-        soilMoisture: state.soilMoisture,
-        lightPollution: state.lightPollution,
-        riverFlow: state.riverFlow,
-        volcanoSeismic: state.volcanoSeismic,
-        whaleMigration: state.whaleMigration,
-        avalancheForecaster: state.avalancheForecaster,
-        auroraForecaster: state.auroraForecaster,
-        ozoneLayer: state.ozoneLayer,
-        deforestation: state.deforestation,
-        methaneEmissions: state.methaneEmissions,
-        oceanAcidification: state.oceanAcidification,
-        spaceDebris: state.spaceDebris,
-        tectonicStrain: state.tectonicStrain,
-        phytoBloom: state.phytoBloom,
-        snowCover: state.snowCover,
-        geomagneticStorm: state.geomagneticStorm,
-        volcanicGas: state.volcanicGas,
-        aquiferDepletion: state.aquiferDepletion,
-        stratosphericWind: state.stratosphericWind,
-        marineHeatwave: state.marineHeatwave,
-        precipitation: state.precipitation,
-        cosmicRay: state.cosmicRay,
-        greenlandIce: state.greenlandIce,
-        radiationExposure: state.radiationExposure,
-        peatFire: state.peatFire,
-        seaLevelRise: state.seaLevelRise,
-        thermocline: state.thermocline,
-        acidRain: state.acidRain,
-        methaneHydrate: state.methaneHydrate,
-        kelpForest: state.kelpForest,
-        glof: state.glof,
-        dustStorm: state.dustStorm,
-        bioluminescence: state.bioluminescence,
-        urbanSprawl: state.urbanSprawl,
-        viralOutbreak: state.viralOutbreak,
-        magnetosphere: state.magnetosphere,
-        fogDensity: state.fogDensity,
-        carbonCapture: state.carbonCapture,
-        hailStorm: state.hailStorm,
-        saharaReforestation: state.saharaReforestation,
-        deepSeaVent: state.deepSeaVent,
-        stormSurge: state.stormSurge,
-        landfillMonitor: state.landfillMonitor,
-        salinityGradient: state.salinityGradient,
-        microplastics: state.microplastics,
-        radioSignal: state.radioSignal,
-        volcanicIsland: state.volcanicIsland,
-        permafrostThaw: state.permafrostThaw,
-        oceanCurrentTracker: state.oceanCurrentTracker,
-        spaceWeatherAlert: state.spaceWeatherAlert,
-        desertMonitor: state.desertMonitor,
-        tsunamiBuoy: state.tsunamiBuoy,
-        glacierVelocity: state.glacierVelocity,
-        earthquakeSwarm: state.earthquakeSwarm,
-        mangroveRestoration: state.mangroveRestoration,
-        coralBleachingMonitor: state.coralBleachingMonitor,
-        arcticSeaIce: state.arcticSeaIce,
-        landslideRisk: state.landslideRisk,
-        airQuality: state.airQuality,
-        soilMoistureAg: state.soilMoistureAg,
-        noisePollution: state.noisePollution,
-        lightPollutionSky: state.lightPollutionSky,
-        groundwaterRecharge: state.groundwaterRecharge,
-        subglacialLake: state.subglacialLake,
-        thermokarstLake: state.thermokarstLake,
-        paleoclimateProxy: state.paleoclimateProxy,
-        gicMonitor: state.gicMonitor,
-        sabkhaEnvironment: state.sabkhaEnvironment,
-        cryosphereChange: state.cryosphereChange,
-        abyssalPlain: state.abyssalPlain,
-        fjordEcosystem: state.fjordEcosystem,
-        geothermalSpring: state.geothermalSpring,
-        asteroidImpact: state.asteroidImpact,
-        desertOasis: state.desertOasis,
-        volcanicLightning: state.volcanicLightning,
-        iceCoreData: state.iceCoreData,
-        stratosphericAerosol: state.stratosphericAerosol,
-        megacityCarbon: state.megacityCarbon,
-        oceanEddy: state.oceanEddy,
-        supervolcano: state.supervolcano,
-        polarVortex: state.polarVortex,
-        karstAquifer: state.karstAquifer,
-        subductionZone: state.subductionZone,
-        tropopause: state.tropopause,
-        invasiveSpecies: state.invasiveSpecies,
-        tundraCarbon: state.tundraCarbon,
-        monsoon: state.monsoon,
-        lavaFlow: state.lavaFlow,
-        tidalEnergy: state.tidalEnergy,
-        peatFire: state.peatFire,
-        coralSpawn: state.coralSpawn,
-        glacierCalving: state.glacierCalving,
-        soilCarbon: state.soilCarbon,
-        urbanTreeCanopy: state.urbanTreeCanopy,
-        geomagneticPole: state.geomagneticPole,
-        hydrothermalVent: state.hydrothermalVent,
-        watershedHealth: state.watershedHealth,
-        migratoryFlyway: state.migratoryFlyway,
-        seagrassMeadow: state.seagrassMeadow,
-        urbanHeatIslandDetail: state.urbanHeatIslandDetail,
-        oceanAcidificationDetail: state.oceanAcidificationDetail,
-        desertificationDetail: state.desertificationDetail,
-        volcanicGasTracker: state.volcanicGasTracker,
-        deepOceanCurrent: state.deepOceanCurrent,
-        stratosphericOzone: state.stratosphericOzone,
-        seismicHarmonic: state.seismicHarmonic,
-        wildfireSmoke: state.wildfireSmoke,
-        estuaryHealth: state.estuaryHealth,
-        alpineGlacier: state.alpineGlacier,
-        oceanAnoxicZone: state.oceanAnoxicZone,
-        permafrostCarbonFeedback: state.permafrostCarbonFeedback,
-        tropicalCyclone: state.tropicalCyclone,
-        volcanicDeformation: state.volcanicDeformation,
-        coralReefBleachingDetail: state.coralReefBleachingDetail,
-        arcticPermafrostLakes: state.arcticPermafrostLakes,
-        methaneEmissionHotspot: state.methaneEmissionHotspot,
-        coastalUpwelling: state.coastalUpwelling,
-        spaceDebrisOrbit: state.spaceDebrisOrbit,
-        tectonicPlateBoundary: state.tectonicPlateBoundary,
-        landslideSusceptibility: state.landslideSusceptibility,
-        solarFlareActivity: state.solarFlareActivity,
-        riverDeltaErosion: state.riverDeltaErosion,
-        seaIceThickness: state.seaIceThickness,
-        urbanAirQuality: state.urbanAirQuality,
-        geothermalEnergy: state.geothermalEnergy,
-        aquiferSalinization: state.aquiferSalinization,
-        biomassBurning: state.biomassBurning,
-        glacialLakeOutburst: state.glacialLakeOutburst,
-        oceanMicroplastic: state.oceanMicroplastic,
-        volcanicAshDispersion: state.volcanicAshDispersion,
-        droughtSeverity: state.droughtSeverity,
-        tsunamiWaveHeight: state.tsunamiWaveHeight,
-        caveEcosystem: state.caveEcosystem,
-        solarIrradiance: state.solarIrradiance,
-        peatlandRestoration: state.peatlandRestoration,
-        mangroveCarbon: state.mangroveCarbon,
-        oceanHeatContent: state.oceanHeatContent,
-        dustStormTracker: state.dustStormTracker,
-        coralDiseaseMonitor: state.coralDiseaseMonitor,
-        iceShelfCollapse: state.iceShelfCollapse,
-        urbanFloodRisk: state.urbanFloodRisk,
-        phytoplanktonBloom: state.phytoplanktonBloom,
-        submarineCanyon: state.submarineCanyon,
-        kelpForestMonitor: state.kelpForestMonitor,
-        volcanicIslandFormation: state.volcanicIslandFormation,
-        saltwaterIntrusion: state.saltwaterIntrusion,
-        arcticShippingRoute: state.arcticShippingRoute,
-        thermoclineDepth: state.thermoclineDepth,
-        bioluminescentBay: state.bioluminescentBay,
-        orographicRainfall: state.orographicRainfall,
-        hydrothermalPlume: state.hydrothermalPlume,
-        seamountEcosystem: state.seamountEcosystem,
-        groundSubsidence: state.groundSubsidence,
-        oceanStratification: state.oceanStratification,
-        snowCoverExtent: state.snowCoverExtent,
-        coastalErosionDetail: state.coastalErosionDetail,
-        ecosystemServiceValue: state.ecosystemServiceValue,
-        tidalFlatMonitor: state.tidalFlatMonitor,
-        wildfireRiskAssessment: state.wildfireRiskAssessment,
-        karstSinkhole: state.karstSinkhole,
-        volcanicSO2: state.volcanicSO2,
-        icebergTracker: state.icebergTracker,
-        caveMineral: state.caveMineral,
-        seafloorHydrate: state.seafloorHydrate,
-        mangroveLoss: state.mangroveLoss,
-        urbanNoiseCorridor: state.urbanNoiseCorridor,
-        stratosphericWarming: state.stratosphericWarming,
-        submarineGroundwater: state.submarineGroundwater,
-        hydrothermalSulfide: state.hydrothermalSulfide,
-        lunarTidalForce: state.lunarTidalForce,
-        ripCurrent: state.ripCurrent,
-        avalancheDebrisFlow: state.avalancheDebrisFlow,
-        coastalAcidification: state.coastalAcidification,
-        desertSandSea: state.desertSandSea,
-        subsidenceHazard: state.subsidenceHazard,
-        volcanicLahar: state.volcanicLahar,
-        deepWaterCoral: state.deepWaterCoral,
-        polarBearHabitat: state.polarBearHabitat,
-        soilSalinization: state.soilSalinization,
-        tsunamiRunup: state.tsunamiRunup,
-        urbanHeatVentilation: state.urbanHeatVentilation,
-        brinePool: state.brinePool,
-        supraglacialStream: state.supraglacialStream,
-        methaneHydrateStability: state.methaneHydrateStability,
-        volcanicAshCloud: state.volcanicAshCloud,
-        geothermalGradient: state.geothermalGradient,
-        oceanDeoxygenation: state.oceanDeoxygenation,
-        rockGlacier: state.rockGlacier,
-        dustHemisphere: state.dustHemisphere,
-        microplasticOcean: state.microplasticOcean,
-        glacierBasalSlide: state.glacierBasalSlide,
-        volcanicFumarole: state.volcanicFumarole,
-        hydroclimateExtremes: state.hydroclimateExtremes,
-        megafaunaTracking: state.megafaunaTracking,
-        cryoconiteHole: state.cryoconiteHole,
-        sapFlow: state.sapFlow,
-        rockfallHazard: state.rockfallHazard,
-        thermohalineCirculation: state.thermohalineCirculation,
-        hydroseismicActivity: state.hydroseismicActivity,
-        lavaTubeCave: state.lavaTubeCave,
-        submarineCanyonFisheries: state.submarineCanyonFisheries,
-        polynyaIce: state.polynyaIce,
-        volcanicDomeGrowth: state.volcanicDomeGrowth,
-        seamountBiodiversity: state.seamountBiodiversity,
-        estuaryAcidification: state.estuaryAcidification,
-        abyssalSedimentFlux: state.abyssalSedimentFlux,
-        glacialMoulin: state.glacialMoulin,
-        iceShelfCalving: state.iceShelfCalving,
-        volcanicGasPlume: state.volcanicGasPlume,
-        submarineLandslide: state.submarineLandslide,
-        coastalWetlandLoss: state.coastalWetlandLoss,
-        tundraPermafrostThaw: state.tundraPermafrostThaw,
-        oceanCurrentProfiler: state.oceanCurrentProfiler,
-        desertificationFront: state.desertificationFront,
-        coralReefRecovery: state.coralReefRecovery,
-        methaneCrater: state.methaneCrater,
-        subglacialVolcano: state.subglacialVolcano,
-        coralSpawnPrediction: state.coralSpawnPrediction,
-        hydrothermalDiffuseFlow: state.hydrothermalDiffuseFlow,
-        permafrostCarbonPipeline: state.permafrostCarbonPipeline,
-        subaqueousLavaFlow: state.subaqueousLavaFlow,
-        intertidalZone: state.intertidalZone,
-        desertFlashFlood: state.desertFlashFlood,
-        mudVolcanoActivity: state.mudVolcanoActivity,
-        glacierSurgeEvent: state.glacierSurgeEvent,
-        seicheWaveOscillation: state.seicheWaveOscillation,
-        laharFlowTracker: state.laharFlowTracker,
-        icePenitentMonitor: state.icePenitentMonitor,
-        frostHeaveMonitor: state.frostHeaveMonitor,
-        pumiceRaftDrift: state.pumiceRaftDrift,
-        limnicEruptionMonitor: state.limnicEruptionMonitor,
-        volcanicTremor: state.volcanicTremor,
-        iceWedgePolygon: state.iceWedgePolygon,
-        saltFlatCrust: state.saltFlatCrust,
-        coldWaterCoralReef: state.coldWaterCoralReef,
-        peatlandCarbonSink: state.peatlandCarbonSink,
-        hyporheicZone: state.hyporheicZone,
-        submarineFan: state.submarineFan,
-        coastalDuneSystem: state.coastalDuneSystem,
-        // Task 99
-        breakwaterIntegrity: state.breakwaterIntegrity,
-        seawallErosion: state.seawallErosion,
-        groinSediment: state.groinSediment,
-        revetmentStability: state.revetmentStability,
-        jettyCurrent: state.jettyCurrent,
-        beachNourishment: state.beachNourishment,
-        coastalArmor: state.coastalArmor,
-        shorelineRetreat: state.shorelineRetreat,
-        // Task 100
-        soilOrganicCarbon: state.soilOrganicCarbon,
-        cationExchange: state.cationExchange,
-        soilPhosphorus: state.soilPhosphorus,
-        soilCompaction: state.soilCompaction,
-        clayMineral: state.clayMineral,
-        podzolProfile: state.podzolProfile,
-        gleyRedox: state.gleyRedox,
-        calcicHorizon: state.calcicHorizon,
-        // Task 101
-        oreGradeAssay: state.oreGradeAssay,
-        mineTailingsDam: state.mineTailingsDam,
-        mineralVeinThickness: state.mineralVeinThickness,
-        stripMineRatio: state.stripMineRatio,
-        undergroundMineVent: state.undergroundMineVent,
-        acidMineDrainage: state.acidMineDrainage,
-        oreReserveEstimate: state.oreReserveEstimate,
-        mineralDepositGrade: state.mineralDepositGrade,
-        // Task 102
-        thermohalineCell: state.thermohalineCell,
-        ekmanTransport: state.ekmanTransport,
-        geostrophicCurrent: state.geostrophicCurrent,
-        upwellingIntensity: state.upwellingIntensity,
-        westernBoundary: state.westernBoundary,
-        deepWaterFormation: state.deepWaterFormation,
-        oceanGyre: state.oceanGyre,
-        tropicalCurrent: state.tropicalCurrent,
-        // Task 103
-        jetStreamPosition: state.jetStreamPosition,
-        atmosphericPressureCell: state.atmosphericPressureCell,
-        tropopauseHeight: state.tropopauseHeight,
-        rossbyWaveAmplitude: state.rossbyWaveAmplitude,
-        hadleyCellCirculation: state.hadleyCellCirculation,
-        atmosphericRiverFlow: state.atmosphericRiverFlow,
-        polarFrontJet: state.polarFrontJet,
-        tradeWindBelt: state.tradeWindBelt,
-        // Task 104
-        speciesMigrationRoute: state.speciesMigrationRoute,
-        habitatCorridor: state.habitatCorridor,
-        endemicHotspot: state.endemicHotspot,
-        keystonePopulation: state.keystonePopulation,
-        wildlifeCorridor: state.wildlifeCorridor,
-        biomeTransition: state.biomeTransition,
-        forestCanopyCover: state.forestCanopyCover,
-        wetlandBiodiversityIndex: state.wetlandBiodiversityIndex,
-        // Task 105
-        watershedDischarge: state.watershedDischarge,
-        aquiferRechargeRate: state.aquiferRechargeRate,
-        floodInundationMap: state.floodInundationMap,
-        riverSedimentLoad: state.riverSedimentLoad,
-        groundwaterTableLevel: state.groundwaterTableLevel,
-        snowpackWaterEquivalent: state.snowpackWaterEquivalent,
-        reservoirStorageLevel: state.reservoirStorageLevel,
-        baseflowIndex: state.baseflowIndex,
-        // Task 106
-        iceShelfThickness: state.iceShelfThickness,
-        seaIceExtent: state.seaIceExtent,
-        glacierMassBalance: state.glacierMassBalance,
-        permafrostActiveLayer: state.permafrostActiveLayer,
-        iceCoreRecord: state.iceCoreRecord,
-        snowCoverDuration: state.snowCoverDuration,
-        frostThawCycle: state.frostThawCycle,
-        icebergCalving: state.icebergCalving,
-        // Task 107
-        magnetopauseStandoff: state.magnetopauseStandoff,
-        auroraOvalPosition: state.auroraOvalPosition,
-        vanAllenRadiation: state.vanAllenRadiation,
-        ionosphericDisturbance: state.ionosphericDisturbance,
-        cosmicRayFlux: state.cosmicRayFlux,
-        solarFluxIndex: state.solarFluxIndex,
-        spaceRadiationDose: state.spaceRadiationDose,
-        satelliteDrag: state.satelliteDrag,
-        // Task 108: Urban Infrastructure & Smart City
-        trafficFlowMonitor: state.trafficFlowMonitor,
-        bridgeStructuralHealth: state.bridgeStructuralHealth,
-        waterPipeNetwork: state.waterPipeNetwork,
-        powerGridLoad: state.powerGridLoad,
-        wasteCollectionRoute: state.wasteCollectionRoute,
-        airQualityUrban: state.airQualityUrban,
-        noiseLevelMapper: state.noiseLevelMapper,
-        smartParkingCapacity: state.smartParkingCapacity,
-        // Task 109: Agricultural Monitoring & Precision Farming
-        cropHealthIndex: state.cropHealthIndex,
-        soilMoistureField: state.soilMoistureField,
-        irrigationEfficiency: state.irrigationEfficiency,
-        pestOutbreakTracker: state.pestOutbreakTracker,
-        fertilizerRunoff: state.fertilizerRunoff,
-        harvestYieldPredict: state.harvestYieldPredict,
-        greenhouseClimate: state.greenhouseClimate,
-        livestockMovement: state.livestockMovement,
-        // Task 110: Renewable Energy & Grid Monitoring
-        windFarmOutput: state.windFarmOutput,
-        hydroelectricFlow: state.hydroelectricFlow,
-        biomassEnergyYield: state.biomassEnergyYield,
-        tidalEnergyPotential: state.tidalEnergyPotential,
-        gridStabilityIndex: state.gridStabilityIndex,
-        energyStorageLevel: state.energyStorageLevel,
-        // Task 111: Public Health & Epidemiology
-        diseaseOutbreakMap: state.diseaseOutbreakMap,
-        vaccinationCoverage: state.vaccinationCoverage,
-        waterQualityIndex: state.waterQualityIndex,
-        hospitalCapacity: state.hospitalCapacity,
-        airPollutionHealth: state.airPollutionHealth,
-        vectorHabitatRisk: state.vectorHabitatRisk,
-        nutritionSecurity: state.nutritionSecurity,
-        pandemicSpreadRate: state.pandemicSpreadRate,
-        // Task 112: Transportation & Logistics
-        flightPathTracker: state.flightPathTracker,
-        portCongestionMap: state.portCongestionMap,
-        railNetworkStatus: state.railNetworkStatus,
-        highwayBottleneck: state.highwayBottleneck,
-        cargoShipTracker: state.cargoShipTracker,
-        transitRidership: state.transitRidership,
-        fuelStationNetwork: state.fuelStationNetwork,
-        logisticsDepotStatus: state.logisticsDepotStatus,
-        // Task 96
-        karstSpringDischarge: state.karstSpringDischarge,
-        caveDripMonitor: state.caveDripMonitor,
-        tidalCreekMonitor: state.tidalCreekMonitor,
-        saltMarshCarbon: state.saltMarshCarbon,
-        opalPaleoMonitor: state.opalPaleoMonitor,
-        aeolianDustDeposition: state.aeolianDustDeposition,
-        katabaticWindMonitor: state.katabaticWindMonitor,
-        snowAvalancheTracker: state.snowAvalancheTracker,
-        // Task 97
-        riftValleyVolcano: state.riftValleyVolcano,
-        streamBankErosion: state.streamBankErosion,
-        iceStreamVelocity: state.iceStreamVelocity,
-        coastalAquifer: state.coastalAquifer,
-        mangroveRootSystem: state.mangroveRootSystem,
-        paleoshorelineTracker: state.paleoshorelineTracker,
-        cryoconiteGranule: state.cryoconiteGranule,
-        subglacialWaterSystem: state.subglacialWaterSystem,
-        // Task 98
-        landslideVelocity: state.landslideVelocity,
-        debrisFlowSurge: state.debrisFlowSurge,
-        rockfallImpact: state.rockfallImpact,
-        soilCreepRate: state.soilCreepRate,
-        solifluctionLobe: state.solifluctionLobe,
-        earthflowDisplacement: state.earthflowDisplacement,
-        slumpFailure: state.slumpFailure,
-        talusAccumulation: state.talusAccumulation,
       }),
     }
   )
