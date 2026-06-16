@@ -8897,6 +8897,24 @@ interface MapState {
   smartParkingCapacity: SmartParkingCapacityState
   setSmartParkingCapacity: (state: Partial<SmartParkingCapacityState>) => void
 
+  // Task 109: Agricultural Monitoring & Precision Farming
+  cropHealthIndex: CropHealthIndexState
+  setCropHealthIndex: (state: Partial<CropHealthIndexState>) => void
+  soilMoistureField: SoilMoistureFieldState
+  setSoilMoistureField: (state: Partial<SoilMoistureFieldState>) => void
+  irrigationEfficiency: IrrigationEfficiencyState
+  setIrrigationEfficiency: (state: Partial<IrrigationEfficiencyState>) => void
+  pestOutbreakTracker: PestOutbreakTrackerState
+  setPestOutbreakTracker: (state: Partial<PestOutbreakTrackerState>) => void
+  fertilizerRunoff: FertilizerRunoffState
+  setFertilizerRunoff: (state: Partial<FertilizerRunoffState>) => void
+  harvestYieldPredict: HarvestYieldPredictState
+  setHarvestYieldPredict: (state: Partial<HarvestYieldPredictState>) => void
+  greenhouseClimate: GreenhouseClimateState
+  setGreenhouseClimate: (state: Partial<GreenhouseClimateState>) => void
+  livestockMovement: LivestockMovementState
+  setLivestockMovement: (state: Partial<LivestockMovementState>) => void
+
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
   setAddLocationDialogOpen: (open: boolean) => void
@@ -12664,6 +12682,393 @@ export interface SmartParkingCapacityState {
   showAvailableSpots: boolean
   showAvgDuration: boolean
   showTurnoverRate: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 109: Agricultural Monitoring & Precision Farming
+export interface CropHealthIndexData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  healthScore: number      // 0-100
+  ndvi: number             // -1 to 1
+  stressLevel: number      // 0-10
+  diseaseRisk: number      // %
+  growthStage: string
+  status: 'healthy' | 'stressed' | 'diseased' | 'critical'
+  description: string
+}
+
+export interface CropHealthIndexState {
+  open: boolean
+  data: CropHealthIndexData[]
+  showHealthScore: boolean
+  showNdvi: boolean
+  showStressLevel: boolean
+  showDiseaseRisk: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface SoilMoistureFieldData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  moisturePercent: number  // %
+  depthCm: number          // cm
+  fieldCapacity: number    // %
+  wiltingPoint: number     // %
+  status: 'saturated' | 'optimal' | 'dry' | 'critical'
+  description: string
+}
+
+export interface SoilMoistureFieldState {
+  open: boolean
+  data: SoilMoistureFieldData[]
+  showMoisturePercent: boolean
+  showDepthCm: boolean
+  showFieldCapacity: boolean
+  showWiltingPoint: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface IrrigationEfficiencyData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  efficiency: number       // %
+  waterApplied: number     // mm
+  waterAbsorbed: number    // mm
+  runoffLoss: number       // mm
+  status: 'excellent' | 'good' | 'moderate' | 'poor'
+  description: string
+}
+
+export interface IrrigationEfficiencyState {
+  open: boolean
+  data: IrrigationEfficiencyData[]
+  showEfficiency: boolean
+  showWaterApplied: boolean
+  showWaterAbsorbed: boolean
+  showRunoffLoss: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface PestOutbreakTrackerData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  pestType: string
+  severity: number         // 1-10
+  affectedArea: number     // hectares
+  spreadRate: number       // km/week
+  status: 'monitoring' | 'alert' | 'outbreak' | 'controlled'
+  description: string
+}
+
+export interface PestOutbreakTrackerState {
+  open: boolean
+  data: PestOutbreakTrackerData[]
+  showSeverity: boolean
+  showAffectedArea: boolean
+  showSpreadRate: boolean
+  showPestType: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface FertilizerRunoffData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  nitrogenLevel: number    // mg/L
+  phosphorusLevel: number  // mg/L
+  runoffVolume: number     // m3
+  contaminationIndex: number // 0-100
+  status: 'safe' | 'elevated' | 'high' | 'critical'
+  description: string
+}
+
+export interface FertilizerRunoffState {
+  open: boolean
+  data: FertilizerRunoffData[]
+  showNitrogenLevel: boolean
+  showPhosphorusLevel: boolean
+  showRunoffVolume: boolean
+  showContaminationIndex: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface HarvestYieldPredictData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  predictedYield: number   // tonnes/hectare
+  confidence: number       // %
+  historicalAvg: number    // tonnes/hectare
+  variancePercent: number  // %
+  status: 'above_average' | 'average' | 'below_average' | 'failed'
+  description: string
+}
+
+export interface HarvestYieldPredictState {
+  open: boolean
+  data: HarvestYieldPredictData[]
+  showPredictedYield: boolean
+  showConfidence: boolean
+  showHistoricalAvg: boolean
+  showVariancePercent: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface GreenhouseClimateData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  temperature: number      // C
+  humidity: number         // %
+  co2Level: number         // ppm
+  lightIntensity: number   // lux
+  status: 'optimal' | 'warm' | 'humid' | 'critical'
+  description: string
+}
+
+export interface GreenhouseClimateState {
+  open: boolean
+  data: GreenhouseClimateData[]
+  showTemperature: boolean
+  showHumidity: boolean
+  showCo2Level: boolean
+  showLightIntensity: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface LivestockMovementData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  animalCount: number
+  avgSpeed: number         // km/h
+  grazingDuration: number  // hours
+  distanceTraveled: number // km
+  status: 'grazing' | 'moving' | 'resting' | 'alert'
+  description: string
+}
+
+export interface LivestockMovementState {
+  open: boolean
+  data: LivestockMovementData[]
+  showAnimalCount: boolean
+  showAvgSpeed: boolean
+  showGrazingDuration: boolean
+  showDistanceTraveled: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 109: Agricultural Monitoring & Precision Farming
+export interface CropHealthIndexData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  ndviIndex: number         // 0-1
+  cropStress: number        // 0-100
+  growthStage: number       // 1-12
+  coveragePercent: number   // 0-100
+  status: 'critical' | 'stressed' | 'healthy' | 'optimal'
+  description: string
+}
+
+export interface CropHealthIndexState {
+  open: boolean
+  data: CropHealthIndexData[]
+  showNdviIndex: boolean
+  showCropStress: boolean
+  showGrowthStage: boolean
+  showCoveragePercent: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface SoilMoistureFieldData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  moisturePercent: number   // 0-100
+  fieldCapacity: number     // 0-100
+  wiltingPoint: number      // 0-100
+  availableWater: number    // mm
+  status: 'drought' | 'dry' | 'adequate' | 'saturated'
+  description: string
+}
+
+export interface SoilMoistureFieldState {
+  open: boolean
+  data: SoilMoistureFieldData[]
+  showMoisturePercent: boolean
+  showFieldCapacity: boolean
+  showWiltingPoint: boolean
+  showAvailableWater: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface IrrigationEfficiencyData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  applicationRate: number     // mm/h
+  distributionPercent: number // 0-100
+  conveyancePercent: number   // 0-100
+  overallEfficiency: number   // 0-100
+  status: 'poor' | 'fair' | 'good' | 'excellent'
+  description: string
+}
+
+export interface IrrigationEfficiencyState {
+  open: boolean
+  data: IrrigationEfficiencyData[]
+  showApplicationRate: boolean
+  showDistributionPercent: boolean
+  showConveyancePercent: boolean
+  showOverallEfficiency: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface PestOutbreakTrackerData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  riskLevel: number        // 0-100
+  spreadRate: number       // km/month
+  affectedArea: number     // km2
+  controlEfficiency: number // 0-100
+  status: 'epidemic' | 'outbreak' | 'monitored' | 'contained'
+  description: string
+}
+
+export interface PestOutbreakTrackerState {
+  open: boolean
+  data: PestOutbreakTrackerData[]
+  showRiskLevel: boolean
+  showSpreadRate: boolean
+  showAffectedArea: boolean
+  showControlEfficiency: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface FertilizerRunoffData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  nitrogenLoad: number      // kg/ha/yr
+  phosphorusLoad: number    // kg/ha/yr
+  nitrateLevel: number      // mg/L
+  eutrophicationIndex: number // 0-100
+  status: 'severe' | 'elevated' | 'moderate' | 'low'
+  description: string
+}
+
+export interface FertilizerRunoffState {
+  open: boolean
+  data: FertilizerRunoffData[]
+  showNitrogenLoad: boolean
+  showPhosphorusLoad: boolean
+  showNitrateLevel: boolean
+  showEutrophicationIndex: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface HarvestYieldPredictData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  yieldForecast: number      // tonnes/ha
+  areaHarvested: number      // million ha
+  productionEst: number      // million tonnes
+  yieldGap: number           // %
+  status: 'failed' | 'below' | 'average' | 'record'
+  description: string
+}
+
+export interface HarvestYieldPredictState {
+  open: boolean
+  data: HarvestYieldPredictData[]
+  showYieldForecast: boolean
+  showAreaHarvested: boolean
+  showProductionEst: boolean
+  showYieldGap: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface GreenhouseClimateData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  temperature: number     // Celsius
+  humidity: number        // 0-100
+  co2Level: number        // ppm
+  lightPAR: number        // umol/m2/s
+  status: 'critical' | 'warning' | 'normal' | 'optimal'
+  description: string
+}
+
+export interface GreenhouseClimateState {
+  open: boolean
+  data: GreenhouseClimateData[]
+  showTemperature: boolean
+  showHumidity: boolean
+  showCo2Level: boolean
+  showLightPAR: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface LivestockMovementData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  herdCount: number       // count
+  avgSpeed: number        // km/h
+  grazingArea: number     // km2
+  healthIndex: number     // 0-100
+  status: 'critical' | 'alert' | 'normal' | 'healthy'
+  description: string
+}
+
+export interface LivestockMovementState {
+  open: boolean
+  data: LivestockMovementData[]
+  showHerdCount: boolean
+  showAvgSpeed: boolean
+  showGrazingArea: boolean
+  showHealthIndex: boolean
   statusFilter: string
   activeItemId: string | null
 }
@@ -17964,6 +18369,40 @@ export const useMapStore = create<MapState>()(
       },
       setSmartParkingCapacity: (updates) => set((state) => ({ smartParkingCapacity: { ...state.smartParkingCapacity, ...updates } })),
 
+      // Task 109: Agricultural Monitoring & Precision Farming
+      cropHealthIndex: {
+        data: [], activeItemId: null, showNdviIndex: true, showCropStress: true, showGrowthStage: false, showCoveragePercent: false, open: false, statusFilter: '',
+      },
+      setCropHealthIndex: (updates) => set((state) => ({ cropHealthIndex: { ...state.cropHealthIndex, ...updates } })),
+      soilMoistureField: {
+        data: [], activeItemId: null, showMoisturePercent: true, showFieldCapacity: true, showWiltingPoint: false, showAvailableWater: false, open: false, statusFilter: '',
+      },
+      setSoilMoistureField: (updates) => set((state) => ({ soilMoistureField: { ...state.soilMoistureField, ...updates } })),
+      irrigationEfficiency: {
+        data: [], activeItemId: null, showApplicationRate: true, showDistributionPercent: true, showConveyancePercent: false, showOverallEfficiency: false, open: false, statusFilter: '',
+      },
+      setIrrigationEfficiency: (updates) => set((state) => ({ irrigationEfficiency: { ...state.irrigationEfficiency, ...updates } })),
+      pestOutbreakTracker: {
+        data: [], activeItemId: null, showRiskLevel: true, showSpreadRate: true, showAffectedArea: false, showControlEfficiency: false, open: false, statusFilter: '',
+      },
+      setPestOutbreakTracker: (updates) => set((state) => ({ pestOutbreakTracker: { ...state.pestOutbreakTracker, ...updates } })),
+      fertilizerRunoff: {
+        data: [], activeItemId: null, showNitrogenLoad: true, showPhosphorusLoad: true, showNitrateLevel: false, showEutrophicationIndex: false, open: false, statusFilter: '',
+      },
+      setFertilizerRunoff: (updates) => set((state) => ({ fertilizerRunoff: { ...state.fertilizerRunoff, ...updates } })),
+      harvestYieldPredict: {
+        data: [], activeItemId: null, showYieldForecast: true, showAreaHarvested: true, showProductionEst: false, showYieldGap: false, open: false, statusFilter: '',
+      },
+      setHarvestYieldPredict: (updates) => set((state) => ({ harvestYieldPredict: { ...state.harvestYieldPredict, ...updates } })),
+      greenhouseClimate: {
+        data: [], activeItemId: null, showTemperature: true, showHumidity: true, showCo2Level: false, showLightPAR: false, open: false, statusFilter: '',
+      },
+      setGreenhouseClimate: (updates) => set((state) => ({ greenhouseClimate: { ...state.greenhouseClimate, ...updates } })),
+      livestockMovement: {
+        data: [], activeItemId: null, showHerdCount: true, showAvgSpeed: true, showGrazingArea: false, showHealthIndex: false, open: false, statusFilter: '',
+      },
+      setLivestockMovement: (updates) => set((state) => ({ livestockMovement: { ...state.livestockMovement, ...updates } })),
+
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
       setAddLocationDialogOpen: (open) => set({ addLocationDialogOpen: open }),
@@ -18518,6 +18957,15 @@ export const useMapStore = create<MapState>()(
         airQualityUrban: state.airQualityUrban,
         noiseLevelMapper: state.noiseLevelMapper,
         smartParkingCapacity: state.smartParkingCapacity,
+        // Task 109: Agricultural Monitoring & Precision Farming
+        cropHealthIndex: state.cropHealthIndex,
+        soilMoistureField: state.soilMoistureField,
+        irrigationEfficiency: state.irrigationEfficiency,
+        pestOutbreakTracker: state.pestOutbreakTracker,
+        fertilizerRunoff: state.fertilizerRunoff,
+        harvestYieldPredict: state.harvestYieldPredict,
+        greenhouseClimate: state.greenhouseClimate,
+        livestockMovement: state.livestockMovement,
         // Task 96
         karstSpringDischarge: state.karstSpringDischarge,
         caveDripMonitor: state.caveDripMonitor,

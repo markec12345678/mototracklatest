@@ -317,6 +317,15 @@ export function MonitorPanelRegistry() {
   const airQualityUrban = useMapStore((s) => s.airQualityUrban)
   const noiseLevelMapper = useMapStore((s) => s.noiseLevelMapper)
   const smartParkingCapacity = useMapStore((s) => s.smartParkingCapacity)
+  // Task 109: Agricultural Monitoring & Precision Farming
+  const cropHealthIndex = useMapStore((s) => s.cropHealthIndex)
+  const soilMoistureField = useMapStore((s) => s.soilMoistureField)
+  const irrigationEfficiency = useMapStore((s) => s.irrigationEfficiency)
+  const pestOutbreakTracker = useMapStore((s) => s.pestOutbreakTracker)
+  const fertilizerRunoff = useMapStore((s) => s.fertilizerRunoff)
+  const harvestYieldPredict = useMapStore((s) => s.harvestYieldPredict)
+  const greenhouseClimate = useMapStore((s) => s.greenhouseClimate)
+  const livestockMovement = useMapStore((s) => s.livestockMovement)
 
   return (
     <>
@@ -1017,6 +1026,31 @@ export function MonitorPanelRegistry() {
       )}
       {smartParkingCapacity.open && (
         <LazyPanel importFn={() => import('@/components/map/SmartParkingCapacityMonitor')} exportName="SmartParkingCapacityMonitor" shouldLoad={true} />
+      )}
+      {/* Task 109: Agricultural Monitoring & Precision Farming */}
+      {cropHealthIndex.open && (
+        <LazyPanel importFn={() => import('@/components/map/CropHealthIndexMonitor')} exportName="CropHealthIndexMonitor" shouldLoad={true} />
+      )}
+      {soilMoistureField.open && (
+        <LazyPanel importFn={() => import('@/components/map/SoilMoistureFieldMonitor')} exportName="SoilMoistureFieldMonitor" shouldLoad={true} />
+      )}
+      {irrigationEfficiency.open && (
+        <LazyPanel importFn={() => import('@/components/map/IrrigationEfficiencyMonitor')} exportName="IrrigationEfficiencyMonitor" shouldLoad={true} />
+      )}
+      {pestOutbreakTracker.open && (
+        <LazyPanel importFn={() => import('@/components/map/PestOutbreakTrackerMonitor')} exportName="PestOutbreakTrackerMonitor" shouldLoad={true} />
+      )}
+      {fertilizerRunoff.open && (
+        <LazyPanel importFn={() => import('@/components/map/FertilizerRunoffMonitor')} exportName="FertilizerRunoffMonitor" shouldLoad={true} />
+      )}
+      {harvestYieldPredict.open && (
+        <LazyPanel importFn={() => import('@/components/map/HarvestYieldPredictMonitor')} exportName="HarvestYieldPredictMonitor" shouldLoad={true} />
+      )}
+      {greenhouseClimate.open && (
+        <LazyPanel importFn={() => import('@/components/map/GreenhouseClimateMonitor')} exportName="GreenhouseClimateMonitor" shouldLoad={true} />
+      )}
+      {livestockMovement.open && (
+        <LazyPanel importFn={() => import('@/components/map/LivestockMovementMonitor')} exportName="LivestockMovementMonitor" shouldLoad={true} />
       )}
     </>
   )

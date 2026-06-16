@@ -438,6 +438,15 @@ import {
   Wind as WindIcon16,
   Volume2 as Volume2Icon2,
   ParkingCircle as ParkingIcon,
+  // Task 109 icons
+  Leaf as LeafIcon9,
+  Droplets as DropletsIcon19,
+  Droplet as DropletIcon14,
+  Bug as BugIcon5,
+  FlaskConical as FlaskConicalIcon4,
+  Sprout as WheatIcon,
+  Thermometer as ThermometerIcon23,
+  Footprints as FootprintsIcon3,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -483,6 +492,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const airQualityUrbanOpen = useMapStore((s) => s.airQualityUrban.open)
   const noiseLevelMapperOpen = useMapStore((s) => s.noiseLevelMapper.open)
   const smartParkingCapacityOpen = useMapStore((s) => s.smartParkingCapacity.open)
+  // Task 109: Agricultural Monitoring & Precision Farming
+  const cropHealthIndexOpen = useMapStore((s) => s.cropHealthIndex.open)
+  const soilMoistureFieldOpen = useMapStore((s) => s.soilMoistureField.open)
+  const irrigationEfficiencyOpen = useMapStore((s) => s.irrigationEfficiency.open)
+  const pestOutbreakTrackerOpen = useMapStore((s) => s.pestOutbreakTracker.open)
+  const fertilizerRunoffOpen = useMapStore((s) => s.fertilizerRunoff.open)
+  const harvestYieldPredictOpen = useMapStore((s) => s.harvestYieldPredict.open)
+  const greenhouseClimateOpen = useMapStore((s) => s.greenhouseClimate.open)
+  const livestockMovementOpen = useMapStore((s) => s.livestockMovement.open)
 
   if (typeof window === 'undefined') return null
 
@@ -3136,6 +3154,191 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
               </TooltipTrigger>
               <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
                 Smart Parking Capacity Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          {/* Task 109: Agricultural Monitoring & Precision Farming */}
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    cropHealthIndexOpen
+                      ? 'bg-green-500 text-white shadow-md shadow-green-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setCropHealthIndex({ open: true })}
+                  aria-label="Crop Health Index Monitor"
+                >
+                  <LeafIcon9 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Crop Health Index Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    soilMoistureFieldOpen
+                      ? 'bg-amber-500 text-white shadow-md shadow-amber-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setSoilMoistureField({ open: true })}
+                  aria-label="Soil Moisture Field Monitor"
+                >
+                  <DropletsIcon19 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Soil Moisture Field Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    irrigationEfficiencyOpen
+                      ? 'bg-cyan-500 text-white shadow-md shadow-cyan-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setIrrigationEfficiency({ open: true })}
+                  aria-label="Irrigation Efficiency Monitor"
+                >
+                  <DropletIcon14 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Irrigation Efficiency Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    pestOutbreakTrackerOpen
+                      ? 'bg-red-500 text-white shadow-md shadow-red-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setPestOutbreakTracker({ open: true })}
+                  aria-label="Pest Outbreak Tracker Monitor"
+                >
+                  <BugIcon5 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Pest Outbreak Tracker Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    fertilizerRunoffOpen
+                      ? 'bg-teal-500 text-white shadow-md shadow-teal-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setFertilizerRunoff({ open: true })}
+                  aria-label="Fertilizer Runoff Monitor"
+                >
+                  <FlaskConicalIcon4 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Fertilizer Runoff Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    harvestYieldPredictOpen
+                      ? 'bg-yellow-500 text-white shadow-md shadow-yellow-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setHarvestYieldPredict({ open: true })}
+                  aria-label="Harvest Yield Predict Monitor"
+                >
+                  <WheatIcon className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Harvest Yield Predict Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    greenhouseClimateOpen
+                      ? 'bg-emerald-500 text-white shadow-md shadow-emerald-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setGreenhouseClimate({ open: true })}
+                  aria-label="Greenhouse Climate Monitor"
+                >
+                  <ThermometerIcon23 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Greenhouse Climate Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    livestockMovementOpen
+                      ? 'bg-orange-500 text-white shadow-md shadow-orange-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setLivestockMovement({ open: true })}
+                  aria-label="Livestock Movement Monitor"
+                >
+                  <FootprintsIcon3 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Livestock Movement Monitor
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
