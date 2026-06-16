@@ -402,6 +402,15 @@ import {
   Layers as LayersIcon9,
   TreeDeciduous as TreeDeciduousIcon5,
   Droplets as DropletsIcon17,
+  // Task 105 icons
+  Waves as WavesIcon22,
+  Droplet as DropletIcon13,
+  AlertTriangle as AlertTriangleIcon5,
+  Layers as LayersIcon10,
+  ArrowDown as ArrowDownIcon7,
+  Snowflake as SnowflakeIcon15,
+  Gauge as GaugeIcon3,
+  Droplets as DropletsIcon18,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -2679,6 +2688,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setBiomeTransition({ open: true })} title="Biome Transition" aria-label="Open biome transition monitor"><LayersIcon9 className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setForestCanopyCover({ open: true })} title="Forest Canopy Cover" aria-label="Open forest canopy cover monitor"><TreeDeciduousIcon5 className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setWetlandBiodiversityIndex({ open: true })} title="Wetland Biodiversity" aria-label="Open wetland biodiversity index monitor"><DropletsIcon17 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setWatershedDischarge({ open: true })} title="Watershed Discharge" aria-label="Open watershed discharge monitor"><WavesIcon22 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setAquiferRechargeRate({ open: true })} title="Aquifer Recharge Rate" aria-label="Open aquifer recharge rate monitor"><DropletIcon13 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setFloodInundationMap({ open: true })} title="Flood Inundation Map" aria-label="Open flood inundation map monitor"><AlertTriangleIcon5 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setRiverSedimentLoad({ open: true })} title="River Sediment Load" aria-label="Open river sediment load monitor"><LayersIcon10 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setGroundwaterTableLevel({ open: true })} title="Groundwater Table Level" aria-label="Open groundwater table level monitor"><ArrowDownIcon7 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setSnowpackWaterEquivalent({ open: true })} title="Snowpack Water Equivalent" aria-label="Open snowpack water equivalent monitor"><SnowflakeIcon15 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setReservoirStorageLevel({ open: true })} title="Reservoir Storage Level" aria-label="Open reservoir storage level monitor"><GaugeIcon3 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setBaseflowIndex({ open: true })} title="Baseflow Index" aria-label="Open baseflow index monitor"><DropletsIcon18 className="h-4 w-4" /></Button>
           <Button
             variant="outline"
             size="icon"

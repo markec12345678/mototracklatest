@@ -281,6 +281,15 @@ export function MonitorPanelRegistry() {
   const biomeTransition = useMapStore((s) => s.biomeTransition)
   const forestCanopyCover = useMapStore((s) => s.forestCanopyCover)
   const wetlandBiodiversityIndex = useMapStore((s) => s.wetlandBiodiversityIndex)
+  // Task 105: Hydrology and Watershed
+  const watershedDischarge = useMapStore((s) => s.watershedDischarge)
+  const aquiferRechargeRate = useMapStore((s) => s.aquiferRechargeRate)
+  const floodInundationMap = useMapStore((s) => s.floodInundationMap)
+  const riverSedimentLoad = useMapStore((s) => s.riverSedimentLoad)
+  const groundwaterTableLevel = useMapStore((s) => s.groundwaterTableLevel)
+  const snowpackWaterEquivalent = useMapStore((s) => s.snowpackWaterEquivalent)
+  const reservoirStorageLevel = useMapStore((s) => s.reservoirStorageLevel)
+  const baseflowIndex = useMapStore((s) => s.baseflowIndex)
 
   return (
     <>
@@ -881,6 +890,31 @@ export function MonitorPanelRegistry() {
       )}
       {wetlandBiodiversityIndex.open && (
         <LazyPanel importFn={() => import('@/components/map/WetlandBiodiversityIndexMonitor')} exportName="WetlandBiodiversityIndexMonitor" shouldLoad={true} />
+      )}
+      {/* Task 105: Hydrology and Watershed */}
+      {watershedDischarge.open && (
+        <LazyPanel importFn={() => import('@/components/map/WatershedDischargeMonitor')} exportName="WatershedDischargeMonitor" shouldLoad={true} />
+      )}
+      {aquiferRechargeRate.open && (
+        <LazyPanel importFn={() => import('@/components/map/AquiferRechargeRateMonitor')} exportName="AquiferRechargeRateMonitor" shouldLoad={true} />
+      )}
+      {floodInundationMap.open && (
+        <LazyPanel importFn={() => import('@/components/map/FloodInundationMapMonitor')} exportName="FloodInundationMapMonitor" shouldLoad={true} />
+      )}
+      {riverSedimentLoad.open && (
+        <LazyPanel importFn={() => import('@/components/map/RiverSedimentLoadMonitor')} exportName="RiverSedimentLoadMonitor" shouldLoad={true} />
+      )}
+      {groundwaterTableLevel.open && (
+        <LazyPanel importFn={() => import('@/components/map/GroundwaterTableLevelMonitor')} exportName="GroundwaterTableLevelMonitor" shouldLoad={true} />
+      )}
+      {snowpackWaterEquivalent.open && (
+        <LazyPanel importFn={() => import('@/components/map/SnowpackWaterEquivalentMonitor')} exportName="SnowpackWaterEquivalentMonitor" shouldLoad={true} />
+      )}
+      {reservoirStorageLevel.open && (
+        <LazyPanel importFn={() => import('@/components/map/ReservoirStorageLevelMonitor')} exportName="ReservoirStorageLevelMonitor" shouldLoad={true} />
+      )}
+      {baseflowIndex.open && (
+        <LazyPanel importFn={() => import('@/components/map/BaseflowIndexMonitor')} exportName="BaseflowIndexMonitor" shouldLoad={true} />
       )}
     </>
   )

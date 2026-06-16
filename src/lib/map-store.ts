@@ -8825,6 +8825,24 @@ interface MapState {
   wetlandBiodiversityIndex: WetlandBiodiversityIndexState
   setWetlandBiodiversityIndex: (state: Partial<WetlandBiodiversityIndexState>) => void
 
+  // Task 105: Hydrology and Watershed
+  watershedDischarge: WatershedDischargeState
+  setWatershedDischarge: (state: Partial<WatershedDischargeState>) => void
+  aquiferRechargeRate: AquiferRechargeRateState
+  setAquiferRechargeRate: (state: Partial<AquiferRechargeRateState>) => void
+  floodInundationMap: FloodInundationMapState
+  setFloodInundationMap: (state: Partial<FloodInundationMapState>) => void
+  riverSedimentLoad: RiverSedimentLoadState
+  setRiverSedimentLoad: (state: Partial<RiverSedimentLoadState>) => void
+  groundwaterTableLevel: GroundwaterTableLevelState
+  setGroundwaterTableLevel: (state: Partial<GroundwaterTableLevelState>) => void
+  snowpackWaterEquivalent: SnowpackWaterEquivalentState
+  setSnowpackWaterEquivalent: (state: Partial<SnowpackWaterEquivalentState>) => void
+  reservoirStorageLevel: ReservoirStorageLevelState
+  setReservoirStorageLevel: (state: Partial<ReservoirStorageLevelState>) => void
+  baseflowIndex: BaseflowIndexState
+  setBaseflowIndex: (state: Partial<BaseflowIndexState>) => void
+
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
   setAddLocationDialogOpen: (open: boolean) => void
@@ -11868,6 +11886,183 @@ export interface WetlandBiodiversityIndexState {
   showSpeciesRichness: boolean
   showShannonIndex: boolean
   showWaterQuality: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 105: Hydrology and Watershed
+export interface WatershedDischargeData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  dischargeRate: number     // m³/s
+  drainageArea: number      // km²
+  runoffCoefficient: number // 0-1
+  status: 'flooding' | 'high' | 'normal' | 'low'
+  description: string
+}
+
+export interface WatershedDischargeState {
+  open: boolean
+  data: WatershedDischargeData[]
+  showDischargeRate: boolean
+  showDrainageArea: boolean
+  showRunoffCoefficient: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface AquiferRechargeRateData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  rechargeRate: number      // mm/year
+  waterTableDepth: number   // m
+  permeability: number      // m/day
+  status: 'surplus' | 'balanced' | 'deficit' | 'depleted'
+  description: string
+}
+
+export interface AquiferRechargeRateState {
+  open: boolean
+  data: AquiferRechargeRateData[]
+  showRechargeRate: boolean
+  showWaterTableDepth: boolean
+  showPermeability: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface FloodInundationMapData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  floodDepth: number        // m
+  returnPeriod: number      // years
+  affectedArea: number      // km²
+  status: 'active' | 'warning' | 'receding' | 'dry'
+  description: string
+}
+
+export interface FloodInundationMapState {
+  open: boolean
+  data: FloodInundationMapData[]
+  showFloodDepth: boolean
+  showReturnPeriod: boolean
+  showAffectedArea: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface RiverSedimentLoadData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  suspendedLoad: number     // mg/L
+  bedloadTransport: number  // kg/s
+  turbidity: number         // NTU
+  status: 'heavy' | 'elevated' | 'normal' | 'clear'
+  description: string
+}
+
+export interface RiverSedimentLoadState {
+  open: boolean
+  data: RiverSedimentLoadData[]
+  showSuspendedLoad: boolean
+  showBedloadTransport: boolean
+  showTurbidity: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface GroundwaterTableLevelData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  waterLevel: number        // m below surface
+  trendRate: number         // m/year
+  aquiferType: number       // classification code
+  status: 'rising' | 'stable' | 'declining' | 'critical'
+  description: string
+}
+
+export interface GroundwaterTableLevelState {
+  open: boolean
+  data: GroundwaterTableLevelData[]
+  showWaterLevel: boolean
+  showTrendRate: boolean
+  showAquiferType: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface SnowpackWaterEquivalentData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  sweValue: number          // mm
+  snowDepth: number         // cm
+  meltRate: number          // mm/day
+  status: 'above_normal' | 'normal' | 'below_normal' | 'deficit'
+  description: string
+}
+
+export interface SnowpackWaterEquivalentState {
+  open: boolean
+  data: SnowpackWaterEquivalentData[]
+  showSweValue: boolean
+  showSnowDepth: boolean
+  showMeltRate: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface ReservoirStorageLevelData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  storageLevel: number      // % capacity
+  inflowRate: number        // m³/s
+  outflowRate: number       // m³/s
+  status: 'overflow' | 'full' | 'adequate' | 'low'
+  description: string
+}
+
+export interface ReservoirStorageLevelState {
+  open: boolean
+  data: ReservoirStorageLevelData[]
+  showStorageLevel: boolean
+  showInflowRate: boolean
+  showOutflowRate: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface BaseflowIndexData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  baseflowRatio: number     // 0-1
+  totalFlow: number         // m³/s
+  groundwaterContribution: number // %
+  status: 'groundwater_dominated' | 'mixed' | 'runoff_dominated' | 'intermittent'
+  description: string
+}
+
+export interface BaseflowIndexState {
+  open: boolean
+  data: BaseflowIndexData[]
+  showBaseflowRatio: boolean
+  showTotalFlow: boolean
+  showGroundwaterContribution: boolean
   statusFilter: string
   activeItemId: string | null
 }
@@ -17032,6 +17227,40 @@ export const useMapStore = create<MapState>()(
       },
       setWetlandBiodiversityIndex: (updates) => set((state) => ({ wetlandBiodiversityIndex: { ...state.wetlandBiodiversityIndex, ...updates } })),
 
+      // Task 105: Hydrology and Watershed
+      watershedDischarge: {
+        data: [], activeItemId: null, showDischargeRate: true, showDrainageArea: true, showRunoffCoefficient: false, open: false, statusFilter: '',
+      },
+      setWatershedDischarge: (updates) => set((state) => ({ watershedDischarge: { ...state.watershedDischarge, ...updates } })),
+      aquiferRechargeRate: {
+        data: [], activeItemId: null, showRechargeRate: true, showWaterTableDepth: true, showPermeability: false, open: false, statusFilter: '',
+      },
+      setAquiferRechargeRate: (updates) => set((state) => ({ aquiferRechargeRate: { ...state.aquiferRechargeRate, ...updates } })),
+      floodInundationMap: {
+        data: [], activeItemId: null, showFloodDepth: true, showReturnPeriod: true, showAffectedArea: false, open: false, statusFilter: '',
+      },
+      setFloodInundationMap: (updates) => set((state) => ({ floodInundationMap: { ...state.floodInundationMap, ...updates } })),
+      riverSedimentLoad: {
+        data: [], activeItemId: null, showSuspendedLoad: true, showBedloadTransport: true, showTurbidity: false, open: false, statusFilter: '',
+      },
+      setRiverSedimentLoad: (updates) => set((state) => ({ riverSedimentLoad: { ...state.riverSedimentLoad, ...updates } })),
+      groundwaterTableLevel: {
+        data: [], activeItemId: null, showWaterLevel: true, showTrendRate: true, showAquiferType: false, open: false, statusFilter: '',
+      },
+      setGroundwaterTableLevel: (updates) => set((state) => ({ groundwaterTableLevel: { ...state.groundwaterTableLevel, ...updates } })),
+      snowpackWaterEquivalent: {
+        data: [], activeItemId: null, showSweValue: true, showSnowDepth: true, showMeltRate: false, open: false, statusFilter: '',
+      },
+      setSnowpackWaterEquivalent: (updates) => set((state) => ({ snowpackWaterEquivalent: { ...state.snowpackWaterEquivalent, ...updates } })),
+      reservoirStorageLevel: {
+        data: [], activeItemId: null, showStorageLevel: true, showInflowRate: true, showOutflowRate: false, open: false, statusFilter: '',
+      },
+      setReservoirStorageLevel: (updates) => set((state) => ({ reservoirStorageLevel: { ...state.reservoirStorageLevel, ...updates } })),
+      baseflowIndex: {
+        data: [], activeItemId: null, showBaseflowRatio: true, showTotalFlow: true, showGroundwaterContribution: false, open: false, statusFilter: '',
+      },
+      setBaseflowIndex: (updates) => set((state) => ({ baseflowIndex: { ...state.baseflowIndex, ...updates } })),
+
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
       setAddLocationDialogOpen: (open) => set({ addLocationDialogOpen: open }),
@@ -17550,6 +17779,15 @@ export const useMapStore = create<MapState>()(
         biomeTransition: state.biomeTransition,
         forestCanopyCover: state.forestCanopyCover,
         wetlandBiodiversityIndex: state.wetlandBiodiversityIndex,
+        // Task 105
+        watershedDischarge: state.watershedDischarge,
+        aquiferRechargeRate: state.aquiferRechargeRate,
+        floodInundationMap: state.floodInundationMap,
+        riverSedimentLoad: state.riverSedimentLoad,
+        groundwaterTableLevel: state.groundwaterTableLevel,
+        snowpackWaterEquivalent: state.snowpackWaterEquivalent,
+        reservoirStorageLevel: state.reservoirStorageLevel,
+        baseflowIndex: state.baseflowIndex,
         // Task 96
         karstSpringDischarge: state.karstSpringDischarge,
         caveDripMonitor: state.caveDripMonitor,
