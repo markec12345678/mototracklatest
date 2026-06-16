@@ -378,6 +378,24 @@ export function MonitorPanelRegistry() {
   const floodControlSystem = useMapStore((s) => s.floodControlSystem)
   const drinkingWaterQuality = useMapStore((s) => s.drinkingWaterQuality)
   const desalinationOutput = useMapStore((s) => s.desalinationOutput)
+  // Task 116: Environmental Pollution & Industrial Monitoring
+  const industrialEmission = useMapStore((s) => s.industrialEmission)
+  const chemicalSpillTracker = useMapStore((s) => s.chemicalSpillTracker)
+  const airToxicMonitor = useMapStore((s) => s.airToxicMonitor)
+  const soilContaminationMap = useMapStore((s) => s.soilContaminationMap)
+  const noiseIndustrialMonitor = useMapStore((s) => s.noiseIndustrialMonitor)
+  const lightPollutionAtlas = useMapStore((s) => s.lightPollutionAtlas)
+  const thermalPollutionMonitor = useMapStore((s) => s.thermalPollutionMonitor)
+  const ewasteDumpMonitor = useMapStore((s) => s.ewasteDumpMonitor)
+  // Task 117: Wildlife Conservation & Biodiversity
+  const endangeredSpecies = useMapStore((s) => s.endangeredSpecies)
+  const marineMammalTracker = useMapStore((s) => s.marineMammalTracker)
+  const birdMigrationFlyway = useMapStore((s) => s.birdMigrationFlyway)
+  const coralReefBleachingTrack = useMapStore((s) => s.coralReefBleachingTrack)
+  const invasiveSpeciesTrack = useMapStore((s) => s.invasiveSpeciesTrack)
+  const habitatFragmentation = useMapStore((s) => s.habitatFragmentation)
+  const biodiversityHotspot = useMapStore((s) => s.biodiversityHotspot)
+  const wildlifeCorridorMapTrack = useMapStore((s) => s.wildlifeCorridorMapTrack)
 
   return (
     <>
@@ -1247,6 +1265,56 @@ export function MonitorPanelRegistry() {
       )}
       {desalinationOutput.open && (
         <LazyPanel importFn={() => import('@/components/map/DesalinationOutputMonitor')} exportName="DesalinationOutputMonitor" shouldLoad={true} />
+      )}
+      {/* Task 116: Environmental Pollution & Industrial Monitoring */}
+      {industrialEmission.open && (
+        <LazyPanel importFn={() => import('@/components/map/IndustrialEmissionMonitor')} exportName="IndustrialEmissionMonitor" shouldLoad={true} />
+      )}
+      {chemicalSpillTracker.open && (
+        <LazyPanel importFn={() => import('@/components/map/ChemicalSpillTracker')} exportName="ChemicalSpillTracker" shouldLoad={true} />
+      )}
+      {airToxicMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/AirToxicMonitor')} exportName="AirToxicMonitor" shouldLoad={true} />
+      )}
+      {soilContaminationMap.open && (
+        <LazyPanel importFn={() => import('@/components/map/SoilContaminationMap')} exportName="SoilContaminationMap" shouldLoad={true} />
+      )}
+      {noiseIndustrialMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/NoiseIndustrialMonitor')} exportName="NoiseIndustrialMonitor" shouldLoad={true} />
+      )}
+      {lightPollutionAtlas.open && (
+        <LazyPanel importFn={() => import('@/components/map/LightPollutionAtlas')} exportName="LightPollutionAtlas" shouldLoad={true} />
+      )}
+      {thermalPollutionMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/ThermalPollutionMonitor')} exportName="ThermalPollutionMonitor" shouldLoad={true} />
+      )}
+      {ewasteDumpMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/EwasteDumpMonitor')} exportName="EwasteDumpMonitor" shouldLoad={true} />
+      )}
+      {/* Task 117: Wildlife Conservation & Biodiversity */}
+      {endangeredSpecies.open && (
+        <LazyPanel importFn={() => import('@/components/map/EndangeredSpeciesMonitor')} exportName="EndangeredSpeciesMonitor" shouldLoad={true} />
+      )}
+      {marineMammalTracker.open && (
+        <LazyPanel importFn={() => import('@/components/map/MarineMammalTracker')} exportName="MarineMammalTracker" shouldLoad={true} />
+      )}
+      {birdMigrationFlyway.open && (
+        <LazyPanel importFn={() => import('@/components/map/BirdMigrationFlyway')} exportName="BirdMigrationFlyway" shouldLoad={true} />
+      )}
+      {coralReefBleachingTrack.open && (
+        <LazyPanel importFn={() => import('@/components/map/CoralReefBleachingMonitorTrack')} exportName="CoralReefBleachingMonitorTrack" shouldLoad={true} />
+      )}
+      {invasiveSpeciesTrack.open && (
+        <LazyPanel importFn={() => import('@/components/map/InvasiveSpeciesMonitor')} exportName="InvasiveSpeciesMonitor" shouldLoad={true} />
+      )}
+      {habitatFragmentation.open && (
+        <LazyPanel importFn={() => import('@/components/map/HabitatFragmentationMonitor')} exportName="HabitatFragmentationMonitor" shouldLoad={true} />
+      )}
+      {biodiversityHotspot.open && (
+        <LazyPanel importFn={() => import('@/components/map/BiodiversityHotspotMonitor')} exportName="BiodiversityHotspotMonitor" shouldLoad={true} />
+      )}
+      {wildlifeCorridorMapTrack.open && (
+        <LazyPanel importFn={() => import('@/components/map/WildlifeCorridorMapTrack')} exportName="WildlifeCorridorMapTrack" shouldLoad={true} />
       )}
     </>
   )

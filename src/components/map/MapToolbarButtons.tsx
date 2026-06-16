@@ -499,6 +499,24 @@ import {
   CloudRain as CloudRainIcon9,
   GlassWater as GlassWaterIcon,
   Waves as WavesIcon26,
+  // Task 116 icons
+  Factory as FactoryIcon3,
+  FlaskConical as FlaskConicalIcon6,
+  Wind as WindIcon18,
+  Layers as LayersIcon11,
+  Volume2 as Volume2Icon3,
+  Moon as MoonIcon3,
+  Flame as FlameIcon19,
+  Monitor as MonitorIcon,
+  // Task 117 icons
+  PawPrint as PawPrintIcon,
+  Fish as FishIcon8,
+  Bird as BirdIcon6,
+  Shell as ShellIcon4,
+  Bug as BugIcon7,
+  Grid3x3 as GridIcon,
+  Flower as FlowerIcon,
+  Route as RouteIcon5,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -605,6 +623,24 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const floodControlSystemOpen = useMapStore((s) => s.floodControlSystem.open)
   const drinkingWaterQualityOpen = useMapStore((s) => s.drinkingWaterQuality.open)
   const desalinationOutputOpen = useMapStore((s) => s.desalinationOutput.open)
+  // Task 116: Environmental Pollution & Industrial Monitoring
+  const industrialEmissionOpen = useMapStore((s) => s.industrialEmission.open)
+  const chemicalSpillTrackerOpen = useMapStore((s) => s.chemicalSpillTracker.open)
+  const airToxicMonitorOpen = useMapStore((s) => s.airToxicMonitor.open)
+  const soilContaminationMapOpen = useMapStore((s) => s.soilContaminationMap.open)
+  const noiseIndustrialMonitorOpen = useMapStore((s) => s.noiseIndustrialMonitor.open)
+  const lightPollutionAtlasOpen = useMapStore((s) => s.lightPollutionAtlas.open)
+  const thermalPollutionMonitorOpen = useMapStore((s) => s.thermalPollutionMonitor.open)
+  const ewasteDumpMonitorOpen = useMapStore((s) => s.ewasteDumpMonitor.open)
+  // Task 117: Wildlife Conservation & Biodiversity
+  const endangeredSpeciesOpen = useMapStore((s) => s.endangeredSpecies.open)
+  const marineMammalTrackerOpen = useMapStore((s) => s.marineMammalTracker.open)
+  const birdMigrationFlywayOpen = useMapStore((s) => s.birdMigrationFlyway.open)
+  const coralReefBleachingTrackOpen = useMapStore((s) => s.coralReefBleachingTrack.open)
+  const invasiveSpeciesTrackOpen = useMapStore((s) => s.invasiveSpeciesTrack.open)
+  const habitatFragmentationOpen = useMapStore((s) => s.habitatFragmentation.open)
+  const biodiversityHotspotOpen = useMapStore((s) => s.biodiversityHotspot.open)
+  const wildlifeCorridorMapTrackOpen = useMapStore((s) => s.wildlifeCorridorMapTrack.open)
 
   if (typeof window === 'undefined') return null
 
@@ -4506,6 +4542,376 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
               </TooltipTrigger>
               <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
                 Desalination Output Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          {/* Task 116: Environmental Pollution & Industrial Monitoring */}
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    industrialEmissionOpen
+                      ? 'bg-gray-500 text-white shadow-md shadow-gray-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setIndustrialEmission({ open: true })}
+                  aria-label="Industrial Emission Monitor"
+                >
+                  <FactoryIcon3 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Industrial Emission Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    chemicalSpillTrackerOpen
+                      ? 'bg-yellow-500 text-white shadow-md shadow-yellow-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setChemicalSpillTracker({ open: true })}
+                  aria-label="Chemical Spill Tracker"
+                >
+                  <FlaskConicalIcon6 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Chemical Spill Tracker
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    airToxicMonitorOpen
+                      ? 'bg-purple-500 text-white shadow-md shadow-purple-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setAirToxicMonitor({ open: true })}
+                  aria-label="Air Toxic Monitor"
+                >
+                  <WindIcon18 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Air Toxic Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    soilContaminationMapOpen
+                      ? 'bg-amber-500 text-white shadow-md shadow-amber-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setSoilContaminationMap({ open: true })}
+                  aria-label="Soil Contamination Map"
+                >
+                  <LayersIcon11 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Soil Contamination Map
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    noiseIndustrialMonitorOpen
+                      ? 'bg-rose-500 text-white shadow-md shadow-rose-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setNoiseIndustrialMonitor({ open: true })}
+                  aria-label="Noise Industrial Monitor"
+                >
+                  <Volume2Icon3 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Noise Industrial Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    lightPollutionAtlasOpen
+                      ? 'bg-indigo-500 text-white shadow-md shadow-indigo-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setLightPollutionAtlas({ open: true })}
+                  aria-label="Light Pollution Atlas"
+                >
+                  <MoonIcon3 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Light Pollution Atlas
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    thermalPollutionMonitorOpen
+                      ? 'bg-red-500 text-white shadow-md shadow-red-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setThermalPollutionMonitor({ open: true })}
+                  aria-label="Thermal Pollution Monitor"
+                >
+                  <FlameIcon19 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Thermal Pollution Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    ewasteDumpMonitorOpen
+                      ? 'bg-emerald-500 text-white shadow-md shadow-emerald-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setEwasteDumpMonitor({ open: true })}
+                  aria-label="Ewaste Dump Monitor"
+                >
+                  <MonitorIcon className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Ewaste Dump Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          {/* Task 117: Wildlife Conservation & Biodiversity */}
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    endangeredSpeciesOpen
+                      ? 'bg-emerald-500 text-white shadow-md shadow-emerald-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setEndangeredSpecies({ open: true })}
+                  aria-label="Endangered Species Monitor"
+                >
+                  <PawPrintIcon className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Endangered Species Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    marineMammalTrackerOpen
+                      ? 'bg-blue-500 text-white shadow-md shadow-blue-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setMarineMammalTracker({ open: true })}
+                  aria-label="Marine Mammal Tracker"
+                >
+                  <FishIcon8 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Marine Mammal Tracker
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    birdMigrationFlywayOpen
+                      ? 'bg-sky-500 text-white shadow-md shadow-sky-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setBirdMigrationFlyway({ open: true })}
+                  aria-label="Bird Migration Flyway"
+                >
+                  <BirdIcon6 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Bird Migration Flyway
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    coralReefBleachingTrackOpen
+                      ? 'bg-teal-500 text-white shadow-md shadow-teal-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setCoralReefBleachingTrack({ open: true })}
+                  aria-label="Coral Reef Bleaching Monitor"
+                >
+                  <ShellIcon4 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Coral Reef Bleaching Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    invasiveSpeciesTrackOpen
+                      ? 'bg-orange-500 text-white shadow-md shadow-orange-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setInvasiveSpeciesTrack({ open: true })}
+                  aria-label="Invasive Species Monitor"
+                >
+                  <BugIcon7 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Invasive Species Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    habitatFragmentationOpen
+                      ? 'bg-amber-500 text-white shadow-md shadow-amber-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setHabitatFragmentation({ open: true })}
+                  aria-label="Habitat Fragmentation Monitor"
+                >
+                  <GridIcon className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Habitat Fragmentation Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    biodiversityHotspotOpen
+                      ? 'bg-rose-500 text-white shadow-md shadow-rose-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setBiodiversityHotspot({ open: true })}
+                  aria-label="Biodiversity Hotspot Monitor"
+                >
+                  <FlowerIcon className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Biodiversity Hotspot Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    wildlifeCorridorMapTrackOpen
+                      ? 'bg-green-500 text-white shadow-md shadow-green-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setWildlifeCorridorMapTrack({ open: true })}
+                  aria-label="Wildlife Corridor Map"
+                >
+                  <RouteIcon5 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Wildlife Corridor Map
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

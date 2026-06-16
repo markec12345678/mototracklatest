@@ -4104,6 +4104,40 @@ interface MapState {
   setDrinkingWaterQuality: (state: Partial<MonitorState>) => void
   desalinationOutput: MonitorState
   setDesalinationOutput: (state: Partial<MonitorState>) => void
+  // Task 116: Environmental Pollution & Industrial Monitoring
+  industrialEmission: MonitorState
+  setIndustrialEmission: (state: Partial<MonitorState>) => void
+  chemicalSpillTracker: MonitorState
+  setChemicalSpillTracker: (state: Partial<MonitorState>) => void
+  airToxicMonitor: MonitorState
+  setAirToxicMonitor: (state: Partial<MonitorState>) => void
+  soilContaminationMap: MonitorState
+  setSoilContaminationMap: (state: Partial<MonitorState>) => void
+  noiseIndustrialMonitor: MonitorState
+  setNoiseIndustrialMonitor: (state: Partial<MonitorState>) => void
+  lightPollutionAtlas: MonitorState
+  setLightPollutionAtlas: (state: Partial<MonitorState>) => void
+  thermalPollutionMonitor: MonitorState
+  setThermalPollutionMonitor: (state: Partial<MonitorState>) => void
+  ewasteDumpMonitor: MonitorState
+  setEwasteDumpMonitor: (state: Partial<MonitorState>) => void
+  // Task 117: Wildlife Conservation & Biodiversity
+  endangeredSpecies: MonitorState
+  setEndangeredSpecies: (state: Partial<MonitorState>) => void
+  marineMammalTracker: MonitorState
+  setMarineMammalTracker: (state: Partial<MonitorState>) => void
+  birdMigrationFlyway: MonitorState
+  setBirdMigrationFlyway: (state: Partial<MonitorState>) => void
+  coralReefBleachingTrack: MonitorState
+  setCoralReefBleachingTrack: (state: Partial<MonitorState>) => void
+  invasiveSpeciesTrack: MonitorState
+  setInvasiveSpeciesTrack: (state: Partial<MonitorState>) => void
+  habitatFragmentation: MonitorState
+  setHabitatFragmentation: (state: Partial<MonitorState>) => void
+  biodiversityHotspot: MonitorState
+  setBiodiversityHotspot: (state: Partial<MonitorState>) => void
+  wildlifeCorridorMapTrack: MonitorState
+  setWildlifeCorridorMapTrack: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -8044,6 +8078,42 @@ export const useMapStore = create<MapState>()(
       setFloodControlSystem: (updates) => set((state) => ({ floodControlSystem: { ...state.floodControlSystem, ...updates } })),
       setDrinkingWaterQuality: (updates) => set((state) => ({ drinkingWaterQuality: { ...state.drinkingWaterQuality, ...updates } })),
       setDesalinationOutput: (updates) => set((state) => ({ desalinationOutput: { ...state.desalinationOutput, ...updates } })),
+
+      // Task 116: Environmental Pollution & Industrial Monitoring
+      industrialEmission: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      chemicalSpillTracker: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      airToxicMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      soilContaminationMap: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      noiseIndustrialMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      lightPollutionAtlas: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      thermalPollutionMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      ewasteDumpMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      setIndustrialEmission: (updates) => set((state) => ({ industrialEmission: { ...state.industrialEmission, ...updates } })),
+      setChemicalSpillTracker: (updates) => set((state) => ({ chemicalSpillTracker: { ...state.chemicalSpillTracker, ...updates } })),
+      setAirToxicMonitor: (updates) => set((state) => ({ airToxicMonitor: { ...state.airToxicMonitor, ...updates } })),
+      setSoilContaminationMap: (updates) => set((state) => ({ soilContaminationMap: { ...state.soilContaminationMap, ...updates } })),
+      setNoiseIndustrialMonitor: (updates) => set((state) => ({ noiseIndustrialMonitor: { ...state.noiseIndustrialMonitor, ...updates } })),
+      setLightPollutionAtlas: (updates) => set((state) => ({ lightPollutionAtlas: { ...state.lightPollutionAtlas, ...updates } })),
+      setThermalPollutionMonitor: (updates) => set((state) => ({ thermalPollutionMonitor: { ...state.thermalPollutionMonitor, ...updates } })),
+      setEwasteDumpMonitor: (updates) => set((state) => ({ ewasteDumpMonitor: { ...state.ewasteDumpMonitor, ...updates } })),
+
+      // Task 117: Wildlife Conservation & Biodiversity
+      endangeredSpecies: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      marineMammalTracker: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      birdMigrationFlyway: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      coralReefBleachingTrack: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      invasiveSpeciesTrack: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      habitatFragmentation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      biodiversityHotspot: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      wildlifeCorridorMapTrack: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      setEndangeredSpecies: (updates) => set((state) => ({ endangeredSpecies: { ...state.endangeredSpecies, ...updates } })),
+      setMarineMammalTracker: (updates) => set((state) => ({ marineMammalTracker: { ...state.marineMammalTracker, ...updates } })),
+      setBirdMigrationFlyway: (updates) => set((state) => ({ birdMigrationFlyway: { ...state.birdMigrationFlyway, ...updates } })),
+      setCoralReefBleachingTrack: (updates) => set((state) => ({ coralReefBleachingTrack: { ...state.coralReefBleachingTrack, ...updates } })),
+      setInvasiveSpeciesTrack: (updates) => set((state) => ({ invasiveSpeciesTrack: { ...state.invasiveSpeciesTrack, ...updates } })),
+      setHabitatFragmentation: (updates) => set((state) => ({ habitatFragmentation: { ...state.habitatFragmentation, ...updates } })),
+      setBiodiversityHotspot: (updates) => set((state) => ({ biodiversityHotspot: { ...state.biodiversityHotspot, ...updates } })),
+      setWildlifeCorridorMapTrack: (updates) => set((state) => ({ wildlifeCorridorMapTrack: { ...state.wildlifeCorridorMapTrack, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
