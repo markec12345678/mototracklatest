@@ -290,6 +290,15 @@ export function MonitorPanelRegistry() {
   const snowpackWaterEquivalent = useMapStore((s) => s.snowpackWaterEquivalent)
   const reservoirStorageLevel = useMapStore((s) => s.reservoirStorageLevel)
   const baseflowIndex = useMapStore((s) => s.baseflowIndex)
+  // Task 106: Cryosphere Dynamics
+  const iceShelfThickness = useMapStore((s) => s.iceShelfThickness)
+  const seaIceExtent = useMapStore((s) => s.seaIceExtent)
+  const glacierMassBalance = useMapStore((s) => s.glacierMassBalance)
+  const permafrostActiveLayer = useMapStore((s) => s.permafrostActiveLayer)
+  const iceCoreRecord = useMapStore((s) => s.iceCoreRecord)
+  const snowCoverDuration = useMapStore((s) => s.snowCoverDuration)
+  const frostThawCycle = useMapStore((s) => s.frostThawCycle)
+  const icebergCalving = useMapStore((s) => s.icebergCalving)
 
   return (
     <>
@@ -915,6 +924,31 @@ export function MonitorPanelRegistry() {
       )}
       {baseflowIndex.open && (
         <LazyPanel importFn={() => import('@/components/map/BaseflowIndexMonitor')} exportName="BaseflowIndexMonitor" shouldLoad={true} />
+      )}
+      {/* Task 106: Cryosphere Dynamics */}
+      {iceShelfThickness.open && (
+        <LazyPanel importFn={() => import('@/components/map/IceShelfThicknessMonitor')} exportName="IceShelfThicknessMonitor" shouldLoad={true} />
+      )}
+      {seaIceExtent.open && (
+        <LazyPanel importFn={() => import('@/components/map/SeaIceExtentMonitor')} exportName="SeaIceExtentMonitor" shouldLoad={true} />
+      )}
+      {glacierMassBalance.open && (
+        <LazyPanel importFn={() => import('@/components/map/GlacierMassBalanceMonitor')} exportName="GlacierMassBalanceMonitor" shouldLoad={true} />
+      )}
+      {permafrostActiveLayer.open && (
+        <LazyPanel importFn={() => import('@/components/map/PermafrostActiveLayerMonitor')} exportName="PermafrostActiveLayerMonitor" shouldLoad={true} />
+      )}
+      {iceCoreRecord.open && (
+        <LazyPanel importFn={() => import('@/components/map/IceCoreRecordMonitor')} exportName="IceCoreRecordMonitor" shouldLoad={true} />
+      )}
+      {snowCoverDuration.open && (
+        <LazyPanel importFn={() => import('@/components/map/SnowCoverDurationMonitor')} exportName="SnowCoverDurationMonitor" shouldLoad={true} />
+      )}
+      {frostThawCycle.open && (
+        <LazyPanel importFn={() => import('@/components/map/FrostThawCycleMonitor')} exportName="FrostThawCycleMonitor" shouldLoad={true} />
+      )}
+      {icebergCalving.open && (
+        <LazyPanel importFn={() => import('@/components/map/IcebergCalvingMonitor')} exportName="IcebergCalvingMonitor" shouldLoad={true} />
       )}
     </>
   )

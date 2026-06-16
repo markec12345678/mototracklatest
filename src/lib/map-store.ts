@@ -8843,6 +8843,24 @@ interface MapState {
   baseflowIndex: BaseflowIndexState
   setBaseflowIndex: (state: Partial<BaseflowIndexState>) => void
 
+  // Task 106: Cryosphere Dynamics
+  iceShelfThickness: IceShelfThicknessState
+  setIceShelfThickness: (state: Partial<IceShelfThicknessState>) => void
+  seaIceExtent: SeaIceExtentState
+  setSeaIceExtent: (state: Partial<SeaIceExtentState>) => void
+  glacierMassBalance: GlacierMassBalanceState
+  setGlacierMassBalance: (state: Partial<GlacierMassBalanceState>) => void
+  permafrostActiveLayer: PermafrostActiveLayerState
+  setPermafrostActiveLayer: (state: Partial<PermafrostActiveLayerState>) => void
+  iceCoreRecord: IceCoreRecordState
+  setIceCoreRecord: (state: Partial<IceCoreRecordState>) => void
+  snowCoverDuration: SnowCoverDurationState
+  setSnowCoverDuration: (state: Partial<SnowCoverDurationState>) => void
+  frostThawCycle: FrostThawCycleState
+  setFrostThawCycle: (state: Partial<FrostThawCycleState>) => void
+  icebergCalving: IcebergCalvingState
+  setIcebergCalving: (state: Partial<IcebergCalvingState>) => void
+
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
   setAddLocationDialogOpen: (open: boolean) => void
@@ -12063,6 +12081,183 @@ export interface BaseflowIndexState {
   showBaseflowRatio: boolean
   showTotalFlow: boolean
   showGroundwaterContribution: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 106: Cryosphere Dynamics
+export interface IceShelfThicknessData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  shelfThickness: number   // m
+  basalMeltRate: number    // m/year
+  riftLength: number       // km
+  status: 'thickening' | 'stable' | 'thinning' | 'fracturing'
+  description: string
+}
+
+export interface IceShelfThicknessState {
+  open: boolean
+  data: IceShelfThicknessData[]
+  showShelfThickness: boolean
+  showBasalMeltRate: boolean
+  showRiftLength: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface SeaIceExtentData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  iceConcentration: number // %
+  extentAnomaly: number    // million km²
+  iceAge: number           // years
+  status: 'expanding' | 'stable' | 'declining' | 'record_low'
+  description: string
+}
+
+export interface SeaIceExtentState {
+  open: boolean
+  data: SeaIceExtentData[]
+  showIceConcentration: boolean
+  showExtentAnomaly: boolean
+  showIceAge: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface GlacierMassBalanceData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  massBalance: number      // m w.e./year
+  equilibriumLine: number  // m altitude
+  accumulationRatio: number // 0-1
+  status: 'gaining' | 'stable' | 'losing' | 'collapsing'
+  description: string
+}
+
+export interface GlacierMassBalanceState {
+  open: boolean
+  data: GlacierMassBalanceData[]
+  showMassBalance: boolean
+  showEquilibriumLine: boolean
+  showAccumulationRatio: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface PermafrostActiveLayerData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  activeLayerDepth: number  // cm
+  groundTemperature: number // °C
+  thawRate: number          // cm/year
+  status: 'deepening' | 'stable' | 'shallow' | 'absent'
+  description: string
+}
+
+export interface PermafrostActiveLayerState {
+  open: boolean
+  data: PermafrostActiveLayerData[]
+  showActiveLayerDepth: boolean
+  showGroundTemperature: boolean
+  showThawRate: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface IceCoreRecordData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  coreDepth: number        // m
+  oldestIceAge: number     // kyr BP
+  co2Concentration: number // ppm
+  status: 'recovering' | 'drilling' | 'completed' | 'archived'
+  description: string
+}
+
+export interface IceCoreRecordState {
+  open: boolean
+  data: IceCoreRecordData[]
+  showCoreDepth: boolean
+  showOldestIceAge: boolean
+  showCo2Concentration: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface SnowCoverDurationData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  snowDays: number          // days/year
+  snowOnsetDate: number     // day of year
+  snowMeltDate: number      // day of year
+  status: 'prolonged' | 'normal' | 'shortened' | 'absent'
+  description: string
+}
+
+export interface SnowCoverDurationState {
+  open: boolean
+  data: SnowCoverDurationData[]
+  showSnowDays: boolean
+  showSnowOnsetDate: boolean
+  showSnowMeltDate: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface FrostThawCycleData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  freezeThawCycles: number  // per year
+  frostDepth: number        // cm
+  heaveMagnitude: number    // mm
+  status: 'frequent' | 'moderate' | 'rare' | 'permafrost'
+  description: string
+}
+
+export interface FrostThawCycleState {
+  open: boolean
+  data: FrostThawCycleData[]
+  showFreezeThawCycles: boolean
+  showFrostDepth: boolean
+  showHeaveMagnitude: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface IcebergCalvingData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  calvingRate: number       // km²/year
+  icebergSize: number       // km²
+  driftSpeed: number        // km/day
+  status: 'intense' | 'active' | 'moderate' | 'minimal'
+  description: string
+}
+
+export interface IcebergCalvingState {
+  open: boolean
+  data: IcebergCalvingData[]
+  showCalvingRate: boolean
+  showIcebergSize: boolean
+  showDriftSpeed: boolean
   statusFilter: string
   activeItemId: string | null
 }
@@ -17261,6 +17456,40 @@ export const useMapStore = create<MapState>()(
       },
       setBaseflowIndex: (updates) => set((state) => ({ baseflowIndex: { ...state.baseflowIndex, ...updates } })),
 
+      // Task 106: Cryosphere Dynamics
+      iceShelfThickness: {
+        data: [], activeItemId: null, showShelfThickness: true, showBasalMeltRate: true, showRiftLength: false, open: false, statusFilter: '',
+      },
+      setIceShelfThickness: (updates) => set((state) => ({ iceShelfThickness: { ...state.iceShelfThickness, ...updates } })),
+      seaIceExtent: {
+        data: [], activeItemId: null, showIceConcentration: true, showExtentAnomaly: true, showIceAge: false, open: false, statusFilter: '',
+      },
+      setSeaIceExtent: (updates) => set((state) => ({ seaIceExtent: { ...state.seaIceExtent, ...updates } })),
+      glacierMassBalance: {
+        data: [], activeItemId: null, showMassBalance: true, showEquilibriumLine: true, showAccumulationRatio: false, open: false, statusFilter: '',
+      },
+      setGlacierMassBalance: (updates) => set((state) => ({ glacierMassBalance: { ...state.glacierMassBalance, ...updates } })),
+      permafrostActiveLayer: {
+        data: [], activeItemId: null, showActiveLayerDepth: true, showGroundTemperature: true, showThawRate: false, open: false, statusFilter: '',
+      },
+      setPermafrostActiveLayer: (updates) => set((state) => ({ permafrostActiveLayer: { ...state.permafrostActiveLayer, ...updates } })),
+      iceCoreRecord: {
+        data: [], activeItemId: null, showCoreDepth: true, showOldestIceAge: true, showCo2Concentration: false, open: false, statusFilter: '',
+      },
+      setIceCoreRecord: (updates) => set((state) => ({ iceCoreRecord: { ...state.iceCoreRecord, ...updates } })),
+      snowCoverDuration: {
+        data: [], activeItemId: null, showSnowDays: true, showSnowOnsetDate: true, showSnowMeltDate: false, open: false, statusFilter: '',
+      },
+      setSnowCoverDuration: (updates) => set((state) => ({ snowCoverDuration: { ...state.snowCoverDuration, ...updates } })),
+      frostThawCycle: {
+        data: [], activeItemId: null, showFreezeThawCycles: true, showFrostDepth: true, showHeaveMagnitude: false, open: false, statusFilter: '',
+      },
+      setFrostThawCycle: (updates) => set((state) => ({ frostThawCycle: { ...state.frostThawCycle, ...updates } })),
+      icebergCalving: {
+        data: [], activeItemId: null, showCalvingRate: true, showIcebergSize: true, showDriftSpeed: false, open: false, statusFilter: '',
+      },
+      setIcebergCalving: (updates) => set((state) => ({ icebergCalving: { ...state.icebergCalving, ...updates } })),
+
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
       setAddLocationDialogOpen: (open) => set({ addLocationDialogOpen: open }),
@@ -17788,6 +18017,15 @@ export const useMapStore = create<MapState>()(
         snowpackWaterEquivalent: state.snowpackWaterEquivalent,
         reservoirStorageLevel: state.reservoirStorageLevel,
         baseflowIndex: state.baseflowIndex,
+        // Task 106
+        iceShelfThickness: state.iceShelfThickness,
+        seaIceExtent: state.seaIceExtent,
+        glacierMassBalance: state.glacierMassBalance,
+        permafrostActiveLayer: state.permafrostActiveLayer,
+        iceCoreRecord: state.iceCoreRecord,
+        snowCoverDuration: state.snowCoverDuration,
+        frostThawCycle: state.frostThawCycle,
+        icebergCalving: state.icebergCalving,
         // Task 96
         karstSpringDischarge: state.karstSpringDischarge,
         caveDripMonitor: state.caveDripMonitor,

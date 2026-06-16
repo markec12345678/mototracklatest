@@ -15,73 +15,73 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useMapStore, type GlacierMassBalanceState, type GlacierMassBalanceData } from '@/lib/map-store'
-import { Mountain as MountainIcon17, X, TrendingUp, ArrowDown, PieChart, MapPin, Filter } from 'lucide-react'
+import { useMapStore, type SnowCoverDurationState, type SnowCoverDurationData } from '@/lib/map-store'
+import { Cloud as CloudIcon6, X, Calendar, ArrowRight, Clock, MapPin, Filter } from 'lucide-react'
 
-const SAMPLE_LOCATIONS: GlacierMassBalanceData[] = [
+const SAMPLE_LOCATIONS: SnowCoverDurationData[] = [
   {
-    id: 'gmb-aletsch',
-    name: 'Aletsch Glacier',
-    lat: 46.5,
-    lng: 8,
-    massBalance: -1.5,
-    equilibriumLine: 3200,
-    accumulationRatio: 0.35,
-    status: 'losing',
-    description: 'Largest Alpine glacier with negative mass balance',
+    id: 'scd-siberia',
+    name: 'Siberia',
+    lat: 62,
+    lng: 100,
+    snowDays: 220,
+    snowOnsetDate: 260,
+    snowMeltDate: 130,
+    status: 'prolonged',
+    description: 'Extended snow cover in central Siberia',
   },
   {
-    id: 'gmb-vatna',
-    name: 'Vatnajokull',
-    lat: 64,
-    lng: -17,
-    massBalance: -0.8,
-    equilibriumLine: 1200,
-    accumulationRatio: 0.45,
-    status: 'losing',
-    description: 'Icelandic ice cap showing sustained mass loss',
+    id: 'scd-alps',
+    name: 'Alps',
+    lat: 47,
+    lng: 12,
+    snowDays: 150,
+    snowOnsetDate: 300,
+    snowMeltDate: 110,
+    status: 'normal',
+    description: 'Normal Alpine snow cover duration',
   },
   {
-    id: 'gmb-karakoram',
-    name: 'Karakoram Glaciers',
-    lat: 36,
-    lng: 76,
-    massBalance: 0.2,
-    equilibriumLine: 5200,
-    accumulationRatio: 0.6,
-    status: 'gaining',
-    description: 'Karakoram anomaly with stable or gaining mass',
+    id: 'scd-rockies',
+    name: 'Rockies',
+    lat: 40,
+    lng: -106,
+    snowDays: 90,
+    snowOnsetDate: 320,
+    snowMeltDate: 85,
+    status: 'shortened',
+    description: 'Shortened snow season in the Rockies',
   },
   {
-    id: 'gmb-austfonna',
-    name: 'Austfonna',
-    lat: 79,
-    lng: 25,
-    massBalance: 0,
-    equilibriumLine: 400,
-    accumulationRatio: 0.5,
-    status: 'stable',
-    description: 'Svalbard ice cap near equilibrium',
+    id: 'scd-sahara',
+    name: 'Sahara Edge',
+    lat: 30,
+    lng: 0,
+    snowDays: 0,
+    snowOnsetDate: 0,
+    snowMeltDate: 0,
+    status: 'absent',
+    description: 'No snow cover at Sahara desert fringe',
   },
 ]
 
-const STATUS_COLORS: Record<GlacierMassBalanceData['status'], { label: string; color: string; bgClass: string }> = {
-  gaining: { label: 'Gaining', color: '#22c55e', bgClass: 'bg-green-500/10 text-green-600 border-green-500/30' },
-  stable: { label: 'Stable', color: '#3b82f6', bgClass: 'bg-blue-500/10 text-blue-600 border-blue-500/30' },
-  losing: { label: 'Losing', color: '#f59e0b', bgClass: 'bg-amber-500/10 text-amber-600 border-amber-500/30' },
-  collapsing: { label: 'Collapsing', color: '#ef4444', bgClass: 'bg-red-500/10 text-red-600 border-red-500/30' },
+const STATUS_COLORS: Record<SnowCoverDurationData['status'], { label: string; color: string; bgClass: string }> = {
+  prolonged: { label: 'Prolonged', color: '#3b82f6', bgClass: 'bg-blue-500/10 text-blue-600 border-blue-500/30' },
+  normal: { label: 'Normal', color: '#22c55e', bgClass: 'bg-green-500/10 text-green-600 border-green-500/30' },
+  shortened: { label: 'Shortened', color: '#f59e0b', bgClass: 'bg-amber-500/10 text-amber-600 border-amber-500/30' },
+  absent: { label: 'Absent', color: '#78716c', bgClass: 'bg-stone-500/10 text-stone-600 border-stone-500/30' },
 }
 
-function TrendIcon({ status }: { status: GlacierMassBalanceData['status'] }) {
+function TrendIcon({ status }: { status: SnowCoverDurationData['status'] }) {
   const cfg = STATUS_COLORS[status]
   return (
     <div className="h-2 w-2 rounded-full" style={{ backgroundColor: cfg.color }} />
   )
 }
 
-export function GlacierMassBalanceMonitor() {
-  const state = useMapStore((s) => s.glacierMassBalance)
-  const setState = useMapStore((s) => s.setGlacierMassBalance)
+export function SnowCoverDurationMonitor() {
+  const state = useMapStore((s) => s.snowCoverDuration)
+  const setState = useMapStore((s) => s.setSnowCoverDuration)
 
   const events = useMemo(
     () => (state.data.length > 0 ? state.data : SAMPLE_LOCATIONS),
@@ -97,16 +97,16 @@ export function GlacierMassBalanceMonitor() {
 
   const summary = useMemo(() => {
     if (filteredItems.length === 0) {
-      return { totalGlaciers: 0, avgMassBalance: 0, avgEqLine: 0, avgAccRatio: 0 }
+      return { totalRegions: 0, avgSnowDays: 0, avgOnset: 0, avgMelt: 0 }
     }
-    const avgMassBalance = filteredItems.reduce((sum, e) => sum + e.massBalance, 0) / filteredItems.length
-    const avgEqLine = filteredItems.reduce((sum, e) => sum + e.equilibriumLine, 0) / filteredItems.length
-    const avgAccRatio = filteredItems.reduce((sum, e) => sum + e.accumulationRatio, 0) / filteredItems.length
+    const avgSnowDays = filteredItems.reduce((sum, e) => sum + e.snowDays, 0) / filteredItems.length
+    const avgOnset = filteredItems.reduce((sum, e) => sum + e.snowOnsetDate, 0) / filteredItems.length
+    const avgMelt = filteredItems.reduce((sum, e) => sum + e.snowMeltDate, 0) / filteredItems.length
     return {
-      totalGlaciers: filteredItems.length,
-      avgMassBalance: Math.round(avgMassBalance * 100) / 100,
-      avgEqLine: Math.round(avgEqLine),
-      avgAccRatio: Math.round(avgAccRatio * 100) / 100,
+      totalRegions: filteredItems.length,
+      avgSnowDays: Math.round(avgSnowDays),
+      avgOnset: Math.round(avgOnset),
+      avgMelt: Math.round(avgMelt),
     }
   }, [filteredItems])
 
@@ -120,35 +120,35 @@ export function GlacierMassBalanceMonitor() {
     features: filteredItems.map((e) => ({
       type: 'Feature' as const,
       geometry: { type: 'Point' as const, coordinates: [e.lng, e.lat] },
-      properties: { id: e.id, name: e.name, status: e.status, massBalance: e.massBalance },
+      properties: { id: e.id, name: e.name, status: e.status, snowDays: e.snowDays },
     })),
   }), [filteredItems])
 
   useEffect(() => {
     if (state.data.length === 0) {
-      useMapStore.getState().setGlacierMassBalance({ data: SAMPLE_LOCATIONS })
+      useMapStore.getState().setSnowCoverDuration({ data: SAMPLE_LOCATIONS })
     }
   }, [state.data.length])
 
   if (typeof window === 'undefined') return null
   if (!state.open) return null
 
-  const overlayToggles: { key: keyof GlacierMassBalanceState; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
-    { key: 'showMassBalance', label: 'Mass Balance', icon: TrendingUp },
-    { key: 'showEquilibriumLine', label: 'Equilibrium Line', icon: ArrowDown },
-    { key: 'showAccumulationRatio', label: 'Accumulation Ratio', icon: PieChart },
+  const overlayToggles: { key: keyof SnowCoverDurationState; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
+    { key: 'showSnowDays', label: 'Snow Days', icon: Calendar },
+    { key: 'showSnowOnsetDate', label: 'Snow Onset Date', icon: ArrowRight },
+    { key: 'showSnowMeltDate', label: 'Snow Melt Date', icon: Clock },
   ]
 
   void geojson
 
   return (
     <div className="fixed right-4 top-16 z-[60] w-[420px] max-w-[calc(100vw-32px)] max-h-[calc(100vh-100px)]">
-      <Card className="bg-gradient-to-br from-slate-950/95 to-blue-950/95 backdrop-blur-xl border border-slate-800/40 rounded-xl shadow-lg overflow-hidden">
+      <Card className="bg-gradient-to-br from-slate-950/95 to-sky-950/95 backdrop-blur-xl border border-slate-800/40 rounded-xl shadow-lg overflow-hidden">
         <CardHeader className="pb-3 border-b border-slate-700/30">
           <div className="flex items-center justify-between">
             <CardTitle className="text-sm flex items-center gap-2 text-slate-100">
-              <MountainIcon17 className="h-4 w-4 text-slate-300" />
-              Glacier Mass Balance Monitor
+              <CloudIcon6 className="h-4 w-4 text-sky-400" />
+              Snow Cover Duration Monitor
             </CardTitle>
             <Button
               variant="ghost"
@@ -170,7 +170,7 @@ export function GlacierMassBalanceMonitor() {
             <Select
               value={state.statusFilter || 'all'}
               onValueChange={(v) =>
-                setState({ statusFilter: v as GlacierMassBalanceState['statusFilter'] })
+                setState({ statusFilter: v as SnowCoverDurationState['statusFilter'] })
               }
             >
               <SelectTrigger className="h-8 text-xs mt-1 bg-slate-900/40 border-slate-700/40 text-slate-100 hover:bg-slate-900/60">
@@ -178,10 +178,10 @@ export function GlacierMassBalanceMonitor() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="gaining">Gaining</SelectItem>
-                <SelectItem value="stable">Stable</SelectItem>
-                <SelectItem value="losing">Losing</SelectItem>
-                <SelectItem value="collapsing">Collapsing</SelectItem>
+                <SelectItem value="prolonged">Prolonged</SelectItem>
+                <SelectItem value="normal">Normal</SelectItem>
+                <SelectItem value="shortened">Shortened</SelectItem>
+                <SelectItem value="absent">Absent</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -200,7 +200,7 @@ export function GlacierMassBalanceMonitor() {
                 <Switch
                   checked={state[key] as boolean}
                   onCheckedChange={(checked) => setState({ [key]: checked })}
-                  className="scale-75 data-[state=checked]:bg-blue-600"
+                  className="scale-75 data-[state=checked]:bg-sky-600"
                 />
               </div>
             ))}
@@ -211,24 +211,24 @@ export function GlacierMassBalanceMonitor() {
           {/* Summary Metrics */}
           <div className="grid grid-cols-2 gap-2">
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Total Glaciers</div>
-              <div className="text-sm font-semibold text-slate-200">{summary.totalGlaciers}</div>
+              <div className="text-[10px] text-slate-400/70">Total Regions</div>
+              <div className="text-sm font-semibold text-slate-200">{summary.totalRegions}</div>
               <div className="text-[9px] text-slate-400/60">monitored</div>
             </div>
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Avg Balance</div>
-              <div className="text-sm font-semibold text-blue-400">{summary.avgMassBalance}</div>
-              <div className="text-[9px] text-slate-400/60">m w.e./yr</div>
+              <div className="text-[10px] text-slate-400/70">Avg Snow Days</div>
+              <div className="text-sm font-semibold text-sky-400">{summary.avgSnowDays}</div>
+              <div className="text-[9px] text-slate-400/60">days/year</div>
             </div>
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Avg ELA</div>
-              <div className="text-sm font-semibold text-slate-300">{summary.avgEqLine}</div>
-              <div className="text-[9px] text-slate-400/60">m altitude</div>
+              <div className="text-[10px] text-slate-400/70">Avg Onset</div>
+              <div className="text-sm font-semibold text-slate-300">{summary.avgOnset}</div>
+              <div className="text-[9px] text-slate-400/60">day of year</div>
             </div>
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Avg AAR</div>
-              <div className="text-sm font-semibold text-slate-400">{summary.avgAccRatio}</div>
-              <div className="text-[9px] text-slate-400/60">ratio</div>
+              <div className="text-[10px] text-slate-400/70">Avg Melt</div>
+              <div className="text-sm font-semibold text-slate-400">{summary.avgMelt}</div>
+              <div className="text-[9px] text-slate-400/60">day of year</div>
             </div>
           </div>
 
@@ -237,7 +237,7 @@ export function GlacierMassBalanceMonitor() {
           {/* Location List */}
           <div className="space-y-1.5">
             <Label className="text-xs text-slate-300/80">
-              Glaciers ({filteredItems.length})
+              Regions ({filteredItems.length})
             </Label>
             <ScrollArea className="max-h-[260px]">
               <div className="space-y-2 pr-1">
@@ -270,22 +270,22 @@ export function GlacierMassBalanceMonitor() {
                       </div>
 
                       <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10px] text-slate-300/60">
-                        {state.showMassBalance && (
+                        {state.showSnowDays && (
                           <div>
-                            Balance:{' '}
-                            <span className="text-slate-100 font-medium">{e.massBalance} m w.e./yr</span>
+                            Snow Days:{' '}
+                            <span className="text-slate-100 font-medium">{e.snowDays} days</span>
                           </div>
                         )}
-                        {state.showEquilibriumLine && (
+                        {state.showSnowOnsetDate && (
                           <div>
-                            ELA:{' '}
-                            <span className="text-slate-100 font-medium">{e.equilibriumLine} m</span>
+                            Onset:{' '}
+                            <span className="text-slate-100 font-medium">Day {e.snowOnsetDate}</span>
                           </div>
                         )}
-                        {state.showAccumulationRatio && (
+                        {state.showSnowMeltDate && (
                           <div>
-                            AAR:{' '}
-                            <span className="text-slate-100 font-medium">{e.accumulationRatio}</span>
+                            Melt:{' '}
+                            <span className="text-slate-100 font-medium">Day {e.snowMeltDate}</span>
                           </div>
                         )}
                       </div>
@@ -294,7 +294,7 @@ export function GlacierMassBalanceMonitor() {
                 })}
                 {filteredItems.length === 0 && (
                   <div className="text-center text-xs text-slate-400/50 py-4">
-                    No glaciers match the current filter.
+                    No regions match the current filter.
                   </div>
                 )}
               </div>
@@ -325,16 +325,16 @@ export function GlacierMassBalanceMonitor() {
                     </span>
                   </div>
                   <div>
-                    <span className="text-slate-400/70">Balance: </span>
-                    <span className="font-medium text-blue-400">{activeItem.massBalance} m w.e./yr</span>
+                    <span className="text-slate-400/70">Snow Days: </span>
+                    <span className="font-medium text-sky-400">{activeItem.snowDays} days</span>
                   </div>
                   <div>
-                    <span className="text-slate-400/70">ELA: </span>
-                    <span className="font-medium text-slate-300">{activeItem.equilibriumLine} m</span>
+                    <span className="text-slate-400/70">Onset: </span>
+                    <span className="font-medium text-slate-300">Day {activeItem.snowOnsetDate}</span>
                   </div>
                   <div>
-                    <span className="text-slate-400/70">AAR: </span>
-                    <span className="font-medium text-slate-400">{activeItem.accumulationRatio}</span>
+                    <span className="text-slate-400/70">Melt: </span>
+                    <span className="font-medium text-slate-400">Day {activeItem.snowMeltDate}</span>
                   </div>
                 </div>
               </div>

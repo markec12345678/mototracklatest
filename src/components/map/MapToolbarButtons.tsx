@@ -411,6 +411,15 @@ import {
   Snowflake as SnowflakeIcon15,
   Gauge as GaugeIcon3,
   Droplets as DropletsIcon18,
+  // Task 106 icons
+  MountainSnow as MountainSnowIcon6,
+  Snowflake as SnowflakeIcon16,
+  Mountain as MountainIcon17,
+  Thermometer as ThermometerIcon22,
+  FlaskConical as FlaskConicalIcon3,
+  Cloud as CloudIcon6,
+  ThermometerSun as ThermometerSunIcon2,
+  Waves as WavesIcon23,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -2696,6 +2705,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setSnowpackWaterEquivalent({ open: true })} title="Snowpack Water Equivalent" aria-label="Open snowpack water equivalent monitor"><SnowflakeIcon15 className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setReservoirStorageLevel({ open: true })} title="Reservoir Storage Level" aria-label="Open reservoir storage level monitor"><GaugeIcon3 className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setBaseflowIndex({ open: true })} title="Baseflow Index" aria-label="Open baseflow index monitor"><DropletsIcon18 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setIceShelfThickness({ open: true })} title="Ice Shelf Thickness" aria-label="Open ice shelf thickness monitor"><MountainSnowIcon6 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setSeaIceExtent({ open: true })} title="Sea Ice Extent" aria-label="Open sea ice extent monitor"><SnowflakeIcon16 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setGlacierMassBalance({ open: true })} title="Glacier Mass Balance" aria-label="Open glacier mass balance monitor"><MountainIcon17 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setPermafrostActiveLayer({ open: true })} title="Permafrost Active Layer" aria-label="Open permafrost active layer monitor"><ThermometerIcon22 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setIceCoreRecord({ open: true })} title="Ice Core Record" aria-label="Open ice core record monitor"><FlaskConicalIcon3 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setSnowCoverDuration({ open: true })} title="Snow Cover Duration" aria-label="Open snow cover duration monitor"><CloudIcon6 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setFrostThawCycle({ open: true })} title="Frost-Thaw Cycle" aria-label="Open frost-thaw cycle monitor"><ThermometerSunIcon2 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setIcebergCalving({ open: true })} title="Iceberg Calving" aria-label="Open iceberg calving monitor"><WavesIcon23 className="h-4 w-4" /></Button>
           <Button
             variant="outline"
             size="icon"

@@ -15,73 +15,73 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useMapStore, type GlacierMassBalanceState, type GlacierMassBalanceData } from '@/lib/map-store'
-import { Mountain as MountainIcon17, X, TrendingUp, ArrowDown, PieChart, MapPin, Filter } from 'lucide-react'
+import { useMapStore, type FrostThawCycleState, type FrostThawCycleData } from '@/lib/map-store'
+import { ThermometerSun as ThermometerSunIcon2, X, RotateCw, ArrowDown, MoveVertical, MapPin, Filter } from 'lucide-react'
 
-const SAMPLE_LOCATIONS: GlacierMassBalanceData[] = [
+const SAMPLE_LOCATIONS: FrostThawCycleData[] = [
   {
-    id: 'gmb-aletsch',
-    name: 'Aletsch Glacier',
-    lat: 46.5,
-    lng: 8,
-    massBalance: -1.5,
-    equilibriumLine: 3200,
-    accumulationRatio: 0.35,
-    status: 'losing',
-    description: 'Largest Alpine glacier with negative mass balance',
+    id: 'ftc-quebec',
+    name: 'Quebec',
+    lat: 47,
+    lng: -72,
+    freezeThawCycles: 85,
+    frostDepth: 180,
+    heaveMagnitude: 25,
+    status: 'frequent',
+    description: 'High freeze-thaw frequency in southern Quebec',
   },
   {
-    id: 'gmb-vatna',
-    name: 'Vatnajokull',
-    lat: 64,
-    lng: -17,
-    massBalance: -0.8,
-    equilibriumLine: 1200,
-    accumulationRatio: 0.45,
-    status: 'losing',
-    description: 'Icelandic ice cap showing sustained mass loss',
+    id: 'ftc-norway',
+    name: 'Norway',
+    lat: 63,
+    lng: 10,
+    freezeThawCycles: 45,
+    frostDepth: 120,
+    heaveMagnitude: 12,
+    status: 'moderate',
+    description: 'Moderate frost cycling in coastal Norway',
   },
   {
-    id: 'gmb-karakoram',
-    name: 'Karakoram Glaciers',
-    lat: 36,
-    lng: 76,
-    massBalance: 0.2,
-    equilibriumLine: 5200,
-    accumulationRatio: 0.6,
-    status: 'gaining',
-    description: 'Karakoram anomaly with stable or gaining mass',
+    id: 'ftc-england',
+    name: 'England',
+    lat: 52,
+    lng: -1,
+    freezeThawCycles: 15,
+    frostDepth: 30,
+    heaveMagnitude: 3,
+    status: 'rare',
+    description: 'Rare frost events in lowland England',
   },
   {
-    id: 'gmb-austfonna',
-    name: 'Austfonna',
-    lat: 79,
-    lng: 25,
-    massBalance: 0,
-    equilibriumLine: 400,
-    accumulationRatio: 0.5,
-    status: 'stable',
-    description: 'Svalbard ice cap near equilibrium',
+    id: 'ftc-svalbard',
+    name: 'Svalbard',
+    lat: 78,
+    lng: 16,
+    freezeThawCycles: 0,
+    frostDepth: 350,
+    heaveMagnitude: 0,
+    status: 'permafrost',
+    description: 'Continuous permafrost with no active cycling',
   },
 ]
 
-const STATUS_COLORS: Record<GlacierMassBalanceData['status'], { label: string; color: string; bgClass: string }> = {
-  gaining: { label: 'Gaining', color: '#22c55e', bgClass: 'bg-green-500/10 text-green-600 border-green-500/30' },
-  stable: { label: 'Stable', color: '#3b82f6', bgClass: 'bg-blue-500/10 text-blue-600 border-blue-500/30' },
-  losing: { label: 'Losing', color: '#f59e0b', bgClass: 'bg-amber-500/10 text-amber-600 border-amber-500/30' },
-  collapsing: { label: 'Collapsing', color: '#ef4444', bgClass: 'bg-red-500/10 text-red-600 border-red-500/30' },
+const STATUS_COLORS: Record<FrostThawCycleData['status'], { label: string; color: string; bgClass: string }> = {
+  frequent: { label: 'Frequent', color: '#ef4444', bgClass: 'bg-red-500/10 text-red-600 border-red-500/30' },
+  moderate: { label: 'Moderate', color: '#f59e0b', bgClass: 'bg-amber-500/10 text-amber-600 border-amber-500/30' },
+  rare: { label: 'Rare', color: '#22c55e', bgClass: 'bg-green-500/10 text-green-600 border-green-500/30' },
+  permafrost: { label: 'Permafrost', color: '#3b82f6', bgClass: 'bg-blue-500/10 text-blue-600 border-blue-500/30' },
 }
 
-function TrendIcon({ status }: { status: GlacierMassBalanceData['status'] }) {
+function TrendIcon({ status }: { status: FrostThawCycleData['status'] }) {
   const cfg = STATUS_COLORS[status]
   return (
     <div className="h-2 w-2 rounded-full" style={{ backgroundColor: cfg.color }} />
   )
 }
 
-export function GlacierMassBalanceMonitor() {
-  const state = useMapStore((s) => s.glacierMassBalance)
-  const setState = useMapStore((s) => s.setGlacierMassBalance)
+export function FrostThawCycleMonitor() {
+  const state = useMapStore((s) => s.frostThawCycle)
+  const setState = useMapStore((s) => s.setFrostThawCycle)
 
   const events = useMemo(
     () => (state.data.length > 0 ? state.data : SAMPLE_LOCATIONS),
@@ -97,16 +97,16 @@ export function GlacierMassBalanceMonitor() {
 
   const summary = useMemo(() => {
     if (filteredItems.length === 0) {
-      return { totalGlaciers: 0, avgMassBalance: 0, avgEqLine: 0, avgAccRatio: 0 }
+      return { totalSites: 0, avgCycles: 0, avgFrostDepth: 0, avgHeave: 0 }
     }
-    const avgMassBalance = filteredItems.reduce((sum, e) => sum + e.massBalance, 0) / filteredItems.length
-    const avgEqLine = filteredItems.reduce((sum, e) => sum + e.equilibriumLine, 0) / filteredItems.length
-    const avgAccRatio = filteredItems.reduce((sum, e) => sum + e.accumulationRatio, 0) / filteredItems.length
+    const avgCycles = filteredItems.reduce((sum, e) => sum + e.freezeThawCycles, 0) / filteredItems.length
+    const avgFrostDepth = filteredItems.reduce((sum, e) => sum + e.frostDepth, 0) / filteredItems.length
+    const avgHeave = filteredItems.reduce((sum, e) => sum + e.heaveMagnitude, 0) / filteredItems.length
     return {
-      totalGlaciers: filteredItems.length,
-      avgMassBalance: Math.round(avgMassBalance * 100) / 100,
-      avgEqLine: Math.round(avgEqLine),
-      avgAccRatio: Math.round(avgAccRatio * 100) / 100,
+      totalSites: filteredItems.length,
+      avgCycles: Math.round(avgCycles * 100) / 100,
+      avgFrostDepth: Math.round(avgFrostDepth * 100) / 100,
+      avgHeave: Math.round(avgHeave * 100) / 100,
     }
   }, [filteredItems])
 
@@ -120,35 +120,35 @@ export function GlacierMassBalanceMonitor() {
     features: filteredItems.map((e) => ({
       type: 'Feature' as const,
       geometry: { type: 'Point' as const, coordinates: [e.lng, e.lat] },
-      properties: { id: e.id, name: e.name, status: e.status, massBalance: e.massBalance },
+      properties: { id: e.id, name: e.name, status: e.status, freezeThawCycles: e.freezeThawCycles },
     })),
   }), [filteredItems])
 
   useEffect(() => {
     if (state.data.length === 0) {
-      useMapStore.getState().setGlacierMassBalance({ data: SAMPLE_LOCATIONS })
+      useMapStore.getState().setFrostThawCycle({ data: SAMPLE_LOCATIONS })
     }
   }, [state.data.length])
 
   if (typeof window === 'undefined') return null
   if (!state.open) return null
 
-  const overlayToggles: { key: keyof GlacierMassBalanceState; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
-    { key: 'showMassBalance', label: 'Mass Balance', icon: TrendingUp },
-    { key: 'showEquilibriumLine', label: 'Equilibrium Line', icon: ArrowDown },
-    { key: 'showAccumulationRatio', label: 'Accumulation Ratio', icon: PieChart },
+  const overlayToggles: { key: keyof FrostThawCycleState; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
+    { key: 'showFreezeThawCycles', label: 'Freeze-Thaw Cycles', icon: RotateCw },
+    { key: 'showFrostDepth', label: 'Frost Depth', icon: ArrowDown },
+    { key: 'showHeaveMagnitude', label: 'Heave Magnitude', icon: MoveVertical },
   ]
 
   void geojson
 
   return (
     <div className="fixed right-4 top-16 z-[60] w-[420px] max-w-[calc(100vw-32px)] max-h-[calc(100vh-100px)]">
-      <Card className="bg-gradient-to-br from-slate-950/95 to-blue-950/95 backdrop-blur-xl border border-slate-800/40 rounded-xl shadow-lg overflow-hidden">
+      <Card className="bg-gradient-to-br from-orange-950/95 to-blue-950/95 backdrop-blur-xl border border-slate-800/40 rounded-xl shadow-lg overflow-hidden">
         <CardHeader className="pb-3 border-b border-slate-700/30">
           <div className="flex items-center justify-between">
             <CardTitle className="text-sm flex items-center gap-2 text-slate-100">
-              <MountainIcon17 className="h-4 w-4 text-slate-300" />
-              Glacier Mass Balance Monitor
+              <ThermometerSunIcon2 className="h-4 w-4 text-orange-400" />
+              Frost-Thaw Cycle Monitor
             </CardTitle>
             <Button
               variant="ghost"
@@ -170,7 +170,7 @@ export function GlacierMassBalanceMonitor() {
             <Select
               value={state.statusFilter || 'all'}
               onValueChange={(v) =>
-                setState({ statusFilter: v as GlacierMassBalanceState['statusFilter'] })
+                setState({ statusFilter: v as FrostThawCycleState['statusFilter'] })
               }
             >
               <SelectTrigger className="h-8 text-xs mt-1 bg-slate-900/40 border-slate-700/40 text-slate-100 hover:bg-slate-900/60">
@@ -178,10 +178,10 @@ export function GlacierMassBalanceMonitor() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="gaining">Gaining</SelectItem>
-                <SelectItem value="stable">Stable</SelectItem>
-                <SelectItem value="losing">Losing</SelectItem>
-                <SelectItem value="collapsing">Collapsing</SelectItem>
+                <SelectItem value="frequent">Frequent</SelectItem>
+                <SelectItem value="moderate">Moderate</SelectItem>
+                <SelectItem value="rare">Rare</SelectItem>
+                <SelectItem value="permafrost">Permafrost</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -200,7 +200,7 @@ export function GlacierMassBalanceMonitor() {
                 <Switch
                   checked={state[key] as boolean}
                   onCheckedChange={(checked) => setState({ [key]: checked })}
-                  className="scale-75 data-[state=checked]:bg-blue-600"
+                  className="scale-75 data-[state=checked]:bg-orange-600"
                 />
               </div>
             ))}
@@ -211,24 +211,24 @@ export function GlacierMassBalanceMonitor() {
           {/* Summary Metrics */}
           <div className="grid grid-cols-2 gap-2">
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Total Glaciers</div>
-              <div className="text-sm font-semibold text-slate-200">{summary.totalGlaciers}</div>
+              <div className="text-[10px] text-slate-400/70">Total Sites</div>
+              <div className="text-sm font-semibold text-slate-200">{summary.totalSites}</div>
               <div className="text-[9px] text-slate-400/60">monitored</div>
             </div>
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Avg Balance</div>
-              <div className="text-sm font-semibold text-blue-400">{summary.avgMassBalance}</div>
-              <div className="text-[9px] text-slate-400/60">m w.e./yr</div>
+              <div className="text-[10px] text-slate-400/70">Avg Cycles</div>
+              <div className="text-sm font-semibold text-orange-400">{summary.avgCycles}</div>
+              <div className="text-[9px] text-slate-400/60">per year</div>
             </div>
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Avg ELA</div>
-              <div className="text-sm font-semibold text-slate-300">{summary.avgEqLine}</div>
-              <div className="text-[9px] text-slate-400/60">m altitude</div>
+              <div className="text-[10px] text-slate-400/70">Avg Frost Depth</div>
+              <div className="text-sm font-semibold text-blue-400">{summary.avgFrostDepth}</div>
+              <div className="text-[9px] text-slate-400/60">cm</div>
             </div>
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Avg AAR</div>
-              <div className="text-sm font-semibold text-slate-400">{summary.avgAccRatio}</div>
-              <div className="text-[9px] text-slate-400/60">ratio</div>
+              <div className="text-[10px] text-slate-400/70">Avg Heave</div>
+              <div className="text-sm font-semibold text-slate-400">{summary.avgHeave}</div>
+              <div className="text-[9px] text-slate-400/60">mm</div>
             </div>
           </div>
 
@@ -237,7 +237,7 @@ export function GlacierMassBalanceMonitor() {
           {/* Location List */}
           <div className="space-y-1.5">
             <Label className="text-xs text-slate-300/80">
-              Glaciers ({filteredItems.length})
+              Sites ({filteredItems.length})
             </Label>
             <ScrollArea className="max-h-[260px]">
               <div className="space-y-2 pr-1">
@@ -270,22 +270,22 @@ export function GlacierMassBalanceMonitor() {
                       </div>
 
                       <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10px] text-slate-300/60">
-                        {state.showMassBalance && (
+                        {state.showFreezeThawCycles && (
                           <div>
-                            Balance:{' '}
-                            <span className="text-slate-100 font-medium">{e.massBalance} m w.e./yr</span>
+                            Cycles:{' '}
+                            <span className="text-slate-100 font-medium">{e.freezeThawCycles}/yr</span>
                           </div>
                         )}
-                        {state.showEquilibriumLine && (
+                        {state.showFrostDepth && (
                           <div>
-                            ELA:{' '}
-                            <span className="text-slate-100 font-medium">{e.equilibriumLine} m</span>
+                            Frost Depth:{' '}
+                            <span className="text-slate-100 font-medium">{e.frostDepth} cm</span>
                           </div>
                         )}
-                        {state.showAccumulationRatio && (
+                        {state.showHeaveMagnitude && (
                           <div>
-                            AAR:{' '}
-                            <span className="text-slate-100 font-medium">{e.accumulationRatio}</span>
+                            Heave:{' '}
+                            <span className="text-slate-100 font-medium">{e.heaveMagnitude} mm</span>
                           </div>
                         )}
                       </div>
@@ -294,7 +294,7 @@ export function GlacierMassBalanceMonitor() {
                 })}
                 {filteredItems.length === 0 && (
                   <div className="text-center text-xs text-slate-400/50 py-4">
-                    No glaciers match the current filter.
+                    No sites match the current filter.
                   </div>
                 )}
               </div>
@@ -325,16 +325,16 @@ export function GlacierMassBalanceMonitor() {
                     </span>
                   </div>
                   <div>
-                    <span className="text-slate-400/70">Balance: </span>
-                    <span className="font-medium text-blue-400">{activeItem.massBalance} m w.e./yr</span>
+                    <span className="text-slate-400/70">Cycles: </span>
+                    <span className="font-medium text-orange-400">{activeItem.freezeThawCycles}/year</span>
                   </div>
                   <div>
-                    <span className="text-slate-400/70">ELA: </span>
-                    <span className="font-medium text-slate-300">{activeItem.equilibriumLine} m</span>
+                    <span className="text-slate-400/70">Frost Depth: </span>
+                    <span className="font-medium text-blue-400">{activeItem.frostDepth} cm</span>
                   </div>
                   <div>
-                    <span className="text-slate-400/70">AAR: </span>
-                    <span className="font-medium text-slate-400">{activeItem.accumulationRatio}</span>
+                    <span className="text-slate-400/70">Heave: </span>
+                    <span className="font-medium text-slate-400">{activeItem.heaveMagnitude} mm</span>
                   </div>
                 </div>
               </div>

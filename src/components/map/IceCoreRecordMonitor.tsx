@@ -15,73 +15,73 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useMapStore, type GlacierMassBalanceState, type GlacierMassBalanceData } from '@/lib/map-store'
-import { Mountain as MountainIcon17, X, TrendingUp, ArrowDown, PieChart, MapPin, Filter } from 'lucide-react'
+import { useMapStore, type IceCoreRecordState, type IceCoreRecordData } from '@/lib/map-store'
+import { FlaskConical as FlaskConicalIcon3, X, ArrowDown, Clock, Cloud, MapPin, Filter } from 'lucide-react'
 
-const SAMPLE_LOCATIONS: GlacierMassBalanceData[] = [
+const SAMPLE_LOCATIONS: IceCoreRecordData[] = [
   {
-    id: 'gmb-aletsch',
-    name: 'Aletsch Glacier',
-    lat: 46.5,
-    lng: 8,
-    massBalance: -1.5,
-    equilibriumLine: 3200,
-    accumulationRatio: 0.35,
-    status: 'losing',
-    description: 'Largest Alpine glacier with negative mass balance',
+    id: 'icr-vostok',
+    name: 'Vostok Station',
+    lat: -78,
+    lng: 106,
+    coreDepth: 3623,
+    oldestIceAge: 420,
+    co2Concentration: 280,
+    status: 'completed',
+    description: 'Longest ice core record spanning 420 kyr',
   },
   {
-    id: 'gmb-vatna',
-    name: 'Vatnajokull',
-    lat: 64,
-    lng: -17,
-    massBalance: -0.8,
-    equilibriumLine: 1200,
-    accumulationRatio: 0.45,
-    status: 'losing',
-    description: 'Icelandic ice cap showing sustained mass loss',
+    id: 'icr-epica',
+    name: 'EPICA Dome C',
+    lat: -75,
+    lng: 123,
+    coreDepth: 3270,
+    oldestIceAge: 800,
+    co2Concentration: 185,
+    status: 'completed',
+    description: 'Oldest continuous ice core at 800 kyr BP',
   },
   {
-    id: 'gmb-karakoram',
-    name: 'Karakoram Glaciers',
-    lat: 36,
-    lng: 76,
-    massBalance: 0.2,
-    equilibriumLine: 5200,
-    accumulationRatio: 0.6,
-    status: 'gaining',
-    description: 'Karakoram anomaly with stable or gaining mass',
+    id: 'icr-gisp2',
+    name: 'GISP2 Greenland',
+    lat: 72,
+    lng: -38,
+    coreDepth: 3053,
+    oldestIceAge: 110,
+    co2Concentration: 290,
+    status: 'archived',
+    description: 'Greenland Ice Sheet Project 2 deep core',
   },
   {
-    id: 'gmb-austfonna',
-    name: 'Austfonna',
-    lat: 79,
-    lng: 25,
-    massBalance: 0,
-    equilibriumLine: 400,
-    accumulationRatio: 0.5,
-    status: 'stable',
-    description: 'Svalbard ice cap near equilibrium',
+    id: 'icr-neem',
+    name: 'NEEM Camp',
+    lat: 77,
+    lng: -51,
+    coreDepth: 2540,
+    oldestIceAge: 128,
+    co2Concentration: 310,
+    status: 'drilling',
+    description: 'North Eemian deep ice core in progress',
   },
 ]
 
-const STATUS_COLORS: Record<GlacierMassBalanceData['status'], { label: string; color: string; bgClass: string }> = {
-  gaining: { label: 'Gaining', color: '#22c55e', bgClass: 'bg-green-500/10 text-green-600 border-green-500/30' },
-  stable: { label: 'Stable', color: '#3b82f6', bgClass: 'bg-blue-500/10 text-blue-600 border-blue-500/30' },
-  losing: { label: 'Losing', color: '#f59e0b', bgClass: 'bg-amber-500/10 text-amber-600 border-amber-500/30' },
-  collapsing: { label: 'Collapsing', color: '#ef4444', bgClass: 'bg-red-500/10 text-red-600 border-red-500/30' },
+const STATUS_COLORS: Record<IceCoreRecordData['status'], { label: string; color: string; bgClass: string }> = {
+  recovering: { label: 'Recovering', color: '#a855f7', bgClass: 'bg-purple-500/10 text-purple-600 border-purple-500/30' },
+  drilling: { label: 'Drilling', color: '#f59e0b', bgClass: 'bg-amber-500/10 text-amber-600 border-amber-500/30' },
+  completed: { label: 'Completed', color: '#22c55e', bgClass: 'bg-green-500/10 text-green-600 border-green-500/30' },
+  archived: { label: 'Archived', color: '#78716c', bgClass: 'bg-stone-500/10 text-stone-600 border-stone-500/30' },
 }
 
-function TrendIcon({ status }: { status: GlacierMassBalanceData['status'] }) {
+function TrendIcon({ status }: { status: IceCoreRecordData['status'] }) {
   const cfg = STATUS_COLORS[status]
   return (
     <div className="h-2 w-2 rounded-full" style={{ backgroundColor: cfg.color }} />
   )
 }
 
-export function GlacierMassBalanceMonitor() {
-  const state = useMapStore((s) => s.glacierMassBalance)
-  const setState = useMapStore((s) => s.setGlacierMassBalance)
+export function IceCoreRecordMonitor() {
+  const state = useMapStore((s) => s.iceCoreRecord)
+  const setState = useMapStore((s) => s.setIceCoreRecord)
 
   const events = useMemo(
     () => (state.data.length > 0 ? state.data : SAMPLE_LOCATIONS),
@@ -97,16 +97,16 @@ export function GlacierMassBalanceMonitor() {
 
   const summary = useMemo(() => {
     if (filteredItems.length === 0) {
-      return { totalGlaciers: 0, avgMassBalance: 0, avgEqLine: 0, avgAccRatio: 0 }
+      return { totalCores: 0, avgDepth: 0, avgAge: 0, avgCo2: 0 }
     }
-    const avgMassBalance = filteredItems.reduce((sum, e) => sum + e.massBalance, 0) / filteredItems.length
-    const avgEqLine = filteredItems.reduce((sum, e) => sum + e.equilibriumLine, 0) / filteredItems.length
-    const avgAccRatio = filteredItems.reduce((sum, e) => sum + e.accumulationRatio, 0) / filteredItems.length
+    const avgDepth = filteredItems.reduce((sum, e) => sum + e.coreDepth, 0) / filteredItems.length
+    const avgAge = filteredItems.reduce((sum, e) => sum + e.oldestIceAge, 0) / filteredItems.length
+    const avgCo2 = filteredItems.reduce((sum, e) => sum + e.co2Concentration, 0) / filteredItems.length
     return {
-      totalGlaciers: filteredItems.length,
-      avgMassBalance: Math.round(avgMassBalance * 100) / 100,
-      avgEqLine: Math.round(avgEqLine),
-      avgAccRatio: Math.round(avgAccRatio * 100) / 100,
+      totalCores: filteredItems.length,
+      avgDepth: Math.round(avgDepth),
+      avgAge: Math.round(avgAge),
+      avgCo2: Math.round(avgCo2),
     }
   }, [filteredItems])
 
@@ -120,35 +120,35 @@ export function GlacierMassBalanceMonitor() {
     features: filteredItems.map((e) => ({
       type: 'Feature' as const,
       geometry: { type: 'Point' as const, coordinates: [e.lng, e.lat] },
-      properties: { id: e.id, name: e.name, status: e.status, massBalance: e.massBalance },
+      properties: { id: e.id, name: e.name, status: e.status, coreDepth: e.coreDepth },
     })),
   }), [filteredItems])
 
   useEffect(() => {
     if (state.data.length === 0) {
-      useMapStore.getState().setGlacierMassBalance({ data: SAMPLE_LOCATIONS })
+      useMapStore.getState().setIceCoreRecord({ data: SAMPLE_LOCATIONS })
     }
   }, [state.data.length])
 
   if (typeof window === 'undefined') return null
   if (!state.open) return null
 
-  const overlayToggles: { key: keyof GlacierMassBalanceState; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
-    { key: 'showMassBalance', label: 'Mass Balance', icon: TrendingUp },
-    { key: 'showEquilibriumLine', label: 'Equilibrium Line', icon: ArrowDown },
-    { key: 'showAccumulationRatio', label: 'Accumulation Ratio', icon: PieChart },
+  const overlayToggles: { key: keyof IceCoreRecordState; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
+    { key: 'showCoreDepth', label: 'Core Depth', icon: ArrowDown },
+    { key: 'showOldestIceAge', label: 'Oldest Ice Age', icon: Clock },
+    { key: 'showCo2Concentration', label: 'CO2 Concentration', icon: Cloud },
   ]
 
   void geojson
 
   return (
     <div className="fixed right-4 top-16 z-[60] w-[420px] max-w-[calc(100vw-32px)] max-h-[calc(100vh-100px)]">
-      <Card className="bg-gradient-to-br from-slate-950/95 to-blue-950/95 backdrop-blur-xl border border-slate-800/40 rounded-xl shadow-lg overflow-hidden">
+      <Card className="bg-gradient-to-br from-violet-950/95 to-indigo-950/95 backdrop-blur-xl border border-slate-800/40 rounded-xl shadow-lg overflow-hidden">
         <CardHeader className="pb-3 border-b border-slate-700/30">
           <div className="flex items-center justify-between">
             <CardTitle className="text-sm flex items-center gap-2 text-slate-100">
-              <MountainIcon17 className="h-4 w-4 text-slate-300" />
-              Glacier Mass Balance Monitor
+              <FlaskConicalIcon3 className="h-4 w-4 text-violet-400" />
+              Ice Core Record Monitor
             </CardTitle>
             <Button
               variant="ghost"
@@ -170,7 +170,7 @@ export function GlacierMassBalanceMonitor() {
             <Select
               value={state.statusFilter || 'all'}
               onValueChange={(v) =>
-                setState({ statusFilter: v as GlacierMassBalanceState['statusFilter'] })
+                setState({ statusFilter: v as IceCoreRecordState['statusFilter'] })
               }
             >
               <SelectTrigger className="h-8 text-xs mt-1 bg-slate-900/40 border-slate-700/40 text-slate-100 hover:bg-slate-900/60">
@@ -178,10 +178,10 @@ export function GlacierMassBalanceMonitor() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="gaining">Gaining</SelectItem>
-                <SelectItem value="stable">Stable</SelectItem>
-                <SelectItem value="losing">Losing</SelectItem>
-                <SelectItem value="collapsing">Collapsing</SelectItem>
+                <SelectItem value="recovering">Recovering</SelectItem>
+                <SelectItem value="drilling">Drilling</SelectItem>
+                <SelectItem value="completed">Completed</SelectItem>
+                <SelectItem value="archived">Archived</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -200,7 +200,7 @@ export function GlacierMassBalanceMonitor() {
                 <Switch
                   checked={state[key] as boolean}
                   onCheckedChange={(checked) => setState({ [key]: checked })}
-                  className="scale-75 data-[state=checked]:bg-blue-600"
+                  className="scale-75 data-[state=checked]:bg-violet-600"
                 />
               </div>
             ))}
@@ -211,24 +211,24 @@ export function GlacierMassBalanceMonitor() {
           {/* Summary Metrics */}
           <div className="grid grid-cols-2 gap-2">
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Total Glaciers</div>
-              <div className="text-sm font-semibold text-slate-200">{summary.totalGlaciers}</div>
-              <div className="text-[9px] text-slate-400/60">monitored</div>
+              <div className="text-[10px] text-slate-400/70">Total Cores</div>
+              <div className="text-sm font-semibold text-slate-200">{summary.totalCores}</div>
+              <div className="text-[9px] text-slate-400/60">drilled</div>
             </div>
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Avg Balance</div>
-              <div className="text-sm font-semibold text-blue-400">{summary.avgMassBalance}</div>
-              <div className="text-[9px] text-slate-400/60">m w.e./yr</div>
+              <div className="text-[10px] text-slate-400/70">Avg Depth</div>
+              <div className="text-sm font-semibold text-violet-400">{summary.avgDepth}</div>
+              <div className="text-[9px] text-slate-400/60">m</div>
             </div>
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Avg ELA</div>
-              <div className="text-sm font-semibold text-slate-300">{summary.avgEqLine}</div>
-              <div className="text-[9px] text-slate-400/60">m altitude</div>
+              <div className="text-[10px] text-slate-400/70">Avg Age</div>
+              <div className="text-sm font-semibold text-indigo-400">{summary.avgAge}</div>
+              <div className="text-[9px] text-slate-400/60">kyr BP</div>
             </div>
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Avg AAR</div>
-              <div className="text-sm font-semibold text-slate-400">{summary.avgAccRatio}</div>
-              <div className="text-[9px] text-slate-400/60">ratio</div>
+              <div className="text-[10px] text-slate-400/70">Avg CO2</div>
+              <div className="text-sm font-semibold text-slate-400">{summary.avgCo2}</div>
+              <div className="text-[9px] text-slate-400/60">ppm</div>
             </div>
           </div>
 
@@ -237,7 +237,7 @@ export function GlacierMassBalanceMonitor() {
           {/* Location List */}
           <div className="space-y-1.5">
             <Label className="text-xs text-slate-300/80">
-              Glaciers ({filteredItems.length})
+              Ice Cores ({filteredItems.length})
             </Label>
             <ScrollArea className="max-h-[260px]">
               <div className="space-y-2 pr-1">
@@ -270,22 +270,22 @@ export function GlacierMassBalanceMonitor() {
                       </div>
 
                       <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10px] text-slate-300/60">
-                        {state.showMassBalance && (
+                        {state.showCoreDepth && (
                           <div>
-                            Balance:{' '}
-                            <span className="text-slate-100 font-medium">{e.massBalance} m w.e./yr</span>
+                            Depth:{' '}
+                            <span className="text-slate-100 font-medium">{e.coreDepth} m</span>
                           </div>
                         )}
-                        {state.showEquilibriumLine && (
+                        {state.showOldestIceAge && (
                           <div>
-                            ELA:{' '}
-                            <span className="text-slate-100 font-medium">{e.equilibriumLine} m</span>
+                            Oldest Ice:{' '}
+                            <span className="text-slate-100 font-medium">{e.oldestIceAge} kyr</span>
                           </div>
                         )}
-                        {state.showAccumulationRatio && (
+                        {state.showCo2Concentration && (
                           <div>
-                            AAR:{' '}
-                            <span className="text-slate-100 font-medium">{e.accumulationRatio}</span>
+                            CO2:{' '}
+                            <span className="text-slate-100 font-medium">{e.co2Concentration} ppm</span>
                           </div>
                         )}
                       </div>
@@ -294,7 +294,7 @@ export function GlacierMassBalanceMonitor() {
                 })}
                 {filteredItems.length === 0 && (
                   <div className="text-center text-xs text-slate-400/50 py-4">
-                    No glaciers match the current filter.
+                    No cores match the current filter.
                   </div>
                 )}
               </div>
@@ -325,16 +325,16 @@ export function GlacierMassBalanceMonitor() {
                     </span>
                   </div>
                   <div>
-                    <span className="text-slate-400/70">Balance: </span>
-                    <span className="font-medium text-blue-400">{activeItem.massBalance} m w.e./yr</span>
+                    <span className="text-slate-400/70">Depth: </span>
+                    <span className="font-medium text-violet-400">{activeItem.coreDepth} m</span>
                   </div>
                   <div>
-                    <span className="text-slate-400/70">ELA: </span>
-                    <span className="font-medium text-slate-300">{activeItem.equilibriumLine} m</span>
+                    <span className="text-slate-400/70">Oldest Ice: </span>
+                    <span className="font-medium text-indigo-400">{activeItem.oldestIceAge} kyr BP</span>
                   </div>
                   <div>
-                    <span className="text-slate-400/70">AAR: </span>
-                    <span className="font-medium text-slate-400">{activeItem.accumulationRatio}</span>
+                    <span className="text-slate-400/70">CO2: </span>
+                    <span className="font-medium text-slate-400">{activeItem.co2Concentration} ppm</span>
                   </div>
                 </div>
               </div>

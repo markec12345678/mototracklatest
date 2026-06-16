@@ -15,73 +15,73 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useMapStore, type GlacierMassBalanceState, type GlacierMassBalanceData } from '@/lib/map-store'
-import { Mountain as MountainIcon17, X, TrendingUp, ArrowDown, PieChart, MapPin, Filter } from 'lucide-react'
+import { useMapStore, type IcebergCalvingState, type IcebergCalvingData } from '@/lib/map-store'
+import { Waves as WavesIcon23, X, TrendingUp, Box, Navigation, MapPin, Filter } from 'lucide-react'
 
-const SAMPLE_LOCATIONS: GlacierMassBalanceData[] = [
+const SAMPLE_LOCATIONS: IcebergCalvingData[] = [
   {
-    id: 'gmb-aletsch',
-    name: 'Aletsch Glacier',
-    lat: 46.5,
-    lng: 8,
-    massBalance: -1.5,
-    equilibriumLine: 3200,
-    accumulationRatio: 0.35,
-    status: 'losing',
-    description: 'Largest Alpine glacier with negative mass balance',
+    id: 'ibc-jakobshavn',
+    name: 'Jakobshavn Glacier',
+    lat: 69,
+    lng: -50,
+    calvingRate: 35,
+    icebergSize: 5,
+    driftSpeed: 2,
+    status: 'intense',
+    description: 'Most active calving glacier in Greenland',
   },
   {
-    id: 'gmb-vatna',
-    name: 'Vatnajokull',
-    lat: 64,
-    lng: -17,
-    massBalance: -0.8,
-    equilibriumLine: 1200,
-    accumulationRatio: 0.45,
-    status: 'losing',
-    description: 'Icelandic ice cap showing sustained mass loss',
+    id: 'ibc-pineisland',
+    name: 'Pine Island Glacier',
+    lat: -75,
+    lng: -100,
+    calvingRate: 25,
+    icebergSize: 8,
+    driftSpeed: 1.5,
+    status: 'active',
+    description: 'West Antarctic glacier with active calving',
   },
   {
-    id: 'gmb-karakoram',
-    name: 'Karakoram Glaciers',
-    lat: 36,
-    lng: 76,
-    massBalance: 0.2,
-    equilibriumLine: 5200,
-    accumulationRatio: 0.6,
-    status: 'gaining',
-    description: 'Karakoram anomaly with stable or gaining mass',
+    id: 'ibc-helheim',
+    name: 'Helheim Glacier',
+    lat: 66,
+    lng: -38,
+    calvingRate: 12,
+    icebergSize: 3,
+    driftSpeed: 0.8,
+    status: 'moderate',
+    description: 'SE Greenland glacier with moderate calving',
   },
   {
-    id: 'gmb-austfonna',
-    name: 'Austfonna',
-    lat: 79,
-    lng: 25,
-    massBalance: 0,
-    equilibriumLine: 400,
-    accumulationRatio: 0.5,
-    status: 'stable',
-    description: 'Svalbard ice cap near equilibrium',
+    id: 'ibc-ross',
+    name: 'Ross Ice Shelf Edge',
+    lat: -78,
+    lng: -170,
+    calvingRate: 2,
+    icebergSize: 0.5,
+    driftSpeed: 0.1,
+    status: 'minimal',
+    description: 'Minimal calving from the Ross Ice Shelf front',
   },
 ]
 
-const STATUS_COLORS: Record<GlacierMassBalanceData['status'], { label: string; color: string; bgClass: string }> = {
-  gaining: { label: 'Gaining', color: '#22c55e', bgClass: 'bg-green-500/10 text-green-600 border-green-500/30' },
-  stable: { label: 'Stable', color: '#3b82f6', bgClass: 'bg-blue-500/10 text-blue-600 border-blue-500/30' },
-  losing: { label: 'Losing', color: '#f59e0b', bgClass: 'bg-amber-500/10 text-amber-600 border-amber-500/30' },
-  collapsing: { label: 'Collapsing', color: '#ef4444', bgClass: 'bg-red-500/10 text-red-600 border-red-500/30' },
+const STATUS_COLORS: Record<IcebergCalvingData['status'], { label: string; color: string; bgClass: string }> = {
+  intense: { label: 'Intense', color: '#ef4444', bgClass: 'bg-red-500/10 text-red-600 border-red-500/30' },
+  active: { label: 'Active', color: '#f97316', bgClass: 'bg-orange-500/10 text-orange-600 border-orange-500/30' },
+  moderate: { label: 'Moderate', color: '#3b82f6', bgClass: 'bg-blue-500/10 text-blue-600 border-blue-500/30' },
+  minimal: { label: 'Minimal', color: '#22c55e', bgClass: 'bg-green-500/10 text-green-600 border-green-500/30' },
 }
 
-function TrendIcon({ status }: { status: GlacierMassBalanceData['status'] }) {
+function TrendIcon({ status }: { status: IcebergCalvingData['status'] }) {
   const cfg = STATUS_COLORS[status]
   return (
     <div className="h-2 w-2 rounded-full" style={{ backgroundColor: cfg.color }} />
   )
 }
 
-export function GlacierMassBalanceMonitor() {
-  const state = useMapStore((s) => s.glacierMassBalance)
-  const setState = useMapStore((s) => s.setGlacierMassBalance)
+export function IcebergCalvingMonitor() {
+  const state = useMapStore((s) => s.icebergCalving)
+  const setState = useMapStore((s) => s.setIcebergCalving)
 
   const events = useMemo(
     () => (state.data.length > 0 ? state.data : SAMPLE_LOCATIONS),
@@ -97,16 +97,16 @@ export function GlacierMassBalanceMonitor() {
 
   const summary = useMemo(() => {
     if (filteredItems.length === 0) {
-      return { totalGlaciers: 0, avgMassBalance: 0, avgEqLine: 0, avgAccRatio: 0 }
+      return { totalGlaciers: 0, avgCalvingRate: 0, avgSize: 0, avgSpeed: 0 }
     }
-    const avgMassBalance = filteredItems.reduce((sum, e) => sum + e.massBalance, 0) / filteredItems.length
-    const avgEqLine = filteredItems.reduce((sum, e) => sum + e.equilibriumLine, 0) / filteredItems.length
-    const avgAccRatio = filteredItems.reduce((sum, e) => sum + e.accumulationRatio, 0) / filteredItems.length
+    const avgCalvingRate = filteredItems.reduce((sum, e) => sum + e.calvingRate, 0) / filteredItems.length
+    const avgSize = filteredItems.reduce((sum, e) => sum + e.icebergSize, 0) / filteredItems.length
+    const avgSpeed = filteredItems.reduce((sum, e) => sum + e.driftSpeed, 0) / filteredItems.length
     return {
       totalGlaciers: filteredItems.length,
-      avgMassBalance: Math.round(avgMassBalance * 100) / 100,
-      avgEqLine: Math.round(avgEqLine),
-      avgAccRatio: Math.round(avgAccRatio * 100) / 100,
+      avgCalvingRate: Math.round(avgCalvingRate * 100) / 100,
+      avgSize: Math.round(avgSize * 100) / 100,
+      avgSpeed: Math.round(avgSpeed * 100) / 100,
     }
   }, [filteredItems])
 
@@ -120,35 +120,35 @@ export function GlacierMassBalanceMonitor() {
     features: filteredItems.map((e) => ({
       type: 'Feature' as const,
       geometry: { type: 'Point' as const, coordinates: [e.lng, e.lat] },
-      properties: { id: e.id, name: e.name, status: e.status, massBalance: e.massBalance },
+      properties: { id: e.id, name: e.name, status: e.status, calvingRate: e.calvingRate },
     })),
   }), [filteredItems])
 
   useEffect(() => {
     if (state.data.length === 0) {
-      useMapStore.getState().setGlacierMassBalance({ data: SAMPLE_LOCATIONS })
+      useMapStore.getState().setIcebergCalving({ data: SAMPLE_LOCATIONS })
     }
   }, [state.data.length])
 
   if (typeof window === 'undefined') return null
   if (!state.open) return null
 
-  const overlayToggles: { key: keyof GlacierMassBalanceState; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
-    { key: 'showMassBalance', label: 'Mass Balance', icon: TrendingUp },
-    { key: 'showEquilibriumLine', label: 'Equilibrium Line', icon: ArrowDown },
-    { key: 'showAccumulationRatio', label: 'Accumulation Ratio', icon: PieChart },
+  const overlayToggles: { key: keyof IcebergCalvingState; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
+    { key: 'showCalvingRate', label: 'Calving Rate', icon: TrendingUp },
+    { key: 'showIcebergSize', label: 'Iceberg Size', icon: Box },
+    { key: 'showDriftSpeed', label: 'Drift Speed', icon: Navigation },
   ]
 
   void geojson
 
   return (
     <div className="fixed right-4 top-16 z-[60] w-[420px] max-w-[calc(100vw-32px)] max-h-[calc(100vh-100px)]">
-      <Card className="bg-gradient-to-br from-slate-950/95 to-blue-950/95 backdrop-blur-xl border border-slate-800/40 rounded-xl shadow-lg overflow-hidden">
+      <Card className="bg-gradient-to-br from-blue-950/95 to-slate-950/95 backdrop-blur-xl border border-slate-800/40 rounded-xl shadow-lg overflow-hidden">
         <CardHeader className="pb-3 border-b border-slate-700/30">
           <div className="flex items-center justify-between">
             <CardTitle className="text-sm flex items-center gap-2 text-slate-100">
-              <MountainIcon17 className="h-4 w-4 text-slate-300" />
-              Glacier Mass Balance Monitor
+              <WavesIcon23 className="h-4 w-4 text-blue-400" />
+              Iceberg Calving Monitor
             </CardTitle>
             <Button
               variant="ghost"
@@ -170,7 +170,7 @@ export function GlacierMassBalanceMonitor() {
             <Select
               value={state.statusFilter || 'all'}
               onValueChange={(v) =>
-                setState({ statusFilter: v as GlacierMassBalanceState['statusFilter'] })
+                setState({ statusFilter: v as IcebergCalvingState['statusFilter'] })
               }
             >
               <SelectTrigger className="h-8 text-xs mt-1 bg-slate-900/40 border-slate-700/40 text-slate-100 hover:bg-slate-900/60">
@@ -178,10 +178,10 @@ export function GlacierMassBalanceMonitor() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="gaining">Gaining</SelectItem>
-                <SelectItem value="stable">Stable</SelectItem>
-                <SelectItem value="losing">Losing</SelectItem>
-                <SelectItem value="collapsing">Collapsing</SelectItem>
+                <SelectItem value="intense">Intense</SelectItem>
+                <SelectItem value="active">Active</SelectItem>
+                <SelectItem value="moderate">Moderate</SelectItem>
+                <SelectItem value="minimal">Minimal</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -216,19 +216,19 @@ export function GlacierMassBalanceMonitor() {
               <div className="text-[9px] text-slate-400/60">monitored</div>
             </div>
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Avg Balance</div>
-              <div className="text-sm font-semibold text-blue-400">{summary.avgMassBalance}</div>
-              <div className="text-[9px] text-slate-400/60">m w.e./yr</div>
+              <div className="text-[10px] text-slate-400/70">Avg Calving Rate</div>
+              <div className="text-sm font-semibold text-blue-400">{summary.avgCalvingRate}</div>
+              <div className="text-[9px] text-slate-400/60">km2/yr</div>
             </div>
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Avg ELA</div>
-              <div className="text-sm font-semibold text-slate-300">{summary.avgEqLine}</div>
-              <div className="text-[9px] text-slate-400/60">m altitude</div>
+              <div className="text-[10px] text-slate-400/70">Avg Iceberg Size</div>
+              <div className="text-sm font-semibold text-slate-300">{summary.avgSize}</div>
+              <div className="text-[9px] text-slate-400/60">km2</div>
             </div>
             <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-2 text-center">
-              <div className="text-[10px] text-slate-400/70">Avg AAR</div>
-              <div className="text-sm font-semibold text-slate-400">{summary.avgAccRatio}</div>
-              <div className="text-[9px] text-slate-400/60">ratio</div>
+              <div className="text-[10px] text-slate-400/70">Avg Drift Speed</div>
+              <div className="text-sm font-semibold text-slate-400">{summary.avgSpeed}</div>
+              <div className="text-[9px] text-slate-400/60">km/day</div>
             </div>
           </div>
 
@@ -270,22 +270,22 @@ export function GlacierMassBalanceMonitor() {
                       </div>
 
                       <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10px] text-slate-300/60">
-                        {state.showMassBalance && (
+                        {state.showCalvingRate && (
                           <div>
-                            Balance:{' '}
-                            <span className="text-slate-100 font-medium">{e.massBalance} m w.e./yr</span>
+                            Calving:{' '}
+                            <span className="text-slate-100 font-medium">{e.calvingRate} km2/yr</span>
                           </div>
                         )}
-                        {state.showEquilibriumLine && (
+                        {state.showIcebergSize && (
                           <div>
-                            ELA:{' '}
-                            <span className="text-slate-100 font-medium">{e.equilibriumLine} m</span>
+                            Size:{' '}
+                            <span className="text-slate-100 font-medium">{e.icebergSize} km2</span>
                           </div>
                         )}
-                        {state.showAccumulationRatio && (
+                        {state.showDriftSpeed && (
                           <div>
-                            AAR:{' '}
-                            <span className="text-slate-100 font-medium">{e.accumulationRatio}</span>
+                            Drift:{' '}
+                            <span className="text-slate-100 font-medium">{e.driftSpeed} km/day</span>
                           </div>
                         )}
                       </div>
@@ -325,16 +325,16 @@ export function GlacierMassBalanceMonitor() {
                     </span>
                   </div>
                   <div>
-                    <span className="text-slate-400/70">Balance: </span>
-                    <span className="font-medium text-blue-400">{activeItem.massBalance} m w.e./yr</span>
+                    <span className="text-slate-400/70">Calving Rate: </span>
+                    <span className="font-medium text-blue-400">{activeItem.calvingRate} km2/year</span>
                   </div>
                   <div>
-                    <span className="text-slate-400/70">ELA: </span>
-                    <span className="font-medium text-slate-300">{activeItem.equilibriumLine} m</span>
+                    <span className="text-slate-400/70">Iceberg Size: </span>
+                    <span className="font-medium text-slate-300">{activeItem.icebergSize} km2</span>
                   </div>
                   <div>
-                    <span className="text-slate-400/70">AAR: </span>
-                    <span className="font-medium text-slate-400">{activeItem.accumulationRatio}</span>
+                    <span className="text-slate-400/70">Drift Speed: </span>
+                    <span className="font-medium text-slate-400">{activeItem.driftSpeed} km/day</span>
                   </div>
                 </div>
               </div>
