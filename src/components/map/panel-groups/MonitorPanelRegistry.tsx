@@ -333,6 +333,15 @@ export function MonitorPanelRegistry() {
   const tidalEnergyPotential = useMapStore((s) => s.tidalEnergyPotential)
   const gridStabilityIndex = useMapStore((s) => s.gridStabilityIndex)
   const energyStorageLevel = useMapStore((s) => s.energyStorageLevel)
+  // Task 111: Public Health & Epidemiology
+  const diseaseOutbreakMap = useMapStore((s) => s.diseaseOutbreakMap)
+  const vaccinationCoverage = useMapStore((s) => s.vaccinationCoverage)
+  const waterQualityIndex = useMapStore((s) => s.waterQualityIndex)
+  const hospitalCapacity = useMapStore((s) => s.hospitalCapacity)
+  const airPollutionHealth = useMapStore((s) => s.airPollutionHealth)
+  const vectorHabitatRisk = useMapStore((s) => s.vectorHabitatRisk)
+  const nutritionSecurity = useMapStore((s) => s.nutritionSecurity)
+  const pandemicSpreadRate = useMapStore((s) => s.pandemicSpreadRate)
 
   return (
     <>
@@ -1077,6 +1086,31 @@ export function MonitorPanelRegistry() {
       )}
       {energyStorageLevel.open && (
         <LazyPanel importFn={() => import('@/components/map/EnergyStorageLevelMonitor')} exportName="EnergyStorageLevelMonitor" shouldLoad={true} />
+      )}
+      {/* Task 111: Public Health & Epidemiology */}
+      {diseaseOutbreakMap.open && (
+        <LazyPanel importFn={() => import('@/components/map/DiseaseOutbreakMapMonitor')} exportName="DiseaseOutbreakMapMonitor" shouldLoad={true} />
+      )}
+      {vaccinationCoverage.open && (
+        <LazyPanel importFn={() => import('@/components/map/VaccinationCoverageMonitor')} exportName="VaccinationCoverageMonitor" shouldLoad={true} />
+      )}
+      {waterQualityIndex.open && (
+        <LazyPanel importFn={() => import('@/components/map/WaterQualityIndexMonitor')} exportName="WaterQualityIndexMonitor" shouldLoad={true} />
+      )}
+      {hospitalCapacity.open && (
+        <LazyPanel importFn={() => import('@/components/map/HospitalCapacityMonitor')} exportName="HospitalCapacityMonitor" shouldLoad={true} />
+      )}
+      {airPollutionHealth.open && (
+        <LazyPanel importFn={() => import('@/components/map/AirPollutionHealthMonitor')} exportName="AirPollutionHealthMonitor" shouldLoad={true} />
+      )}
+      {vectorHabitatRisk.open && (
+        <LazyPanel importFn={() => import('@/components/map/VectorHabitatRiskMonitor')} exportName="VectorHabitatRiskMonitor" shouldLoad={true} />
+      )}
+      {nutritionSecurity.open && (
+        <LazyPanel importFn={() => import('@/components/map/NutritionSecurityMonitor')} exportName="NutritionSecurityMonitor" shouldLoad={true} />
+      )}
+      {pandemicSpreadRate.open && (
+        <LazyPanel importFn={() => import('@/components/map/PandemicSpreadRateMonitor')} exportName="PandemicSpreadRateMonitor" shouldLoad={true} />
       )}
     </>
   )

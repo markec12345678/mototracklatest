@@ -8928,6 +8928,23 @@ interface MapState {
   setGridStabilityIndex: (state: Partial<GridStabilityIndexState>) => void
   energyStorageLevel: EnergyStorageLevelState
   setEnergyStorageLevel: (state: Partial<EnergyStorageLevelState>) => void
+  // Task 111: Public Health & Epidemiology
+  diseaseOutbreakMap: DiseaseOutbreakMapState
+  setDiseaseOutbreakMap: (state: Partial<DiseaseOutbreakMapState>) => void
+  vaccinationCoverage: VaccinationCoverageState
+  setVaccinationCoverage: (state: Partial<VaccinationCoverageState>) => void
+  waterQualityIndex: WaterQualityIndexState
+  setWaterQualityIndex: (state: Partial<WaterQualityIndexState>) => void
+  hospitalCapacity: HospitalCapacityState
+  setHospitalCapacity: (state: Partial<HospitalCapacityState>) => void
+  airPollutionHealth: AirPollutionHealthState
+  setAirPollutionHealth: (state: Partial<AirPollutionHealthState>) => void
+  vectorHabitatRisk: VectorHabitatRiskState
+  setVectorHabitatRisk: (state: Partial<VectorHabitatRiskState>) => void
+  nutritionSecurity: NutritionSecurityState
+  setNutritionSecurity: (state: Partial<NutritionSecurityState>) => void
+  pandemicSpreadRate: PandemicSpreadRateState
+  setPandemicSpreadRate: (state: Partial<PandemicSpreadRateState>) => void
 
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
@@ -13228,6 +13245,199 @@ export interface EnergyStorageLevelState {
   showChargeLevel: boolean
   showDischargeRate: boolean
   showRoundTripEfficiency: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 111: Public Health & Epidemiology
+export interface DiseaseOutbreakMapData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  caseCount: number           // active cases
+  incidenceRate: number       // per 100k population
+  transmissionRate: number    // R0 value
+  mortalityRate: number       // 0-100
+  status: 'contained' | 'spreading' | 'epidemic' | 'pandemic'
+  description: string
+}
+
+export interface DiseaseOutbreakMapState {
+  open: boolean
+  data: DiseaseOutbreakMapData[]
+  showCaseCount: boolean
+  showIncidenceRate: boolean
+  showTransmissionRate: boolean
+  showMortalityRate: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface VaccinationCoverageData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  coverageRate: number        // 0-100%
+  doseCompletion: number      // 0-100%
+  boosterUptake: number       // 0-100%
+  hesitancyIndex: number      // 0-100
+  status: 'critical' | 'below_target' | 'on_track' | 'achieved'
+  description: string
+}
+
+export interface VaccinationCoverageState {
+  open: boolean
+  data: VaccinationCoverageData[]
+  showCoverageRate: boolean
+  showDoseCompletion: boolean
+  showBoosterUptake: boolean
+  showHesitancyIndex: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface WaterQualityIndexData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  wqiScore: number            // 0-100
+  phLevel: number             // 0-14
+  dissolvedOxygen: number     // mg/L
+  contaminantLevel: number    // 0-100
+  status: 'hazardous' | 'poor' | 'moderate' | 'good' | 'excellent'
+  description: string
+}
+
+export interface WaterQualityIndexState {
+  open: boolean
+  data: WaterQualityIndexData[]
+  showWqiScore: boolean
+  showPhLevel: boolean
+  showDissolvedOxygen: boolean
+  showContaminantLevel: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface HospitalCapacityData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  bedOccupancy: number        // 0-100%
+  icuUtilization: number      // 0-100%
+  ventilatorUsage: number     // 0-100%
+  staffAvailability: number   // 0-100%
+  status: 'overwhelmed' | 'critical' | 'stable' | 'optimal'
+  description: string
+}
+
+export interface HospitalCapacityState {
+  open: boolean
+  data: HospitalCapacityData[]
+  showBedOccupancy: boolean
+  showIcuUtilization: boolean
+  showVentilatorUsage: boolean
+  showStaffAvailability: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface AirPollutionHealthData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  aqiValue: number            // 0-500
+  pm25Concentration: number   // ug/m3
+  respiratoryRisk: number     // 0-100
+  cardiovascularImpact: number // 0-100
+  status: 'good' | 'moderate' | 'unhealthy' | 'hazardous'
+  description: string
+}
+
+export interface AirPollutionHealthState {
+  open: boolean
+  data: AirPollutionHealthData[]
+  showAqiValue: boolean
+  showPm25Concentration: boolean
+  showRespiratoryRisk: boolean
+  showCardiovascularImpact: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface VectorHabitatRiskData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  habitatSuitability: number  // 0-100
+  vectorDensity: number       // per trap/night
+  diseasePrevalence: number   // 0-100
+  seasonalityIndex: number    // 0-100
+  status: 'minimal' | 'low' | 'moderate' | 'high' | 'extreme'
+  description: string
+}
+
+export interface VectorHabitatRiskState {
+  open: boolean
+  data: VectorHabitatRiskData[]
+  showHabitatSuitability: boolean
+  showVectorDensity: boolean
+  showDiseasePrevalence: boolean
+  showSeasonalityIndex: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface NutritionSecurityData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  foodSecurityIndex: number   // 0-100
+  malnutritionRate: number    // 0-100%
+  stuntingPrevalence: number  // 0-100%
+  dietaryDiversity: number    // 0-10
+  status: 'critical' | 'severe' | 'moderate' | 'adequate' | 'optimal'
+  description: string
+}
+
+export interface NutritionSecurityState {
+  open: boolean
+  data: NutritionSecurityData[]
+  showFoodSecurityIndex: boolean
+  showMalnutritionRate: boolean
+  showStuntingPrevalence: boolean
+  showDietaryDiversity: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface PandemicSpreadRateData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  reproductionNumber: number  // R-value
+  doublingTime: number        // days
+  testPositivity: number      // 0-100%
+  hospitalizationRate: number // per 100k
+  status: 'declining' | 'stable' | 'accelerating' | 'exponential'
+  description: string
+}
+
+export interface PandemicSpreadRateState {
+  open: boolean
+  data: PandemicSpreadRateData[]
+  showReproductionNumber: boolean
+  showDoublingTime: boolean
+  showTestPositivity: boolean
+  showHospitalizationRate: boolean
   statusFilter: string
   activeItemId: string | null
 }
@@ -18587,6 +18797,39 @@ export const useMapStore = create<MapState>()(
         data: [], activeItemId: null, showStorageCapacity: true, showChargeLevel: true, showDischargeRate: false, showRoundTripEfficiency: false, open: false, statusFilter: '',
       },
       setEnergyStorageLevel: (updates) => set((state) => ({ energyStorageLevel: { ...state.energyStorageLevel, ...updates } })),
+      // Task 111: Public Health & Epidemiology
+      diseaseOutbreakMap: {
+        data: [], activeItemId: null, showCaseCount: true, showIncidenceRate: true, showTransmissionRate: false, showMortalityRate: false, open: false, statusFilter: '',
+      },
+      setDiseaseOutbreakMap: (updates) => set((state) => ({ diseaseOutbreakMap: { ...state.diseaseOutbreakMap, ...updates } })),
+      vaccinationCoverage: {
+        data: [], activeItemId: null, showCoverageRate: true, showDoseCompletion: true, showBoosterUptake: false, showHesitancyIndex: false, open: false, statusFilter: '',
+      },
+      setVaccinationCoverage: (updates) => set((state) => ({ vaccinationCoverage: { ...state.vaccinationCoverage, ...updates } })),
+      waterQualityIndex: {
+        data: [], activeItemId: null, showWqiScore: true, showPhLevel: true, showDissolvedOxygen: false, showContaminantLevel: false, open: false, statusFilter: '',
+      },
+      setWaterQualityIndex: (updates) => set((state) => ({ waterQualityIndex: { ...state.waterQualityIndex, ...updates } })),
+      hospitalCapacity: {
+        data: [], activeItemId: null, showBedOccupancy: true, showIcuUtilization: true, showVentilatorUsage: false, showStaffAvailability: false, open: false, statusFilter: '',
+      },
+      setHospitalCapacity: (updates) => set((state) => ({ hospitalCapacity: { ...state.hospitalCapacity, ...updates } })),
+      airPollutionHealth: {
+        data: [], activeItemId: null, showAqiValue: true, showPm25Concentration: true, showRespiratoryRisk: false, showCardiovascularImpact: false, open: false, statusFilter: '',
+      },
+      setAirPollutionHealth: (updates) => set((state) => ({ airPollutionHealth: { ...state.airPollutionHealth, ...updates } })),
+      vectorHabitatRisk: {
+        data: [], activeItemId: null, showHabitatSuitability: true, showVectorDensity: true, showDiseasePrevalence: false, showSeasonalityIndex: false, open: false, statusFilter: '',
+      },
+      setVectorHabitatRisk: (updates) => set((state) => ({ vectorHabitatRisk: { ...state.vectorHabitatRisk, ...updates } })),
+      nutritionSecurity: {
+        data: [], activeItemId: null, showFoodSecurityIndex: true, showMalnutritionRate: true, showStuntingPrevalence: false, showDietaryDiversity: false, open: false, statusFilter: '',
+      },
+      setNutritionSecurity: (updates) => set((state) => ({ nutritionSecurity: { ...state.nutritionSecurity, ...updates } })),
+      pandemicSpreadRate: {
+        data: [], activeItemId: null, showReproductionNumber: true, showDoublingTime: true, showTestPositivity: false, showHospitalizationRate: false, open: false, statusFilter: '',
+      },
+      setPandemicSpreadRate: (updates) => set((state) => ({ pandemicSpreadRate: { ...state.pandemicSpreadRate, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
@@ -19158,6 +19401,15 @@ export const useMapStore = create<MapState>()(
         tidalEnergyPotential: state.tidalEnergyPotential,
         gridStabilityIndex: state.gridStabilityIndex,
         energyStorageLevel: state.energyStorageLevel,
+        // Task 111: Public Health & Epidemiology
+        diseaseOutbreakMap: state.diseaseOutbreakMap,
+        vaccinationCoverage: state.vaccinationCoverage,
+        waterQualityIndex: state.waterQualityIndex,
+        hospitalCapacity: state.hospitalCapacity,
+        airPollutionHealth: state.airPollutionHealth,
+        vectorHabitatRisk: state.vectorHabitatRisk,
+        nutritionSecurity: state.nutritionSecurity,
+        pandemicSpreadRate: state.pandemicSpreadRate,
         // Task 96
         karstSpringDischarge: state.karstSpringDischarge,
         caveDripMonitor: state.caveDripMonitor,

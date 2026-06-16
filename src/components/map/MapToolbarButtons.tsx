@@ -454,6 +454,15 @@ import {
   Anchor as AnchorIcon4,
   Activity as ActivityIcon9,
   BatteryMedium as BatteryIcon,
+  // Task 111 icons
+  Virus as VirusIcon,
+  Syringe as SyringeIcon,
+  Droplets as DropletsIcon20,
+  Building2 as Building2Icon2,
+  CloudCog as CloudCogIcon3,
+  Bug as BugIcon6,
+  Cherry as AppleIcon,
+  Globe as GlobeIcon4,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -515,6 +524,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const tidalEnergyPotentialOpen = useMapStore((s) => s.tidalEnergyPotential.open)
   const gridStabilityIndexOpen = useMapStore((s) => s.gridStabilityIndex.open)
   const energyStorageLevelOpen = useMapStore((s) => s.energyStorageLevel.open)
+  // Task 111: Public Health & Epidemiology
+  const diseaseOutbreakMapOpen = useMapStore((s) => s.diseaseOutbreakMap.open)
+  const vaccinationCoverageOpen = useMapStore((s) => s.vaccinationCoverage.open)
+  const waterQualityIndexOpen = useMapStore((s) => s.waterQualityIndex.open)
+  const hospitalCapacityOpen = useMapStore((s) => s.hospitalCapacity.open)
+  const airPollutionHealthOpen = useMapStore((s) => s.airPollutionHealth.open)
+  const vectorHabitatRiskOpen = useMapStore((s) => s.vectorHabitatRisk.open)
+  const nutritionSecurityOpen = useMapStore((s) => s.nutritionSecurity.open)
+  const pandemicSpreadRateOpen = useMapStore((s) => s.pandemicSpreadRate.open)
 
   if (typeof window === 'undefined') return null
 
@@ -3492,6 +3510,190 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
               </TooltipTrigger>
               <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
                 Energy Storage Level Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    diseaseOutbreakMapOpen
+                      ? 'bg-red-500 text-white shadow-md shadow-red-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setDiseaseOutbreakMap({ open: true })}
+                  aria-label="Disease Outbreak Map Monitor"
+                >
+                  <VirusIcon className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Disease Outbreak Map Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    vaccinationCoverageOpen
+                      ? 'bg-blue-500 text-white shadow-md shadow-blue-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setVaccinationCoverage({ open: true })}
+                  aria-label="Vaccination Coverage Monitor"
+                >
+                  <SyringeIcon className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Vaccination Coverage Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    waterQualityIndexOpen
+                      ? 'bg-cyan-500 text-white shadow-md shadow-cyan-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setWaterQualityIndex({ open: true })}
+                  aria-label="Water Quality Index Monitor"
+                >
+                  <DropletsIcon20 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Water Quality Index Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    hospitalCapacityOpen
+                      ? 'bg-emerald-500 text-white shadow-md shadow-emerald-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setHospitalCapacity({ open: true })}
+                  aria-label="Hospital Capacity Monitor"
+                >
+                  <Building2Icon2 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Hospital Capacity Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    airPollutionHealthOpen
+                      ? 'bg-gray-500 text-white shadow-md shadow-gray-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setAirPollutionHealth({ open: true })}
+                  aria-label="Air Pollution Health Monitor"
+                >
+                  <CloudCogIcon3 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Air Pollution Health Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    vectorHabitatRiskOpen
+                      ? 'bg-orange-500 text-white shadow-md shadow-orange-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setVectorHabitatRisk({ open: true })}
+                  aria-label="Vector Habitat Risk Monitor"
+                >
+                  <BugIcon6 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Vector Habitat Risk Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    nutritionSecurityOpen
+                      ? 'bg-green-500 text-white shadow-md shadow-green-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setNutritionSecurity({ open: true })}
+                  aria-label="Nutrition Security Monitor"
+                >
+                  <AppleIcon className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Nutrition Security Monitor
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'h-11 w-11 rounded-xl transition-all duration-200',
+                    pandemicSpreadRateOpen
+                      ? 'bg-purple-500 text-white shadow-md shadow-purple-500/30'
+                      : 'hover:bg-accent'
+                  )}
+                  onClick={() => useMapStore.getState().setPandemicSpreadRate({ open: true })}
+                  aria-label="Pandemic Spread Rate Monitor"
+                >
+                  <GlobeIcon4 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs font-medium px-3 py-2">
+                Pandemic Spread Rate Monitor
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
