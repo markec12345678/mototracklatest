@@ -299,6 +299,15 @@ export function MonitorPanelRegistry() {
   const snowCoverDuration = useMapStore((s) => s.snowCoverDuration)
   const frostThawCycle = useMapStore((s) => s.frostThawCycle)
   const icebergCalving = useMapStore((s) => s.icebergCalving)
+  // Task 107: Space Weather and Geomagnetism
+  const magnetopauseStandoff = useMapStore((s) => s.magnetopauseStandoff)
+  const auroraOvalPosition = useMapStore((s) => s.auroraOvalPosition)
+  const vanAllenRadiation = useMapStore((s) => s.vanAllenRadiation)
+  const ionosphericDisturbance = useMapStore((s) => s.ionosphericDisturbance)
+  const cosmicRayFlux = useMapStore((s) => s.cosmicRayFlux)
+  const solarFluxIndex = useMapStore((s) => s.solarFluxIndex)
+  const spaceRadiationDose = useMapStore((s) => s.spaceRadiationDose)
+  const satelliteDrag = useMapStore((s) => s.satelliteDrag)
 
   return (
     <>
@@ -949,6 +958,31 @@ export function MonitorPanelRegistry() {
       )}
       {icebergCalving.open && (
         <LazyPanel importFn={() => import('@/components/map/IcebergCalvingMonitor')} exportName="IcebergCalvingMonitor" shouldLoad={true} />
+      )}
+      {/* Task 107: Space Weather and Geomagnetism */}
+      {magnetopauseStandoff.open && (
+        <LazyPanel importFn={() => import('@/components/map/MagnetopauseStandoffMonitor')} exportName="MagnetopauseStandoffMonitor" shouldLoad={true} />
+      )}
+      {auroraOvalPosition.open && (
+        <LazyPanel importFn={() => import('@/components/map/AuroraOvalPositionMonitor')} exportName="AuroraOvalPositionMonitor" shouldLoad={true} />
+      )}
+      {vanAllenRadiation.open && (
+        <LazyPanel importFn={() => import('@/components/map/VanAllenRadiationMonitor')} exportName="VanAllenRadiationMonitor" shouldLoad={true} />
+      )}
+      {ionosphericDisturbance.open && (
+        <LazyPanel importFn={() => import('@/components/map/IonosphericDisturbanceMonitor')} exportName="IonosphericDisturbanceMonitor" shouldLoad={true} />
+      )}
+      {cosmicRayFlux.open && (
+        <LazyPanel importFn={() => import('@/components/map/CosmicRayFluxMonitor')} exportName="CosmicRayFluxMonitor" shouldLoad={true} />
+      )}
+      {solarFluxIndex.open && (
+        <LazyPanel importFn={() => import('@/components/map/SolarFluxIndexMonitor')} exportName="SolarFluxIndexMonitor" shouldLoad={true} />
+      )}
+      {spaceRadiationDose.open && (
+        <LazyPanel importFn={() => import('@/components/map/SpaceRadiationDoseMonitor')} exportName="SpaceRadiationDoseMonitor" shouldLoad={true} />
+      )}
+      {satelliteDrag.open && (
+        <LazyPanel importFn={() => import('@/components/map/SatelliteDragMonitor')} exportName="SatelliteDragMonitor" shouldLoad={true} />
       )}
     </>
   )

@@ -8861,6 +8861,24 @@ interface MapState {
   icebergCalving: IcebergCalvingState
   setIcebergCalving: (state: Partial<IcebergCalvingState>) => void
 
+  // Task 107: Space Weather and Geomagnetism
+  magnetopauseStandoff: MagnetopauseStandoffState
+  setMagnetopauseStandoff: (state: Partial<MagnetopauseStandoffState>) => void
+  auroraOvalPosition: AuroraOvalPositionState
+  setAuroraOvalPosition: (state: Partial<AuroraOvalPositionState>) => void
+  vanAllenRadiation: VanAllenRadiationState
+  setVanAllenRadiation: (state: Partial<VanAllenRadiationState>) => void
+  ionosphericDisturbance: IonosphericDisturbanceState
+  setIonosphericDisturbance: (state: Partial<IonosphericDisturbanceState>) => void
+  cosmicRayFlux: CosmicRayFluxState
+  setCosmicRayFlux: (state: Partial<CosmicRayFluxState>) => void
+  solarFluxIndex: SolarFluxIndexState
+  setSolarFluxIndex: (state: Partial<SolarFluxIndexState>) => void
+  spaceRadiationDose: SpaceRadiationDoseState
+  setSpaceRadiationDose: (state: Partial<SpaceRadiationDoseState>) => void
+  satelliteDrag: SatelliteDragState
+  setSatelliteDrag: (state: Partial<SatelliteDragState>) => void
+
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
   setAddLocationDialogOpen: (open: boolean) => void
@@ -12258,6 +12276,183 @@ export interface IcebergCalvingState {
   showCalvingRate: boolean
   showIcebergSize: boolean
   showDriftSpeed: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 107: Space Weather and Geomagnetism
+export interface MagnetopauseStandoffData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  standoffDistance: number // Earth radii
+  solarWindPressure: number // nPa
+  magneticFieldBz: number  // nT
+  status: 'compressed' | 'normal' | 'expanded' | 'eroded'
+  description: string
+}
+
+export interface MagnetopauseStandoffState {
+  open: boolean
+  data: MagnetopauseStandoffData[]
+  showStandoffDistance: boolean
+  showSolarWindPressure: boolean
+  showMagneticFieldBz: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface AuroraOvalPositionData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  ovalLatitude: number   // degrees
+  kpIndex: number         // 0-9
+  visibilityProbability: number // %
+  status: 'storm' | 'active' | 'quiet' | 'substorm'
+  description: string
+}
+
+export interface AuroraOvalPositionState {
+  open: boolean
+  data: AuroraOvalPositionData[]
+  showOvalLatitude: boolean
+  showKpIndex: boolean
+  showVisibilityProbability: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface VanAllenRadiationData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  protonFlux: number     // particles/cm2/s
+  electronFlux: number   // particles/cm2/s
+  beltAltitude: number   // km
+  status: 'enhanced' | 'elevated' | 'normal' | 'depleted'
+  description: string
+}
+
+export interface VanAllenRadiationState {
+  open: boolean
+  data: VanAllenRadiationData[]
+  showProtonFlux: boolean
+  showElectronFlux: boolean
+  showBeltAltitude: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface IonosphericDisturbanceData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  tecValue: number        // TECU
+  scintillationIndex: number // S4
+  f2LayerFrequency: number // MHz
+  status: 'disturbed' | 'moderate' | 'quiet' | 'blackout'
+  description: string
+}
+
+export interface IonosphericDisturbanceState {
+  open: boolean
+  data: IonosphericDisturbanceData[]
+  showTecValue: boolean
+  showScintillationIndex: boolean
+  showF2LayerFrequency: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface CosmicRayFluxData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  neutronCount: number    // counts/min
+  muonFlux: number        // counts/min
+  solarModulation: number // GV
+  status: 'forbush_decrease' | 'depressed' | 'normal' | 'ground_level'
+  description: string
+}
+
+export interface CosmicRayFluxState {
+  open: boolean
+  data: CosmicRayFluxData[]
+  showNeutronCount: boolean
+  showMuonFlux: boolean
+  showSolarModulation: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface SolarFluxIndexData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  f107Index: number        // sfu
+  sunspotNumber: number
+  solarCyclePhase: number  // 0-1
+  status: 'solar_max' | 'rising' | 'declining' | 'solar_min'
+  description: string
+}
+
+export interface SolarFluxIndexState {
+  open: boolean
+  data: SolarFluxIndexData[]
+  showF107Index: boolean
+  showSunspotNumber: boolean
+  showSolarCyclePhase: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface SpaceRadiationDoseData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  doseRate: number         // mSv/hr
+  particleEnergy: number   // MeV
+  shieldingEffectiveness: number // %
+  status: 'dangerous' | 'elevated' | 'moderate' | 'safe'
+  description: string
+}
+
+export interface SpaceRadiationDoseState {
+  open: boolean
+  data: SpaceRadiationDoseData[]
+  showDoseRate: boolean
+  showParticleEnergy: boolean
+  showShieldingEffectiveness: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface SatelliteDragData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  orbitalDecay: number    // m/day
+  atmosphericDensity: number // kg/m3
+  altitude: number        // km
+  status: 'critical' | 'elevated' | 'normal' | 'low'
+  description: string
+}
+
+export interface SatelliteDragState {
+  open: boolean
+  data: SatelliteDragData[]
+  showOrbitalDecay: boolean
+  showAtmosphericDensity: boolean
+  showAltitude: boolean
   statusFilter: string
   activeItemId: string | null
 }
@@ -17490,6 +17685,40 @@ export const useMapStore = create<MapState>()(
       },
       setIcebergCalving: (updates) => set((state) => ({ icebergCalving: { ...state.icebergCalving, ...updates } })),
 
+      // Task 107: Space Weather and Geomagnetism
+      magnetopauseStandoff: {
+        data: [], activeItemId: null, showStandoffDistance: true, showSolarWindPressure: true, showMagneticFieldBz: false, open: false, statusFilter: '',
+      },
+      setMagnetopauseStandoff: (updates) => set((state) => ({ magnetopauseStandoff: { ...state.magnetopauseStandoff, ...updates } })),
+      auroraOvalPosition: {
+        data: [], activeItemId: null, showOvalLatitude: true, showKpIndex: true, showVisibilityProbability: false, open: false, statusFilter: '',
+      },
+      setAuroraOvalPosition: (updates) => set((state) => ({ auroraOvalPosition: { ...state.auroraOvalPosition, ...updates } })),
+      vanAllenRadiation: {
+        data: [], activeItemId: null, showProtonFlux: true, showElectronFlux: true, showBeltAltitude: false, open: false, statusFilter: '',
+      },
+      setVanAllenRadiation: (updates) => set((state) => ({ vanAllenRadiation: { ...state.vanAllenRadiation, ...updates } })),
+      ionosphericDisturbance: {
+        data: [], activeItemId: null, showTecValue: true, showScintillationIndex: true, showF2LayerFrequency: false, open: false, statusFilter: '',
+      },
+      setIonosphericDisturbance: (updates) => set((state) => ({ ionosphericDisturbance: { ...state.ionosphericDisturbance, ...updates } })),
+      cosmicRayFlux: {
+        data: [], activeItemId: null, showNeutronCount: true, showMuonFlux: true, showSolarModulation: false, open: false, statusFilter: '',
+      },
+      setCosmicRayFlux: (updates) => set((state) => ({ cosmicRayFlux: { ...state.cosmicRayFlux, ...updates } })),
+      solarFluxIndex: {
+        data: [], activeItemId: null, showF107Index: true, showSunspotNumber: true, showSolarCyclePhase: false, open: false, statusFilter: '',
+      },
+      setSolarFluxIndex: (updates) => set((state) => ({ solarFluxIndex: { ...state.solarFluxIndex, ...updates } })),
+      spaceRadiationDose: {
+        data: [], activeItemId: null, showDoseRate: true, showParticleEnergy: true, showShieldingEffectiveness: false, open: false, statusFilter: '',
+      },
+      setSpaceRadiationDose: (updates) => set((state) => ({ spaceRadiationDose: { ...state.spaceRadiationDose, ...updates } })),
+      satelliteDrag: {
+        data: [], activeItemId: null, showOrbitalDecay: true, showAtmosphericDensity: true, showAltitude: false, open: false, statusFilter: '',
+      },
+      setSatelliteDrag: (updates) => set((state) => ({ satelliteDrag: { ...state.satelliteDrag, ...updates } })),
+
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
       setAddLocationDialogOpen: (open) => set({ addLocationDialogOpen: open }),
@@ -18026,6 +18255,15 @@ export const useMapStore = create<MapState>()(
         snowCoverDuration: state.snowCoverDuration,
         frostThawCycle: state.frostThawCycle,
         icebergCalving: state.icebergCalving,
+        // Task 107
+        magnetopauseStandoff: state.magnetopauseStandoff,
+        auroraOvalPosition: state.auroraOvalPosition,
+        vanAllenRadiation: state.vanAllenRadiation,
+        ionosphericDisturbance: state.ionosphericDisturbance,
+        cosmicRayFlux: state.cosmicRayFlux,
+        solarFluxIndex: state.solarFluxIndex,
+        spaceRadiationDose: state.spaceRadiationDose,
+        satelliteDrag: state.satelliteDrag,
         // Task 96
         karstSpringDischarge: state.karstSpringDischarge,
         caveDripMonitor: state.caveDripMonitor,

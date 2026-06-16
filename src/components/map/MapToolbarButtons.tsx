@@ -420,6 +420,15 @@ import {
   Cloud as CloudIcon6,
   ThermometerSun as ThermometerSunIcon2,
   Waves as WavesIcon23,
+  // Task 107 icons
+  Shield as ShieldIcon4,
+  Sparkles as SparklesIcon9,
+  Radio as RadioIcon3,
+  Activity as ActivityIcon8,
+  Zap as ZapIcon4,
+  Sun as SunIcon11,
+  Siren as SirenIcon3,
+  Satellite as SatelliteIcon2,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -2713,6 +2722,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setSnowCoverDuration({ open: true })} title="Snow Cover Duration" aria-label="Open snow cover duration monitor"><CloudIcon6 className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setFrostThawCycle({ open: true })} title="Frost-Thaw Cycle" aria-label="Open frost-thaw cycle monitor"><ThermometerSunIcon2 className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setIcebergCalving({ open: true })} title="Iceberg Calving" aria-label="Open iceberg calving monitor"><WavesIcon23 className="h-4 w-4" /></Button>
+          {/* Task 107: Space Weather and Geomagnetism */}
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setMagnetopauseStandoff({ open: true })} title="Magnetopause Standoff" aria-label="Open magnetopause standoff monitor"><ShieldIcon4 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setAuroraOvalPosition({ open: true })} title="Aurora Oval Position" aria-label="Open aurora oval position monitor"><SparklesIcon9 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setVanAllenRadiation({ open: true })} title="Van Allen Radiation" aria-label="Open van allen radiation monitor"><RadioIcon3 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setIonosphericDisturbance({ open: true })} title="Ionospheric Disturbance" aria-label="Open ionospheric disturbance monitor"><ActivityIcon8 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setCosmicRayFlux({ open: true })} title="Cosmic Ray Flux" aria-label="Open cosmic ray flux monitor"><ZapIcon4 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setSolarFluxIndex({ open: true })} title="Solar Flux Index" aria-label="Open solar flux index monitor"><SunIcon11 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setSpaceRadiationDose({ open: true })} title="Space Radiation Dose" aria-label="Open space radiation dose monitor"><SirenIcon3 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setSatelliteDrag({ open: true })} title="Satellite Drag" aria-label="Open satellite drag monitor"><SatelliteIcon2 className="h-4 w-4" /></Button>
           <Button
             variant="outline"
             size="icon"
