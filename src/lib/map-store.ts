@@ -4240,6 +4240,23 @@ interface MapState {
   setFintechHubActivity: (state: Partial<MonitorState>) => void
   goldReserveVault: MonitorState
   setGoldReserveVault: (state: Partial<MonitorState>) => void
+  // Task 124: Sports & Entertainment Venues
+  stadiumCrowdMonitor: MonitorState
+  setStadiumCrowdMonitor: (state: Partial<MonitorState>) => void
+  arenaEventMonitor: MonitorState
+  setArenaEventMonitor: (state: Partial<MonitorState>) => void
+  concertVenueMonitor: MonitorState
+  setConcertVenueMonitor: (state: Partial<MonitorState>) => void
+  sportLeagueStanding: MonitorState
+  setSportLeagueStanding: (state: Partial<MonitorState>) => void
+  olympicVenueMonitor: MonitorState
+  setOlympicVenueMonitor: (state: Partial<MonitorState>) => void
+  racetrackActivity: MonitorState
+  setRacetrackActivity: (state: Partial<MonitorState>) => void
+  golfCourseStatus: MonitorState
+  setGolfCourseStatus: (state: Partial<MonitorState>) => void
+  waterParkCapacity: MonitorState
+  setWaterParkCapacity: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -8280,6 +8297,15 @@ export const useMapStore = create<MapState>()(
       paymentGatewayStatus: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       fintechHubActivity: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       goldReserveVault: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 124: Sports & Entertainment Venues
+      stadiumCrowdMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      arenaEventMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      concertVenueMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      sportLeagueStanding: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      olympicVenueMonitor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      racetrackActivity: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      golfCourseStatus: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      waterParkCapacity: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -8324,6 +8350,15 @@ export const useMapStore = create<MapState>()(
       setPaymentGatewayStatus: (updates) => set((state) => ({ paymentGatewayStatus: { ...state.paymentGatewayStatus, ...updates } })),
       setFintechHubActivity: (updates) => set((state) => ({ fintechHubActivity: { ...state.fintechHubActivity, ...updates } })),
       setGoldReserveVault: (updates) => set((state) => ({ goldReserveVault: { ...state.goldReserveVault, ...updates } })),
+      // Task 124: Sports & Entertainment Venues
+      setStadiumCrowdMonitor: (updates) => set((state) => ({ stadiumCrowdMonitor: { ...state.stadiumCrowdMonitor, ...updates } })),
+      setArenaEventMonitor: (updates) => set((state) => ({ arenaEventMonitor: { ...state.arenaEventMonitor, ...updates } })),
+      setConcertVenueMonitor: (updates) => set((state) => ({ concertVenueMonitor: { ...state.concertVenueMonitor, ...updates } })),
+      setSportLeagueStanding: (updates) => set((state) => ({ sportLeagueStanding: { ...state.sportLeagueStanding, ...updates } })),
+      setOlympicVenueMonitor: (updates) => set((state) => ({ olympicVenueMonitor: { ...state.olympicVenueMonitor, ...updates } })),
+      setRacetrackActivity: (updates) => set((state) => ({ racetrackActivity: { ...state.racetrackActivity, ...updates } })),
+      setGolfCourseStatus: (updates) => set((state) => ({ golfCourseStatus: { ...state.golfCourseStatus, ...updates } })),
+      setWaterParkCapacity: (updates) => set((state) => ({ waterParkCapacity: { ...state.waterParkCapacity, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

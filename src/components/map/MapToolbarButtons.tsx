@@ -570,6 +570,15 @@ import {
   Wallet as WalletIcon,
   Rocket as RocketIcon,
   Gem as GemIcon6,
+  // Task 124 icons
+  Trophy as TrophyIcon,
+  Clapperboard as ClapperboardIcon2,
+  Music as MusicIcon2,
+  Medal as MedalIcon,
+  Award as AwardIcon3,
+  Flag as FlagIcon3,
+  Flag as FlagIcon4,
+  Waves as WavesIcon4,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -748,6 +757,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const paymentGatewayStatusOpen = useMapStore((s) => s.paymentGatewayStatus.open)
   const fintechHubActivityOpen = useMapStore((s) => s.fintechHubActivity.open)
   const goldReserveVaultOpen = useMapStore((s) => s.goldReserveVault.open)
+  // Task 124: Sports & Entertainment Venues
+  const stadiumCrowdMonitorOpen = useMapStore((s) => s.stadiumCrowdMonitor.open)
+  const arenaEventMonitorOpen = useMapStore((s) => s.arenaEventMonitor.open)
+  const concertVenueMonitorOpen = useMapStore((s) => s.concertVenueMonitor.open)
+  const sportLeagueStandingOpen = useMapStore((s) => s.sportLeagueStanding.open)
+  const olympicVenueMonitorOpen = useMapStore((s) => s.olympicVenueMonitor.open)
+  const racetrackActivityOpen = useMapStore((s) => s.racetrackActivity.open)
+  const golfCourseStatusOpen = useMapStore((s) => s.golfCourseStatus.open)
+  const waterParkCapacityOpen = useMapStore((s) => s.waterParkCapacity.open)
 
   if (typeof window === 'undefined') return null
 
@@ -5651,6 +5669,71 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <GemIcon6 className="h-4 w-4" />
             {goldReserveVaultOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-yellow-400" />}
+          </button>
+          {/* Task 124: Sports & Entertainment Venues */}
+          <button
+            onClick={() => useMapStore.getState().setStadiumCrowdMonitor({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${stadiumCrowdMonitorOpen ? 'bg-emerald-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Stadium Crowd Monitor"
+          >
+            <TrophyIcon className="h-4 w-4" />
+            {stadiumCrowdMonitorOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setArenaEventMonitor({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${arenaEventMonitorOpen ? 'bg-violet-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Arena Event Monitor"
+          >
+            <ClapperboardIcon2 className="h-4 w-4" />
+            {arenaEventMonitorOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-violet-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setConcertVenueMonitor({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${concertVenueMonitorOpen ? 'bg-fuchsia-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Concert Venue Monitor"
+          >
+            <MusicIcon2 className="h-4 w-4" />
+            {concertVenueMonitorOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-fuchsia-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setSportLeagueStanding({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${sportLeagueStandingOpen ? 'bg-amber-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Sport League Standing Monitor"
+          >
+            <MedalIcon className="h-4 w-4" />
+            {sportLeagueStandingOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setOlympicVenueMonitor({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${olympicVenueMonitorOpen ? 'bg-yellow-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Olympic Venue Monitor"
+          >
+            <AwardIcon3 className="h-4 w-4" />
+            {olympicVenueMonitorOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-yellow-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setRacetrackActivity({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${racetrackActivityOpen ? 'bg-rose-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Racetrack Activity Monitor"
+          >
+            <FlagIcon3 className="h-4 w-4" />
+            {racetrackActivityOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setGolfCourseStatus({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${golfCourseStatusOpen ? 'bg-lime-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Golf Course Status Monitor"
+          >
+            <FlagIcon4 className="h-4 w-4" />
+            {golfCourseStatusOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-lime-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setWaterParkCapacity({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${waterParkCapacityOpen ? 'bg-cyan-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Water Park Capacity Monitor"
+          >
+            <WavesIcon4 className="h-4 w-4" />
+            {waterParkCapacityOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-400" />}
           </button>
         </div>
       </div>

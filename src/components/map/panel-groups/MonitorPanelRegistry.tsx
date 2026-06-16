@@ -441,6 +441,15 @@ export function MonitorPanelRegistry() {
   const paymentGatewayStatus = useMapStore((s) => s.paymentGatewayStatus)
   const fintechHubActivity = useMapStore((s) => s.fintechHubActivity)
   const goldReserveVault = useMapStore((s) => s.goldReserveVault)
+  // Task 124: Sports & Entertainment Venues
+  const stadiumCrowdMonitor = useMapStore((s) => s.stadiumCrowdMonitor)
+  const arenaEventMonitor = useMapStore((s) => s.arenaEventMonitor)
+  const concertVenueMonitor = useMapStore((s) => s.concertVenueMonitor)
+  const sportLeagueStanding = useMapStore((s) => s.sportLeagueStanding)
+  const olympicVenueMonitor = useMapStore((s) => s.olympicVenueMonitor)
+  const racetrackActivity = useMapStore((s) => s.racetrackActivity)
+  const golfCourseStatus = useMapStore((s) => s.golfCourseStatus)
+  const waterParkCapacity = useMapStore((s) => s.waterParkCapacity)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -1519,6 +1528,31 @@ export function MonitorPanelRegistry() {
       )}
       {goldReserveVault.open && (
         <LazyPanel importFn={() => import('@/components/map/GoldReserveVaultMonitor').then(m => ({ default: m.GoldReserveVaultMonitor }))} exportName="GoldReserveVaultMonitor" shouldLoad={goldReserveVault.open} />
+      )}
+      {/* Task 124: Sports & Entertainment Venues */}
+      {stadiumCrowdMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/StadiumCrowdMonitor').then(m => ({ default: m.StadiumCrowdMonitor }))} exportName="StadiumCrowdMonitor" shouldLoad={stadiumCrowdMonitor.open} />
+      )}
+      {arenaEventMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/ArenaEventMonitor').then(m => ({ default: m.ArenaEventMonitor }))} exportName="ArenaEventMonitor" shouldLoad={arenaEventMonitor.open} />
+      )}
+      {concertVenueMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/ConcertVenueMonitor').then(m => ({ default: m.ConcertVenueMonitor }))} exportName="ConcertVenueMonitor" shouldLoad={concertVenueMonitor.open} />
+      )}
+      {sportLeagueStanding.open && (
+        <LazyPanel importFn={() => import('@/components/map/SportLeagueStandingMonitor').then(m => ({ default: m.SportLeagueStandingMonitor }))} exportName="SportLeagueStandingMonitor" shouldLoad={sportLeagueStanding.open} />
+      )}
+      {olympicVenueMonitor.open && (
+        <LazyPanel importFn={() => import('@/components/map/OlympicVenueMonitor').then(m => ({ default: m.OlympicVenueMonitor }))} exportName="OlympicVenueMonitor" shouldLoad={olympicVenueMonitor.open} />
+      )}
+      {racetrackActivity.open && (
+        <LazyPanel importFn={() => import('@/components/map/RacetrackActivityMonitor').then(m => ({ default: m.RacetrackActivityMonitor }))} exportName="RacetrackActivityMonitor" shouldLoad={racetrackActivity.open} />
+      )}
+      {golfCourseStatus.open && (
+        <LazyPanel importFn={() => import('@/components/map/GolfCourseStatusMonitor').then(m => ({ default: m.GolfCourseStatusMonitor }))} exportName="GolfCourseStatusMonitor" shouldLoad={golfCourseStatus.open} />
+      )}
+      {waterParkCapacity.open && (
+        <LazyPanel importFn={() => import('@/components/map/WaterParkCapacityMonitor').then(m => ({ default: m.WaterParkCapacityMonitor }))} exportName="WaterParkCapacityMonitor" shouldLoad={waterParkCapacity.open} />
       )}
     </>
   )
