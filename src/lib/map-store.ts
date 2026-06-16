@@ -4410,6 +4410,23 @@ interface MapState {
   setSatelliteLaunchSchedule: (state: Partial<MonitorState>) => void
   aviationFuelDepot: MonitorState
   setAviationFuelDepot: (state: Partial<MonitorState>) => void
+  // Task 134: Construction & Infrastructure
+  megaProjectConstruction: MonitorState
+  setMegaProjectConstruction: (state: Partial<MonitorState>) => void
+  bridgeStructuralIntegrity: MonitorState
+  setBridgeStructuralIntegrity: (state: Partial<MonitorState>) => void
+  tunnelVentilationSystem: MonitorState
+  setTunnelVentilationSystem: (state: Partial<MonitorState>) => void
+  skyscraperElevator: MonitorState
+  setSkyscraperElevator: (state: Partial<MonitorState>) => void
+  damConstructionProgress: MonitorState
+  setDamConstructionProgress: (state: Partial<MonitorState>) => void
+  highwayExpansionProject: MonitorState
+  setHighwayExpansionProject: (state: Partial<MonitorState>) => void
+  cementPlantOutput: MonitorState
+  setCementPlantOutput: (state: Partial<MonitorState>) => void
+  craneFleetOperation: MonitorState
+  setCraneFleetOperation: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -8540,6 +8557,15 @@ export const useMapStore = create<MapState>()(
       runwayOccupancy: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       satelliteLaunchSchedule: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       aviationFuelDepot: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 134: Construction & Infrastructure
+      megaProjectConstruction: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      bridgeStructuralIntegrity: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      tunnelVentilationSystem: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      skyscraperElevator: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      damConstructionProgress: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      highwayExpansionProject: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      cementPlantOutput: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      craneFleetOperation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -8674,6 +8700,15 @@ export const useMapStore = create<MapState>()(
       setRunwayOccupancy: (updates) => set((state) => ({ runwayOccupancy: { ...state.runwayOccupancy, ...updates } })),
       setSatelliteLaunchSchedule: (updates) => set((state) => ({ satelliteLaunchSchedule: { ...state.satelliteLaunchSchedule, ...updates } })),
       setAviationFuelDepot: (updates) => set((state) => ({ aviationFuelDepot: { ...state.aviationFuelDepot, ...updates } })),
+      // Task 134: Construction & Infrastructure
+      setMegaProjectConstruction: (updates) => set((state) => ({ megaProjectConstruction: { ...state.megaProjectConstruction, ...updates } })),
+      setBridgeStructuralIntegrity: (updates) => set((state) => ({ bridgeStructuralIntegrity: { ...state.bridgeStructuralIntegrity, ...updates } })),
+      setTunnelVentilationSystem: (updates) => set((state) => ({ tunnelVentilationSystem: { ...state.tunnelVentilationSystem, ...updates } })),
+      setSkyscraperElevator: (updates) => set((state) => ({ skyscraperElevator: { ...state.skyscraperElevator, ...updates } })),
+      setDamConstructionProgress: (updates) => set((state) => ({ damConstructionProgress: { ...state.damConstructionProgress, ...updates } })),
+      setHighwayExpansionProject: (updates) => set((state) => ({ highwayExpansionProject: { ...state.highwayExpansionProject, ...updates } })),
+      setCementPlantOutput: (updates) => set((state) => ({ cementPlantOutput: { ...state.cementPlantOutput, ...updates } })),
+      setCraneFleetOperation: (updates) => set((state) => ({ craneFleetOperation: { ...state.craneFleetOperation, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

@@ -660,6 +660,15 @@ import {
   PlaneLanding as PlaneLandingIcon2,
   SatelliteDish as SatelliteDishIcon,
   Fuel as FuelIcon3,
+  // Task 134 icons - Construction & Infrastructure
+  HardHat as HardHatIcon,
+  Landmark as LandmarkIcon4,
+  Wind as WindIcon20,
+  ArrowUpDown as ArrowUpDownIcon,
+  Droplet as DropletIcon19,
+  TrafficCone as TrafficConeIcon,
+  Factory as FactoryIcon6,
+  Construction as ConstructionIcon3,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -928,6 +937,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const runwayOccupancyOpen = useMapStore((s) => s.runwayOccupancy.open)
   const satelliteLaunchScheduleOpen = useMapStore((s) => s.satelliteLaunchSchedule.open)
   const aviationFuelDepotOpen = useMapStore((s) => s.aviationFuelDepot.open)
+  // Task 134: Construction & Infrastructure
+  const megaProjectConstructionOpen = useMapStore((s) => s.megaProjectConstruction.open)
+  const bridgeStructuralIntegrityOpen = useMapStore((s) => s.bridgeStructuralIntegrity.open)
+  const tunnelVentilationSystemOpen = useMapStore((s) => s.tunnelVentilationSystem.open)
+  const skyscraperElevatorOpen = useMapStore((s) => s.skyscraperElevator.open)
+  const damConstructionProgressOpen = useMapStore((s) => s.damConstructionProgress.open)
+  const highwayExpansionProjectOpen = useMapStore((s) => s.highwayExpansionProject.open)
+  const cementPlantOutputOpen = useMapStore((s) => s.cementPlantOutput.open)
+  const craneFleetOperationOpen = useMapStore((s) => s.craneFleetOperation.open)
 
   if (typeof window === 'undefined') return null
 
@@ -6481,6 +6499,71 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <FuelIcon3 className="h-4 w-4" />
             {aviationFuelDepotOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-400" />}
+          </button>
+          {/* Task 134: Construction & Infrastructure */}
+          <button
+            onClick={() => useMapStore.getState().setMegaProjectConstruction({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${megaProjectConstructionOpen ? 'bg-orange-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Mega Project Construction Monitor"
+          >
+            <HardHatIcon className="h-4 w-4" />
+            {megaProjectConstructionOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBridgeStructuralIntegrity({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${bridgeStructuralIntegrityOpen ? 'bg-cyan-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Bridge Structural Integrity Monitor"
+          >
+            <LandmarkIcon4 className="h-4 w-4" />
+            {bridgeStructuralIntegrityOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setTunnelVentilationSystem({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${tunnelVentilationSystemOpen ? 'bg-stone-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Tunnel Ventilation System Monitor"
+          >
+            <WindIcon20 className="h-4 w-4" />
+            {tunnelVentilationSystemOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-stone-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setSkyscraperElevator({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${skyscraperElevatorOpen ? 'bg-indigo-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Skyscraper Elevator Monitor"
+          >
+            <ArrowUpDownIcon className="h-4 w-4" />
+            {skyscraperElevatorOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-indigo-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setDamConstructionProgress({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${damConstructionProgressOpen ? 'bg-teal-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Dam Construction Progress Monitor"
+          >
+            <DropletIcon19 className="h-4 w-4" />
+            {damConstructionProgressOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setHighwayExpansionProject({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${highwayExpansionProjectOpen ? 'bg-green-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Highway Expansion Project Monitor"
+          >
+            <TrafficConeIcon className="h-4 w-4" />
+            {highwayExpansionProjectOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-green-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCementPlantOutput({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${cementPlantOutputOpen ? 'bg-zinc-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Cement Plant Output Monitor"
+          >
+            <FactoryIcon6 className="h-4 w-4" />
+            {cementPlantOutputOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-zinc-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCraneFleetOperation({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${craneFleetOperationOpen ? 'bg-yellow-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Crane Fleet Operation Monitor"
+          >
+            <ConstructionIcon3 className="h-4 w-4" />
+            {craneFleetOperationOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-yellow-400" />}
           </button>
         </div>
       </div>

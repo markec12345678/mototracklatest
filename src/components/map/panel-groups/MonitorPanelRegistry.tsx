@@ -531,6 +531,15 @@ export function MonitorPanelRegistry() {
   const runwayOccupancy = useMapStore((s) => s.runwayOccupancy)
   const satelliteLaunchSchedule = useMapStore((s) => s.satelliteLaunchSchedule)
   const aviationFuelDepot = useMapStore((s) => s.aviationFuelDepot)
+  // Task 134: Construction & Infrastructure
+  const megaProjectConstruction = useMapStore((s) => s.megaProjectConstruction)
+  const bridgeStructuralIntegrity = useMapStore((s) => s.bridgeStructuralIntegrity)
+  const tunnelVentilationSystem = useMapStore((s) => s.tunnelVentilationSystem)
+  const skyscraperElevator = useMapStore((s) => s.skyscraperElevator)
+  const damConstructionProgress = useMapStore((s) => s.damConstructionProgress)
+  const highwayExpansionProject = useMapStore((s) => s.highwayExpansionProject)
+  const cementPlantOutput = useMapStore((s) => s.cementPlantOutput)
+  const craneFleetOperation = useMapStore((s) => s.craneFleetOperation)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -1859,6 +1868,31 @@ export function MonitorPanelRegistry() {
       )}
       {aviationFuelDepot.open && (
         <LazyPanel importFn={() => import('@/components/map/AviationFuelDepotMonitor')} exportName="AviationFuelDepotMonitor" shouldLoad={aviationFuelDepot.open} />
+      )}
+      {/* Task 134: Construction & Infrastructure */}
+      {megaProjectConstruction.open && (
+        <LazyPanel importFn={() => import('@/components/map/MegaProjectConstructionMonitor')} exportName="MegaProjectConstructionMonitor" shouldLoad={megaProjectConstruction.open} />
+      )}
+      {bridgeStructuralIntegrity.open && (
+        <LazyPanel importFn={() => import('@/components/map/BridgeStructuralIntegrityMonitor')} exportName="BridgeStructuralIntegrityMonitor" shouldLoad={bridgeStructuralIntegrity.open} />
+      )}
+      {tunnelVentilationSystem.open && (
+        <LazyPanel importFn={() => import('@/components/map/TunnelVentilationSystemMonitor')} exportName="TunnelVentilationSystemMonitor" shouldLoad={tunnelVentilationSystem.open} />
+      )}
+      {skyscraperElevator.open && (
+        <LazyPanel importFn={() => import('@/components/map/SkyscraperElevatorMonitor')} exportName="SkyscraperElevatorMonitor" shouldLoad={skyscraperElevator.open} />
+      )}
+      {damConstructionProgress.open && (
+        <LazyPanel importFn={() => import('@/components/map/DamConstructionProgressMonitor')} exportName="DamConstructionProgressMonitor" shouldLoad={damConstructionProgress.open} />
+      )}
+      {highwayExpansionProject.open && (
+        <LazyPanel importFn={() => import('@/components/map/HighwayExpansionProjectMonitor')} exportName="HighwayExpansionProjectMonitor" shouldLoad={highwayExpansionProject.open} />
+      )}
+      {cementPlantOutput.open && (
+        <LazyPanel importFn={() => import('@/components/map/CementPlantOutputMonitor')} exportName="CementPlantOutputMonitor" shouldLoad={cementPlantOutput.open} />
+      )}
+      {craneFleetOperation.open && (
+        <LazyPanel importFn={() => import('@/components/map/CraneFleetOperationMonitor')} exportName="CraneFleetOperationMonitor" shouldLoad={craneFleetOperation.open} />
       )}
     </>
   )
