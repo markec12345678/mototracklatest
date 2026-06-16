@@ -218,6 +218,15 @@ export function MonitorPanelRegistry() {
   const paleoshorelineTracker = useMapStore((s) => s.paleoshorelineTracker)
   const cryoconiteGranule = useMapStore((s) => s.cryoconiteGranule)
   const subglacialWaterSystem = useMapStore((s) => s.subglacialWaterSystem)
+  // Task 98
+  const landslideVelocity = useMapStore((s) => s.landslideVelocity)
+  const debrisFlowSurge = useMapStore((s) => s.debrisFlowSurge)
+  const rockfallImpact = useMapStore((s) => s.rockfallImpact)
+  const soilCreepRate = useMapStore((s) => s.soilCreepRate)
+  const solifluctionLobe = useMapStore((s) => s.solifluctionLobe)
+  const earthflowDisplacement = useMapStore((s) => s.earthflowDisplacement)
+  const slumpFailure = useMapStore((s) => s.slumpFailure)
+  const talusAccumulation = useMapStore((s) => s.talusAccumulation)
 
   return (
     <>
@@ -643,6 +652,31 @@ export function MonitorPanelRegistry() {
       )}
       {subglacialWaterSystem.open && (
         <LazyPanel importFn={() => import('@/components/map/SubglacialWaterSystemMonitor')} exportName="SubglacialWaterSystemMonitor" shouldLoad={true} />
+      )}
+      {/* Task 98: Mass Wasting and Slope Processes */}
+      {landslideVelocity.open && (
+        <LazyPanel importFn={() => import('@/components/map/LandslideVelocityMonitor')} exportName="LandslideVelocityMonitor" shouldLoad={true} />
+      )}
+      {debrisFlowSurge.open && (
+        <LazyPanel importFn={() => import('@/components/map/DebrisFlowSurgeMonitor')} exportName="DebrisFlowSurgeMonitor" shouldLoad={true} />
+      )}
+      {rockfallImpact.open && (
+        <LazyPanel importFn={() => import('@/components/map/RockfallImpactMonitor')} exportName="RockfallImpactMonitor" shouldLoad={true} />
+      )}
+      {soilCreepRate.open && (
+        <LazyPanel importFn={() => import('@/components/map/SoilCreepRateMonitor')} exportName="SoilCreepRateMonitor" shouldLoad={true} />
+      )}
+      {solifluctionLobe.open && (
+        <LazyPanel importFn={() => import('@/components/map/SolifluctionLobeMonitor')} exportName="SolifluctionLobeMonitor" shouldLoad={true} />
+      )}
+      {earthflowDisplacement.open && (
+        <LazyPanel importFn={() => import('@/components/map/EarthflowDisplacementMonitor')} exportName="EarthflowDisplacementMonitor" shouldLoad={true} />
+      )}
+      {slumpFailure.open && (
+        <LazyPanel importFn={() => import('@/components/map/SlumpFailureMonitor')} exportName="SlumpFailureMonitor" shouldLoad={true} />
+      )}
+      {talusAccumulation.open && (
+        <LazyPanel importFn={() => import('@/components/map/TalusAccumulationMonitor')} exportName="TalusAccumulationMonitor" shouldLoad={true} />
       )}
     </>
   )

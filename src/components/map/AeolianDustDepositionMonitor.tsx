@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useMapStore, type AeolianDustDepositionState, type AeolianDustDepositionData } from '@/lib/map-store'
-import { Wind as WindIcon12, X, CloudDown, CircleDot, Route, MapPin, Filter } from 'lucide-react'
+import { Wind as WindIcon12, X, CloudDownload as CloudDown, CircleDot, Route, MapPin, Filter } from 'lucide-react'
 
 const SAMPLE_LOCATIONS: AeolianDustDepositionData[] = [
   {

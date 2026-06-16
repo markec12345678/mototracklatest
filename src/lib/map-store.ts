@@ -8699,6 +8699,24 @@ interface MapState {
   subglacialWaterSystem: SubglacialWaterSystemState
   setSubglacialWaterSystem: (state: Partial<SubglacialWaterSystemState>) => void
 
+  // Task 98: Mass Wasting and Slope Processes
+  landslideVelocity: LandslideVelocityState
+  setLandslideVelocity: (state: Partial<LandslideVelocityState>) => void
+  debrisFlowSurge: DebrisFlowSurgeState
+  setDebrisFlowSurge: (state: Partial<DebrisFlowSurgeState>) => void
+  rockfallImpact: RockfallImpactState
+  setRockfallImpact: (state: Partial<RockfallImpactState>) => void
+  soilCreepRate: SoilCreepRateState
+  setSoilCreepRate: (state: Partial<SoilCreepRateState>) => void
+  solifluctionLobe: SolifluctionLobeState
+  setSolifluctionLobe: (state: Partial<SolifluctionLobeState>) => void
+  earthflowDisplacement: EarthflowDisplacementState
+  setEarthflowDisplacement: (state: Partial<EarthflowDisplacementState>) => void
+  slumpFailure: SlumpFailureState
+  setSlumpFailure: (state: Partial<SlumpFailureState>) => void
+  talusAccumulation: TalusAccumulationState
+  setTalusAccumulation: (state: Partial<TalusAccumulationState>) => void
+
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
   setAddLocationDialogOpen: (open: boolean) => void
@@ -10503,6 +10521,183 @@ export interface SubglacialWaterSystemState {
   showWaterPressure: boolean
   showFlowRate: boolean
   showChannelDiameter: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 98: Mass Wasting and Slope Processes
+export interface LandslideVelocityData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  velocity: number        // mm/day
+  displacement: number    // mm total
+  depth: number           // m (slide surface depth)
+  status: 'active' | 'slow' | 'dormant' | 'accelerating'
+  description: string
+}
+
+export interface LandslideVelocityState {
+  open: boolean
+  data: LandslideVelocityData[]
+  showVelocity: boolean
+  showDisplacement: boolean
+  showDepth: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface DebrisFlowSurgeData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  surgeVolume: number     // m³
+  flowVelocity: number    // m/s
+  sedimentConcentration: number // %
+  status: 'surging' | 'flowing' | 'waning' | 'deposited'
+  description: string
+}
+
+export interface DebrisFlowSurgeState {
+  open: boolean
+  data: DebrisFlowSurgeData[]
+  showSurgeVolume: boolean
+  showFlowVelocity: boolean
+  showSedimentConcentration: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface RockfallImpactData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  impactEnergy: number    // kJ
+  blockVolume: number     // m³
+  frequency: number       // events/month
+  status: 'frequent' | 'moderate' | 'rare' | 'stable'
+  description: string
+}
+
+export interface RockfallImpactState {
+  open: boolean
+  data: RockfallImpactData[]
+  showImpactEnergy: boolean
+  showBlockVolume: boolean
+  showFrequency: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface SoilCreepRateData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  creepRate: number       // mm/year
+  soilMoisture: number    // %
+  slopeAngle: number      // degrees
+  status: 'rapid' | 'moderate' | 'slow' | 'negligible'
+  description: string
+}
+
+export interface SoilCreepRateState {
+  open: boolean
+  data: SoilCreepRateData[]
+  showCreepRate: boolean
+  showSoilMoisture: boolean
+  showSlopeAngle: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface SolifluctionLobeData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  lobeVelocity: number    // cm/year
+  lobeWidth: number       // m
+  activeLayerDepth: number // cm
+  status: 'active' | 'paused' | 'seasonal' | 'stable'
+  description: string
+}
+
+export interface SolifluctionLobeState {
+  open: boolean
+  data: SolifluctionLobeData[]
+  showLobeVelocity: boolean
+  showLobeWidth: boolean
+  showActiveLayerDepth: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface EarthflowDisplacementData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  displacement: number    // cm
+  flowRate: number        // cm/day
+  moistureContent: number // %
+  status: 'rapid' | 'moderate' | 'slow' | 'stabilized'
+  description: string
+}
+
+export interface EarthflowDisplacementState {
+  open: boolean
+  data: EarthflowDisplacementData[]
+  showDisplacement: boolean
+  showFlowRate: boolean
+  showMoistureContent: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface SlumpFailureData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  scarpHeight: number     // m
+  rotationAngle: number   // degrees
+  porePressure: number    // kPa
+  status: 'failing' | 'creeping' | 'remodeling' | 'stabilized'
+  description: string
+}
+
+export interface SlumpFailureState {
+  open: boolean
+  data: SlumpFailureData[]
+  showScarpHeight: boolean
+  showRotationAngle: boolean
+  showPorePressure: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface TalusAccumulationData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  accumulationRate: number // cm/year
+  talusVolume: number      // m³
+  slopeAngle: number       // degrees
+  status: 'accumulating' | 'redistributing' | 'weathering' | 'stable'
+  description: string
+}
+
+export interface TalusAccumulationState {
+  open: boolean
+  data: TalusAccumulationData[]
+  showAccumulationRate: boolean
+  showTalusVolume: boolean
+  showSlopeAngle: boolean
   statusFilter: string
   activeItemId: string | null
 }
@@ -15429,6 +15624,40 @@ export const useMapStore = create<MapState>()(
       },
       setSubglacialWaterSystem: (updates) => set((state) => ({ subglacialWaterSystem: { ...state.subglacialWaterSystem, ...updates } })),
 
+      // Task 98: Mass Wasting and Slope Processes
+      landslideVelocity: {
+        data: [], activeItemId: null, showVelocity: true, showDisplacement: true, showDepth: false, open: false, statusFilter: '',
+      },
+      setLandslideVelocity: (updates) => set((state) => ({ landslideVelocity: { ...state.landslideVelocity, ...updates } })),
+      debrisFlowSurge: {
+        data: [], activeItemId: null, showSurgeVolume: true, showFlowVelocity: true, showSedimentConcentration: false, open: false, statusFilter: '',
+      },
+      setDebrisFlowSurge: (updates) => set((state) => ({ debrisFlowSurge: { ...state.debrisFlowSurge, ...updates } })),
+      rockfallImpact: {
+        data: [], activeItemId: null, showImpactEnergy: true, showBlockVolume: true, showFrequency: false, open: false, statusFilter: '',
+      },
+      setRockfallImpact: (updates) => set((state) => ({ rockfallImpact: { ...state.rockfallImpact, ...updates } })),
+      soilCreepRate: {
+        data: [], activeItemId: null, showCreepRate: true, showSoilMoisture: true, showSlopeAngle: false, open: false, statusFilter: '',
+      },
+      setSoilCreepRate: (updates) => set((state) => ({ soilCreepRate: { ...state.soilCreepRate, ...updates } })),
+      solifluctionLobe: {
+        data: [], activeItemId: null, showLobeVelocity: true, showLobeWidth: true, showActiveLayerDepth: false, open: false, statusFilter: '',
+      },
+      setSolifluctionLobe: (updates) => set((state) => ({ solifluctionLobe: { ...state.solifluctionLobe, ...updates } })),
+      earthflowDisplacement: {
+        data: [], activeItemId: null, showDisplacement: true, showFlowRate: true, showMoistureContent: false, open: false, statusFilter: '',
+      },
+      setEarthflowDisplacement: (updates) => set((state) => ({ earthflowDisplacement: { ...state.earthflowDisplacement, ...updates } })),
+      slumpFailure: {
+        data: [], activeItemId: null, showScarpHeight: true, showRotationAngle: true, showPorePressure: false, open: false, statusFilter: '',
+      },
+      setSlumpFailure: (updates) => set((state) => ({ slumpFailure: { ...state.slumpFailure, ...updates } })),
+      talusAccumulation: {
+        data: [], activeItemId: null, showAccumulationRate: true, showTalusVolume: true, showSlopeAngle: false, open: false, statusFilter: '',
+      },
+      setTalusAccumulation: (updates) => set((state) => ({ talusAccumulation: { ...state.talusAccumulation, ...updates } })),
+
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
       setAddLocationDialogOpen: (open) => set({ addLocationDialogOpen: open }),
@@ -15911,6 +16140,15 @@ export const useMapStore = create<MapState>()(
         paleoshorelineTracker: state.paleoshorelineTracker,
         cryoconiteGranule: state.cryoconiteGranule,
         subglacialWaterSystem: state.subglacialWaterSystem,
+        // Task 98
+        landslideVelocity: state.landslideVelocity,
+        debrisFlowSurge: state.debrisFlowSurge,
+        rockfallImpact: state.rockfallImpact,
+        soilCreepRate: state.soilCreepRate,
+        solifluctionLobe: state.solifluctionLobe,
+        earthflowDisplacement: state.earthflowDisplacement,
+        slumpFailure: state.slumpFailure,
+        talusAccumulation: state.talusAccumulation,
       }),
     }
   )

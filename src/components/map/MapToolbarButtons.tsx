@@ -338,6 +338,15 @@ import {
   MapPinned as MapPinnedIcon2,
   CircleDot as CircleDotIcon3,
   Droplets as DropletsIcon15,
+  // Task 98 icons
+  TriangleAlert as TriangleAlertIcon5,
+  Waves as WavesIcon19,
+  Mountain as MountainIcon14,
+  ArrowDown as ArrowDownIcon5,
+  Snowflake as SnowflakeIcon13,
+  TrendingDown as TrendingDownIcon4,
+  AlertTriangle as AlertTriangleIcon3,
+  Layers as LayersIcon7,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -2559,6 +2568,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setPaleoshorelineTracker({ open: true })} title="Paleoshoreline Tracker" aria-label="Open paleoshoreline tracker"><MapPinnedIcon2 className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setCryoconiteGranule({ open: true })} title="Cryoconite Granule" aria-label="Open cryoconite granule monitor"><CircleDotIcon3 className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setSubglacialWaterSystem({ open: true })} title="Subglacial Water System" aria-label="Open subglacial water system monitor"><DropletsIcon15 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setLandslideVelocity({ open: true })} title="Landslide Velocity" aria-label="Open landslide velocity monitor"><TriangleAlertIcon5 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setDebrisFlowSurge({ open: true })} title="Debris Flow Surge" aria-label="Open debris flow surge monitor"><WavesIcon19 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setRockfallImpact({ open: true })} title="Rockfall Impact" aria-label="Open rockfall impact monitor"><MountainIcon14 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setSoilCreepRate({ open: true })} title="Soil Creep Rate" aria-label="Open soil creep rate monitor"><ArrowDownIcon5 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setSolifluctionLobe({ open: true })} title="Solifluction Lobe" aria-label="Open solifluction lobe monitor"><SnowflakeIcon13 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setEarthflowDisplacement({ open: true })} title="Earthflow Displacement" aria-label="Open earthflow displacement monitor"><TrendingDownIcon4 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setSlumpFailure({ open: true })} title="Slump Failure" aria-label="Open slump failure monitor"><AlertTriangleIcon3 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setTalusAccumulation({ open: true })} title="Talus Accumulation" aria-label="Open talus accumulation monitor"><LayersIcon7 className="h-4 w-4" /></Button>
           <Button
             variant="outline"
             size="icon"
