@@ -236,6 +236,15 @@ export function MonitorPanelRegistry() {
   const beachNourishment = useMapStore((s) => s.beachNourishment)
   const coastalArmor = useMapStore((s) => s.coastalArmor)
   const shorelineRetreat = useMapStore((s) => s.shorelineRetreat)
+  // Task 100
+  const soilOrganicCarbon = useMapStore((s) => s.soilOrganicCarbon)
+  const cationExchange = useMapStore((s) => s.cationExchange)
+  const soilPhosphorus = useMapStore((s) => s.soilPhosphorus)
+  const soilCompaction = useMapStore((s) => s.soilCompaction)
+  const clayMineral = useMapStore((s) => s.clayMineral)
+  const podzolProfile = useMapStore((s) => s.podzolProfile)
+  const gleyRedox = useMapStore((s) => s.gleyRedox)
+  const calcicHorizon = useMapStore((s) => s.calcicHorizon)
 
   return (
     <>
@@ -711,6 +720,31 @@ export function MonitorPanelRegistry() {
       )}
       {shorelineRetreat.open && (
         <LazyPanel importFn={() => import('@/components/map/ShorelineRetreatMonitor')} exportName="ShorelineRetreatMonitor" shouldLoad={true} />
+      )}
+      {/* Task 100: Soil Science and Pedology */}
+      {soilOrganicCarbon.open && (
+        <LazyPanel importFn={() => import('@/components/map/SoilOrganicCarbonMonitor')} exportName="SoilOrganicCarbonMonitor" shouldLoad={true} />
+      )}
+      {cationExchange.open && (
+        <LazyPanel importFn={() => import('@/components/map/CationExchangeMonitor')} exportName="CationExchangeMonitor" shouldLoad={true} />
+      )}
+      {soilPhosphorus.open && (
+        <LazyPanel importFn={() => import('@/components/map/SoilPhosphorusMonitor')} exportName="SoilPhosphorusMonitor" shouldLoad={true} />
+      )}
+      {soilCompaction.open && (
+        <LazyPanel importFn={() => import('@/components/map/SoilCompactionMonitor')} exportName="SoilCompactionMonitor" shouldLoad={true} />
+      )}
+      {clayMineral.open && (
+        <LazyPanel importFn={() => import('@/components/map/ClayMineralMonitor')} exportName="ClayMineralMonitor" shouldLoad={true} />
+      )}
+      {podzolProfile.open && (
+        <LazyPanel importFn={() => import('@/components/map/PodzolProfileMonitor')} exportName="PodzolProfileMonitor" shouldLoad={true} />
+      )}
+      {gleyRedox.open && (
+        <LazyPanel importFn={() => import('@/components/map/GleyRedoxMonitor')} exportName="GleyRedoxMonitor" shouldLoad={true} />
+      )}
+      {calcicHorizon.open && (
+        <LazyPanel importFn={() => import('@/components/map/CalcicHorizonMonitor')} exportName="CalcicHorizonMonitor" shouldLoad={true} />
       )}
     </>
   )

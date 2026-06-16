@@ -8735,6 +8735,24 @@ interface MapState {
   shorelineRetreat: ShorelineRetreatState
   setShorelineRetreat: (state: Partial<ShorelineRetreatState>) => void
 
+  // Task 100: Soil Science and Pedology
+  soilOrganicCarbon: SoilOrganicCarbonState
+  setSoilOrganicCarbon: (state: Partial<SoilOrganicCarbonState>) => void
+  cationExchange: CationExchangeState
+  setCationExchange: (state: Partial<CationExchangeState>) => void
+  soilPhosphorus: SoilPhosphorusState
+  setSoilPhosphorus: (state: Partial<SoilPhosphorusState>) => void
+  soilCompaction: SoilCompactionState
+  setSoilCompaction: (state: Partial<SoilCompactionState>) => void
+  clayMineral: ClayMineralState
+  setClayMineral: (state: Partial<ClayMineralState>) => void
+  podzolProfile: PodzolProfileState
+  setPodzolProfile: (state: Partial<PodzolProfileState>) => void
+  gleyRedox: GleyRedoxState
+  setGleyRedox: (state: Partial<GleyRedoxState>) => void
+  calcicHorizon: CalcicHorizonState
+  setCalcicHorizon: (state: Partial<CalcicHorizonState>) => void
+
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
   setAddLocationDialogOpen: (open: boolean) => void
@@ -10893,6 +10911,183 @@ export interface ShorelineRetreatState {
   showRetreatRate: boolean
   showCliffHeight: boolean
   showWaveEnergy: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 100: Soil Science and Pedology
+export interface SoilOrganicCarbonData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  carbonContent: number   // g/kg
+  bulkDensity: number     // g/cm³
+  decompositionRate: number // mg CO2/kg/day
+  status: 'rich' | 'moderate' | 'depleted' | 'critical'
+  description: string
+}
+
+export interface SoilOrganicCarbonState {
+  open: boolean
+  data: SoilOrganicCarbonData[]
+  showCarbonContent: boolean
+  showBulkDensity: boolean
+  showDecompositionRate: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface CationExchangeData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  cec: number              // cmol/kg
+  baseSaturation: number   // %
+  phLevel: number
+  status: 'fertile' | 'adequate' | 'low' | 'degraded'
+  description: string
+}
+
+export interface CationExchangeState {
+  open: boolean
+  data: CationExchangeData[]
+  showCec: boolean
+  showBaseSaturation: boolean
+  showPhLevel: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface SoilPhosphorusData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  availableP: number      // mg/kg
+  totalP: number          // mg/kg
+  retentionCapacity: number // %
+  status: 'optimal' | 'adequate' | 'deficient' | 'locked'
+  description: string
+}
+
+export interface SoilPhosphorusState {
+  open: boolean
+  data: SoilPhosphorusData[]
+  showAvailableP: boolean
+  showTotalP: boolean
+  showRetentionCapacity: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface SoilCompactionData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  penetrationResistance: number // MPa
+  bulkDensity: number           // g/cm³
+  porosity: number              // %
+  status: 'severe' | 'moderate' | 'slight' | 'loose'
+  description: string
+}
+
+export interface SoilCompactionState {
+  open: boolean
+  data: SoilCompactionData[]
+  showPenetrationResistance: boolean
+  showBulkDensity: boolean
+  showPorosity: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface ClayMineralData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  swellPotential: number  // %
+  plasticityIndex: number
+  shrinkageLimit: number  // %
+  status: 'expansive' | 'moderate' | 'low' | 'stable'
+  description: string
+}
+
+export interface ClayMineralState {
+  open: boolean
+  data: ClayMineralData[]
+  showSwellPotential: boolean
+  showPlasticityIndex: boolean
+  showShrinkageLimit: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface PodzolProfileData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  eluviationDepth: number // cm
+  illuviationDepth: number // cm
+  organicLayer: number    // cm
+  status: 'active' | 'developing' | 'degraded' | 'buried'
+  description: string
+}
+
+export interface PodzolProfileState {
+  open: boolean
+  data: PodzolProfileData[]
+  showEluviationDepth: boolean
+  showIlluviationDepth: boolean
+  showOrganicLayer: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface GleyRedoxData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  redoxPotential: number  // mV
+  waterTableDepth: number // cm
+  ironReduction: number   // %
+  status: 'reduced' | 'transitional' | 'oxidized' | 'fluctuating'
+  description: string
+}
+
+export interface GleyRedoxState {
+  open: boolean
+  data: GleyRedoxData[]
+  showRedoxPotential: boolean
+  showWaterTableDepth: boolean
+  showIronReduction: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface CalcicHorizonData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  caco3Content: number    // %
+  horizonDepth: number    // cm
+  noduleDensity: number   // per m²
+  status: 'indurated' | 'cemented' | 'developing' | 'incipient'
+  description: string
+}
+
+export interface CalcicHorizonState {
+  open: boolean
+  data: CalcicHorizonData[]
+  showCaco3Content: boolean
+  showHorizonDepth: boolean
+  showNoduleDensity: boolean
   statusFilter: string
   activeItemId: string | null
 }
@@ -15887,6 +16082,40 @@ export const useMapStore = create<MapState>()(
       },
       setShorelineRetreat: (updates) => set((state) => ({ shorelineRetreat: { ...state.shorelineRetreat, ...updates } })),
 
+      // Task 100: Soil Science and Pedology
+      soilOrganicCarbon: {
+        data: [], activeItemId: null, showCarbonContent: true, showBulkDensity: true, showDecompositionRate: false, open: false, statusFilter: '',
+      },
+      setSoilOrganicCarbon: (updates) => set((state) => ({ soilOrganicCarbon: { ...state.soilOrganicCarbon, ...updates } })),
+      cationExchange: {
+        data: [], activeItemId: null, showCec: true, showBaseSaturation: true, showPhLevel: false, open: false, statusFilter: '',
+      },
+      setCationExchange: (updates) => set((state) => ({ cationExchange: { ...state.cationExchange, ...updates } })),
+      soilPhosphorus: {
+        data: [], activeItemId: null, showAvailableP: true, showTotalP: true, showRetentionCapacity: false, open: false, statusFilter: '',
+      },
+      setSoilPhosphorus: (updates) => set((state) => ({ soilPhosphorus: { ...state.soilPhosphorus, ...updates } })),
+      soilCompaction: {
+        data: [], activeItemId: null, showPenetrationResistance: true, showBulkDensity: true, showPorosity: false, open: false, statusFilter: '',
+      },
+      setSoilCompaction: (updates) => set((state) => ({ soilCompaction: { ...state.soilCompaction, ...updates } })),
+      clayMineral: {
+        data: [], activeItemId: null, showSwellPotential: true, showPlasticityIndex: true, showShrinkageLimit: false, open: false, statusFilter: '',
+      },
+      setClayMineral: (updates) => set((state) => ({ clayMineral: { ...state.clayMineral, ...updates } })),
+      podzolProfile: {
+        data: [], activeItemId: null, showEluviationDepth: true, showIlluviationDepth: true, showOrganicLayer: false, open: false, statusFilter: '',
+      },
+      setPodzolProfile: (updates) => set((state) => ({ podzolProfile: { ...state.podzolProfile, ...updates } })),
+      gleyRedox: {
+        data: [], activeItemId: null, showRedoxPotential: true, showWaterTableDepth: true, showIronReduction: false, open: false, statusFilter: '',
+      },
+      setGleyRedox: (updates) => set((state) => ({ gleyRedox: { ...state.gleyRedox, ...updates } })),
+      calcicHorizon: {
+        data: [], activeItemId: null, showCaco3Content: true, showHorizonDepth: true, showNoduleDensity: false, open: false, statusFilter: '',
+      },
+      setCalcicHorizon: (updates) => set((state) => ({ calcicHorizon: { ...state.calcicHorizon, ...updates } })),
+
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
       setAddLocationDialogOpen: (open) => set({ addLocationDialogOpen: open }),
@@ -16360,6 +16589,15 @@ export const useMapStore = create<MapState>()(
         beachNourishment: state.beachNourishment,
         coastalArmor: state.coastalArmor,
         shorelineRetreat: state.shorelineRetreat,
+        // Task 100
+        soilOrganicCarbon: state.soilOrganicCarbon,
+        cationExchange: state.cationExchange,
+        soilPhosphorus: state.soilPhosphorus,
+        soilCompaction: state.soilCompaction,
+        clayMineral: state.clayMineral,
+        podzolProfile: state.podzolProfile,
+        gleyRedox: state.gleyRedox,
+        calcicHorizon: state.calcicHorizon,
         // Task 96
         karstSpringDischarge: state.karstSpringDischarge,
         caveDripMonitor: state.caveDripMonitor,

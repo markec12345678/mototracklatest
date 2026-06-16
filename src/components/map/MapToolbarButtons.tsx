@@ -356,6 +356,15 @@ import {
   Sun as SunIcon9,
   ShieldCheck as ShieldCheckIcon,
   Map as MapIcon3,
+  // Task 100 icons
+  Leaf as LeafIcon8,
+  FlaskConical as FlaskConicalIcon2,
+  Droplets as DropletsIcon16,
+  Box as BoxIcon2,
+  Gem as GemIcon4,
+  Layers as LayersIcon8,
+  Droplet as DropletIcon11,
+  Mountain as MountainIcon15,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -2593,6 +2602,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setBeachNourishment({ open: true })} title="Beach Nourishment" aria-label="Open beach nourishment monitor"><SunIcon9 className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setCoastalArmor({ open: true })} title="Coastal Armor" aria-label="Open coastal armor monitor"><ShieldCheckIcon className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setShorelineRetreat({ open: true })} title="Shoreline Retreat" aria-label="Open shoreline retreat monitor"><MapIcon3 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setSoilOrganicCarbon({ open: true })} title="Soil Organic Carbon" aria-label="Open soil organic carbon monitor"><LeafIcon8 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setCationExchange({ open: true })} title="Cation Exchange" aria-label="Open cation exchange monitor"><FlaskConicalIcon2 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setSoilPhosphorus({ open: true })} title="Soil Phosphorus" aria-label="Open soil phosphorus monitor"><DropletsIcon16 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setSoilCompaction({ open: true })} title="Soil Compaction" aria-label="Open soil compaction monitor"><BoxIcon2 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setClayMineral({ open: true })} title="Clay Mineral" aria-label="Open clay mineral monitor"><GemIcon4 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setPodzolProfile({ open: true })} title="Podzol Profile" aria-label="Open podzol profile monitor"><LayersIcon8 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setGleyRedox({ open: true })} title="Gley Redox" aria-label="Open gley redox monitor"><DropletIcon11 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setCalcicHorizon({ open: true })} title="Calcic Horizon" aria-label="Open calcic Horizon monitor"><MountainIcon15 className="h-4 w-4" /></Button>
           <Button
             variant="outline"
             size="icon"
