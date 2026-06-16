@@ -522,6 +522,15 @@ export function MonitorPanelRegistry() {
   const coastalPilotService = useMapStore((s) => s.coastalPilotService)
   const shipbreakingYard = useMapStore((s) => s.shipbreakingYard)
   const maritimeFuelBunker = useMapStore((s) => s.maritimeFuelBunker)
+  // Task 133: Aviation & Aerospace
+  const airTrafficControl = useMapStore((s) => s.airTrafficControl)
+  const spaceportLaunchSite = useMapStore((s) => s.spaceportLaunchSite)
+  const weatherRadarStation = useMapStore((s) => s.weatherRadarStation)
+  const flightRouteCongestion = useMapStore((s) => s.flightRouteCongestion)
+  const aircraftHangarFacility = useMapStore((s) => s.aircraftHangarFacility)
+  const runwayOccupancy = useMapStore((s) => s.runwayOccupancy)
+  const satelliteLaunchSchedule = useMapStore((s) => s.satelliteLaunchSchedule)
+  const aviationFuelDepot = useMapStore((s) => s.aviationFuelDepot)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -1825,6 +1834,31 @@ export function MonitorPanelRegistry() {
       )}
       {maritimeFuelBunker.open && (
         <LazyPanel importFn={() => import('@/components/map/MaritimeFuelBunkerMonitor')} exportName="MaritimeFuelBunkerMonitor" shouldLoad={maritimeFuelBunker.open} />
+      )}
+      {/* Task 133: Aviation & Aerospace */}
+      {airTrafficControl.open && (
+        <LazyPanel importFn={() => import('@/components/map/AirTrafficControlMonitor')} exportName="AirTrafficControlMonitor" shouldLoad={airTrafficControl.open} />
+      )}
+      {spaceportLaunchSite.open && (
+        <LazyPanel importFn={() => import('@/components/map/SpaceportLaunchSiteMonitor')} exportName="SpaceportLaunchSiteMonitor" shouldLoad={spaceportLaunchSite.open} />
+      )}
+      {weatherRadarStation.open && (
+        <LazyPanel importFn={() => import('@/components/map/WeatherRadarStationMonitor')} exportName="WeatherRadarStationMonitor" shouldLoad={weatherRadarStation.open} />
+      )}
+      {flightRouteCongestion.open && (
+        <LazyPanel importFn={() => import('@/components/map/FlightRouteCongestionMonitor')} exportName="FlightRouteCongestionMonitor" shouldLoad={flightRouteCongestion.open} />
+      )}
+      {aircraftHangarFacility.open && (
+        <LazyPanel importFn={() => import('@/components/map/AircraftHangarFacilityMonitor')} exportName="AircraftHangarFacilityMonitor" shouldLoad={aircraftHangarFacility.open} />
+      )}
+      {runwayOccupancy.open && (
+        <LazyPanel importFn={() => import('@/components/map/RunwayOccupancyMonitor')} exportName="RunwayOccupancyMonitor" shouldLoad={runwayOccupancy.open} />
+      )}
+      {satelliteLaunchSchedule.open && (
+        <LazyPanel importFn={() => import('@/components/map/SatelliteLaunchScheduleMonitor')} exportName="SatelliteLaunchScheduleMonitor" shouldLoad={satelliteLaunchSchedule.open} />
+      )}
+      {aviationFuelDepot.open && (
+        <LazyPanel importFn={() => import('@/components/map/AviationFuelDepotMonitor')} exportName="AviationFuelDepotMonitor" shouldLoad={aviationFuelDepot.open} />
       )}
     </>
   )

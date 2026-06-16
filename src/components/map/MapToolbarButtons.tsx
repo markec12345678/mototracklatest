@@ -651,6 +651,15 @@ import {
   Compass as CompassIcon6,
   Recycle as RecycleIcon,
   Fuel as FuelIcon2,
+  // Task 133 icons - Aviation & Aerospace
+  PlaneTakeoff as PlaneTakeoffIcon,
+  Rocket as RocketIcon2,
+  CloudRain as CloudRainIcon10,
+  Plane as PlaneIcon2,
+  Building as BuildingIcon4,
+  PlaneLanding as PlaneLandingIcon2,
+  SatelliteDish as SatelliteDishIcon,
+  Fuel as FuelIcon3,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -910,6 +919,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const coastalPilotServiceOpen = useMapStore((s) => s.coastalPilotService.open)
   const shipbreakingYardOpen = useMapStore((s) => s.shipbreakingYard.open)
   const maritimeFuelBunkerOpen = useMapStore((s) => s.maritimeFuelBunker.open)
+  // Task 133: Aviation & Aerospace
+  const airTrafficControlOpen = useMapStore((s) => s.airTrafficControl.open)
+  const spaceportLaunchSiteOpen = useMapStore((s) => s.spaceportLaunchSite.open)
+  const weatherRadarStationOpen = useMapStore((s) => s.weatherRadarStation.open)
+  const flightRouteCongestionOpen = useMapStore((s) => s.flightRouteCongestion.open)
+  const aircraftHangarFacilityOpen = useMapStore((s) => s.aircraftHangarFacility.open)
+  const runwayOccupancyOpen = useMapStore((s) => s.runwayOccupancy.open)
+  const satelliteLaunchScheduleOpen = useMapStore((s) => s.satelliteLaunchSchedule.open)
+  const aviationFuelDepotOpen = useMapStore((s) => s.aviationFuelDepot.open)
 
   if (typeof window === 'undefined') return null
 
@@ -6398,6 +6416,71 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <FuelIcon2 className="h-4 w-4" />
             {maritimeFuelBunkerOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-400" />}
+          </button>
+          {/* Task 133: Aviation & Aerospace */}
+          <button
+            onClick={() => useMapStore.getState().setAirTrafficControl({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${airTrafficControlOpen ? 'bg-sky-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Air Traffic Control Monitor"
+          >
+            <PlaneTakeoffIcon className="h-4 w-4" />
+            {airTrafficControlOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-sky-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setSpaceportLaunchSite({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${spaceportLaunchSiteOpen ? 'bg-violet-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Spaceport Launch Site Monitor"
+          >
+            <RocketIcon2 className="h-4 w-4" />
+            {spaceportLaunchSiteOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-violet-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setWeatherRadarStation({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${weatherRadarStationOpen ? 'bg-cyan-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Weather Radar Station Monitor"
+          >
+            <CloudRainIcon2 className="h-4 w-4" />
+            {weatherRadarStationOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setFlightRouteCongestion({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${flightRouteCongestionOpen ? 'bg-amber-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Flight Route Congestion Monitor"
+          >
+            <PlaneIcon2 className="h-4 w-4" />
+            {flightRouteCongestionOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setAircraftHangarFacility({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${aircraftHangarFacilityOpen ? 'bg-slate-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Aircraft Hangar Facility Monitor"
+          >
+            <BuildingIcon4 className="h-4 w-4" />
+            {aircraftHangarFacilityOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-slate-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setRunwayOccupancy({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${runwayOccupancyOpen ? 'bg-emerald-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Runway Occupancy Monitor"
+          >
+            <PlaneLandingIcon2 className="h-4 w-4" />
+            {runwayOccupancyOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setSatelliteLaunchSchedule({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${satelliteLaunchScheduleOpen ? 'bg-fuchsia-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Satellite Launch Schedule Monitor"
+          >
+            <SatelliteDishIcon className="h-4 w-4" />
+            {satelliteLaunchScheduleOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-fuchsia-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setAviationFuelDepot({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${aviationFuelDepotOpen ? 'bg-rose-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Aviation Fuel Depot Monitor"
+          >
+            <FuelIcon3 className="h-4 w-4" />
+            {aviationFuelDepotOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-400" />}
           </button>
         </div>
       </div>

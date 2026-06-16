@@ -4393,6 +4393,23 @@ interface MapState {
   setShipbreakingYard: (state: Partial<MonitorState>) => void
   maritimeFuelBunker: MonitorState
   setMaritimeFuelBunker: (state: Partial<MonitorState>) => void
+  // Task 133: Aviation & Aerospace
+  airTrafficControl: MonitorState
+  setAirTrafficControl: (state: Partial<MonitorState>) => void
+  spaceportLaunchSite: MonitorState
+  setSpaceportLaunchSite: (state: Partial<MonitorState>) => void
+  weatherRadarStation: MonitorState
+  setWeatherRadarStation: (state: Partial<MonitorState>) => void
+  flightRouteCongestion: MonitorState
+  setFlightRouteCongestion: (state: Partial<MonitorState>) => void
+  aircraftHangarFacility: MonitorState
+  setAircraftHangarFacility: (state: Partial<MonitorState>) => void
+  runwayOccupancy: MonitorState
+  setRunwayOccupancy: (state: Partial<MonitorState>) => void
+  satelliteLaunchSchedule: MonitorState
+  setSatelliteLaunchSchedule: (state: Partial<MonitorState>) => void
+  aviationFuelDepot: MonitorState
+  setAviationFuelDepot: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -8514,6 +8531,15 @@ export const useMapStore = create<MapState>()(
       coastalPilotService: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       shipbreakingYard: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       maritimeFuelBunker: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 133: Aviation & Aerospace
+      airTrafficControl: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      spaceportLaunchSite: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      weatherRadarStation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      flightRouteCongestion: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      aircraftHangarFacility: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      runwayOccupancy: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      satelliteLaunchSchedule: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      aviationFuelDepot: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -8639,6 +8665,15 @@ export const useMapStore = create<MapState>()(
       setCoastalPilotService: (updates) => set((state) => ({ coastalPilotService: { ...state.coastalPilotService, ...updates } })),
       setShipbreakingYard: (updates) => set((state) => ({ shipbreakingYard: { ...state.shipbreakingYard, ...updates } })),
       setMaritimeFuelBunker: (updates) => set((state) => ({ maritimeFuelBunker: { ...state.maritimeFuelBunker, ...updates } })),
+      // Task 133: Aviation & Aerospace
+      setAirTrafficControl: (updates) => set((state) => ({ airTrafficControl: { ...state.airTrafficControl, ...updates } })),
+      setSpaceportLaunchSite: (updates) => set((state) => ({ spaceportLaunchSite: { ...state.spaceportLaunchSite, ...updates } })),
+      setWeatherRadarStation: (updates) => set((state) => ({ weatherRadarStation: { ...state.weatherRadarStation, ...updates } })),
+      setFlightRouteCongestion: (updates) => set((state) => ({ flightRouteCongestion: { ...state.flightRouteCongestion, ...updates } })),
+      setAircraftHangarFacility: (updates) => set((state) => ({ aircraftHangarFacility: { ...state.aircraftHangarFacility, ...updates } })),
+      setRunwayOccupancy: (updates) => set((state) => ({ runwayOccupancy: { ...state.runwayOccupancy, ...updates } })),
+      setSatelliteLaunchSchedule: (updates) => set((state) => ({ satelliteLaunchSchedule: { ...state.satelliteLaunchSchedule, ...updates } })),
+      setAviationFuelDepot: (updates) => set((state) => ({ aviationFuelDepot: { ...state.aviationFuelDepot, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
