@@ -4427,6 +4427,23 @@ interface MapState {
   setCementPlantOutput: (state: Partial<MonitorState>) => void
   craneFleetOperation: MonitorState
   setCraneFleetOperation: (state: Partial<MonitorState>) => void
+  // Task 135: Heavy Manufacturing & Industrial Plants
+  steelMillOperation: MonitorState
+  setSteelMillOperation: (state: Partial<MonitorState>) => void
+  aluminumSmelter: MonitorState
+  setAluminumSmelter: (state: Partial<MonitorState>) => void
+  semiconductorFab: MonitorState
+  setSemiconductorFab: (state: Partial<MonitorState>) => void
+  automobileAssemblyPlant: MonitorState
+  setAutomobileAssemblyPlant: (state: Partial<MonitorState>) => void
+  paperPulpMill: MonitorState
+  setPaperPulpMill: (state: Partial<MonitorState>) => void
+  glassManufacturing: MonitorState
+  setGlassManufacturing: (state: Partial<MonitorState>) => void
+  chemicalProcessingPlant: MonitorState
+  setChemicalProcessingPlant: (state: Partial<MonitorState>) => void
+  textileMillOperation: MonitorState
+  setTextileMillOperation: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -8566,6 +8583,15 @@ export const useMapStore = create<MapState>()(
       highwayExpansionProject: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       cementPlantOutput: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       craneFleetOperation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 135: Heavy Manufacturing & Industrial Plants
+      steelMillOperation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      aluminumSmelter: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      semiconductorFab: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      automobileAssemblyPlant: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      paperPulpMill: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      glassManufacturing: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      chemicalProcessingPlant: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      textileMillOperation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -8709,6 +8735,15 @@ export const useMapStore = create<MapState>()(
       setHighwayExpansionProject: (updates) => set((state) => ({ highwayExpansionProject: { ...state.highwayExpansionProject, ...updates } })),
       setCementPlantOutput: (updates) => set((state) => ({ cementPlantOutput: { ...state.cementPlantOutput, ...updates } })),
       setCraneFleetOperation: (updates) => set((state) => ({ craneFleetOperation: { ...state.craneFleetOperation, ...updates } })),
+      // Task 135: Heavy Manufacturing & Industrial Plants
+      setSteelMillOperation: (updates) => set((state) => ({ steelMillOperation: { ...state.steelMillOperation, ...updates } })),
+      setAluminumSmelter: (updates) => set((state) => ({ aluminumSmelter: { ...state.aluminumSmelter, ...updates } })),
+      setSemiconductorFab: (updates) => set((state) => ({ semiconductorFab: { ...state.semiconductorFab, ...updates } })),
+      setAutomobileAssemblyPlant: (updates) => set((state) => ({ automobileAssemblyPlant: { ...state.automobileAssemblyPlant, ...updates } })),
+      setPaperPulpMill: (updates) => set((state) => ({ paperPulpMill: { ...state.paperPulpMill, ...updates } })),
+      setGlassManufacturing: (updates) => set((state) => ({ glassManufacturing: { ...state.glassManufacturing, ...updates } })),
+      setChemicalProcessingPlant: (updates) => set((state) => ({ chemicalProcessingPlant: { ...state.chemicalProcessingPlant, ...updates } })),
+      setTextileMillOperation: (updates) => set((state) => ({ textileMillOperation: { ...state.textileMillOperation, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

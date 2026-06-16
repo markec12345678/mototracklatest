@@ -540,6 +540,14 @@ export function MonitorPanelRegistry() {
   const highwayExpansionProject = useMapStore((s) => s.highwayExpansionProject)
   const cementPlantOutput = useMapStore((s) => s.cementPlantOutput)
   const craneFleetOperation = useMapStore((s) => s.craneFleetOperation)
+  const steelMillOperation = useMapStore((s) => s.steelMillOperation)
+  const aluminumSmelter = useMapStore((s) => s.aluminumSmelter)
+  const semiconductorFab = useMapStore((s) => s.semiconductorFab)
+  const automobileAssemblyPlant = useMapStore((s) => s.automobileAssemblyPlant)
+  const paperPulpMill = useMapStore((s) => s.paperPulpMill)
+  const glassManufacturing = useMapStore((s) => s.glassManufacturing)
+  const chemicalProcessingPlant = useMapStore((s) => s.chemicalProcessingPlant)
+  const textileMillOperation = useMapStore((s) => s.textileMillOperation)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -1893,6 +1901,30 @@ export function MonitorPanelRegistry() {
       )}
       {craneFleetOperation.open && (
         <LazyPanel importFn={() => import('@/components/map/CraneFleetOperationMonitor')} exportName="CraneFleetOperationMonitor" shouldLoad={craneFleetOperation.open} />
+      )}
+      {steelMillOperation.open && (
+        <LazyPanel importFn={() => import('@/components/map/SteelMillOperationMonitor')} exportName="SteelMillOperationMonitor" shouldLoad={steelMillOperation.open} />
+      )}
+      {aluminumSmelter.open && (
+        <LazyPanel importFn={() => import('@/components/map/AluminumSmelterMonitor')} exportName="AluminumSmelterMonitor" shouldLoad={aluminumSmelter.open} />
+      )}
+      {semiconductorFab.open && (
+        <LazyPanel importFn={() => import('@/components/map/SemiconductorFabMonitor')} exportName="SemiconductorFabMonitor" shouldLoad={semiconductorFab.open} />
+      )}
+      {automobileAssemblyPlant.open && (
+        <LazyPanel importFn={() => import('@/components/map/AutomobileAssemblyPlantMonitor')} exportName="AutomobileAssemblyPlantMonitor" shouldLoad={automobileAssemblyPlant.open} />
+      )}
+      {paperPulpMill.open && (
+        <LazyPanel importFn={() => import('@/components/map/PaperPulpMillMonitor')} exportName="PaperPulpMillMonitor" shouldLoad={paperPulpMill.open} />
+      )}
+      {glassManufacturing.open && (
+        <LazyPanel importFn={() => import('@/components/map/GlassManufacturingMonitor')} exportName="GlassManufacturingMonitor" shouldLoad={glassManufacturing.open} />
+      )}
+      {chemicalProcessingPlant.open && (
+        <LazyPanel importFn={() => import('@/components/map/ChemicalProcessingPlantMonitor')} exportName="ChemicalProcessingPlantMonitor" shouldLoad={chemicalProcessingPlant.open} />
+      )}
+      {textileMillOperation.open && (
+        <LazyPanel importFn={() => import('@/components/map/TextileMillOperationMonitor')} exportName="TextileMillOperationMonitor" shouldLoad={textileMillOperation.open} />
       )}
     </>
   )

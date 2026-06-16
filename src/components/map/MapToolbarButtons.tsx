@@ -669,6 +669,14 @@ import {
   TrafficCone as TrafficConeIcon,
   Factory as FactoryIcon6,
   Construction as ConstructionIcon3,
+  Flame as FlameIcon24,
+  Zap as ZapIcon6,
+  Cpu as CpuIcon,
+  Car as CarIcon4,
+  FileText as FileTextIcon,
+  Sparkles as SparklesIcon10,
+  FlaskConical as FlaskConicalIcon9,
+  Shirt as ShirtIcon,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -946,6 +954,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const highwayExpansionProjectOpen = useMapStore((s) => s.highwayExpansionProject.open)
   const cementPlantOutputOpen = useMapStore((s) => s.cementPlantOutput.open)
   const craneFleetOperationOpen = useMapStore((s) => s.craneFleetOperation.open)
+  const steelMillOperationOpen = useMapStore((s) => s.steelMillOperation.open)
+  const aluminumSmelterOpen = useMapStore((s) => s.aluminumSmelter.open)
+  const semiconductorFabOpen = useMapStore((s) => s.semiconductorFab.open)
+  const automobileAssemblyPlantOpen = useMapStore((s) => s.automobileAssemblyPlant.open)
+  const paperPulpMillOpen = useMapStore((s) => s.paperPulpMill.open)
+  const glassManufacturingOpen = useMapStore((s) => s.glassManufacturing.open)
+  const chemicalProcessingPlantOpen = useMapStore((s) => s.chemicalProcessingPlant.open)
+  const textileMillOperationOpen = useMapStore((s) => s.textileMillOperation.open)
 
   if (typeof window === 'undefined') return null
 
@@ -6564,6 +6580,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <ConstructionIcon3 className="h-4 w-4" />
             {craneFleetOperationOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-yellow-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setSteelMillOperation({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${steelMillOperationOpen ? 'bg-orange-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Steel Mill Operation Monitor"
+          >
+            <FlameIcon24 className="h-4 w-4" />
+            {steelMillOperationOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setAluminumSmelter({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${aluminumSmelterOpen ? 'bg-cyan-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Aluminum Smelter Monitor"
+          >
+            <ZapIcon6 className="h-4 w-4" />
+            {aluminumSmelterOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setSemiconductorFab({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${semiconductorFabOpen ? 'bg-purple-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Semiconductor Fab Monitor"
+          >
+            <CpuIcon className="h-4 w-4" />
+            {semiconductorFabOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-purple-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setAutomobileAssemblyPlant({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${automobileAssemblyPlantOpen ? 'bg-red-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Auto Assembly Plant Monitor"
+          >
+            <CarIcon4 className="h-4 w-4" />
+            {automobileAssemblyPlantOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setPaperPulpMill({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${paperPulpMillOpen ? 'bg-stone-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Paper & Pulp Mill Monitor"
+          >
+            <FileTextIcon className="h-4 w-4" />
+            {paperPulpMillOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-stone-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setGlassManufacturing({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${glassManufacturingOpen ? 'bg-sky-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Glass Manufacturing Monitor"
+          >
+            <SparklesIcon10 className="h-4 w-4" />
+            {glassManufacturingOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-sky-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setChemicalProcessingPlant({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${chemicalProcessingPlantOpen ? 'bg-rose-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Chemical Processing Plant Monitor"
+          >
+            <FlaskConicalIcon9 className="h-4 w-4" />
+            {chemicalProcessingPlantOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setTextileMillOperation({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${textileMillOperationOpen ? 'bg-emerald-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Textile Mill Operation Monitor"
+          >
+            <ShirtIcon className="h-4 w-4" />
+            {textileMillOperationOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-400" />}
           </button>
         </div>
       </div>
