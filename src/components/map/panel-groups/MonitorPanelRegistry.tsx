@@ -486,6 +486,15 @@ export function MonitorPanelRegistry() {
   const grainSiloStorage = useMapStore((s) => s.grainSiloStorage)
   const foodProcessingPlant = useMapStore((s) => s.foodProcessingPlant)
   const coldChainLogistics = useMapStore((s) => s.coldChainLogistics)
+  // Task 129: Energy Generation & Utilities
+  const nuclearPowerPlant = useMapStore((s) => s.nuclearPowerPlant)
+  const naturalGasTerminal = useMapStore((s) => s.naturalGasTerminal)
+  const coalPowerStation = useMapStore((s) => s.coalPowerStation)
+  const hydroelectricDam = useMapStore((s) => s.hydroelectricDam)
+  const evChargingNetwork = useMapStore((s) => s.evChargingNetwork)
+  const batteryStorageFacility = useMapStore((s) => s.batteryStorageFacility)
+  const districtHeatingPlant = useMapStore((s) => s.districtHeatingPlant)
+  const waterTreatmentUtility = useMapStore((s) => s.waterTreatmentUtility)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -1689,6 +1698,31 @@ export function MonitorPanelRegistry() {
       )}
       {coldChainLogistics.open && (
         <LazyPanel importFn={() => import('@/components/map/ColdChainLogisticsMonitor').then(m => ({ default: m.ColdChainLogisticsMonitor }))} exportName="ColdChainLogisticsMonitor" shouldLoad={coldChainLogistics.open} />
+      )}
+      {/* Task 129: Energy Generation & Utilities */}
+      {nuclearPowerPlant.open && (
+        <LazyPanel importFn={() => import('@/components/map/NuclearPowerPlantMonitor').then(m => ({ default: m.NuclearPowerPlantMonitor }))} exportName="NuclearPowerPlantMonitor" shouldLoad={nuclearPowerPlant.open} />
+      )}
+      {naturalGasTerminal.open && (
+        <LazyPanel importFn={() => import('@/components/map/NaturalGasTerminalMonitor').then(m => ({ default: m.NaturalGasTerminalMonitor }))} exportName="NaturalGasTerminalMonitor" shouldLoad={naturalGasTerminal.open} />
+      )}
+      {coalPowerStation.open && (
+        <LazyPanel importFn={() => import('@/components/map/CoalPowerStationMonitor').then(m => ({ default: m.CoalPowerStationMonitor }))} exportName="CoalPowerStationMonitor" shouldLoad={coalPowerStation.open} />
+      )}
+      {hydroelectricDam.open && (
+        <LazyPanel importFn={() => import('@/components/map/HydroelectricDamMonitor').then(m => ({ default: m.HydroelectricDamMonitor }))} exportName="HydroelectricDamMonitor" shouldLoad={hydroelectricDam.open} />
+      )}
+      {evChargingNetwork.open && (
+        <LazyPanel importFn={() => import('@/components/map/EvChargingNetworkMonitor').then(m => ({ default: m.EvChargingNetworkMonitor }))} exportName="EvChargingNetworkMonitor" shouldLoad={evChargingNetwork.open} />
+      )}
+      {batteryStorageFacility.open && (
+        <LazyPanel importFn={() => import('@/components/map/BatteryStorageFacilityMonitor').then(m => ({ default: m.BatteryStorageFacilityMonitor }))} exportName="BatteryStorageFacilityMonitor" shouldLoad={batteryStorageFacility.open} />
+      )}
+      {districtHeatingPlant.open && (
+        <LazyPanel importFn={() => import('@/components/map/DistrictHeatingPlantMonitor').then(m => ({ default: m.DistrictHeatingPlantMonitor }))} exportName="DistrictHeatingPlantMonitor" shouldLoad={districtHeatingPlant.open} />
+      )}
+      {waterTreatmentUtility.open && (
+        <LazyPanel importFn={() => import('@/components/map/WaterTreatmentUtilityMonitor').then(m => ({ default: m.WaterTreatmentUtilityMonitor }))} exportName="WaterTreatmentUtilityMonitor" shouldLoad={waterTreatmentUtility.open} />
       )}
     </>
   )

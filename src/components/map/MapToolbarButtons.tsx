@@ -615,6 +615,15 @@ import {
   Factory as FactoryIcon4,
   Soup as SoupIcon,
   Snowflake as SnowflakeIcon19,
+  // Task 129 icons
+  Atom as AtomIcon2,
+  Flame as FlameIcon23,
+  Factory as FactoryIcon5,
+  Waves as WavesIcon28,
+  PlugZap as PlugZapIcon,
+  Battery as BatteryIcon2,
+  Thermometer as ThermometerIcon25,
+  Droplet as DropletIcon18,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -838,6 +847,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const grainSiloStorageOpen = useMapStore((s) => s.grainSiloStorage.open)
   const foodProcessingPlantOpen = useMapStore((s) => s.foodProcessingPlant.open)
   const coldChainLogisticsOpen = useMapStore((s) => s.coldChainLogistics.open)
+  // Task 129: Energy Generation & Utilities
+  const nuclearPowerPlantOpen = useMapStore((s) => s.nuclearPowerPlant.open)
+  const naturalGasTerminalOpen = useMapStore((s) => s.naturalGasTerminal.open)
+  const coalPowerStationOpen = useMapStore((s) => s.coalPowerStation.open)
+  const hydroelectricDamOpen = useMapStore((s) => s.hydroelectricDam.open)
+  const evChargingNetworkOpen = useMapStore((s) => s.evChargingNetwork.open)
+  const batteryStorageFacilityOpen = useMapStore((s) => s.batteryStorageFacility.open)
+  const districtHeatingPlantOpen = useMapStore((s) => s.districtHeatingPlant.open)
+  const waterTreatmentUtilityOpen = useMapStore((s) => s.waterTreatmentUtility.open)
 
   if (typeof window === 'undefined') return null
 
@@ -6066,6 +6084,71 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <SnowflakeIcon19 className="h-4 w-4" />
             {coldChainLogisticsOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-400" />}
+          </button>
+          {/* Task 129: Energy Generation & Utilities */}
+          <button
+            onClick={() => useMapStore.getState().setNuclearPowerPlant({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${nuclearPowerPlantOpen ? 'bg-slate-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Nuclear Power Plant Monitor"
+          >
+            <AtomIcon2 className="h-4 w-4" />
+            {nuclearPowerPlantOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-slate-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setNaturalGasTerminal({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${naturalGasTerminalOpen ? 'bg-amber-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Natural Gas Terminal Monitor"
+          >
+            <FlameIcon23 className="h-4 w-4" />
+            {naturalGasTerminalOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCoalPowerStation({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${coalPowerStationOpen ? 'bg-stone-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Coal Power Station Monitor"
+          >
+            <FactoryIcon5 className="h-4 w-4" />
+            {coalPowerStationOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-stone-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setHydroelectricDam({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${hydroelectricDamOpen ? 'bg-cyan-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Hydroelectric Dam Monitor"
+          >
+            <WavesIcon28 className="h-4 w-4" />
+            {hydroelectricDamOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setEvChargingNetwork({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${evChargingNetworkOpen ? 'bg-emerald-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="EV Charging Network Monitor"
+          >
+            <PlugZapIcon className="h-4 w-4" />
+            {evChargingNetworkOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBatteryStorageFacility({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${batteryStorageFacilityOpen ? 'bg-lime-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Battery Storage Facility Monitor"
+          >
+            <BatteryIcon2 className="h-4 w-4" />
+            {batteryStorageFacilityOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-lime-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setDistrictHeatingPlant({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${districtHeatingPlantOpen ? 'bg-orange-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="District Heating Plant Monitor"
+          >
+            <ThermometerIcon25 className="h-4 w-4" />
+            {districtHeatingPlantOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setWaterTreatmentUtility({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${waterTreatmentUtilityOpen ? 'bg-cyan-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Water Treatment Utility Monitor"
+          >
+            <DropletIcon18 className="h-4 w-4" />
+            {waterTreatmentUtilityOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-400" />}
           </button>
         </div>
       </div>

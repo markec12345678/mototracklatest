@@ -4325,6 +4325,23 @@ interface MapState {
   setFoodProcessingPlant: (state: Partial<MonitorState>) => void
   coldChainLogistics: MonitorState
   setColdChainLogistics: (state: Partial<MonitorState>) => void
+  // Task 129: Energy Generation & Utilities
+  nuclearPowerPlant: MonitorState
+  setNuclearPowerPlant: (state: Partial<MonitorState>) => void
+  naturalGasTerminal: MonitorState
+  setNaturalGasTerminal: (state: Partial<MonitorState>) => void
+  coalPowerStation: MonitorState
+  setCoalPowerStation: (state: Partial<MonitorState>) => void
+  hydroelectricDam: MonitorState
+  setHydroelectricDam: (state: Partial<MonitorState>) => void
+  evChargingNetwork: MonitorState
+  setEvChargingNetwork: (state: Partial<MonitorState>) => void
+  batteryStorageFacility: MonitorState
+  setBatteryStorageFacility: (state: Partial<MonitorState>) => void
+  districtHeatingPlant: MonitorState
+  setDistrictHeatingPlant: (state: Partial<MonitorState>) => void
+  waterTreatmentUtility: MonitorState
+  setWaterTreatmentUtility: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -8410,6 +8427,15 @@ export const useMapStore = create<MapState>()(
       grainSiloStorage: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       foodProcessingPlant: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       coldChainLogistics: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 129: Energy Generation & Utilities
+      nuclearPowerPlant: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      naturalGasTerminal: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      coalPowerStation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      hydroelectricDam: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      evChargingNetwork: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      batteryStorageFacility: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      districtHeatingPlant: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      waterTreatmentUtility: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -8499,6 +8525,15 @@ export const useMapStore = create<MapState>()(
       setGrainSiloStorage: (updates) => set((state) => ({ grainSiloStorage: { ...state.grainSiloStorage, ...updates } })),
       setFoodProcessingPlant: (updates) => set((state) => ({ foodProcessingPlant: { ...state.foodProcessingPlant, ...updates } })),
       setColdChainLogistics: (updates) => set((state) => ({ coldChainLogistics: { ...state.coldChainLogistics, ...updates } })),
+      // Task 129: Energy Generation & Utilities
+      setNuclearPowerPlant: (updates) => set((state) => ({ nuclearPowerPlant: { ...state.nuclearPowerPlant, ...updates } })),
+      setNaturalGasTerminal: (updates) => set((state) => ({ naturalGasTerminal: { ...state.naturalGasTerminal, ...updates } })),
+      setCoalPowerStation: (updates) => set((state) => ({ coalPowerStation: { ...state.coalPowerStation, ...updates } })),
+      setHydroelectricDam: (updates) => set((state) => ({ hydroelectricDam: { ...state.hydroelectricDam, ...updates } })),
+      setEvChargingNetwork: (updates) => set((state) => ({ evChargingNetwork: { ...state.evChargingNetwork, ...updates } })),
+      setBatteryStorageFacility: (updates) => set((state) => ({ batteryStorageFacility: { ...state.batteryStorageFacility, ...updates } })),
+      setDistrictHeatingPlant: (updates) => set((state) => ({ districtHeatingPlant: { ...state.districtHeatingPlant, ...updates } })),
+      setWaterTreatmentUtility: (updates) => set((state) => ({ waterTreatmentUtility: { ...state.waterTreatmentUtility, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
