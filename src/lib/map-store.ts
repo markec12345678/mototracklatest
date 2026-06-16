@@ -4342,6 +4342,23 @@ interface MapState {
   setDistrictHeatingPlant: (state: Partial<MonitorState>) => void
   waterTreatmentUtility: MonitorState
   setWaterTreatmentUtility: (state: Partial<MonitorState>) => void
+  // Task 130: Mining, Minerals & Raw Materials
+  goldMineOperation: MonitorState
+  setGoldMineOperation: (state: Partial<MonitorState>) => void
+  copperMineOutput: MonitorState
+  setCopperMineOutput: (state: Partial<MonitorState>) => void
+  ironOreExtraction: MonitorState
+  setIronOreExtraction: (state: Partial<MonitorState>) => void
+  coalMineProduction: MonitorState
+  setCoalMineProduction: (state: Partial<MonitorState>) => void
+  diamondMineOutput: MonitorState
+  setDiamondMineOutput: (state: Partial<MonitorState>) => void
+  rareEarthMineral: MonitorState
+  setRareEarthMineral: (state: Partial<MonitorState>) => void
+  lithiumExtraction: MonitorState
+  setLithiumExtraction: (state: Partial<MonitorState>) => void
+  uraniumMiningSite: MonitorState
+  setUraniumMiningSite: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -8436,6 +8453,15 @@ export const useMapStore = create<MapState>()(
       batteryStorageFacility: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       districtHeatingPlant: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       waterTreatmentUtility: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 130: Mining, Minerals & Raw Materials
+      goldMineOperation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      copperMineOutput: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      ironOreExtraction: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      coalMineProduction: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      diamondMineOutput: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      rareEarthMineral: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      lithiumExtraction: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      uraniumMiningSite: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -8534,6 +8560,15 @@ export const useMapStore = create<MapState>()(
       setBatteryStorageFacility: (updates) => set((state) => ({ batteryStorageFacility: { ...state.batteryStorageFacility, ...updates } })),
       setDistrictHeatingPlant: (updates) => set((state) => ({ districtHeatingPlant: { ...state.districtHeatingPlant, ...updates } })),
       setWaterTreatmentUtility: (updates) => set((state) => ({ waterTreatmentUtility: { ...state.waterTreatmentUtility, ...updates } })),
+      // Task 130: Mining, Minerals & Raw Materials
+      setGoldMineOperation: (updates) => set((state) => ({ goldMineOperation: { ...state.goldMineOperation, ...updates } })),
+      setCopperMineOutput: (updates) => set((state) => ({ copperMineOutput: { ...state.copperMineOutput, ...updates } })),
+      setIronOreExtraction: (updates) => set((state) => ({ ironOreExtraction: { ...state.ironOreExtraction, ...updates } })),
+      setCoalMineProduction: (updates) => set((state) => ({ coalMineProduction: { ...state.coalMineProduction, ...updates } })),
+      setDiamondMineOutput: (updates) => set((state) => ({ diamondMineOutput: { ...state.diamondMineOutput, ...updates } })),
+      setRareEarthMineral: (updates) => set((state) => ({ rareEarthMineral: { ...state.rareEarthMineral, ...updates } })),
+      setLithiumExtraction: (updates) => set((state) => ({ lithiumExtraction: { ...state.lithiumExtraction, ...updates } })),
+      setUraniumMiningSite: (updates) => set((state) => ({ uraniumMiningSite: { ...state.uraniumMiningSite, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

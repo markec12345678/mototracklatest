@@ -624,6 +624,15 @@ import {
   Battery as BatteryIcon2,
   Thermometer as ThermometerIcon25,
   Droplet as DropletIcon18,
+  // Task 130 icons
+  Medal as MedalIcon2,
+  Circle as CopperCircleIcon,
+  Pickaxe as PickaxeIcon3,
+  Mountain as MountainIcon3,
+  Diamond as DiamondIcon2,
+  Gem as GemIcon8,
+  Battery as BatteryIcon3,
+  Atom as AtomIcon3,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -856,6 +865,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const batteryStorageFacilityOpen = useMapStore((s) => s.batteryStorageFacility.open)
   const districtHeatingPlantOpen = useMapStore((s) => s.districtHeatingPlant.open)
   const waterTreatmentUtilityOpen = useMapStore((s) => s.waterTreatmentUtility.open)
+  // Task 130: Mining, Minerals & Raw Materials
+  const goldMineOperationOpen = useMapStore((s) => s.goldMineOperation.open)
+  const copperMineOutputOpen = useMapStore((s) => s.copperMineOutput.open)
+  const ironOreExtractionOpen = useMapStore((s) => s.ironOreExtraction.open)
+  const coalMineProductionOpen = useMapStore((s) => s.coalMineProduction.open)
+  const diamondMineOutputOpen = useMapStore((s) => s.diamondMineOutput.open)
+  const rareEarthMineralOpen = useMapStore((s) => s.rareEarthMineral.open)
+  const lithiumExtractionOpen = useMapStore((s) => s.lithiumExtraction.open)
+  const uraniumMiningSiteOpen = useMapStore((s) => s.uraniumMiningSite.open)
 
   if (typeof window === 'undefined') return null
 
@@ -6149,6 +6167,71 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <DropletIcon18 className="h-4 w-4" />
             {waterTreatmentUtilityOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-400" />}
+          </button>
+          {/* Task 130: Mining, Minerals & Raw Materials */}
+          <button
+            onClick={() => useMapStore.getState().setGoldMineOperation({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${goldMineOperationOpen ? 'bg-yellow-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Gold Mine Operation Monitor"
+          >
+            <MedalIcon2 className="h-4 w-4" />
+            {goldMineOperationOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-yellow-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCopperMineOutput({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${copperMineOutputOpen ? 'bg-orange-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Copper Mine Output Monitor"
+          >
+            <CopperCircleIcon className="h-4 w-4" />
+            {copperMineOutputOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setIronOreExtraction({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${ironOreExtractionOpen ? 'bg-stone-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Iron Ore Extraction Monitor"
+          >
+            <PickaxeIcon3 className="h-4 w-4" />
+            {ironOreExtractionOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-stone-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCoalMineProduction({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${coalMineProductionOpen ? 'bg-gray-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Coal Mine Production Monitor"
+          >
+            <MountainIcon3 className="h-4 w-4" />
+            {coalMineProductionOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-gray-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setDiamondMineOutput({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${diamondMineOutputOpen ? 'bg-cyan-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Diamond Mine Output Monitor"
+          >
+            <DiamondIcon2 className="h-4 w-4" />
+            {diamondMineOutputOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setRareEarthMineral({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${rareEarthMineralOpen ? 'bg-violet-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Rare Earth Mineral Monitor"
+          >
+            <GemIcon8 className="h-4 w-4" />
+            {rareEarthMineralOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-violet-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setLithiumExtraction({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${lithiumExtractionOpen ? 'bg-lime-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Lithium Extraction Monitor"
+          >
+            <BatteryIcon3 className="h-4 w-4" />
+            {lithiumExtractionOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-lime-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setUraniumMiningSite({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${uraniumMiningSiteOpen ? 'bg-emerald-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Uranium Mining Site Monitor"
+          >
+            <AtomIcon3 className="h-4 w-4" />
+            {uraniumMiningSiteOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-400" />}
           </button>
         </div>
       </div>

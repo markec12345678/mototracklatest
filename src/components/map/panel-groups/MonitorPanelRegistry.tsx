@@ -495,6 +495,15 @@ export function MonitorPanelRegistry() {
   const batteryStorageFacility = useMapStore((s) => s.batteryStorageFacility)
   const districtHeatingPlant = useMapStore((s) => s.districtHeatingPlant)
   const waterTreatmentUtility = useMapStore((s) => s.waterTreatmentUtility)
+  // Task 130: Mining, Minerals & Raw Materials
+  const goldMineOperation = useMapStore((s) => s.goldMineOperation)
+  const copperMineOutput = useMapStore((s) => s.copperMineOutput)
+  const ironOreExtraction = useMapStore((s) => s.ironOreExtraction)
+  const coalMineProduction = useMapStore((s) => s.coalMineProduction)
+  const diamondMineOutput = useMapStore((s) => s.diamondMineOutput)
+  const rareEarthMineral = useMapStore((s) => s.rareEarthMineral)
+  const lithiumExtraction = useMapStore((s) => s.lithiumExtraction)
+  const uraniumMiningSite = useMapStore((s) => s.uraniumMiningSite)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -1723,6 +1732,31 @@ export function MonitorPanelRegistry() {
       )}
       {waterTreatmentUtility.open && (
         <LazyPanel importFn={() => import('@/components/map/WaterTreatmentUtilityMonitor').then(m => ({ default: m.WaterTreatmentUtilityMonitor }))} exportName="WaterTreatmentUtilityMonitor" shouldLoad={waterTreatmentUtility.open} />
+      )}
+      {/* Task 130: Mining, Minerals & Raw Materials */}
+      {goldMineOperation.open && (
+        <LazyPanel importFn={() => import('@/components/map/GoldMineOperationMonitor').then(m => ({ default: m.GoldMineOperationMonitor }))} exportName="GoldMineOperationMonitor" shouldLoad={goldMineOperation.open} />
+      )}
+      {copperMineOutput.open && (
+        <LazyPanel importFn={() => import('@/components/map/CopperMineOutputMonitor').then(m => ({ default: m.CopperMineOutputMonitor }))} exportName="CopperMineOutputMonitor" shouldLoad={copperMineOutput.open} />
+      )}
+      {ironOreExtraction.open && (
+        <LazyPanel importFn={() => import('@/components/map/IronOreExtractionMonitor').then(m => ({ default: m.IronOreExtractionMonitor }))} exportName="IronOreExtractionMonitor" shouldLoad={ironOreExtraction.open} />
+      )}
+      {coalMineProduction.open && (
+        <LazyPanel importFn={() => import('@/components/map/CoalMineProductionMonitor').then(m => ({ default: m.CoalMineProductionMonitor }))} exportName="CoalMineProductionMonitor" shouldLoad={coalMineProduction.open} />
+      )}
+      {diamondMineOutput.open && (
+        <LazyPanel importFn={() => import('@/components/map/DiamondMineOutputMonitor').then(m => ({ default: m.DiamondMineOutputMonitor }))} exportName="DiamondMineOutputMonitor" shouldLoad={diamondMineOutput.open} />
+      )}
+      {rareEarthMineral.open && (
+        <LazyPanel importFn={() => import('@/components/map/RareEarthMineralMonitor').then(m => ({ default: m.RareEarthMineralMonitor }))} exportName="RareEarthMineralMonitor" shouldLoad={rareEarthMineral.open} />
+      )}
+      {lithiumExtraction.open && (
+        <LazyPanel importFn={() => import('@/components/map/LithiumExtractionMonitor').then(m => ({ default: m.LithiumExtractionMonitor }))} exportName="LithiumExtractionMonitor" shouldLoad={lithiumExtraction.open} />
+      )}
+      {uraniumMiningSite.open && (
+        <LazyPanel importFn={() => import('@/components/map/UraniumMiningSiteMonitor').then(m => ({ default: m.UraniumMiningSiteMonitor }))} exportName="UraniumMiningSiteMonitor" shouldLoad={uraniumMiningSite.open} />
       )}
     </>
   )
