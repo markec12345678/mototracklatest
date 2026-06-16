@@ -347,6 +347,15 @@ import {
   TrendingDown as TrendingDownIcon4,
   AlertTriangle as AlertTriangleIcon3,
   Layers as LayersIcon7,
+  // Task 99 icons
+  Shield as ShieldIcon3,
+  Waves as WavesIcon20,
+  ArrowRightLeft as ArrowRightLeftIcon,
+  Square as SquareIcon,
+  Anchor as AnchorIcon3,
+  Sun as SunIcon9,
+  ShieldCheck as ShieldCheckIcon,
+  Map as MapIcon3,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -2576,6 +2585,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setEarthflowDisplacement({ open: true })} title="Earthflow Displacement" aria-label="Open earthflow displacement monitor"><TrendingDownIcon4 className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setSlumpFailure({ open: true })} title="Slump Failure" aria-label="Open slump failure monitor"><AlertTriangleIcon3 className="h-4 w-4" /></Button>
           <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setTalusAccumulation({ open: true })} title="Talus Accumulation" aria-label="Open talus accumulation monitor"><LayersIcon7 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setBreakwaterIntegrity({ open: true })} title="Breakwater Integrity" aria-label="Open breakwater integrity monitor"><ShieldIcon3 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setSeawallErosion({ open: true })} title="Seawall Erosion" aria-label="Open seawall erosion monitor"><WavesIcon20 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setGroinSediment({ open: true })} title="Groin Sediment" aria-label="Open groin sediment monitor"><ArrowRightLeftIcon className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setRevetmentStability({ open: true })} title="Revetment Stability" aria-label="Open revetment stability monitor"><SquareIcon className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setJettyCurrent({ open: true })} title="Jetty Current" aria-label="Open jetty current monitor"><AnchorIcon3 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setBeachNourishment({ open: true })} title="Beach Nourishment" aria-label="Open beach nourishment monitor"><SunIcon9 className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setCoastalArmor({ open: true })} title="Coastal Armor" aria-label="Open coastal armor monitor"><ShieldCheckIcon className="h-4 w-4" /></Button>
+          <Button variant="outline" size="icon" className="map-control-glass h-9 w-9 sm:h-10 sm:w-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95" onClick={() => useMapStore.getState().setShorelineRetreat({ open: true })} title="Shoreline Retreat" aria-label="Open shoreline retreat monitor"><MapIcon3 className="h-4 w-4" /></Button>
           <Button
             variant="outline"
             size="icon"

@@ -8717,6 +8717,24 @@ interface MapState {
   talusAccumulation: TalusAccumulationState
   setTalusAccumulation: (state: Partial<TalusAccumulationState>) => void
 
+  // Task 99: Coastal Engineering and Shore Protection
+  breakwaterIntegrity: BreakwaterIntegrityState
+  setBreakwaterIntegrity: (state: Partial<BreakwaterIntegrityState>) => void
+  seawallErosion: SeawallErosionState
+  setSeawallErosion: (state: Partial<SeawallErosionState>) => void
+  groinSediment: GroinSedimentState
+  setGroinSediment: (state: Partial<GroinSedimentState>) => void
+  revetmentStability: RevetmentStabilityState
+  setRevetmentStability: (state: Partial<RevetmentStabilityState>) => void
+  jettyCurrent: JettyCurrentState
+  setJettyCurrent: (state: Partial<JettyCurrentState>) => void
+  beachNourishment: BeachNourishmentState
+  setBeachNourishment: (state: Partial<BeachNourishmentState>) => void
+  coastalArmor: CoastalArmorState
+  setCoastalArmor: (state: Partial<CoastalArmorState>) => void
+  shorelineRetreat: ShorelineRetreatState
+  setShorelineRetreat: (state: Partial<ShorelineRetreatState>) => void
+
   // Dialog states (moved from local useState in page.tsx for lazy loading)
   addLocationDialogOpen: boolean
   setAddLocationDialogOpen: (open: boolean) => void
@@ -10698,6 +10716,183 @@ export interface TalusAccumulationState {
   showAccumulationRate: boolean
   showTalusVolume: boolean
   showSlopeAngle: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+// Task 99: Coastal Engineering and Shore Protection
+export interface BreakwaterIntegrityData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  structuralHealth: number  // %
+  waveForce: number         // kN/m
+  overtoppingRate: number   // l/s/m
+  status: 'critical' | 'degraded' | 'fair' | 'intact'
+  description: string
+}
+
+export interface BreakwaterIntegrityState {
+  open: boolean
+  data: BreakwaterIntegrityData[]
+  showStructuralHealth: boolean
+  showWaveForce: boolean
+  showOvertoppingRate: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface SeawallErosionData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  erosionRate: number       // mm/year
+  scourDepth: number        // m
+  wallDisplacement: number  // mm
+  status: 'failing' | 'eroding' | 'stable' | 'reinforced'
+  description: string
+}
+
+export interface SeawallErosionState {
+  open: boolean
+  data: SeawallErosionData[]
+  showErosionRate: boolean
+  showScourDepth: boolean
+  showWallDisplacement: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface GroinSedimentData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  accretionRate: number     // m³/year
+  bypassRate: number        // m³/year
+  updriftWidth: number      // m
+  status: 'accreting' | 'bypassing' | 'equilibrium' | 'eroding'
+  description: string
+}
+
+export interface GroinSedimentState {
+  open: boolean
+  data: GroinSedimentData[]
+  showAccretionRate: boolean
+  showBypassRate: boolean
+  showUpdriftWidth: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface RevetmentStabilityData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  armorIntegrity: number    // %
+  slopeDisplacement: number // mm
+  underpressure: number     // kPa
+  status: 'breached' | 'shifting' | 'settling' | 'stable'
+  description: string
+}
+
+export interface RevetmentStabilityState {
+  open: boolean
+  data: RevetmentStabilityData[]
+  showArmorIntegrity: boolean
+  showSlopeDisplacement: boolean
+  showUnderpressure: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface JettyCurrentData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  currentSpeed: number      // m/s
+  eddyIntensity: number     // %
+  sedimentDeposition: number // m³/year
+  status: 'dangerous' | 'moderate' | 'calm' | 'navigable'
+  description: string
+}
+
+export interface JettyCurrentState {
+  open: boolean
+  data: JettyCurrentData[]
+  showCurrentSpeed: boolean
+  showEddyIntensity: boolean
+  showSedimentDeposition: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface BeachNourishmentData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  fillVolume: number        // m³
+  retentionRate: number     // %
+  shorelineChange: number   // m/year
+  status: 'losing' | 'depleting' | 'retaining' | 'gaining'
+  description: string
+}
+
+export interface BeachNourishmentState {
+  open: boolean
+  data: BeachNourishmentData[]
+  showFillVolume: boolean
+  showRetentionRate: boolean
+  showShorelineChange: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface CoastalArmorData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  armorWeight: number       // tonnes
+  displacementRate: number  // m/year
+  waveRunup: number         // m
+  status: 'displaced' | 'settling' | 'stable' | 'reinforced'
+  description: string
+}
+
+export interface CoastalArmorState {
+  open: boolean
+  data: CoastalArmorData[]
+  showArmorWeight: boolean
+  showDisplacementRate: boolean
+  showWaveRunup: boolean
+  statusFilter: string
+  activeItemId: string | null
+}
+
+export interface ShorelineRetreatData {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  retreatRate: number       // m/year
+  cliffHeight: number       // m
+  waveEnergy: number        // kJ/m
+  status: 'rapid' | 'moderate' | 'slow' | 'accreting'
+  description: string
+}
+
+export interface ShorelineRetreatState {
+  open: boolean
+  data: ShorelineRetreatData[]
+  showRetreatRate: boolean
+  showCliffHeight: boolean
+  showWaveEnergy: boolean
   statusFilter: string
   activeItemId: string | null
 }
@@ -15658,6 +15853,40 @@ export const useMapStore = create<MapState>()(
       },
       setTalusAccumulation: (updates) => set((state) => ({ talusAccumulation: { ...state.talusAccumulation, ...updates } })),
 
+      // Task 99: Coastal Engineering and Shore Protection
+      breakwaterIntegrity: {
+        data: [], activeItemId: null, showStructuralHealth: true, showWaveForce: true, showOvertoppingRate: false, open: false, statusFilter: '',
+      },
+      setBreakwaterIntegrity: (updates) => set((state) => ({ breakwaterIntegrity: { ...state.breakwaterIntegrity, ...updates } })),
+      seawallErosion: {
+        data: [], activeItemId: null, showErosionRate: true, showScourDepth: true, showWallDisplacement: false, open: false, statusFilter: '',
+      },
+      setSeawallErosion: (updates) => set((state) => ({ seawallErosion: { ...state.seawallErosion, ...updates } })),
+      groinSediment: {
+        data: [], activeItemId: null, showAccretionRate: true, showBypassRate: true, showUpdriftWidth: false, open: false, statusFilter: '',
+      },
+      setGroinSediment: (updates) => set((state) => ({ groinSediment: { ...state.groinSediment, ...updates } })),
+      revetmentStability: {
+        data: [], activeItemId: null, showArmorIntegrity: true, showSlopeDisplacement: true, showUnderpressure: false, open: false, statusFilter: '',
+      },
+      setRevetmentStability: (updates) => set((state) => ({ revetmentStability: { ...state.revetmentStability, ...updates } })),
+      jettyCurrent: {
+        data: [], activeItemId: null, showCurrentSpeed: true, showEddyIntensity: true, showSedimentDeposition: false, open: false, statusFilter: '',
+      },
+      setJettyCurrent: (updates) => set((state) => ({ jettyCurrent: { ...state.jettyCurrent, ...updates } })),
+      beachNourishment: {
+        data: [], activeItemId: null, showFillVolume: true, showRetentionRate: true, showShorelineChange: false, open: false, statusFilter: '',
+      },
+      setBeachNourishment: (updates) => set((state) => ({ beachNourishment: { ...state.beachNourishment, ...updates } })),
+      coastalArmor: {
+        data: [], activeItemId: null, showArmorWeight: true, showDisplacementRate: true, showWaveRunup: false, open: false, statusFilter: '',
+      },
+      setCoastalArmor: (updates) => set((state) => ({ coastalArmor: { ...state.coastalArmor, ...updates } })),
+      shorelineRetreat: {
+        data: [], activeItemId: null, showRetreatRate: true, showCliffHeight: true, showWaveEnergy: false, open: false, statusFilter: '',
+      },
+      setShorelineRetreat: (updates) => set((state) => ({ shorelineRetreat: { ...state.shorelineRetreat, ...updates } })),
+
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
       setAddLocationDialogOpen: (open) => set({ addLocationDialogOpen: open }),
@@ -16122,6 +16351,15 @@ export const useMapStore = create<MapState>()(
         hyporheicZone: state.hyporheicZone,
         submarineFan: state.submarineFan,
         coastalDuneSystem: state.coastalDuneSystem,
+        // Task 99
+        breakwaterIntegrity: state.breakwaterIntegrity,
+        seawallErosion: state.seawallErosion,
+        groinSediment: state.groinSediment,
+        revetmentStability: state.revetmentStability,
+        jettyCurrent: state.jettyCurrent,
+        beachNourishment: state.beachNourishment,
+        coastalArmor: state.coastalArmor,
+        shorelineRetreat: state.shorelineRetreat,
         // Task 96
         karstSpringDischarge: state.karstSpringDischarge,
         caveDripMonitor: state.caveDripMonitor,

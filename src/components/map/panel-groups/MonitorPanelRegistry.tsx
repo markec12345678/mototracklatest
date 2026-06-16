@@ -227,6 +227,15 @@ export function MonitorPanelRegistry() {
   const earthflowDisplacement = useMapStore((s) => s.earthflowDisplacement)
   const slumpFailure = useMapStore((s) => s.slumpFailure)
   const talusAccumulation = useMapStore((s) => s.talusAccumulation)
+  // Task 99
+  const breakwaterIntegrity = useMapStore((s) => s.breakwaterIntegrity)
+  const seawallErosion = useMapStore((s) => s.seawallErosion)
+  const groinSediment = useMapStore((s) => s.groinSediment)
+  const revetmentStability = useMapStore((s) => s.revetmentStability)
+  const jettyCurrent = useMapStore((s) => s.jettyCurrent)
+  const beachNourishment = useMapStore((s) => s.beachNourishment)
+  const coastalArmor = useMapStore((s) => s.coastalArmor)
+  const shorelineRetreat = useMapStore((s) => s.shorelineRetreat)
 
   return (
     <>
@@ -677,6 +686,31 @@ export function MonitorPanelRegistry() {
       )}
       {talusAccumulation.open && (
         <LazyPanel importFn={() => import('@/components/map/TalusAccumulationMonitor')} exportName="TalusAccumulationMonitor" shouldLoad={true} />
+      )}
+      {/* Task 99: Coastal Engineering and Shore Protection */}
+      {breakwaterIntegrity.open && (
+        <LazyPanel importFn={() => import('@/components/map/BreakwaterIntegrityMonitor')} exportName="BreakwaterIntegrityMonitor" shouldLoad={true} />
+      )}
+      {seawallErosion.open && (
+        <LazyPanel importFn={() => import('@/components/map/SeawallErosionMonitor')} exportName="SeawallErosionMonitor" shouldLoad={true} />
+      )}
+      {groinSediment.open && (
+        <LazyPanel importFn={() => import('@/components/map/GroinSedimentMonitor')} exportName="GroinSedimentMonitor" shouldLoad={true} />
+      )}
+      {revetmentStability.open && (
+        <LazyPanel importFn={() => import('@/components/map/RevetmentStabilityMonitor')} exportName="RevetmentStabilityMonitor" shouldLoad={true} />
+      )}
+      {jettyCurrent.open && (
+        <LazyPanel importFn={() => import('@/components/map/JettyCurrentMonitor')} exportName="JettyCurrentMonitor" shouldLoad={true} />
+      )}
+      {beachNourishment.open && (
+        <LazyPanel importFn={() => import('@/components/map/BeachNourishmentMonitor')} exportName="BeachNourishmentMonitor" shouldLoad={true} />
+      )}
+      {coastalArmor.open && (
+        <LazyPanel importFn={() => import('@/components/map/CoastalArmorMonitor')} exportName="CoastalArmorMonitor" shouldLoad={true} />
+      )}
+      {shorelineRetreat.open && (
+        <LazyPanel importFn={() => import('@/components/map/ShorelineRetreatMonitor')} exportName="ShorelineRetreatMonitor" shouldLoad={true} />
       )}
     </>
   )
