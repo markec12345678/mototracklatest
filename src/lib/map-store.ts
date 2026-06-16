@@ -4376,6 +4376,23 @@ interface MapState {
   setInlandContainerDepot: (state: Partial<MonitorState>) => void
   lastMileDeliveryHub: MonitorState
   setLastMileDeliveryHub: (state: Partial<MonitorState>) => void
+  // Task 132: Maritime & Shipping
+  vesselTrafficManagement: MonitorState
+  setVesselTrafficManagement: (state: Partial<MonitorState>) => void
+  maritimePiracyAlert: MonitorState
+  setMaritimePiracyAlert: (state: Partial<MonitorState>) => void
+  lighthouseNavigation: MonitorState
+  setLighthouseNavigation: (state: Partial<MonitorState>) => void
+  searchAndRescueOperation: MonitorState
+  setSearchAndRescueOperation: (state: Partial<MonitorState>) => void
+  marinePollutionResponse: MonitorState
+  setMarinePollutionResponse: (state: Partial<MonitorState>) => void
+  coastalPilotService: MonitorState
+  setCoastalPilotService: (state: Partial<MonitorState>) => void
+  shipbreakingYard: MonitorState
+  setShipbreakingYard: (state: Partial<MonitorState>) => void
+  maritimeFuelBunker: MonitorState
+  setMaritimeFuelBunker: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -8488,6 +8505,15 @@ export const useMapStore = create<MapState>()(
       highwayTollPlaza: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       inlandContainerDepot: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       lastMileDeliveryHub: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 132: Maritime & Shipping
+      vesselTrafficManagement: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      maritimePiracyAlert: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      lighthouseNavigation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      searchAndRescueOperation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      marinePollutionResponse: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      coastalPilotService: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      shipbreakingYard: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      maritimeFuelBunker: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -8604,6 +8630,15 @@ export const useMapStore = create<MapState>()(
       setHighwayTollPlaza: (updates) => set((state) => ({ highwayTollPlaza: { ...state.highwayTollPlaza, ...updates } })),
       setInlandContainerDepot: (updates) => set((state) => ({ inlandContainerDepot: { ...state.inlandContainerDepot, ...updates } })),
       setLastMileDeliveryHub: (updates) => set((state) => ({ lastMileDeliveryHub: { ...state.lastMileDeliveryHub, ...updates } })),
+      // Task 132: Maritime & Shipping
+      setVesselTrafficManagement: (updates) => set((state) => ({ vesselTrafficManagement: { ...state.vesselTrafficManagement, ...updates } })),
+      setMaritimePiracyAlert: (updates) => set((state) => ({ maritimePiracyAlert: { ...state.maritimePiracyAlert, ...updates } })),
+      setLighthouseNavigation: (updates) => set((state) => ({ lighthouseNavigation: { ...state.lighthouseNavigation, ...updates } })),
+      setSearchAndRescueOperation: (updates) => set((state) => ({ searchAndRescueOperation: { ...state.searchAndRescueOperation, ...updates } })),
+      setMarinePollutionResponse: (updates) => set((state) => ({ marinePollutionResponse: { ...state.marinePollutionResponse, ...updates } })),
+      setCoastalPilotService: (updates) => set((state) => ({ coastalPilotService: { ...state.coastalPilotService, ...updates } })),
+      setShipbreakingYard: (updates) => set((state) => ({ shipbreakingYard: { ...state.shipbreakingYard, ...updates } })),
+      setMaritimeFuelBunker: (updates) => set((state) => ({ maritimeFuelBunker: { ...state.maritimeFuelBunker, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

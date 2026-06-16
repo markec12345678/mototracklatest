@@ -513,6 +513,15 @@ export function MonitorPanelRegistry() {
   const highwayTollPlaza = useMapStore((s) => s.highwayTollPlaza)
   const inlandContainerDepot = useMapStore((s) => s.inlandContainerDepot)
   const lastMileDeliveryHub = useMapStore((s) => s.lastMileDeliveryHub)
+  // Task 132: Maritime & Shipping
+  const vesselTrafficManagement = useMapStore((s) => s.vesselTrafficManagement)
+  const maritimePiracyAlert = useMapStore((s) => s.maritimePiracyAlert)
+  const lighthouseNavigation = useMapStore((s) => s.lighthouseNavigation)
+  const searchAndRescueOperation = useMapStore((s) => s.searchAndRescueOperation)
+  const marinePollutionResponse = useMapStore((s) => s.marinePollutionResponse)
+  const coastalPilotService = useMapStore((s) => s.coastalPilotService)
+  const shipbreakingYard = useMapStore((s) => s.shipbreakingYard)
+  const maritimeFuelBunker = useMapStore((s) => s.maritimeFuelBunker)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -1791,6 +1800,31 @@ export function MonitorPanelRegistry() {
       )}
       {lastMileDeliveryHub.open && (
         <LazyPanel importFn={() => import('@/components/map/LastMileDeliveryHubMonitor')} exportName="LastMileDeliveryHubMonitor" shouldLoad={lastMileDeliveryHub.open} />
+      )}
+      {/* Task 132: Maritime & Shipping */}
+      {vesselTrafficManagement.open && (
+        <LazyPanel importFn={() => import('@/components/map/VesselTrafficManagementMonitor')} exportName="VesselTrafficManagementMonitor" shouldLoad={vesselTrafficManagement.open} />
+      )}
+      {maritimePiracyAlert.open && (
+        <LazyPanel importFn={() => import('@/components/map/MaritimePiracyAlertMonitor')} exportName="MaritimePiracyAlertMonitor" shouldLoad={maritimePiracyAlert.open} />
+      )}
+      {lighthouseNavigation.open && (
+        <LazyPanel importFn={() => import('@/components/map/LighthouseNavigationMonitor')} exportName="LighthouseNavigationMonitor" shouldLoad={lighthouseNavigation.open} />
+      )}
+      {searchAndRescueOperation.open && (
+        <LazyPanel importFn={() => import('@/components/map/SearchAndRescueOperationMonitor')} exportName="SearchAndRescueOperationMonitor" shouldLoad={searchAndRescueOperation.open} />
+      )}
+      {marinePollutionResponse.open && (
+        <LazyPanel importFn={() => import('@/components/map/MarinePollutionResponseMonitor')} exportName="MarinePollutionResponseMonitor" shouldLoad={marinePollutionResponse.open} />
+      )}
+      {coastalPilotService.open && (
+        <LazyPanel importFn={() => import('@/components/map/CoastalPilotServiceMonitor')} exportName="CoastalPilotServiceMonitor" shouldLoad={coastalPilotService.open} />
+      )}
+      {shipbreakingYard.open && (
+        <LazyPanel importFn={() => import('@/components/map/ShipbreakingYardMonitor')} exportName="ShipbreakingYardMonitor" shouldLoad={shipbreakingYard.open} />
+      )}
+      {maritimeFuelBunker.open && (
+        <LazyPanel importFn={() => import('@/components/map/MaritimeFuelBunkerMonitor')} exportName="MaritimeFuelBunkerMonitor" shouldLoad={maritimeFuelBunker.open} />
       )}
     </>
   )

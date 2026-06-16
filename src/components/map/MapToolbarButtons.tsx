@@ -642,6 +642,15 @@ import {
   Coins as CoinsIcon2,
   Container as ContainerIcon3,
   PackageCheck as PackageCheckIcon,
+  // Task 132 icons - Maritime & Shipping
+  Radar as RadarIcon,
+  Skull as SkullIcon,
+  Sailboat as SailboatIcon,
+  LifeBuoy as LifeBuoyIcon2,
+  Biohazard as BiohazardIcon3,
+  Compass as CompassIcon6,
+  Recycle as RecycleIcon,
+  Fuel as FuelIcon2,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -892,6 +901,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const highwayTollPlazaOpen = useMapStore((s) => s.highwayTollPlaza.open)
   const inlandContainerDepotOpen = useMapStore((s) => s.inlandContainerDepot.open)
   const lastMileDeliveryHubOpen = useMapStore((s) => s.lastMileDeliveryHub.open)
+  // Task 132: Maritime & Shipping
+  const vesselTrafficManagementOpen = useMapStore((s) => s.vesselTrafficManagement.open)
+  const maritimePiracyAlertOpen = useMapStore((s) => s.maritimePiracyAlert.open)
+  const lighthouseNavigationOpen = useMapStore((s) => s.lighthouseNavigation.open)
+  const searchAndRescueOperationOpen = useMapStore((s) => s.searchAndRescueOperation.open)
+  const marinePollutionResponseOpen = useMapStore((s) => s.marinePollutionResponse.open)
+  const coastalPilotServiceOpen = useMapStore((s) => s.coastalPilotService.open)
+  const shipbreakingYardOpen = useMapStore((s) => s.shipbreakingYard.open)
+  const maritimeFuelBunkerOpen = useMapStore((s) => s.maritimeFuelBunker.open)
 
   if (typeof window === 'undefined') return null
 
@@ -6315,6 +6333,71 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <PackageCheckIcon className="h-4 w-4" />
             {lastMileDeliveryHubOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-green-400" />}
+          </button>
+          {/* Task 132: Maritime & Shipping */}
+          <button
+            onClick={() => useMapStore.getState().setVesselTrafficManagement({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${vesselTrafficManagementOpen ? 'bg-blue-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Vessel Traffic Management Monitor"
+          >
+            <RadarIcon className="h-4 w-4" />
+            {vesselTrafficManagementOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-blue-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setMaritimePiracyAlert({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${maritimePiracyAlertOpen ? 'bg-red-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Maritime Piracy Alert Monitor"
+          >
+            <SkullIcon className="h-4 w-4" />
+            {maritimePiracyAlertOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setLighthouseNavigation({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${lighthouseNavigationOpen ? 'bg-amber-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Lighthouse Navigation Monitor"
+          >
+            <SailboatIcon className="h-4 w-4" />
+            {lighthouseNavigationOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setSearchAndRescueOperation({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${searchAndRescueOperationOpen ? 'bg-emerald-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Search And Rescue Operation Monitor"
+          >
+            <LifeBuoyIcon2 className="h-4 w-4" />
+            {searchAndRescueOperationOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setMarinePollutionResponse({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${marinePollutionResponseOpen ? 'bg-stone-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Marine Pollution Response Monitor"
+          >
+            <BiohazardIcon3 className="h-4 w-4" />
+            {marinePollutionResponseOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-stone-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCoastalPilotService({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${coastalPilotServiceOpen ? 'bg-cyan-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Coastal Pilot Service Monitor"
+          >
+            <CompassIcon6 className="h-4 w-4" />
+            {coastalPilotServiceOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setShipbreakingYard({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${shipbreakingYardOpen ? 'bg-zinc-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Shipbreaking Yard Monitor"
+          >
+            <RecycleIcon className="h-4 w-4" />
+            {shipbreakingYardOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-zinc-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setMaritimeFuelBunker({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${maritimeFuelBunkerOpen ? 'bg-orange-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Maritime Fuel Bunker Monitor"
+          >
+            <FuelIcon2 className="h-4 w-4" />
+            {maritimeFuelBunkerOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-400" />}
           </button>
         </div>
       </div>
