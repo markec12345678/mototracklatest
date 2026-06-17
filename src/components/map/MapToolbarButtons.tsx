@@ -833,6 +833,14 @@ import {
   Snowflake as SnowflakeIcon20,
   Waves as WavesIcon29,
   Goal as GoalIcon,
+  ShoppingBag as ShoppingBagIcon4,
+  Footprints as FootprintsIcon6,
+  Store as StoreIcon3,
+  Shirt as ShirtIcon2,
+  Sparkles as SparklesIcon12,
+  Crown as CrownIcon3,
+  Scissors as ScissorsIcon4,
+  Tag as TagIcon,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1277,6 +1285,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const skiSnowboardShopOpen = useMapStore((s) => s.skiSnowboardShop.open)
   const surfWatersportShopOpen = useMapStore((s) => s.surfWatersportShop.open)
   const soccerSpecialtyStoreOpen = useMapStore((s) => s.soccerSpecialtyStore.open)
+  const apparelRetailChainOpen = useMapStore((s) => s.apparelRetailChain.open)
+  const footwearBoutiqueOpen = useMapStore((s) => s.footwearBoutique.open)
+  const fashionDepartmentStoreOpen = useMapStore((s) => s.fashionDepartmentStore.open)
+  const denimJeansStoreOpen = useMapStore((s) => s.denimJeansStore.open)
+  const streetwearBoutiqueOpen = useMapStore((s) => s.streetwearBoutique.open)
+  const womensClothingStoreOpen = useMapStore((s) => s.womensClothingStore.open)
+  const mensClothingStoreOpen = useMapStore((s) => s.mensClothingStore.open)
+  const childrensClothingStoreOpen = useMapStore((s) => s.childrensClothingStore.open)
 
   if (typeof window === 'undefined') return null
 
@@ -8189,6 +8205,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <GoalIcon className="h-4 w-4" />
             {soccerSpecialtyStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-green-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setApparelRetailChain({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${apparelRetailChainOpen ? 'bg-rose-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Apparel Retail Chain Monitor"
+          >
+            <ShoppingBagIcon4 className="h-4 w-4" />
+            {apparelRetailChainOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setFootwearBoutique({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${footwearBoutiqueOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Footwear Boutique Monitor"
+          >
+            <FootprintsIcon6 className="h-4 w-4" />
+            {footwearBoutiqueOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setFashionDepartmentStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${fashionDepartmentStoreOpen ? 'bg-purple-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Fashion Department Store Monitor"
+          >
+            <StoreIcon3 className="h-4 w-4" />
+            {fashionDepartmentStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-purple-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setDenimJeansStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${denimJeansStoreOpen ? 'bg-blue-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Denim & Jeans Store Monitor"
+          >
+            <ShirtIcon2 className="h-4 w-4" />
+            {denimJeansStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-blue-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setStreetwearBoutique({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${streetwearBoutiqueOpen ? 'bg-fuchsia-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Streetwear Boutique Monitor"
+          >
+            <SparklesIcon12 className="h-4 w-4" />
+            {streetwearBoutiqueOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-fuchsia-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setWomensClothingStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${womensClothingStoreOpen ? 'bg-rose-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Women's Clothing Store Monitor"
+          >
+            <CrownIcon3 className="h-4 w-4" />
+            {womensClothingStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setMensClothingStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${mensClothingStoreOpen ? 'bg-zinc-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Men's Clothing Store Monitor"
+          >
+            <ScissorsIcon4 className="h-4 w-4" />
+            {mensClothingStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-zinc-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setChildrensClothingStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${childrensClothingStoreOpen ? 'bg-yellow-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Children's Clothing Store Monitor"
+          >
+            <TagIcon className="h-4 w-4" />
+            {childrensClothingStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-yellow-300" />}
           </button>
         </div>
       </div>

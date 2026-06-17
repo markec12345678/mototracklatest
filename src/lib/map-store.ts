@@ -4763,6 +4763,22 @@ interface MapState {
   setSurfWatersportShop: (state: Partial<MonitorState>) => void
   soccerSpecialtyStore: MonitorState
   setSoccerSpecialtyStore: (state: Partial<MonitorState>) => void
+  apparelRetailChain: MonitorState
+  setApparelRetailChain: (state: Partial<MonitorState>) => void
+  footwearBoutique: MonitorState
+  setFootwearBoutique: (state: Partial<MonitorState>) => void
+  fashionDepartmentStore: MonitorState
+  setFashionDepartmentStore: (state: Partial<MonitorState>) => void
+  denimJeansStore: MonitorState
+  setDenimJeansStore: (state: Partial<MonitorState>) => void
+  streetwearBoutique: MonitorState
+  setStreetwearBoutique: (state: Partial<MonitorState>) => void
+  womensClothingStore: MonitorState
+  setWomensClothingStore: (state: Partial<MonitorState>) => void
+  mensClothingStore: MonitorState
+  setMensClothingStore: (state: Partial<MonitorState>) => void
+  childrensClothingStore: MonitorState
+  setChildrensClothingStore: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -9077,6 +9093,14 @@ export const useMapStore = create<MapState>()(
       skiSnowboardShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       surfWatersportShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       soccerSpecialtyStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      apparelRetailChain: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      footwearBoutique: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      fashionDepartmentStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      denimJeansStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      streetwearBoutique: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      womensClothingStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      mensClothingStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      childrensClothingStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -9395,6 +9419,14 @@ export const useMapStore = create<MapState>()(
       setSkiSnowboardShop: (updates) => set((state) => ({ skiSnowboardShop: { ...state.skiSnowboardShop, ...updates } })),
       setSurfWatersportShop: (updates) => set((state) => ({ surfWatersportShop: { ...state.surfWatersportShop, ...updates } })),
       setSoccerSpecialtyStore: (updates) => set((state) => ({ soccerSpecialtyStore: { ...state.soccerSpecialtyStore, ...updates } })),
+      setApparelRetailChain: (updates) => set((state) => ({ apparelRetailChain: { ...state.apparelRetailChain, ...updates } })),
+      setFootwearBoutique: (updates) => set((state) => ({ footwearBoutique: { ...state.footwearBoutique, ...updates } })),
+      setFashionDepartmentStore: (updates) => set((state) => ({ fashionDepartmentStore: { ...state.fashionDepartmentStore, ...updates } })),
+      setDenimJeansStore: (updates) => set((state) => ({ denimJeansStore: { ...state.denimJeansStore, ...updates } })),
+      setStreetwearBoutique: (updates) => set((state) => ({ streetwearBoutique: { ...state.streetwearBoutique, ...updates } })),
+      setWomensClothingStore: (updates) => set((state) => ({ womensClothingStore: { ...state.womensClothingStore, ...updates } })),
+      setMensClothingStore: (updates) => set((state) => ({ mensClothingStore: { ...state.mensClothingStore, ...updates } })),
+      setChildrensClothingStore: (updates) => set((state) => ({ childrensClothingStore: { ...state.childrensClothingStore, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

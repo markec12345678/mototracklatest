@@ -717,6 +717,15 @@ export function MonitorPanelRegistry() {
   const skiSnowboardShop = useMapStore((s) => s.skiSnowboardShop)
   const surfWatersportShop = useMapStore((s) => s.surfWatersportShop)
   const soccerSpecialtyStore = useMapStore((s) => s.soccerSpecialtyStore)
+  // Task 155: Apparel & Footwear Retail
+  const apparelRetailChain = useMapStore((s) => s.apparelRetailChain)
+  const footwearBoutique = useMapStore((s) => s.footwearBoutique)
+  const fashionDepartmentStore = useMapStore((s) => s.fashionDepartmentStore)
+  const denimJeansStore = useMapStore((s) => s.denimJeansStore)
+  const streetwearBoutique = useMapStore((s) => s.streetwearBoutique)
+  const womensClothingStore = useMapStore((s) => s.womensClothingStore)
+  const mensClothingStore = useMapStore((s) => s.mensClothingStore)
+  const childrensClothingStore = useMapStore((s) => s.childrensClothingStore)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -2557,6 +2566,30 @@ export function MonitorPanelRegistry() {
       )}
       {soccerSpecialtyStore.open && (
         <LazyPanel importFn={() => import('@/components/map/SoccerSpecialtyStoreMonitor')} exportName="SoccerSpecialtyStoreMonitor" shouldLoad={soccerSpecialtyStore.open} />
+      )}
+      {apparelRetailChain.open && (
+        <LazyPanel importFn={() => import('@/components/map/ApparelRetailChainMonitor')} exportName="ApparelRetailChainMonitor" shouldLoad={apparelRetailChain.open} />
+      )}
+      {footwearBoutique.open && (
+        <LazyPanel importFn={() => import('@/components/map/FootwearBoutiqueMonitor')} exportName="FootwearBoutiqueMonitor" shouldLoad={footwearBoutique.open} />
+      )}
+      {fashionDepartmentStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/FashionDepartmentStoreMonitor')} exportName="FashionDepartmentStoreMonitor" shouldLoad={fashionDepartmentStore.open} />
+      )}
+      {denimJeansStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/DenimJeansStoreMonitor')} exportName="DenimJeansStoreMonitor" shouldLoad={denimJeansStore.open} />
+      )}
+      {streetwearBoutique.open && (
+        <LazyPanel importFn={() => import('@/components/map/StreetwearBoutiqueMonitor')} exportName="StreetwearBoutiqueMonitor" shouldLoad={streetwearBoutique.open} />
+      )}
+      {womensClothingStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/WomensClothingStoreMonitor')} exportName="WomensClothingStoreMonitor" shouldLoad={womensClothingStore.open} />
+      )}
+      {mensClothingStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/MensClothingStoreMonitor')} exportName="MensClothingStoreMonitor" shouldLoad={mensClothingStore.open} />
+      )}
+      {childrensClothingStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/ChildrensClothingStoreMonitor')} exportName="ChildrensClothingStoreMonitor" shouldLoad={childrensClothingStore.open} />
       )}
     </>
   )
