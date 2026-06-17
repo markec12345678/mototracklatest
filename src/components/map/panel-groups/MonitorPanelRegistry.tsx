@@ -654,6 +654,15 @@ export function MonitorPanelRegistry() {
   const fastenersIndustrial = useMapStore((s) => s.fastenersIndustrial)
   const paintDecorating = useMapStore((s) => s.paintDecorating)
   const lawnGardenEquipment = useMapStore((s) => s.lawnGardenEquipment)
+  // Task 148: Jewelry & Watches
+  const luxuryJewelryBoutique = useMapStore((s) => s.luxuryJewelryBoutique)
+  const watchBoutiqueRetail = useMapStore((s) => s.watchBoutiqueRetail)
+  const engagementRingStore = useMapStore((s) => s.engagementRingStore)
+  const diamondWholesaleDealer = useMapStore((s) => s.diamondWholesaleDealer)
+  const gemstoneJewelryDealer = useMapStore((s) => s.gemstoneJewelryDealer)
+  const estateJewelryAuction = useMapStore((s) => s.estateJewelryAuction)
+  const customJewelryDesign = useMapStore((s) => s.customJewelryDesign)
+  const jewelryRepairAppraisal = useMapStore((s) => s.jewelryRepairAppraisal)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -2323,6 +2332,31 @@ export function MonitorPanelRegistry() {
       )}
       {lawnGardenEquipment.open && (
         <LazyPanel importFn={() => import('@/components/map/LawnGardenEquipmentMonitor')} exportName="LawnGardenEquipmentMonitor" shouldLoad={lawnGardenEquipment.open} />
+      )}
+      {/* Task 148: Jewelry & Watches */}
+      {luxuryJewelryBoutique.open && (
+        <LazyPanel importFn={() => import('@/components/map/LuxuryJewelryBoutiqueMonitor')} exportName="LuxuryJewelryBoutiqueMonitor" shouldLoad={luxuryJewelryBoutique.open} />
+      )}
+      {watchBoutiqueRetail.open && (
+        <LazyPanel importFn={() => import('@/components/map/WatchBoutiqueRetailMonitor')} exportName="WatchBoutiqueRetailMonitor" shouldLoad={watchBoutiqueRetail.open} />
+      )}
+      {engagementRingStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/EngagementRingStoreMonitor')} exportName="EngagementRingStoreMonitor" shouldLoad={engagementRingStore.open} />
+      )}
+      {diamondWholesaleDealer.open && (
+        <LazyPanel importFn={() => import('@/components/map/DiamondWholesaleDealerMonitor')} exportName="DiamondWholesaleDealerMonitor" shouldLoad={diamondWholesaleDealer.open} />
+      )}
+      {gemstoneJewelryDealer.open && (
+        <LazyPanel importFn={() => import('@/components/map/GemstoneJewelryDealerMonitor')} exportName="GemstoneJewelryDealerMonitor" shouldLoad={gemstoneJewelryDealer.open} />
+      )}
+      {estateJewelryAuction.open && (
+        <LazyPanel importFn={() => import('@/components/map/EstateJewelryAuctionMonitor')} exportName="EstateJewelryAuctionMonitor" shouldLoad={estateJewelryAuction.open} />
+      )}
+      {customJewelryDesign.open && (
+        <LazyPanel importFn={() => import('@/components/map/CustomJewelryDesignMonitor')} exportName="CustomJewelryDesignMonitor" shouldLoad={customJewelryDesign.open} />
+      )}
+      {jewelryRepairAppraisal.open && (
+        <LazyPanel importFn={() => import('@/components/map/JewelryRepairAppraisalMonitor')} exportName="JewelryRepairAppraisalMonitor" shouldLoad={jewelryRepairAppraisal.open} />
       )}
     </>
   )

@@ -4648,6 +4648,23 @@ interface MapState {
   setPaintDecorating: (state: Partial<MonitorState>) => void
   lawnGardenEquipment: MonitorState
   setLawnGardenEquipment: (state: Partial<MonitorState>) => void
+  // Task 148: Jewelry & Watches
+  luxuryJewelryBoutique: MonitorState
+  setLuxuryJewelryBoutique: (state: Partial<MonitorState>) => void
+  watchBoutiqueRetail: MonitorState
+  setWatchBoutiqueRetail: (state: Partial<MonitorState>) => void
+  engagementRingStore: MonitorState
+  setEngagementRingStore: (state: Partial<MonitorState>) => void
+  diamondWholesaleDealer: MonitorState
+  setDiamondWholesaleDealer: (state: Partial<MonitorState>) => void
+  gemstoneJewelryDealer: MonitorState
+  setGemstoneJewelryDealer: (state: Partial<MonitorState>) => void
+  estateJewelryAuction: MonitorState
+  setEstateJewelryAuction: (state: Partial<MonitorState>) => void
+  customJewelryDesign: MonitorState
+  setCustomJewelryDesign: (state: Partial<MonitorState>) => void
+  jewelryRepairAppraisal: MonitorState
+  setJewelryRepairAppraisal: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -8903,6 +8920,15 @@ export const useMapStore = create<MapState>()(
       fastenersIndustrial: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       paintDecorating: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       lawnGardenEquipment: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 148: Jewelry & Watches
+      luxuryJewelryBoutique: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      watchBoutiqueRetail: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      engagementRingStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      diamondWholesaleDealer: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      gemstoneJewelryDealer: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      estateJewelryAuction: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      customJewelryDesign: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      jewelryRepairAppraisal: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -9162,6 +9188,15 @@ export const useMapStore = create<MapState>()(
       setFastenersIndustrial: (updates) => set((state) => ({ fastenersIndustrial: { ...state.fastenersIndustrial, ...updates } })),
       setPaintDecorating: (updates) => set((state) => ({ paintDecorating: { ...state.paintDecorating, ...updates } })),
       setLawnGardenEquipment: (updates) => set((state) => ({ lawnGardenEquipment: { ...state.lawnGardenEquipment, ...updates } })),
+      // Task 148: Jewelry & Watches
+      setLuxuryJewelryBoutique: (updates) => set((state) => ({ luxuryJewelryBoutique: { ...state.luxuryJewelryBoutique, ...updates } })),
+      setWatchBoutiqueRetail: (updates) => set((state) => ({ watchBoutiqueRetail: { ...state.watchBoutiqueRetail, ...updates } })),
+      setEngagementRingStore: (updates) => set((state) => ({ engagementRingStore: { ...state.engagementRingStore, ...updates } })),
+      setDiamondWholesaleDealer: (updates) => set((state) => ({ diamondWholesaleDealer: { ...state.diamondWholesaleDealer, ...updates } })),
+      setGemstoneJewelryDealer: (updates) => set((state) => ({ gemstoneJewelryDealer: { ...state.gemstoneJewelryDealer, ...updates } })),
+      setEstateJewelryAuction: (updates) => set((state) => ({ estateJewelryAuction: { ...state.estateJewelryAuction, ...updates } })),
+      setCustomJewelryDesign: (updates) => set((state) => ({ customJewelryDesign: { ...state.customJewelryDesign, ...updates } })),
+      setJewelryRepairAppraisal: (updates) => set((state) => ({ jewelryRepairAppraisal: { ...state.jewelryRepairAppraisal, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

@@ -776,6 +776,15 @@ import {
   Bolt as BoltIcon,
   PaintBucket as PaintBucketIcon,
   Sprout as SproutIcon4,
+  // Task 148: Jewelry & Watches
+  Gem as GemIcon7,
+  Watch as WatchIcon2,
+  Diamond as DiamondIcon3,
+  Diamond as DiamondIcon4,
+  Sparkles as SparklesIcon11,
+  Crown as CrownIcon2,
+  Award as AwardIcon4,
+  Hourglass as HourglassIcon,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1161,6 +1170,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const fastenersIndustrialOpen = useMapStore((s) => s.fastenersIndustrial.open)
   const paintDecoratingOpen = useMapStore((s) => s.paintDecorating.open)
   const lawnGardenEquipmentOpen = useMapStore((s) => s.lawnGardenEquipment.open)
+  // Task 148: Jewelry & Watches
+  const luxuryJewelryBoutiqueOpen = useMapStore((s) => s.luxuryJewelryBoutique.open)
+  const watchBoutiqueRetailOpen = useMapStore((s) => s.watchBoutiqueRetail.open)
+  const engagementRingStoreOpen = useMapStore((s) => s.engagementRingStore.open)
+  const diamondWholesaleDealerOpen = useMapStore((s) => s.diamondWholesaleDealer.open)
+  const gemstoneJewelryDealerOpen = useMapStore((s) => s.gemstoneJewelryDealer.open)
+  const estateJewelryAuctionOpen = useMapStore((s) => s.estateJewelryAuction.open)
+  const customJewelryDesignOpen = useMapStore((s) => s.customJewelryDesign.open)
+  const jewelryRepairAppraisalOpen = useMapStore((s) => s.jewelryRepairAppraisal.open)
 
   if (typeof window === 'undefined') return null
 
@@ -7622,6 +7640,71 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <SproutIcon4 className="h-4 w-4" />
             {lawnGardenEquipmentOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-green-400" />}
+          </button>
+          {/* Task 148: Jewelry & Watches */}
+          <button
+            onClick={() => useMapStore.getState().setLuxuryJewelryBoutique({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${luxuryJewelryBoutiqueOpen ? 'bg-amber-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Luxury Jewelry Boutique Monitor"
+          >
+            <GemIcon7 className="h-4 w-4" />
+            {luxuryJewelryBoutiqueOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setWatchBoutiqueRetail({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${watchBoutiqueRetailOpen ? 'bg-slate-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Watch Boutique Retail Monitor"
+          >
+            <WatchIcon2 className="h-4 w-4" />
+            {watchBoutiqueRetailOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-slate-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setEngagementRingStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${engagementRingStoreOpen ? 'bg-rose-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Engagement Ring Store Monitor"
+          >
+            <DiamondIcon3 className="h-4 w-4" />
+            {engagementRingStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setDiamondWholesaleDealer({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${diamondWholesaleDealerOpen ? 'bg-blue-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Diamond Wholesale Dealer Monitor"
+          >
+            <DiamondIcon4 className="h-4 w-4" />
+            {diamondWholesaleDealerOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-blue-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setGemstoneJewelryDealer({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${gemstoneJewelryDealerOpen ? 'bg-purple-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Gemstone Jewelry Dealer Monitor"
+          >
+            <SparklesIcon11 className="h-4 w-4" />
+            {gemstoneJewelryDealerOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-purple-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setEstateJewelryAuction({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${estateJewelryAuctionOpen ? 'bg-yellow-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Estate Jewelry Auction Monitor"
+          >
+            <CrownIcon2 className="h-4 w-4" />
+            {estateJewelryAuctionOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-yellow-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCustomJewelryDesign({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${customJewelryDesignOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Custom Jewelry Design Monitor"
+          >
+            <AwardIcon4 className="h-4 w-4" />
+            {customJewelryDesignOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setJewelryRepairAppraisal({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${jewelryRepairAppraisalOpen ? 'bg-teal-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Jewelry Repair & Appraisal Monitor"
+          >
+            <HourglassIcon className="h-4 w-4" />
+            {jewelryRepairAppraisalOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-400" />}
           </button>
         </div>
       </div>
