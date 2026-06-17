@@ -636,6 +636,15 @@ export function MonitorPanelRegistry() {
   const veterinaryHospitalEmergency = useMapStore((s) => s.veterinaryHospitalEmergency)
   const petDaycareCenter = useMapStore((s) => s.petDaycareCenter)
   const petTrainingObedienceSchool = useMapStore((s) => s.petTrainingObedienceSchool)
+  // Task 146: Childcare & Daycare Services
+  const preschoolKindergarten = useMapStore((s) => s.preschoolKindergarten)
+  const montessoriEarlyLearning = useMapStore((s) => s.montessoriEarlyLearning)
+  const daycareInfantCenter = useMapStore((s) => s.daycareInfantCenter)
+  const afterSchoolProgram = useMapStore((s) => s.afterSchoolProgram)
+  const nurserySchool = useMapStore((s) => s.nurserySchool)
+  const earlyLearningCenter = useMapStore((s) => s.earlyLearningCenter)
+  const nannyAgencyService = useMapStore((s) => s.nannyAgencyService)
+  const babysittingService = useMapStore((s) => s.babysittingService)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -2256,6 +2265,30 @@ export function MonitorPanelRegistry() {
       )}
       {petTrainingObedienceSchool.open && (
         <LazyPanel importFn={() => import('@/components/map/PetTrainingObedienceSchoolMonitor')} exportName="PetTrainingObedienceSchoolMonitor" shouldLoad={petTrainingObedienceSchool.open} />
+      )}
+      {preschoolKindergarten.open && (
+        <LazyPanel importFn={() => import('@/components/map/PreschoolKindergartenMonitor')} exportName="PreschoolKindergartenMonitor" shouldLoad={preschoolKindergarten.open} />
+      )}
+      {montessoriEarlyLearning.open && (
+        <LazyPanel importFn={() => import('@/components/map/MontessoriEarlyLearningMonitor')} exportName="MontessoriEarlyLearningMonitor" shouldLoad={montessoriEarlyLearning.open} />
+      )}
+      {daycareInfantCenter.open && (
+        <LazyPanel importFn={() => import('@/components/map/DaycareInfantCenterMonitor')} exportName="DaycareInfantCenterMonitor" shouldLoad={daycareInfantCenter.open} />
+      )}
+      {afterSchoolProgram.open && (
+        <LazyPanel importFn={() => import('@/components/map/AfterSchoolProgramMonitor')} exportName="AfterSchoolProgramMonitor" shouldLoad={afterSchoolProgram.open} />
+      )}
+      {nurserySchool.open && (
+        <LazyPanel importFn={() => import('@/components/map/NurserySchoolMonitor')} exportName="NurserySchoolMonitor" shouldLoad={nurserySchool.open} />
+      )}
+      {earlyLearningCenter.open && (
+        <LazyPanel importFn={() => import('@/components/map/EarlyLearningCenterMonitor')} exportName="EarlyLearningCenterMonitor" shouldLoad={earlyLearningCenter.open} />
+      )}
+      {nannyAgencyService.open && (
+        <LazyPanel importFn={() => import('@/components/map/NannyAgencyServiceMonitor')} exportName="NannyAgencyServiceMonitor" shouldLoad={nannyAgencyService.open} />
+      )}
+      {babysittingService.open && (
+        <LazyPanel importFn={() => import('@/components/map/BabysittingServiceMonitor')} exportName="BabysittingServiceMonitor" shouldLoad={babysittingService.open} />
       )}
     </>
   )

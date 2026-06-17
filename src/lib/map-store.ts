@@ -4614,6 +4614,23 @@ interface MapState {
   setPetDaycareCenter: (state: Partial<MonitorState>) => void
   petTrainingObedienceSchool: MonitorState
   setPetTrainingObedienceSchool: (state: Partial<MonitorState>) => void
+  // Task 146: Childcare & Daycare Services
+  preschoolKindergarten: MonitorState
+  setPreschoolKindergarten: (state: Partial<MonitorState>) => void
+  montessoriEarlyLearning: MonitorState
+  setMontessoriEarlyLearning: (state: Partial<MonitorState>) => void
+  daycareInfantCenter: MonitorState
+  setDaycareInfantCenter: (state: Partial<MonitorState>) => void
+  afterSchoolProgram: MonitorState
+  setAfterSchoolProgram: (state: Partial<MonitorState>) => void
+  nurserySchool: MonitorState
+  setNurserySchool: (state: Partial<MonitorState>) => void
+  earlyLearningCenter: MonitorState
+  setEarlyLearningCenter: (state: Partial<MonitorState>) => void
+  nannyAgencyService: MonitorState
+  setNannyAgencyService: (state: Partial<MonitorState>) => void
+  babysittingService: MonitorState
+  setBabysittingService: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -8851,6 +8868,15 @@ export const useMapStore = create<MapState>()(
       veterinaryHospitalEmergency: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       petDaycareCenter: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       petTrainingObedienceSchool: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 146: Childcare & Daycare Services
+      preschoolKindergarten: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      montessoriEarlyLearning: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      daycareInfantCenter: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      afterSchoolProgram: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      nurserySchool: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      earlyLearningCenter: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      nannyAgencyService: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      babysittingService: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -9092,6 +9118,15 @@ export const useMapStore = create<MapState>()(
       setVeterinaryHospitalEmergency: (updates) => set((state) => ({ veterinaryHospitalEmergency: { ...state.veterinaryHospitalEmergency, ...updates } })),
       setPetDaycareCenter: (updates) => set((state) => ({ petDaycareCenter: { ...state.petDaycareCenter, ...updates } })),
       setPetTrainingObedienceSchool: (updates) => set((state) => ({ petTrainingObedienceSchool: { ...state.petTrainingObedienceSchool, ...updates } })),
+      // Task 146: Childcare & Daycare Services
+      setPreschoolKindergarten: (updates) => set((state) => ({ preschoolKindergarten: { ...state.preschoolKindergarten, ...updates } })),
+      setMontessoriEarlyLearning: (updates) => set((state) => ({ montessoriEarlyLearning: { ...state.montessoriEarlyLearning, ...updates } })),
+      setDaycareInfantCenter: (updates) => set((state) => ({ daycareInfantCenter: { ...state.daycareInfantCenter, ...updates } })),
+      setAfterSchoolProgram: (updates) => set((state) => ({ afterSchoolProgram: { ...state.afterSchoolProgram, ...updates } })),
+      setNurserySchool: (updates) => set((state) => ({ nurserySchool: { ...state.nurserySchool, ...updates } })),
+      setEarlyLearningCenter: (updates) => set((state) => ({ earlyLearningCenter: { ...state.earlyLearningCenter, ...updates } })),
+      setNannyAgencyService: (updates) => set((state) => ({ nannyAgencyService: { ...state.nannyAgencyService, ...updates } })),
+      setBabysittingService: (updates) => set((state) => ({ babysittingService: { ...state.babysittingService, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

@@ -759,6 +759,15 @@ import {
   Siren as SirenIcon4,
   Baby as BabyIcon2,
   GraduationCap as GraduationCapIcon2,
+  // Task 146: Childcare & Daycare icons
+  BookOpen as BookOpenIcon,
+  Puzzle as PuzzleIcon,
+  Baby as BabyIcon3,
+  Backpack as BackpackIcon,
+  Apple as AppleIcon2,
+  Blocks as BlocksIcon,
+  Smile as SmileIcon2,
+  Heart as HeartIcon3,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1126,6 +1135,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const veterinaryHospitalEmergencyOpen = useMapStore((s) => s.veterinaryHospitalEmergency.open)
   const petDaycareCenterOpen = useMapStore((s) => s.petDaycareCenter.open)
   const petTrainingObedienceSchoolOpen = useMapStore((s) => s.petTrainingObedienceSchool.open)
+  // Task 146: Childcare & Daycare Services
+  const preschoolKindergartenOpen = useMapStore((s) => s.preschoolKindergarten.open)
+  const montessoriEarlyLearningOpen = useMapStore((s) => s.montessoriEarlyLearning.open)
+  const daycareInfantCenterOpen = useMapStore((s) => s.daycareInfantCenter.open)
+  const afterSchoolProgramOpen = useMapStore((s) => s.afterSchoolProgram.open)
+  const nurserySchoolOpen = useMapStore((s) => s.nurserySchool.open)
+  const earlyLearningCenterOpen = useMapStore((s) => s.earlyLearningCenter.open)
+  const nannyAgencyServiceOpen = useMapStore((s) => s.nannyAgencyService.open)
+  const babysittingServiceOpen = useMapStore((s) => s.babysittingService.open)
 
   if (typeof window === 'undefined') return null
 
@@ -7457,6 +7475,71 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <GraduationCapIcon2 className="h-4 w-4" />
             {petTrainingObedienceSchoolOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-violet-400" />}
+          </button>
+          {/* Task 146: Childcare & Daycare Services */}
+          <button
+            onClick={() => useMapStore.getState().setPreschoolKindergarten({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${preschoolKindergartenOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Preschool & Kindergarten Monitor"
+          >
+            <BookOpenIcon className="h-4 w-4" />
+            {preschoolKindergartenOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setMontessoriEarlyLearning({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${montessoriEarlyLearningOpen ? 'bg-emerald-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Montessori Early Learning Monitor"
+          >
+            <PuzzleIcon className="h-4 w-4" />
+            {montessoriEarlyLearningOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setDaycareInfantCenter({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${daycareInfantCenterOpen ? 'bg-rose-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Daycare Infant Center Monitor"
+          >
+            <BabyIcon3 className="h-4 w-4" />
+            {daycareInfantCenterOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setAfterSchoolProgram({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${afterSchoolProgramOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="After-School Program Monitor"
+          >
+            <BackpackIcon className="h-4 w-4" />
+            {afterSchoolProgramOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setNurserySchool({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${nurserySchoolOpen ? 'bg-green-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Nursery School Monitor"
+          >
+            <AppleIcon2 className="h-4 w-4" />
+            {nurserySchoolOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-green-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setEarlyLearningCenter({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${earlyLearningCenterOpen ? 'bg-purple-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Early Learning Center Monitor"
+          >
+            <BlocksIcon className="h-4 w-4" />
+            {earlyLearningCenterOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-purple-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setNannyAgencyService({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${nannyAgencyServiceOpen ? 'bg-cyan-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Nanny Agency Service Monitor"
+          >
+            <SmileIcon2 className="h-4 w-4" />
+            {nannyAgencyServiceOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBabysittingService({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${babysittingServiceOpen ? 'bg-pink-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Babysitting Service Monitor"
+          >
+            <HeartIcon3 className="h-4 w-4" />
+            {babysittingServiceOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-pink-400" />}
           </button>
         </div>
       </div>
