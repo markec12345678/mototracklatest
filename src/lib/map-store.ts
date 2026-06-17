@@ -4682,6 +4682,23 @@ interface MapState {
   setPlantNurseryRetail: (state: Partial<MonitorState>) => void
   gardenToolEquipment: MonitorState
   setGardenToolEquipment: (state: Partial<MonitorState>) => void
+  // Task 150: Home Improvement & Furniture
+  furnitureRetailChain: MonitorState
+  setFurnitureRetailChain: (state: Partial<MonitorState>) => void
+  mattressBeddingStore: MonitorState
+  setMattressBeddingStore: (state: Partial<MonitorState>) => void
+  homeDecorBoutique: MonitorState
+  setHomeDecorBoutique: (state: Partial<MonitorState>) => void
+  lightingShowroom: MonitorState
+  setLightingShowroom: (state: Partial<MonitorState>) => void
+  flooringStore: MonitorState
+  setFlooringStore: (state: Partial<MonitorState>) => void
+  kitchenBathShowroom: MonitorState
+  setKitchenBathShowroom: (state: Partial<MonitorState>) => void
+  applianceRetailStore: MonitorState
+  setApplianceRetailStore: (state: Partial<MonitorState>) => void
+  windowTreatmentStore: MonitorState
+  setWindowTreatmentStore: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -8955,6 +8972,15 @@ export const useMapStore = create<MapState>()(
       floralDesignStudio: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       plantNurseryRetail: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       gardenToolEquipment: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 150: Home Improvement & Furniture
+      furnitureRetailChain: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      mattressBeddingStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      homeDecorBoutique: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      lightingShowroom: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      flooringStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      kitchenBathShowroom: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      applianceRetailStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      windowTreatmentStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -9232,6 +9258,15 @@ export const useMapStore = create<MapState>()(
       setFloralDesignStudio: (updates) => set((state) => ({ floralDesignStudio: { ...state.floralDesignStudio, ...updates } })),
       setPlantNurseryRetail: (updates) => set((state) => ({ plantNurseryRetail: { ...state.plantNurseryRetail, ...updates } })),
       setGardenToolEquipment: (updates) => set((state) => ({ gardenToolEquipment: { ...state.gardenToolEquipment, ...updates } })),
+      // Task 150: Home Improvement & Furniture
+      setFurnitureRetailChain: (updates) => set((state) => ({ furnitureRetailChain: { ...state.furnitureRetailChain, ...updates } })),
+      setMattressBeddingStore: (updates) => set((state) => ({ mattressBeddingStore: { ...state.mattressBeddingStore, ...updates } })),
+      setHomeDecorBoutique: (updates) => set((state) => ({ homeDecorBoutique: { ...state.homeDecorBoutique, ...updates } })),
+      setLightingShowroom: (updates) => set((state) => ({ lightingShowroom: { ...state.lightingShowroom, ...updates } })),
+      setFlooringStore: (updates) => set((state) => ({ flooringStore: { ...state.flooringStore, ...updates } })),
+      setKitchenBathShowroom: (updates) => set((state) => ({ kitchenBathShowroom: { ...state.kitchenBathShowroom, ...updates } })),
+      setApplianceRetailStore: (updates) => set((state) => ({ applianceRetailStore: { ...state.applianceRetailStore, ...updates } })),
+      setWindowTreatmentStore: (updates) => set((state) => ({ windowTreatmentStore: { ...state.windowTreatmentStore, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

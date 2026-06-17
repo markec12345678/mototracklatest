@@ -672,6 +672,15 @@ export function MonitorPanelRegistry() {
   const floralDesignStudio = useMapStore((s) => s.floralDesignStudio)
   const plantNurseryRetail = useMapStore((s) => s.plantNurseryRetail)
   const gardenToolEquipment = useMapStore((s) => s.gardenToolEquipment)
+  // Task 150: Home Improvement & Furniture
+  const furnitureRetailChain = useMapStore((s) => s.furnitureRetailChain)
+  const mattressBeddingStore = useMapStore((s) => s.mattressBeddingStore)
+  const homeDecorBoutique = useMapStore((s) => s.homeDecorBoutique)
+  const lightingShowroom = useMapStore((s) => s.lightingShowroom)
+  const flooringStore = useMapStore((s) => s.flooringStore)
+  const kitchenBathShowroom = useMapStore((s) => s.kitchenBathShowroom)
+  const applianceRetailStore = useMapStore((s) => s.applianceRetailStore)
+  const windowTreatmentStore = useMapStore((s) => s.windowTreatmentStore)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -2391,6 +2400,31 @@ export function MonitorPanelRegistry() {
       )}
       {gardenToolEquipment.open && (
         <LazyPanel importFn={() => import('@/components/map/GardenToolEquipmentMonitor')} exportName="GardenToolEquipmentMonitor" shouldLoad={gardenToolEquipment.open} />
+      )}
+      {/* Task 150: Home Improvement & Furniture */}
+      {furnitureRetailChain.open && (
+        <LazyPanel importFn={() => import('@/components/map/FurnitureRetailChainMonitor')} exportName="FurnitureRetailChainMonitor" shouldLoad={furnitureRetailChain.open} />
+      )}
+      {mattressBeddingStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/MattressBeddingStoreMonitor')} exportName="MattressBeddingStoreMonitor" shouldLoad={mattressBeddingStore.open} />
+      )}
+      {homeDecorBoutique.open && (
+        <LazyPanel importFn={() => import('@/components/map/HomeDecorBoutiqueMonitor')} exportName="HomeDecorBoutiqueMonitor" shouldLoad={homeDecorBoutique.open} />
+      )}
+      {lightingShowroom.open && (
+        <LazyPanel importFn={() => import('@/components/map/LightingShowroomMonitor')} exportName="LightingShowroomMonitor" shouldLoad={lightingShowroom.open} />
+      )}
+      {flooringStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/FlooringStoreMonitor')} exportName="FlooringStoreMonitor" shouldLoad={flooringStore.open} />
+      )}
+      {kitchenBathShowroom.open && (
+        <LazyPanel importFn={() => import('@/components/map/KitchenBathShowroomMonitor')} exportName="KitchenBathShowroomMonitor" shouldLoad={kitchenBathShowroom.open} />
+      )}
+      {applianceRetailStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/ApplianceRetailStoreMonitor')} exportName="ApplianceRetailStoreMonitor" shouldLoad={applianceRetailStore.open} />
+      )}
+      {windowTreatmentStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/WindowTreatmentStoreMonitor')} exportName="WindowTreatmentStoreMonitor" shouldLoad={windowTreatmentStore.open} />
       )}
     </>
   )

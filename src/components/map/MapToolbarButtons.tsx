@@ -794,6 +794,15 @@ import {
   Scissors as ScissorsIcon3,
   Leaf as LeafIcon11,
   Tractor as TractorIcon,
+  // Task 150: Home Improvement & Furniture icons
+  Sofa as SofaIcon,
+  Bed as BedIcon2,
+  Lamp as LampIcon,
+  LampCeiling as LampCeilingIcon,
+  Grid3x3 as Grid3x3Icon,
+  Ruler as RulerIcon2,
+  Lightbulb as LightbulbIcon2,
+  BrickWall as BrickWallIcon,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1197,6 +1206,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const floralDesignStudioOpen = useMapStore((s) => s.floralDesignStudio.open)
   const plantNurseryRetailOpen = useMapStore((s) => s.plantNurseryRetail.open)
   const gardenToolEquipmentOpen = useMapStore((s) => s.gardenToolEquipment.open)
+  // Task 150: Home Improvement & Furniture
+  const furnitureRetailChainOpen = useMapStore((s) => s.furnitureRetailChain.open)
+  const mattressBeddingStoreOpen = useMapStore((s) => s.mattressBeddingStore.open)
+  const homeDecorBoutiqueOpen = useMapStore((s) => s.homeDecorBoutique.open)
+  const lightingShowroomOpen = useMapStore((s) => s.lightingShowroom.open)
+  const flooringStoreOpen = useMapStore((s) => s.flooringStore.open)
+  const kitchenBathShowroomOpen = useMapStore((s) => s.kitchenBathShowroom.open)
+  const applianceRetailStoreOpen = useMapStore((s) => s.applianceRetailStore.open)
+  const windowTreatmentStoreOpen = useMapStore((s) => s.windowTreatmentStore.open)
 
   if (typeof window === 'undefined') return null
 
@@ -7788,6 +7806,71 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <TractorIcon className="h-4 w-4" />
             {gardenToolEquipmentOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-400" />}
+          </button>
+          {/* Task 150: Home Improvement & Furniture */}
+          <button
+            onClick={() => useMapStore.getState().setFurnitureRetailChain({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${furnitureRetailChainOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Furniture Retail Chain Monitor"
+          >
+            <SofaIcon className="h-4 w-4" />
+            {furnitureRetailChainOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setMattressBeddingStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${mattressBeddingStoreOpen ? 'bg-violet-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Mattress & Bedding Store Monitor"
+          >
+            <BedIcon2 className="h-4 w-4" />
+            {mattressBeddingStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-violet-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setHomeDecorBoutique({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${homeDecorBoutiqueOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Home Decor Boutique Monitor"
+          >
+            <LampIcon className="h-4 w-4" />
+            {homeDecorBoutiqueOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setLightingShowroom({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${lightingShowroomOpen ? 'bg-yellow-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Lighting Showroom Monitor"
+          >
+            <LampCeilingIcon className="h-4 w-4" />
+            {lightingShowroomOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-yellow-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setFlooringStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${flooringStoreOpen ? 'bg-slate-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Flooring Store Monitor"
+          >
+            <Grid3x3Icon className="h-4 w-4" />
+            {flooringStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-slate-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setKitchenBathShowroom({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${kitchenBathShowroomOpen ? 'bg-blue-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Kitchen & Bath Showroom Monitor"
+          >
+            <RulerIcon2 className="h-4 w-4" />
+            {kitchenBathShowroomOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-blue-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setApplianceRetailStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${applianceRetailStoreOpen ? 'bg-slate-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Appliance Retail Store Monitor"
+          >
+            <LightbulbIcon2 className="h-4 w-4" />
+            {applianceRetailStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-slate-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setWindowTreatmentStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${windowTreatmentStoreOpen ? 'bg-teal-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Window Treatment Store Monitor"
+          >
+            <BrickWallIcon className="h-4 w-4" />
+            {windowTreatmentStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-400" />}
           </button>
         </div>
       </div>
