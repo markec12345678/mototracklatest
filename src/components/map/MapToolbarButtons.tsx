@@ -803,6 +803,14 @@ import {
   Ruler as RulerIcon2,
   Lightbulb as LightbulbIcon2,
   BrickWall as BrickWallIcon,
+  Trash2 as Trash2Icon,
+  Recycle as RecycleIcon2,
+  Trash as TrashIcon,
+  Leaf as LeafIcon12,
+  Biohazard as BiohazardIcon,
+  Anvil as AnvilIcon,
+  Cpu as CpuIcon2,
+  PackagePlus as PackagePlusIcon,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1215,6 +1223,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const kitchenBathShowroomOpen = useMapStore((s) => s.kitchenBathShowroom.open)
   const applianceRetailStoreOpen = useMapStore((s) => s.applianceRetailStore.open)
   const windowTreatmentStoreOpen = useMapStore((s) => s.windowTreatmentStore.open)
+  const municipalWasteCollectionOpen = useMapStore((s) => s.municipalWasteCollection.open)
+  const recyclingCenterOpen = useMapStore((s) => s.recyclingCenter.open)
+  const landfillOperationOpen = useMapStore((s) => s.landfillOperation.open)
+  const compostingFacilityOpen = useMapStore((s) => s.compostingFacility.open)
+  const hazardousWasteDisposalOpen = useMapStore((s) => s.hazardousWasteDisposal.open)
+  const scrapMetalYardOpen = useMapStore((s) => s.scrapMetalYard.open)
+  const electronicWasteFacilityOpen = useMapStore((s) => s.electronicWasteFacility.open)
+  const transferStationOpen = useMapStore((s) => s.transferStation.open)
 
   if (typeof window === 'undefined') return null
 
@@ -7871,6 +7887,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <BrickWallIcon className="h-4 w-4" />
             {windowTreatmentStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setMunicipalWasteCollection({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${municipalWasteCollectionOpen ? 'bg-emerald-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Municipal Waste Collection Monitor"
+          >
+            <Trash2Icon className="h-4 w-4" />
+            {municipalWasteCollectionOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setRecyclingCenter({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${recyclingCenterOpen ? 'bg-emerald-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Recycling Center Monitor"
+          >
+            <RecycleIcon2 className="h-4 w-4" />
+            {recyclingCenterOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setLandfillOperation({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${landfillOperationOpen ? 'bg-stone-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Landfill Operation Monitor"
+          >
+            <TrashIcon className="h-4 w-4" />
+            {landfillOperationOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-stone-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCompostingFacility({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${compostingFacilityOpen ? 'bg-lime-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Composting Facility Monitor"
+          >
+            <LeafIcon12 className="h-4 w-4" />
+            {compostingFacilityOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-lime-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setHazardousWasteDisposal({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${hazardousWasteDisposalOpen ? 'bg-red-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Hazardous Waste Disposal Monitor"
+          >
+            <BiohazardIcon className="h-4 w-4" />
+            {hazardousWasteDisposalOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setScrapMetalYard({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${scrapMetalYardOpen ? 'bg-zinc-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Scrap Metal Yard Monitor"
+          >
+            <AnvilIcon className="h-4 w-4" />
+            {scrapMetalYardOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-zinc-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setElectronicWasteFacility({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${electronicWasteFacilityOpen ? 'bg-indigo-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Electronic Waste Facility Monitor"
+          >
+            <CpuIcon2 className="h-4 w-4" />
+            {electronicWasteFacilityOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-indigo-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setTransferStation({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${transferStationOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Transfer Station Monitor"
+          >
+            <PackagePlusIcon className="h-4 w-4" />
+            {transferStationOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-400" />}
           </button>
         </div>
       </div>

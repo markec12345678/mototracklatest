@@ -4699,6 +4699,22 @@ interface MapState {
   setApplianceRetailStore: (state: Partial<MonitorState>) => void
   windowTreatmentStore: MonitorState
   setWindowTreatmentStore: (state: Partial<MonitorState>) => void
+  municipalWasteCollection: MonitorState
+  setMunicipalWasteCollection: (state: Partial<MonitorState>) => void
+  recyclingCenter: MonitorState
+  setRecyclingCenter: (state: Partial<MonitorState>) => void
+  landfillOperation: MonitorState
+  setLandfillOperation: (state: Partial<MonitorState>) => void
+  compostingFacility: MonitorState
+  setCompostingFacility: (state: Partial<MonitorState>) => void
+  hazardousWasteDisposal: MonitorState
+  setHazardousWasteDisposal: (state: Partial<MonitorState>) => void
+  scrapMetalYard: MonitorState
+  setScrapMetalYard: (state: Partial<MonitorState>) => void
+  electronicWasteFacility: MonitorState
+  setElectronicWasteFacility: (state: Partial<MonitorState>) => void
+  transferStation: MonitorState
+  setTransferStation: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -8981,6 +8997,14 @@ export const useMapStore = create<MapState>()(
       kitchenBathShowroom: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       applianceRetailStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       windowTreatmentStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      municipalWasteCollection: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      recyclingCenter: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      landfillOperation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      compostingFacility: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      hazardousWasteDisposal: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      scrapMetalYard: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      electronicWasteFacility: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      transferStation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -9267,6 +9291,14 @@ export const useMapStore = create<MapState>()(
       setKitchenBathShowroom: (updates) => set((state) => ({ kitchenBathShowroom: { ...state.kitchenBathShowroom, ...updates } })),
       setApplianceRetailStore: (updates) => set((state) => ({ applianceRetailStore: { ...state.applianceRetailStore, ...updates } })),
       setWindowTreatmentStore: (updates) => set((state) => ({ windowTreatmentStore: { ...state.windowTreatmentStore, ...updates } })),
+      setMunicipalWasteCollection: (updates) => set((state) => ({ municipalWasteCollection: { ...state.municipalWasteCollection, ...updates } })),
+      setRecyclingCenter: (updates) => set((state) => ({ recyclingCenter: { ...state.recyclingCenter, ...updates } })),
+      setLandfillOperation: (updates) => set((state) => ({ landfillOperation: { ...state.landfillOperation, ...updates } })),
+      setCompostingFacility: (updates) => set((state) => ({ compostingFacility: { ...state.compostingFacility, ...updates } })),
+      setHazardousWasteDisposal: (updates) => set((state) => ({ hazardousWasteDisposal: { ...state.hazardousWasteDisposal, ...updates } })),
+      setScrapMetalYard: (updates) => set((state) => ({ scrapMetalYard: { ...state.scrapMetalYard, ...updates } })),
+      setElectronicWasteFacility: (updates) => set((state) => ({ electronicWasteFacility: { ...state.electronicWasteFacility, ...updates } })),
+      setTransferStation: (updates) => set((state) => ({ transferStation: { ...state.transferStation, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

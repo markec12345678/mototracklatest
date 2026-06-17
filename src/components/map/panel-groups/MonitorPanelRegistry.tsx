@@ -681,6 +681,15 @@ export function MonitorPanelRegistry() {
   const kitchenBathShowroom = useMapStore((s) => s.kitchenBathShowroom)
   const applianceRetailStore = useMapStore((s) => s.applianceRetailStore)
   const windowTreatmentStore = useMapStore((s) => s.windowTreatmentStore)
+  // Task 151: Waste Management & Recycling
+  const municipalWasteCollection = useMapStore((s) => s.municipalWasteCollection)
+  const recyclingCenter = useMapStore((s) => s.recyclingCenter)
+  const landfillOperation = useMapStore((s) => s.landfillOperation)
+  const compostingFacility = useMapStore((s) => s.compostingFacility)
+  const hazardousWasteDisposal = useMapStore((s) => s.hazardousWasteDisposal)
+  const scrapMetalYard = useMapStore((s) => s.scrapMetalYard)
+  const electronicWasteFacility = useMapStore((s) => s.electronicWasteFacility)
+  const transferStation = useMapStore((s) => s.transferStation)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -2425,6 +2434,30 @@ export function MonitorPanelRegistry() {
       )}
       {windowTreatmentStore.open && (
         <LazyPanel importFn={() => import('@/components/map/WindowTreatmentStoreMonitor')} exportName="WindowTreatmentStoreMonitor" shouldLoad={windowTreatmentStore.open} />
+      )}
+      {municipalWasteCollection.open && (
+        <LazyPanel importFn={() => import('@/components/map/MunicipalWasteCollectionMonitor')} exportName="MunicipalWasteCollectionMonitor" shouldLoad={municipalWasteCollection.open} />
+      )}
+      {recyclingCenter.open && (
+        <LazyPanel importFn={() => import('@/components/map/RecyclingCenterMonitor')} exportName="RecyclingCenterMonitor" shouldLoad={recyclingCenter.open} />
+      )}
+      {landfillOperation.open && (
+        <LazyPanel importFn={() => import('@/components/map/LandfillOperationMonitor')} exportName="LandfillOperationMonitor" shouldLoad={landfillOperation.open} />
+      )}
+      {compostingFacility.open && (
+        <LazyPanel importFn={() => import('@/components/map/CompostingFacilityMonitor')} exportName="CompostingFacilityMonitor" shouldLoad={compostingFacility.open} />
+      )}
+      {hazardousWasteDisposal.open && (
+        <LazyPanel importFn={() => import('@/components/map/HazardousWasteDisposalMonitor')} exportName="HazardousWasteDisposalMonitor" shouldLoad={hazardousWasteDisposal.open} />
+      )}
+      {scrapMetalYard.open && (
+        <LazyPanel importFn={() => import('@/components/map/ScrapMetalYardMonitor')} exportName="ScrapMetalYardMonitor" shouldLoad={scrapMetalYard.open} />
+      )}
+      {electronicWasteFacility.open && (
+        <LazyPanel importFn={() => import('@/components/map/ElectronicWasteFacilityMonitor')} exportName="ElectronicWasteFacilityMonitor" shouldLoad={electronicWasteFacility.open} />
+      )}
+      {transferStation.open && (
+        <LazyPanel importFn={() => import('@/components/map/TransferStationMonitor')} exportName="TransferStationMonitor" shouldLoad={transferStation.open} />
       )}
     </>
   )
