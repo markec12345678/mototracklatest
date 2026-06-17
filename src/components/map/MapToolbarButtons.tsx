@@ -693,6 +693,14 @@ import {
   Building as BuildingIcon5,
   Vote as VoteIcon,
   Home as HomeIcon,
+  Landmark as LandmarkIcon6,
+  Sunrise as SunriseIcon,
+  Moon as MoonIcon4,
+  Star as StarIcon,
+  Flame as FlameIcon25,
+  TreePine as TreePineIcon11,
+  Mountain as MountainIcon20,
+  Footprints as FootprintsIcon4,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -994,6 +1002,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const cityHallCivicOpen = useMapStore((s) => s.cityHallCivic.open)
   const stateLegislatureOpen = useMapStore((s) => s.stateLegislature.open)
   const governorMansionOpen = useMapStore((s) => s.governorMansion.open)
+  const cathedralBasilicaOpen = useMapStore((s) => s.cathedralBasilica.open)
+  const buddhistTempleOpen = useMapStore((s) => s.buddhistTemple.open)
+  const mosqueCompoundOpen = useMapStore((s) => s.mosqueCompound.open)
+  const synagogueHeritageOpen = useMapStore((s) => s.synagogueHeritage.open)
+  const hinduTempleOpen = useMapStore((s) => s.hinduTemple.open)
+  const shintoShrineOpen = useMapStore((s) => s.shintoShrine.open)
+  const monasteryAbbeyOpen = useMapStore((s) => s.monasteryAbbey.open)
+  const pilgrimageSiteOpen = useMapStore((s) => s.pilgrimageSite.open)
 
   if (typeof window === 'undefined') return null
 
@@ -6804,6 +6820,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <HomeIcon className="h-4 w-4" />
             {governorMansionOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-green-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCathedralBasilica({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${cathedralBasilicaOpen ? 'bg-yellow-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Cathedral & Basilica Monitor"
+          >
+            <LandmarkIcon6 className="h-4 w-4" />
+            {cathedralBasilicaOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-yellow-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBuddhistTemple({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${buddhistTempleOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Buddhist Temple Monitor"
+          >
+            <SunriseIcon className="h-4 w-4" />
+            {buddhistTempleOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setMosqueCompound({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${mosqueCompoundOpen ? 'bg-teal-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Mosque Compound Monitor"
+          >
+            <MoonIcon4 className="h-4 w-4" />
+            {mosqueCompoundOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setSynagogueHeritage({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${synagogueHeritageOpen ? 'bg-indigo-800 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Synagogue Heritage Monitor"
+          >
+            <StarIcon className="h-4 w-4" />
+            {synagogueHeritageOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-indigo-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setHinduTemple({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${hinduTempleOpen ? 'bg-red-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Hindu Temple Monitor"
+          >
+            <FlameIcon25 className="h-4 w-4" />
+            {hinduTempleOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setShintoShrine({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${shintoShrineOpen ? 'bg-rose-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Shinto Shrine Monitor"
+          >
+            <TreePineIcon11 className="h-4 w-4" />
+            {shintoShrineOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setMonasteryAbbey({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${monasteryAbbeyOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Monastery & Abbey Monitor"
+          >
+            <MountainIcon20 className="h-4 w-4" />
+            {monasteryAbbeyOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setPilgrimageSite({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${pilgrimageSiteOpen ? 'bg-violet-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Pilgrimage Site Monitor"
+          >
+            <FootprintsIcon4 className="h-4 w-4" />
+            {pilgrimageSiteOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-violet-400" />}
           </button>
         </div>
       </div>

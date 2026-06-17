@@ -4478,6 +4478,23 @@ interface MapState {
   setStateLegislature: (state: Partial<MonitorState>) => void
   governorMansion: MonitorState
   setGovernorMansion: (state: Partial<MonitorState>) => void
+  // Task 138: Religious & Spiritual Heritage Sites
+  cathedralBasilica: MonitorState
+  setCathedralBasilica: (state: Partial<MonitorState>) => void
+  buddhistTemple: MonitorState
+  setBuddhistTemple: (state: Partial<MonitorState>) => void
+  mosqueCompound: MonitorState
+  setMosqueCompound: (state: Partial<MonitorState>) => void
+  synagogueHeritage: MonitorState
+  setSynagogueHeritage: (state: Partial<MonitorState>) => void
+  hinduTemple: MonitorState
+  setHinduTemple: (state: Partial<MonitorState>) => void
+  shintoShrine: MonitorState
+  setShintoShrine: (state: Partial<MonitorState>) => void
+  monasteryAbbey: MonitorState
+  setMonasteryAbbey: (state: Partial<MonitorState>) => void
+  pilgrimageSite: MonitorState
+  setPilgrimageSite: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -8644,6 +8661,15 @@ export const useMapStore = create<MapState>()(
       cityHallCivic: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       stateLegislature: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       governorMansion: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 138: Religious & Spiritual Heritage Sites
+      cathedralBasilica: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      buddhistTemple: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      mosqueCompound: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      synagogueHeritage: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      hinduTemple: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      shintoShrine: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      monasteryAbbey: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      pilgrimageSite: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -8814,6 +8840,15 @@ export const useMapStore = create<MapState>()(
       setCityHallCivic: (updates) => set((state) => ({ cityHallCivic: { ...state.cityHallCivic, ...updates } })),
       setStateLegislature: (updates) => set((state) => ({ stateLegislature: { ...state.stateLegislature, ...updates } })),
       setGovernorMansion: (updates) => set((state) => ({ governorMansion: { ...state.governorMansion, ...updates } })),
+      // Task 138: Religious & Spiritual Heritage Sites
+      setCathedralBasilica: (updates) => set((state) => ({ cathedralBasilica: { ...state.cathedralBasilica, ...updates } })),
+      setBuddhistTemple: (updates) => set((state) => ({ buddhistTemple: { ...state.buddhistTemple, ...updates } })),
+      setMosqueCompound: (updates) => set((state) => ({ mosqueCompound: { ...state.mosqueCompound, ...updates } })),
+      setSynagogueHeritage: (updates) => set((state) => ({ synagogueHeritage: { ...state.synagogueHeritage, ...updates } })),
+      setHinduTemple: (updates) => set((state) => ({ hinduTemple: { ...state.hinduTemple, ...updates } })),
+      setShintoShrine: (updates) => set((state) => ({ shintoShrine: { ...state.shintoShrine, ...updates } })),
+      setMonasteryAbbey: (updates) => set((state) => ({ monasteryAbbey: { ...state.monasteryAbbey, ...updates } })),
+      setPilgrimageSite: (updates) => set((state) => ({ pilgrimageSite: { ...state.pilgrimageSite, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

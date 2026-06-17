@@ -564,6 +564,14 @@ export function MonitorPanelRegistry() {
   const cityHallCivic = useMapStore((s) => s.cityHallCivic)
   const stateLegislature = useMapStore((s) => s.stateLegislature)
   const governorMansion = useMapStore((s) => s.governorMansion)
+  const cathedralBasilica = useMapStore((s) => s.cathedralBasilica)
+  const buddhistTemple = useMapStore((s) => s.buddhistTemple)
+  const mosqueCompound = useMapStore((s) => s.mosqueCompound)
+  const synagogueHeritage = useMapStore((s) => s.synagogueHeritage)
+  const hinduTemple = useMapStore((s) => s.hinduTemple)
+  const shintoShrine = useMapStore((s) => s.shintoShrine)
+  const monasteryAbbey = useMapStore((s) => s.monasteryAbbey)
+  const pilgrimageSite = useMapStore((s) => s.pilgrimageSite)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -1989,6 +1997,30 @@ export function MonitorPanelRegistry() {
       )}
       {governorMansion.open && (
         <LazyPanel importFn={() => import('@/components/map/GovernorMansionMonitor')} exportName="GovernorMansionMonitor" shouldLoad={governorMansion.open} />
+      )}
+      {cathedralBasilica.open && (
+        <LazyPanel importFn={() => import('@/components/map/CathedralBasilicaMonitor')} exportName="CathedralBasilicaMonitor" shouldLoad={cathedralBasilica.open} />
+      )}
+      {buddhistTemple.open && (
+        <LazyPanel importFn={() => import('@/components/map/BuddhistTempleMonitor')} exportName="BuddhistTempleMonitor" shouldLoad={buddhistTemple.open} />
+      )}
+      {mosqueCompound.open && (
+        <LazyPanel importFn={() => import('@/components/map/MosqueCompoundMonitor')} exportName="MosqueCompoundMonitor" shouldLoad={mosqueCompound.open} />
+      )}
+      {synagogueHeritage.open && (
+        <LazyPanel importFn={() => import('@/components/map/SynagogueHeritageMonitor')} exportName="SynagogueHeritageMonitor" shouldLoad={synagogueHeritage.open} />
+      )}
+      {hinduTemple.open && (
+        <LazyPanel importFn={() => import('@/components/map/HinduTempleMonitor')} exportName="HinduTempleMonitor" shouldLoad={hinduTemple.open} />
+      )}
+      {shintoShrine.open && (
+        <LazyPanel importFn={() => import('@/components/map/ShintoShrineMonitor')} exportName="ShintoShrineMonitor" shouldLoad={shintoShrine.open} />
+      )}
+      {monasteryAbbey.open && (
+        <LazyPanel importFn={() => import('@/components/map/MonasteryAbbeyMonitor')} exportName="MonasteryAbbeyMonitor" shouldLoad={monasteryAbbey.open} />
+      )}
+      {pilgrimageSite.open && (
+        <LazyPanel importFn={() => import('@/components/map/PilgrimageSiteMonitor')} exportName="PilgrimageSiteMonitor" shouldLoad={pilgrimageSite.open} />
       )}
     </>
   )
