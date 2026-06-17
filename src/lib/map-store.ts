@@ -4631,6 +4631,23 @@ interface MapState {
   setNannyAgencyService: (state: Partial<MonitorState>) => void
   babysittingService: MonitorState
   setBabysittingService: (state: Partial<MonitorState>) => void
+  // Task 147: Hardware & Tools Retail
+  hardwareStore: MonitorState
+  setHardwareStore: (state: Partial<MonitorState>) => void
+  powerToolsRetail: MonitorState
+  setPowerToolsRetail: (state: Partial<MonitorState>) => void
+  plumbingSupply: MonitorState
+  setPlumbingSupply: (state: Partial<MonitorState>) => void
+  electricalSupply: MonitorState
+  setElectricalSupply: (state: Partial<MonitorState>) => void
+  buildingMaterials: MonitorState
+  setBuildingMaterials: (state: Partial<MonitorState>) => void
+  fastenersIndustrial: MonitorState
+  setFastenersIndustrial: (state: Partial<MonitorState>) => void
+  paintDecorating: MonitorState
+  setPaintDecorating: (state: Partial<MonitorState>) => void
+  lawnGardenEquipment: MonitorState
+  setLawnGardenEquipment: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -8877,6 +8894,15 @@ export const useMapStore = create<MapState>()(
       earlyLearningCenter: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       nannyAgencyService: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       babysittingService: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 147: Hardware & Tools Retail
+      hardwareStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      powerToolsRetail: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      plumbingSupply: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      electricalSupply: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      buildingMaterials: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      fastenersIndustrial: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      paintDecorating: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      lawnGardenEquipment: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -9127,6 +9153,15 @@ export const useMapStore = create<MapState>()(
       setEarlyLearningCenter: (updates) => set((state) => ({ earlyLearningCenter: { ...state.earlyLearningCenter, ...updates } })),
       setNannyAgencyService: (updates) => set((state) => ({ nannyAgencyService: { ...state.nannyAgencyService, ...updates } })),
       setBabysittingService: (updates) => set((state) => ({ babysittingService: { ...state.babysittingService, ...updates } })),
+      // Task 147: Hardware & Tools Retail
+      setHardwareStore: (updates) => set((state) => ({ hardwareStore: { ...state.hardwareStore, ...updates } })),
+      setPowerToolsRetail: (updates) => set((state) => ({ powerToolsRetail: { ...state.powerToolsRetail, ...updates } })),
+      setPlumbingSupply: (updates) => set((state) => ({ plumbingSupply: { ...state.plumbingSupply, ...updates } })),
+      setElectricalSupply: (updates) => set((state) => ({ electricalSupply: { ...state.electricalSupply, ...updates } })),
+      setBuildingMaterials: (updates) => set((state) => ({ buildingMaterials: { ...state.buildingMaterials, ...updates } })),
+      setFastenersIndustrial: (updates) => set((state) => ({ fastenersIndustrial: { ...state.fastenersIndustrial, ...updates } })),
+      setPaintDecorating: (updates) => set((state) => ({ paintDecorating: { ...state.paintDecorating, ...updates } })),
+      setLawnGardenEquipment: (updates) => set((state) => ({ lawnGardenEquipment: { ...state.lawnGardenEquipment, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

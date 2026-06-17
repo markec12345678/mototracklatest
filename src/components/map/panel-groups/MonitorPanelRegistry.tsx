@@ -645,6 +645,15 @@ export function MonitorPanelRegistry() {
   const earlyLearningCenter = useMapStore((s) => s.earlyLearningCenter)
   const nannyAgencyService = useMapStore((s) => s.nannyAgencyService)
   const babysittingService = useMapStore((s) => s.babysittingService)
+  // Task 147: Hardware & Tools Retail
+  const hardwareStore = useMapStore((s) => s.hardwareStore)
+  const powerToolsRetail = useMapStore((s) => s.powerToolsRetail)
+  const plumbingSupply = useMapStore((s) => s.plumbingSupply)
+  const electricalSupply = useMapStore((s) => s.electricalSupply)
+  const buildingMaterials = useMapStore((s) => s.buildingMaterials)
+  const fastenersIndustrial = useMapStore((s) => s.fastenersIndustrial)
+  const paintDecorating = useMapStore((s) => s.paintDecorating)
+  const lawnGardenEquipment = useMapStore((s) => s.lawnGardenEquipment)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -2289,6 +2298,31 @@ export function MonitorPanelRegistry() {
       )}
       {babysittingService.open && (
         <LazyPanel importFn={() => import('@/components/map/BabysittingServiceMonitor')} exportName="BabysittingServiceMonitor" shouldLoad={babysittingService.open} />
+      )}
+      {/* Task 147: Hardware & Tools Retail */}
+      {hardwareStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/HardwareStoreMonitor')} exportName="HardwareStoreMonitor" shouldLoad={hardwareStore.open} />
+      )}
+      {powerToolsRetail.open && (
+        <LazyPanel importFn={() => import('@/components/map/PowerToolsRetailMonitor')} exportName="PowerToolsRetailMonitor" shouldLoad={powerToolsRetail.open} />
+      )}
+      {plumbingSupply.open && (
+        <LazyPanel importFn={() => import('@/components/map/PlumbingSupplyMonitor')} exportName="PlumbingSupplyMonitor" shouldLoad={plumbingSupply.open} />
+      )}
+      {electricalSupply.open && (
+        <LazyPanel importFn={() => import('@/components/map/ElectricalSupplyMonitor')} exportName="ElectricalSupplyMonitor" shouldLoad={electricalSupply.open} />
+      )}
+      {buildingMaterials.open && (
+        <LazyPanel importFn={() => import('@/components/map/BuildingMaterialsMonitor')} exportName="BuildingMaterialsMonitor" shouldLoad={buildingMaterials.open} />
+      )}
+      {fastenersIndustrial.open && (
+        <LazyPanel importFn={() => import('@/components/map/FastenersIndustrialMonitor')} exportName="FastenersIndustrialMonitor" shouldLoad={fastenersIndustrial.open} />
+      )}
+      {paintDecorating.open && (
+        <LazyPanel importFn={() => import('@/components/map/PaintDecoratingMonitor')} exportName="PaintDecoratingMonitor" shouldLoad={paintDecorating.open} />
+      )}
+      {lawnGardenEquipment.open && (
+        <LazyPanel importFn={() => import('@/components/map/LawnGardenEquipmentMonitor')} exportName="LawnGardenEquipmentMonitor" shouldLoad={lawnGardenEquipment.open} />
       )}
     </>
   )

@@ -768,6 +768,14 @@ import {
   Blocks as BlocksIcon,
   Smile as SmileIcon2,
   Heart as HeartIcon3,
+  // Task 147: Hardware & Tools Retail
+  Drill as DrillIcon3,
+  Cog as CogIcon5,
+  Plug as PlugIcon,
+  HardHat as HardHatIcon2,
+  Bolt as BoltIcon,
+  PaintBucket as PaintBucketIcon,
+  Sprout as SproutIcon4,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1144,6 +1152,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const earlyLearningCenterOpen = useMapStore((s) => s.earlyLearningCenter.open)
   const nannyAgencyServiceOpen = useMapStore((s) => s.nannyAgencyService.open)
   const babysittingServiceOpen = useMapStore((s) => s.babysittingService.open)
+  // Task 147: Hardware & Tools Retail
+  const hardwareStoreOpen = useMapStore((s) => s.hardwareStore.open)
+  const powerToolsRetailOpen = useMapStore((s) => s.powerToolsRetail.open)
+  const plumbingSupplyOpen = useMapStore((s) => s.plumbingSupply.open)
+  const electricalSupplyOpen = useMapStore((s) => s.electricalSupply.open)
+  const buildingMaterialsOpen = useMapStore((s) => s.buildingMaterials.open)
+  const fastenersIndustrialOpen = useMapStore((s) => s.fastenersIndustrial.open)
+  const paintDecoratingOpen = useMapStore((s) => s.paintDecorating.open)
+  const lawnGardenEquipmentOpen = useMapStore((s) => s.lawnGardenEquipment.open)
 
   if (typeof window === 'undefined') return null
 
@@ -7540,6 +7557,71 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <HeartIcon3 className="h-4 w-4" />
             {babysittingServiceOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-pink-400" />}
+          </button>
+          {/* Task 147: Hardware & Tools Retail */}
+          <button
+            onClick={() => useMapStore.getState().setHardwareStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${hardwareStoreOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Hardware Store Monitor"
+          >
+            <WrenchIcon className="h-4 w-4" />
+            {hardwareStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setPowerToolsRetail({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${powerToolsRetailOpen ? 'bg-red-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Power Tools Retail Monitor"
+          >
+            <DrillIcon3 className="h-4 w-4" />
+            {powerToolsRetailOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setPlumbingSupply({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${plumbingSupplyOpen ? 'bg-blue-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Plumbing Supply Monitor"
+          >
+            <CogIcon5 className="h-4 w-4" />
+            {plumbingSupplyOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-blue-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setElectricalSupply({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${electricalSupplyOpen ? 'bg-amber-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Electrical Supply Monitor"
+          >
+            <PlugIcon className="h-4 w-4" />
+            {electricalSupplyOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBuildingMaterials({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${buildingMaterialsOpen ? 'bg-slate-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Building Materials Monitor"
+          >
+            <HardHatIcon2 className="h-4 w-4" />
+            {buildingMaterialsOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-stone-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setFastenersIndustrial({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${fastenersIndustrialOpen ? 'bg-zinc-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Fasteners Industrial Monitor"
+          >
+            <BoltIcon className="h-4 w-4" />
+            {fastenersIndustrialOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-zinc-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setPaintDecorating({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${paintDecoratingOpen ? 'bg-fuchsia-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Paint & Decorating Monitor"
+          >
+            <PaintBucketIcon className="h-4 w-4" />
+            {paintDecoratingOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-fuchsia-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setLawnGardenEquipment({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${lawnGardenEquipmentOpen ? 'bg-green-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Lawn & Garden Equipment Monitor"
+          >
+            <SproutIcon4 className="h-4 w-4" />
+            {lawnGardenEquipmentOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-green-400" />}
           </button>
         </div>
       </div>
