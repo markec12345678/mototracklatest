@@ -608,6 +608,15 @@ export function MonitorPanelRegistry() {
   const foodTruckFleet = useMapStore((s) => s.foodTruckFleet)
   const iceCreamParlor = useMapStore((s) => s.iceCreamParlor)
   const pizzeriaChain = useMapStore((s) => s.pizzeriaChain)
+  // Task 143: Beauty, Personal Care & Wellness Services
+  const hairSalonChain = useMapStore((s) => s.hairSalonChain)
+  const barberShopClassic = useMapStore((s) => s.barberShopClassic)
+  const nailSpaManicure = useMapStore((s) => s.nailSpaManicure)
+  const tattooParlorStudio = useMapStore((s) => s.tattooParlorStudio)
+  const cosmeticsBeautyStore = useMapStore((s) => s.cosmeticsBeautyStore)
+  const massageTherapySpa = useMapStore((s) => s.massageTherapySpa)
+  const estheticianMedSpa = useMapStore((s) => s.estheticianMedSpa)
+  const tanningSalonStudio = useMapStore((s) => s.tanningSalonStudio)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -2153,6 +2162,30 @@ export function MonitorPanelRegistry() {
       )}
       {pizzeriaChain.open && (
         <LazyPanel importFn={() => import('@/components/map/PizzeriaChainMonitor')} exportName="PizzeriaChainMonitor" shouldLoad={pizzeriaChain.open} />
+      )}
+      {hairSalonChain.open && (
+        <LazyPanel importFn={() => import('@/components/map/HairSalonChainMonitor')} exportName="HairSalonChainMonitor" shouldLoad={hairSalonChain.open} />
+      )}
+      {barberShopClassic.open && (
+        <LazyPanel importFn={() => import('@/components/map/BarberShopClassicMonitor')} exportName="BarberShopClassicMonitor" shouldLoad={barberShopClassic.open} />
+      )}
+      {nailSpaManicure.open && (
+        <LazyPanel importFn={() => import('@/components/map/NailSpaManicureMonitor')} exportName="NailSpaManicureMonitor" shouldLoad={nailSpaManicure.open} />
+      )}
+      {tattooParlorStudio.open && (
+        <LazyPanel importFn={() => import('@/components/map/TattooParlorStudioMonitor')} exportName="TattooParlorStudioMonitor" shouldLoad={tattooParlorStudio.open} />
+      )}
+      {cosmeticsBeautyStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/CosmeticsBeautyStoreMonitor')} exportName="CosmeticsBeautyStoreMonitor" shouldLoad={cosmeticsBeautyStore.open} />
+      )}
+      {massageTherapySpa.open && (
+        <LazyPanel importFn={() => import('@/components/map/MassageTherapySpaMonitor')} exportName="MassageTherapySpaMonitor" shouldLoad={massageTherapySpa.open} />
+      )}
+      {estheticianMedSpa.open && (
+        <LazyPanel importFn={() => import('@/components/map/EstheticianMedSpaMonitor')} exportName="EstheticianMedSpaMonitor" shouldLoad={estheticianMedSpa.open} />
+      )}
+      {tanningSalonStudio.open && (
+        <LazyPanel importFn={() => import('@/components/map/TanningSalonStudioMonitor')} exportName="TanningSalonStudioMonitor" shouldLoad={tanningSalonStudio.open} />
       )}
     </>
   )

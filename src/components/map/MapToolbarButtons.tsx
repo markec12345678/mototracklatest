@@ -733,6 +733,14 @@ import {
   Truck as TruckIcon,
   IceCream as IceCreamIcon,
   Pizza as PizzaIcon,
+  Scissors as ScissorsIcon,
+  Brush as BrushIcon,
+  Flower as FlowerIcon3,
+  Heart as HeartIcon,
+  SprayCan as SprayCanIcon,
+  Hand as HandIcon,
+  Smile as SmileIcon,
+  Sun as SunIcon14,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1074,6 +1082,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const foodTruckFleetOpen = useMapStore((s) => s.foodTruckFleet.open)
   const iceCreamParlorOpen = useMapStore((s) => s.iceCreamParlor.open)
   const pizzeriaChainOpen = useMapStore((s) => s.pizzeriaChain.open)
+  const hairSalonChainOpen = useMapStore((s) => s.hairSalonChain.open)
+  const barberShopClassicOpen = useMapStore((s) => s.barberShopClassic.open)
+  const nailSpaManicureOpen = useMapStore((s) => s.nailSpaManicure.open)
+  const tattooParlorStudioOpen = useMapStore((s) => s.tattooParlorStudio.open)
+  const cosmeticsBeautyStoreOpen = useMapStore((s) => s.cosmeticsBeautyStore.open)
+  const massageTherapySpaOpen = useMapStore((s) => s.massageTherapySpa.open)
+  const estheticianMedSpaOpen = useMapStore((s) => s.estheticianMedSpa.open)
+  const tanningSalonStudioOpen = useMapStore((s) => s.tanningSalonStudio.open)
 
   if (typeof window === 'undefined') return null
 
@@ -7204,6 +7220,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <PizzaIcon className="h-4 w-4" />
             {pizzeriaChainOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setHairSalonChain({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${hairSalonChainOpen ? 'bg-rose-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Hair Salon Chain Monitor"
+          >
+            <ScissorsIcon className="h-4 w-4" />
+            {hairSalonChainOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBarberShopClassic({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${barberShopClassicOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Barber Shop Classic Monitor"
+          >
+            <BrushIcon className="h-4 w-4" />
+            {barberShopClassicOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setNailSpaManicure({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${nailSpaManicureOpen ? 'bg-pink-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Nail Spa Manicure Monitor"
+          >
+            <FlowerIcon3 className="h-4 w-4" />
+            {nailSpaManicureOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-pink-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setTattooParlorStudio({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${tattooParlorStudioOpen ? 'bg-slate-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Tattoo Parlor Studio Monitor"
+          >
+            <HeartIcon className="h-4 w-4" />
+            {tattooParlorStudioOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-zinc-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCosmeticsBeautyStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${cosmeticsBeautyStoreOpen ? 'bg-fuchsia-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Cosmetics Beauty Store Monitor"
+          >
+            <SprayCanIcon className="h-4 w-4" />
+            {cosmeticsBeautyStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-fuchsia-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setMassageTherapySpa({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${massageTherapySpaOpen ? 'bg-teal-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Massage Therapy Spa Monitor"
+          >
+            <HandIcon className="h-4 w-4" />
+            {massageTherapySpaOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setEstheticianMedSpa({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${estheticianMedSpaOpen ? 'bg-rose-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Esthetician Med Spa Monitor"
+          >
+            <SmileIcon className="h-4 w-4" />
+            {estheticianMedSpaOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-pink-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setTanningSalonStudio({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${tanningSalonStudioOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Tanning Salon Studio Monitor"
+          >
+            <SunIcon14 className="h-4 w-4" />
+            {tanningSalonStudioOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-400" />}
           </button>
         </div>
       </div>

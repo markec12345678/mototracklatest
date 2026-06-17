@@ -4561,6 +4561,23 @@ interface MapState {
   setIceCreamParlor: (state: Partial<MonitorState>) => void
   pizzeriaChain: MonitorState
   setPizzeriaChain: (state: Partial<MonitorState>) => void
+  // Task 143: Beauty, Personal Care & Wellness Services
+  hairSalonChain: MonitorState
+  setHairSalonChain: (state: Partial<MonitorState>) => void
+  barberShopClassic: MonitorState
+  setBarberShopClassic: (state: Partial<MonitorState>) => void
+  nailSpaManicure: MonitorState
+  setNailSpaManicure: (state: Partial<MonitorState>) => void
+  tattooParlorStudio: MonitorState
+  setTattooParlorStudio: (state: Partial<MonitorState>) => void
+  cosmeticsBeautyStore: MonitorState
+  setCosmeticsBeautyStore: (state: Partial<MonitorState>) => void
+  massageTherapySpa: MonitorState
+  setMassageTherapySpa: (state: Partial<MonitorState>) => void
+  estheticianMedSpa: MonitorState
+  setEstheticianMedSpa: (state: Partial<MonitorState>) => void
+  tanningSalonStudio: MonitorState
+  setTanningSalonStudio: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -8770,6 +8787,15 @@ export const useMapStore = create<MapState>()(
       foodTruckFleet: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       iceCreamParlor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       pizzeriaChain: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 143: Beauty, Personal Care & Wellness Services
+      hairSalonChain: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      barberShopClassic: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      nailSpaManicure: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      tattooParlorStudio: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      cosmeticsBeautyStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      massageTherapySpa: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      estheticianMedSpa: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      tanningSalonStudio: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -8983,6 +9009,15 @@ export const useMapStore = create<MapState>()(
       setFoodTruckFleet: (updates) => set((state) => ({ foodTruckFleet: { ...state.foodTruckFleet, ...updates } })),
       setIceCreamParlor: (updates) => set((state) => ({ iceCreamParlor: { ...state.iceCreamParlor, ...updates } })),
       setPizzeriaChain: (updates) => set((state) => ({ pizzeriaChain: { ...state.pizzeriaChain, ...updates } })),
+      // Task 143: Beauty, Personal Care & Wellness Services
+      setHairSalonChain: (updates) => set((state) => ({ hairSalonChain: { ...state.hairSalonChain, ...updates } })),
+      setBarberShopClassic: (updates) => set((state) => ({ barberShopClassic: { ...state.barberShopClassic, ...updates } })),
+      setNailSpaManicure: (updates) => set((state) => ({ nailSpaManicure: { ...state.nailSpaManicure, ...updates } })),
+      setTattooParlorStudio: (updates) => set((state) => ({ tattooParlorStudio: { ...state.tattooParlorStudio, ...updates } })),
+      setCosmeticsBeautyStore: (updates) => set((state) => ({ cosmeticsBeautyStore: { ...state.cosmeticsBeautyStore, ...updates } })),
+      setMassageTherapySpa: (updates) => set((state) => ({ massageTherapySpa: { ...state.massageTherapySpa, ...updates } })),
+      setEstheticianMedSpa: (updates) => set((state) => ({ estheticianMedSpa: { ...state.estheticianMedSpa, ...updates } })),
+      setTanningSalonStudio: (updates) => set((state) => ({ tanningSalonStudio: { ...state.tanningSalonStudio, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
