@@ -572,6 +572,15 @@ export function MonitorPanelRegistry() {
   const shintoShrine = useMapStore((s) => s.shintoShrine)
   const monasteryAbbey = useMapStore((s) => s.monasteryAbbey)
   const pilgrimageSite = useMapStore((s) => s.pilgrimageSite)
+  // Task 139: Beverage Production & Brewing
+  const breweryFermentation = useMapStore((s) => s.breweryFermentation)
+  const wineryVineyardCellar = useMapStore((s) => s.wineryVineyardCellar)
+  const distilleryOperation = useMapStore((s) => s.distilleryOperation)
+  const bottlingPlantLine = useMapStore((s) => s.bottlingPlantLine)
+  const coffeeRoasteryBatch = useMapStore((s) => s.coffeeRoasteryBatch)
+  const teaProcessingFacility = useMapStore((s) => s.teaProcessingFacility)
+  const juiceProcessingLine = useMapStore((s) => s.juiceProcessingLine)
+  const softDrinkBottling = useMapStore((s) => s.softDrinkBottling)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -2021,6 +2030,30 @@ export function MonitorPanelRegistry() {
       )}
       {pilgrimageSite.open && (
         <LazyPanel importFn={() => import('@/components/map/PilgrimageSiteMonitor')} exportName="PilgrimageSiteMonitor" shouldLoad={pilgrimageSite.open} />
+      )}
+      {breweryFermentation.open && (
+        <LazyPanel importFn={() => import('@/components/map/BreweryFermentationMonitor')} exportName="BreweryFermentationMonitor" shouldLoad={breweryFermentation.open} />
+      )}
+      {wineryVineyardCellar.open && (
+        <LazyPanel importFn={() => import('@/components/map/WineryVineyardCellarMonitor')} exportName="WineryVineyardCellarMonitor" shouldLoad={wineryVineyardCellar.open} />
+      )}
+      {distilleryOperation.open && (
+        <LazyPanel importFn={() => import('@/components/map/DistilleryOperationMonitor')} exportName="DistilleryOperationMonitor" shouldLoad={distilleryOperation.open} />
+      )}
+      {bottlingPlantLine.open && (
+        <LazyPanel importFn={() => import('@/components/map/BottlingPlantLineMonitor')} exportName="BottlingPlantLineMonitor" shouldLoad={bottlingPlantLine.open} />
+      )}
+      {coffeeRoasteryBatch.open && (
+        <LazyPanel importFn={() => import('@/components/map/CoffeeRoasteryBatchMonitor')} exportName="CoffeeRoasteryBatchMonitor" shouldLoad={coffeeRoasteryBatch.open} />
+      )}
+      {teaProcessingFacility.open && (
+        <LazyPanel importFn={() => import('@/components/map/TeaProcessingFacilityMonitor')} exportName="TeaProcessingFacilityMonitor" shouldLoad={teaProcessingFacility.open} />
+      )}
+      {juiceProcessingLine.open && (
+        <LazyPanel importFn={() => import('@/components/map/JuiceProcessingLineMonitor')} exportName="JuiceProcessingLineMonitor" shouldLoad={juiceProcessingLine.open} />
+      )}
+      {softDrinkBottling.open && (
+        <LazyPanel importFn={() => import('@/components/map/SoftDrinkBottlingMonitor')} exportName="SoftDrinkBottlingMonitor" shouldLoad={softDrinkBottling.open} />
       )}
     </>
   )

@@ -701,6 +701,14 @@ import {
   TreePine as TreePineIcon11,
   Mountain as MountainIcon20,
   Footprints as FootprintsIcon4,
+  Beer as BeerIcon,
+  Grape as GrapeIcon,
+  FlaskConical as FlaskConicalIcon10,
+  Factory as FactoryIcon7,
+  Coffee as CoffeeIcon,
+  Leaf as LeafIcon10,
+  Citrus as CitrusIcon,
+  CupSoda as CupSodaIcon,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1010,6 +1018,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const shintoShrineOpen = useMapStore((s) => s.shintoShrine.open)
   const monasteryAbbeyOpen = useMapStore((s) => s.monasteryAbbey.open)
   const pilgrimageSiteOpen = useMapStore((s) => s.pilgrimageSite.open)
+  const breweryFermentationOpen = useMapStore((s) => s.breweryFermentation.open)
+  const wineryVineyardCellarOpen = useMapStore((s) => s.wineryVineyardCellar.open)
+  const distilleryOperationOpen = useMapStore((s) => s.distilleryOperation.open)
+  const bottlingPlantLineOpen = useMapStore((s) => s.bottlingPlantLine.open)
+  const coffeeRoasteryBatchOpen = useMapStore((s) => s.coffeeRoasteryBatch.open)
+  const teaProcessingFacilityOpen = useMapStore((s) => s.teaProcessingFacility.open)
+  const juiceProcessingLineOpen = useMapStore((s) => s.juiceProcessingLine.open)
+  const softDrinkBottlingOpen = useMapStore((s) => s.softDrinkBottling.open)
 
   if (typeof window === 'undefined') return null
 
@@ -6884,6 +6900,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <FootprintsIcon4 className="h-4 w-4" />
             {pilgrimageSiteOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-violet-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBreweryFermentation({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${breweryFermentationOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Brewery Fermentation Monitor"
+          >
+            <BeerIcon className="h-4 w-4" />
+            {breweryFermentationOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setWineryVineyardCellar({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${wineryVineyardCellarOpen ? 'bg-rose-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Winery & Vineyard Cellar Monitor"
+          >
+            <GrapeIcon className="h-4 w-4" />
+            {wineryVineyardCellarOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setDistilleryOperation({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${distilleryOperationOpen ? 'bg-yellow-800 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Distillery Operation Monitor"
+          >
+            <FlaskConicalIcon10 className="h-4 w-4" />
+            {distilleryOperationOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-yellow-500" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBottlingPlantLine({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${bottlingPlantLineOpen ? 'bg-cyan-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Bottling Plant Line Monitor"
+          >
+            <FactoryIcon7 className="h-4 w-4" />
+            {bottlingPlantLineOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCoffeeRoasteryBatch({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${coffeeRoasteryBatchOpen ? 'bg-stone-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Coffee Roastery Batch Monitor"
+          >
+            <CoffeeIcon className="h-4 w-4" />
+            {coffeeRoasteryBatchOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-stone-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setTeaProcessingFacility({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${teaProcessingFacilityOpen ? 'bg-emerald-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Tea Processing Facility Monitor"
+          >
+            <LeafIcon10 className="h-4 w-4" />
+            {teaProcessingFacilityOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setJuiceProcessingLine({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${juiceProcessingLineOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Juice Processing Line Monitor"
+          >
+            <CitrusIcon className="h-4 w-4" />
+            {juiceProcessingLineOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setSoftDrinkBottling({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${softDrinkBottlingOpen ? 'bg-red-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Soft Drink Bottling Monitor"
+          >
+            <CupSodaIcon className="h-4 w-4" />
+            {softDrinkBottlingOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-400" />}
           </button>
         </div>
       </div>

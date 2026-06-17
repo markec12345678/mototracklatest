@@ -4495,6 +4495,22 @@ interface MapState {
   setMonasteryAbbey: (state: Partial<MonitorState>) => void
   pilgrimageSite: MonitorState
   setPilgrimageSite: (state: Partial<MonitorState>) => void
+  breweryFermentation: MonitorState
+  setBreweryFermentation: (state: Partial<MonitorState>) => void
+  wineryVineyardCellar: MonitorState
+  setWineryVineyardCellar: (state: Partial<MonitorState>) => void
+  distilleryOperation: MonitorState
+  setDistilleryOperation: (state: Partial<MonitorState>) => void
+  bottlingPlantLine: MonitorState
+  setBottlingPlantLine: (state: Partial<MonitorState>) => void
+  coffeeRoasteryBatch: MonitorState
+  setCoffeeRoasteryBatch: (state: Partial<MonitorState>) => void
+  teaProcessingFacility: MonitorState
+  setTeaProcessingFacility: (state: Partial<MonitorState>) => void
+  juiceProcessingLine: MonitorState
+  setJuiceProcessingLine: (state: Partial<MonitorState>) => void
+  softDrinkBottling: MonitorState
+  setSoftDrinkBottling: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -8670,6 +8686,14 @@ export const useMapStore = create<MapState>()(
       shintoShrine: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       monasteryAbbey: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       pilgrimageSite: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      breweryFermentation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      wineryVineyardCellar: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      distilleryOperation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      bottlingPlantLine: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      coffeeRoasteryBatch: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      teaProcessingFacility: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      juiceProcessingLine: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      softDrinkBottling: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -8849,6 +8873,14 @@ export const useMapStore = create<MapState>()(
       setShintoShrine: (updates) => set((state) => ({ shintoShrine: { ...state.shintoShrine, ...updates } })),
       setMonasteryAbbey: (updates) => set((state) => ({ monasteryAbbey: { ...state.monasteryAbbey, ...updates } })),
       setPilgrimageSite: (updates) => set((state) => ({ pilgrimageSite: { ...state.pilgrimageSite, ...updates } })),
+      setBreweryFermentation: (updates) => set((state) => ({ breweryFermentation: { ...state.breweryFermentation, ...updates } })),
+      setWineryVineyardCellar: (updates) => set((state) => ({ wineryVineyardCellar: { ...state.wineryVineyardCellar, ...updates } })),
+      setDistilleryOperation: (updates) => set((state) => ({ distilleryOperation: { ...state.distilleryOperation, ...updates } })),
+      setBottlingPlantLine: (updates) => set((state) => ({ bottlingPlantLine: { ...state.bottlingPlantLine, ...updates } })),
+      setCoffeeRoasteryBatch: (updates) => set((state) => ({ coffeeRoasteryBatch: { ...state.coffeeRoasteryBatch, ...updates } })),
+      setTeaProcessingFacility: (updates) => set((state) => ({ teaProcessingFacility: { ...state.teaProcessingFacility, ...updates } })),
+      setJuiceProcessingLine: (updates) => set((state) => ({ juiceProcessingLine: { ...state.juiceProcessingLine, ...updates } })),
+      setSoftDrinkBottling: (updates) => set((state) => ({ softDrinkBottling: { ...state.softDrinkBottling, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
