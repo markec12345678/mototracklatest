@@ -825,6 +825,14 @@ import {
   Headphones as HeadphonesIcon2,
   Music4 as MusicIcon4,
   Disc3 as Disc3Icon,
+  Dumbbell as DumbbellIcon2,
+  Footprints as FootprintsIcon5,
+  Tent as TentIcon2,
+  Activity as ActivityIcon12,
+  Trophy as TrophyIcon2,
+  Snowflake as SnowflakeIcon20,
+  Waves as WavesIcon29,
+  Goal as GoalIcon,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1261,6 +1269,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const audioEquipmentStoreOpen = useMapStore((s) => s.audioEquipmentStore.open)
   const sheetMusicShopOpen = useMapStore((s) => s.sheetMusicShop.open)
   const vinylRecordStoreOpen = useMapStore((s) => s.vinylRecordStore.open)
+  const sportingGoodsChainOpen = useMapStore((s) => s.sportingGoodsChain.open)
+  const athleticFootwearStoreOpen = useMapStore((s) => s.athleticFootwearStore.open)
+  const outdoorAdventureGearOpen = useMapStore((s) => s.outdoorAdventureGear.open)
+  const fitnessEquipmentStoreOpen = useMapStore((s) => s.fitnessEquipmentStore.open)
+  const teamSportApparelOpen = useMapStore((s) => s.teamSportApparel.open)
+  const skiSnowboardShopOpen = useMapStore((s) => s.skiSnowboardShop.open)
+  const surfWatersportShopOpen = useMapStore((s) => s.surfWatersportShop.open)
+  const soccerSpecialtyStoreOpen = useMapStore((s) => s.soccerSpecialtyStore.open)
 
   if (typeof window === 'undefined') return null
 
@@ -8109,6 +8125,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <Disc3Icon className="h-4 w-4" />
             {vinylRecordStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-pink-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setSportingGoodsChain({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${sportingGoodsChainOpen ? 'bg-emerald-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Sporting Goods Chain Monitor"
+          >
+            <DumbbellIcon2 className="h-4 w-4" />
+            {sportingGoodsChainOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setAthleticFootwearStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${athleticFootwearStoreOpen ? 'bg-rose-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Athletic Footwear Store Monitor"
+          >
+            <FootprintsIcon5 className="h-4 w-4" />
+            {athleticFootwearStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setOutdoorAdventureGear({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${outdoorAdventureGearOpen ? 'bg-green-800 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Outdoor Adventure Gear Monitor"
+          >
+            <TentIcon2 className="h-4 w-4" />
+            {outdoorAdventureGearOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-green-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setFitnessEquipmentStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${fitnessEquipmentStoreOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Fitness Equipment Store Monitor"
+          >
+            <ActivityIcon12 className="h-4 w-4" />
+            {fitnessEquipmentStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setTeamSportApparel({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${teamSportApparelOpen ? 'bg-red-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Team Sport Apparel Monitor"
+          >
+            <TrophyIcon2 className="h-4 w-4" />
+            {teamSportApparelOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setSkiSnowboardShop({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${skiSnowboardShopOpen ? 'bg-sky-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Ski & Snowboard Shop Monitor"
+          >
+            <SnowflakeIcon20 className="h-4 w-4" />
+            {skiSnowboardShopOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-sky-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setSurfWatersportShop({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${surfWatersportShopOpen ? 'bg-cyan-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Surf & Watersport Shop Monitor"
+          >
+            <WavesIcon29 className="h-4 w-4" />
+            {surfWatersportShopOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setSoccerSpecialtyStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${soccerSpecialtyStoreOpen ? 'bg-green-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Soccer Specialty Store Monitor"
+          >
+            <GoalIcon className="h-4 w-4" />
+            {soccerSpecialtyStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-green-400" />}
           </button>
         </div>
       </div>

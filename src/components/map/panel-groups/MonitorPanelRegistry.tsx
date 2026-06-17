@@ -708,6 +708,15 @@ export function MonitorPanelRegistry() {
   const audioEquipmentStore = useMapStore((s) => s.audioEquipmentStore)
   const sheetMusicShop = useMapStore((s) => s.sheetMusicShop)
   const vinylRecordStore = useMapStore((s) => s.vinylRecordStore)
+  // Task 154: Sporting Goods Retail
+  const sportingGoodsChain = useMapStore((s) => s.sportingGoodsChain)
+  const athleticFootwearStore = useMapStore((s) => s.athleticFootwearStore)
+  const outdoorAdventureGear = useMapStore((s) => s.outdoorAdventureGear)
+  const fitnessEquipmentStore = useMapStore((s) => s.fitnessEquipmentStore)
+  const teamSportApparel = useMapStore((s) => s.teamSportApparel)
+  const skiSnowboardShop = useMapStore((s) => s.skiSnowboardShop)
+  const surfWatersportShop = useMapStore((s) => s.surfWatersportShop)
+  const soccerSpecialtyStore = useMapStore((s) => s.soccerSpecialtyStore)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -2524,6 +2533,30 @@ export function MonitorPanelRegistry() {
       )}
       {vinylRecordStore.open && (
         <LazyPanel importFn={() => import('@/components/map/VinylRecordStoreMonitor')} exportName="VinylRecordStoreMonitor" shouldLoad={vinylRecordStore.open} />
+      )}
+      {sportingGoodsChain.open && (
+        <LazyPanel importFn={() => import('@/components/map/SportingGoodsChainMonitor')} exportName="SportingGoodsChainMonitor" shouldLoad={sportingGoodsChain.open} />
+      )}
+      {athleticFootwearStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/AthleticFootwearStoreMonitor')} exportName="AthleticFootwearStoreMonitor" shouldLoad={athleticFootwearStore.open} />
+      )}
+      {outdoorAdventureGear.open && (
+        <LazyPanel importFn={() => import('@/components/map/OutdoorAdventureGearMonitor')} exportName="OutdoorAdventureGearMonitor" shouldLoad={outdoorAdventureGear.open} />
+      )}
+      {fitnessEquipmentStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/FitnessEquipmentStoreMonitor')} exportName="FitnessEquipmentStoreMonitor" shouldLoad={fitnessEquipmentStore.open} />
+      )}
+      {teamSportApparel.open && (
+        <LazyPanel importFn={() => import('@/components/map/TeamSportApparelMonitor')} exportName="TeamSportApparelMonitor" shouldLoad={teamSportApparel.open} />
+      )}
+      {skiSnowboardShop.open && (
+        <LazyPanel importFn={() => import('@/components/map/SkiSnowboardShopMonitor')} exportName="SkiSnowboardShopMonitor" shouldLoad={skiSnowboardShop.open} />
+      )}
+      {surfWatersportShop.open && (
+        <LazyPanel importFn={() => import('@/components/map/SurfWatersportShopMonitor')} exportName="SurfWatersportShopMonitor" shouldLoad={surfWatersportShop.open} />
+      )}
+      {soccerSpecialtyStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/SoccerSpecialtyStoreMonitor')} exportName="SoccerSpecialtyStoreMonitor" shouldLoad={soccerSpecialtyStore.open} />
       )}
     </>
   )

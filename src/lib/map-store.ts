@@ -4747,6 +4747,22 @@ interface MapState {
   setSheetMusicShop: (state: Partial<MonitorState>) => void
   vinylRecordStore: MonitorState
   setVinylRecordStore: (state: Partial<MonitorState>) => void
+  sportingGoodsChain: MonitorState
+  setSportingGoodsChain: (state: Partial<MonitorState>) => void
+  athleticFootwearStore: MonitorState
+  setAthleticFootwearStore: (state: Partial<MonitorState>) => void
+  outdoorAdventureGear: MonitorState
+  setOutdoorAdventureGear: (state: Partial<MonitorState>) => void
+  fitnessEquipmentStore: MonitorState
+  setFitnessEquipmentStore: (state: Partial<MonitorState>) => void
+  teamSportApparel: MonitorState
+  setTeamSportApparel: (state: Partial<MonitorState>) => void
+  skiSnowboardShop: MonitorState
+  setSkiSnowboardShop: (state: Partial<MonitorState>) => void
+  surfWatersportShop: MonitorState
+  setSurfWatersportShop: (state: Partial<MonitorState>) => void
+  soccerSpecialtyStore: MonitorState
+  setSoccerSpecialtyStore: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -9053,6 +9069,14 @@ export const useMapStore = create<MapState>()(
       audioEquipmentStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       sheetMusicShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       vinylRecordStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      sportingGoodsChain: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      athleticFootwearStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      outdoorAdventureGear: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      fitnessEquipmentStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      teamSportApparel: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      skiSnowboardShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      surfWatersportShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      soccerSpecialtyStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -9363,6 +9387,14 @@ export const useMapStore = create<MapState>()(
       setAudioEquipmentStore: (updates) => set((state) => ({ audioEquipmentStore: { ...state.audioEquipmentStore, ...updates } })),
       setSheetMusicShop: (updates) => set((state) => ({ sheetMusicShop: { ...state.sheetMusicShop, ...updates } })),
       setVinylRecordStore: (updates) => set((state) => ({ vinylRecordStore: { ...state.vinylRecordStore, ...updates } })),
+      setSportingGoodsChain: (updates) => set((state) => ({ sportingGoodsChain: { ...state.sportingGoodsChain, ...updates } })),
+      setAthleticFootwearStore: (updates) => set((state) => ({ athleticFootwearStore: { ...state.athleticFootwearStore, ...updates } })),
+      setOutdoorAdventureGear: (updates) => set((state) => ({ outdoorAdventureGear: { ...state.outdoorAdventureGear, ...updates } })),
+      setFitnessEquipmentStore: (updates) => set((state) => ({ fitnessEquipmentStore: { ...state.fitnessEquipmentStore, ...updates } })),
+      setTeamSportApparel: (updates) => set((state) => ({ teamSportApparel: { ...state.teamSportApparel, ...updates } })),
+      setSkiSnowboardShop: (updates) => set((state) => ({ skiSnowboardShop: { ...state.skiSnowboardShop, ...updates } })),
+      setSurfWatersportShop: (updates) => set((state) => ({ surfWatersportShop: { ...state.surfWatersportShop, ...updates } })),
+      setSoccerSpecialtyStore: (updates) => set((state) => ({ soccerSpecialtyStore: { ...state.soccerSpecialtyStore, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
