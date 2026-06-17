@@ -741,6 +741,14 @@ import {
   Hand as HandIcon,
   Smile as SmileIcon,
   Sun as SunIcon14,
+  Car as CarIcon5,
+  Wrench as WrenchIcon,
+  CarFront as CarFrontIcon,
+  CircleDot as CircleDotIcon6,
+  Droplet as DropletIcon20,
+  Gauge as GaugeIcon4,
+  Cog as CogIcon,
+  KeyRound as KeyRoundIcon,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1090,6 +1098,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const massageTherapySpaOpen = useMapStore((s) => s.massageTherapySpa.open)
   const estheticianMedSpaOpen = useMapStore((s) => s.estheticianMedSpa.open)
   const tanningSalonStudioOpen = useMapStore((s) => s.tanningSalonStudio.open)
+  const carWashTunnelOpen = useMapStore((s) => s.carWashTunnel.open)
+  const autoRepairGarageOpen = useMapStore((s) => s.autoRepairGarage.open)
+  const carDealershipShowroomOpen = useMapStore((s) => s.carDealershipShowroom.open)
+  const tireAutoCareOpen = useMapStore((s) => s.tireAutoCare.open)
+  const oilChangeQuickOpen = useMapStore((s) => s.oilChangeQuick.open)
+  const emissionsInspectionOpen = useMapStore((s) => s.emissionsInspection.open)
+  const autoPartsStoreOpen = useMapStore((s) => s.autoPartsStore.open)
+  const carRentalAgencyOpen = useMapStore((s) => s.carRentalAgency.open)
 
   if (typeof window === 'undefined') return null
 
@@ -7284,6 +7300,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <SunIcon14 className="h-4 w-4" />
             {tanningSalonStudioOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCarWashTunnel({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${carWashTunnelOpen ? 'bg-blue-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Car Wash Tunnel Monitor"
+          >
+            <CarIcon5 className="h-4 w-4" />
+            {carWashTunnelOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-blue-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setAutoRepairGarage({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${autoRepairGarageOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Auto Repair Garage Monitor"
+          >
+            <WrenchIcon className="h-4 w-4" />
+            {autoRepairGarageOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCarDealershipShowroom({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${carDealershipShowroomOpen ? 'bg-red-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Car Dealership Showroom Monitor"
+          >
+            <CarFrontIcon className="h-4 w-4" />
+            {carDealershipShowroomOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setTireAutoCare({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${tireAutoCareOpen ? 'bg-slate-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Tire Auto Care Monitor"
+          >
+            <CircleDotIcon6 className="h-4 w-4" />
+            {tireAutoCareOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-zinc-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setOilChangeQuick({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${oilChangeQuickOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Oil Change Quick Monitor"
+          >
+            <DropletIcon20 className="h-4 w-4" />
+            {oilChangeQuickOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setEmissionsInspection({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${emissionsInspectionOpen ? 'bg-emerald-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Emissions Inspection Monitor"
+          >
+            <GaugeIcon4 className="h-4 w-4" />
+            {emissionsInspectionOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setAutoPartsStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${autoPartsStoreOpen ? 'bg-stone-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Auto Parts Store Monitor"
+          >
+            <CogIcon className="h-4 w-4" />
+            {autoPartsStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-stone-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCarRentalAgency({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${carRentalAgencyOpen ? 'bg-purple-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Car Rental Agency Monitor"
+          >
+            <KeyRoundIcon className="h-4 w-4" />
+            {carRentalAgencyOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-purple-400" />}
           </button>
         </div>
       </div>

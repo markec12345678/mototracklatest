@@ -617,6 +617,15 @@ export function MonitorPanelRegistry() {
   const massageTherapySpa = useMapStore((s) => s.massageTherapySpa)
   const estheticianMedSpa = useMapStore((s) => s.estheticianMedSpa)
   const tanningSalonStudio = useMapStore((s) => s.tanningSalonStudio)
+  // Task 144: Auto & Vehicle Services
+  const carWashTunnel = useMapStore((s) => s.carWashTunnel)
+  const autoRepairGarage = useMapStore((s) => s.autoRepairGarage)
+  const carDealershipShowroom = useMapStore((s) => s.carDealershipShowroom)
+  const tireAutoCare = useMapStore((s) => s.tireAutoCare)
+  const oilChangeQuick = useMapStore((s) => s.oilChangeQuick)
+  const emissionsInspection = useMapStore((s) => s.emissionsInspection)
+  const autoPartsStore = useMapStore((s) => s.autoPartsStore)
+  const carRentalAgency = useMapStore((s) => s.carRentalAgency)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -2186,6 +2195,30 @@ export function MonitorPanelRegistry() {
       )}
       {tanningSalonStudio.open && (
         <LazyPanel importFn={() => import('@/components/map/TanningSalonStudioMonitor')} exportName="TanningSalonStudioMonitor" shouldLoad={tanningSalonStudio.open} />
+      )}
+      {carWashTunnel.open && (
+        <LazyPanel importFn={() => import('@/components/map/CarWashTunnelMonitor')} exportName="CarWashTunnelMonitor" shouldLoad={carWashTunnel.open} />
+      )}
+      {autoRepairGarage.open && (
+        <LazyPanel importFn={() => import('@/components/map/AutoRepairGarageMonitor')} exportName="AutoRepairGarageMonitor" shouldLoad={autoRepairGarage.open} />
+      )}
+      {carDealershipShowroom.open && (
+        <LazyPanel importFn={() => import('@/components/map/CarDealershipShowroomMonitor')} exportName="CarDealershipShowroomMonitor" shouldLoad={carDealershipShowroom.open} />
+      )}
+      {tireAutoCare.open && (
+        <LazyPanel importFn={() => import('@/components/map/TireAutoCareMonitor')} exportName="TireAutoCareMonitor" shouldLoad={tireAutoCare.open} />
+      )}
+      {oilChangeQuick.open && (
+        <LazyPanel importFn={() => import('@/components/map/OilChangeQuickMonitor')} exportName="OilChangeQuickMonitor" shouldLoad={oilChangeQuick.open} />
+      )}
+      {emissionsInspection.open && (
+        <LazyPanel importFn={() => import('@/components/map/EmissionsInspectionMonitor')} exportName="EmissionsInspectionMonitor" shouldLoad={emissionsInspection.open} />
+      )}
+      {autoPartsStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/AutoPartsStoreMonitor')} exportName="AutoPartsStoreMonitor" shouldLoad={autoPartsStore.open} />
+      )}
+      {carRentalAgency.open && (
+        <LazyPanel importFn={() => import('@/components/map/CarRentalAgencyMonitor')} exportName="CarRentalAgencyMonitor" shouldLoad={carRentalAgency.open} />
       )}
     </>
   )

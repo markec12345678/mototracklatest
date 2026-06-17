@@ -4578,6 +4578,23 @@ interface MapState {
   setEstheticianMedSpa: (state: Partial<MonitorState>) => void
   tanningSalonStudio: MonitorState
   setTanningSalonStudio: (state: Partial<MonitorState>) => void
+  // Task 144: Auto & Vehicle Services
+  carWashTunnel: MonitorState
+  setCarWashTunnel: (state: Partial<MonitorState>) => void
+  autoRepairGarage: MonitorState
+  setAutoRepairGarage: (state: Partial<MonitorState>) => void
+  carDealershipShowroom: MonitorState
+  setCarDealershipShowroom: (state: Partial<MonitorState>) => void
+  tireAutoCare: MonitorState
+  setTireAutoCare: (state: Partial<MonitorState>) => void
+  oilChangeQuick: MonitorState
+  setOilChangeQuick: (state: Partial<MonitorState>) => void
+  emissionsInspection: MonitorState
+  setEmissionsInspection: (state: Partial<MonitorState>) => void
+  autoPartsStore: MonitorState
+  setAutoPartsStore: (state: Partial<MonitorState>) => void
+  carRentalAgency: MonitorState
+  setCarRentalAgency: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -8796,6 +8813,15 @@ export const useMapStore = create<MapState>()(
       massageTherapySpa: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       estheticianMedSpa: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       tanningSalonStudio: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 144: Auto & Vehicle Services
+      carWashTunnel: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      autoRepairGarage: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      carDealershipShowroom: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      tireAutoCare: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      oilChangeQuick: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      emissionsInspection: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      autoPartsStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      carRentalAgency: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -9018,6 +9044,15 @@ export const useMapStore = create<MapState>()(
       setMassageTherapySpa: (updates) => set((state) => ({ massageTherapySpa: { ...state.massageTherapySpa, ...updates } })),
       setEstheticianMedSpa: (updates) => set((state) => ({ estheticianMedSpa: { ...state.estheticianMedSpa, ...updates } })),
       setTanningSalonStudio: (updates) => set((state) => ({ tanningSalonStudio: { ...state.tanningSalonStudio, ...updates } })),
+      // Task 144: Auto & Vehicle Services
+      setCarWashTunnel: (updates) => set((state) => ({ carWashTunnel: { ...state.carWashTunnel, ...updates } })),
+      setAutoRepairGarage: (updates) => set((state) => ({ autoRepairGarage: { ...state.autoRepairGarage, ...updates } })),
+      setCarDealershipShowroom: (updates) => set((state) => ({ carDealershipShowroom: { ...state.carDealershipShowroom, ...updates } })),
+      setTireAutoCare: (updates) => set((state) => ({ tireAutoCare: { ...state.tireAutoCare, ...updates } })),
+      setOilChangeQuick: (updates) => set((state) => ({ oilChangeQuick: { ...state.oilChangeQuick, ...updates } })),
+      setEmissionsInspection: (updates) => set((state) => ({ emissionsInspection: { ...state.emissionsInspection, ...updates } })),
+      setAutoPartsStore: (updates) => set((state) => ({ autoPartsStore: { ...state.autoPartsStore, ...updates } })),
+      setCarRentalAgency: (updates) => set((state) => ({ carRentalAgency: { ...state.carRentalAgency, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
