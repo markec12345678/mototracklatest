@@ -725,6 +725,14 @@ import {
   Calendar as CalendarIcon,
   Building as BuildingIcon7,
   Tent as TentIcon,
+  Drumstick as DrumstickIcon,
+  Coffee as CoffeeIcon2,
+  Croissant as CroissantIcon,
+  Utensils as UtensilsIcon2,
+  Wine as WineIcon,
+  Truck as TruckIcon,
+  IceCream as IceCreamIcon,
+  Pizza as PizzaIcon,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1058,6 +1066,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const conventionCenterBookingOpen = useMapStore((s) => s.conventionCenterBooking.open)
   const servicedApartmentOpen = useMapStore((s) => s.servicedApartment.open)
   const campgroundRvParkOpen = useMapStore((s) => s.campgroundRvPark.open)
+  const fastFoodChainOpen = useMapStore((s) => s.fastFoodChain.open)
+  const coffeeShopCafeOpen = useMapStore((s) => s.coffeeShopCafe.open)
+  const bakeryPastryShopOpen = useMapStore((s) => s.bakeryPastryShop.open)
+  const fineDiningRestaurantOpen = useMapStore((s) => s.fineDiningRestaurant.open)
+  const barPubTavernOpen = useMapStore((s) => s.barPubTavern.open)
+  const foodTruckFleetOpen = useMapStore((s) => s.foodTruckFleet.open)
+  const iceCreamParlorOpen = useMapStore((s) => s.iceCreamParlor.open)
+  const pizzeriaChainOpen = useMapStore((s) => s.pizzeriaChain.open)
 
   if (typeof window === 'undefined') return null
 
@@ -7124,6 +7140,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <TentIcon className="h-4 w-4" />
             {campgroundRvParkOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-green-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setFastFoodChain({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${fastFoodChainOpen ? 'bg-red-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Fast Food Chain Monitor"
+          >
+            <DrumstickIcon className="h-4 w-4" />
+            {fastFoodChainOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCoffeeShopCafe({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${coffeeShopCafeOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Coffee Shop Cafe Monitor"
+          >
+            <CoffeeIcon2 className="h-4 w-4" />
+            {coffeeShopCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBakeryPastryShop({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${bakeryPastryShopOpen ? 'bg-yellow-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Bakery Pastry Shop Monitor"
+          >
+            <CroissantIcon className="h-4 w-4" />
+            {bakeryPastryShopOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-yellow-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setFineDiningRestaurant({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${fineDiningRestaurantOpen ? 'bg-slate-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Fine Dining Restaurant Monitor"
+          >
+            <UtensilsIcon2 className="h-4 w-4" />
+            {fineDiningRestaurantOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-zinc-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBarPubTavern({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${barPubTavernOpen ? 'bg-purple-800 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Bar Pub Tavern Monitor"
+          >
+            <WineIcon className="h-4 w-4" />
+            {barPubTavernOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-purple-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setFoodTruckFleet({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${foodTruckFleetOpen ? 'bg-lime-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Food Truck Fleet Monitor"
+          >
+            <TruckIcon className="h-4 w-4" />
+            {foodTruckFleetOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-lime-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setIceCreamParlor({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${iceCreamParlorOpen ? 'bg-pink-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Ice Cream Parlor Monitor"
+          >
+            <IceCreamIcon className="h-4 w-4" />
+            {iceCreamParlorOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-pink-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setPizzeriaChain({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${pizzeriaChainOpen ? 'bg-red-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Pizzeria Chain Monitor"
+          >
+            <PizzaIcon className="h-4 w-4" />
+            {pizzeriaChainOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-400" />}
           </button>
         </div>
       </div>
