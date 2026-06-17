@@ -690,6 +690,15 @@ export function MonitorPanelRegistry() {
   const scrapMetalYard = useMapStore((s) => s.scrapMetalYard)
   const electronicWasteFacility = useMapStore((s) => s.electronicWasteFacility)
   const transferStation = useMapStore((s) => s.transferStation)
+  // Task 152: Toy & Hobby Shop
+  const toyRetailChain = useMapStore((s) => s.toyRetailChain)
+  const legoBrandStore = useMapStore((s) => s.legoBrandStore)
+  const boardGameCafe = useMapStore((s) => s.boardGameCafe)
+  const comicBookShop = useMapStore((s) => s.comicBookShop)
+  const hobbyCraftStore = useMapStore((s) => s.hobbyCraftStore)
+  const modelHobbyShop = useMapStore((s) => s.modelHobbyShop)
+  const videoGameRetailer = useMapStore((s) => s.videoGameRetailer)
+  const bicycleRetailer = useMapStore((s) => s.bicycleRetailer)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -2458,6 +2467,30 @@ export function MonitorPanelRegistry() {
       )}
       {transferStation.open && (
         <LazyPanel importFn={() => import('@/components/map/TransferStationMonitor')} exportName="TransferStationMonitor" shouldLoad={transferStation.open} />
+      )}
+      {toyRetailChain.open && (
+        <LazyPanel importFn={() => import('@/components/map/ToyRetailChainMonitor')} exportName="ToyRetailChainMonitor" shouldLoad={toyRetailChain.open} />
+      )}
+      {legoBrandStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/LegoBrandStoreMonitor')} exportName="LegoBrandStoreMonitor" shouldLoad={legoBrandStore.open} />
+      )}
+      {boardGameCafe.open && (
+        <LazyPanel importFn={() => import('@/components/map/BoardGameCafeMonitor')} exportName="BoardGameCafeMonitor" shouldLoad={boardGameCafe.open} />
+      )}
+      {comicBookShop.open && (
+        <LazyPanel importFn={() => import('@/components/map/ComicBookShopMonitor')} exportName="ComicBookShopMonitor" shouldLoad={comicBookShop.open} />
+      )}
+      {hobbyCraftStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/HobbyCraftStoreMonitor')} exportName="HobbyCraftStoreMonitor" shouldLoad={hobbyCraftStore.open} />
+      )}
+      {modelHobbyShop.open && (
+        <LazyPanel importFn={() => import('@/components/map/ModelHobbyShopMonitor')} exportName="ModelHobbyShopMonitor" shouldLoad={modelHobbyShop.open} />
+      )}
+      {videoGameRetailer.open && (
+        <LazyPanel importFn={() => import('@/components/map/VideoGameRetailerMonitor')} exportName="VideoGameRetailerMonitor" shouldLoad={videoGameRetailer.open} />
+      )}
+      {bicycleRetailer.open && (
+        <LazyPanel importFn={() => import('@/components/map/BicycleRetailerMonitor')} exportName="BicycleRetailerMonitor" shouldLoad={bicycleRetailer.open} />
       )}
     </>
   )

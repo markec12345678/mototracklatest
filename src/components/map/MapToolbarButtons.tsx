@@ -811,6 +811,13 @@ import {
   Anvil as AnvilIcon,
   Cpu as CpuIcon2,
   PackagePlus as PackagePlusIcon,
+  Gamepad as GamepadIcon3,
+  Blocks as BlocksIcon2,
+  Dices as DicesIcon2,
+  Book as BookIcon3,
+  Palette as PaletteIcon4,
+  Plane as PlaneIcon4,
+  Bike as BikeIcon3,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1231,6 +1238,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const scrapMetalYardOpen = useMapStore((s) => s.scrapMetalYard.open)
   const electronicWasteFacilityOpen = useMapStore((s) => s.electronicWasteFacility.open)
   const transferStationOpen = useMapStore((s) => s.transferStation.open)
+  const toyRetailChainOpen = useMapStore((s) => s.toyRetailChain.open)
+  const legoBrandStoreOpen = useMapStore((s) => s.legoBrandStore.open)
+  const boardGameCafeOpen = useMapStore((s) => s.boardGameCafe.open)
+  const comicBookShopOpen = useMapStore((s) => s.comicBookShop.open)
+  const hobbyCraftStoreOpen = useMapStore((s) => s.hobbyCraftStore.open)
+  const modelHobbyShopOpen = useMapStore((s) => s.modelHobbyShop.open)
+  const videoGameRetailerOpen = useMapStore((s) => s.videoGameRetailer.open)
+  const bicycleRetailerOpen = useMapStore((s) => s.bicycleRetailer.open)
 
   if (typeof window === 'undefined') return null
 
@@ -7951,6 +7966,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <PackagePlusIcon className="h-4 w-4" />
             {transferStationOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setToyRetailChain({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${toyRetailChainOpen ? 'bg-rose-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Toy Retail Chain Monitor"
+          >
+            <GamepadIcon3 className="h-4 w-4" />
+            {toyRetailChainOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setLegoBrandStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${legoBrandStoreOpen ? 'bg-yellow-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="LEGO Brand Store Monitor"
+          >
+            <BlocksIcon2 className="h-4 w-4" />
+            {legoBrandStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-yellow-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBoardGameCafe({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${boardGameCafeOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Board Game Cafe Monitor"
+          >
+            <DicesIcon2 className="h-4 w-4" />
+            {boardGameCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setComicBookShop({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${comicBookShopOpen ? 'bg-fuchsia-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Comic Book Shop Monitor"
+          >
+            <BookIcon3 className="h-4 w-4" />
+            {comicBookShopOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-fuchsia-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setHobbyCraftStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${hobbyCraftStoreOpen ? 'bg-cyan-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Hobby Craft Store Monitor"
+          >
+            <PaletteIcon4 className="h-4 w-4" />
+            {hobbyCraftStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setModelHobbyShop({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${modelHobbyShopOpen ? 'bg-indigo-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Model Hobby Shop Monitor"
+          >
+            <PlaneIcon4 className="h-4 w-4" />
+            {modelHobbyShopOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-indigo-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setVideoGameRetailer({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${videoGameRetailerOpen ? 'bg-purple-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Video Game Retailer Monitor"
+          >
+            <GamepadIcon3 className="h-4 w-4" />
+            {videoGameRetailerOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-purple-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBicycleRetailer({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${bicycleRetailerOpen ? 'bg-emerald-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Bicycle Retailer Monitor"
+          >
+            <BikeIcon3 className="h-4 w-4" />
+            {bicycleRetailerOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-400" />}
           </button>
         </div>
       </div>

@@ -4715,6 +4715,22 @@ interface MapState {
   setElectronicWasteFacility: (state: Partial<MonitorState>) => void
   transferStation: MonitorState
   setTransferStation: (state: Partial<MonitorState>) => void
+  toyRetailChain: MonitorState
+  setToyRetailChain: (state: Partial<MonitorState>) => void
+  legoBrandStore: MonitorState
+  setLegoBrandStore: (state: Partial<MonitorState>) => void
+  boardGameCafe: MonitorState
+  setBoardGameCafe: (state: Partial<MonitorState>) => void
+  comicBookShop: MonitorState
+  setComicBookShop: (state: Partial<MonitorState>) => void
+  hobbyCraftStore: MonitorState
+  setHobbyCraftStore: (state: Partial<MonitorState>) => void
+  modelHobbyShop: MonitorState
+  setModelHobbyShop: (state: Partial<MonitorState>) => void
+  videoGameRetailer: MonitorState
+  setVideoGameRetailer: (state: Partial<MonitorState>) => void
+  bicycleRetailer: MonitorState
+  setBicycleRetailer: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -9005,6 +9021,14 @@ export const useMapStore = create<MapState>()(
       scrapMetalYard: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       electronicWasteFacility: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       transferStation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      toyRetailChain: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      legoBrandStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      boardGameCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      comicBookShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      hobbyCraftStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      modelHobbyShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      videoGameRetailer: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      bicycleRetailer: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -9299,6 +9323,14 @@ export const useMapStore = create<MapState>()(
       setScrapMetalYard: (updates) => set((state) => ({ scrapMetalYard: { ...state.scrapMetalYard, ...updates } })),
       setElectronicWasteFacility: (updates) => set((state) => ({ electronicWasteFacility: { ...state.electronicWasteFacility, ...updates } })),
       setTransferStation: (updates) => set((state) => ({ transferStation: { ...state.transferStation, ...updates } })),
+      setToyRetailChain: (updates) => set((state) => ({ toyRetailChain: { ...state.toyRetailChain, ...updates } })),
+      setLegoBrandStore: (updates) => set((state) => ({ legoBrandStore: { ...state.legoBrandStore, ...updates } })),
+      setBoardGameCafe: (updates) => set((state) => ({ boardGameCafe: { ...state.boardGameCafe, ...updates } })),
+      setComicBookShop: (updates) => set((state) => ({ comicBookShop: { ...state.comicBookShop, ...updates } })),
+      setHobbyCraftStore: (updates) => set((state) => ({ hobbyCraftStore: { ...state.hobbyCraftStore, ...updates } })),
+      setModelHobbyShop: (updates) => set((state) => ({ modelHobbyShop: { ...state.modelHobbyShop, ...updates } })),
+      setVideoGameRetailer: (updates) => set((state) => ({ videoGameRetailer: { ...state.videoGameRetailer, ...updates } })),
+      setBicycleRetailer: (updates) => set((state) => ({ bicycleRetailer: { ...state.bicycleRetailer, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
