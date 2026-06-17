@@ -726,6 +726,15 @@ export function MonitorPanelRegistry() {
   const womensClothingStore = useMapStore((s) => s.womensClothingStore)
   const mensClothingStore = useMapStore((s) => s.mensClothingStore)
   const childrensClothingStore = useMapStore((s) => s.childrensClothingStore)
+  // Task 156: Electronics & Computer Store
+  const electronicsRetailChain = useMapStore((s) => s.electronicsRetailChain)
+  const computerSpecialtyStore = useMapStore((s) => s.computerSpecialtyStore)
+  const smartphoneStore = useMapStore((s) => s.smartphoneStore)
+  const audioVideoStore = useMapStore((s) => s.audioVideoStore)
+  const gamingElectronicsStore = useMapStore((s) => s.gamingElectronicsStore)
+  const cameraPhotoStore = useMapStore((s) => s.cameraPhotoStore)
+  const smartHomeTechStore = useMapStore((s) => s.smartHomeTechStore)
+  const refurbishedElectronicsStore = useMapStore((s) => s.refurbishedElectronicsStore)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -2590,6 +2599,30 @@ export function MonitorPanelRegistry() {
       )}
       {childrensClothingStore.open && (
         <LazyPanel importFn={() => import('@/components/map/ChildrensClothingStoreMonitor')} exportName="ChildrensClothingStoreMonitor" shouldLoad={childrensClothingStore.open} />
+      )}
+      {electronicsRetailChain.open && (
+        <LazyPanel importFn={() => import('@/components/map/ElectronicsRetailChainMonitor')} exportName="ElectronicsRetailChainMonitor" shouldLoad={electronicsRetailChain.open} />
+      )}
+      {computerSpecialtyStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/ComputerSpecialtyStoreMonitor')} exportName="ComputerSpecialtyStoreMonitor" shouldLoad={computerSpecialtyStore.open} />
+      )}
+      {smartphoneStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/SmartphoneStoreMonitor')} exportName="SmartphoneStoreMonitor" shouldLoad={smartphoneStore.open} />
+      )}
+      {audioVideoStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/AudioVideoStoreMonitor')} exportName="AudioVideoStoreMonitor" shouldLoad={audioVideoStore.open} />
+      )}
+      {gamingElectronicsStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/GamingElectronicsStoreMonitor')} exportName="GamingElectronicsStoreMonitor" shouldLoad={gamingElectronicsStore.open} />
+      )}
+      {cameraPhotoStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/CameraPhotoStoreMonitor')} exportName="CameraPhotoStoreMonitor" shouldLoad={cameraPhotoStore.open} />
+      )}
+      {smartHomeTechStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/SmartHomeTechStoreMonitor')} exportName="SmartHomeTechStoreMonitor" shouldLoad={smartHomeTechStore.open} />
+      )}
+      {refurbishedElectronicsStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/RefurbishedElectronicsStoreMonitor')} exportName="RefurbishedElectronicsStoreMonitor" shouldLoad={refurbishedElectronicsStore.open} />
       )}
     </>
   )

@@ -841,6 +841,14 @@ import {
   Crown as CrownIcon3,
   Scissors as ScissorsIcon4,
   Tag as TagIcon,
+  Laptop as LaptopIcon,
+  Monitor as MonitorIcon2,
+  Smartphone as SmartphoneIcon,
+  Tv as TvIcon2,
+  Gamepad2 as Gamepad2Icon,
+  Camera as CameraIcon2,
+  Cctv as CctvIcon,
+  Recycle as RecycleIcon3,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1293,6 +1301,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const womensClothingStoreOpen = useMapStore((s) => s.womensClothingStore.open)
   const mensClothingStoreOpen = useMapStore((s) => s.mensClothingStore.open)
   const childrensClothingStoreOpen = useMapStore((s) => s.childrensClothingStore.open)
+  const electronicsRetailChainOpen = useMapStore((s) => s.electronicsRetailChain.open)
+  const computerSpecialtyStoreOpen = useMapStore((s) => s.computerSpecialtyStore.open)
+  const smartphoneStoreOpen = useMapStore((s) => s.smartphoneStore.open)
+  const audioVideoStoreOpen = useMapStore((s) => s.audioVideoStore.open)
+  const gamingElectronicsStoreOpen = useMapStore((s) => s.gamingElectronicsStore.open)
+  const cameraPhotoStoreOpen = useMapStore((s) => s.cameraPhotoStore.open)
+  const smartHomeTechStoreOpen = useMapStore((s) => s.smartHomeTechStore.open)
+  const refurbishedElectronicsStoreOpen = useMapStore((s) => s.refurbishedElectronicsStore.open)
 
   if (typeof window === 'undefined') return null
 
@@ -8269,6 +8285,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <TagIcon className="h-4 w-4" />
             {childrensClothingStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-yellow-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setElectronicsRetailChain({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${electronicsRetailChainOpen ? 'bg-blue-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Electronics Retail Chain Monitor"
+          >
+            <LaptopIcon className="h-4 w-4" />
+            {electronicsRetailChainOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-blue-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setComputerSpecialtyStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${computerSpecialtyStoreOpen ? 'bg-slate-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Computer Specialty Store Monitor"
+          >
+            <MonitorIcon2 className="h-4 w-4" />
+            {computerSpecialtyStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-slate-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setSmartphoneStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${smartphoneStoreOpen ? 'bg-zinc-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Smartphone Store Monitor"
+          >
+            <SmartphoneIcon className="h-4 w-4" />
+            {smartphoneStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-zinc-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setAudioVideoStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${audioVideoStoreOpen ? 'bg-rose-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Audio Video Store Monitor"
+          >
+            <TvIcon2 className="h-4 w-4" />
+            {audioVideoStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setGamingElectronicsStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${gamingElectronicsStoreOpen ? 'bg-fuchsia-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Gaming Electronics Store Monitor"
+          >
+            <Gamepad2Icon className="h-4 w-4" />
+            {gamingElectronicsStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-fuchsia-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCameraPhotoStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${cameraPhotoStoreOpen ? 'bg-cyan-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Camera & Photo Store Monitor"
+          >
+            <CameraIcon2 className="h-4 w-4" />
+            {cameraPhotoStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setSmartHomeTechStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${smartHomeTechStoreOpen ? 'bg-emerald-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Smart Home Tech Store Monitor"
+          >
+            <CctvIcon className="h-4 w-4" />
+            {smartHomeTechStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setRefurbishedElectronicsStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${refurbishedElectronicsStoreOpen ? 'bg-lime-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Refurbished Electronics Store Monitor"
+          >
+            <RecycleIcon3 className="h-4 w-4" />
+            {refurbishedElectronicsStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-lime-300" />}
           </button>
         </div>
       </div>

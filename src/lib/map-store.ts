@@ -4779,6 +4779,22 @@ interface MapState {
   setMensClothingStore: (state: Partial<MonitorState>) => void
   childrensClothingStore: MonitorState
   setChildrensClothingStore: (state: Partial<MonitorState>) => void
+  electronicsRetailChain: MonitorState
+  setElectronicsRetailChain: (state: Partial<MonitorState>) => void
+  computerSpecialtyStore: MonitorState
+  setComputerSpecialtyStore: (state: Partial<MonitorState>) => void
+  smartphoneStore: MonitorState
+  setSmartphoneStore: (state: Partial<MonitorState>) => void
+  audioVideoStore: MonitorState
+  setAudioVideoStore: (state: Partial<MonitorState>) => void
+  gamingElectronicsStore: MonitorState
+  setGamingElectronicsStore: (state: Partial<MonitorState>) => void
+  cameraPhotoStore: MonitorState
+  setCameraPhotoStore: (state: Partial<MonitorState>) => void
+  smartHomeTechStore: MonitorState
+  setSmartHomeTechStore: (state: Partial<MonitorState>) => void
+  refurbishedElectronicsStore: MonitorState
+  setRefurbishedElectronicsStore: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -9101,6 +9117,14 @@ export const useMapStore = create<MapState>()(
       womensClothingStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       mensClothingStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       childrensClothingStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      electronicsRetailChain: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      computerSpecialtyStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      smartphoneStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      audioVideoStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      gamingElectronicsStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      cameraPhotoStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      smartHomeTechStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      refurbishedElectronicsStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -9427,6 +9451,14 @@ export const useMapStore = create<MapState>()(
       setWomensClothingStore: (updates) => set((state) => ({ womensClothingStore: { ...state.womensClothingStore, ...updates } })),
       setMensClothingStore: (updates) => set((state) => ({ mensClothingStore: { ...state.mensClothingStore, ...updates } })),
       setChildrensClothingStore: (updates) => set((state) => ({ childrensClothingStore: { ...state.childrensClothingStore, ...updates } })),
+      setElectronicsRetailChain: (updates) => set((state) => ({ electronicsRetailChain: { ...state.electronicsRetailChain, ...updates } })),
+      setComputerSpecialtyStore: (updates) => set((state) => ({ computerSpecialtyStore: { ...state.computerSpecialtyStore, ...updates } })),
+      setSmartphoneStore: (updates) => set((state) => ({ smartphoneStore: { ...state.smartphoneStore, ...updates } })),
+      setAudioVideoStore: (updates) => set((state) => ({ audioVideoStore: { ...state.audioVideoStore, ...updates } })),
+      setGamingElectronicsStore: (updates) => set((state) => ({ gamingElectronicsStore: { ...state.gamingElectronicsStore, ...updates } })),
+      setCameraPhotoStore: (updates) => set((state) => ({ cameraPhotoStore: { ...state.cameraPhotoStore, ...updates } })),
+      setSmartHomeTechStore: (updates) => set((state) => ({ smartHomeTechStore: { ...state.smartHomeTechStore, ...updates } })),
+      setRefurbishedElectronicsStore: (updates) => set((state) => ({ refurbishedElectronicsStore: { ...state.refurbishedElectronicsStore, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
