@@ -663,6 +663,15 @@ export function MonitorPanelRegistry() {
   const estateJewelryAuction = useMapStore((s) => s.estateJewelryAuction)
   const customJewelryDesign = useMapStore((s) => s.customJewelryDesign)
   const jewelryRepairAppraisal = useMapStore((s) => s.jewelryRepairAppraisal)
+  // Task 149: Florist & Garden Center
+  const floristBoutiqueShop = useMapStore((s) => s.floristBoutiqueShop)
+  const gardenCenterNursery = useMapStore((s) => s.gardenCenterNursery)
+  const greenhouseGrower = useMapStore((s) => s.greenhouseGrower)
+  const landscapeSupplyYard = useMapStore((s) => s.landscapeSupplyYard)
+  const flowerMarketWholesale = useMapStore((s) => s.flowerMarketWholesale)
+  const floralDesignStudio = useMapStore((s) => s.floralDesignStudio)
+  const plantNurseryRetail = useMapStore((s) => s.plantNurseryRetail)
+  const gardenToolEquipment = useMapStore((s) => s.gardenToolEquipment)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -2357,6 +2366,31 @@ export function MonitorPanelRegistry() {
       )}
       {jewelryRepairAppraisal.open && (
         <LazyPanel importFn={() => import('@/components/map/JewelryRepairAppraisalMonitor')} exportName="JewelryRepairAppraisalMonitor" shouldLoad={jewelryRepairAppraisal.open} />
+      )}
+      {/* Task 149: Florist & Garden Center */}
+      {floristBoutiqueShop.open && (
+        <LazyPanel importFn={() => import('@/components/map/FloristBoutiqueShopMonitor')} exportName="FloristBoutiqueShopMonitor" shouldLoad={floristBoutiqueShop.open} />
+      )}
+      {gardenCenterNursery.open && (
+        <LazyPanel importFn={() => import('@/components/map/GardenCenterNurseryMonitor')} exportName="GardenCenterNurseryMonitor" shouldLoad={gardenCenterNursery.open} />
+      )}
+      {greenhouseGrower.open && (
+        <LazyPanel importFn={() => import('@/components/map/GreenhouseGrowerMonitor')} exportName="GreenhouseGrowerMonitor" shouldLoad={greenhouseGrower.open} />
+      )}
+      {landscapeSupplyYard.open && (
+        <LazyPanel importFn={() => import('@/components/map/LandscapeSupplyYardMonitor')} exportName="LandscapeSupplyYardMonitor" shouldLoad={landscapeSupplyYard.open} />
+      )}
+      {flowerMarketWholesale.open && (
+        <LazyPanel importFn={() => import('@/components/map/FlowerMarketWholesaleMonitor')} exportName="FlowerMarketWholesaleMonitor" shouldLoad={flowerMarketWholesale.open} />
+      )}
+      {floralDesignStudio.open && (
+        <LazyPanel importFn={() => import('@/components/map/FloralDesignStudioMonitor')} exportName="FloralDesignStudioMonitor" shouldLoad={floralDesignStudio.open} />
+      )}
+      {plantNurseryRetail.open && (
+        <LazyPanel importFn={() => import('@/components/map/PlantNurseryRetailMonitor')} exportName="PlantNurseryRetailMonitor" shouldLoad={plantNurseryRetail.open} />
+      )}
+      {gardenToolEquipment.open && (
+        <LazyPanel importFn={() => import('@/components/map/GardenToolEquipmentMonitor')} exportName="GardenToolEquipmentMonitor" shouldLoad={gardenToolEquipment.open} />
       )}
     </>
   )

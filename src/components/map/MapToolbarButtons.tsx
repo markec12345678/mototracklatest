@@ -785,6 +785,15 @@ import {
   Crown as CrownIcon2,
   Award as AwardIcon4,
   Hourglass as HourglassIcon,
+  // Task 149: Florist & Garden Center icons
+  Flower as FlowerIcon4,
+  Sprout as SproutIcon5,
+  Trees as TreesIcon2,
+  Shovel as ShovelIcon,
+  Flower2 as Flower2Icon,
+  Scissors as ScissorsIcon3,
+  Leaf as LeafIcon11,
+  Tractor as TractorIcon,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1179,6 +1188,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const estateJewelryAuctionOpen = useMapStore((s) => s.estateJewelryAuction.open)
   const customJewelryDesignOpen = useMapStore((s) => s.customJewelryDesign.open)
   const jewelryRepairAppraisalOpen = useMapStore((s) => s.jewelryRepairAppraisal.open)
+  // Task 149: Florist & Garden Center
+  const floristBoutiqueShopOpen = useMapStore((s) => s.floristBoutiqueShop.open)
+  const gardenCenterNurseryOpen = useMapStore((s) => s.gardenCenterNursery.open)
+  const greenhouseGrowerOpen = useMapStore((s) => s.greenhouseGrower.open)
+  const landscapeSupplyYardOpen = useMapStore((s) => s.landscapeSupplyYard.open)
+  const flowerMarketWholesaleOpen = useMapStore((s) => s.flowerMarketWholesale.open)
+  const floralDesignStudioOpen = useMapStore((s) => s.floralDesignStudio.open)
+  const plantNurseryRetailOpen = useMapStore((s) => s.plantNurseryRetail.open)
+  const gardenToolEquipmentOpen = useMapStore((s) => s.gardenToolEquipment.open)
 
   if (typeof window === 'undefined') return null
 
@@ -7705,6 +7723,71 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <HourglassIcon className="h-4 w-4" />
             {jewelryRepairAppraisalOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-400" />}
+          </button>
+          {/* Task 149: Florist & Garden Center */}
+          <button
+            onClick={() => useMapStore.getState().setFloristBoutiqueShop({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${floristBoutiqueShopOpen ? 'bg-rose-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Florist Boutique Shop Monitor"
+          >
+            <FlowerIcon4 className="h-4 w-4" />
+            {floristBoutiqueShopOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setGardenCenterNursery({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${gardenCenterNurseryOpen ? 'bg-emerald-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Garden Center Nursery Monitor"
+          >
+            <SproutIcon5 className="h-4 w-4" />
+            {gardenCenterNurseryOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setGreenhouseGrower({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${greenhouseGrowerOpen ? 'bg-lime-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Greenhouse Grower Monitor"
+          >
+            <TreesIcon2 className="h-4 w-4" />
+            {greenhouseGrowerOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-lime-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setLandscapeSupplyYard({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${landscapeSupplyYardOpen ? 'bg-stone-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Landscape Supply Yard Monitor"
+          >
+            <ShovelIcon className="h-4 w-4" />
+            {landscapeSupplyYardOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-stone-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setFlowerMarketWholesale({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${flowerMarketWholesaleOpen ? 'bg-purple-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Flower Market Wholesale Monitor"
+          >
+            <Flower2Icon className="h-4 w-4" />
+            {flowerMarketWholesaleOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-purple-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setFloralDesignStudio({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${floralDesignStudioOpen ? 'bg-fuchsia-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Floral Design Studio Monitor"
+          >
+            <ScissorsIcon3 className="h-4 w-4" />
+            {floralDesignStudioOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-fuchsia-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setPlantNurseryRetail({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${plantNurseryRetailOpen ? 'bg-teal-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Plant Nursery Retail Monitor"
+          >
+            <LeafIcon11 className="h-4 w-4" />
+            {plantNurseryRetailOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setGardenToolEquipment({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${gardenToolEquipmentOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Garden Tool Equipment Monitor"
+          >
+            <TractorIcon className="h-4 w-4" />
+            {gardenToolEquipmentOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-400" />}
           </button>
         </div>
       </div>

@@ -4665,6 +4665,23 @@ interface MapState {
   setCustomJewelryDesign: (state: Partial<MonitorState>) => void
   jewelryRepairAppraisal: MonitorState
   setJewelryRepairAppraisal: (state: Partial<MonitorState>) => void
+  // Task 149: Florist & Garden Center
+  floristBoutiqueShop: MonitorState
+  setFloristBoutiqueShop: (state: Partial<MonitorState>) => void
+  gardenCenterNursery: MonitorState
+  setGardenCenterNursery: (state: Partial<MonitorState>) => void
+  greenhouseGrower: MonitorState
+  setGreenhouseGrower: (state: Partial<MonitorState>) => void
+  landscapeSupplyYard: MonitorState
+  setLandscapeSupplyYard: (state: Partial<MonitorState>) => void
+  flowerMarketWholesale: MonitorState
+  setFlowerMarketWholesale: (state: Partial<MonitorState>) => void
+  floralDesignStudio: MonitorState
+  setFloralDesignStudio: (state: Partial<MonitorState>) => void
+  plantNurseryRetail: MonitorState
+  setPlantNurseryRetail: (state: Partial<MonitorState>) => void
+  gardenToolEquipment: MonitorState
+  setGardenToolEquipment: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -8929,6 +8946,15 @@ export const useMapStore = create<MapState>()(
       estateJewelryAuction: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       customJewelryDesign: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       jewelryRepairAppraisal: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 149: Florist & Garden Center
+      floristBoutiqueShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      gardenCenterNursery: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      greenhouseGrower: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      landscapeSupplyYard: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      flowerMarketWholesale: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      floralDesignStudio: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      plantNurseryRetail: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      gardenToolEquipment: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -9197,6 +9223,15 @@ export const useMapStore = create<MapState>()(
       setEstateJewelryAuction: (updates) => set((state) => ({ estateJewelryAuction: { ...state.estateJewelryAuction, ...updates } })),
       setCustomJewelryDesign: (updates) => set((state) => ({ customJewelryDesign: { ...state.customJewelryDesign, ...updates } })),
       setJewelryRepairAppraisal: (updates) => set((state) => ({ jewelryRepairAppraisal: { ...state.jewelryRepairAppraisal, ...updates } })),
+      // Task 149: Florist & Garden Center
+      setFloristBoutiqueShop: (updates) => set((state) => ({ floristBoutiqueShop: { ...state.floristBoutiqueShop, ...updates } })),
+      setGardenCenterNursery: (updates) => set((state) => ({ gardenCenterNursery: { ...state.gardenCenterNursery, ...updates } })),
+      setGreenhouseGrower: (updates) => set((state) => ({ greenhouseGrower: { ...state.greenhouseGrower, ...updates } })),
+      setLandscapeSupplyYard: (updates) => set((state) => ({ landscapeSupplyYard: { ...state.landscapeSupplyYard, ...updates } })),
+      setFlowerMarketWholesale: (updates) => set((state) => ({ flowerMarketWholesale: { ...state.flowerMarketWholesale, ...updates } })),
+      setFloralDesignStudio: (updates) => set((state) => ({ floralDesignStudio: { ...state.floralDesignStudio, ...updates } })),
+      setPlantNurseryRetail: (updates) => set((state) => ({ plantNurseryRetail: { ...state.plantNurseryRetail, ...updates } })),
+      setGardenToolEquipment: (updates) => set((state) => ({ gardenToolEquipment: { ...state.gardenToolEquipment, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
