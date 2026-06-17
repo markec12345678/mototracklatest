@@ -556,6 +556,14 @@ export function MonitorPanelRegistry() {
   const militaryTrainingRange = useMapStore((s) => s.militaryTrainingRange)
   const commandBunkerFacility = useMapStore((s) => s.commandBunkerFacility)
   const defenseLogisticsDepot = useMapStore((s) => s.defenseLogisticsDepot)
+  const parliamentChamber = useMapStore((s) => s.parliamentChamber)
+  const presidentialPalace = useMapStore((s) => s.presidentialPalace)
+  const supremeCourt = useMapStore((s) => s.supremeCourt)
+  const embassyCompound = useMapStore((s) => s.embassyCompound)
+  const ministryHeadquarters = useMapStore((s) => s.ministryHeadquarters)
+  const cityHallCivic = useMapStore((s) => s.cityHallCivic)
+  const stateLegislature = useMapStore((s) => s.stateLegislature)
+  const governorMansion = useMapStore((s) => s.governorMansion)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -1957,6 +1965,30 @@ export function MonitorPanelRegistry() {
       )}
       {defenseLogisticsDepot.open && (
         <LazyPanel importFn={() => import('@/components/map/DefenseLogisticsDepotMonitor')} exportName="DefenseLogisticsDepotMonitor" shouldLoad={defenseLogisticsDepot.open} />
+      )}
+      {parliamentChamber.open && (
+        <LazyPanel importFn={() => import('@/components/map/ParliamentChamberMonitor')} exportName="ParliamentChamberMonitor" shouldLoad={parliamentChamber.open} />
+      )}
+      {presidentialPalace.open && (
+        <LazyPanel importFn={() => import('@/components/map/PresidentialPalaceMonitor')} exportName="PresidentialPalaceMonitor" shouldLoad={presidentialPalace.open} />
+      )}
+      {supremeCourt.open && (
+        <LazyPanel importFn={() => import('@/components/map/SupremeCourtMonitor')} exportName="SupremeCourtMonitor" shouldLoad={supremeCourt.open} />
+      )}
+      {embassyCompound.open && (
+        <LazyPanel importFn={() => import('@/components/map/EmbassyCompoundMonitor')} exportName="EmbassyCompoundMonitor" shouldLoad={embassyCompound.open} />
+      )}
+      {ministryHeadquarters.open && (
+        <LazyPanel importFn={() => import('@/components/map/MinistryHeadquartersMonitor')} exportName="MinistryHeadquartersMonitor" shouldLoad={ministryHeadquarters.open} />
+      )}
+      {cityHallCivic.open && (
+        <LazyPanel importFn={() => import('@/components/map/CityHallCivicMonitor')} exportName="CityHallCivicMonitor" shouldLoad={cityHallCivic.open} />
+      )}
+      {stateLegislature.open && (
+        <LazyPanel importFn={() => import('@/components/map/StateLegislatureMonitor')} exportName="StateLegislatureMonitor" shouldLoad={stateLegislature.open} />
+      )}
+      {governorMansion.open && (
+        <LazyPanel importFn={() => import('@/components/map/GovernorMansionMonitor')} exportName="GovernorMansionMonitor" shouldLoad={governorMansion.open} />
       )}
     </>
   )

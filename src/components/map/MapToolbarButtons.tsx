@@ -685,6 +685,14 @@ import {
   Crosshair as CrosshairIcon,
   Shield as ShieldIcon8,
   Package as PackageIcon2,
+  Landmark as LandmarkIcon5,
+  Crown as CrownIcon,
+  Scale as ScaleIcon2,
+  Flag as FlagIcon5,
+  Building2 as Building2Icon6,
+  Building as BuildingIcon5,
+  Vote as VoteIcon,
+  Home as HomeIcon,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -978,6 +986,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const militaryTrainingRangeOpen = useMapStore((s) => s.militaryTrainingRange.open)
   const commandBunkerFacilityOpen = useMapStore((s) => s.commandBunkerFacility.open)
   const defenseLogisticsDepotOpen = useMapStore((s) => s.defenseLogisticsDepot.open)
+  const parliamentChamberOpen = useMapStore((s) => s.parliamentChamber.open)
+  const presidentialPalaceOpen = useMapStore((s) => s.presidentialPalace.open)
+  const supremeCourtOpen = useMapStore((s) => s.supremeCourt.open)
+  const embassyCompoundOpen = useMapStore((s) => s.embassyCompound.open)
+  const ministryHeadquartersOpen = useMapStore((s) => s.ministryHeadquarters.open)
+  const cityHallCivicOpen = useMapStore((s) => s.cityHallCivic.open)
+  const stateLegislatureOpen = useMapStore((s) => s.stateLegislature.open)
+  const governorMansionOpen = useMapStore((s) => s.governorMansion.open)
 
   if (typeof window === 'undefined') return null
 
@@ -6724,6 +6740,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <PackageIcon2 className="h-4 w-4" />
             {defenseLogisticsDepotOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-slate-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setParliamentChamber({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${parliamentChamberOpen ? 'bg-amber-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Parliament Chamber Monitor"
+          >
+            <LandmarkIcon5 className="h-4 w-4" />
+            {parliamentChamberOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setPresidentialPalace({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${presidentialPalaceOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Presidential Palace Monitor"
+          >
+            <CrownIcon className="h-4 w-4" />
+            {presidentialPalaceOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setSupremeCourt({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${supremeCourtOpen ? 'bg-red-800 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Supreme Court Monitor"
+          >
+            <ScaleIcon2 className="h-4 w-4" />
+            {supremeCourtOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setEmbassyCompound({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${embassyCompoundOpen ? 'bg-blue-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Embassy Compound Monitor"
+          >
+            <FlagIcon5 className="h-4 w-4" />
+            {embassyCompoundOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-blue-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setMinistryHeadquarters({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${ministryHeadquartersOpen ? 'bg-slate-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Ministry Headquarters Monitor"
+          >
+            <Building2Icon6 className="h-4 w-4" />
+            {ministryHeadquartersOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-slate-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCityHallCivic({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${cityHallCivicOpen ? 'bg-cyan-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="City Hall Civic Monitor"
+          >
+            <BuildingIcon5 className="h-4 w-4" />
+            {cityHallCivicOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setStateLegislature({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${stateLegislatureOpen ? 'bg-violet-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="State Legislature Monitor"
+          >
+            <VoteIcon className="h-4 w-4" />
+            {stateLegislatureOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-violet-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setGovernorMansion({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${governorMansionOpen ? 'bg-green-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Governor Mansion Monitor"
+          >
+            <HomeIcon className="h-4 w-4" />
+            {governorMansionOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-green-400" />}
           </button>
         </div>
       </div>

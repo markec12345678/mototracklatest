@@ -4461,6 +4461,23 @@ interface MapState {
   setCommandBunkerFacility: (state: Partial<MonitorState>) => void
   defenseLogisticsDepot: MonitorState
   setDefenseLogisticsDepot: (state: Partial<MonitorState>) => void
+  // Task 137: Government & Civic Buildings
+  parliamentChamber: MonitorState
+  setParliamentChamber: (state: Partial<MonitorState>) => void
+  presidentialPalace: MonitorState
+  setPresidentialPalace: (state: Partial<MonitorState>) => void
+  supremeCourt: MonitorState
+  setSupremeCourt: (state: Partial<MonitorState>) => void
+  embassyCompound: MonitorState
+  setEmbassyCompound: (state: Partial<MonitorState>) => void
+  ministryHeadquarters: MonitorState
+  setMinistryHeadquarters: (state: Partial<MonitorState>) => void
+  cityHallCivic: MonitorState
+  setCityHallCivic: (state: Partial<MonitorState>) => void
+  stateLegislature: MonitorState
+  setStateLegislature: (state: Partial<MonitorState>) => void
+  governorMansion: MonitorState
+  setGovernorMansion: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -8618,6 +8635,15 @@ export const useMapStore = create<MapState>()(
       militaryTrainingRange: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       commandBunkerFacility: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       defenseLogisticsDepot: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 137: Government & Civic Buildings
+      parliamentChamber: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      presidentialPalace: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      supremeCourt: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      embassyCompound: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      ministryHeadquarters: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      cityHallCivic: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      stateLegislature: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      governorMansion: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -8779,6 +8805,15 @@ export const useMapStore = create<MapState>()(
       setMilitaryTrainingRange: (updates) => set((state) => ({ militaryTrainingRange: { ...state.militaryTrainingRange, ...updates } })),
       setCommandBunkerFacility: (updates) => set((state) => ({ commandBunkerFacility: { ...state.commandBunkerFacility, ...updates } })),
       setDefenseLogisticsDepot: (updates) => set((state) => ({ defenseLogisticsDepot: { ...state.defenseLogisticsDepot, ...updates } })),
+      // Task 137: Government & Civic Buildings
+      setParliamentChamber: (updates) => set((state) => ({ parliamentChamber: { ...state.parliamentChamber, ...updates } })),
+      setPresidentialPalace: (updates) => set((state) => ({ presidentialPalace: { ...state.presidentialPalace, ...updates } })),
+      setSupremeCourt: (updates) => set((state) => ({ supremeCourt: { ...state.supremeCourt, ...updates } })),
+      setEmbassyCompound: (updates) => set((state) => ({ embassyCompound: { ...state.embassyCompound, ...updates } })),
+      setMinistryHeadquarters: (updates) => set((state) => ({ ministryHeadquarters: { ...state.ministryHeadquarters, ...updates } })),
+      setCityHallCivic: (updates) => set((state) => ({ cityHallCivic: { ...state.cityHallCivic, ...updates } })),
+      setStateLegislature: (updates) => set((state) => ({ stateLegislature: { ...state.stateLegislature, ...updates } })),
+      setGovernorMansion: (updates) => set((state) => ({ governorMansion: { ...state.governorMansion, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
