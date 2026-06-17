@@ -749,6 +749,16 @@ import {
   Gauge as GaugeIcon4,
   Cog as CogIcon,
   KeyRound as KeyRoundIcon,
+  // Task 145: Pet & Veterinary icons
+  Stethoscope as StethoscopeIcon2,
+  Scissors as ScissorsIcon2,
+  Home as HomeIcon3,
+  Heart as HeartIcon2,
+  ShoppingBag as ShoppingBagIcon3,
+  TreePine as TreePineIcon12,
+  Siren as SirenIcon4,
+  Baby as BabyIcon2,
+  GraduationCap as GraduationCapIcon2,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1106,6 +1116,16 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const emissionsInspectionOpen = useMapStore((s) => s.emissionsInspection.open)
   const autoPartsStoreOpen = useMapStore((s) => s.autoPartsStore.open)
   const carRentalAgencyOpen = useMapStore((s) => s.carRentalAgency.open)
+  // Task 145: Pet & Veterinary Services
+  const veterinaryClinicOpen = useMapStore((s) => s.veterinaryClinic.open)
+  const petGroomingSalonOpen = useMapStore((s) => s.petGroomingSalon.open)
+  const petBoardingKennelOpen = useMapStore((s) => s.petBoardingKennel.open)
+  const animalShelterRescueOpen = useMapStore((s) => s.animalShelterRescue.open)
+  const petStoreRetailOpen = useMapStore((s) => s.petStoreRetail.open)
+  const dogParkActivityOpen = useMapStore((s) => s.dogParkActivity.open)
+  const veterinaryHospitalEmergencyOpen = useMapStore((s) => s.veterinaryHospitalEmergency.open)
+  const petDaycareCenterOpen = useMapStore((s) => s.petDaycareCenter.open)
+  const petTrainingObedienceSchoolOpen = useMapStore((s) => s.petTrainingObedienceSchool.open)
 
   if (typeof window === 'undefined') return null
 
@@ -7364,6 +7384,79 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <KeyRoundIcon className="h-4 w-4" />
             {carRentalAgencyOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-purple-400" />}
+          </button>
+          {/* Task 145: Pet & Veterinary Services */}
+          <button
+            onClick={() => useMapStore.getState().setVeterinaryClinic({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${veterinaryClinicOpen ? 'bg-emerald-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Veterinary Clinic Monitor"
+          >
+            <StethoscopeIcon2 className="h-4 w-4" />
+            {veterinaryClinicOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setPetGroomingSalon({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${petGroomingSalonOpen ? 'bg-rose-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Pet Grooming Salon Monitor"
+          >
+            <ScissorsIcon2 className="h-4 w-4" />
+            {petGroomingSalonOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setPetBoardingKennel({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${petBoardingKennelOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Pet Boarding Kennel Monitor"
+          >
+            <HomeIcon3 className="h-4 w-4" />
+            {petBoardingKennelOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setAnimalShelterRescue({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${animalShelterRescueOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Animal Shelter & Rescue Monitor"
+          >
+            <HeartIcon2 className="h-4 w-4" />
+            {animalShelterRescueOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setPetStoreRetail({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${petStoreRetailOpen ? 'bg-fuchsia-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Pet Store Retail Monitor"
+          >
+            <ShoppingBagIcon3 className="h-4 w-4" />
+            {petStoreRetailOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-fuchsia-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setDogParkActivity({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${dogParkActivityOpen ? 'bg-lime-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Dog Park Activity Monitor"
+          >
+            <TreePineIcon12 className="h-4 w-4" />
+            {dogParkActivityOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-lime-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setVeterinaryHospitalEmergency({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${veterinaryHospitalEmergencyOpen ? 'bg-red-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Vet Hospital ER Monitor"
+          >
+            <SirenIcon4 className="h-4 w-4" />
+            {veterinaryHospitalEmergencyOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setPetDaycareCenter({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${petDaycareCenterOpen ? 'bg-teal-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Pet Daycare Center Monitor"
+          >
+            <BabyIcon2 className="h-4 w-4" />
+            {petDaycareCenterOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setPetTrainingObedienceSchool({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${petTrainingObedienceSchoolOpen ? 'bg-violet-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Pet Training School Monitor"
+          >
+            <GraduationCapIcon2 className="h-4 w-4" />
+            {petTrainingObedienceSchoolOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-violet-400" />}
           </button>
         </div>
       </div>

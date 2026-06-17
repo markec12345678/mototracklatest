@@ -4595,6 +4595,25 @@ interface MapState {
   setAutoPartsStore: (state: Partial<MonitorState>) => void
   carRentalAgency: MonitorState
   setCarRentalAgency: (state: Partial<MonitorState>) => void
+  // Task 145: Pet & Veterinary Services
+  veterinaryClinic: MonitorState
+  setVeterinaryClinic: (state: Partial<MonitorState>) => void
+  petGroomingSalon: MonitorState
+  setPetGroomingSalon: (state: Partial<MonitorState>) => void
+  petBoardingKennel: MonitorState
+  setPetBoardingKennel: (state: Partial<MonitorState>) => void
+  animalShelterRescue: MonitorState
+  setAnimalShelterRescue: (state: Partial<MonitorState>) => void
+  petStoreRetail: MonitorState
+  setPetStoreRetail: (state: Partial<MonitorState>) => void
+  dogParkActivity: MonitorState
+  setDogParkActivity: (state: Partial<MonitorState>) => void
+  veterinaryHospitalEmergency: MonitorState
+  setVeterinaryHospitalEmergency: (state: Partial<MonitorState>) => void
+  petDaycareCenter: MonitorState
+  setPetDaycareCenter: (state: Partial<MonitorState>) => void
+  petTrainingObedienceSchool: MonitorState
+  setPetTrainingObedienceSchool: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -8822,6 +8841,16 @@ export const useMapStore = create<MapState>()(
       emissionsInspection: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       autoPartsStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       carRentalAgency: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 145: Pet & Veterinary Services
+      veterinaryClinic: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      petGroomingSalon: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      petBoardingKennel: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      animalShelterRescue: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      petStoreRetail: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      dogParkActivity: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      veterinaryHospitalEmergency: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      petDaycareCenter: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      petTrainingObedienceSchool: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -9053,6 +9082,16 @@ export const useMapStore = create<MapState>()(
       setEmissionsInspection: (updates) => set((state) => ({ emissionsInspection: { ...state.emissionsInspection, ...updates } })),
       setAutoPartsStore: (updates) => set((state) => ({ autoPartsStore: { ...state.autoPartsStore, ...updates } })),
       setCarRentalAgency: (updates) => set((state) => ({ carRentalAgency: { ...state.carRentalAgency, ...updates } })),
+      // Task 145: Pet & Veterinary Services
+      setVeterinaryClinic: (updates) => set((state) => ({ veterinaryClinic: { ...state.veterinaryClinic, ...updates } })),
+      setPetGroomingSalon: (updates) => set((state) => ({ petGroomingSalon: { ...state.petGroomingSalon, ...updates } })),
+      setPetBoardingKennel: (updates) => set((state) => ({ petBoardingKennel: { ...state.petBoardingKennel, ...updates } })),
+      setAnimalShelterRescue: (updates) => set((state) => ({ animalShelterRescue: { ...state.animalShelterRescue, ...updates } })),
+      setPetStoreRetail: (updates) => set((state) => ({ petStoreRetail: { ...state.petStoreRetail, ...updates } })),
+      setDogParkActivity: (updates) => set((state) => ({ dogParkActivity: { ...state.dogParkActivity, ...updates } })),
+      setVeterinaryHospitalEmergency: (updates) => set((state) => ({ veterinaryHospitalEmergency: { ...state.veterinaryHospitalEmergency, ...updates } })),
+      setPetDaycareCenter: (updates) => set((state) => ({ petDaycareCenter: { ...state.petDaycareCenter, ...updates } })),
+      setPetTrainingObedienceSchool: (updates) => set((state) => ({ petTrainingObedienceSchool: { ...state.petTrainingObedienceSchool, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

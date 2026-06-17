@@ -626,6 +626,16 @@ export function MonitorPanelRegistry() {
   const emissionsInspection = useMapStore((s) => s.emissionsInspection)
   const autoPartsStore = useMapStore((s) => s.autoPartsStore)
   const carRentalAgency = useMapStore((s) => s.carRentalAgency)
+  // Task 145: Pet & Veterinary Services
+  const veterinaryClinic = useMapStore((s) => s.veterinaryClinic)
+  const petGroomingSalon = useMapStore((s) => s.petGroomingSalon)
+  const petBoardingKennel = useMapStore((s) => s.petBoardingKennel)
+  const animalShelterRescue = useMapStore((s) => s.animalShelterRescue)
+  const petStoreRetail = useMapStore((s) => s.petStoreRetail)
+  const dogParkActivity = useMapStore((s) => s.dogParkActivity)
+  const veterinaryHospitalEmergency = useMapStore((s) => s.veterinaryHospitalEmergency)
+  const petDaycareCenter = useMapStore((s) => s.petDaycareCenter)
+  const petTrainingObedienceSchool = useMapStore((s) => s.petTrainingObedienceSchool)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -2219,6 +2229,33 @@ export function MonitorPanelRegistry() {
       )}
       {carRentalAgency.open && (
         <LazyPanel importFn={() => import('@/components/map/CarRentalAgencyMonitor')} exportName="CarRentalAgencyMonitor" shouldLoad={carRentalAgency.open} />
+      )}
+      {veterinaryClinic.open && (
+        <LazyPanel importFn={() => import('@/components/map/VeterinaryClinicMonitor')} exportName="VeterinaryClinicMonitor" shouldLoad={veterinaryClinic.open} />
+      )}
+      {petGroomingSalon.open && (
+        <LazyPanel importFn={() => import('@/components/map/PetGroomingSalonMonitor')} exportName="PetGroomingSalonMonitor" shouldLoad={petGroomingSalon.open} />
+      )}
+      {petBoardingKennel.open && (
+        <LazyPanel importFn={() => import('@/components/map/PetBoardingKennelMonitor')} exportName="PetBoardingKennelMonitor" shouldLoad={petBoardingKennel.open} />
+      )}
+      {animalShelterRescue.open && (
+        <LazyPanel importFn={() => import('@/components/map/AnimalShelterRescueMonitor')} exportName="AnimalShelterRescueMonitor" shouldLoad={animalShelterRescue.open} />
+      )}
+      {petStoreRetail.open && (
+        <LazyPanel importFn={() => import('@/components/map/PetStoreRetailMonitor')} exportName="PetStoreRetailMonitor" shouldLoad={petStoreRetail.open} />
+      )}
+      {dogParkActivity.open && (
+        <LazyPanel importFn={() => import('@/components/map/DogParkActivityMonitor')} exportName="DogParkActivityMonitor" shouldLoad={dogParkActivity.open} />
+      )}
+      {veterinaryHospitalEmergency.open && (
+        <LazyPanel importFn={() => import('@/components/map/VeterinaryHospitalEmergencyMonitor')} exportName="VeterinaryHospitalEmergencyMonitor" shouldLoad={veterinaryHospitalEmergency.open} />
+      )}
+      {petDaycareCenter.open && (
+        <LazyPanel importFn={() => import('@/components/map/PetDaycareCenterMonitor')} exportName="PetDaycareCenterMonitor" shouldLoad={petDaycareCenter.open} />
+      )}
+      {petTrainingObedienceSchool.open && (
+        <LazyPanel importFn={() => import('@/components/map/PetTrainingObedienceSchoolMonitor')} exportName="PetTrainingObedienceSchoolMonitor" shouldLoad={petTrainingObedienceSchool.open} />
       )}
     </>
   )
