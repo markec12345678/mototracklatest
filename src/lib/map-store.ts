@@ -4511,6 +4511,22 @@ interface MapState {
   setJuiceProcessingLine: (state: Partial<MonitorState>) => void
   softDrinkBottling: MonitorState
   setSoftDrinkBottling: (state: Partial<MonitorState>) => void
+  casinoGamingFloor: MonitorState
+  setCasinoGamingFloor: (state: Partial<MonitorState>) => void
+  zooWildlifePark: MonitorState
+  setZooWildlifePark: (state: Partial<MonitorState>) => void
+  aquariumMarineExhibit: MonitorState
+  setAquariumMarineExhibit: (state: Partial<MonitorState>) => void
+  planetariumShow: MonitorState
+  setPlanetariumShow: (state: Partial<MonitorState>) => void
+  operaHouseSchedule: MonitorState
+  setOperaHouseSchedule: (state: Partial<MonitorState>) => void
+  artGalleryExhibit: MonitorState
+  setArtGalleryExhibit: (state: Partial<MonitorState>) => void
+  botanicalGarden: MonitorState
+  setBotanicalGarden: (state: Partial<MonitorState>) => void
+  bowlingAlleyLane: MonitorState
+  setBowlingAlleyLane: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -8694,6 +8710,14 @@ export const useMapStore = create<MapState>()(
       teaProcessingFacility: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       juiceProcessingLine: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       softDrinkBottling: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      casinoGamingFloor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      zooWildlifePark: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      aquariumMarineExhibit: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      planetariumShow: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      operaHouseSchedule: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      artGalleryExhibit: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      botanicalGarden: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      bowlingAlleyLane: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -8881,6 +8905,14 @@ export const useMapStore = create<MapState>()(
       setTeaProcessingFacility: (updates) => set((state) => ({ teaProcessingFacility: { ...state.teaProcessingFacility, ...updates } })),
       setJuiceProcessingLine: (updates) => set((state) => ({ juiceProcessingLine: { ...state.juiceProcessingLine, ...updates } })),
       setSoftDrinkBottling: (updates) => set((state) => ({ softDrinkBottling: { ...state.softDrinkBottling, ...updates } })),
+      setCasinoGamingFloor: (updates) => set((state) => ({ casinoGamingFloor: { ...state.casinoGamingFloor, ...updates } })),
+      setZooWildlifePark: (updates) => set((state) => ({ zooWildlifePark: { ...state.zooWildlifePark, ...updates } })),
+      setAquariumMarineExhibit: (updates) => set((state) => ({ aquariumMarineExhibit: { ...state.aquariumMarineExhibit, ...updates } })),
+      setPlanetariumShow: (updates) => set((state) => ({ planetariumShow: { ...state.planetariumShow, ...updates } })),
+      setOperaHouseSchedule: (updates) => set((state) => ({ operaHouseSchedule: { ...state.operaHouseSchedule, ...updates } })),
+      setArtGalleryExhibit: (updates) => set((state) => ({ artGalleryExhibit: { ...state.artGalleryExhibit, ...updates } })),
+      setBotanicalGarden: (updates) => set((state) => ({ botanicalGarden: { ...state.botanicalGarden, ...updates } })),
+      setBowlingAlleyLane: (updates) => set((state) => ({ bowlingAlleyLane: { ...state.bowlingAlleyLane, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

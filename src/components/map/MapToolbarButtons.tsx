@@ -709,6 +709,14 @@ import {
   Leaf as LeafIcon10,
   Citrus as CitrusIcon,
   CupSoda as CupSodaIcon,
+  Dices as DicesIcon,
+  PawPrint as PawPrintIcon2,
+  Fish as FishIcon10,
+  Orbit as OrbitIcon2,
+  Music as MusicIcon3,
+  Palette as PaletteIcon,
+  Flower as FlowerIcon2,
+  CircleDot as CircleDotIcon5,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1026,6 +1034,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const teaProcessingFacilityOpen = useMapStore((s) => s.teaProcessingFacility.open)
   const juiceProcessingLineOpen = useMapStore((s) => s.juiceProcessingLine.open)
   const softDrinkBottlingOpen = useMapStore((s) => s.softDrinkBottling.open)
+  const casinoGamingFloorOpen = useMapStore((s) => s.casinoGamingFloor.open)
+  const zooWildlifeParkOpen = useMapStore((s) => s.zooWildlifePark.open)
+  const aquariumMarineExhibitOpen = useMapStore((s) => s.aquariumMarineExhibit.open)
+  const planetariumShowOpen = useMapStore((s) => s.planetariumShow.open)
+  const operaHouseScheduleOpen = useMapStore((s) => s.operaHouseSchedule.open)
+  const artGalleryExhibitOpen = useMapStore((s) => s.artGalleryExhibit.open)
+  const botanicalGardenOpen = useMapStore((s) => s.botanicalGarden.open)
+  const bowlingAlleyLaneOpen = useMapStore((s) => s.bowlingAlleyLane.open)
 
   if (typeof window === 'undefined') return null
 
@@ -6964,6 +6980,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <CupSodaIcon className="h-4 w-4" />
             {softDrinkBottlingOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCasinoGamingFloor({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${casinoGamingFloorOpen ? 'bg-rose-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Casino Gaming Floor Monitor"
+          >
+            <DicesIcon className="h-4 w-4" />
+            {casinoGamingFloorOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setZooWildlifePark({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${zooWildlifeParkOpen ? 'bg-emerald-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Zoo Wildlife Park Monitor"
+          >
+            <PawPrintIcon2 className="h-4 w-4" />
+            {zooWildlifeParkOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setAquariumMarineExhibit({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${aquariumMarineExhibitOpen ? 'bg-blue-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Aquarium Marine Exhibit Monitor"
+          >
+            <FishIcon10 className="h-4 w-4" />
+            {aquariumMarineExhibitOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-blue-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setPlanetariumShow({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${planetariumShowOpen ? 'bg-indigo-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Planetarium Show Monitor"
+          >
+            <OrbitIcon2 className="h-4 w-4" />
+            {planetariumShowOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-indigo-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setOperaHouseSchedule({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${operaHouseScheduleOpen ? 'bg-purple-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Opera House Schedule Monitor"
+          >
+            <MusicIcon3 className="h-4 w-4" />
+            {operaHouseScheduleOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-purple-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setArtGalleryExhibit({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${artGalleryExhibitOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Art Gallery Exhibit Monitor"
+          >
+            <PaletteIcon className="h-4 w-4" />
+            {artGalleryExhibitOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBotanicalGarden({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${botanicalGardenOpen ? 'bg-teal-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Botanical Garden Monitor"
+          >
+            <FlowerIcon2 className="h-4 w-4" />
+            {botanicalGardenOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBowlingAlleyLane({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${bowlingAlleyLaneOpen ? 'bg-fuchsia-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Bowling Alley Lane Monitor"
+          >
+            <CircleDotIcon5 className="h-4 w-4" />
+            {bowlingAlleyLaneOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-fuchsia-400" />}
           </button>
         </div>
       </div>
