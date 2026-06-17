@@ -699,6 +699,15 @@ export function MonitorPanelRegistry() {
   const modelHobbyShop = useMapStore((s) => s.modelHobbyShop)
   const videoGameRetailer = useMapStore((s) => s.videoGameRetailer)
   const bicycleRetailer = useMapStore((s) => s.bicycleRetailer)
+  // Task 153: Music Instrument Store
+  const musicInstrumentStore = useMapStore((s) => s.musicInstrumentStore)
+  const guitarShop = useMapStore((s) => s.guitarShop)
+  const pianoShowroom = useMapStore((s) => s.pianoShowroom)
+  const drumShop = useMapStore((s) => s.drumShop)
+  const recordingStudio = useMapStore((s) => s.recordingStudio)
+  const audioEquipmentStore = useMapStore((s) => s.audioEquipmentStore)
+  const sheetMusicShop = useMapStore((s) => s.sheetMusicShop)
+  const vinylRecordStore = useMapStore((s) => s.vinylRecordStore)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -2491,6 +2500,30 @@ export function MonitorPanelRegistry() {
       )}
       {bicycleRetailer.open && (
         <LazyPanel importFn={() => import('@/components/map/BicycleRetailerMonitor')} exportName="BicycleRetailerMonitor" shouldLoad={bicycleRetailer.open} />
+      )}
+      {musicInstrumentStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/MusicInstrumentStoreMonitor')} exportName="MusicInstrumentStoreMonitor" shouldLoad={musicInstrumentStore.open} />
+      )}
+      {guitarShop.open && (
+        <LazyPanel importFn={() => import('@/components/map/GuitarShopMonitor')} exportName="GuitarShopMonitor" shouldLoad={guitarShop.open} />
+      )}
+      {pianoShowroom.open && (
+        <LazyPanel importFn={() => import('@/components/map/PianoShowroomMonitor')} exportName="PianoShowroomMonitor" shouldLoad={pianoShowroom.open} />
+      )}
+      {drumShop.open && (
+        <LazyPanel importFn={() => import('@/components/map/DrumShopMonitor')} exportName="DrumShopMonitor" shouldLoad={drumShop.open} />
+      )}
+      {recordingStudio.open && (
+        <LazyPanel importFn={() => import('@/components/map/RecordingStudioMonitor')} exportName="RecordingStudioMonitor" shouldLoad={recordingStudio.open} />
+      )}
+      {audioEquipmentStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/AudioEquipmentStoreMonitor')} exportName="AudioEquipmentStoreMonitor" shouldLoad={audioEquipmentStore.open} />
+      )}
+      {sheetMusicShop.open && (
+        <LazyPanel importFn={() => import('@/components/map/SheetMusicShopMonitor')} exportName="SheetMusicShopMonitor" shouldLoad={sheetMusicShop.open} />
+      )}
+      {vinylRecordStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/VinylRecordStoreMonitor')} exportName="VinylRecordStoreMonitor" shouldLoad={vinylRecordStore.open} />
       )}
     </>
   )

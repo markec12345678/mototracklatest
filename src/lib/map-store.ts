@@ -4731,6 +4731,22 @@ interface MapState {
   setVideoGameRetailer: (state: Partial<MonitorState>) => void
   bicycleRetailer: MonitorState
   setBicycleRetailer: (state: Partial<MonitorState>) => void
+  musicInstrumentStore: MonitorState
+  setMusicInstrumentStore: (state: Partial<MonitorState>) => void
+  guitarShop: MonitorState
+  setGuitarShop: (state: Partial<MonitorState>) => void
+  pianoShowroom: MonitorState
+  setPianoShowroom: (state: Partial<MonitorState>) => void
+  drumShop: MonitorState
+  setDrumShop: (state: Partial<MonitorState>) => void
+  recordingStudio: MonitorState
+  setRecordingStudio: (state: Partial<MonitorState>) => void
+  audioEquipmentStore: MonitorState
+  setAudioEquipmentStore: (state: Partial<MonitorState>) => void
+  sheetMusicShop: MonitorState
+  setSheetMusicShop: (state: Partial<MonitorState>) => void
+  vinylRecordStore: MonitorState
+  setVinylRecordStore: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -9029,6 +9045,14 @@ export const useMapStore = create<MapState>()(
       modelHobbyShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       videoGameRetailer: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       bicycleRetailer: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      musicInstrumentStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      guitarShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      pianoShowroom: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      drumShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      recordingStudio: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      audioEquipmentStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      sheetMusicShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      vinylRecordStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -9331,6 +9355,14 @@ export const useMapStore = create<MapState>()(
       setModelHobbyShop: (updates) => set((state) => ({ modelHobbyShop: { ...state.modelHobbyShop, ...updates } })),
       setVideoGameRetailer: (updates) => set((state) => ({ videoGameRetailer: { ...state.videoGameRetailer, ...updates } })),
       setBicycleRetailer: (updates) => set((state) => ({ bicycleRetailer: { ...state.bicycleRetailer, ...updates } })),
+      setMusicInstrumentStore: (updates) => set((state) => ({ musicInstrumentStore: { ...state.musicInstrumentStore, ...updates } })),
+      setGuitarShop: (updates) => set((state) => ({ guitarShop: { ...state.guitarShop, ...updates } })),
+      setPianoShowroom: (updates) => set((state) => ({ pianoShowroom: { ...state.pianoShowroom, ...updates } })),
+      setDrumShop: (updates) => set((state) => ({ drumShop: { ...state.drumShop, ...updates } })),
+      setRecordingStudio: (updates) => set((state) => ({ recordingStudio: { ...state.recordingStudio, ...updates } })),
+      setAudioEquipmentStore: (updates) => set((state) => ({ audioEquipmentStore: { ...state.audioEquipmentStore, ...updates } })),
+      setSheetMusicShop: (updates) => set((state) => ({ sheetMusicShop: { ...state.sheetMusicShop, ...updates } })),
+      setVinylRecordStore: (updates) => set((state) => ({ vinylRecordStore: { ...state.vinylRecordStore, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

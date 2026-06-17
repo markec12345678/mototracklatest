@@ -818,6 +818,13 @@ import {
   Palette as PaletteIcon4,
   Plane as PlaneIcon4,
   Bike as BikeIcon3,
+  Guitar as GuitarIcon2,
+  Piano as PianoIcon2,
+  Drum as DrumIcon2,
+  Mic as MicIcon2,
+  Headphones as HeadphonesIcon2,
+  Music4 as MusicIcon4,
+  Disc3 as Disc3Icon,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1246,6 +1253,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const modelHobbyShopOpen = useMapStore((s) => s.modelHobbyShop.open)
   const videoGameRetailerOpen = useMapStore((s) => s.videoGameRetailer.open)
   const bicycleRetailerOpen = useMapStore((s) => s.bicycleRetailer.open)
+  const musicInstrumentStoreOpen = useMapStore((s) => s.musicInstrumentStore.open)
+  const guitarShopOpen = useMapStore((s) => s.guitarShop.open)
+  const pianoShowroomOpen = useMapStore((s) => s.pianoShowroom.open)
+  const drumShopOpen = useMapStore((s) => s.drumShop.open)
+  const recordingStudioOpen = useMapStore((s) => s.recordingStudio.open)
+  const audioEquipmentStoreOpen = useMapStore((s) => s.audioEquipmentStore.open)
+  const sheetMusicShopOpen = useMapStore((s) => s.sheetMusicShop.open)
+  const vinylRecordStoreOpen = useMapStore((s) => s.vinylRecordStore.open)
 
   if (typeof window === 'undefined') return null
 
@@ -8030,6 +8045,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <BikeIcon3 className="h-4 w-4" />
             {bicycleRetailerOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setMusicInstrumentStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${musicInstrumentStoreOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Music Instrument Store Monitor"
+          >
+            <MusicIcon4 className="h-4 w-4" />
+            {musicInstrumentStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setGuitarShop({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${guitarShopOpen ? 'bg-red-800 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Guitar Shop Monitor"
+          >
+            <GuitarIcon2 className="h-4 w-4" />
+            {guitarShopOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setPianoShowroom({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${pianoShowroomOpen ? 'bg-zinc-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Piano Showroom Monitor"
+          >
+            <PianoIcon2 className="h-4 w-4" />
+            {pianoShowroomOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-zinc-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setDrumShop({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${drumShopOpen ? 'bg-rose-800 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Drum Shop Monitor"
+          >
+            <DrumIcon2 className="h-4 w-4" />
+            {drumShopOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setRecordingStudio({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${recordingStudioOpen ? 'bg-purple-800 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Recording Studio Monitor"
+          >
+            <MicIcon2 className="h-4 w-4" />
+            {recordingStudioOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-purple-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setAudioEquipmentStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${audioEquipmentStoreOpen ? 'bg-blue-800 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Audio Equipment Store Monitor"
+          >
+            <HeadphonesIcon2 className="h-4 w-4" />
+            {audioEquipmentStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-blue-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setSheetMusicShop({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${sheetMusicShopOpen ? 'bg-teal-800 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Sheet Music Shop Monitor"
+          >
+            <MusicIcon4 className="h-4 w-4" />
+            {sheetMusicShopOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setVinylRecordStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${vinylRecordStoreOpen ? 'bg-pink-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Vinyl Record Store Monitor"
+          >
+            <Disc3Icon className="h-4 w-4" />
+            {vinylRecordStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-pink-400" />}
           </button>
         </div>
       </div>
