@@ -4527,6 +4527,23 @@ interface MapState {
   setBotanicalGarden: (state: Partial<MonitorState>) => void
   bowlingAlleyLane: MonitorState
   setBowlingAlleyLane: (state: Partial<MonitorState>) => void
+  // Task 141: Accommodation & Hospitality
+  hotelChainOperation: MonitorState
+  setHotelChainOperation: (state: Partial<MonitorState>) => void
+  resortSpaWellness: MonitorState
+  setResortSpaWellness: (state: Partial<MonitorState>) => void
+  hostelBackpacker: MonitorState
+  setHostelBackpacker: (state: Partial<MonitorState>) => void
+  bedBreakfastInn: MonitorState
+  setBedBreakfastInn: (state: Partial<MonitorState>) => void
+  vacationRentalProperty: MonitorState
+  setVacationRentalProperty: (state: Partial<MonitorState>) => void
+  conventionCenterBooking: MonitorState
+  setConventionCenterBooking: (state: Partial<MonitorState>) => void
+  servicedApartment: MonitorState
+  setServicedApartment: (state: Partial<MonitorState>) => void
+  campgroundRvPark: MonitorState
+  setCampgroundRvPark: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -8718,6 +8735,15 @@ export const useMapStore = create<MapState>()(
       artGalleryExhibit: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       botanicalGarden: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       bowlingAlleyLane: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 141: Accommodation & Hospitality
+      hotelChainOperation: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      resortSpaWellness: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      hostelBackpacker: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      bedBreakfastInn: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      vacationRentalProperty: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      conventionCenterBooking: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      servicedApartment: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      campgroundRvPark: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -8913,6 +8939,15 @@ export const useMapStore = create<MapState>()(
       setArtGalleryExhibit: (updates) => set((state) => ({ artGalleryExhibit: { ...state.artGalleryExhibit, ...updates } })),
       setBotanicalGarden: (updates) => set((state) => ({ botanicalGarden: { ...state.botanicalGarden, ...updates } })),
       setBowlingAlleyLane: (updates) => set((state) => ({ bowlingAlleyLane: { ...state.bowlingAlleyLane, ...updates } })),
+      // Task 141: Accommodation & Hospitality
+      setHotelChainOperation: (updates) => set((state) => ({ hotelChainOperation: { ...state.hotelChainOperation, ...updates } })),
+      setResortSpaWellness: (updates) => set((state) => ({ resortSpaWellness: { ...state.resortSpaWellness, ...updates } })),
+      setHostelBackpacker: (updates) => set((state) => ({ hostelBackpacker: { ...state.hostelBackpacker, ...updates } })),
+      setBedBreakfastInn: (updates) => set((state) => ({ bedBreakfastInn: { ...state.bedBreakfastInn, ...updates } })),
+      setVacationRentalProperty: (updates) => set((state) => ({ vacationRentalProperty: { ...state.vacationRentalProperty, ...updates } })),
+      setConventionCenterBooking: (updates) => set((state) => ({ conventionCenterBooking: { ...state.conventionCenterBooking, ...updates } })),
+      setServicedApartment: (updates) => set((state) => ({ servicedApartment: { ...state.servicedApartment, ...updates } })),
+      setCampgroundRvPark: (updates) => set((state) => ({ campgroundRvPark: { ...state.campgroundRvPark, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

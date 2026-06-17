@@ -717,6 +717,14 @@ import {
   Palette as PaletteIcon,
   Flower as FlowerIcon2,
   CircleDot as CircleDotIcon5,
+  Building2 as Building2Icon7,
+  Bath as BathIcon,
+  Bed as BedIcon,
+  Home as HomeIcon2,
+  Key as KeyIcon,
+  Calendar as CalendarIcon,
+  Building as BuildingIcon7,
+  Tent as TentIcon,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1042,6 +1050,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const artGalleryExhibitOpen = useMapStore((s) => s.artGalleryExhibit.open)
   const botanicalGardenOpen = useMapStore((s) => s.botanicalGarden.open)
   const bowlingAlleyLaneOpen = useMapStore((s) => s.bowlingAlleyLane.open)
+  const hotelChainOperationOpen = useMapStore((s) => s.hotelChainOperation.open)
+  const resortSpaWellnessOpen = useMapStore((s) => s.resortSpaWellness.open)
+  const hostelBackpackerOpen = useMapStore((s) => s.hostelBackpacker.open)
+  const bedBreakfastInnOpen = useMapStore((s) => s.bedBreakfastInn.open)
+  const vacationRentalPropertyOpen = useMapStore((s) => s.vacationRentalProperty.open)
+  const conventionCenterBookingOpen = useMapStore((s) => s.conventionCenterBooking.open)
+  const servicedApartmentOpen = useMapStore((s) => s.servicedApartment.open)
+  const campgroundRvParkOpen = useMapStore((s) => s.campgroundRvPark.open)
 
   if (typeof window === 'undefined') return null
 
@@ -7044,6 +7060,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <CircleDotIcon5 className="h-4 w-4" />
             {bowlingAlleyLaneOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-fuchsia-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setHotelChainOperation({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${hotelChainOperationOpen ? 'bg-violet-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Hotel Chain Operation Monitor"
+          >
+            <Building2Icon7 className="h-4 w-4" />
+            {hotelChainOperationOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-violet-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setResortSpaWellness({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${resortSpaWellnessOpen ? 'bg-teal-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Resort Spa Wellness Monitor"
+          >
+            <BathIcon className="h-4 w-4" />
+            {resortSpaWellnessOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setHostelBackpacker({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${hostelBackpackerOpen ? 'bg-orange-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Hostel Backpacker Monitor"
+          >
+            <BedIcon className="h-4 w-4" />
+            {hostelBackpackerOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBedBreakfastInn({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${bedBreakfastInnOpen ? 'bg-rose-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Bed Breakfast Inn Monitor"
+          >
+            <HomeIcon2 className="h-4 w-4" />
+            {bedBreakfastInnOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setVacationRentalProperty({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${vacationRentalPropertyOpen ? 'bg-pink-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Vacation Rental Property Monitor"
+          >
+            <KeyIcon className="h-4 w-4" />
+            {vacationRentalPropertyOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-pink-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setConventionCenterBooking({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${conventionCenterBookingOpen ? 'bg-blue-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Convention Center Booking Monitor"
+          >
+            <CalendarIcon className="h-4 w-4" />
+            {conventionCenterBookingOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-blue-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setServicedApartment({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${servicedApartmentOpen ? 'bg-stone-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Serviced Apartment Monitor"
+          >
+            <BuildingIcon7 className="h-4 w-4" />
+            {servicedApartmentOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-stone-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCampgroundRvPark({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${campgroundRvParkOpen ? 'bg-green-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Campground RV Park Monitor"
+          >
+            <TentIcon className="h-4 w-4" />
+            {campgroundRvParkOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-green-400" />}
           </button>
         </div>
       </div>
