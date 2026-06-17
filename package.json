@@ -3,8 +3,8 @@
   "version": "0.2.0",
   "private": true,
   "scripts": {
-    "dev": "KEEP_ALIVE_TIMEOUT=0 NODE_OPTIONS='--max-old-space-size=7168' next dev -p 3000 --turbopack > dev.log 2>&1",
-    "dev:turbo": "KEEP_ALIVE_TIMEOUT=0 NODE_OPTIONS='--max-old-space-size=4096' next dev -p 3000 --turbopack > dev.log 2>&1",
+    "dev": "KEEP_ALIVE_TIMEOUT=0 NODE_OPTIONS='--max-old-space-size=7168' next dev -p 3000 --webpack > dev.log 2>&1",
+    "dev:turbo": "KEEP_ALIVE_TIMEOUT=0 NODE_OPTIONS='--max-old-space-size=7168' next dev -p 3000 --turbopack > dev.log 2>&1",
     "build": "next build && cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/",
     "start": "KEEP_ALIVE_TIMEOUT=0 NODE_ENV=production node .next/standalone/server.js",
     "lint": "eslint .",
