@@ -860,12 +860,11 @@ import {
   // Task 158: Retail & Commercial Districts mix
   BookOpen as BookOpenIcon2,
   Gift as GiftIcon2,
-  Warehouse as WarehouseIcon2,
+  Warehouse as WarehouseIcon3,
   PartyPopper as PartyPopperIcon2,
   Pill as PillIcon2,
   Hammer as HammerIcon2,
   Flower2 as Flower2Icon2,
-  Fish as FishIcon2,
   // Task 159: Home, Hobby & Specialty Retail mix
   ToyBrick as ToyBrickIcon2,
   Watch as WatchIcon3,
@@ -915,6 +914,14 @@ import {
   HandHeart as HandHeartIcon,
   Soup as SoupIcon3,
   Apple as AppleIcon3,
+  HeartPulse as HeartPulseIcon2,
+  Building2 as BuildingIcon,
+  Hotel as HotelIcon,
+  Wine as WineIcon3,
+  Beer as BeerIcon2,
+  Beaker as BeakerIcon,
+  Grape as GrapeIcon2,
+  Cake as CakeIcon,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1439,6 +1446,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const foodBankPantryOpen = useMapStore((s) => s.foodBankPantry.open)
   const soupKitchenShelterOpen = useMapStore((s) => s.soupKitchenShelter.open)
   const schoolCafeteriaOperatorOpen = useMapStore((s) => s.schoolCafeteriaOperator.open)
+  const hospitalFoodServiceOpen = useMapStore((s) => s.hospitalFoodService.open)
+  const corporateDiningServiceOpen = useMapStore((s) => s.corporateDiningService.open)
+  const hotelRestaurantSupplyOpen = useMapStore((s) => s.hotelRestaurantSupply.open)
+  const barNightclubSupplyOpen = useMapStore((s) => s.barNightclubSupply.open)
+  const breweryTaproomOpen = useMapStore((s) => s.breweryTaproom.open)
+  const distilleryTastingRoomOpen = useMapStore((s) => s.distilleryTastingRoom.open)
+  const wineryVineyardOpen = useMapStore((s) => s.wineryVineyard.open)
+  const weddingEventVenueOpen = useMapStore((s) => s.weddingEventVenue.open)
 
   if (typeof window === 'undefined') return null
 
@@ -8565,7 +8580,7 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
             className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${wholesaleClubWarehouseOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
             title="Wholesale Club Warehouse Monitor"
           >
-            <WarehouseIcon2 className="h-4 w-4" />
+            <WarehouseIcon3 className="h-4 w-4" />
             {wholesaleClubWarehouseOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-300" />}
           </button>
           <button
@@ -8991,6 +9006,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <AppleIcon3 className="h-4 w-4" />
             {schoolCafeteriaOperatorOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setHospitalFoodService({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${hospitalFoodServiceOpen ? 'bg-rose-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Hospital Food Service Monitor"
+          >
+            <HeartPulseIcon2 className="h-4 w-4" />
+            {hospitalFoodServiceOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCorporateDiningService({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${corporateDiningServiceOpen ? 'bg-emerald-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Corporate Dining Service Monitor"
+          >
+            <BuildingIcon className="h-4 w-4" />
+            {corporateDiningServiceOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setHotelRestaurantSupply({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${hotelRestaurantSupplyOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Hotel & Restaurant Supply Monitor"
+          >
+            <HotelIcon className="h-4 w-4" />
+            {hotelRestaurantSupplyOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBarNightclubSupply({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${barNightclubSupplyOpen ? 'bg-fuchsia-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Bar & Nightclub Supply Monitor"
+          >
+            <WineIcon3 className="h-4 w-4" />
+            {barNightclubSupplyOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-fuchsia-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBreweryTaproom({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${breweryTaproomOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Brewery & Taproom Monitor"
+          >
+            <BeerIcon2 className="h-4 w-4" />
+            {breweryTaproomOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setDistilleryTastingRoom({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${distilleryTastingRoomOpen ? 'bg-yellow-800 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Distillery & Tasting Room Monitor"
+          >
+            <BeakerIcon className="h-4 w-4" />
+            {distilleryTastingRoomOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-yellow-400" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setWineryVineyard({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${wineryVineyardOpen ? 'bg-purple-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Winery & Vineyard Monitor"
+          >
+            <GrapeIcon2 className="h-4 w-4" />
+            {wineryVineyardOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-purple-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setWeddingEventVenue({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${weddingEventVenueOpen ? 'bg-pink-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Wedding & Event Venue Monitor"
+          >
+            <CakeIcon className="h-4 w-4" />
+            {weddingEventVenueOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-pink-300" />}
           </button>
         </div>
       </div>

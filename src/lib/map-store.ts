@@ -2999,10 +2999,6 @@ interface MapState {
   radiationExposure: MonitorState
   setRadiationExposure: (state: Partial<MonitorState>) => void
 
-  // Peat Fire Tracker
-  peatFire: MonitorState
-  setPeatFire: (state: Partial<MonitorState>) => void
-
   // Sea Level Rise Projector
   seaLevelRise: MonitorState
   setSeaLevelRise: (state: Partial<MonitorState>) => void
@@ -4925,6 +4921,24 @@ interface MapState {
   setSoupKitchenShelter: (state: Partial<MonitorState>) => void
   schoolCafeteriaOperator: MonitorState
   setSchoolCafeteriaOperator: (state: Partial<MonitorState>) => void
+
+  // Task 165: Institutional & Hospitality Dining monitors
+  hospitalFoodService: MonitorState
+  setHospitalFoodService: (state: Partial<MonitorState>) => void
+  corporateDiningService: MonitorState
+  setCorporateDiningService: (state: Partial<MonitorState>) => void
+  hotelRestaurantSupply: MonitorState
+  setHotelRestaurantSupply: (state: Partial<MonitorState>) => void
+  barNightclubSupply: MonitorState
+  setBarNightclubSupply: (state: Partial<MonitorState>) => void
+  breweryTaproom: MonitorState
+  setBreweryTaproom: (state: Partial<MonitorState>) => void
+  distilleryTastingRoom: MonitorState
+  setDistilleryTastingRoom: (state: Partial<MonitorState>) => void
+  wineryVineyard: MonitorState
+  setWineryVineyard: (state: Partial<MonitorState>) => void
+  weddingEventVenue: MonitorState
+  setWeddingEventVenue: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -7750,11 +7764,6 @@ export const useMapStore = create<MapState>()(
         radiationExposure: { ...state.radiationExposure, ...updates },
       })),
 
-      peatFire: { open: false, data: [], statusFilter: 'all', activeItemId: null },
-      setPeatFire: (updates) => set((state) => ({
-        peatFire: { open: false, data: [], statusFilter: 'all', activeItemId: null },
-      })),
-
       seaLevelRise: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setSeaLevelRise: (updates) => set((state) => ({
         seaLevelRise: { ...state.seaLevelRise, ...updates },
@@ -9321,6 +9330,14 @@ export const useMapStore = create<MapState>()(
       foodBankPantry: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       soupKitchenShelter: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       schoolCafeteriaOperator: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      hospitalFoodService: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      corporateDiningService: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      hotelRestaurantSupply: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      barNightclubSupply: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      breweryTaproom: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      distilleryTastingRoom: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      wineryVineyard: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      weddingEventVenue: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -9721,6 +9738,14 @@ export const useMapStore = create<MapState>()(
       setFoodBankPantry: (updates) => set((state) => ({ foodBankPantry: { ...state.foodBankPantry, ...updates } })),
       setSoupKitchenShelter: (updates) => set((state) => ({ soupKitchenShelter: { ...state.soupKitchenShelter, ...updates } })),
       setSchoolCafeteriaOperator: (updates) => set((state) => ({ schoolCafeteriaOperator: { ...state.schoolCafeteriaOperator, ...updates } })),
+      setHospitalFoodService: (updates) => set((state) => ({ hospitalFoodService: { ...state.hospitalFoodService, ...updates } })),
+      setCorporateDiningService: (updates) => set((state) => ({ corporateDiningService: { ...state.corporateDiningService, ...updates } })),
+      setHotelRestaurantSupply: (updates) => set((state) => ({ hotelRestaurantSupply: { ...state.hotelRestaurantSupply, ...updates } })),
+      setBarNightclubSupply: (updates) => set((state) => ({ barNightclubSupply: { ...state.barNightclubSupply, ...updates } })),
+      setBreweryTaproom: (updates) => set((state) => ({ breweryTaproom: { ...state.breweryTaproom, ...updates } })),
+      setDistilleryTastingRoom: (updates) => set((state) => ({ distilleryTastingRoom: { ...state.distilleryTastingRoom, ...updates } })),
+      setWineryVineyard: (updates) => set((state) => ({ wineryVineyard: { ...state.wineryVineyard, ...updates } })),
+      setWeddingEventVenue: (updates) => set((state) => ({ weddingEventVenue: { ...state.weddingEventVenue, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
