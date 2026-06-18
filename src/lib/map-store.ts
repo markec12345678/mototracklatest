@@ -4795,6 +4795,22 @@ interface MapState {
   setSmartHomeTechStore: (state: Partial<MonitorState>) => void
   refurbishedElectronicsStore: MonitorState
   setRefurbishedElectronicsStore: (state: Partial<MonitorState>) => void
+  officeSupplyChain: MonitorState
+  setOfficeSupplyChain: (state: Partial<MonitorState>) => void
+  stationeryStore: MonitorState
+  setStationeryStore: (state: Partial<MonitorState>) => void
+  printCopyCenter: MonitorState
+  setPrintCopyCenter: (state: Partial<MonitorState>) => void
+  businessFurnitureStore: MonitorState
+  setBusinessFurnitureStore: (state: Partial<MonitorState>) => void
+  filingStorageStore: MonitorState
+  setFilingStorageStore: (state: Partial<MonitorState>) => void
+  penWritingStore: MonitorState
+  setPenWritingStore: (state: Partial<MonitorState>) => void
+  corporateGiftingStore: MonitorState
+  setCorporateGiftingStore: (state: Partial<MonitorState>) => void
+  shippingPackagingStore: MonitorState
+  setShippingPackagingStore: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -9125,6 +9141,14 @@ export const useMapStore = create<MapState>()(
       cameraPhotoStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       smartHomeTechStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       refurbishedElectronicsStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      officeSupplyChain: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      stationeryStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      printCopyCenter: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      businessFurnitureStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      filingStorageStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      penWritingStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      corporateGiftingStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      shippingPackagingStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -9459,6 +9483,14 @@ export const useMapStore = create<MapState>()(
       setCameraPhotoStore: (updates) => set((state) => ({ cameraPhotoStore: { ...state.cameraPhotoStore, ...updates } })),
       setSmartHomeTechStore: (updates) => set((state) => ({ smartHomeTechStore: { ...state.smartHomeTechStore, ...updates } })),
       setRefurbishedElectronicsStore: (updates) => set((state) => ({ refurbishedElectronicsStore: { ...state.refurbishedElectronicsStore, ...updates } })),
+      setOfficeSupplyChain: (updates) => set((state) => ({ officeSupplyChain: { ...state.officeSupplyChain, ...updates } })),
+      setStationeryStore: (updates) => set((state) => ({ stationeryStore: { ...state.stationeryStore, ...updates } })),
+      setPrintCopyCenter: (updates) => set((state) => ({ printCopyCenter: { ...state.printCopyCenter, ...updates } })),
+      setBusinessFurnitureStore: (updates) => set((state) => ({ businessFurnitureStore: { ...state.businessFurnitureStore, ...updates } })),
+      setFilingStorageStore: (updates) => set((state) => ({ filingStorageStore: { ...state.filingStorageStore, ...updates } })),
+      setPenWritingStore: (updates) => set((state) => ({ penWritingStore: { ...state.penWritingStore, ...updates } })),
+      setCorporateGiftingStore: (updates) => set((state) => ({ corporateGiftingStore: { ...state.corporateGiftingStore, ...updates } })),
+      setShippingPackagingStore: (updates) => set((state) => ({ shippingPackagingStore: { ...state.shippingPackagingStore, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

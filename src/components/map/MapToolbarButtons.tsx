@@ -849,6 +849,14 @@ import {
   Camera as CameraIcon2,
   Cctv as CctvIcon,
   Recycle as RecycleIcon3,
+  Briefcase as BriefcaseIcon,
+  Feather as FeatherIcon,
+  Printer as PrinterIcon,
+  Clipboard as ClipboardIcon,
+  Folder as FolderIcon,
+  Pen as PenIcon,
+  Highlighter as HighlighterIcon,
+  Box as BoxIcon,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1309,6 +1317,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const cameraPhotoStoreOpen = useMapStore((s) => s.cameraPhotoStore.open)
   const smartHomeTechStoreOpen = useMapStore((s) => s.smartHomeTechStore.open)
   const refurbishedElectronicsStoreOpen = useMapStore((s) => s.refurbishedElectronicsStore.open)
+  const officeSupplyChainOpen = useMapStore((s) => s.officeSupplyChain.open)
+  const stationeryStoreOpen = useMapStore((s) => s.stationeryStore.open)
+  const printCopyCenterOpen = useMapStore((s) => s.printCopyCenter.open)
+  const businessFurnitureStoreOpen = useMapStore((s) => s.businessFurnitureStore.open)
+  const filingStorageStoreOpen = useMapStore((s) => s.filingStorageStore.open)
+  const penWritingStoreOpen = useMapStore((s) => s.penWritingStore.open)
+  const corporateGiftingStoreOpen = useMapStore((s) => s.corporateGiftingStore.open)
+  const shippingPackagingStoreOpen = useMapStore((s) => s.shippingPackagingStore.open)
 
   if (typeof window === 'undefined') return null
 
@@ -8349,6 +8365,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <RecycleIcon3 className="h-4 w-4" />
             {refurbishedElectronicsStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-lime-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setOfficeSupplyChain({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${officeSupplyChainOpen ? 'bg-red-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Office Supply Chain Monitor"
+          >
+            <BriefcaseIcon className="h-4 w-4" />
+            {officeSupplyChainOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setStationeryStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${stationeryStoreOpen ? 'bg-rose-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Stationery Store Monitor"
+          >
+            <FeatherIcon className="h-4 w-4" />
+            {stationeryStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setPrintCopyCenter({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${printCopyCenterOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Print & Copy Center Monitor"
+          >
+            <PrinterIcon className="h-4 w-4" />
+            {printCopyCenterOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBusinessFurnitureStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${businessFurnitureStoreOpen ? 'bg-yellow-800 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Business Furniture Store Monitor"
+          >
+            <ClipboardIcon className="h-4 w-4" />
+            {businessFurnitureStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-yellow-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setFilingStorageStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${filingStorageStoreOpen ? 'bg-cyan-800 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Filing & Storage Store Monitor"
+          >
+            <FolderIcon className="h-4 w-4" />
+            {filingStorageStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setPenWritingStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${penWritingStoreOpen ? 'bg-slate-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Pen & Writing Store Monitor"
+          >
+            <PenIcon className="h-4 w-4" />
+            {penWritingStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-slate-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCorporateGiftingStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${corporateGiftingStoreOpen ? 'bg-violet-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Corporate Gifting Store Monitor"
+          >
+            <HighlighterIcon className="h-4 w-4" />
+            {corporateGiftingStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-violet-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setShippingPackagingStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${shippingPackagingStoreOpen ? 'bg-yellow-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Shipping & Packaging Store Monitor"
+          >
+            <BoxIcon className="h-4 w-4" />
+            {shippingPackagingStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-yellow-300" />}
           </button>
         </div>
       </div>
