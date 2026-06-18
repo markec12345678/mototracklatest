@@ -4909,6 +4909,22 @@ interface MapState {
   setEthnicGroceryStore: (state: Partial<MonitorState>) => void
   halalKosherMarket: MonitorState
   setHalalKosherMarket: (state: Partial<MonitorState>) => void
+  beverageDistributionCenter: MonitorState
+  setBeverageDistributionCenter: (state: Partial<MonitorState>) => void
+  vendingMachineOperator: MonitorState
+  setVendingMachineOperator: (state: Partial<MonitorState>) => void
+  foodTruckCommissary: MonitorState
+  setFoodTruckCommissary: (state: Partial<MonitorState>) => void
+  cateringEventHall: MonitorState
+  setCateringEventHall: (state: Partial<MonitorState>) => void
+  cookingSchoolCulinaryInstitute: MonitorState
+  setCookingSchoolCulinaryInstitute: (state: Partial<MonitorState>) => void
+  foodBankPantry: MonitorState
+  setFoodBankPantry: (state: Partial<MonitorState>) => void
+  soupKitchenShelter: MonitorState
+  setSoupKitchenShelter: (state: Partial<MonitorState>) => void
+  schoolCafeteriaOperator: MonitorState
+  setSchoolCafeteriaOperator: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -9297,6 +9313,14 @@ export const useMapStore = create<MapState>()(
       farmersMarketStand: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       ethnicGroceryStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       halalKosherMarket: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      beverageDistributionCenter: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      vendingMachineOperator: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      foodTruckCommissary: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      cateringEventHall: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      cookingSchoolCulinaryInstitute: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      foodBankPantry: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      soupKitchenShelter: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      schoolCafeteriaOperator: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -9689,6 +9713,14 @@ export const useMapStore = create<MapState>()(
       setFarmersMarketStand: (updates) => set((state) => ({ farmersMarketStand: { ...state.farmersMarketStand, ...updates } })),
       setEthnicGroceryStore: (updates) => set((state) => ({ ethnicGroceryStore: { ...state.ethnicGroceryStore, ...updates } })),
       setHalalKosherMarket: (updates) => set((state) => ({ halalKosherMarket: { ...state.halalKosherMarket, ...updates } })),
+      setBeverageDistributionCenter: (updates) => set((state) => ({ beverageDistributionCenter: { ...state.beverageDistributionCenter, ...updates } })),
+      setVendingMachineOperator: (updates) => set((state) => ({ vendingMachineOperator: { ...state.vendingMachineOperator, ...updates } })),
+      setFoodTruckCommissary: (updates) => set((state) => ({ foodTruckCommissary: { ...state.foodTruckCommissary, ...updates } })),
+      setCateringEventHall: (updates) => set((state) => ({ cateringEventHall: { ...state.cateringEventHall, ...updates } })),
+      setCookingSchoolCulinaryInstitute: (updates) => set((state) => ({ cookingSchoolCulinaryInstitute: { ...state.cookingSchoolCulinaryInstitute, ...updates } })),
+      setFoodBankPantry: (updates) => set((state) => ({ foodBankPantry: { ...state.foodBankPantry, ...updates } })),
+      setSoupKitchenShelter: (updates) => set((state) => ({ soupKitchenShelter: { ...state.soupKitchenShelter, ...updates } })),
+      setSchoolCafeteriaOperator: (updates) => set((state) => ({ schoolCafeteriaOperator: { ...state.schoolCafeteriaOperator, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

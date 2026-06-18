@@ -794,6 +794,14 @@ export function MonitorPanelRegistry() {
   const farmersMarketStand = useMapStore((s) => s.farmersMarketStand)
   const ethnicGroceryStore = useMapStore((s) => s.ethnicGroceryStore)
   const halalKosherMarket = useMapStore((s) => s.halalKosherMarket)
+  const beverageDistributionCenter = useMapStore((s) => s.beverageDistributionCenter)
+  const vendingMachineOperator = useMapStore((s) => s.vendingMachineOperator)
+  const foodTruckCommissary = useMapStore((s) => s.foodTruckCommissary)
+  const cateringEventHall = useMapStore((s) => s.cateringEventHall)
+  const cookingSchoolCulinaryInstitute = useMapStore((s) => s.cookingSchoolCulinaryInstitute)
+  const foodBankPantry = useMapStore((s) => s.foodBankPantry)
+  const soupKitchenShelter = useMapStore((s) => s.soupKitchenShelter)
+  const schoolCafeteriaOperator = useMapStore((s) => s.schoolCafeteriaOperator)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -2850,6 +2858,30 @@ export function MonitorPanelRegistry() {
       )}
       {halalKosherMarket.open && (
         <LazyPanel importFn={() => import('@/components/map/HalalKosherMarketMonitor')} exportName="HalalKosherMarketMonitor" shouldLoad={halalKosherMarket.open} />
+      )}
+      {beverageDistributionCenter.open && (
+        <LazyPanel importFn={() => import('@/components/map/BeverageDistributionCenterMonitor')} exportName="BeverageDistributionCenterMonitor" shouldLoad={beverageDistributionCenter.open} />
+      )}
+      {vendingMachineOperator.open && (
+        <LazyPanel importFn={() => import('@/components/map/VendingMachineOperatorMonitor')} exportName="VendingMachineOperatorMonitor" shouldLoad={vendingMachineOperator.open} />
+      )}
+      {foodTruckCommissary.open && (
+        <LazyPanel importFn={() => import('@/components/map/FoodTruckCommissaryMonitor')} exportName="FoodTruckCommissaryMonitor" shouldLoad={foodTruckCommissary.open} />
+      )}
+      {cateringEventHall.open && (
+        <LazyPanel importFn={() => import('@/components/map/CateringEventHallMonitor')} exportName="CateringEventHallMonitor" shouldLoad={cateringEventHall.open} />
+      )}
+      {cookingSchoolCulinaryInstitute.open && (
+        <LazyPanel importFn={() => import('@/components/map/CookingSchoolCulinaryInstituteMonitor')} exportName="CookingSchoolCulinaryInstituteMonitor" shouldLoad={cookingSchoolCulinaryInstitute.open} />
+      )}
+      {foodBankPantry.open && (
+        <LazyPanel importFn={() => import('@/components/map/FoodBankPantryMonitor')} exportName="FoodBankPantryMonitor" shouldLoad={foodBankPantry.open} />
+      )}
+      {soupKitchenShelter.open && (
+        <LazyPanel importFn={() => import('@/components/map/SoupKitchenShelterMonitor')} exportName="SoupKitchenShelterMonitor" shouldLoad={soupKitchenShelter.open} />
+      )}
+      {schoolCafeteriaOperator.open && (
+        <LazyPanel importFn={() => import('@/components/map/SchoolCafeteriaOperatorMonitor')} exportName="SchoolCafeteriaOperatorMonitor" shouldLoad={schoolCafeteriaOperator.open} />
       )}
     </>
   )

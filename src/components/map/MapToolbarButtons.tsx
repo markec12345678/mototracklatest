@@ -907,6 +907,14 @@ import {
   Wheat as WheatIcon3,
   Globe2 as Globe2Icon3,
   Scale as ScaleIcon3,
+  Truck as TruckIcon2,
+  CircleDollarSign as CircleDollarSignIcon,
+  UtensilsCrossed as UtensilsCrossedIcon,
+  PartyPopper as PartyPopperIcon,
+  ChefHat as ChefHatIcon,
+  HandHeart as HandHeartIcon,
+  Soup as SoupIcon3,
+  Apple as AppleIcon3,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1423,6 +1431,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const farmersMarketStandOpen = useMapStore((s) => s.farmersMarketStand.open)
   const ethnicGroceryStoreOpen = useMapStore((s) => s.ethnicGroceryStore.open)
   const halalKosherMarketOpen = useMapStore((s) => s.halalKosherMarket.open)
+  const beverageDistributionCenterOpen = useMapStore((s) => s.beverageDistributionCenter.open)
+  const vendingMachineOperatorOpen = useMapStore((s) => s.vendingMachineOperator.open)
+  const foodTruckCommissaryOpen = useMapStore((s) => s.foodTruckCommissary.open)
+  const cateringEventHallOpen = useMapStore((s) => s.cateringEventHall.open)
+  const cookingSchoolCulinaryInstituteOpen = useMapStore((s) => s.cookingSchoolCulinaryInstitute.open)
+  const foodBankPantryOpen = useMapStore((s) => s.foodBankPantry.open)
+  const soupKitchenShelterOpen = useMapStore((s) => s.soupKitchenShelter.open)
+  const schoolCafeteriaOperatorOpen = useMapStore((s) => s.schoolCafeteriaOperator.open)
 
   if (typeof window === 'undefined') return null
 
@@ -8911,6 +8927,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <ScaleIcon3 className="h-4 w-4" />
             {halalKosherMarketOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-stone-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBeverageDistributionCenter({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${beverageDistributionCenterOpen ? 'bg-cyan-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Beverage Distribution Center Monitor"
+          >
+            <TruckIcon2 className="h-4 w-4" />
+            {beverageDistributionCenterOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setVendingMachineOperator({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${vendingMachineOperatorOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Vending Machine Operator Monitor"
+          >
+            <CircleDollarSignIcon className="h-4 w-4" />
+            {vendingMachineOperatorOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setFoodTruckCommissary({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${foodTruckCommissaryOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Food Truck Commissary Monitor"
+          >
+            <UtensilsCrossedIcon className="h-4 w-4" />
+            {foodTruckCommissaryOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCateringEventHall({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${cateringEventHallOpen ? 'bg-rose-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Catering & Event Hall Monitor"
+          >
+            <PartyPopperIcon className="h-4 w-4" />
+            {cateringEventHallOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCookingSchoolCulinaryInstitute({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${cookingSchoolCulinaryInstituteOpen ? 'bg-emerald-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Cooking School & Culinary Institute Monitor"
+          >
+            <ChefHatIcon className="h-4 w-4" />
+            {cookingSchoolCulinaryInstituteOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setFoodBankPantry({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${foodBankPantryOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Food Bank & Pantry Monitor"
+          >
+            <HandHeartIcon className="h-4 w-4" />
+            {foodBankPantryOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setSoupKitchenShelter({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${soupKitchenShelterOpen ? 'bg-stone-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Soup Kitchen & Shelter Monitor"
+          >
+            <SoupIcon3 className="h-4 w-4" />
+            {soupKitchenShelterOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-stone-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setSchoolCafeteriaOperator({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${schoolCafeteriaOperatorOpen ? 'bg-teal-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="School Cafeteria Operator Monitor"
+          >
+            <AppleIcon3 className="h-4 w-4" />
+            {schoolCafeteriaOperatorOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-300" />}
           </button>
         </div>
       </div>
