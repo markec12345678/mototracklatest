@@ -899,6 +899,14 @@ import {
   Shrimp as ShrimpIcon,
   Egg as EggIcon2,
   Citrus as CitrusIcon2,
+  IceCreamCone as IceCreamConeIcon2,
+  Candy as CandyIcon,
+  HeartPulse as HeartPulseIcon,
+  Pill as PillIcon3,
+  Sprout as SproutIcon6,
+  Wheat as WheatIcon3,
+  Globe2 as Globe2Icon3,
+  Scale as ScaleIcon3,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1407,6 +1415,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const seafoodFishMarketOpen = useMapStore((s) => s.seafoodFishMarket.open)
   const dinerBreakfastSpotOpen = useMapStore((s) => s.dinerBreakfastSpot.open)
   const juiceBarSmoothieShopOpen = useMapStore((s) => s.juiceBarSmoothieShop.open)
+  const frozenYogurtShopOpen = useMapStore((s) => s.frozenYogurtShop.open)
+  const candySweetShopOpen = useMapStore((s) => s.candySweetShop.open)
+  const healthFoodStoreOpen = useMapStore((s) => s.healthFoodStore.open)
+  const vitaminSupplementShopOpen = useMapStore((s) => s.vitaminSupplementShop.open)
+  const organicGroceryStoreOpen = useMapStore((s) => s.organicGroceryStore.open)
+  const farmersMarketStandOpen = useMapStore((s) => s.farmersMarketStand.open)
+  const ethnicGroceryStoreOpen = useMapStore((s) => s.ethnicGroceryStore.open)
+  const halalKosherMarketOpen = useMapStore((s) => s.halalKosherMarket.open)
 
   if (typeof window === 'undefined') return null
 
@@ -8831,6 +8847,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <CitrusIcon2 className="h-4 w-4" />
             {juiceBarSmoothieShopOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setFrozenYogurtShop({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${frozenYogurtShopOpen ? 'bg-pink-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Frozen Yogurt Shop Monitor"
+          >
+            <IceCreamConeIcon2 className="h-4 w-4" />
+            {frozenYogurtShopOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-pink-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCandySweetShop({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${candySweetShopOpen ? 'bg-fuchsia-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Candy & Sweet Shop Monitor"
+          >
+            <CandyIcon className="h-4 w-4" />
+            {candySweetShopOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-fuchsia-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setHealthFoodStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${healthFoodStoreOpen ? 'bg-emerald-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Health Food Store Monitor"
+          >
+            <HeartPulseIcon className="h-4 w-4" />
+            {healthFoodStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setVitaminSupplementShop({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${vitaminSupplementShopOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Vitamin & Supplement Shop Monitor"
+          >
+            <PillIcon3 className="h-4 w-4" />
+            {vitaminSupplementShopOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setOrganicGroceryStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${organicGroceryStoreOpen ? 'bg-green-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Organic Grocery Store Monitor"
+          >
+            <SproutIcon6 className="h-4 w-4" />
+            {organicGroceryStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-green-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setFarmersMarketStand({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${farmersMarketStandOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Farmers Market Stand Monitor"
+          >
+            <WheatIcon3 className="h-4 w-4" />
+            {farmersMarketStandOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setEthnicGroceryStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${ethnicGroceryStoreOpen ? 'bg-violet-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Ethnic Grocery Store Monitor"
+          >
+            <Globe2Icon3 className="h-4 w-4" />
+            {ethnicGroceryStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-violet-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setHalalKosherMarket({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${halalKosherMarketOpen ? 'bg-stone-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Halal & Kosher Market Monitor"
+          >
+            <ScaleIcon3 className="h-4 w-4" />
+            {halalKosherMarketOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-stone-300" />}
           </button>
         </div>
       </div>

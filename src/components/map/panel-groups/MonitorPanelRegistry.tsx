@@ -786,6 +786,14 @@ export function MonitorPanelRegistry() {
   const seafoodFishMarket = useMapStore((s) => s.seafoodFishMarket)
   const dinerBreakfastSpot = useMapStore((s) => s.dinerBreakfastSpot)
   const juiceBarSmoothieShop = useMapStore((s) => s.juiceBarSmoothieShop)
+  const frozenYogurtShop = useMapStore((s) => s.frozenYogurtShop)
+  const candySweetShop = useMapStore((s) => s.candySweetShop)
+  const healthFoodStore = useMapStore((s) => s.healthFoodStore)
+  const vitaminSupplementShop = useMapStore((s) => s.vitaminSupplementShop)
+  const organicGroceryStore = useMapStore((s) => s.organicGroceryStore)
+  const farmersMarketStand = useMapStore((s) => s.farmersMarketStand)
+  const ethnicGroceryStore = useMapStore((s) => s.ethnicGroceryStore)
+  const halalKosherMarket = useMapStore((s) => s.halalKosherMarket)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -2818,6 +2826,30 @@ export function MonitorPanelRegistry() {
       )}
       {juiceBarSmoothieShop.open && (
         <LazyPanel importFn={() => import('@/components/map/JuiceBarSmoothieShopMonitor')} exportName="JuiceBarSmoothieShopMonitor" shouldLoad={juiceBarSmoothieShop.open} />
+      )}
+      {frozenYogurtShop.open && (
+        <LazyPanel importFn={() => import('@/components/map/FrozenYogurtShopMonitor')} exportName="FrozenYogurtShopMonitor" shouldLoad={frozenYogurtShop.open} />
+      )}
+      {candySweetShop.open && (
+        <LazyPanel importFn={() => import('@/components/map/CandySweetShopMonitor')} exportName="CandySweetShopMonitor" shouldLoad={candySweetShop.open} />
+      )}
+      {healthFoodStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/HealthFoodStoreMonitor')} exportName="HealthFoodStoreMonitor" shouldLoad={healthFoodStore.open} />
+      )}
+      {vitaminSupplementShop.open && (
+        <LazyPanel importFn={() => import('@/components/map/VitaminSupplementShopMonitor')} exportName="VitaminSupplementShopMonitor" shouldLoad={vitaminSupplementShop.open} />
+      )}
+      {organicGroceryStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/OrganicGroceryStoreMonitor')} exportName="OrganicGroceryStoreMonitor" shouldLoad={organicGroceryStore.open} />
+      )}
+      {farmersMarketStand.open && (
+        <LazyPanel importFn={() => import('@/components/map/FarmersMarketStandMonitor')} exportName="FarmersMarketStandMonitor" shouldLoad={farmersMarketStand.open} />
+      )}
+      {ethnicGroceryStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/EthnicGroceryStoreMonitor')} exportName="EthnicGroceryStoreMonitor" shouldLoad={ethnicGroceryStore.open} />
+      )}
+      {halalKosherMarket.open && (
+        <LazyPanel importFn={() => import('@/components/map/HalalKosherMarketMonitor')} exportName="HalalKosherMarketMonitor" shouldLoad={halalKosherMarket.open} />
       )}
     </>
   )
