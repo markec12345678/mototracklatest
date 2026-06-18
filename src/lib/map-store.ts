@@ -4939,6 +4939,24 @@ interface MapState {
   setWineryVineyard: (state: Partial<MonitorState>) => void
   weddingEventVenue: MonitorState
   setWeddingEventVenue: (state: Partial<MonitorState>) => void
+
+  // Task 166: Entertainment & Travel Venue monitors
+  conferenceConventionCenter: MonitorState
+  setConferenceConventionCenter: (state: Partial<MonitorState>) => void
+  concertMusicHall: MonitorState
+  setConcertMusicHall: (state: Partial<MonitorState>) => void
+  stadiumArenaConcession: MonitorState
+  setStadiumArenaConcession: (state: Partial<MonitorState>) => void
+  movieTheaterConcession: MonitorState
+  setMovieTheaterConcession: (state: Partial<MonitorState>) => void
+  museumCafeGift: MonitorState
+  setMuseumCafeGift: (state: Partial<MonitorState>) => void
+  themeParkRestaurant: MonitorState
+  setThemeParkRestaurant: (state: Partial<MonitorState>) => void
+  cruiseShipGalley: MonitorState
+  setCruiseShipGalley: (state: Partial<MonitorState>) => void
+  airportFoodCourt: MonitorState
+  setAirportFoodCourt: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -9338,6 +9356,14 @@ export const useMapStore = create<MapState>()(
       distilleryTastingRoom: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       wineryVineyard: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       weddingEventVenue: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      conferenceConventionCenter: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      concertMusicHall: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      stadiumArenaConcession: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      movieTheaterConcession: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      museumCafeGift: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      themeParkRestaurant: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      cruiseShipGalley: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      airportFoodCourt: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -9746,6 +9772,14 @@ export const useMapStore = create<MapState>()(
       setDistilleryTastingRoom: (updates) => set((state) => ({ distilleryTastingRoom: { ...state.distilleryTastingRoom, ...updates } })),
       setWineryVineyard: (updates) => set((state) => ({ wineryVineyard: { ...state.wineryVineyard, ...updates } })),
       setWeddingEventVenue: (updates) => set((state) => ({ weddingEventVenue: { ...state.weddingEventVenue, ...updates } })),
+      setConferenceConventionCenter: (updates) => set((state) => ({ conferenceConventionCenter: { ...state.conferenceConventionCenter, ...updates } })),
+      setConcertMusicHall: (updates) => set((state) => ({ concertMusicHall: { ...state.concertMusicHall, ...updates } })),
+      setStadiumArenaConcession: (updates) => set((state) => ({ stadiumArenaConcession: { ...state.stadiumArenaConcession, ...updates } })),
+      setMovieTheaterConcession: (updates) => set((state) => ({ movieTheaterConcession: { ...state.movieTheaterConcession, ...updates } })),
+      setMuseumCafeGift: (updates) => set((state) => ({ museumCafeGift: { ...state.museumCafeGift, ...updates } })),
+      setThemeParkRestaurant: (updates) => set((state) => ({ themeParkRestaurant: { ...state.themeParkRestaurant, ...updates } })),
+      setCruiseShipGalley: (updates) => set((state) => ({ cruiseShipGalley: { ...state.cruiseShipGalley, ...updates } })),
+      setAirportFoodCourt: (updates) => set((state) => ({ airportFoodCourt: { ...state.airportFoodCourt, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

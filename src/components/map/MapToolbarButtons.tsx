@@ -922,6 +922,14 @@ import {
   Beaker as BeakerIcon,
   Grape as GrapeIcon2,
   Cake as CakeIcon,
+  Building as BuildingIcon3,
+  Music as MusicIcon5,
+  Trophy as TrophyIcon3,
+  Film as FilmIcon2,
+  Landmark as LandmarkIcon2,
+  Palette as PaletteIcon3,
+  Ship as ShipIcon2,
+  Plane as PlaneIcon5,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1454,6 +1462,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const distilleryTastingRoomOpen = useMapStore((s) => s.distilleryTastingRoom.open)
   const wineryVineyardOpen = useMapStore((s) => s.wineryVineyard.open)
   const weddingEventVenueOpen = useMapStore((s) => s.weddingEventVenue.open)
+  const conferenceConventionCenterOpen = useMapStore((s) => s.conferenceConventionCenter.open)
+  const concertMusicHallOpen = useMapStore((s) => s.concertMusicHall.open)
+  const stadiumArenaConcessionOpen = useMapStore((s) => s.stadiumArenaConcession.open)
+  const movieTheaterConcessionOpen = useMapStore((s) => s.movieTheaterConcession.open)
+  const museumCafeGiftOpen = useMapStore((s) => s.museumCafeGift.open)
+  const themeParkRestaurantOpen = useMapStore((s) => s.themeParkRestaurant.open)
+  const cruiseShipGalleyOpen = useMapStore((s) => s.cruiseShipGalley.open)
+  const airportFoodCourtOpen = useMapStore((s) => s.airportFoodCourt.open)
 
   if (typeof window === 'undefined') return null
 
@@ -9070,6 +9086,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <CakeIcon className="h-4 w-4" />
             {weddingEventVenueOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-pink-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setConferenceConventionCenter({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${conferenceConventionCenterOpen ? 'bg-stone-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Conference & Convention Center Monitor"
+          >
+            <BuildingIcon3 className="h-4 w-4" />
+            {conferenceConventionCenterOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-stone-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setConcertMusicHall({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${concertMusicHallOpen ? 'bg-purple-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Concert & Music Hall Monitor"
+          >
+            <MusicIcon5 className="h-4 w-4" />
+            {concertMusicHallOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-purple-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setStadiumArenaConcession({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${stadiumArenaConcessionOpen ? 'bg-green-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Stadium & Arena Concession Monitor"
+          >
+            <TrophyIcon3 className="h-4 w-4" />
+            {stadiumArenaConcessionOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-green-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setMovieTheaterConcession({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${movieTheaterConcessionOpen ? 'bg-red-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Movie Theater Concession Monitor"
+          >
+            <FilmIcon2 className="h-4 w-4" />
+            {movieTheaterConcessionOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setMuseumCafeGift({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${museumCafeGiftOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Museum Cafe & Gift Monitor"
+          >
+            <LandmarkIcon2 className="h-4 w-4" />
+            {museumCafeGiftOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setThemeParkRestaurant({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${themeParkRestaurantOpen ? 'bg-fuchsia-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Theme Park Restaurant Monitor"
+          >
+            <PaletteIcon3 className="h-4 w-4" />
+            {themeParkRestaurantOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-fuchsia-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCruiseShipGalley({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${cruiseShipGalleyOpen ? 'bg-cyan-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Cruise Ship Galley Monitor"
+          >
+            <ShipIcon2 className="h-4 w-4" />
+            {cruiseShipGalleyOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setAirportFoodCourt({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${airportFoodCourtOpen ? 'bg-teal-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Airport Food Court Monitor"
+          >
+            <PlaneIcon5 className="h-4 w-4" />
+            {airportFoodCourtOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-300" />}
           </button>
         </div>
       </div>
