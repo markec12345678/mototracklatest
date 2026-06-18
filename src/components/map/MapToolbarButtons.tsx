@@ -875,6 +875,14 @@ import {
   Lightbulb as LightbulbIcon4,
   Palette as PaletteIcon2,
   Crown as CrownIcon4,
+  Cigarette as CigaretteIcon,
+  Newspaper as NewspaperIcon,
+  Dumbbell as DumbbellIcon3,
+  Bike as BikeIcon4,
+  Waves as WavesIcon6,
+  Crosshair as CrosshairIcon3,
+  Fish as FishIcon11,
+  Beer as BeerIcon3,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1359,6 +1367,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const lightingCeilingFanStoreOpen = useMapStore((s) => s.lightingCeilingFanStore.open)
   const artFramingGalleryStoreOpen = useMapStore((s) => s.artFramingGalleryStore.open)
   const antiquesCollectiblesStoreOpen = useMapStore((s) => s.antiquesCollectiblesStore.open)
+  const vapeTobaccoShopOpen = useMapStore((s) => s.vapeTobaccoShop.open)
+  const lotteryNewsStandOpen = useMapStore((s) => s.lotteryNewsStand.open)
+  const sportingGoodsOutdoorOpen = useMapStore((s) => s.sportingGoodsOutdoor.open)
+  const bicycleShopOpen = useMapStore((s) => s.bicycleShop.open)
+  const skateSurfShopOpen = useMapStore((s) => s.skateSurfShop.open)
+  const gunArcheryShopOpen = useMapStore((s) => s.gunArcheryShop.open)
+  const fishingTackleShopOpen = useMapStore((s) => s.fishingTackleShop.open)
+  const craftBeerHomebrewShopOpen = useMapStore((s) => s.craftBeerHomebrewShop.open)
 
   if (typeof window === 'undefined') return null
 
@@ -8591,6 +8607,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <CrownIcon4 className="h-4 w-4" />
             {antiquesCollectiblesStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setVapeTobaccoShop({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${vapeTobaccoShopOpen ? 'bg-violet-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Vape & Tobacco Shop Monitor"
+          >
+            <CigaretteIcon className="h-4 w-4" />
+            {vapeTobaccoShopOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-violet-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setLotteryNewsStand({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${lotteryNewsStandOpen ? 'bg-emerald-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Lottery & News Stand Monitor"
+          >
+            <NewspaperIcon className="h-4 w-4" />
+            {lotteryNewsStandOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setSportingGoodsOutdoor({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${sportingGoodsOutdoorOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Sporting Goods & Outdoor Monitor"
+          >
+            <DumbbellIcon3 className="h-4 w-4" />
+            {sportingGoodsOutdoorOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBicycleShop({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${bicycleShopOpen ? 'bg-red-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Bicycle Shop Monitor"
+          >
+            <BikeIcon4 className="h-4 w-4" />
+            {bicycleShopOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setSkateSurfShop({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${skateSurfShopOpen ? 'bg-cyan-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Skate & Surf Shop Monitor"
+          >
+            <WavesIcon6 className="h-4 w-4" />
+            {skateSurfShopOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setGunArcheryShop({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${gunArcheryShopOpen ? 'bg-stone-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Gun & Archery Shop Monitor"
+          >
+            <CrosshairIcon3 className="h-4 w-4" />
+            {gunArcheryShopOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-stone-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setFishingTackleShop({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${fishingTackleShopOpen ? 'bg-teal-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Fishing & Tackle Shop Monitor"
+          >
+            <FishIcon11 className="h-4 w-4" />
+            {fishingTackleShopOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCraftBeerHomebrewShop({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${craftBeerHomebrewShopOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Craft Beer & Homebrew Shop Monitor"
+          >
+            <BeerIcon3 className="h-4 w-4" />
+            {craftBeerHomebrewShopOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-300" />}
           </button>
         </div>
       </div>

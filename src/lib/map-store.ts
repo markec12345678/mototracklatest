@@ -4845,6 +4845,22 @@ interface MapState {
   setArtFramingGalleryStore: (state: Partial<MonitorState>) => void
   antiquesCollectiblesStore: MonitorState
   setAntiquesCollectiblesStore: (state: Partial<MonitorState>) => void
+  vapeTobaccoShop: MonitorState
+  setVapeTobaccoShop: (state: Partial<MonitorState>) => void
+  lotteryNewsStand: MonitorState
+  setLotteryNewsStand: (state: Partial<MonitorState>) => void
+  sportingGoodsOutdoor: MonitorState
+  setSportingGoodsOutdoor: (state: Partial<MonitorState>) => void
+  bicycleShop: MonitorState
+  setBicycleShop: (state: Partial<MonitorState>) => void
+  skateSurfShop: MonitorState
+  setSkateSurfShop: (state: Partial<MonitorState>) => void
+  gunArcheryShop: MonitorState
+  setGunArcheryShop: (state: Partial<MonitorState>) => void
+  fishingTackleShop: MonitorState
+  setFishingTackleShop: (state: Partial<MonitorState>) => void
+  craftBeerHomebrewShop: MonitorState
+  setCraftBeerHomebrewShop: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -9201,6 +9217,14 @@ export const useMapStore = create<MapState>()(
       lightingCeilingFanStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       artFramingGalleryStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       antiquesCollectiblesStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      vapeTobaccoShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      lotteryNewsStand: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      sportingGoodsOutdoor: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      bicycleShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      skateSurfShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      gunArcheryShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      fishingTackleShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      craftBeerHomebrewShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -9561,6 +9585,14 @@ export const useMapStore = create<MapState>()(
       setLightingCeilingFanStore: (updates) => set((state) => ({ lightingCeilingFanStore: { ...state.lightingCeilingFanStore, ...updates } })),
       setArtFramingGalleryStore: (updates) => set((state) => ({ artFramingGalleryStore: { ...state.artFramingGalleryStore, ...updates } })),
       setAntiquesCollectiblesStore: (updates) => set((state) => ({ antiquesCollectiblesStore: { ...state.antiquesCollectiblesStore, ...updates } })),
+      setVapeTobaccoShop: (updates) => set((state) => ({ vapeTobaccoShop: { ...state.vapeTobaccoShop, ...updates } })),
+      setLotteryNewsStand: (updates) => set((state) => ({ lotteryNewsStand: { ...state.lotteryNewsStand, ...updates } })),
+      setSportingGoodsOutdoor: (updates) => set((state) => ({ sportingGoodsOutdoor: { ...state.sportingGoodsOutdoor, ...updates } })),
+      setBicycleShop: (updates) => set((state) => ({ bicycleShop: { ...state.bicycleShop, ...updates } })),
+      setSkateSurfShop: (updates) => set((state) => ({ skateSurfShop: { ...state.skateSurfShop, ...updates } })),
+      setGunArcheryShop: (updates) => set((state) => ({ gunArcheryShop: { ...state.gunArcheryShop, ...updates } })),
+      setFishingTackleShop: (updates) => set((state) => ({ fishingTackleShop: { ...state.fishingTackleShop, ...updates } })),
+      setCraftBeerHomebrewShop: (updates) => set((state) => ({ craftBeerHomebrewShop: { ...state.craftBeerHomebrewShop, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

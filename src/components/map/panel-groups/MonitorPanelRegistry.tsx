@@ -762,6 +762,14 @@ export function MonitorPanelRegistry() {
   const lightingCeilingFanStore = useMapStore((s) => s.lightingCeilingFanStore)
   const artFramingGalleryStore = useMapStore((s) => s.artFramingGalleryStore)
   const antiquesCollectiblesStore = useMapStore((s) => s.antiquesCollectiblesStore)
+  const vapeTobaccoShop = useMapStore((s) => s.vapeTobaccoShop)
+  const lotteryNewsStand = useMapStore((s) => s.lotteryNewsStand)
+  const sportingGoodsOutdoor = useMapStore((s) => s.sportingGoodsOutdoor)
+  const bicycleShop = useMapStore((s) => s.bicycleShop)
+  const skateSurfShop = useMapStore((s) => s.skateSurfShop)
+  const gunArcheryShop = useMapStore((s) => s.gunArcheryShop)
+  const fishingTackleShop = useMapStore((s) => s.fishingTackleShop)
+  const craftBeerHomebrewShop = useMapStore((s) => s.craftBeerHomebrewShop)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -2722,6 +2730,30 @@ export function MonitorPanelRegistry() {
       )}
       {antiquesCollectiblesStore.open && (
         <LazyPanel importFn={() => import('@/components/map/AntiquesCollectiblesStoreMonitor')} exportName="AntiquesCollectiblesStoreMonitor" shouldLoad={antiquesCollectiblesStore.open} />
+      )}
+      {vapeTobaccoShop.open && (
+        <LazyPanel importFn={() => import('@/components/map/VapeTobaccoShopMonitor')} exportName="VapeTobaccoShopMonitor" shouldLoad={vapeTobaccoShop.open} />
+      )}
+      {lotteryNewsStand.open && (
+        <LazyPanel importFn={() => import('@/components/map/LotteryNewsStandMonitor')} exportName="LotteryNewsStandMonitor" shouldLoad={lotteryNewsStand.open} />
+      )}
+      {sportingGoodsOutdoor.open && (
+        <LazyPanel importFn={() => import('@/components/map/SportingGoodsOutdoorMonitor')} exportName="SportingGoodsOutdoorMonitor" shouldLoad={sportingGoodsOutdoor.open} />
+      )}
+      {bicycleShop.open && (
+        <LazyPanel importFn={() => import('@/components/map/BicycleShopMonitor')} exportName="BicycleShopMonitor" shouldLoad={bicycleShop.open} />
+      )}
+      {skateSurfShop.open && (
+        <LazyPanel importFn={() => import('@/components/map/SkateSurfShopMonitor')} exportName="SkateSurfShopMonitor" shouldLoad={skateSurfShop.open} />
+      )}
+      {gunArcheryShop.open && (
+        <LazyPanel importFn={() => import('@/components/map/GunArcheryShopMonitor')} exportName="GunArcheryShopMonitor" shouldLoad={gunArcheryShop.open} />
+      )}
+      {fishingTackleShop.open && (
+        <LazyPanel importFn={() => import('@/components/map/FishingTackleShopMonitor')} exportName="FishingTackleShopMonitor" shouldLoad={fishingTackleShop.open} />
+      )}
+      {craftBeerHomebrewShop.open && (
+        <LazyPanel importFn={() => import('@/components/map/CraftBeerHomebrewShopMonitor')} exportName="CraftBeerHomebrewShopMonitor" shouldLoad={craftBeerHomebrewShop.open} />
       )}
     </>
   )
