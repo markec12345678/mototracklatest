@@ -857,6 +857,15 @@ import {
   Pen as PenIcon,
   Highlighter as HighlighterIcon,
   Box as BoxIcon,
+  // Task 158: Retail & Commercial Districts mix
+  BookOpen as BookOpenIcon2,
+  Gift as GiftIcon2,
+  Warehouse as WarehouseIcon2,
+  PartyPopper as PartyPopperIcon2,
+  Pill as PillIcon2,
+  Hammer as HammerIcon2,
+  Flower2 as Flower2Icon2,
+  Fish as FishIcon2,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1325,6 +1334,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const penWritingStoreOpen = useMapStore((s) => s.penWritingStore.open)
   const corporateGiftingStoreOpen = useMapStore((s) => s.corporateGiftingStore.open)
   const shippingPackagingStoreOpen = useMapStore((s) => s.shippingPackagingStore.open)
+  const bookstoreRetailChainOpen = useMapStore((s) => s.bookstoreRetailChain.open)
+  const giftSpecialtyShopOpen = useMapStore((s) => s.giftSpecialtyShop.open)
+  const wholesaleClubWarehouseOpen = useMapStore((s) => s.wholesaleClubWarehouse.open)
+  const partySupplyStoreOpen = useMapStore((s) => s.partySupplyStore.open)
+  const pharmacyDrugStoreOpen = useMapStore((s) => s.pharmacyDrugStore.open)
+  const buildingSupplyCenterOpen = useMapStore((s) => s.buildingSupplyCenter.open)
+  const gardenCenterFloristOpen = useMapStore((s) => s.gardenCenterFlorist.open)
+  const aquariumPetSupplyOpen = useMapStore((s) => s.aquariumPetSupply.open)
 
   if (typeof window === 'undefined') return null
 
@@ -8429,6 +8446,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <BoxIcon className="h-4 w-4" />
             {shippingPackagingStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-yellow-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBookstoreRetailChain({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${bookstoreRetailChainOpen ? 'bg-emerald-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Bookstore Retail Chain Monitor"
+          >
+            <BookOpenIcon2 className="h-4 w-4" />
+            {bookstoreRetailChainOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setGiftSpecialtyShop({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${giftSpecialtyShopOpen ? 'bg-pink-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Gift Specialty Shop Monitor"
+          >
+            <GiftIcon2 className="h-4 w-4" />
+            {giftSpecialtyShopOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-pink-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setWholesaleClubWarehouse({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${wholesaleClubWarehouseOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Wholesale Club Warehouse Monitor"
+          >
+            <WarehouseIcon2 className="h-4 w-4" />
+            {wholesaleClubWarehouseOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setPartySupplyStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${partySupplyStoreOpen ? 'bg-fuchsia-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Party Supply Store Monitor"
+          >
+            <PartyPopperIcon2 className="h-4 w-4" />
+            {partySupplyStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-fuchsia-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setPharmacyDrugStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${pharmacyDrugStoreOpen ? 'bg-teal-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Pharmacy & Drug Store Monitor"
+          >
+            <PillIcon2 className="h-4 w-4" />
+            {pharmacyDrugStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBuildingSupplyCenter({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${buildingSupplyCenterOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Building Supply Center Monitor"
+          >
+            <HammerIcon2 className="h-4 w-4" />
+            {buildingSupplyCenterOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setGardenCenterFlorist({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${gardenCenterFloristOpen ? 'bg-green-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Garden Center & Florist Monitor"
+          >
+            <Flower2Icon2 className="h-4 w-4" />
+            {gardenCenterFloristOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-green-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setAquariumPetSupply({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${aquariumPetSupplyOpen ? 'bg-cyan-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Aquarium & Pet Supply Monitor"
+          >
+            <FishIcon2 className="h-4 w-4" />
+            {aquariumPetSupplyOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-300" />}
           </button>
         </div>
       </div>

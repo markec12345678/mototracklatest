@@ -4811,6 +4811,23 @@ interface MapState {
   setCorporateGiftingStore: (state: Partial<MonitorState>) => void
   shippingPackagingStore: MonitorState
   setShippingPackagingStore: (state: Partial<MonitorState>) => void
+  // Task 158: Retail & Commercial Districts mix
+  bookstoreRetailChain: MonitorState
+  setBookstoreRetailChain: (state: Partial<MonitorState>) => void
+  giftSpecialtyShop: MonitorState
+  setGiftSpecialtyShop: (state: Partial<MonitorState>) => void
+  wholesaleClubWarehouse: MonitorState
+  setWholesaleClubWarehouse: (state: Partial<MonitorState>) => void
+  partySupplyStore: MonitorState
+  setPartySupplyStore: (state: Partial<MonitorState>) => void
+  pharmacyDrugStore: MonitorState
+  setPharmacyDrugStore: (state: Partial<MonitorState>) => void
+  buildingSupplyCenter: MonitorState
+  setBuildingSupplyCenter: (state: Partial<MonitorState>) => void
+  gardenCenterFlorist: MonitorState
+  setGardenCenterFlorist: (state: Partial<MonitorState>) => void
+  aquariumPetSupply: MonitorState
+  setAquariumPetSupply: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -9149,6 +9166,15 @@ export const useMapStore = create<MapState>()(
       penWritingStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       corporateGiftingStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       shippingPackagingStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 158: Retail & Commercial Districts mix
+      bookstoreRetailChain: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      giftSpecialtyShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      wholesaleClubWarehouse: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      partySupplyStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      pharmacyDrugStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      buildingSupplyCenter: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      gardenCenterFlorist: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      aquariumPetSupply: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -9491,6 +9517,15 @@ export const useMapStore = create<MapState>()(
       setPenWritingStore: (updates) => set((state) => ({ penWritingStore: { ...state.penWritingStore, ...updates } })),
       setCorporateGiftingStore: (updates) => set((state) => ({ corporateGiftingStore: { ...state.corporateGiftingStore, ...updates } })),
       setShippingPackagingStore: (updates) => set((state) => ({ shippingPackagingStore: { ...state.shippingPackagingStore, ...updates } })),
+      // Task 158: Retail & Commercial Districts mix
+      setBookstoreRetailChain: (updates) => set((state) => ({ bookstoreRetailChain: { ...state.bookstoreRetailChain, ...updates } })),
+      setGiftSpecialtyShop: (updates) => set((state) => ({ giftSpecialtyShop: { ...state.giftSpecialtyShop, ...updates } })),
+      setWholesaleClubWarehouse: (updates) => set((state) => ({ wholesaleClubWarehouse: { ...state.wholesaleClubWarehouse, ...updates } })),
+      setPartySupplyStore: (updates) => set((state) => ({ partySupplyStore: { ...state.partySupplyStore, ...updates } })),
+      setPharmacyDrugStore: (updates) => set((state) => ({ pharmacyDrugStore: { ...state.pharmacyDrugStore, ...updates } })),
+      setBuildingSupplyCenter: (updates) => set((state) => ({ buildingSupplyCenter: { ...state.buildingSupplyCenter, ...updates } })),
+      setGardenCenterFlorist: (updates) => set((state) => ({ gardenCenterFlorist: { ...state.gardenCenterFlorist, ...updates } })),
+      setAquariumPetSupply: (updates) => set((state) => ({ aquariumPetSupply: { ...state.aquariumPetSupply, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
