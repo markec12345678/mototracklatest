@@ -753,6 +753,15 @@ export function MonitorPanelRegistry() {
   const buildingSupplyCenter = useMapStore((s) => s.buildingSupplyCenter)
   const gardenCenterFlorist = useMapStore((s) => s.gardenCenterFlorist)
   const aquariumPetSupply = useMapStore((s) => s.aquariumPetSupply)
+  // Task 159: Home, Hobby & Specialty Retail mix
+  const toyHobbyStore = useMapStore((s) => s.toyHobbyStore)
+  const jewelryWatchStore = useMapStore((s) => s.jewelryWatchStore)
+  const furnitureHomeDecorStore = useMapStore((s) => s.furnitureHomeDecorStore)
+  const flooringCarpetStore = useMapStore((s) => s.flooringCarpetStore)
+  const kitchenBathFixtureStore = useMapStore((s) => s.kitchenBathFixtureStore)
+  const lightingCeilingFanStore = useMapStore((s) => s.lightingCeilingFanStore)
+  const artFramingGalleryStore = useMapStore((s) => s.artFramingGalleryStore)
+  const antiquesCollectiblesStore = useMapStore((s) => s.antiquesCollectiblesStore)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -2689,6 +2698,30 @@ export function MonitorPanelRegistry() {
       )}
       {aquariumPetSupply.open && (
         <LazyPanel importFn={() => import('@/components/map/AquariumPetSupplyMonitor')} exportName="AquariumPetSupplyMonitor" shouldLoad={aquariumPetSupply.open} />
+      )}
+      {toyHobbyStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/ToyHobbyStoreMonitor')} exportName="ToyHobbyStoreMonitor" shouldLoad={toyHobbyStore.open} />
+      )}
+      {jewelryWatchStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/JewelryWatchStoreMonitor')} exportName="JewelryWatchStoreMonitor" shouldLoad={jewelryWatchStore.open} />
+      )}
+      {furnitureHomeDecorStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/FurnitureHomeDecorStoreMonitor')} exportName="FurnitureHomeDecorStoreMonitor" shouldLoad={furnitureHomeDecorStore.open} />
+      )}
+      {flooringCarpetStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/FlooringCarpetStoreMonitor')} exportName="FlooringCarpetStoreMonitor" shouldLoad={flooringCarpetStore.open} />
+      )}
+      {kitchenBathFixtureStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/KitchenBathFixtureStoreMonitor')} exportName="KitchenBathFixtureStoreMonitor" shouldLoad={kitchenBathFixtureStore.open} />
+      )}
+      {lightingCeilingFanStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/LightingCeilingFanStoreMonitor')} exportName="LightingCeilingFanStoreMonitor" shouldLoad={lightingCeilingFanStore.open} />
+      )}
+      {artFramingGalleryStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/ArtFramingGalleryStoreMonitor')} exportName="ArtFramingGalleryStoreMonitor" shouldLoad={artFramingGalleryStore.open} />
+      )}
+      {antiquesCollectiblesStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/AntiquesCollectiblesStoreMonitor')} exportName="AntiquesCollectiblesStoreMonitor" shouldLoad={antiquesCollectiblesStore.open} />
       )}
     </>
   )

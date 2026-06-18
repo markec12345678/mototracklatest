@@ -4828,6 +4828,23 @@ interface MapState {
   setGardenCenterFlorist: (state: Partial<MonitorState>) => void
   aquariumPetSupply: MonitorState
   setAquariumPetSupply: (state: Partial<MonitorState>) => void
+  // Task 159: Home, Hobby & Specialty Retail mix
+  toyHobbyStore: MonitorState
+  setToyHobbyStore: (state: Partial<MonitorState>) => void
+  jewelryWatchStore: MonitorState
+  setJewelryWatchStore: (state: Partial<MonitorState>) => void
+  furnitureHomeDecorStore: MonitorState
+  setFurnitureHomeDecorStore: (state: Partial<MonitorState>) => void
+  flooringCarpetStore: MonitorState
+  setFlooringCarpetStore: (state: Partial<MonitorState>) => void
+  kitchenBathFixtureStore: MonitorState
+  setKitchenBathFixtureStore: (state: Partial<MonitorState>) => void
+  lightingCeilingFanStore: MonitorState
+  setLightingCeilingFanStore: (state: Partial<MonitorState>) => void
+  artFramingGalleryStore: MonitorState
+  setArtFramingGalleryStore: (state: Partial<MonitorState>) => void
+  antiquesCollectiblesStore: MonitorState
+  setAntiquesCollectiblesStore: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -9175,6 +9192,15 @@ export const useMapStore = create<MapState>()(
       buildingSupplyCenter: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       gardenCenterFlorist: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       aquariumPetSupply: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 159: Home, Hobby & Specialty Retail mix
+      toyHobbyStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      jewelryWatchStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      furnitureHomeDecorStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      flooringCarpetStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      kitchenBathFixtureStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      lightingCeilingFanStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      artFramingGalleryStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      antiquesCollectiblesStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -9526,6 +9552,15 @@ export const useMapStore = create<MapState>()(
       setBuildingSupplyCenter: (updates) => set((state) => ({ buildingSupplyCenter: { ...state.buildingSupplyCenter, ...updates } })),
       setGardenCenterFlorist: (updates) => set((state) => ({ gardenCenterFlorist: { ...state.gardenCenterFlorist, ...updates } })),
       setAquariumPetSupply: (updates) => set((state) => ({ aquariumPetSupply: { ...state.aquariumPetSupply, ...updates } })),
+      // Task 159: Home, Hobby & Specialty Retail mix
+      setToyHobbyStore: (updates) => set((state) => ({ toyHobbyStore: { ...state.toyHobbyStore, ...updates } })),
+      setJewelryWatchStore: (updates) => set((state) => ({ jewelryWatchStore: { ...state.jewelryWatchStore, ...updates } })),
+      setFurnitureHomeDecorStore: (updates) => set((state) => ({ furnitureHomeDecorStore: { ...state.furnitureHomeDecorStore, ...updates } })),
+      setFlooringCarpetStore: (updates) => set((state) => ({ flooringCarpetStore: { ...state.flooringCarpetStore, ...updates } })),
+      setKitchenBathFixtureStore: (updates) => set((state) => ({ kitchenBathFixtureStore: { ...state.kitchenBathFixtureStore, ...updates } })),
+      setLightingCeilingFanStore: (updates) => set((state) => ({ lightingCeilingFanStore: { ...state.lightingCeilingFanStore, ...updates } })),
+      setArtFramingGalleryStore: (updates) => set((state) => ({ artFramingGalleryStore: { ...state.artFramingGalleryStore, ...updates } })),
+      setAntiquesCollectiblesStore: (updates) => set((state) => ({ antiquesCollectiblesStore: { ...state.antiquesCollectiblesStore, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

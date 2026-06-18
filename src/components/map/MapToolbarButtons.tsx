@@ -866,6 +866,15 @@ import {
   Hammer as HammerIcon2,
   Flower2 as Flower2Icon2,
   Fish as FishIcon2,
+  // Task 159: Home, Hobby & Specialty Retail mix
+  ToyBrick as ToyBrickIcon2,
+  Watch as WatchIcon3,
+  Sofa as SofaIcon2,
+  SquareStack as SquareStackIcon,
+  Bath as BathIcon2,
+  Lightbulb as LightbulbIcon4,
+  Palette as PaletteIcon2,
+  Crown as CrownIcon4,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1342,6 +1351,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const buildingSupplyCenterOpen = useMapStore((s) => s.buildingSupplyCenter.open)
   const gardenCenterFloristOpen = useMapStore((s) => s.gardenCenterFlorist.open)
   const aquariumPetSupplyOpen = useMapStore((s) => s.aquariumPetSupply.open)
+  const toyHobbyStoreOpen = useMapStore((s) => s.toyHobbyStore.open)
+  const jewelryWatchStoreOpen = useMapStore((s) => s.jewelryWatchStore.open)
+  const furnitureHomeDecorStoreOpen = useMapStore((s) => s.furnitureHomeDecorStore.open)
+  const flooringCarpetStoreOpen = useMapStore((s) => s.flooringCarpetStore.open)
+  const kitchenBathFixtureStoreOpen = useMapStore((s) => s.kitchenBathFixtureStore.open)
+  const lightingCeilingFanStoreOpen = useMapStore((s) => s.lightingCeilingFanStore.open)
+  const artFramingGalleryStoreOpen = useMapStore((s) => s.artFramingGalleryStore.open)
+  const antiquesCollectiblesStoreOpen = useMapStore((s) => s.antiquesCollectiblesStore.open)
 
   if (typeof window === 'undefined') return null
 
@@ -8510,6 +8527,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <FishIcon2 className="h-4 w-4" />
             {aquariumPetSupplyOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setToyHobbyStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${toyHobbyStoreOpen ? 'bg-red-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Toy & Hobby Store Monitor"
+          >
+            <ToyBrickIcon2 className="h-4 w-4" />
+            {toyHobbyStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setJewelryWatchStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${jewelryWatchStoreOpen ? 'bg-yellow-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Jewelry & Watch Store Monitor"
+          >
+            <WatchIcon3 className="h-4 w-4" />
+            {jewelryWatchStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-yellow-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setFurnitureHomeDecorStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${furnitureHomeDecorStoreOpen ? 'bg-stone-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Furniture & Home Decor Store Monitor"
+          >
+            <SofaIcon2 className="h-4 w-4" />
+            {furnitureHomeDecorStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-stone-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setFlooringCarpetStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${flooringCarpetStoreOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Flooring & Carpet Store Monitor"
+          >
+            <SquareStackIcon className="h-4 w-4" />
+            {flooringCarpetStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setKitchenBathFixtureStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${kitchenBathFixtureStoreOpen ? 'bg-cyan-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Kitchen & Bath Fixture Store Monitor"
+          >
+            <BathIcon2 className="h-4 w-4" />
+            {kitchenBathFixtureStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setLightingCeilingFanStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${lightingCeilingFanStoreOpen ? 'bg-yellow-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Lighting & Ceiling Fan Store Monitor"
+          >
+            <LightbulbIcon4 className="h-4 w-4" />
+            {lightingCeilingFanStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-yellow-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setArtFramingGalleryStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${artFramingGalleryStoreOpen ? 'bg-violet-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Art & Framing Gallery Store Monitor"
+          >
+            <PaletteIcon2 className="h-4 w-4" />
+            {artFramingGalleryStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-violet-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setAntiquesCollectiblesStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${antiquesCollectiblesStoreOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Antiques & Collectibles Store Monitor"
+          >
+            <CrownIcon4 className="h-4 w-4" />
+            {antiquesCollectiblesStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-300" />}
           </button>
         </div>
       </div>
