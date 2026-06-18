@@ -4861,6 +4861,22 @@ interface MapState {
   setFishingTackleShop: (state: Partial<MonitorState>) => void
   craftBeerHomebrewShop: MonitorState
   setCraftBeerHomebrewShop: (state: Partial<MonitorState>) => void
+  wineSpiritsShop: MonitorState
+  setWineSpiritsShop: (state: Partial<MonitorState>) => void
+  coffeeRoasterCafe: MonitorState
+  setCoffeeRoasterCafe: (state: Partial<MonitorState>) => void
+  teaSpiceMerchant: MonitorState
+  setTeaSpiceMerchant: (state: Partial<MonitorState>) => void
+  chocolateConfectionery: MonitorState
+  setChocolateConfectionery: (state: Partial<MonitorState>) => void
+  donutBakeryShop: MonitorState
+  setDonutBakeryShop: (state: Partial<MonitorState>) => void
+  iceCreamDessertShop: MonitorState
+  setIceCreamDessertShop: (state: Partial<MonitorState>) => void
+  bagelDeliShop: MonitorState
+  setBagelDeliShop: (state: Partial<MonitorState>) => void
+  pizzaItalianRestaurant: MonitorState
+  setPizzaItalianRestaurant: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -9225,6 +9241,14 @@ export const useMapStore = create<MapState>()(
       gunArcheryShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       fishingTackleShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       craftBeerHomebrewShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      wineSpiritsShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      coffeeRoasterCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      teaSpiceMerchant: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      chocolateConfectionery: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      donutBakeryShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      iceCreamDessertShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      bagelDeliShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      pizzaItalianRestaurant: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -9593,6 +9617,14 @@ export const useMapStore = create<MapState>()(
       setGunArcheryShop: (updates) => set((state) => ({ gunArcheryShop: { ...state.gunArcheryShop, ...updates } })),
       setFishingTackleShop: (updates) => set((state) => ({ fishingTackleShop: { ...state.fishingTackleShop, ...updates } })),
       setCraftBeerHomebrewShop: (updates) => set((state) => ({ craftBeerHomebrewShop: { ...state.craftBeerHomebrewShop, ...updates } })),
+      setWineSpiritsShop: (updates) => set((state) => ({ wineSpiritsShop: { ...state.wineSpiritsShop, ...updates } })),
+      setCoffeeRoasterCafe: (updates) => set((state) => ({ coffeeRoasterCafe: { ...state.coffeeRoasterCafe, ...updates } })),
+      setTeaSpiceMerchant: (updates) => set((state) => ({ teaSpiceMerchant: { ...state.teaSpiceMerchant, ...updates } })),
+      setChocolateConfectionery: (updates) => set((state) => ({ chocolateConfectionery: { ...state.chocolateConfectionery, ...updates } })),
+      setDonutBakeryShop: (updates) => set((state) => ({ donutBakeryShop: { ...state.donutBakeryShop, ...updates } })),
+      setIceCreamDessertShop: (updates) => set((state) => ({ iceCreamDessertShop: { ...state.iceCreamDessertShop, ...updates } })),
+      setBagelDeliShop: (updates) => set((state) => ({ bagelDeliShop: { ...state.bagelDeliShop, ...updates } })),
+      setPizzaItalianRestaurant: (updates) => set((state) => ({ pizzaItalianRestaurant: { ...state.pizzaItalianRestaurant, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

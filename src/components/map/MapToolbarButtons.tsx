@@ -883,6 +883,14 @@ import {
   Crosshair as CrosshairIcon3,
   Fish as FishIcon11,
   Beer as BeerIcon3,
+  Wine as WineIcon2,
+  Coffee as CoffeeIcon3,
+  Leaf as LeafIcon2,
+  Cookie as CookieIcon,
+  Donut as DonutIcon,
+  IceCreamCone as IceCreamConeIcon,
+  Sandwich as SandwichIcon,
+  Pizza as PizzaIcon2,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1375,6 +1383,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const gunArcheryShopOpen = useMapStore((s) => s.gunArcheryShop.open)
   const fishingTackleShopOpen = useMapStore((s) => s.fishingTackleShop.open)
   const craftBeerHomebrewShopOpen = useMapStore((s) => s.craftBeerHomebrewShop.open)
+  const wineSpiritsShopOpen = useMapStore((s) => s.wineSpiritsShop.open)
+  const coffeeRoasterCafeOpen = useMapStore((s) => s.coffeeRoasterCafe.open)
+  const teaSpiceMerchantOpen = useMapStore((s) => s.teaSpiceMerchant.open)
+  const chocolateConfectioneryOpen = useMapStore((s) => s.chocolateConfectionery.open)
+  const donutBakeryShopOpen = useMapStore((s) => s.donutBakeryShop.open)
+  const iceCreamDessertShopOpen = useMapStore((s) => s.iceCreamDessertShop.open)
+  const bagelDeliShopOpen = useMapStore((s) => s.bagelDeliShop.open)
+  const pizzaItalianRestaurantOpen = useMapStore((s) => s.pizzaItalianRestaurant.open)
 
   if (typeof window === 'undefined') return null
 
@@ -8671,6 +8687,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <BeerIcon3 className="h-4 w-4" />
             {craftBeerHomebrewShopOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setWineSpiritsShop({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${wineSpiritsShopOpen ? 'bg-rose-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Wine & Spirits Shop Monitor"
+          >
+            <WineIcon2 className="h-4 w-4" />
+            {wineSpiritsShopOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCoffeeRoasterCafe({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${coffeeRoasterCafeOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Coffee Roaster & Cafe Monitor"
+          >
+            <CoffeeIcon3 className="h-4 w-4" />
+            {coffeeRoasterCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setTeaSpiceMerchant({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${teaSpiceMerchantOpen ? 'bg-emerald-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Tea & Spice Merchant Monitor"
+          >
+            <LeafIcon2 className="h-4 w-4" />
+            {teaSpiceMerchantOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setChocolateConfectionery({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${chocolateConfectioneryOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Chocolate & Confectionery Monitor"
+          >
+            <CookieIcon className="h-4 w-4" />
+            {chocolateConfectioneryOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setDonutBakeryShop({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${donutBakeryShopOpen ? 'bg-pink-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Donut & Bakery Shop Monitor"
+          >
+            <DonutIcon className="h-4 w-4" />
+            {donutBakeryShopOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-pink-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setIceCreamDessertShop({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${iceCreamDessertShopOpen ? 'bg-cyan-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Ice Cream & Dessert Shop Monitor"
+          >
+            <IceCreamConeIcon className="h-4 w-4" />
+            {iceCreamDessertShopOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBagelDeliShop({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${bagelDeliShopOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Bagel & Deli Shop Monitor"
+          >
+            <SandwichIcon className="h-4 w-4" />
+            {bagelDeliShopOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setPizzaItalianRestaurant({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${pizzaItalianRestaurantOpen ? 'bg-red-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Pizza & Italian Restaurant Monitor"
+          >
+            <PizzaIcon2 className="h-4 w-4" />
+            {pizzaItalianRestaurantOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-300" />}
           </button>
         </div>
       </div>
