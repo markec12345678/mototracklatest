@@ -930,6 +930,14 @@ import {
   Palette as PaletteIcon3,
   Ship as ShipIcon2,
   Plane as PlaneIcon5,
+  Coffee as CoffeeIcon4,
+  BellRing as BellRingIcon,
+  Spade as SpadeIcon,
+  Crown as CrownIcon5,
+  Fish as FishIcon13,
+  PawPrint as PawPrintIcon3,
+  Leaf as LeafIcon3,
+  Mountain as MountainIcon5,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1470,6 +1478,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const themeParkRestaurantOpen = useMapStore((s) => s.themeParkRestaurant.open)
   const cruiseShipGalleyOpen = useMapStore((s) => s.cruiseShipGalley.open)
   const airportFoodCourtOpen = useMapStore((s) => s.airportFoodCourt.open)
+  const hospitalCafeGiftShopOpen = useMapStore((s) => s.hospitalCafeGiftShop.open)
+  const hotelRoomServiceOpen = useMapStore((s) => s.hotelRoomService.open)
+  const casinoRestaurantOpen = useMapStore((s) => s.casinoRestaurant.open)
+  const stadiumPremiumSuiteOpen = useMapStore((s) => s.stadiumPremiumSuite.open)
+  const aquariumCafeOpen = useMapStore((s) => s.aquariumCafe.open)
+  const zooConcessionOpen = useMapStore((s) => s.zooConcession.open)
+  const botanicalGardenCafeOpen = useMapStore((s) => s.botanicalGardenCafe.open)
+  const nationalParkLodgeOpen = useMapStore((s) => s.nationalParkLodge.open)
 
   if (typeof window === 'undefined') return null
 
@@ -9150,6 +9166,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <PlaneIcon5 className="h-4 w-4" />
             {airportFoodCourtOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setHospitalCafeGiftShop({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${hospitalCafeGiftShopOpen ? 'bg-rose-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Hospital Cafe & Gift Shop Monitor"
+          >
+            <CoffeeIcon4 className="h-4 w-4" />
+            {hospitalCafeGiftShopOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setHotelRoomService({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${hotelRoomServiceOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Hotel Room Service Monitor"
+          >
+            <BellRingIcon className="h-4 w-4" />
+            {hotelRoomServiceOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCasinoRestaurant({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${casinoRestaurantOpen ? 'bg-red-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Casino Restaurant Monitor"
+          >
+            <SpadeIcon className="h-4 w-4" />
+            {casinoRestaurantOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setStadiumPremiumSuite({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${stadiumPremiumSuiteOpen ? 'bg-yellow-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Stadium Premium Suite Monitor"
+          >
+            <CrownIcon5 className="h-4 w-4" />
+            {stadiumPremiumSuiteOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-yellow-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setAquariumCafe({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${aquariumCafeOpen ? 'bg-cyan-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Aquarium Cafe Monitor"
+          >
+            <FishIcon13 className="h-4 w-4" />
+            {aquariumCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setZooConcession({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${zooConcessionOpen ? 'bg-green-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Zoo Concession Monitor"
+          >
+            <PawPrintIcon3 className="h-4 w-4" />
+            {zooConcessionOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-green-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBotanicalGardenCafe({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${botanicalGardenCafeOpen ? 'bg-emerald-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Botanical Garden Cafe Monitor"
+          >
+            <LeafIcon3 className="h-4 w-4" />
+            {botanicalGardenCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setNationalParkLodge({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${nationalParkLodgeOpen ? 'bg-stone-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="National Park Lodge Monitor"
+          >
+            <MountainIcon5 className="h-4 w-4" />
+            {nationalParkLodgeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-stone-300" />}
           </button>
         </div>
       </div>

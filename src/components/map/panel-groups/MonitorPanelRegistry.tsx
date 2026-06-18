@@ -820,6 +820,15 @@ export function MonitorPanelRegistry() {
   const themeParkRestaurant = useMapStore((s) => s.themeParkRestaurant)
   const cruiseShipGalley = useMapStore((s) => s.cruiseShipGalley)
   const airportFoodCourt = useMapStore((s) => s.airportFoodCourt)
+  // Task 167: Specialty Hospitality & Attraction Venue monitors
+  const hospitalCafeGiftShop = useMapStore((s) => s.hospitalCafeGiftShop)
+  const hotelRoomService = useMapStore((s) => s.hotelRoomService)
+  const casinoRestaurant = useMapStore((s) => s.casinoRestaurant)
+  const stadiumPremiumSuite = useMapStore((s) => s.stadiumPremiumSuite)
+  const aquariumCafe = useMapStore((s) => s.aquariumCafe)
+  const zooConcession = useMapStore((s) => s.zooConcession)
+  const botanicalGardenCafe = useMapStore((s) => s.botanicalGardenCafe)
+  const nationalParkLodge = useMapStore((s) => s.nationalParkLodge)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -2948,6 +2957,30 @@ export function MonitorPanelRegistry() {
       )}
       {airportFoodCourt.open && (
         <LazyPanel importFn={() => import('@/components/map/AirportFoodCourtMonitor')} exportName="AirportFoodCourtMonitor" shouldLoad={airportFoodCourt.open} />
+      )}
+      {hospitalCafeGiftShop.open && (
+        <LazyPanel importFn={() => import('@/components/map/HospitalCafeGiftShopMonitor')} exportName="HospitalCafeGiftShopMonitor" shouldLoad={hospitalCafeGiftShop.open} />
+      )}
+      {hotelRoomService.open && (
+        <LazyPanel importFn={() => import('@/components/map/HotelRoomServiceMonitor')} exportName="HotelRoomServiceMonitor" shouldLoad={hotelRoomService.open} />
+      )}
+      {casinoRestaurant.open && (
+        <LazyPanel importFn={() => import('@/components/map/CasinoRestaurantMonitor')} exportName="CasinoRestaurantMonitor" shouldLoad={casinoRestaurant.open} />
+      )}
+      {stadiumPremiumSuite.open && (
+        <LazyPanel importFn={() => import('@/components/map/StadiumPremiumSuiteMonitor')} exportName="StadiumPremiumSuiteMonitor" shouldLoad={stadiumPremiumSuite.open} />
+      )}
+      {aquariumCafe.open && (
+        <LazyPanel importFn={() => import('@/components/map/AquariumCafeMonitor')} exportName="AquariumCafeMonitor" shouldLoad={aquariumCafe.open} />
+      )}
+      {zooConcession.open && (
+        <LazyPanel importFn={() => import('@/components/map/ZooConcessionMonitor')} exportName="ZooConcessionMonitor" shouldLoad={zooConcession.open} />
+      )}
+      {botanicalGardenCafe.open && (
+        <LazyPanel importFn={() => import('@/components/map/BotanicalGardenCafeMonitor')} exportName="BotanicalGardenCafeMonitor" shouldLoad={botanicalGardenCafe.open} />
+      )}
+      {nationalParkLodge.open && (
+        <LazyPanel importFn={() => import('@/components/map/NationalParkLodgeMonitor')} exportName="NationalParkLodgeMonitor" shouldLoad={nationalParkLodge.open} />
       )}
     </>
   )
