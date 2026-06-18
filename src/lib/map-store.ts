@@ -4877,6 +4877,22 @@ interface MapState {
   setBagelDeliShop: (state: Partial<MonitorState>) => void
   pizzaItalianRestaurant: MonitorState
   setPizzaItalianRestaurant: (state: Partial<MonitorState>) => void
+  burgerFryJoint: MonitorState
+  setBurgerFryJoint: (state: Partial<MonitorState>) => void
+  tacoBurritoCantina: MonitorState
+  setTacoBurritoCantina: (state: Partial<MonitorState>) => void
+  sushiJapaneseRestaurant: MonitorState
+  setSushiJapaneseRestaurant: (state: Partial<MonitorState>) => void
+  steakhouseGrill: MonitorState
+  setSteakhouseGrill: (state: Partial<MonitorState>) => void
+  butcherCharcuterieShop: MonitorState
+  setButcherCharcuterieShop: (state: Partial<MonitorState>) => void
+  seafoodFishMarket: MonitorState
+  setSeafoodFishMarket: (state: Partial<MonitorState>) => void
+  dinerBreakfastSpot: MonitorState
+  setDinerBreakfastSpot: (state: Partial<MonitorState>) => void
+  juiceBarSmoothieShop: MonitorState
+  setJuiceBarSmoothieShop: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -9249,6 +9265,14 @@ export const useMapStore = create<MapState>()(
       iceCreamDessertShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       bagelDeliShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       pizzaItalianRestaurant: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      burgerFryJoint: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      tacoBurritoCantina: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      sushiJapaneseRestaurant: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      steakhouseGrill: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      butcherCharcuterieShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      seafoodFishMarket: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      dinerBreakfastSpot: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      juiceBarSmoothieShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -9625,6 +9649,14 @@ export const useMapStore = create<MapState>()(
       setIceCreamDessertShop: (updates) => set((state) => ({ iceCreamDessertShop: { ...state.iceCreamDessertShop, ...updates } })),
       setBagelDeliShop: (updates) => set((state) => ({ bagelDeliShop: { ...state.bagelDeliShop, ...updates } })),
       setPizzaItalianRestaurant: (updates) => set((state) => ({ pizzaItalianRestaurant: { ...state.pizzaItalianRestaurant, ...updates } })),
+      setBurgerFryJoint: (updates) => set((state) => ({ burgerFryJoint: { ...state.burgerFryJoint, ...updates } })),
+      setTacoBurritoCantina: (updates) => set((state) => ({ tacoBurritoCantina: { ...state.tacoBurritoCantina, ...updates } })),
+      setSushiJapaneseRestaurant: (updates) => set((state) => ({ sushiJapaneseRestaurant: { ...state.sushiJapaneseRestaurant, ...updates } })),
+      setSteakhouseGrill: (updates) => set((state) => ({ steakhouseGrill: { ...state.steakhouseGrill, ...updates } })),
+      setButcherCharcuterieShop: (updates) => set((state) => ({ butcherCharcuterieShop: { ...state.butcherCharcuterieShop, ...updates } })),
+      setSeafoodFishMarket: (updates) => set((state) => ({ seafoodFishMarket: { ...state.seafoodFishMarket, ...updates } })),
+      setDinerBreakfastSpot: (updates) => set((state) => ({ dinerBreakfastSpot: { ...state.dinerBreakfastSpot, ...updates } })),
+      setJuiceBarSmoothieShop: (updates) => set((state) => ({ juiceBarSmoothieShop: { ...state.juiceBarSmoothieShop, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
