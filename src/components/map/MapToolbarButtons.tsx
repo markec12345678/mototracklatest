@@ -987,6 +987,15 @@ import {
   Droplets as DropletsIcon1,
   Anchor as AnchorIcon,
   Shell as ShellIcon,
+  // Task 174 icons: Water Concession & Wellness Retreat
+  Waves as WavesIcon30,
+  Wind as WindIcon5,
+  Ship as ShipIcon1,
+  Anchor as AnchorIcon1,
+  Palmtree as PalmtreeIcon1,
+  Sparkles as SparklesIcon1,
+  Gem as GemIcon,
+  Flower as FlowerIcon1,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1586,6 +1595,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const kayakTourSnackBarOpen = useMapStore((s) => s.kayakTourSnackBar.open)
   const canoeRentalCafeOpen = useMapStore((s) => s.canoeRentalCafe.open)
   const paddleboardRentalCafeOpen = useMapStore((s) => s.paddleboardRentalCafe.open)
+  // Task 174: Water Concession & Wellness Retreat
+  const whitewaterRaftingConcessionOpen = useMapStore((s) => s.whitewaterRaftingConcession.open)
+  const jetSkiRentalSnackBarOpen = useMapStore((s) => s.jetSkiRentalSnackBar.open)
+  const sailingClubBarOpen = useMapStore((s) => s.sailingClubBar.open)
+  const marinaRestaurantOpen = useMapStore((s) => s.marinaRestaurant.open)
+  const houseboatRentalCafeOpen = useMapStore((s) => s.houseboatRentalCafe.open)
+  const floatSpaLoungeOpen = useMapStore((s) => s.floatSpaLounge.open)
+  const saltCaveRelaxationCafeOpen = useMapStore((s) => s.saltCaveRelaxationCafe.open)
+  const daySpaCafeOpen = useMapStore((s) => s.daySpaCafe.open)
 
   if (typeof window === 'undefined') return null
 
@@ -9717,6 +9735,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <ShellIcon className="h-4 w-4" />
             {paddleboardRentalCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setWhitewaterRaftingConcession({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${whitewaterRaftingConcessionOpen ? 'bg-emerald-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Whitewater Rafting Concession Monitor"
+          >
+            <WavesIcon30 className="h-4 w-4" />
+            {whitewaterRaftingConcessionOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setJetSkiRentalSnackBar({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${jetSkiRentalSnackBarOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Jet Ski Rental Snack Bar Monitor"
+          >
+            <WindIcon5 className="h-4 w-4" />
+            {jetSkiRentalSnackBarOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setSailingClubBar({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${sailingClubBarOpen ? 'bg-teal-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Sailing Club Bar Monitor"
+          >
+            <ShipIcon1 className="h-4 w-4" />
+            {sailingClubBarOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setMarinaRestaurant({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${marinaRestaurantOpen ? 'bg-cyan-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Marina Restaurant Monitor"
+          >
+            <AnchorIcon1 className="h-4 w-4" />
+            {marinaRestaurantOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setHouseboatRentalCafe({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${houseboatRentalCafeOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Houseboat Rental Cafe Monitor"
+          >
+            <PalmtreeIcon1 className="h-4 w-4" />
+            {houseboatRentalCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setFloatSpaLounge({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${floatSpaLoungeOpen ? 'bg-violet-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Float Spa Lounge Monitor"
+          >
+            <SparklesIcon1 className="h-4 w-4" />
+            {floatSpaLoungeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-violet-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setSaltCaveRelaxationCafe({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${saltCaveRelaxationCafeOpen ? 'bg-rose-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Salt Cave Relaxation Cafe Monitor"
+          >
+            <GemIcon className="h-4 w-4" />
+            {saltCaveRelaxationCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setDaySpaCafe({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${daySpaCafeOpen ? 'bg-pink-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Day Spa Cafe Monitor"
+          >
+            <FlowerIcon1 className="h-4 w-4" />
+            {daySpaCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-pink-300" />}
           </button>
         </div>
       </div>

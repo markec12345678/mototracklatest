@@ -883,6 +883,15 @@ export function MonitorPanelRegistry() {
   const kayakTourSnackBar = useMapStore((s) => s.kayakTourSnackBar)
   const canoeRentalCafe = useMapStore((s) => s.canoeRentalCafe)
   const paddleboardRentalCafe = useMapStore((s) => s.paddleboardRentalCafe)
+  // Task 174: Water Concession & Wellness Retreat
+  const whitewaterRaftingConcession = useMapStore((s) => s.whitewaterRaftingConcession)
+  const jetSkiRentalSnackBar = useMapStore((s) => s.jetSkiRentalSnackBar)
+  const sailingClubBar = useMapStore((s) => s.sailingClubBar)
+  const marinaRestaurant = useMapStore((s) => s.marinaRestaurant)
+  const houseboatRentalCafe = useMapStore((s) => s.houseboatRentalCafe)
+  const floatSpaLounge = useMapStore((s) => s.floatSpaLounge)
+  const saltCaveRelaxationCafe = useMapStore((s) => s.saltCaveRelaxationCafe)
+  const daySpaCafe = useMapStore((s) => s.daySpaCafe)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -3182,6 +3191,30 @@ export function MonitorPanelRegistry() {
       )}
       {paddleboardRentalCafe.open && (
         <LazyPanel importFn={() => import('@/components/map/PaddleboardRentalCafeMonitor')} exportName="PaddleboardRentalCafeMonitor" shouldLoad={paddleboardRentalCafe.open} />
+      )}
+      {whitewaterRaftingConcession.open && (
+        <LazyPanel importFn={() => import('@/components/map/WhitewaterRaftingConcessionMonitor')} exportName="WhitewaterRaftingConcessionMonitor" shouldLoad={whitewaterRaftingConcession.open} />
+      )}
+      {jetSkiRentalSnackBar.open && (
+        <LazyPanel importFn={() => import('@/components/map/JetSkiRentalSnackBarMonitor')} exportName="JetSkiRentalSnackBarMonitor" shouldLoad={jetSkiRentalSnackBar.open} />
+      )}
+      {sailingClubBar.open && (
+        <LazyPanel importFn={() => import('@/components/map/SailingClubBarMonitor')} exportName="SailingClubBarMonitor" shouldLoad={sailingClubBar.open} />
+      )}
+      {marinaRestaurant.open && (
+        <LazyPanel importFn={() => import('@/components/map/MarinaRestaurantMonitor')} exportName="MarinaRestaurantMonitor" shouldLoad={marinaRestaurant.open} />
+      )}
+      {houseboatRentalCafe.open && (
+        <LazyPanel importFn={() => import('@/components/map/HouseboatRentalCafeMonitor')} exportName="HouseboatRentalCafeMonitor" shouldLoad={houseboatRentalCafe.open} />
+      )}
+      {floatSpaLounge.open && (
+        <LazyPanel importFn={() => import('@/components/map/FloatSpaLoungeMonitor')} exportName="FloatSpaLoungeMonitor" shouldLoad={floatSpaLounge.open} />
+      )}
+      {saltCaveRelaxationCafe.open && (
+        <LazyPanel importFn={() => import('@/components/map/SaltCaveRelaxationCafeMonitor')} exportName="SaltCaveRelaxationCafeMonitor" shouldLoad={saltCaveRelaxationCafe.open} />
+      )}
+      {daySpaCafe.open && (
+        <LazyPanel importFn={() => import('@/components/map/DaySpaCafeMonitor')} exportName="DaySpaCafeMonitor" shouldLoad={daySpaCafe.open} />
       )}
     </>
   )

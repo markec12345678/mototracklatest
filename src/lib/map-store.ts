@@ -5080,6 +5080,23 @@ interface MapState {
   setCanoeRentalCafe: (state: Partial<MonitorState>) => void
   paddleboardRentalCafe: MonitorState
   setPaddleboardRentalCafe: (state: Partial<MonitorState>) => void
+  // Task 174: Water Concession & Wellness Retreat monitors
+  whitewaterRaftingConcession: MonitorState
+  setWhitewaterRaftingConcession: (state: Partial<MonitorState>) => void
+  jetSkiRentalSnackBar: MonitorState
+  setJetSkiRentalSnackBar: (state: Partial<MonitorState>) => void
+  sailingClubBar: MonitorState
+  setSailingClubBar: (state: Partial<MonitorState>) => void
+  marinaRestaurant: MonitorState
+  setMarinaRestaurant: (state: Partial<MonitorState>) => void
+  houseboatRentalCafe: MonitorState
+  setHouseboatRentalCafe: (state: Partial<MonitorState>) => void
+  floatSpaLounge: MonitorState
+  setFloatSpaLounge: (state: Partial<MonitorState>) => void
+  saltCaveRelaxationCafe: MonitorState
+  setSaltCaveRelaxationCafe: (state: Partial<MonitorState>) => void
+  daySpaCafe: MonitorState
+  setDaySpaCafe: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -9549,6 +9566,15 @@ export const useMapStore = create<MapState>()(
       kayakTourSnackBar: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       canoeRentalCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       paddleboardRentalCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 174: Water Concession & Wellness Retreat monitors
+      whitewaterRaftingConcession: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      jetSkiRentalSnackBar: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      sailingClubBar: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      marinaRestaurant: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      houseboatRentalCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      floatSpaLounge: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      saltCaveRelaxationCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      daySpaCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -10027,6 +10053,15 @@ export const useMapStore = create<MapState>()(
       setKayakTourSnackBar: (updates) => set((state) => ({ kayakTourSnackBar: { ...state.kayakTourSnackBar, ...updates } })),
       setCanoeRentalCafe: (updates) => set((state) => ({ canoeRentalCafe: { ...state.canoeRentalCafe, ...updates } })),
       setPaddleboardRentalCafe: (updates) => set((state) => ({ paddleboardRentalCafe: { ...state.paddleboardRentalCafe, ...updates } })),
+      // Task 174: Water Concession & Wellness Retreat monitors
+      setWhitewaterRaftingConcession: (updates) => set((state) => ({ whitewaterRaftingConcession: { ...state.whitewaterRaftingConcession, ...updates } })),
+      setJetSkiRentalSnackBar: (updates) => set((state) => ({ jetSkiRentalSnackBar: { ...state.jetSkiRentalSnackBar, ...updates } })),
+      setSailingClubBar: (updates) => set((state) => ({ sailingClubBar: { ...state.sailingClubBar, ...updates } })),
+      setMarinaRestaurant: (updates) => set((state) => ({ marinaRestaurant: { ...state.marinaRestaurant, ...updates } })),
+      setHouseboatRentalCafe: (updates) => set((state) => ({ houseboatRentalCafe: { ...state.houseboatRentalCafe, ...updates } })),
+      setFloatSpaLounge: (updates) => set((state) => ({ floatSpaLounge: { ...state.floatSpaLounge, ...updates } })),
+      setSaltCaveRelaxationCafe: (updates) => set((state) => ({ saltCaveRelaxationCafe: { ...state.saltCaveRelaxationCafe, ...updates } })),
+      setDaySpaCafe: (updates) => set((state) => ({ daySpaCafe: { ...state.daySpaCafe, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
