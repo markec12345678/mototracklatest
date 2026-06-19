@@ -5009,6 +5009,23 @@ interface MapState {
   setGolfTournamentHospitality: (state: Partial<MonitorState>) => void
   marathonExpoSports: MonitorState
   setMarathonExpoSports: (state: Partial<MonitorState>) => void
+  // Task 170: Outdoor Recreation & Amusement Venue monitors
+  stadiumBeerGarden: MonitorState
+  setStadiumBeerGarden: (state: Partial<MonitorState>) => void
+  skiResortApresSkiBar: MonitorState
+  setSkiResortApresSkiBar: (state: Partial<MonitorState>) => void
+  beachBoardwalkFood: MonitorState
+  setBeachBoardwalkFood: (state: Partial<MonitorState>) => void
+  lakeHouseRestaurant: MonitorState
+  setLakeHouseRestaurant: (state: Partial<MonitorState>) => void
+  riverboatCruiseDining: MonitorState
+  setRiverboatCruiseDining: (state: Partial<MonitorState>) => void
+  dinnerCruise: MonitorState
+  setDinnerCruise: (state: Partial<MonitorState>) => void
+  themeParkFoodCourt: MonitorState
+  setThemeParkFoodCourt: (state: Partial<MonitorState>) => void
+  waterParkSnackBar: MonitorState
+  setWaterParkSnackBar: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -9442,6 +9459,15 @@ export const useMapStore = create<MapState>()(
       tennisTournamentDining: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       golfTournamentHospitality: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       marathonExpoSports: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 170: Outdoor Recreation & Amusement Venue monitors
+      stadiumBeerGarden: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      skiResortApresSkiBar: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      beachBoardwalkFood: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      lakeHouseRestaurant: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      riverboatCruiseDining: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      dinnerCruise: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      themeParkFoodCourt: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      waterParkSnackBar: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -9884,6 +9910,15 @@ export const useMapStore = create<MapState>()(
       setTennisTournamentDining: (updates) => set((state) => ({ tennisTournamentDining: { ...state.tennisTournamentDining, ...updates } })),
       setGolfTournamentHospitality: (updates) => set((state) => ({ golfTournamentHospitality: { ...state.golfTournamentHospitality, ...updates } })),
       setMarathonExpoSports: (updates) => set((state) => ({ marathonExpoSports: { ...state.marathonExpoSports, ...updates } })),
+      // Task 170: Outdoor Recreation & Amusement Venue monitors
+      setStadiumBeerGarden: (updates) => set((state) => ({ stadiumBeerGarden: { ...state.stadiumBeerGarden, ...updates } })),
+      setSkiResortApresSkiBar: (updates) => set((state) => ({ skiResortApresSkiBar: { ...state.skiResortApresSkiBar, ...updates } })),
+      setBeachBoardwalkFood: (updates) => set((state) => ({ beachBoardwalkFood: { ...state.beachBoardwalkFood, ...updates } })),
+      setLakeHouseRestaurant: (updates) => set((state) => ({ lakeHouseRestaurant: { ...state.lakeHouseRestaurant, ...updates } })),
+      setRiverboatCruiseDining: (updates) => set((state) => ({ riverboatCruiseDining: { ...state.riverboatCruiseDining, ...updates } })),
+      setDinnerCruise: (updates) => set((state) => ({ dinnerCruise: { ...state.dinnerCruise, ...updates } })),
+      setThemeParkFoodCourt: (updates) => set((state) => ({ themeParkFoodCourt: { ...state.themeParkFoodCourt, ...updates } })),
+      setWaterParkSnackBar: (updates) => set((state) => ({ waterParkSnackBar: { ...state.waterParkSnackBar, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

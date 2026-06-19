@@ -956,6 +956,13 @@ import {
   Volleyball as VolleyballIcon,
   Flag as FlagIcon7,
   Dumbbell as DumbbellIcon4,
+  // Task 170: Outdoor Recreation & Amusement Venue monitors
+  Beer as BeerIcon4,
+  Umbrella as UmbrellaIcon2,
+  TreePalm as TreePalmIcon,
+  Sailboat as SailboatIcon3,
+  Wine as WineIcon4,
+  FerrisWheel as FerrisWheelIcon2,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1522,6 +1529,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const tennisTournamentDiningOpen = useMapStore((s) => s.tennisTournamentDining.open)
   const golfTournamentHospitalityOpen = useMapStore((s) => s.golfTournamentHospitality.open)
   const marathonExpoSportsOpen = useMapStore((s) => s.marathonExpoSports.open)
+  // Task 170: Outdoor Recreation & Amusement Venue monitors
+  const stadiumBeerGardenOpen = useMapStore((s) => s.stadiumBeerGarden.open)
+  const skiResortApresSkiBarOpen = useMapStore((s) => s.skiResortApresSkiBar.open)
+  const beachBoardwalkFoodOpen = useMapStore((s) => s.beachBoardwalkFood.open)
+  const lakeHouseRestaurantOpen = useMapStore((s) => s.lakeHouseRestaurant.open)
+  const riverboatCruiseDiningOpen = useMapStore((s) => s.riverboatCruiseDining.open)
+  const dinnerCruiseOpen = useMapStore((s) => s.dinnerCruise.open)
+  const themeParkFoodCourtOpen = useMapStore((s) => s.themeParkFoodCourt.open)
+  const waterParkSnackBarOpen = useMapStore((s) => s.waterParkSnackBar.open)
 
   if (typeof window === 'undefined') return null
 
@@ -9396,6 +9412,71 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <DumbbellIcon4 className="h-4 w-4" />
             {marathonExpoSportsOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-300" />}
+          </button>
+          {/* Task 170: Outdoor Recreation & Amusement Venue monitors */}
+          <button
+            onClick={() => useMapStore.getState().setStadiumBeerGarden({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${stadiumBeerGardenOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Stadium Beer Garden Monitor"
+          >
+            <BeerIcon4 className="h-4 w-4" />
+            {stadiumBeerGardenOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setSkiResortApresSkiBar({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${skiResortApresSkiBarOpen ? 'bg-cyan-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Ski Resort Apres-Ski Bar Monitor"
+          >
+            <SnowflakeIcon10 className="h-4 w-4" />
+            {skiResortApresSkiBarOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBeachBoardwalkFood({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${beachBoardwalkFoodOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Beach Boardwalk Food Monitor"
+          >
+            <UmbrellaIcon2 className="h-4 w-4" />
+            {beachBoardwalkFoodOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setLakeHouseRestaurant({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${lakeHouseRestaurantOpen ? 'bg-teal-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Lake House Restaurant Monitor"
+          >
+            <TreePalmIcon className="h-4 w-4" />
+            {lakeHouseRestaurantOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setRiverboatCruiseDining({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${riverboatCruiseDiningOpen ? 'bg-rose-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Riverboat Cruise Dining Monitor"
+          >
+            <SailboatIcon3 className="h-4 w-4" />
+            {riverboatCruiseDiningOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setDinnerCruise({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${dinnerCruiseOpen ? 'bg-purple-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Dinner Cruise Monitor"
+          >
+            <WineIcon4 className="h-4 w-4" />
+            {dinnerCruiseOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-purple-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setThemeParkFoodCourt({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${themeParkFoodCourtOpen ? 'bg-fuchsia-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Theme Park Food Court Monitor"
+          >
+            <FerrisWheelIcon2 className="h-4 w-4" />
+            {themeParkFoodCourtOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-fuchsia-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setWaterParkSnackBar({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${waterParkSnackBarOpen ? 'bg-cyan-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Water Park Snack Bar Monitor"
+          >
+            <WavesIcon10 className="h-4 w-4" />
+            {waterParkSnackBarOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-300" />}
           </button>
         </div>
       </div>
