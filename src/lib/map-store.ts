@@ -4992,6 +4992,23 @@ interface MapState {
   setTrainStationDining: (state: Partial<MonitorState>) => void
   ferryTerminalCafe: MonitorState
   setFerryTerminalCafe: (state: Partial<MonitorState>) => void
+  // Task 169: Sports & Event Venue monitors
+  airportLoungeDining: MonitorState
+  setAirportLoungeDining: (state: Partial<MonitorState>) => void
+  baseballSpringTraining: MonitorState
+  setBaseballSpringTraining: (state: Partial<MonitorState>) => void
+  autoRaceTrackConcession: MonitorState
+  setAutoRaceTrackConcession: (state: Partial<MonitorState>) => void
+  rodeoArenaConcession: MonitorState
+  setRodeoArenaConcession: (state: Partial<MonitorState>) => void
+  poloEquestrianClub: MonitorState
+  setPoloEquestrianClub: (state: Partial<MonitorState>) => void
+  tennisTournamentDining: MonitorState
+  setTennisTournamentDining: (state: Partial<MonitorState>) => void
+  golfTournamentHospitality: MonitorState
+  setGolfTournamentHospitality: (state: Partial<MonitorState>) => void
+  marathonExpoSports: MonitorState
+  setMarathonExpoSports: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -9416,6 +9433,15 @@ export const useMapStore = create<MapState>()(
       highwayRestArea: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       trainStationDining: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       ferryTerminalCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 169: Sports & Event Venue monitors
+      airportLoungeDining: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      baseballSpringTraining: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      autoRaceTrackConcession: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      rodeoArenaConcession: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      poloEquestrianClub: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      tennisTournamentDining: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      golfTournamentHospitality: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      marathonExpoSports: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -9849,6 +9875,15 @@ export const useMapStore = create<MapState>()(
       setHighwayRestArea: (updates) => set((state) => ({ highwayRestArea: { ...state.highwayRestArea, ...updates } })),
       setTrainStationDining: (updates) => set((state) => ({ trainStationDining: { ...state.trainStationDining, ...updates } })),
       setFerryTerminalCafe: (updates) => set((state) => ({ ferryTerminalCafe: { ...state.ferryTerminalCafe, ...updates } })),
+      // Task 169: Sports & Event Venue monitors
+      setAirportLoungeDining: (updates) => set((state) => ({ airportLoungeDining: { ...state.airportLoungeDining, ...updates } })),
+      setBaseballSpringTraining: (updates) => set((state) => ({ baseballSpringTraining: { ...state.baseballSpringTraining, ...updates } })),
+      setAutoRaceTrackConcession: (updates) => set((state) => ({ autoRaceTrackConcession: { ...state.autoRaceTrackConcession, ...updates } })),
+      setRodeoArenaConcession: (updates) => set((state) => ({ rodeoArenaConcession: { ...state.rodeoArenaConcession, ...updates } })),
+      setPoloEquestrianClub: (updates) => set((state) => ({ poloEquestrianClub: { ...state.poloEquestrianClub, ...updates } })),
+      setTennisTournamentDining: (updates) => set((state) => ({ tennisTournamentDining: { ...state.tennisTournamentDining, ...updates } })),
+      setGolfTournamentHospitality: (updates) => set((state) => ({ golfTournamentHospitality: { ...state.golfTournamentHospitality, ...updates } })),
+      setMarathonExpoSports: (updates) => set((state) => ({ marathonExpoSports: { ...state.marathonExpoSports, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

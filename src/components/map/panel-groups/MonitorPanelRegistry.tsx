@@ -838,6 +838,15 @@ export function MonitorPanelRegistry() {
   const highwayRestArea = useMapStore((s) => s.highwayRestArea)
   const trainStationDining = useMapStore((s) => s.trainStationDining)
   const ferryTerminalCafe = useMapStore((s) => s.ferryTerminalCafe)
+  // Task 169: Sports & Event Venue monitors
+  const airportLoungeDining = useMapStore((s) => s.airportLoungeDining)
+  const baseballSpringTraining = useMapStore((s) => s.baseballSpringTraining)
+  const autoRaceTrackConcession = useMapStore((s) => s.autoRaceTrackConcession)
+  const rodeoArenaConcession = useMapStore((s) => s.rodeoArenaConcession)
+  const poloEquestrianClub = useMapStore((s) => s.poloEquestrianClub)
+  const tennisTournamentDining = useMapStore((s) => s.tennisTournamentDining)
+  const golfTournamentHospitality = useMapStore((s) => s.golfTournamentHospitality)
+  const marathonExpoSports = useMapStore((s) => s.marathonExpoSports)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -3015,6 +3024,31 @@ export function MonitorPanelRegistry() {
       )}
       {ferryTerminalCafe.open && (
         <LazyPanel importFn={() => import('@/components/map/FerryTerminalCafeMonitor')} exportName="FerryTerminalCafeMonitor" shouldLoad={ferryTerminalCafe.open} />
+      )}
+      {/* Task 169: Sports & Event Venue monitors */}
+      {airportLoungeDining.open && (
+        <LazyPanel importFn={() => import('@/components/map/AirportLoungeDiningMonitor')} exportName="AirportLoungeDiningMonitor" shouldLoad={airportLoungeDining.open} />
+      )}
+      {baseballSpringTraining.open && (
+        <LazyPanel importFn={() => import('@/components/map/BaseballSpringTrainingMonitor')} exportName="BaseballSpringTrainingMonitor" shouldLoad={baseballSpringTraining.open} />
+      )}
+      {autoRaceTrackConcession.open && (
+        <LazyPanel importFn={() => import('@/components/map/AutoRaceTrackConcessionMonitor')} exportName="AutoRaceTrackConcessionMonitor" shouldLoad={autoRaceTrackConcession.open} />
+      )}
+      {rodeoArenaConcession.open && (
+        <LazyPanel importFn={() => import('@/components/map/RodeoArenaConcessionMonitor')} exportName="RodeoArenaConcessionMonitor" shouldLoad={rodeoArenaConcession.open} />
+      )}
+      {poloEquestrianClub.open && (
+        <LazyPanel importFn={() => import('@/components/map/PoloEquestrianClubMonitor')} exportName="PoloEquestrianClubMonitor" shouldLoad={poloEquestrianClub.open} />
+      )}
+      {tennisTournamentDining.open && (
+        <LazyPanel importFn={() => import('@/components/map/TennisTournamentDiningMonitor')} exportName="TennisTournamentDiningMonitor" shouldLoad={tennisTournamentDining.open} />
+      )}
+      {golfTournamentHospitality.open && (
+        <LazyPanel importFn={() => import('@/components/map/GolfTournamentHospitalityMonitor')} exportName="GolfTournamentHospitalityMonitor" shouldLoad={golfTournamentHospitality.open} />
+      )}
+      {marathonExpoSports.open && (
+        <LazyPanel importFn={() => import('@/components/map/MarathonExpoSportsMonitor')} exportName="MarathonExpoSportsMonitor" shouldLoad={marathonExpoSports.open} />
       )}
     </>
   )

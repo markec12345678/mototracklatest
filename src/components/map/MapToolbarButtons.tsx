@@ -947,6 +947,15 @@ import {
   Milestone as MilestoneIcon,
   Train as TrainIcon2,
   Ship as ShipIcon8,
+  // Task 169: Sports & Event Venue monitors
+  Plane as PlaneIcon6,
+  Trophy as TrophyIcon4,
+  Car as CarIcon6,
+  PersonStanding as PersonStandingIcon,
+  Goal as GoalIcon2,
+  Volleyball as VolleyballIcon,
+  Flag as FlagIcon7,
+  Dumbbell as DumbbellIcon4,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1504,6 +1513,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const highwayRestAreaOpen = useMapStore((s) => s.highwayRestArea.open)
   const trainStationDiningOpen = useMapStore((s) => s.trainStationDining.open)
   const ferryTerminalCafeOpen = useMapStore((s) => s.ferryTerminalCafe.open)
+  // Task 169: Sports & Event Venue monitors
+  const airportLoungeDiningOpen = useMapStore((s) => s.airportLoungeDining.open)
+  const baseballSpringTrainingOpen = useMapStore((s) => s.baseballSpringTraining.open)
+  const autoRaceTrackConcessionOpen = useMapStore((s) => s.autoRaceTrackConcession.open)
+  const rodeoArenaConcessionOpen = useMapStore((s) => s.rodeoArenaConcession.open)
+  const poloEquestrianClubOpen = useMapStore((s) => s.poloEquestrianClub.open)
+  const tennisTournamentDiningOpen = useMapStore((s) => s.tennisTournamentDining.open)
+  const golfTournamentHospitalityOpen = useMapStore((s) => s.golfTournamentHospitality.open)
+  const marathonExpoSportsOpen = useMapStore((s) => s.marathonExpoSports.open)
 
   if (typeof window === 'undefined') return null
 
@@ -9313,6 +9331,71 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <ShipIcon8 className="h-4 w-4" />
             {ferryTerminalCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-300" />}
+          </button>
+          {/* Task 169: Sports & Event Venue monitors */}
+          <button
+            onClick={() => useMapStore.getState().setAirportLoungeDining({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${airportLoungeDiningOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Airport Lounge Dining Monitor"
+          >
+            <PlaneIcon6 className="h-4 w-4" />
+            {airportLoungeDiningOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBaseballSpringTraining({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${baseballSpringTrainingOpen ? 'bg-emerald-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Baseball Spring Training Monitor"
+          >
+            <TrophyIcon4 className="h-4 w-4" />
+            {baseballSpringTrainingOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setAutoRaceTrackConcession({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${autoRaceTrackConcessionOpen ? 'bg-red-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Auto Race Track Concession Monitor"
+          >
+            <CarIcon6 className="h-4 w-4" />
+            {autoRaceTrackConcessionOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setRodeoArenaConcession({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${rodeoArenaConcessionOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Rodeo Arena Concession Monitor"
+          >
+            <PersonStandingIcon className="h-4 w-4" />
+            {rodeoArenaConcessionOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setPoloEquestrianClub({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${poloEquestrianClubOpen ? 'bg-emerald-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Polo & Equestrian Club Monitor"
+          >
+            <GoalIcon2 className="h-4 w-4" />
+            {poloEquestrianClubOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setTennisTournamentDining({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${tennisTournamentDiningOpen ? 'bg-rose-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Tennis Tournament Dining Monitor"
+          >
+            <VolleyballIcon className="h-4 w-4" />
+            {tennisTournamentDiningOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setGolfTournamentHospitality({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${golfTournamentHospitalityOpen ? 'bg-emerald-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Golf Tournament Hospitality Monitor"
+          >
+            <FlagIcon7 className="h-4 w-4" />
+            {golfTournamentHospitalityOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setMarathonExpoSports({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${marathonExpoSportsOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Marathon Expo Sports Monitor"
+          >
+            <DumbbellIcon4 className="h-4 w-4" />
+            {marathonExpoSportsOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-300" />}
           </button>
         </div>
       </div>
