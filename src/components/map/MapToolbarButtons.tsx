@@ -1005,6 +1005,15 @@ import {
   Leaf as LeafIcon1,
   Star as StarIcon1,
   Heart as HeartIcon1,
+  // Task 176 icons: Holistic & Integrative Wellness Clinic
+  Flame as FlameIcon18,
+  ConciergeBell as ConciergeBellIcon1,
+  Flower as FlowerIcon5,
+  HandHeart as HandHeartIcon1,
+  Sparkle as SparkleIcon1,
+  Activity as ActivityIcon1,
+  Stethoscope as StethoscopeIcon1,
+  Leaf as LeafIcon13,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1622,6 +1631,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const yogaRetreatCafeOpen = useMapStore((s) => s.yogaRetreatCafe.open)
   const pilatesStudioBarreOpen = useMapStore((s) => s.pilatesStudioBarre.open)
   const barreFitnessStudioCafeOpen = useMapStore((s) => s.barreFitnessStudioCafe.open)
+  // Task 176: Holistic & Integrative Wellness Clinic
+  const hotYogaStudioCafeOpen = useMapStore((s) => s.hotYogaStudioCafe.open)
+  const soundBathMeditationLoungeOpen = useMapStore((s) => s.soundBathMeditationLounge.open)
+  const aromatherapySpaCafeOpen = useMapStore((s) => s.aromatherapySpaCafe.open)
+  const reflexologyLoungeCafeOpen = useMapStore((s) => s.reflexologyLoungeCafe.open)
+  const reikiHealingCenterCafeOpen = useMapStore((s) => s.reikiHealingCenterCafe.open)
+  const acupunctureClinicCafeOpen = useMapStore((s) => s.acupunctureClinicCafe.open)
+  const chiropracticWellnessCafeOpen = useMapStore((s) => s.chiropracticWellnessCafe.open)
+  const naturopathicClinicCafeOpen = useMapStore((s) => s.naturopathicClinicCafe.open)
 
   if (typeof window === 'undefined') return null
 
@@ -9881,6 +9899,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <HeartIcon1 className="h-4 w-4" />
             {barreFitnessStudioCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-pink-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setHotYogaStudioCafe({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${hotYogaStudioCafeOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Hot Yoga Studio Cafe Monitor"
+          >
+            <FlameIcon18 className="h-4 w-4" />
+            {hotYogaStudioCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setSoundBathMeditationLounge({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${soundBathMeditationLoungeOpen ? 'bg-violet-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Sound Bath Meditation Lounge Monitor"
+          >
+            <ConciergeBellIcon1 className="h-4 w-4" />
+            {soundBathMeditationLoungeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-violet-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setAromatherapySpaCafe({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${aromatherapySpaCafeOpen ? 'bg-rose-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Aromatherapy Spa Cafe Monitor"
+          >
+            <FlowerIcon5 className="h-4 w-4" />
+            {aromatherapySpaCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setReflexologyLoungeCafe({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${reflexologyLoungeCafeOpen ? 'bg-emerald-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Reflexology Lounge Cafe Monitor"
+          >
+            <HandHeartIcon1 className="h-4 w-4" />
+            {reflexologyLoungeCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setReikiHealingCenterCafe({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${reikiHealingCenterCafeOpen ? 'bg-fuchsia-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Reiki Healing Center Cafe Monitor"
+          >
+            <SparkleIcon1 className="h-4 w-4" />
+            {reikiHealingCenterCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-fuchsia-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setAcupunctureClinicCafe({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${acupunctureClinicCafeOpen ? 'bg-teal-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Acupuncture Clinic Cafe Monitor"
+          >
+            <ActivityIcon1 className="h-4 w-4" />
+            {acupunctureClinicCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setChiropracticWellnessCafe({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${chiropracticWellnessCafeOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Chiropractic Wellness Cafe Monitor"
+          >
+            <StethoscopeIcon1 className="h-4 w-4" />
+            {chiropracticWellnessCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setNaturopathicClinicCafe({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${naturopathicClinicCafeOpen ? 'bg-green-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Naturopathic Clinic Cafe Monitor"
+          >
+            <LeafIcon13 className="h-4 w-4" />
+            {naturopathicClinicCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-green-300" />}
           </button>
         </div>
       </div>

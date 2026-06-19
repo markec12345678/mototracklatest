@@ -901,6 +901,15 @@ export function MonitorPanelRegistry() {
   const yogaRetreatCafe = useMapStore((s) => s.yogaRetreatCafe)
   const pilatesStudioBarre = useMapStore((s) => s.pilatesStudioBarre)
   const barreFitnessStudioCafe = useMapStore((s) => s.barreFitnessStudioCafe)
+  // Task 176: Holistic & Integrative Wellness Clinic
+  const hotYogaStudioCafe = useMapStore((s) => s.hotYogaStudioCafe)
+  const soundBathMeditationLounge = useMapStore((s) => s.soundBathMeditationLounge)
+  const aromatherapySpaCafe = useMapStore((s) => s.aromatherapySpaCafe)
+  const reflexologyLoungeCafe = useMapStore((s) => s.reflexologyLoungeCafe)
+  const reikiHealingCenterCafe = useMapStore((s) => s.reikiHealingCenterCafe)
+  const acupunctureClinicCafe = useMapStore((s) => s.acupunctureClinicCafe)
+  const chiropracticWellnessCafe = useMapStore((s) => s.chiropracticWellnessCafe)
+  const naturopathicClinicCafe = useMapStore((s) => s.naturopathicClinicCafe)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -3248,6 +3257,30 @@ export function MonitorPanelRegistry() {
       )}
       {barreFitnessStudioCafe.open && (
         <LazyPanel importFn={() => import('@/components/map/BarreFitnessStudioCafeMonitor')} exportName="BarreFitnessStudioCafeMonitor" shouldLoad={barreFitnessStudioCafe.open} />
+      )}
+      {hotYogaStudioCafe.open && (
+        <LazyPanel importFn={() => import('@/components/map/HotYogaStudioCafeMonitor')} exportName="HotYogaStudioCafeMonitor" shouldLoad={hotYogaStudioCafe.open} />
+      )}
+      {soundBathMeditationLounge.open && (
+        <LazyPanel importFn={() => import('@/components/map/SoundBathMeditationLoungeMonitor')} exportName="SoundBathMeditationLoungeMonitor" shouldLoad={soundBathMeditationLounge.open} />
+      )}
+      {aromatherapySpaCafe.open && (
+        <LazyPanel importFn={() => import('@/components/map/AromatherapySpaCafeMonitor')} exportName="AromatherapySpaCafeMonitor" shouldLoad={aromatherapySpaCafe.open} />
+      )}
+      {reflexologyLoungeCafe.open && (
+        <LazyPanel importFn={() => import('@/components/map/ReflexologyLoungeCafeMonitor')} exportName="ReflexologyLoungeCafeMonitor" shouldLoad={reflexologyLoungeCafe.open} />
+      )}
+      {reikiHealingCenterCafe.open && (
+        <LazyPanel importFn={() => import('@/components/map/ReikiHealingCenterCafeMonitor')} exportName="ReikiHealingCenterCafeMonitor" shouldLoad={reikiHealingCenterCafe.open} />
+      )}
+      {acupunctureClinicCafe.open && (
+        <LazyPanel importFn={() => import('@/components/map/AcupunctureClinicCafeMonitor')} exportName="AcupunctureClinicCafeMonitor" shouldLoad={acupunctureClinicCafe.open} />
+      )}
+      {chiropracticWellnessCafe.open && (
+        <LazyPanel importFn={() => import('@/components/map/ChiropracticWellnessCafeMonitor')} exportName="ChiropracticWellnessCafeMonitor" shouldLoad={chiropracticWellnessCafe.open} />
+      )}
+      {naturopathicClinicCafe.open && (
+        <LazyPanel importFn={() => import('@/components/map/NaturopathicClinicCafeMonitor')} exportName="NaturopathicClinicCafeMonitor" shouldLoad={naturopathicClinicCafe.open} />
       )}
     </>
   )

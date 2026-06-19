@@ -5114,6 +5114,23 @@ interface MapState {
   setPilatesStudioBarre: (state: Partial<MonitorState>) => void
   barreFitnessStudioCafe: MonitorState
   setBarreFitnessStudioCafe: (state: Partial<MonitorState>) => void
+  // Task 176: Holistic & Integrative Wellness Clinic monitors
+  hotYogaStudioCafe: MonitorState
+  setHotYogaStudioCafe: (state: Partial<MonitorState>) => void
+  soundBathMeditationLounge: MonitorState
+  setSoundBathMeditationLounge: (state: Partial<MonitorState>) => void
+  aromatherapySpaCafe: MonitorState
+  setAromatherapySpaCafe: (state: Partial<MonitorState>) => void
+  reflexologyLoungeCafe: MonitorState
+  setReflexologyLoungeCafe: (state: Partial<MonitorState>) => void
+  reikiHealingCenterCafe: MonitorState
+  setReikiHealingCenterCafe: (state: Partial<MonitorState>) => void
+  acupunctureClinicCafe: MonitorState
+  setAcupunctureClinicCafe: (state: Partial<MonitorState>) => void
+  chiropracticWellnessCafe: MonitorState
+  setChiropracticWellnessCafe: (state: Partial<MonitorState>) => void
+  naturopathicClinicCafe: MonitorState
+  setNaturopathicClinicCafe: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -9601,6 +9618,15 @@ export const useMapStore = create<MapState>()(
       yogaRetreatCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       pilatesStudioBarre: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       barreFitnessStudioCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 176: Holistic & Integrative Wellness Clinic monitors
+      hotYogaStudioCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      soundBathMeditationLounge: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      aromatherapySpaCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      reflexologyLoungeCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      reikiHealingCenterCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      acupunctureClinicCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      chiropracticWellnessCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      naturopathicClinicCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -10097,6 +10123,15 @@ export const useMapStore = create<MapState>()(
       setYogaRetreatCafe: (updates) => set((state) => ({ yogaRetreatCafe: { ...state.yogaRetreatCafe, ...updates } })),
       setPilatesStudioBarre: (updates) => set((state) => ({ pilatesStudioBarre: { ...state.pilatesStudioBarre, ...updates } })),
       setBarreFitnessStudioCafe: (updates) => set((state) => ({ barreFitnessStudioCafe: { ...state.barreFitnessStudioCafe, ...updates } })),
+      // Task 176: Holistic & Integrative Wellness Clinic monitors
+      setHotYogaStudioCafe: (updates) => set((state) => ({ hotYogaStudioCafe: { ...state.hotYogaStudioCafe, ...updates } })),
+      setSoundBathMeditationLounge: (updates) => set((state) => ({ soundBathMeditationLounge: { ...state.soundBathMeditationLounge, ...updates } })),
+      setAromatherapySpaCafe: (updates) => set((state) => ({ aromatherapySpaCafe: { ...state.aromatherapySpaCafe, ...updates } })),
+      setReflexologyLoungeCafe: (updates) => set((state) => ({ reflexologyLoungeCafe: { ...state.reflexologyLoungeCafe, ...updates } })),
+      setReikiHealingCenterCafe: (updates) => set((state) => ({ reikiHealingCenterCafe: { ...state.reikiHealingCenterCafe, ...updates } })),
+      setAcupunctureClinicCafe: (updates) => set((state) => ({ acupunctureClinicCafe: { ...state.acupunctureClinicCafe, ...updates } })),
+      setChiropracticWellnessCafe: (updates) => set((state) => ({ chiropracticWellnessCafe: { ...state.chiropracticWellnessCafe, ...updates } })),
+      setNaturopathicClinicCafe: (updates) => set((state) => ({ naturopathicClinicCafe: { ...state.naturopathicClinicCafe, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
