@@ -5026,6 +5026,24 @@ interface MapState {
   setThemeParkFoodCourt: (state: Partial<MonitorState>) => void
   waterParkSnackBar: MonitorState
   setWaterParkSnackBar: (state: Partial<MonitorState>) => void
+
+  // Task 171: Outdoor Recreation & Adventure Venue monitors
+  driveInTheaterConcession: MonitorState
+  setDriveInTheaterConcession: (state: Partial<MonitorState>) => void
+  miniGolfSnackBar: MonitorState
+  setMiniGolfSnackBar: (state: Partial<MonitorState>) => void
+  goKartTrackConcession: MonitorState
+  setGoKartTrackConcession: (state: Partial<MonitorState>) => void
+  rollerRinkSnackBar: MonitorState
+  setRollerRinkSnackBar: (state: Partial<MonitorState>) => void
+  iceRinkCafe: MonitorState
+  setIceRinkCafe: (state: Partial<MonitorState>) => void
+  paintballParkCafe: MonitorState
+  setPaintballParkCafe: (state: Partial<MonitorState>) => void
+  zipLineTourCafe: MonitorState
+  setZipLineTourCafe: (state: Partial<MonitorState>) => void
+  bungeeJumpSiteCafe: MonitorState
+  setBungeeJumpSiteCafe: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -9468,6 +9486,15 @@ export const useMapStore = create<MapState>()(
       dinnerCruise: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       themeParkFoodCourt: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       waterParkSnackBar: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 171: Outdoor Recreation & Adventure Venue monitors
+      driveInTheaterConcession: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      miniGolfSnackBar: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      goKartTrackConcession: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      rollerRinkSnackBar: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      iceRinkCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      paintballParkCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      zipLineTourCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      bungeeJumpSiteCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -9919,6 +9946,15 @@ export const useMapStore = create<MapState>()(
       setDinnerCruise: (updates) => set((state) => ({ dinnerCruise: { ...state.dinnerCruise, ...updates } })),
       setThemeParkFoodCourt: (updates) => set((state) => ({ themeParkFoodCourt: { ...state.themeParkFoodCourt, ...updates } })),
       setWaterParkSnackBar: (updates) => set((state) => ({ waterParkSnackBar: { ...state.waterParkSnackBar, ...updates } })),
+      // Task 171: Outdoor Recreation & Adventure Venue monitors
+      setDriveInTheaterConcession: (updates) => set((state) => ({ driveInTheaterConcession: { ...state.driveInTheaterConcession, ...updates } })),
+      setMiniGolfSnackBar: (updates) => set((state) => ({ miniGolfSnackBar: { ...state.miniGolfSnackBar, ...updates } })),
+      setGoKartTrackConcession: (updates) => set((state) => ({ goKartTrackConcession: { ...state.goKartTrackConcession, ...updates } })),
+      setRollerRinkSnackBar: (updates) => set((state) => ({ rollerRinkSnackBar: { ...state.rollerRinkSnackBar, ...updates } })),
+      setIceRinkCafe: (updates) => set((state) => ({ iceRinkCafe: { ...state.iceRinkCafe, ...updates } })),
+      setPaintballParkCafe: (updates) => set((state) => ({ paintballParkCafe: { ...state.paintballParkCafe, ...updates } })),
+      setZipLineTourCafe: (updates) => set((state) => ({ zipLineTourCafe: { ...state.zipLineTourCafe, ...updates } })),
+      setBungeeJumpSiteCafe: (updates) => set((state) => ({ bungeeJumpSiteCafe: { ...state.bungeeJumpSiteCafe, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

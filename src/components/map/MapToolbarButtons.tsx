@@ -963,6 +963,14 @@ import {
   Sailboat as SailboatIcon3,
   Wine as WineIcon4,
   FerrisWheel as FerrisWheelIcon2,
+  Film as FilmIcon4,
+  Flag as FlagIcon,
+  Car as CarIcon,
+  Disc3 as Disc3Icon2,
+  CloudSnow as CloudSnowIcon,
+  SprayCan as SprayCanIcon2,
+  Cable as CableIcon,
+  MoveVertical as MoveVerticalIcon,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1538,6 +1546,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const dinnerCruiseOpen = useMapStore((s) => s.dinnerCruise.open)
   const themeParkFoodCourtOpen = useMapStore((s) => s.themeParkFoodCourt.open)
   const waterParkSnackBarOpen = useMapStore((s) => s.waterParkSnackBar.open)
+  const driveInTheaterConcessionOpen = useMapStore((s) => s.driveInTheaterConcession.open)
+  const miniGolfSnackBarOpen = useMapStore((s) => s.miniGolfSnackBar.open)
+  const goKartTrackConcessionOpen = useMapStore((s) => s.goKartTrackConcession.open)
+  const rollerRinkSnackBarOpen = useMapStore((s) => s.rollerRinkSnackBar.open)
+  const iceRinkCafeOpen = useMapStore((s) => s.iceRinkCafe.open)
+  const paintballParkCafeOpen = useMapStore((s) => s.paintballParkCafe.open)
+  const zipLineTourCafeOpen = useMapStore((s) => s.zipLineTourCafe.open)
+  const bungeeJumpSiteCafeOpen = useMapStore((s) => s.bungeeJumpSiteCafe.open)
 
   if (typeof window === 'undefined') return null
 
@@ -9477,6 +9493,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <WavesIcon10 className="h-4 w-4" />
             {waterParkSnackBarOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setDriveInTheaterConcession({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${driveInTheaterConcessionOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Drive-In Theater Concession Monitor"
+          >
+            <FilmIcon4 className="h-4 w-4" />
+            {driveInTheaterConcessionOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setMiniGolfSnackBar({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${miniGolfSnackBarOpen ? 'bg-green-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Mini Golf Course Snack Bar Monitor"
+          >
+            <FlagIcon className="h-4 w-4" />
+            {miniGolfSnackBarOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-green-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setGoKartTrackConcession({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${goKartTrackConcessionOpen ? 'bg-red-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Go-Kart Track Concession Monitor"
+          >
+            <CarIcon className="h-4 w-4" />
+            {goKartTrackConcessionOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setRollerRinkSnackBar({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${rollerRinkSnackBarOpen ? 'bg-fuchsia-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Roller Rink Snack Bar Monitor"
+          >
+            <Disc3Icon2 className="h-4 w-4" />
+            {rollerRinkSnackBarOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-fuchsia-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setIceRinkCafe({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${iceRinkCafeOpen ? 'bg-cyan-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Ice Rink Cafe Monitor"
+          >
+            <CloudSnowIcon className="h-4 w-4" />
+            {iceRinkCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setPaintballParkCafe({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${paintballParkCafeOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Paintball Park Cafe Monitor"
+          >
+            <SprayCanIcon2 className="h-4 w-4" />
+            {paintballParkCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setZipLineTourCafe({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${zipLineTourCafeOpen ? 'bg-emerald-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Zip Line Tour Cafe Monitor"
+          >
+            <CableIcon className="h-4 w-4" />
+            {zipLineTourCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBungeeJumpSiteCafe({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${bungeeJumpSiteCafeOpen ? 'bg-rose-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Bungee Jump Site Cafe Monitor"
+          >
+            <MoveVerticalIcon className="h-4 w-4" />
+            {bungeeJumpSiteCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-300" />}
           </button>
         </div>
       </div>

@@ -856,6 +856,15 @@ export function MonitorPanelRegistry() {
   const dinnerCruise = useMapStore((s) => s.dinnerCruise)
   const themeParkFoodCourt = useMapStore((s) => s.themeParkFoodCourt)
   const waterParkSnackBar = useMapStore((s) => s.waterParkSnackBar)
+  // Task 171: Outdoor Recreation & Adventure Venue monitors
+  const driveInTheaterConcession = useMapStore((s) => s.driveInTheaterConcession)
+  const miniGolfSnackBar = useMapStore((s) => s.miniGolfSnackBar)
+  const goKartTrackConcession = useMapStore((s) => s.goKartTrackConcession)
+  const rollerRinkSnackBar = useMapStore((s) => s.rollerRinkSnackBar)
+  const iceRinkCafe = useMapStore((s) => s.iceRinkCafe)
+  const paintballParkCafe = useMapStore((s) => s.paintballParkCafe)
+  const zipLineTourCafe = useMapStore((s) => s.zipLineTourCafe)
+  const bungeeJumpSiteCafe = useMapStore((s) => s.bungeeJumpSiteCafe)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -3083,6 +3092,30 @@ export function MonitorPanelRegistry() {
       )}
       {waterParkSnackBar.open && (
         <LazyPanel importFn={() => import('@/components/map/WaterParkSnackBarMonitor')} exportName="WaterParkSnackBarMonitor" shouldLoad={waterParkSnackBar.open} />
+      )}
+      {driveInTheaterConcession.open && (
+        <LazyPanel importFn={() => import('@/components/map/DriveInTheaterConcessionMonitor')} exportName="DriveInTheaterConcessionMonitor" shouldLoad={driveInTheaterConcession.open} />
+      )}
+      {miniGolfSnackBar.open && (
+        <LazyPanel importFn={() => import('@/components/map/MiniGolfSnackBarMonitor')} exportName="MiniGolfSnackBarMonitor" shouldLoad={miniGolfSnackBar.open} />
+      )}
+      {goKartTrackConcession.open && (
+        <LazyPanel importFn={() => import('@/components/map/GoKartTrackConcessionMonitor')} exportName="GoKartTrackConcessionMonitor" shouldLoad={goKartTrackConcession.open} />
+      )}
+      {rollerRinkSnackBar.open && (
+        <LazyPanel importFn={() => import('@/components/map/RollerRinkSnackBarMonitor')} exportName="RollerRinkSnackBarMonitor" shouldLoad={rollerRinkSnackBar.open} />
+      )}
+      {iceRinkCafe.open && (
+        <LazyPanel importFn={() => import('@/components/map/IceRinkCafeMonitor')} exportName="IceRinkCafeMonitor" shouldLoad={iceRinkCafe.open} />
+      )}
+      {paintballParkCafe.open && (
+        <LazyPanel importFn={() => import('@/components/map/PaintballParkCafeMonitor')} exportName="PaintballParkCafeMonitor" shouldLoad={paintballParkCafe.open} />
+      )}
+      {zipLineTourCafe.open && (
+        <LazyPanel importFn={() => import('@/components/map/ZipLineTourCafeMonitor')} exportName="ZipLineTourCafeMonitor" shouldLoad={zipLineTourCafe.open} />
+      )}
+      {bungeeJumpSiteCafe.open && (
+        <LazyPanel importFn={() => import('@/components/map/BungeeJumpSiteCafeMonitor')} exportName="BungeeJumpSiteCafeMonitor" shouldLoad={bungeeJumpSiteCafe.open} />
       )}
     </>
   )
