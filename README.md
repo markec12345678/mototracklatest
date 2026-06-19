@@ -1,12 +1,15 @@
-# 🗺️ MotoTrack - MapLibre Explorer
+# 🗺️ MotoTrack — MapLibre Explorer
 
-A feature-rich, interactive mapping application built with **Next.js 16**, **MapLibre GL JS**, and **MapTiler**. Explore maps, search locations, plan routes, measure distances, analyze terrain, track weather, and much more — all in one beautiful interface.
+A feature-rich, interactive mapping application built with **Next.js 16**, **MapLibre GL JS**, **MapTiler**, and **MapTiler Geocoding**. Explore maps, search locations, plan routes, measure distances, analyze terrain, track weather, monitor environmental hazards, and visualize business operations across **819 specialized monitor panels** — all in one beautiful interface.
 
 ![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
 ![MapLibre GL](https://img.shields.io/badge/MapLibre_GL-5-blueviolet?logo=maplibre)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-38bdf8?logo=tailwindcss)
+![Monitors](https://img.shields.io/badge/Monitor_Panels-819-brightgreen)
 ![License](https://img.shields.io/badge/License-MIT-green)
+
+> **Scale**: 819 monitor components · 92 dependencies · 7 languages · 25+ API endpoints · 35+ map tools
 
 ---
 
@@ -35,7 +38,9 @@ A feature-rich, interactive mapping application built with **Next.js 16**, **Map
 - **3 Route Profiles** — Driving, Cycling, and Walking via OSRM
 - **Turn-by-Turn Directions** with step navigation and maneuver icons
 - **Route Distance & Duration** calculation
+- **Route Optimizer** — Nearest-neighbor TSP heuristic with before/after comparison
 - **Isochrone Visualization** — See reachable areas from a point
+- **Multi-route Comparison** — Compare multiple routes side by side
 
 ### 📏 Measurement & Drawing
 - **Distance Measurement** — Click points to measure with haversine formula
@@ -43,6 +48,7 @@ A feature-rich, interactive mapping application built with **Next.js 16**, **Map
 - **Marker Placement** — Click to add draggable markers with categories
 - **Map Annotations** — Add text labels anywhere on the map
 - **Right-Click Context Menu** — Add markers, measure, copy coordinates, and more
+- **Distance Matrix** — Calculate distances between multiple points
 
 ### 🏔️ Terrain & Elevation
 - **Elevation Profile** — Visualize terrain along routes with Recharts area chart
@@ -67,6 +73,40 @@ A feature-rich, interactive mapping application built with **Next.js 16**, **Map
 - **24-Hour AQI Forecast** — Hourly bar chart showing predicted air quality
 - **Health Recommendations** — Context-aware advice based on current AQI
 - **AQI Scale Reference** — Visual scale with current position indicator
+
+### 📊 Monitor Panel System (819 Panels)
+
+The flagship feature of MotoTrack is a **massive library of 819 specialized monitor panels**, each providing real-time status, location lists, metrics, and detail cards for a specific domain. Every monitor follows a consistent pattern based on `OfficeSupplyChainMonitor.tsx`:
+
+- **4 real US locations** per monitor with coordinates, status, and business data
+- **4-cell metrics grid** — Daily Customers, Revenue ($M/mo), SKUs, Stores
+- **5-option status filter** — All / Critical / Warning / Moderate / Stable
+- **Color-coded status badges** — Red (critical), Amber (warning), Blue (moderate), Emerald (stable)
+- **Trend indicators** — Up / Down / Stable with directional icons
+- **Scrollable location list** with active-item detail card
+- **Gradient header** with domain-specific emoji and close button
+- **Lazy-loaded** via `LazyPanel` registry for optimal performance
+
+#### Monitor Categories (selected examples)
+
+| Category | Example Monitors | Count |
+|----------|-----------------|-------|
+| **Environmental & Climate** | AirQuality, AcidRainTracker, AtmosphericRiverFlow, ArcticSeaIce, AlpineGlacier, AeolianDustDeposition, AquiferDepletion | ~120 |
+| **Geological & Tectonic** | EarthquakeForecast, VolcanoEruptionAlert, TsunamiWarning, LandslideHazard, AbyssalSedimentFlux | ~40 |
+| **Oceanic & Marine** | AquacultureFishery, OceanCurrentTracker, CoralReefBleach, SeaLevelRise, ThermohalineCirculation | ~50 |
+| **Atmospheric & Weather** | AtmosphericPressureCell, AuroraOvalPosition, OzoneLayerTrack, MethaneEmissionSource, AerosolOpticalDepth | ~60 |
+| **Supply Chain & Logistics** | OfficeSupplyChain, AutomobileAssemblyPlant, AluminumSmelter, AviationFuelDepot | ~80 |
+| **Retail & Commerce** | ApparelRetailChain, ApplianceRetailStore, AudioEquipmentStore, AutoPartsStore, BakeryPastryShop | ~90 |
+| **Sports & Recreation Venues** | DriveInTheaterConcession, GoKartTrackConcession, TrampolineParkCafe, AxeThrowingVenueBar | ~70 |
+| **Water Sports Concessions** | WhitewaterRaftingConcession, JetSkiRentalSnackBar, SailingClubBar, MarinaRestaurant | ~24 |
+| **Wellness & Spa Retreats** | FloatSpaLounge, SaltCaveRelaxationCafe, HotSpringResortCafe, ThermalBathLounge, DaySpaCafe | ~24 |
+| **Thermal & Mind-Body** | CryotherapyClinicCafe, InfraredSaunaLounge, MeditationStudioCafe, YogaRetreatCafe, PilatesStudioBarre | ~16 |
+| **Military & Infrastructure** | AirForceBase, ArmyBaseReadiness, AirTrafficControl, AircraftHangarFacility | ~30 |
+| **Education & Community** | AfterSchoolProgram, AcademicCitation, AnimalShelterRescue | ~25 |
+| **Food & Beverage** | AirportFoodCourt, AirportLoungeDining, BarPubTavern, BagelDeliShop | ~60 |
+| **Other Domains** | ArenaEvent, AtmNetworkStatus, AntiquesCollectiblesStore, AquariumMarineExhibit | ~120 |
+
+> Each monitor is a standalone `*Monitor.tsx` component (~213 lines) following the exact same template, ensuring visual and behavioral consistency across all 819 panels.
 
 ### 📦 Import & Export
 - **GPX Import** — Load GPX 1.1 tracks and waypoints onto the map
@@ -101,11 +141,11 @@ A feature-rich, interactive mapping application built with **Next.js 16**, **Map
 - **Location Detail Drawer** — Expandable info panel for markers and POIs
 - **Heatmap Layer** — Visualize density of markers/POIs with adjustable intensity and radius
 - **Custom Tile Sources** — Add your own tile server URLs with presets (OSM, Stamen, CartoDB)
-- **Distance Matrix** — Calculate distances between multiple points (haversine + OSRM)
 - **Map Snapshots** — Save and restore map views with markers
 - **Style Gallery** — Visual style browser with categories and search
 - **Analytics Dashboard** — Session stats, tool usage charts, activity heatmap, and key metrics
 - **Tool Usage Tracking** — Frequency of tool mode switches and action counts
+- **Location History Timeline** — Browse saved locations by date with category filtering and search
 
 ### 🏃 GPS & Tracking
 - **Track Recording** — Record GPS tracks in real-time with speed, distance, elevation
@@ -147,18 +187,22 @@ A feature-rich, interactive mapping application built with **Next.js 16**, **Map
 
 | Category | Technology |
 |----------|-----------|
-| **Framework** | Next.js 16 (App Router) |
+| **Framework** | Next.js 16 (App Router, webpack mode) |
 | **Language** | TypeScript 5 |
-| **Styling** | Tailwind CSS 4 + shadcn/ui |
+| **Styling** | Tailwind CSS 4 + shadcn/ui (New York style) |
 | **Map Engine** | MapLibre GL JS 5 |
 | **Tiles & Geocoding** | MapTiler API |
 | **Routing** | OSRM (Open Source Routing Machine) |
 | **POI Data** | Overpass API (OpenStreetMap) |
 | **State Management** | Zustand (persisted) |
+| **Server State** | TanStack Query |
 | **Database** | Prisma ORM + SQLite |
 | **Animations** | Framer Motion |
 | **Icons** | Lucide React |
 | **Notifications** | Sonner |
+| **Forms** | React Hook Form + Zod |
+| **Charts** | Recharts |
+| **Rich Text** | MDX Editor |
 
 ---
 
@@ -216,7 +260,9 @@ bun run dev
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+The app runs on `http://localhost:3000`.
+
+> **Note**: The dev server uses webpack mode (not turbopack) with `--max-old-space-size=7168` to handle the large codebase (819 monitor components). The server writes logs to `dev.log`.
 
 ---
 
@@ -224,78 +270,126 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ```
 ├── prisma/
-│   └── schema.prisma          # Database schema (Location, MapStyle, Route)
+│   └── schema.prisma              # Database schema (Location, MapStyle, Route)
 ├── public/
-│   ├── logo.svg               # App logo
-│   └── robots.txt             # SEO robots
+│   ├── logo.svg                   # App logo
+│   └── robots.txt                 # SEO robots
 ├── src/
 │   ├── app/
-│   │   ├── api/               # API routes
-│   │   │   ├── directions/    # OSRM routing proxy
-│   │   │   ├── elevation/     # Elevation data proxy
-│   │   │   ├── export/gpx/    # GPX file export
-│   │   │   ├── import/gpx/    # GPX file import
-│   │   │   ├── isochrone/     # Isochrone calculation
-│   │   │   ├── locations/     # CRUD for saved locations
-│   │   │   ├── poi/           # Overpass POI search
-│   │   │   ├── reverse-geocode/ # Reverse geocoding
-│   │   │   ├── routes/        # CRUD for saved routes
-│   │   │   ├── search/        # MapTiler geocoding search
-│   │   │   ├── styles/        # Map style management
-│   │   │   ├── sun-position/  # Solar position calculations
-│   │   │   └── weather/       # Weather data proxy
-│   │   ├── globals.css        # Global styles, animations, custom scrollbars
-│   │   ├── layout.tsx         # Root layout with providers
-│   │   └── page.tsx           # Main application page
+│   │   ├── api/                   # API routes (25+ endpoints)
+│   │   │   ├── directions/        # OSRM routing proxy
+│   │   │   ├── elevation/         # Elevation data proxy
+│   │   │   ├── export/gpx/        # GPX file export
+│   │   │   ├── import/gpx/        # GPX file import
+│   │   │   ├── isochrone/         # Isochrone calculation
+│   │   │   ├── locations/         # CRUD for saved locations
+│   │   │   ├── poi/               # Overpass POI search
+│   │   │   ├── reverse-geocode/   # Reverse geocoding
+│   │   │   ├── routes/            # CRUD for saved routes
+│   │   │   ├── search/            # MapTiler geocoding search
+│   │   │   ├── styles/            # Map style management
+│   │   │   ├── sun-position/      # Solar position calculations
+│   │   │   ├── weather/           # Weather data proxy
+│   │   │   ├── weather-forecast/  # 7-day forecast
+│   │   │   ├── air-quality/       # AQI data
+│   │   │   ├── chat/              # AI chat endpoint
+│   │   │   ├── export/            # Map export
+│   │   │   └── terrain-analysis/  # Terrain analysis
+│   │   ├── globals.css            # Global styles, animations, custom scrollbars
+│   │   ├── layout.tsx             # Root layout with providers
+│   │   └── page.tsx               # Main application page (sole user route)
 │   ├── components/
-│   │   ├── map/               # Map-specific components
-│   │   │   ├── MapView.tsx        # Core map renderer
-│   │   │   ├── MapSidebar.tsx     # Sidebar with tabs
-│   │   │   ├── SearchBar.tsx      # Geocoding search
-│   │   │   ├── MapToolbar.tsx     # Floating tool palette
-│   │   │   ├── StyleSwitcher.tsx  # Map style selector
-│   │   │   ├── WeatherPanel.tsx   # Weather information
-│   │   │   ├── ElevationProfile.tsx # Terrain profile chart
-│   │   │   ├── MiniMap.tsx        # Overview minimap
-│   │   │   ├── MapComparison.tsx  # Split-screen comparison
-│   │   │   ├── BookmarkManager.tsx # Location bookmarks
-│   │   │   ├── MapAnnotations.tsx  # Text annotations
-│   │   │   ├── MapContextMenu.tsx  # Right-click menu
-│   │   │   ├── UndoRedoBar.tsx    # Undo/redo controls
-│   │   │   ├── HeatmapLayer.tsx   # Heatmap visualization
-│   │   │   ├── HeatmapControls.tsx # Heatmap settings
-│   │   │   ├── TrackRecorder.tsx  # GPS track recording
-│   │   │   ├── TrackPlayer.tsx    # Track playback
-│   │   │   ├── GeofenceDialog.tsx  # Geofence creation
-│   │   │   ├── GeofenceManager.tsx # Geofence management
-│   │   │   ├── ShareDialog.tsx    # Share/QR/embed
-│   │   │   ├── Buildings3DLayer.tsx # 3D building explorer
-│   │   │   ├── BuildingInfoPanel.tsx # Building details
-│   │   │   ├── MarkerIconPicker.tsx # Custom marker icons
-│   │   │   ├── CustomTileSourceDialog.tsx # Add custom tiles
-│   │   │   ├── CustomTileSourceList.tsx # Manage custom tiles
-│   │   │   ├── PWAInstallBanner.tsx # PWA install prompt
-│   │   │   └── ...                # 35+ map components
-│   │   └── ui/                # shadcn/ui components (40+)
+│   │   ├── map/                   # Map-specific components (1136+ files)
+│   │   │   ├── MapView.tsx            # Core map renderer
+│   │   │   ├── MapSidebar.tsx         # Sidebar with tabs
+│   │   │   ├── SearchBar.tsx          # Geocoding search
+│   │   │   ├── MapToolbar.tsx         # Floating tool palette
+│   │   │   ├── MapToolbarButtons.tsx  # 819 monitor toolbar buttons (~596KB)
+│   │   │   ├── StyleSwitcher.tsx      # Map style selector
+│   │   │   ├── WeatherPanel.tsx       # Weather information
+│   │   │   ├── ElevationProfile.tsx   # Terrain profile chart
+│   │   │   ├── MiniMap.tsx            # Overview minimap
+│   │   │   ├── MapComparison.tsx      # Split-screen comparison
+│   │   │   ├── BookmarkManager.tsx    # Location bookmarks
+│   │   │   ├── OfficeSupplyChainMonitor.tsx  # Monitor pattern template
+│   │   │   ├── *Monitor.tsx           # 819 monitor components
+│   │   │   ├── panel-groups/
+│   │   │   │   └── MonitorPanelRegistry.tsx  # Lazy-load registry (~224KB)
+│   │   │   └── ...                    # 35+ map tool components
+│   │   └── ui/                    # shadcn/ui components (40+)
 │   ├── hooks/
-│   │   ├── use-mobile.ts      # Mobile detection hook
-│   │   ├── use-toast.ts       # Toast notification hook
-│   │   └── use-pwa-install.ts # PWA install detection hook
+│   │   ├── use-mobile.ts          # Mobile detection hook
+│   │   ├── use-toast.ts           # Toast notification hook
+│   │   └── use-pwa-install.ts     # PWA install detection hook
 │   └── lib/
-│       ├── map-store.ts       # Zustand map state (persisted)
-│       ├── undo-manager.ts    # Generic undo/redo engine
-│       ├── use-undo-store.ts  # Undo/redo Zustand store
-│       ├── weather-utils.ts   # Weather data utilities
-│       ├── db.ts              # Prisma client instance
-│       └── utils.ts           # General utilities (cn, etc.)
-├── .env.example               # Environment variable template
-├── .gitignore                 # Git ignore rules
-├── components.json            # shadcn/ui configuration
-├── next.config.ts             # Next.js configuration
-├── package.json               # Dependencies and scripts
-├── tailwind.config.ts         # Tailwind CSS configuration
-└── tsconfig.json              # TypeScript configuration
+│       ├── map-store.ts           # Zustand map state (persisted, ~500KB)
+│       ├── undo-manager.ts        # Generic undo/redo engine
+│       ├── use-undo-store.ts      # Undo/redo Zustand store
+│       ├── weather-utils.ts       # Weather data utilities
+│       ├── db.ts                  # Prisma client instance
+│       └── utils.ts               # General utilities (cn, etc.)
+├── .env.example                   # Environment variable template
+├── .gitignore                     # Git ignore rules
+├── components.json                # shadcn/ui configuration
+├── next.config.ts                 # Next.js configuration
+├── package.json                   # Dependencies and scripts (92 deps)
+├── tailwind.config.ts             # Tailwind CSS configuration
+└── tsconfig.json                  # TypeScript configuration
 ```
+
+---
+
+## 📊 Monitor Panel Architecture
+
+The 819 monitor panels are the largest subsystem in MotoTrack. Here is how they are architected:
+
+### Pattern Template
+Every monitor follows `OfficeSupplyChainMonitor.tsx` exactly (~213 lines):
+1. `'use client'` directive
+2. Imports: `useEffect`, `useMemo`, `Card`, `Select` components, `X` icon, `useMapStore`
+3. `SAMPLE_LOCATIONS` array with 4 entries, each containing: `id`, `name`, `lat`, `lng`, `status`, `value`, `dailyCustomers`, `monthlyRevenue` (number in $M), `skusInStock`, `flagshipLines` (comma-separated string), `trend` (`'up'|'down'|'stable'` with `as const`), `description`
+4. `STATUS_COLORS` record — critical (red), warning (amber), moderate (blue), stable (emerald)
+5. `TrendIcon` helper component
+6. `useEffect` seeding into Zustand store on first open
+7. `useMemo` triplet with `void geojson` (to satisfy bundler)
+8. SSR guard and open guard
+9. Fixed-position Card: `fixed right-4 top-16 z-[60] w-[340px] max-h-[80vh]`
+10. Gradient header with emoji HTML entity + close button
+11. 5-option `Select` filter (all/critical/warning/moderate/stable)
+12. 4-cell metrics grid
+13. Scrollable location list (`max-h-[260px] overflow-y-auto`)
+14. Active-item detail card with status badge + description + footer metrics
+
+### State Management
+Each monitor has 3 references in `src/lib/map-store.ts`:
+- Interface field: `monitorKey: MonitorState`
+- Default state: `monitorKey: { open: false, data: [], statusFilter: 'all', activeItemId: null }`
+- Setter: `setMonitorKey: (updates) => set((state) => ({ monitorKey: { ...state.monitorKey, ...updates } }))`
+
+### Lazy Loading
+Monitors are lazy-loaded via `LazyPanel` in `MonitorPanelRegistry.tsx`:
+```tsx
+{monitorKey.open && (
+  <LazyPanel
+    importFn={() => import('@/components/map/MonitorName')}
+    exportName="MonitorName"
+    shouldLoad={monitorKey.open}
+  />
+)}
+```
+
+### Toolbar Integration
+Each monitor has a button in `MapToolbarButtons.tsx`:
+- Icon import with unique alias (e.g., `Waves as WavesIcon30`)
+- Store read: `const monitorOpen = useMapStore((s) => s.monitorKey.open)`
+- Button block with `onClick`, `className` (color-coded), `title`, icon, and active indicator dot
+
+### Color Rules
+- **NO indigo/blue** primary gradient colors (allowed: emerald, pink, amber, fuchsia, teal, orange, green, cyan, rose, red, violet, stone, purple, sky, yellow)
+- The only blue allowed is the canonical `bg-blue-500` STATUS_COLORS entry for `moderate` status
+
+### Icon Alias System
+With 819 monitors, icon aliases are heavily reused. Lucide icons like `Waves`, `Sparkles`, `Mountain` have 20+ aliases (e.g., `WavesIcon1` through `WavesIcon30`). New monitors must grep for the first free alias suffix before assignment.
 
 ---
 
@@ -323,8 +417,10 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 | `/api/search` | GET | Geocoding search (MapTiler) |
 | `/api/reverse-geocode` | GET | Reverse geocode coordinates |
 | `/api/directions` | GET | Route directions (OSRM) |
-| `/api/elevation` | GET/POST | Elevation data lookup (GET) or batch coordinate query (POST) |
+| `/api/elevation` | GET/POST | Elevation data lookup or batch query |
 | `/api/weather` | GET | Current weather data |
+| `/api/weather-forecast` | GET | 7-day weather forecast |
+| `/api/air-quality` | GET | Air quality index data |
 | `/api/sun-position` | GET | Solar position calculations |
 | `/api/poi` | GET | POI search (Overpass) |
 | `/api/isochrone` | GET | Isochrone reachability |
@@ -335,6 +431,10 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 | `/api/routes/[id]` | PUT/DELETE | Update/delete route |
 | `/api/import/gpx` | POST | Import GPX file |
 | `/api/export/gpx` | POST | Export route as GPX |
+| `/api/export` | POST | Export map as image |
+| `/api/chat` | POST | AI chat endpoint |
+| `/api/terrain-analysis` | GET | Terrain analysis |
+| `/api/suggestions` | GET | AI location suggestions |
 
 ---
 
@@ -345,7 +445,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 | **MapTiler** | Map tiles, geocoding, styles | [docs.maptiler.com](https://docs.maptiler.com/) |
 | **OSRM** | Routing (driving, cycling, walking) | [project-osrm.org](https://project-osrm.org/) |
 | **Overpass** | OpenStreetMap POI queries | [overpass-api.de](https://overpass-api.de/) |
-| **Open-Meteo** | Weather data | [open-meteo.com](https://open-meteo.com/) |
+| **Open-Meteo** | Weather & air quality data | [open-meteo.com](https://open-meteo.com/) |
 
 ---
 
@@ -361,29 +461,35 @@ The app is fully responsive with three breakpoints:
 
 ## 🎯 Roadmap
 
-- [x] ~~PWA Support~~ — Installable as native app ✅
-- [x] ~~Route Elevation Profile~~ — Recharts area chart ✅
-- [x] ~~Custom Tile Sources~~ — Add any tile URL with presets ✅
-- [x] ~~3D Building Explorer~~ — Click to inspect buildings ✅
-- [x] ~~Heatmap Layer~~ — Density visualization with controls ✅
-- [x] ~~Geofencing Alerts~~ — Enter/exit notifications ✅
-- [x] ~~Track Recording~~ — Real-time GPS tracking ✅
-- [x] ~~Multi-language Support~~ — 7 languages with i18n foundation ✅
-- [x] ~~AI-Powered Suggestions~~ — LLM-based location recommendations ✅
-- [x] ~~Weather Alerts & Forecast~~ — 7-day forecast with severity alerts ✅
-- [x] ~~Distance Matrix~~ — Multi-point distance calculator ✅
-- [x] ~~Style Gallery~~ — Visual style browser ✅
-- [x] ~~Map Snapshots~~ — Save/restore map views ✅
-- [x] ~~Notification Center~~ — Centralized notification history ✅
-- [x] ~~Route Optimizer~~ — Nearest-neighbor TSP heuristic for route optimization with before/after comparison ✅
-- [x] ~~Location History Timeline~~ — Browse saved locations by date with category filtering and search ✅
-- [x] ~~Multi-route Comparison~~ — Compare multiple routes side by side ✅
-- [x] ~~Map Analytics Dashboard~~ — Session stats, activity charts, tool usage, and heatmap ✅
-- [x] ~~Air Quality Index~~ — Real-time AQI with pollutant levels, 24h forecast, and health recommendations ✅
-- [ ] **Collaborative Maps** — Share and edit maps with others in real-time
-- [ ] **Offline Map Caching** — Service worker for tile caching
-- [ ] **Real-time Chat** — Discuss locations with other users
-- [ ] **Voice Navigation** — Turn-by-turn voice instructions
+### Completed ✅
+- [x] PWA Support — Installable as native app
+- [x] Route Elevation Profile — Recharts area chart
+- [x] Custom Tile Sources — Add any tile URL with presets
+- [x] 3D Building Explorer — Click to inspect buildings
+- [x] Heatmap Layer — Density visualization with controls
+- [x] Geofencing Alerts — Enter/exit notifications
+- [x] Track Recording — Real-time GPS tracking
+- [x] Multi-language Support — 7 languages with i18n foundation
+- [x] AI-Powered Suggestions — LLM-based location recommendations
+- [x] Weather Alerts & Forecast — 7-day forecast with severity alerts
+- [x] Distance Matrix — Multi-point distance calculator
+- [x] Style Gallery — Visual style browser
+- [x] Map Snapshots — Save/restore map views
+- [x] Notification Center — Centralized notification history
+- [x] Route Optimizer — Nearest-neighbor TSP heuristic
+- [x] Location History Timeline — Browse by date with filtering
+- [x] Multi-route Comparison — Compare routes side by side
+- [x] Map Analytics Dashboard — Session stats, activity charts, tool usage
+- [x] Air Quality Index — Real-time AQI with pollutant levels and forecast
+- [x] **Monitor Panel System — 819 specialized monitor panels** spanning environmental, geological, oceanic, atmospheric, supply chain, retail, sports venue, wellness retreat, and thermal/mind-body domains
+
+### Planned 🚧
+- [ ] Collaborative Maps — Share and edit maps with others in real-time
+- [ ] Offline Map Caching — Service worker for tile caching
+- [ ] Real-time Chat — Discuss locations with other users
+- [ ] Voice Navigation — Turn-by-turn voice instructions
+- [ ] Monitor panel code-splitting — Split `MapToolbarButtons.tsx` (~596KB) into batched files to reduce compilation memory pressure
+- [ ] Store slicing — Split `map-store.ts` (~500KB) into domain-specific slices
 
 ---
 
@@ -394,6 +500,26 @@ The app is fully responsive with three breakpoints:
 3. Commit your changes: `git commit -m 'Add amazing feature'`
 4. Push to the branch: `git push origin feature/amazing-feature`
 5. Open a Pull Request
+
+### Adding a New Monitor Panel
+
+To add a new monitor following the established pattern:
+
+1. **Verify no conflicts** — Check that the component file and store key do not already exist
+2. **Verify icon existence** — Use `node -e "require('lucide-react')['IconName']"` (note: this is unreliable for some icons; verify via actual dev server import)
+3. **Check alias conflicts** — Grep `MapToolbarButtons.tsx` for `as IconNameN` to find a free suffix
+4. **Add store references** — Add interface field, default state, and setter in `map-store.ts` (3 refs per key)
+5. **Create the component** — Copy `OfficeSupplyChainMonitor.tsx` pattern, replace with 4 real US locations and domain data
+6. **Register LazyPanel** — Add store read and LazyPanel block in `MonitorPanelRegistry.tsx`
+7. **Add toolbar button** — Add icon import, store read, and button block in `MapToolbarButtons.tsx`
+8. **Verify** — Lint, then test via agent-browser: open page, click button, verify heading + 4 locations + metrics
+
+### Rules
+- **NO indigo/blue** primary gradient colors
+- `trend` must be `'up' | 'down' | 'stable'` with `as const`
+- `flagshipLines` is a comma-separated STRING, `monthlyRevenue` is a NUMBER in $M
+- **NEVER use `\'` or `\\'`** in description strings — causes parse errors
+- Use real US locations with realistic business data
 
 ---
 
@@ -411,3 +537,7 @@ This project is licensed under the MIT License — see the [LICENSE](LICENSE) fi
 - [OSRM](https://project-osrm.org/) — Routing engine
 - [shadcn/ui](https://ui.shadcn.com/) — UI component library
 - [Next.js](https://nextjs.org/) — React framework
+- [Lucide](https://lucide.dev/) — Icon library
+- [Prisma](https://www.prisma.io/) — Database ORM
+- [Zustand](https://github.com/pmndrs/zustand) — State management
+- [Framer Motion](https://www.framer.com/motion/) — Animations
