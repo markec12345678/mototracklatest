@@ -971,6 +971,14 @@ import {
   SprayCan as SprayCanIcon2,
   Cable as CableIcon,
   MoveVertical as MoveVerticalIcon,
+  Zap as ZapIcon,
+  Crosshair as CrosshairIcon2,
+  Lock as LockIcon,
+  Axe as AxeIcon,
+  Radical as RadicalIcon,
+  Disc as DiscIcon,
+  Bike as BikeIcon,
+  Mountain as MountainIcon21,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1554,6 +1562,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const paintballParkCafeOpen = useMapStore((s) => s.paintballParkCafe.open)
   const zipLineTourCafeOpen = useMapStore((s) => s.zipLineTourCafe.open)
   const bungeeJumpSiteCafeOpen = useMapStore((s) => s.bungeeJumpSiteCafe.open)
+  const trampolineParkCafeOpen = useMapStore((s) => s.trampolineParkCafe.open)
+  const laserTagArenaSnackBarOpen = useMapStore((s) => s.laserTagArenaSnackBar.open)
+  const escapeRoomLoungeOpen = useMapStore((s) => s.escapeRoomLounge.open)
+  const axeThrowingVenueBarOpen = useMapStore((s) => s.axeThrowingVenueBar.open)
+  const climbingGymCafeOpen = useMapStore((s) => s.climbingGymCafe.open)
+  const skateParkSnackBarOpen = useMapStore((s) => s.skateParkSnackBar.open)
+  const discGolfCourseConcessionOpen = useMapStore((s) => s.discGolfCourseConcession.open)
+  const bmxTrackConcessionOpen = useMapStore((s) => s.bmxTrackConcession.open)
 
   if (typeof window === 'undefined') return null
 
@@ -9557,6 +9573,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <MoveVerticalIcon className="h-4 w-4" />
             {bungeeJumpSiteCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setTrampolineParkCafe({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${trampolineParkCafeOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Trampoline Park Cafe Monitor"
+          >
+            <ZapIcon className="h-4 w-4" />
+            {trampolineParkCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setLaserTagArenaSnackBar({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${laserTagArenaSnackBarOpen ? 'bg-fuchsia-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Laser Tag Arena Snack Bar Monitor"
+          >
+            <CrosshairIcon2 className="h-4 w-4" />
+            {laserTagArenaSnackBarOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-fuchsia-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setEscapeRoomLounge({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${escapeRoomLoungeOpen ? 'bg-stone-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Escape Room Lounge Monitor"
+          >
+            <LockIcon className="h-4 w-4" />
+            {escapeRoomLoungeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-stone-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setAxeThrowingVenueBar({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${axeThrowingVenueBarOpen ? 'bg-red-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Axe Throwing Venue Bar Monitor"
+          >
+            <AxeIcon className="h-4 w-4" />
+            {axeThrowingVenueBarOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setClimbingGymCafe({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${climbingGymCafeOpen ? 'bg-emerald-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Climbing Gym Cafe Monitor"
+          >
+            <MountainIcon21 className="h-4 w-4" />
+            {climbingGymCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setSkateParkSnackBar({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${skateParkSnackBarOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Skate Park Snack Bar Monitor"
+          >
+            <RadicalIcon className="h-4 w-4" />
+            {skateParkSnackBarOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setDiscGolfCourseConcession({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${discGolfCourseConcessionOpen ? 'bg-green-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Disc Golf Course Concession Monitor"
+          >
+            <DiscIcon className="h-4 w-4" />
+            {discGolfCourseConcessionOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-green-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBMXTrackConcession({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${bmxTrackConcessionOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="BMX Track Concession Monitor"
+          >
+            <BikeIcon className="h-4 w-4" />
+            {bmxTrackConcessionOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-300" />}
           </button>
         </div>
       </div>

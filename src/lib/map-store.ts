@@ -5044,6 +5044,24 @@ interface MapState {
   setZipLineTourCafe: (state: Partial<MonitorState>) => void
   bungeeJumpSiteCafe: MonitorState
   setBungeeJumpSiteCafe: (state: Partial<MonitorState>) => void
+
+  // Task 172: Action Sports & Adventure Lounge monitors
+  trampolineParkCafe: MonitorState
+  setTrampolineParkCafe: (state: Partial<MonitorState>) => void
+  laserTagArenaSnackBar: MonitorState
+  setLaserTagArenaSnackBar: (state: Partial<MonitorState>) => void
+  escapeRoomLounge: MonitorState
+  setEscapeRoomLounge: (state: Partial<MonitorState>) => void
+  axeThrowingVenueBar: MonitorState
+  setAxeThrowingVenueBar: (state: Partial<MonitorState>) => void
+  climbingGymCafe: MonitorState
+  setClimbingGymCafe: (state: Partial<MonitorState>) => void
+  skateParkSnackBar: MonitorState
+  setSkateParkSnackBar: (state: Partial<MonitorState>) => void
+  discGolfCourseConcession: MonitorState
+  setDiscGolfCourseConcession: (state: Partial<MonitorState>) => void
+  bmxTrackConcession: MonitorState
+  setBMXTrackConcession: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -9495,6 +9513,15 @@ export const useMapStore = create<MapState>()(
       paintballParkCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       zipLineTourCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       bungeeJumpSiteCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 172: Action Sports & Adventure Lounge monitors
+      trampolineParkCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      laserTagArenaSnackBar: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      escapeRoomLounge: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      axeThrowingVenueBar: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      climbingGymCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      skateParkSnackBar: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      discGolfCourseConcession: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      bmxTrackConcession: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -9955,6 +9982,15 @@ export const useMapStore = create<MapState>()(
       setPaintballParkCafe: (updates) => set((state) => ({ paintballParkCafe: { ...state.paintballParkCafe, ...updates } })),
       setZipLineTourCafe: (updates) => set((state) => ({ zipLineTourCafe: { ...state.zipLineTourCafe, ...updates } })),
       setBungeeJumpSiteCafe: (updates) => set((state) => ({ bungeeJumpSiteCafe: { ...state.bungeeJumpSiteCafe, ...updates } })),
+      // Task 172: Action Sports & Adventure Lounge monitors
+      setTrampolineParkCafe: (updates) => set((state) => ({ trampolineParkCafe: { ...state.trampolineParkCafe, ...updates } })),
+      setLaserTagArenaSnackBar: (updates) => set((state) => ({ laserTagArenaSnackBar: { ...state.laserTagArenaSnackBar, ...updates } })),
+      setEscapeRoomLounge: (updates) => set((state) => ({ escapeRoomLounge: { ...state.escapeRoomLounge, ...updates } })),
+      setAxeThrowingVenueBar: (updates) => set((state) => ({ axeThrowingVenueBar: { ...state.axeThrowingVenueBar, ...updates } })),
+      setClimbingGymCafe: (updates) => set((state) => ({ climbingGymCafe: { ...state.climbingGymCafe, ...updates } })),
+      setSkateParkSnackBar: (updates) => set((state) => ({ skateParkSnackBar: { ...state.skateParkSnackBar, ...updates } })),
+      setDiscGolfCourseConcession: (updates) => set((state) => ({ discGolfCourseConcession: { ...state.discGolfCourseConcession, ...updates } })),
+      setBMXTrackConcession: (updates) => set((state) => ({ bmxTrackConcession: { ...state.bmxTrackConcession, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
