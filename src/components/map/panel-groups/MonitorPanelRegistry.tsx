@@ -892,6 +892,15 @@ export function MonitorPanelRegistry() {
   const floatSpaLounge = useMapStore((s) => s.floatSpaLounge)
   const saltCaveRelaxationCafe = useMapStore((s) => s.saltCaveRelaxationCafe)
   const daySpaCafe = useMapStore((s) => s.daySpaCafe)
+  // Task 175: Thermal & Mind-Body Wellness Retreat
+  const hotSpringResortCafe = useMapStore((s) => s.hotSpringResortCafe)
+  const thermalBathLounge = useMapStore((s) => s.thermalBathLounge)
+  const cryotherapyClinicCafe = useMapStore((s) => s.cryotherapyClinicCafe)
+  const infraredSaunaLounge = useMapStore((s) => s.infraredSaunaLounge)
+  const meditationStudioCafe = useMapStore((s) => s.meditationStudioCafe)
+  const yogaRetreatCafe = useMapStore((s) => s.yogaRetreatCafe)
+  const pilatesStudioBarre = useMapStore((s) => s.pilatesStudioBarre)
+  const barreFitnessStudioCafe = useMapStore((s) => s.barreFitnessStudioCafe)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -3215,6 +3224,30 @@ export function MonitorPanelRegistry() {
       )}
       {daySpaCafe.open && (
         <LazyPanel importFn={() => import('@/components/map/DaySpaCafeMonitor')} exportName="DaySpaCafeMonitor" shouldLoad={daySpaCafe.open} />
+      )}
+      {hotSpringResortCafe.open && (
+        <LazyPanel importFn={() => import('@/components/map/HotSpringResortCafeMonitor')} exportName="HotSpringResortCafeMonitor" shouldLoad={hotSpringResortCafe.open} />
+      )}
+      {thermalBathLounge.open && (
+        <LazyPanel importFn={() => import('@/components/map/ThermalBathLoungeMonitor')} exportName="ThermalBathLoungeMonitor" shouldLoad={thermalBathLounge.open} />
+      )}
+      {cryotherapyClinicCafe.open && (
+        <LazyPanel importFn={() => import('@/components/map/CryotherapyClinicCafeMonitor')} exportName="CryotherapyClinicCafeMonitor" shouldLoad={cryotherapyClinicCafe.open} />
+      )}
+      {infraredSaunaLounge.open && (
+        <LazyPanel importFn={() => import('@/components/map/InfraredSaunaLoungeMonitor')} exportName="InfraredSaunaLoungeMonitor" shouldLoad={infraredSaunaLounge.open} />
+      )}
+      {meditationStudioCafe.open && (
+        <LazyPanel importFn={() => import('@/components/map/MeditationStudioCafeMonitor')} exportName="MeditationStudioCafeMonitor" shouldLoad={meditationStudioCafe.open} />
+      )}
+      {yogaRetreatCafe.open && (
+        <LazyPanel importFn={() => import('@/components/map/YogaRetreatCafeMonitor')} exportName="YogaRetreatCafeMonitor" shouldLoad={yogaRetreatCafe.open} />
+      )}
+      {pilatesStudioBarre.open && (
+        <LazyPanel importFn={() => import('@/components/map/PilatesStudioBarreMonitor')} exportName="PilatesStudioBarreMonitor" shouldLoad={pilatesStudioBarre.open} />
+      )}
+      {barreFitnessStudioCafe.open && (
+        <LazyPanel importFn={() => import('@/components/map/BarreFitnessStudioCafeMonitor')} exportName="BarreFitnessStudioCafeMonitor" shouldLoad={barreFitnessStudioCafe.open} />
       )}
     </>
   )

@@ -5097,6 +5097,23 @@ interface MapState {
   setSaltCaveRelaxationCafe: (state: Partial<MonitorState>) => void
   daySpaCafe: MonitorState
   setDaySpaCafe: (state: Partial<MonitorState>) => void
+  // Task 175: Thermal & Mind-Body Wellness Retreat monitors
+  hotSpringResortCafe: MonitorState
+  setHotSpringResortCafe: (state: Partial<MonitorState>) => void
+  thermalBathLounge: MonitorState
+  setThermalBathLounge: (state: Partial<MonitorState>) => void
+  cryotherapyClinicCafe: MonitorState
+  setCryotherapyClinicCafe: (state: Partial<MonitorState>) => void
+  infraredSaunaLounge: MonitorState
+  setInfraredSaunaLounge: (state: Partial<MonitorState>) => void
+  meditationStudioCafe: MonitorState
+  setMeditationStudioCafe: (state: Partial<MonitorState>) => void
+  yogaRetreatCafe: MonitorState
+  setYogaRetreatCafe: (state: Partial<MonitorState>) => void
+  pilatesStudioBarre: MonitorState
+  setPilatesStudioBarre: (state: Partial<MonitorState>) => void
+  barreFitnessStudioCafe: MonitorState
+  setBarreFitnessStudioCafe: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -9575,6 +9592,15 @@ export const useMapStore = create<MapState>()(
       floatSpaLounge: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       saltCaveRelaxationCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       daySpaCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 175: Thermal & Mind-Body Wellness Retreat monitors
+      hotSpringResortCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      thermalBathLounge: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      cryotherapyClinicCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      infraredSaunaLounge: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      meditationStudioCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      yogaRetreatCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      pilatesStudioBarre: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      barreFitnessStudioCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -10062,6 +10088,15 @@ export const useMapStore = create<MapState>()(
       setFloatSpaLounge: (updates) => set((state) => ({ floatSpaLounge: { ...state.floatSpaLounge, ...updates } })),
       setSaltCaveRelaxationCafe: (updates) => set((state) => ({ saltCaveRelaxationCafe: { ...state.saltCaveRelaxationCafe, ...updates } })),
       setDaySpaCafe: (updates) => set((state) => ({ daySpaCafe: { ...state.daySpaCafe, ...updates } })),
+      // Task 175: Thermal & Mind-Body Wellness Retreat monitors
+      setHotSpringResortCafe: (updates) => set((state) => ({ hotSpringResortCafe: { ...state.hotSpringResortCafe, ...updates } })),
+      setThermalBathLounge: (updates) => set((state) => ({ thermalBathLounge: { ...state.thermalBathLounge, ...updates } })),
+      setCryotherapyClinicCafe: (updates) => set((state) => ({ cryotherapyClinicCafe: { ...state.cryotherapyClinicCafe, ...updates } })),
+      setInfraredSaunaLounge: (updates) => set((state) => ({ infraredSaunaLounge: { ...state.infraredSaunaLounge, ...updates } })),
+      setMeditationStudioCafe: (updates) => set((state) => ({ meditationStudioCafe: { ...state.meditationStudioCafe, ...updates } })),
+      setYogaRetreatCafe: (updates) => set((state) => ({ yogaRetreatCafe: { ...state.yogaRetreatCafe, ...updates } })),
+      setPilatesStudioBarre: (updates) => set((state) => ({ pilatesStudioBarre: { ...state.pilatesStudioBarre, ...updates } })),
+      setBarreFitnessStudioCafe: (updates) => set((state) => ({ barreFitnessStudioCafe: { ...state.barreFitnessStudioCafe, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

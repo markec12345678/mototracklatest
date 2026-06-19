@@ -996,6 +996,15 @@ import {
   Sparkles as SparklesIcon1,
   Gem as GemIcon,
   Flower as FlowerIcon1,
+  // Task 175 icons: Thermal & Mind-Body Wellness Retreat
+  Flame as FlameIcon1,
+  Cloud as CloudIcon1,
+  Snowflake as SnowflakeIcon1,
+  Droplet as DropletIcon1,
+  Moon as MoonIcon1,
+  Leaf as LeafIcon1,
+  Star as StarIcon1,
+  Heart as HeartIcon1,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1604,6 +1613,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const floatSpaLoungeOpen = useMapStore((s) => s.floatSpaLounge.open)
   const saltCaveRelaxationCafeOpen = useMapStore((s) => s.saltCaveRelaxationCafe.open)
   const daySpaCafeOpen = useMapStore((s) => s.daySpaCafe.open)
+  // Task 175: Thermal & Mind-Body Wellness Retreat
+  const hotSpringResortCafeOpen = useMapStore((s) => s.hotSpringResortCafe.open)
+  const thermalBathLoungeOpen = useMapStore((s) => s.thermalBathLounge.open)
+  const cryotherapyClinicCafeOpen = useMapStore((s) => s.cryotherapyClinicCafe.open)
+  const infraredSaunaLoungeOpen = useMapStore((s) => s.infraredSaunaLounge.open)
+  const meditationStudioCafeOpen = useMapStore((s) => s.meditationStudioCafe.open)
+  const yogaRetreatCafeOpen = useMapStore((s) => s.yogaRetreatCafe.open)
+  const pilatesStudioBarreOpen = useMapStore((s) => s.pilatesStudioBarre.open)
+  const barreFitnessStudioCafeOpen = useMapStore((s) => s.barreFitnessStudioCafe.open)
 
   if (typeof window === 'undefined') return null
 
@@ -9799,6 +9817,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <FlowerIcon1 className="h-4 w-4" />
             {daySpaCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-pink-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setHotSpringResortCafe({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${hotSpringResortCafeOpen ? 'bg-rose-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Hot Spring Resort Cafe Monitor"
+          >
+            <FlameIcon1 className="h-4 w-4" />
+            {hotSpringResortCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setThermalBathLounge({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${thermalBathLoungeOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Thermal Bath Lounge Monitor"
+          >
+            <CloudIcon1 className="h-4 w-4" />
+            {thermalBathLoungeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCryotherapyClinicCafe({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${cryotherapyClinicCafeOpen ? 'bg-cyan-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Cryotherapy Clinic Cafe Monitor"
+          >
+            <SnowflakeIcon1 className="h-4 w-4" />
+            {cryotherapyClinicCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setInfraredSaunaLounge({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${infraredSaunaLoungeOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Infrared Sauna Lounge Monitor"
+          >
+            <DropletIcon1 className="h-4 w-4" />
+            {infraredSaunaLoungeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setMeditationStudioCafe({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${meditationStudioCafeOpen ? 'bg-violet-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Meditation Studio Cafe Monitor"
+          >
+            <MoonIcon1 className="h-4 w-4" />
+            {meditationStudioCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-violet-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setYogaRetreatCafe({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${yogaRetreatCafeOpen ? 'bg-emerald-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Yoga Retreat Cafe Monitor"
+          >
+            <LeafIcon1 className="h-4 w-4" />
+            {yogaRetreatCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setPilatesStudioBarre({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${pilatesStudioBarreOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Pilates Studio Barre Monitor"
+          >
+            <StarIcon1 className="h-4 w-4" />
+            {pilatesStudioBarreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBarreFitnessStudioCafe({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${barreFitnessStudioCafeOpen ? 'bg-pink-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Barre Fitness Studio Cafe Monitor"
+          >
+            <HeartIcon1 className="h-4 w-4" />
+            {barreFitnessStudioCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-pink-300" />}
           </button>
         </div>
       </div>
