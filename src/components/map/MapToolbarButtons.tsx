@@ -938,6 +938,15 @@ import {
   PawPrint as PawPrintIcon3,
   Leaf as LeafIcon3,
   Mountain as MountainIcon5,
+  // Task 168: Travel & Recreation Venue monitors
+  Palmtree as PalmtreeIcon,
+  Snowflake as SnowflakeIcon6,
+  Flag as FlagIcon6,
+  Sailboat as SailboatIcon2,
+  Dices as DicesIcon3,
+  Milestone as MilestoneIcon,
+  Train as TrainIcon2,
+  Ship as ShipIcon8,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1486,6 +1495,15 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const zooConcessionOpen = useMapStore((s) => s.zooConcession.open)
   const botanicalGardenCafeOpen = useMapStore((s) => s.botanicalGardenCafe.open)
   const nationalParkLodgeOpen = useMapStore((s) => s.nationalParkLodge.open)
+  // Task 168: Travel & Recreation Venue monitors
+  const beachResortRestaurantOpen = useMapStore((s) => s.beachResortRestaurant.open)
+  const mountainSkiLodgeRestaurantOpen = useMapStore((s) => s.mountainSkiLodgeRestaurant.open)
+  const golfCountryClubRestaurantOpen = useMapStore((s) => s.golfCountryClubRestaurant.open)
+  const marinaYachtClubOpen = useMapStore((s) => s.marinaYachtClub.open)
+  const casinoHotelBuffetOpen = useMapStore((s) => s.casinoHotelBuffet.open)
+  const highwayRestAreaOpen = useMapStore((s) => s.highwayRestArea.open)
+  const trainStationDiningOpen = useMapStore((s) => s.trainStationDining.open)
+  const ferryTerminalCafeOpen = useMapStore((s) => s.ferryTerminalCafe.open)
 
   if (typeof window === 'undefined') return null
 
@@ -9230,6 +9248,71 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <MountainIcon5 className="h-4 w-4" />
             {nationalParkLodgeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-stone-300" />}
+          </button>
+          {/* Task 168: Travel & Recreation Venue monitors */}
+          <button
+            onClick={() => useMapStore.getState().setBeachResortRestaurant({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${beachResortRestaurantOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Beach Resort Restaurant Monitor"
+          >
+            <PalmtreeIcon className="h-4 w-4" />
+            {beachResortRestaurantOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setMountainSkiLodgeRestaurant({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${mountainSkiLodgeRestaurantOpen ? 'bg-cyan-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Mountain Ski Lodge Restaurant Monitor"
+          >
+            <SnowflakeIcon6 className="h-4 w-4" />
+            {mountainSkiLodgeRestaurantOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setGolfCountryClubRestaurant({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${golfCountryClubRestaurantOpen ? 'bg-emerald-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Golf & Country Club Restaurant Monitor"
+          >
+            <FlagIcon6 className="h-4 w-4" />
+            {golfCountryClubRestaurantOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setMarinaYachtClub({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${marinaYachtClubOpen ? 'bg-teal-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Marina & Yacht Club Monitor"
+          >
+            <SailboatIcon2 className="h-4 w-4" />
+            {marinaYachtClubOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCasinoHotelBuffet({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${casinoHotelBuffetOpen ? 'bg-red-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Casino Hotel Buffet Monitor"
+          >
+            <DicesIcon3 className="h-4 w-4" />
+            {casinoHotelBuffetOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setHighwayRestArea({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${highwayRestAreaOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Highway Rest Area Monitor"
+          >
+            <MilestoneIcon className="h-4 w-4" />
+            {highwayRestAreaOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setTrainStationDining({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${trainStationDiningOpen ? 'bg-rose-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Train Station Dining Monitor"
+          >
+            <TrainIcon2 className="h-4 w-4" />
+            {trainStationDiningOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setFerryTerminalCafe({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${ferryTerminalCafeOpen ? 'bg-teal-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Ferry Terminal Cafe Monitor"
+          >
+            <ShipIcon8 className="h-4 w-4" />
+            {ferryTerminalCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-300" />}
           </button>
         </div>
       </div>

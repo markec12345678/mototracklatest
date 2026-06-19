@@ -4975,6 +4975,23 @@ interface MapState {
   setBotanicalGardenCafe: (state: Partial<MonitorState>) => void
   nationalParkLodge: MonitorState
   setNationalParkLodge: (state: Partial<MonitorState>) => void
+  // Task 168: Travel & Recreation Venue monitors
+  beachResortRestaurant: MonitorState
+  setBeachResortRestaurant: (state: Partial<MonitorState>) => void
+  mountainSkiLodgeRestaurant: MonitorState
+  setMountainSkiLodgeRestaurant: (state: Partial<MonitorState>) => void
+  golfCountryClubRestaurant: MonitorState
+  setGolfCountryClubRestaurant: (state: Partial<MonitorState>) => void
+  marinaYachtClub: MonitorState
+  setMarinaYachtClub: (state: Partial<MonitorState>) => void
+  casinoHotelBuffet: MonitorState
+  setCasinoHotelBuffet: (state: Partial<MonitorState>) => void
+  highwayRestArea: MonitorState
+  setHighwayRestArea: (state: Partial<MonitorState>) => void
+  trainStationDining: MonitorState
+  setTrainStationDining: (state: Partial<MonitorState>) => void
+  ferryTerminalCafe: MonitorState
+  setFerryTerminalCafe: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -9390,6 +9407,15 @@ export const useMapStore = create<MapState>()(
       zooConcession: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       botanicalGardenCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       nationalParkLodge: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 168: Travel & Recreation Venue monitors
+      beachResortRestaurant: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      mountainSkiLodgeRestaurant: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      golfCountryClubRestaurant: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      marinaYachtClub: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      casinoHotelBuffet: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      highwayRestArea: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      trainStationDining: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      ferryTerminalCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -9814,6 +9840,15 @@ export const useMapStore = create<MapState>()(
       setZooConcession: (updates) => set((state) => ({ zooConcession: { ...state.zooConcession, ...updates } })),
       setBotanicalGardenCafe: (updates) => set((state) => ({ botanicalGardenCafe: { ...state.botanicalGardenCafe, ...updates } })),
       setNationalParkLodge: (updates) => set((state) => ({ nationalParkLodge: { ...state.nationalParkLodge, ...updates } })),
+      // Task 168: Travel & Recreation Venue monitors
+      setBeachResortRestaurant: (updates) => set((state) => ({ beachResortRestaurant: { ...state.beachResortRestaurant, ...updates } })),
+      setMountainSkiLodgeRestaurant: (updates) => set((state) => ({ mountainSkiLodgeRestaurant: { ...state.mountainSkiLodgeRestaurant, ...updates } })),
+      setGolfCountryClubRestaurant: (updates) => set((state) => ({ golfCountryClubRestaurant: { ...state.golfCountryClubRestaurant, ...updates } })),
+      setMarinaYachtClub: (updates) => set((state) => ({ marinaYachtClub: { ...state.marinaYachtClub, ...updates } })),
+      setCasinoHotelBuffet: (updates) => set((state) => ({ casinoHotelBuffet: { ...state.casinoHotelBuffet, ...updates } })),
+      setHighwayRestArea: (updates) => set((state) => ({ highwayRestArea: { ...state.highwayRestArea, ...updates } })),
+      setTrainStationDining: (updates) => set((state) => ({ trainStationDining: { ...state.trainStationDining, ...updates } })),
+      setFerryTerminalCafe: (updates) => set((state) => ({ ferryTerminalCafe: { ...state.ferryTerminalCafe, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
