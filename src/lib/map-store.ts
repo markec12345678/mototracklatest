@@ -5062,6 +5062,24 @@ interface MapState {
   setDiscGolfCourseConcession: (state: Partial<MonitorState>) => void
   bmxTrackConcession: MonitorState
   setBMXTrackConcession: (state: Partial<MonitorState>) => void
+
+  // Task 173: Paddle & Wind Water Sports Venue monitors
+  rollerDerbyVenueBar: MonitorState
+  setRollerDerbyVenueBar: (state: Partial<MonitorState>) => void
+  indoorSkydivingLounge: MonitorState
+  setIndoorSkydivingLounge: (state: Partial<MonitorState>) => void
+  surfSchoolCafe: MonitorState
+  setSurfSchoolCafe: (state: Partial<MonitorState>) => void
+  kiteboardingBeachBar: MonitorState
+  setKiteboardingBeachBar: (state: Partial<MonitorState>) => void
+  windsurfingShoreCafe: MonitorState
+  setWindsurfingShoreCafe: (state: Partial<MonitorState>) => void
+  kayakTourSnackBar: MonitorState
+  setKayakTourSnackBar: (state: Partial<MonitorState>) => void
+  canoeRentalCafe: MonitorState
+  setCanoeRentalCafe: (state: Partial<MonitorState>) => void
+  paddleboardRentalCafe: MonitorState
+  setPaddleboardRentalCafe: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -9522,6 +9540,15 @@ export const useMapStore = create<MapState>()(
       skateParkSnackBar: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       discGolfCourseConcession: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       bmxTrackConcession: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      // Task 173: Paddle & Wind Water Sports Venue monitors
+      rollerDerbyVenueBar: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      indoorSkydivingLounge: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      surfSchoolCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      kiteboardingBeachBar: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      windsurfingShoreCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      kayakTourSnackBar: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      canoeRentalCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      paddleboardRentalCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -9991,6 +10018,15 @@ export const useMapStore = create<MapState>()(
       setSkateParkSnackBar: (updates) => set((state) => ({ skateParkSnackBar: { ...state.skateParkSnackBar, ...updates } })),
       setDiscGolfCourseConcession: (updates) => set((state) => ({ discGolfCourseConcession: { ...state.discGolfCourseConcession, ...updates } })),
       setBMXTrackConcession: (updates) => set((state) => ({ bmxTrackConcession: { ...state.bmxTrackConcession, ...updates } })),
+      // Task 173: Paddle & Wind Water Sports Venue monitors
+      setRollerDerbyVenueBar: (updates) => set((state) => ({ rollerDerbyVenueBar: { ...state.rollerDerbyVenueBar, ...updates } })),
+      setIndoorSkydivingLounge: (updates) => set((state) => ({ indoorSkydivingLounge: { ...state.indoorSkydivingLounge, ...updates } })),
+      setSurfSchoolCafe: (updates) => set((state) => ({ surfSchoolCafe: { ...state.surfSchoolCafe, ...updates } })),
+      setKiteboardingBeachBar: (updates) => set((state) => ({ kiteboardingBeachBar: { ...state.kiteboardingBeachBar, ...updates } })),
+      setWindsurfingShoreCafe: (updates) => set((state) => ({ windsurfingShoreCafe: { ...state.windsurfingShoreCafe, ...updates } })),
+      setKayakTourSnackBar: (updates) => set((state) => ({ kayakTourSnackBar: { ...state.kayakTourSnackBar, ...updates } })),
+      setCanoeRentalCafe: (updates) => set((state) => ({ canoeRentalCafe: { ...state.canoeRentalCafe, ...updates } })),
+      setPaddleboardRentalCafe: (updates) => set((state) => ({ paddleboardRentalCafe: { ...state.paddleboardRentalCafe, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

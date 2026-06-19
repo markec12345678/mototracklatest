@@ -979,6 +979,14 @@ import {
   Disc as DiscIcon,
   Bike as BikeIcon,
   Mountain as MountainIcon21,
+  CircleDot as CircleDotIcon1,
+  Wind as WindIcon1,
+  Waves as WavesIcon1,
+  Bird as BirdIcon1,
+  Sailboat as SailboatIcon1,
+  Droplets as DropletsIcon1,
+  Anchor as AnchorIcon,
+  Shell as ShellIcon,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1570,6 +1578,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const skateParkSnackBarOpen = useMapStore((s) => s.skateParkSnackBar.open)
   const discGolfCourseConcessionOpen = useMapStore((s) => s.discGolfCourseConcession.open)
   const bmxTrackConcessionOpen = useMapStore((s) => s.bmxTrackConcession.open)
+  const rollerDerbyVenueBarOpen = useMapStore((s) => s.rollerDerbyVenueBar.open)
+  const indoorSkydivingLoungeOpen = useMapStore((s) => s.indoorSkydivingLounge.open)
+  const surfSchoolCafeOpen = useMapStore((s) => s.surfSchoolCafe.open)
+  const kiteboardingBeachBarOpen = useMapStore((s) => s.kiteboardingBeachBar.open)
+  const windsurfingShoreCafeOpen = useMapStore((s) => s.windsurfingShoreCafe.open)
+  const kayakTourSnackBarOpen = useMapStore((s) => s.kayakTourSnackBar.open)
+  const canoeRentalCafeOpen = useMapStore((s) => s.canoeRentalCafe.open)
+  const paddleboardRentalCafeOpen = useMapStore((s) => s.paddleboardRentalCafe.open)
 
   if (typeof window === 'undefined') return null
 
@@ -9637,6 +9653,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <BikeIcon className="h-4 w-4" />
             {bmxTrackConcessionOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setRollerDerbyVenueBar({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${rollerDerbyVenueBarOpen ? 'bg-rose-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Roller Derby Venue Bar Monitor"
+          >
+            <CircleDotIcon1 className="h-4 w-4" />
+            {rollerDerbyVenueBarOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setIndoorSkydivingLounge({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${indoorSkydivingLoungeOpen ? 'bg-cyan-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Indoor Skydiving Lounge Monitor"
+          >
+            <WindIcon1 className="h-4 w-4" />
+            {indoorSkydivingLoungeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setSurfSchoolCafe({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${surfSchoolCafeOpen ? 'bg-cyan-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Surf School Cafe Monitor"
+          >
+            <WavesIcon1 className="h-4 w-4" />
+            {surfSchoolCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setKiteboardingBeachBar({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${kiteboardingBeachBarOpen ? 'bg-teal-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Kiteboarding Beach Bar Monitor"
+          >
+            <BirdIcon1 className="h-4 w-4" />
+            {kiteboardingBeachBarOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setWindsurfingShoreCafe({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${windsurfingShoreCafeOpen ? 'bg-emerald-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Windsurfing Shore Cafe Monitor"
+          >
+            <SailboatIcon1 className="h-4 w-4" />
+            {windsurfingShoreCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setKayakTourSnackBar({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${kayakTourSnackBarOpen ? 'bg-teal-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Kayak Tour Snack Bar Monitor"
+          >
+            <DropletsIcon1 className="h-4 w-4" />
+            {kayakTourSnackBarOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCanoeRentalCafe({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${canoeRentalCafeOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Canoe Rental Cafe Monitor"
+          >
+            <AnchorIcon className="h-4 w-4" />
+            {canoeRentalCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setPaddleboardRentalCafe({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${paddleboardRentalCafeOpen ? 'bg-cyan-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Paddleboard Rental Cafe Monitor"
+          >
+            <ShellIcon className="h-4 w-4" />
+            {paddleboardRentalCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-300" />}
           </button>
         </div>
       </div>
