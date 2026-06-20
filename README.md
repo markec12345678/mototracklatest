@@ -495,6 +495,7 @@ The app is fully responsive with three breakpoints:
 - [ ] Voice Navigation — Turn-by-turn voice instructions
 - [ ] Monitor panel code-splitting — Split `MapToolbarButtons.tsx` (~620KB) into batched files to reduce compilation memory pressure
 - [ ] Store slicing — Split `map-store.ts` (~520KB) into domain-specific slices
+- [ ] Reduce TypeScript type debt — Fix the ~226 pre-existing `tsc --noEmit` errors so typecheck can become a blocking CI gate again
 - [ ] Dependabot config — Automated dependency updates
 - [ ] Code coverage reporting — Istanbul/c8 in CI
 
@@ -544,12 +545,14 @@ For vulnerability reports and security policy, see **[SECURITY.md](SECURITY.md)*
 
 This repository uses [GitHub Actions](.github/workflows/ci.yml) for continuous integration. Every push to `main` and every pull request triggers:
 
-| Job | Purpose | Tool |
-|-----|---------|------|
-| **lint** | Enforce code style and ESLint rules | `bun run lint` |
-| **typecheck** | Catch type errors before merge | `bunx tsc --noEmit` |
-| **build** | Verify production build succeeds | `bun run build` |
-| **ci-pass** | Single status gate for branch protection | Aggregated |
+| Job | Purpose | Tool | Blocking? |
+|-----|---------|------|-----------|
+| **lint** | Enforce code style and ESLint rules | `bun run lint` | ✅ Yes |
+| **typecheck** | Surface type errors for awareness | `bunx tsc --noEmit` | ℹ️ Informational (`continue-on-error`) |
+| **build** | Verify production build succeeds | `bun run build` | ✅ Yes |
+| **ci-pass** | Single status gate for branch protection | Aggregated | ✅ Yes |
+
+> **Why is typecheck non-blocking?** The project ships with `typescript.ignoreBuildErrors: true` in `next.config.ts` because the codebase (851 monitors, 10K-line toolbar) is in active development with ~226 pre-existing type errors. The typecheck job surfaces these for awareness without blocking merges. Cleanup is tracked in the [Roadmap](#-roadmap). ESLint and the production build remain hard gates.
 
 The `concurrency` block cancels in-progress runs when a new commit is pushed to the same branch, keeping CI fast and cheap. To enable branch protection, require the `CI Passed` status check on `main`.
 

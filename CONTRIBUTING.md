@@ -255,16 +255,20 @@ Before requesting review, ensure:
 
 All PRs and pushes to `main` run through [GitHub Actions](.github/workflows/ci.yml):
 
-| Job | Purpose | Fails on |
-|-----|---------|----------|
-| **lint** | `bun run lint` (ESLint) | Any ESLint error |
-| **typecheck** | `tsc --noEmit` | Any TypeScript error |
-| **build** | `bun run build` (only on PRs to main) | Build failure |
+| Job | Purpose | Fails on | Blocking? |
+|-----|---------|----------|-----------|
+| **lint** | `bun run lint` (ESLint) | Any ESLint error | ✅ Yes |
+| **typecheck** | `bunx tsc --noEmit` | Any TypeScript error | ℹ️ Informational (`continue-on-error`) |
+| **build** | `bun run build` | Build failure | ✅ Yes |
+| **ci-pass** | Aggregated gate | Lint or build failure | ✅ Yes |
+
+> **Note on typecheck**: The project ships with `typescript.ignoreBuildErrors: true` in `next.config.ts` due to ~226 pre-existing type errors in the large codebase (851 monitors). The typecheck job runs for awareness but does **not** block merges. This is tracked as tech debt in the Roadmap. ESLint and the production build remain hard gates.
 
 **Tips to keep CI green**:
-- Run `bun run lint` locally before pushing.
-- For TypeScript errors, run `npx tsc --noEmit` to reproduce locally.
-- Build failures are often memory-related — if you added many components, the dev server uses webpack with `--max-old-space-size=7168`. CI runs `next build` which has its own memory budget.
+- Run `bun run lint` locally before pushing — this is the first hard gate.
+- For TypeScript errors, run `bunx tsc --noEmit` to see the full list, but know that they won't block your PR (yet).
+- Build failures are often memory-related — if you added many components, the dev server uses webpack with `--max-old-space-size=7168`. CI runs `next build` with `--max-old-space-size=4096`.
+- The `concurrency` block cancels in-progress runs when you push a new commit, so don't worry about "wasting" CI minutes by force-pushing.
 
 ---
 
