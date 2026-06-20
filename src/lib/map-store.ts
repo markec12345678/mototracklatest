@@ -5163,6 +5163,22 @@ interface MapState {
   setMufflerExhaustShop: (state: Partial<MonitorState>) => void
   transmissionRepairShop: MonitorState
   setTransmissionRepairShop: (state: Partial<MonitorState>) => void
+  bankBranchOffice: MonitorState
+  setBankBranchOffice: (state: Partial<MonitorState>) => void
+  creditUnionBranch: MonitorState
+  setCreditUnionBranch: (state: Partial<MonitorState>) => void
+  accountingFirmOffice: MonitorState
+  setAccountingFirmOffice: (state: Partial<MonitorState>) => void
+  taxPrepService: MonitorState
+  setTaxPrepService: (state: Partial<MonitorState>) => void
+  insuranceAgencyOffice: MonitorState
+  setInsuranceAgencyOffice: (state: Partial<MonitorState>) => void
+  lawFirmPractice: MonitorState
+  setLawFirmPractice: (state: Partial<MonitorState>) => void
+  notarySigningService: MonitorState
+  setNotarySigningService: (state: Partial<MonitorState>) => void
+  realEstateAgency: MonitorState
+  setRealEstateAgency: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -9675,6 +9691,14 @@ export const useMapStore = create<MapState>()(
       bodyCollisionShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       mufflerExhaustShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       transmissionRepairShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      bankBranchOffice: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      creditUnionBranch: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      accountingFirmOffice: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      taxPrepService: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      insuranceAgencyOffice: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      lawFirmPractice: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      notarySigningService: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      realEstateAgency: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -10196,6 +10220,14 @@ export const useMapStore = create<MapState>()(
       setBodyCollisionShop: (updates) => set((state) => ({ bodyCollisionShop: { ...state.bodyCollisionShop, ...updates } })),
       setMufflerExhaustShop: (updates) => set((state) => ({ mufflerExhaustShop: { ...state.mufflerExhaustShop, ...updates } })),
       setTransmissionRepairShop: (updates) => set((state) => ({ transmissionRepairShop: { ...state.transmissionRepairShop, ...updates } })),
+      setBankBranchOffice: (updates) => set((state) => ({ bankBranchOffice: { ...state.bankBranchOffice, ...updates } })),
+      setCreditUnionBranch: (updates) => set((state) => ({ creditUnionBranch: { ...state.creditUnionBranch, ...updates } })),
+      setAccountingFirmOffice: (updates) => set((state) => ({ accountingFirmOffice: { ...state.accountingFirmOffice, ...updates } })),
+      setTaxPrepService: (updates) => set((state) => ({ taxPrepService: { ...state.taxPrepService, ...updates } })),
+      setInsuranceAgencyOffice: (updates) => set((state) => ({ insuranceAgencyOffice: { ...state.insuranceAgencyOffice, ...updates } })),
+      setLawFirmPractice: (updates) => set((state) => ({ lawFirmPractice: { ...state.lawFirmPractice, ...updates } })),
+      setNotarySigningService: (updates) => set((state) => ({ notarySigningService: { ...state.notarySigningService, ...updates } })),
+      setRealEstateAgency: (updates) => set((state) => ({ realEstateAgency: { ...state.realEstateAgency, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

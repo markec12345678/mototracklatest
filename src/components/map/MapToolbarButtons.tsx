@@ -1030,6 +1030,14 @@ import {
   Hammer as HammerIcon3,
   Wind as WindIcon21,
   Cog as CogIcon6,
+  Landmark as LandmarkIcon7,
+  Building2 as Building2Icon8,
+  Calculator as CalculatorIcon,
+  Receipt as ReceiptIcon,
+  Shield as ShieldIcon9,
+  Scale as ScaleIcon4,
+  Stamp as StampIcon,
+  Briefcase as BriefcaseIcon2,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1672,6 +1680,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const bodyCollisionShopOpen = useMapStore((s) => s.bodyCollisionShop.open)
   const mufflerExhaustShopOpen = useMapStore((s) => s.mufflerExhaustShop.open)
   const transmissionRepairShopOpen = useMapStore((s) => s.transmissionRepairShop.open)
+  const bankBranchOfficeOpen = useMapStore((s) => s.bankBranchOffice.open)
+  const creditUnionBranchOpen = useMapStore((s) => s.creditUnionBranch.open)
+  const accountingFirmOfficeOpen = useMapStore((s) => s.accountingFirmOffice.open)
+  const taxPrepServiceOpen = useMapStore((s) => s.taxPrepService.open)
+  const insuranceAgencyOfficeOpen = useMapStore((s) => s.insuranceAgencyOffice.open)
+  const lawFirmPracticeOpen = useMapStore((s) => s.lawFirmPractice.open)
+  const notarySigningServiceOpen = useMapStore((s) => s.notarySigningService.open)
+  const realEstateAgencyOpen = useMapStore((s) => s.realEstateAgency.open)
 
   if (typeof window === 'undefined') return null
 
@@ -10123,6 +10139,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <CogIcon6 className="h-4 w-4" />
             {transmissionRepairShopOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-violet-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBankBranchOffice({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${bankBranchOfficeOpen ? 'bg-emerald-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Bank Branch Office Monitor"
+          >
+            <LandmarkIcon7 className="h-4 w-4" />
+            {bankBranchOfficeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCreditUnionBranch({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${creditUnionBranchOpen ? 'bg-green-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Credit Union Branch Monitor"
+          >
+            <Building2Icon8 className="h-4 w-4" />
+            {creditUnionBranchOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-green-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setAccountingFirmOffice({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${accountingFirmOfficeOpen ? 'bg-rose-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Accounting Firm Office Monitor"
+          >
+            <CalculatorIcon className="h-4 w-4" />
+            {accountingFirmOfficeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setTaxPrepService({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${taxPrepServiceOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Tax Prep Service Monitor"
+          >
+            <ReceiptIcon className="h-4 w-4" />
+            {taxPrepServiceOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setInsuranceAgencyOffice({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${insuranceAgencyOfficeOpen ? 'bg-teal-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Insurance Agency Office Monitor"
+          >
+            <ShieldIcon9 className="h-4 w-4" />
+            {insuranceAgencyOfficeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setLawFirmPractice({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${lawFirmPracticeOpen ? 'bg-stone-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Law Firm Practice Monitor"
+          >
+            <ScaleIcon4 className="h-4 w-4" />
+            {lawFirmPracticeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-stone-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setNotarySigningService({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${notarySigningServiceOpen ? 'bg-purple-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Notary Signing Service Monitor"
+          >
+            <StampIcon className="h-4 w-4" />
+            {notarySigningServiceOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-purple-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setRealEstateAgency({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${realEstateAgencyOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Real Estate Agency Monitor"
+          >
+            <BriefcaseIcon2 className="h-4 w-4" />
+            {realEstateAgencyOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-300" />}
           </button>
         </div>
       </div>

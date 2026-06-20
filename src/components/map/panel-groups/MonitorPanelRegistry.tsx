@@ -926,6 +926,14 @@ export function MonitorPanelRegistry() {
   const bodyCollisionShop = useMapStore((s) => s.bodyCollisionShop)
   const mufflerExhaustShop = useMapStore((s) => s.mufflerExhaustShop)
   const transmissionRepairShop = useMapStore((s) => s.transmissionRepairShop)
+  const bankBranchOffice = useMapStore((s) => s.bankBranchOffice)
+  const creditUnionBranch = useMapStore((s) => s.creditUnionBranch)
+  const accountingFirmOffice = useMapStore((s) => s.accountingFirmOffice)
+  const taxPrepService = useMapStore((s) => s.taxPrepService)
+  const insuranceAgencyOffice = useMapStore((s) => s.insuranceAgencyOffice)
+  const lawFirmPractice = useMapStore((s) => s.lawFirmPractice)
+  const notarySigningService = useMapStore((s) => s.notarySigningService)
+  const realEstateAgency = useMapStore((s) => s.realEstateAgency)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -3345,6 +3353,30 @@ export function MonitorPanelRegistry() {
       )}
       {transmissionRepairShop.open && (
         <LazyPanel importFn={() => import('@/components/map/TransmissionRepairShopMonitor')} exportName="TransmissionRepairShopMonitor" shouldLoad={transmissionRepairShop.open} />
+      )}
+      {bankBranchOffice.open && (
+        <LazyPanel importFn={() => import('@/components/map/BankBranchOfficeMonitor')} exportName="BankBranchOfficeMonitor" shouldLoad={bankBranchOffice.open} />
+      )}
+      {creditUnionBranch.open && (
+        <LazyPanel importFn={() => import('@/components/map/CreditUnionBranchMonitor')} exportName="CreditUnionBranchMonitor" shouldLoad={creditUnionBranch.open} />
+      )}
+      {accountingFirmOffice.open && (
+        <LazyPanel importFn={() => import('@/components/map/AccountingFirmOfficeMonitor')} exportName="AccountingFirmOfficeMonitor" shouldLoad={accountingFirmOffice.open} />
+      )}
+      {taxPrepService.open && (
+        <LazyPanel importFn={() => import('@/components/map/TaxPrepServiceMonitor')} exportName="TaxPrepServiceMonitor" shouldLoad={taxPrepService.open} />
+      )}
+      {insuranceAgencyOffice.open && (
+        <LazyPanel importFn={() => import('@/components/map/InsuranceAgencyOfficeMonitor')} exportName="InsuranceAgencyOfficeMonitor" shouldLoad={insuranceAgencyOffice.open} />
+      )}
+      {lawFirmPractice.open && (
+        <LazyPanel importFn={() => import('@/components/map/LawFirmPracticeMonitor')} exportName="LawFirmPracticeMonitor" shouldLoad={lawFirmPractice.open} />
+      )}
+      {notarySigningService.open && (
+        <LazyPanel importFn={() => import('@/components/map/NotarySigningServiceMonitor')} exportName="NotarySigningServiceMonitor" shouldLoad={notarySigningService.open} />
+      )}
+      {realEstateAgency.open && (
+        <LazyPanel importFn={() => import('@/components/map/RealEstateAgencyMonitor')} exportName="RealEstateAgencyMonitor" shouldLoad={realEstateAgency.open} />
       )}
     </>
   )
