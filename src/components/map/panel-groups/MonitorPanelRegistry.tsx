@@ -910,6 +910,14 @@ export function MonitorPanelRegistry() {
   const acupunctureClinicCafe = useMapStore((s) => s.acupunctureClinicCafe)
   const chiropracticWellnessCafe = useMapStore((s) => s.chiropracticWellnessCafe)
   const naturopathicClinicCafe = useMapStore((s) => s.naturopathicClinicCafe)
+  const hairSalonStudio = useMapStore((s) => s.hairSalonStudio)
+  const barberShopLounge = useMapStore((s) => s.barberShopLounge)
+  const manicurePedicureSpa = useMapStore((s) => s.manicurePedicureSpa)
+  const skinCareClinic = useMapStore((s) => s.skinCareClinic)
+  const lashBrowBar = useMapStore((s) => s.lashBrowBar)
+  const waxingHairRemoval = useMapStore((s) => s.waxingHairRemoval)
+  const makeupCosmeticsStudio = useMapStore((s) => s.makeupCosmeticsStudio)
+  const sprayTanStudio = useMapStore((s) => s.sprayTanStudio)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -3281,6 +3289,30 @@ export function MonitorPanelRegistry() {
       )}
       {naturopathicClinicCafe.open && (
         <LazyPanel importFn={() => import('@/components/map/NaturopathicClinicCafeMonitor')} exportName="NaturopathicClinicCafeMonitor" shouldLoad={naturopathicClinicCafe.open} />
+      )}
+      {hairSalonStudio.open && (
+        <LazyPanel importFn={() => import('@/components/map/HairSalonStudioMonitor')} exportName="HairSalonStudioMonitor" shouldLoad={hairSalonStudio.open} />
+      )}
+      {barberShopLounge.open && (
+        <LazyPanel importFn={() => import('@/components/map/BarberShopLoungeMonitor')} exportName="BarberShopLoungeMonitor" shouldLoad={barberShopLounge.open} />
+      )}
+      {manicurePedicureSpa.open && (
+        <LazyPanel importFn={() => import('@/components/map/ManicurePedicureSpaMonitor')} exportName="ManicurePedicureSpaMonitor" shouldLoad={manicurePedicureSpa.open} />
+      )}
+      {skinCareClinic.open && (
+        <LazyPanel importFn={() => import('@/components/map/SkinCareClinicMonitor')} exportName="SkinCareClinicMonitor" shouldLoad={skinCareClinic.open} />
+      )}
+      {lashBrowBar.open && (
+        <LazyPanel importFn={() => import('@/components/map/LashBrowBarMonitor')} exportName="LashBrowBarMonitor" shouldLoad={lashBrowBar.open} />
+      )}
+      {waxingHairRemoval.open && (
+        <LazyPanel importFn={() => import('@/components/map/WaxingHairRemovalMonitor')} exportName="WaxingHairRemovalMonitor" shouldLoad={waxingHairRemoval.open} />
+      )}
+      {makeupCosmeticsStudio.open && (
+        <LazyPanel importFn={() => import('@/components/map/MakeupCosmeticsStudioMonitor')} exportName="MakeupCosmeticsStudioMonitor" shouldLoad={makeupCosmeticsStudio.open} />
+      )}
+      {sprayTanStudio.open && (
+        <LazyPanel importFn={() => import('@/components/map/SprayTanStudioMonitor')} exportName="SprayTanStudioMonitor" shouldLoad={sprayTanStudio.open} />
       )}
     </>
   )

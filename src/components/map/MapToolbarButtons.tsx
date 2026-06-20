@@ -1014,6 +1014,14 @@ import {
   Activity as ActivityIcon1,
   Stethoscope as StethoscopeIcon1,
   Leaf as LeafIcon13,
+  Scissors as ScissorsIcon5,
+  Brush as BrushIcon1,
+  Hand as HandIcon1,
+  Sparkles as SparklesIcon13,
+  Eye as EyeIcon3,
+  Flame as FlameIcon26,
+  Palette as PaletteIcon5,
+  Sun as SunIcon15,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1640,6 +1648,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const acupunctureClinicCafeOpen = useMapStore((s) => s.acupunctureClinicCafe.open)
   const chiropracticWellnessCafeOpen = useMapStore((s) => s.chiropracticWellnessCafe.open)
   const naturopathicClinicCafeOpen = useMapStore((s) => s.naturopathicClinicCafe.open)
+  const hairSalonStudioOpen = useMapStore((s) => s.hairSalonStudio.open)
+  const barberShopLoungeOpen = useMapStore((s) => s.barberShopLounge.open)
+  const manicurePedicureSpaOpen = useMapStore((s) => s.manicurePedicureSpa.open)
+  const skinCareClinicOpen = useMapStore((s) => s.skinCareClinic.open)
+  const lashBrowBarOpen = useMapStore((s) => s.lashBrowBar.open)
+  const waxingHairRemovalOpen = useMapStore((s) => s.waxingHairRemoval.open)
+  const makeupCosmeticsStudioOpen = useMapStore((s) => s.makeupCosmeticsStudio.open)
+  const sprayTanStudioOpen = useMapStore((s) => s.sprayTanStudio.open)
 
   if (typeof window === 'undefined') return null
 
@@ -9963,6 +9979,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <LeafIcon13 className="h-4 w-4" />
             {naturopathicClinicCafeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-green-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setHairSalonStudio({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${hairSalonStudioOpen ? 'bg-pink-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Hair Salon Studio Monitor"
+          >
+            <ScissorsIcon5 className="h-4 w-4" />
+            {hairSalonStudioOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-pink-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBarberShopLounge({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${barberShopLoungeOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Barber Shop Lounge Monitor"
+          >
+            <BrushIcon1 className="h-4 w-4" />
+            {barberShopLoungeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setManicurePedicureSpa({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${manicurePedicureSpaOpen ? 'bg-fuchsia-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Manicure Pedicure Spa Monitor"
+          >
+            <HandIcon1 className="h-4 w-4" />
+            {manicurePedicureSpaOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-fuchsia-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setSkinCareClinic({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${skinCareClinicOpen ? 'bg-rose-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Skin Care Clinic Monitor"
+          >
+            <SparklesIcon13 className="h-4 w-4" />
+            {skinCareClinicOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setLashBrowBar({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${lashBrowBarOpen ? 'bg-violet-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Lash Brow Bar Monitor"
+          >
+            <EyeIcon3 className="h-4 w-4" />
+            {lashBrowBarOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-violet-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setWaxingHairRemoval({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${waxingHairRemovalOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Waxing Hair Removal Monitor"
+          >
+            <FlameIcon26 className="h-4 w-4" />
+            {waxingHairRemovalOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setMakeupCosmeticsStudio({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${makeupCosmeticsStudioOpen ? 'bg-purple-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Makeup Cosmetics Studio Monitor"
+          >
+            <PaletteIcon5 className="h-4 w-4" />
+            {makeupCosmeticsStudioOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-purple-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setSprayTanStudio({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${sprayTanStudioOpen ? 'bg-yellow-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Spray Tan Studio Monitor"
+          >
+            <SunIcon15 className="h-4 w-4" />
+            {sprayTanStudioOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-yellow-300" />}
           </button>
         </div>
       </div>

@@ -5131,6 +5131,22 @@ interface MapState {
   setChiropracticWellnessCafe: (state: Partial<MonitorState>) => void
   naturopathicClinicCafe: MonitorState
   setNaturopathicClinicCafe: (state: Partial<MonitorState>) => void
+  hairSalonStudio: MonitorState
+  setHairSalonStudio: (state: Partial<MonitorState>) => void
+  barberShopLounge: MonitorState
+  setBarberShopLounge: (state: Partial<MonitorState>) => void
+  manicurePedicureSpa: MonitorState
+  setManicurePedicureSpa: (state: Partial<MonitorState>) => void
+  skinCareClinic: MonitorState
+  setSkinCareClinic: (state: Partial<MonitorState>) => void
+  lashBrowBar: MonitorState
+  setLashBrowBar: (state: Partial<MonitorState>) => void
+  waxingHairRemoval: MonitorState
+  setWaxingHairRemoval: (state: Partial<MonitorState>) => void
+  makeupCosmeticsStudio: MonitorState
+  setMakeupCosmeticsStudio: (state: Partial<MonitorState>) => void
+  sprayTanStudio: MonitorState
+  setSprayTanStudio: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -9627,6 +9643,14 @@ export const useMapStore = create<MapState>()(
       acupunctureClinicCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       chiropracticWellnessCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       naturopathicClinicCafe: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      hairSalonStudio: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      barberShopLounge: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      manicurePedicureSpa: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      skinCareClinic: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      lashBrowBar: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      waxingHairRemoval: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      makeupCosmeticsStudio: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      sprayTanStudio: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -10132,6 +10156,14 @@ export const useMapStore = create<MapState>()(
       setAcupunctureClinicCafe: (updates) => set((state) => ({ acupunctureClinicCafe: { ...state.acupunctureClinicCafe, ...updates } })),
       setChiropracticWellnessCafe: (updates) => set((state) => ({ chiropracticWellnessCafe: { ...state.chiropracticWellnessCafe, ...updates } })),
       setNaturopathicClinicCafe: (updates) => set((state) => ({ naturopathicClinicCafe: { ...state.naturopathicClinicCafe, ...updates } })),
+      setHairSalonStudio: (updates) => set((state) => ({ hairSalonStudio: { ...state.hairSalonStudio, ...updates } })),
+      setBarberShopLounge: (updates) => set((state) => ({ barberShopLounge: { ...state.barberShopLounge, ...updates } })),
+      setManicurePedicureSpa: (updates) => set((state) => ({ manicurePedicureSpa: { ...state.manicurePedicureSpa, ...updates } })),
+      setSkinCareClinic: (updates) => set((state) => ({ skinCareClinic: { ...state.skinCareClinic, ...updates } })),
+      setLashBrowBar: (updates) => set((state) => ({ lashBrowBar: { ...state.lashBrowBar, ...updates } })),
+      setWaxingHairRemoval: (updates) => set((state) => ({ waxingHairRemoval: { ...state.waxingHairRemoval, ...updates } })),
+      setMakeupCosmeticsStudio: (updates) => set((state) => ({ makeupCosmeticsStudio: { ...state.makeupCosmeticsStudio, ...updates } })),
+      setSprayTanStudio: (updates) => set((state) => ({ sprayTanStudio: { ...state.sprayTanStudio, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
