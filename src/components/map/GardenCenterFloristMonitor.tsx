@@ -125,7 +125,7 @@ export function GardenCenterFloristMonitor() {
     <Card className="fixed right-4 top-16 z-[60] w-[340px] max-h-[80vh] overflow-hidden flex flex-col p-0 bg-slate-900/95 border-slate-700 text-slate-100 backdrop-blur-md">
       <div className="flex items-center justify-between p-3 bg-gradient-to-r from-green-700 to-emerald-800">
         <div className="flex items-center gap-2">
-          <span className="text-lg">&#1278003;</span>
+          <span className="text-lg">&#127800;</span>
           <h3 className="text-sm font-semibold text-white">Garden Center &amp; Florist</h3>
         </div>
         <button onClick={() => setState({ open: false })} className="text-white/80 hover:text-white">
