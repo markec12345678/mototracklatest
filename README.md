@@ -1,16 +1,16 @@
 # 🗺️ MotoTrack — MapLibre Explorer
 
-A feature-rich, interactive mapping application built with **Next.js 16**, **MapLibre GL JS**, **MapTiler**, and **MapTiler Geocoding**. Explore maps, search locations, plan routes, measure distances, analyze terrain, track weather, monitor environmental hazards, and visualize business operations across **851 specialized monitor panels** — all in one beautiful interface.
+A feature-rich, interactive mapping application built with **Next.js 16**, **MapLibre GL JS**, **MapTiler**, and **MapTiler Geocoding**. Explore maps, search locations, plan routes, measure distances, analyze terrain, track weather, monitor environmental hazards, and visualize business operations across **859 specialized monitor panels** — all in one beautiful interface.
 
 [![CI](https://github.com/markec12345678/mototracklatest/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/markec12345678/mototracklatest/actions/workflows/ci.yml)
 ![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
 ![MapLibre GL](https://img.shields.io/badge/MapLibre_GL-5-blueviolet?logo=maplibre)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-38bdf8?logo=tailwindcss)
-![Monitors](https://img.shields.io/badge/Monitor_Panels-851-brightgreen)
+![Monitors](https://img.shields.io/badge/Monitor_Panels-859-brightgreen)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-> **Scale**: 851 monitor components · 92 dependencies · 7 languages · 25+ API endpoints · 35+ map tools
+> **Scale**: 859 monitor components · 92 dependencies · 7 languages · 25+ API endpoints · 35+ map tools
 
 ---
 
@@ -75,9 +75,9 @@ A feature-rich, interactive mapping application built with **Next.js 16**, **Map
 - **Health Recommendations** — Context-aware advice based on current AQI
 - **AQI Scale Reference** — Visual scale with current position indicator
 
-### 📊 Monitor Panel System (851 Panels)
+### 📊 Monitor Panel System (859 Panels)
 
-The flagship feature of MotoTrack is a **massive library of 851 specialized monitor panels**, each providing real-time status, location lists, metrics, and detail cards for a specific domain. Every monitor follows a consistent pattern based on `OfficeSupplyChainMonitor.tsx`:
+The flagship feature of MotoTrack is a **massive library of 859 specialized monitor panels**, each providing real-time status, location lists, metrics, and detail cards for a specific domain. Every monitor follows a consistent pattern based on `OfficeSupplyChainMonitor.tsx`:
 
 - **4 real US locations** per monitor with coordinates, status, and business data
 - **4-cell metrics grid** — Daily Customers, Revenue ($M/mo), SKUs, Stores
@@ -108,9 +108,10 @@ The flagship feature of MotoTrack is a **massive library of 851 specialized moni
 | **Beauty & Personal Care** | HairSalonStudio, BarberShopLounge, ManicurePedicureSpa, SkinCareClinic, LashBrowBar, WaxingHairRemoval, MakeupCosmeticsStudio, SprayTanStudio | 8 |
 | **Automotive Services** | AutoMechanicShop, TireRotationShop, OilChangeExpress, CarWashDetailing, AftermarketPartsStore, BodyCollisionShop, MufflerExhaustShop, TransmissionRepairShop | 8 |
 | **Financial & Professional Services** | BankBranchNetwork, InsuranceAgencyOffice, AccountingTaxFirm, LawOfficePractice, RealEstateAgency, InvestmentAdvisoryFirm, MortgageBrokerOffice, NotaryPublicService | 8 |
+| **Healthcare & Medical Services** | UrgentCareClinic, DentalOfficePractice, PhysicalTherapyClinic, ChiropracticOffice, OptometryClinic, PediatricClinic, WomensHealthClinic, MentalHealthCounseling | 8 |
 | **Other Domains** | ArenaEvent, AtmNetworkStatus, AntiquesCollectiblesStore, AquariumMarineExhibit | ~120 |
 
-> Each monitor is a standalone `*Monitor.tsx` component (~213 lines) following the exact same template, ensuring visual and behavioral consistency across all 851 panels.
+> Each monitor is a standalone `*Monitor.tsx` component (~213 lines) following the exact same template, ensuring visual and behavioral consistency across all 859 panels.
 
 ### 📦 Import & Export
 - **GPX Import** — Load GPX 1.1 tracks and waypoints onto the map
@@ -266,7 +267,7 @@ npm run dev
 
 The app runs on `http://localhost:3000`.
 
-> **Note**: The dev server uses webpack mode (not turbopack) with `--max-old-space-size=7168` to handle the large codebase (851 monitor components). The server writes logs to `dev.log`.
+> **Note**: The dev server uses webpack mode (not turbopack) with `--max-old-space-size=7168` to handle the large codebase (859 monitor components). The server writes logs to `dev.log`.
 
 ---
 
@@ -308,7 +309,7 @@ The app runs on `http://localhost:3000`.
 │   │   │   ├── MapSidebar.tsx         # Sidebar with tabs
 │   │   │   ├── SearchBar.tsx          # Geocoding search
 │   │   │   ├── MapToolbar.tsx         # Floating tool palette
-│   │   │   ├── MapToolbarButtons.tsx  # 851 monitor toolbar buttons (~620KB)
+│   │   │   ├── MapToolbarButtons.tsx  # 859 monitor toolbar buttons (~620KB)
 │   │   │   ├── StyleSwitcher.tsx      # Map style selector
 │   │   │   ├── WeatherPanel.tsx       # Weather information
 │   │   │   ├── ElevationProfile.tsx   # Terrain profile chart
@@ -316,7 +317,7 @@ The app runs on `http://localhost:3000`.
 │   │   │   ├── MapComparison.tsx      # Split-screen comparison
 │   │   │   ├── BookmarkManager.tsx    # Location bookmarks
 │   │   │   ├── OfficeSupplyChainMonitor.tsx  # Monitor pattern template
-│   │   │   ├── *Monitor.tsx           # 851 monitor components
+│   │   │   ├── *Monitor.tsx           # 859 monitor components
 │   │   │   ├── panel-groups/
 │   │   │   │   └── MonitorPanelRegistry.tsx  # Lazy-load registry (~232KB)
 │   │   │   └── ...                    # 35+ map tool components
@@ -345,7 +346,7 @@ The app runs on `http://localhost:3000`.
 
 ## 📊 Monitor Panel Architecture
 
-The 851 monitor panels are the largest subsystem in MotoTrack. Here is how they are architected:
+The 859 monitor panels are the largest subsystem in MotoTrack. Here is how they are architected:
 
 ### Pattern Template
 Every monitor follows `OfficeSupplyChainMonitor.tsx` exactly (~213 lines):
@@ -393,7 +394,7 @@ Each monitor has a button in `MapToolbarButtons.tsx`:
 - The only blue allowed is the canonical `bg-blue-500` STATUS_COLORS entry for `moderate` status
 
 ### Icon Alias System
-With 851 monitors, icon aliases are heavily reused. Lucide icons like `Waves`, `Sparkles`, `Mountain` have 20+ aliases (e.g., `WavesIcon1` through `WavesIcon30`). New monitors must grep for the first free alias suffix before assignment.
+With 859 monitors, icon aliases are heavily reused. Lucide icons like `Waves`, `Sparkles`, `Mountain` have 20+ aliases (e.g., `WavesIcon1` through `WavesIcon30`). New monitors must grep for the first free alias suffix before assignment.
 
 ---
 
@@ -485,7 +486,7 @@ The app is fully responsive with three breakpoints:
 - [x] Multi-route Comparison — Compare routes side by side
 - [x] Map Analytics Dashboard — Session stats, activity charts, tool usage
 - [x] Air Quality Index — Real-time AQI with pollutant levels and forecast
-- [x] **Monitor Panel System — 851 specialized monitor panels** spanning environmental, geological, oceanic, atmospheric, supply chain, retail, sports venue, wellness retreat, beauty/personal care, automotive, and financial/professional services domains
+- [x] **Monitor Panel System — 859 specialized monitor panels** spanning environmental, geological, oceanic, atmospheric, supply chain, retail, sports venue, wellness retreat, beauty/personal care, automotive, financial/professional services, and healthcare/medical services domains
 - [x] **Repository hardening** — Comprehensive README, CONTRIBUTING.md, SECURITY.md, MIT LICENSE, and GitHub Actions CI pipeline (lint + typecheck + build)
 
 ### Planned 🚧
@@ -552,7 +553,7 @@ This repository uses [GitHub Actions](.github/workflows/ci.yml) for continuous i
 | **build** | Verify production build succeeds | `bun run build` | ✅ Yes |
 | **ci-pass** | Single status gate for branch protection | Aggregated | ✅ Yes |
 
-> **Why is typecheck non-blocking?** The project ships with `typescript.ignoreBuildErrors: true` in `next.config.ts` because the codebase (851 monitors, 10K-line toolbar) is in active development with ~226 pre-existing type errors. The typecheck job surfaces these for awareness without blocking merges. Cleanup is tracked in the [Roadmap](#-roadmap). ESLint and the production build remain hard gates.
+> **Why is typecheck non-blocking?** The project ships with `typescript.ignoreBuildErrors: true` in `next.config.ts` because the codebase (859 monitors, 10K-line toolbar) is in active development with ~226 pre-existing type errors. The typecheck job surfaces these for awareness without blocking merges. Cleanup is tracked in the [Roadmap](#-roadmap). ESLint and the production build remain hard gates.
 
 The `concurrency` block cancels in-progress runs when a new commit is pushed to the same branch, keeping CI fast and cheap. To enable branch protection, require the `CI Passed` status check on `main`.
 
