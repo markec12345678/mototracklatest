@@ -918,6 +918,14 @@ export function MonitorPanelRegistry() {
   const waxingHairRemoval = useMapStore((s) => s.waxingHairRemoval)
   const makeupCosmeticsStudio = useMapStore((s) => s.makeupCosmeticsStudio)
   const sprayTanStudio = useMapStore((s) => s.sprayTanStudio)
+  const autoMechanicShop = useMapStore((s) => s.autoMechanicShop)
+  const tireRotationShop = useMapStore((s) => s.tireRotationShop)
+  const oilChangeExpress = useMapStore((s) => s.oilChangeExpress)
+  const carWashDetailing = useMapStore((s) => s.carWashDetailing)
+  const aftermarketPartsStore = useMapStore((s) => s.aftermarketPartsStore)
+  const bodyCollisionShop = useMapStore((s) => s.bodyCollisionShop)
+  const mufflerExhaustShop = useMapStore((s) => s.mufflerExhaustShop)
+  const transmissionRepairShop = useMapStore((s) => s.transmissionRepairShop)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -3313,6 +3321,30 @@ export function MonitorPanelRegistry() {
       )}
       {sprayTanStudio.open && (
         <LazyPanel importFn={() => import('@/components/map/SprayTanStudioMonitor')} exportName="SprayTanStudioMonitor" shouldLoad={sprayTanStudio.open} />
+      )}
+      {autoMechanicShop.open && (
+        <LazyPanel importFn={() => import('@/components/map/AutoMechanicShopMonitor')} exportName="AutoMechanicShopMonitor" shouldLoad={autoMechanicShop.open} />
+      )}
+      {tireRotationShop.open && (
+        <LazyPanel importFn={() => import('@/components/map/TireRotationShopMonitor')} exportName="TireRotationShopMonitor" shouldLoad={tireRotationShop.open} />
+      )}
+      {oilChangeExpress.open && (
+        <LazyPanel importFn={() => import('@/components/map/OilChangeExpressMonitor')} exportName="OilChangeExpressMonitor" shouldLoad={oilChangeExpress.open} />
+      )}
+      {carWashDetailing.open && (
+        <LazyPanel importFn={() => import('@/components/map/CarWashDetailingMonitor')} exportName="CarWashDetailingMonitor" shouldLoad={carWashDetailing.open} />
+      )}
+      {aftermarketPartsStore.open && (
+        <LazyPanel importFn={() => import('@/components/map/AftermarketPartsStoreMonitor')} exportName="AftermarketPartsStoreMonitor" shouldLoad={aftermarketPartsStore.open} />
+      )}
+      {bodyCollisionShop.open && (
+        <LazyPanel importFn={() => import('@/components/map/BodyCollisionShopMonitor')} exportName="BodyCollisionShopMonitor" shouldLoad={bodyCollisionShop.open} />
+      )}
+      {mufflerExhaustShop.open && (
+        <LazyPanel importFn={() => import('@/components/map/MufflerExhaustShopMonitor')} exportName="MufflerExhaustShopMonitor" shouldLoad={mufflerExhaustShop.open} />
+      )}
+      {transmissionRepairShop.open && (
+        <LazyPanel importFn={() => import('@/components/map/TransmissionRepairShopMonitor')} exportName="TransmissionRepairShopMonitor" shouldLoad={transmissionRepairShop.open} />
       )}
     </>
   )

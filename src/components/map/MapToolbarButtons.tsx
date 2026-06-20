@@ -1022,6 +1022,14 @@ import {
   Flame as FlameIcon26,
   Palette as PaletteIcon5,
   Sun as SunIcon15,
+  Wrench as WrenchIcon1,
+  Disc as DiscIcon1,
+  Droplet as DropletIcon21,
+  Car as CarIcon7,
+  Package as PackageIcon3,
+  Hammer as HammerIcon3,
+  Wind as WindIcon21,
+  Cog as CogIcon6,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1656,6 +1664,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const waxingHairRemovalOpen = useMapStore((s) => s.waxingHairRemoval.open)
   const makeupCosmeticsStudioOpen = useMapStore((s) => s.makeupCosmeticsStudio.open)
   const sprayTanStudioOpen = useMapStore((s) => s.sprayTanStudio.open)
+  const autoMechanicShopOpen = useMapStore((s) => s.autoMechanicShop.open)
+  const tireRotationShopOpen = useMapStore((s) => s.tireRotationShop.open)
+  const oilChangeExpressOpen = useMapStore((s) => s.oilChangeExpress.open)
+  const carWashDetailingOpen = useMapStore((s) => s.carWashDetailing.open)
+  const aftermarketPartsStoreOpen = useMapStore((s) => s.aftermarketPartsStore.open)
+  const bodyCollisionShopOpen = useMapStore((s) => s.bodyCollisionShop.open)
+  const mufflerExhaustShopOpen = useMapStore((s) => s.mufflerExhaustShop.open)
+  const transmissionRepairShopOpen = useMapStore((s) => s.transmissionRepairShop.open)
 
   if (typeof window === 'undefined') return null
 
@@ -10043,6 +10059,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <SunIcon15 className="h-4 w-4" />
             {sprayTanStudioOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-yellow-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setAutoMechanicShop({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${autoMechanicShopOpen ? 'bg-red-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Auto Mechanic Shop Monitor"
+          >
+            <WrenchIcon1 className="h-4 w-4" />
+            {autoMechanicShopOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setTireRotationShop({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${tireRotationShopOpen ? 'bg-stone-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Tire Rotation Shop Monitor"
+          >
+            <DiscIcon1 className="h-4 w-4" />
+            {tireRotationShopOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-stone-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setOilChangeExpress({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${oilChangeExpressOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Oil Change Express Monitor"
+          >
+            <DropletIcon21 className="h-4 w-4" />
+            {oilChangeExpressOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCarWashDetailing({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${carWashDetailingOpen ? 'bg-cyan-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Car Wash Detailing Monitor"
+          >
+            <CarIcon7 className="h-4 w-4" />
+            {carWashDetailingOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setAftermarketPartsStore({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${aftermarketPartsStoreOpen ? 'bg-emerald-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Aftermarket Parts Store Monitor"
+          >
+            <PackageIcon3 className="h-4 w-4" />
+            {aftermarketPartsStoreOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setBodyCollisionShop({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${bodyCollisionShopOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Body Collision Shop Monitor"
+          >
+            <HammerIcon3 className="h-4 w-4" />
+            {bodyCollisionShopOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setMufflerExhaustShop({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${mufflerExhaustShopOpen ? 'bg-slate-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Muffler Exhaust Shop Monitor"
+          >
+            <WindIcon21 className="h-4 w-4" />
+            {mufflerExhaustShopOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-slate-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setTransmissionRepairShop({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${transmissionRepairShopOpen ? 'bg-violet-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Transmission Repair Shop Monitor"
+          >
+            <CogIcon6 className="h-4 w-4" />
+            {transmissionRepairShopOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-violet-300" />}
           </button>
         </div>
       </div>

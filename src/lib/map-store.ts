@@ -5147,6 +5147,22 @@ interface MapState {
   setMakeupCosmeticsStudio: (state: Partial<MonitorState>) => void
   sprayTanStudio: MonitorState
   setSprayTanStudio: (state: Partial<MonitorState>) => void
+  autoMechanicShop: MonitorState
+  setAutoMechanicShop: (state: Partial<MonitorState>) => void
+  tireRotationShop: MonitorState
+  setTireRotationShop: (state: Partial<MonitorState>) => void
+  oilChangeExpress: MonitorState
+  setOilChangeExpress: (state: Partial<MonitorState>) => void
+  carWashDetailing: MonitorState
+  setCarWashDetailing: (state: Partial<MonitorState>) => void
+  aftermarketPartsStore: MonitorState
+  setAftermarketPartsStore: (state: Partial<MonitorState>) => void
+  bodyCollisionShop: MonitorState
+  setBodyCollisionShop: (state: Partial<MonitorState>) => void
+  mufflerExhaustShop: MonitorState
+  setMufflerExhaustShop: (state: Partial<MonitorState>) => void
+  transmissionRepairShop: MonitorState
+  setTransmissionRepairShop: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -9651,6 +9667,14 @@ export const useMapStore = create<MapState>()(
       waxingHairRemoval: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       makeupCosmeticsStudio: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       sprayTanStudio: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      autoMechanicShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      tireRotationShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      oilChangeExpress: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      carWashDetailing: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      aftermarketPartsStore: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      bodyCollisionShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      mufflerExhaustShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      transmissionRepairShop: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -10164,6 +10188,14 @@ export const useMapStore = create<MapState>()(
       setWaxingHairRemoval: (updates) => set((state) => ({ waxingHairRemoval: { ...state.waxingHairRemoval, ...updates } })),
       setMakeupCosmeticsStudio: (updates) => set((state) => ({ makeupCosmeticsStudio: { ...state.makeupCosmeticsStudio, ...updates } })),
       setSprayTanStudio: (updates) => set((state) => ({ sprayTanStudio: { ...state.sprayTanStudio, ...updates } })),
+      setAutoMechanicShop: (updates) => set((state) => ({ autoMechanicShop: { ...state.autoMechanicShop, ...updates } })),
+      setTireRotationShop: (updates) => set((state) => ({ tireRotationShop: { ...state.tireRotationShop, ...updates } })),
+      setOilChangeExpress: (updates) => set((state) => ({ oilChangeExpress: { ...state.oilChangeExpress, ...updates } })),
+      setCarWashDetailing: (updates) => set((state) => ({ carWashDetailing: { ...state.carWashDetailing, ...updates } })),
+      setAftermarketPartsStore: (updates) => set((state) => ({ aftermarketPartsStore: { ...state.aftermarketPartsStore, ...updates } })),
+      setBodyCollisionShop: (updates) => set((state) => ({ bodyCollisionShop: { ...state.bodyCollisionShop, ...updates } })),
+      setMufflerExhaustShop: (updates) => set((state) => ({ mufflerExhaustShop: { ...state.mufflerExhaustShop, ...updates } })),
+      setTransmissionRepairShop: (updates) => set((state) => ({ transmissionRepairShop: { ...state.transmissionRepairShop, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
