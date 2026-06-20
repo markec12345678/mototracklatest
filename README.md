@@ -1,15 +1,16 @@
 # 🗺️ MotoTrack — MapLibre Explorer
 
-A feature-rich, interactive mapping application built with **Next.js 16**, **MapLibre GL JS**, **MapTiler**, and **MapTiler Geocoding**. Explore maps, search locations, plan routes, measure distances, analyze terrain, track weather, monitor environmental hazards, and visualize business operations across **819 specialized monitor panels** — all in one beautiful interface.
+A feature-rich, interactive mapping application built with **Next.js 16**, **MapLibre GL JS**, **MapTiler**, and **MapTiler Geocoding**. Explore maps, search locations, plan routes, measure distances, analyze terrain, track weather, monitor environmental hazards, and visualize business operations across **851 specialized monitor panels** — all in one beautiful interface.
 
+[![CI](https://github.com/markec12345678/mototracklatest/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/markec12345678/mototracklatest/actions/workflows/ci.yml)
 ![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
 ![MapLibre GL](https://img.shields.io/badge/MapLibre_GL-5-blueviolet?logo=maplibre)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-38bdf8?logo=tailwindcss)
-![Monitors](https://img.shields.io/badge/Monitor_Panels-819-brightgreen)
+![Monitors](https://img.shields.io/badge/Monitor_Panels-851-brightgreen)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-> **Scale**: 819 monitor components · 92 dependencies · 7 languages · 25+ API endpoints · 35+ map tools
+> **Scale**: 851 monitor components · 92 dependencies · 7 languages · 25+ API endpoints · 35+ map tools
 
 ---
 
@@ -74,9 +75,9 @@ A feature-rich, interactive mapping application built with **Next.js 16**, **Map
 - **Health Recommendations** — Context-aware advice based on current AQI
 - **AQI Scale Reference** — Visual scale with current position indicator
 
-### 📊 Monitor Panel System (819 Panels)
+### 📊 Monitor Panel System (851 Panels)
 
-The flagship feature of MotoTrack is a **massive library of 819 specialized monitor panels**, each providing real-time status, location lists, metrics, and detail cards for a specific domain. Every monitor follows a consistent pattern based on `OfficeSupplyChainMonitor.tsx`:
+The flagship feature of MotoTrack is a **massive library of 851 specialized monitor panels**, each providing real-time status, location lists, metrics, and detail cards for a specific domain. Every monitor follows a consistent pattern based on `OfficeSupplyChainMonitor.tsx`:
 
 - **4 real US locations** per monitor with coordinates, status, and business data
 - **4-cell metrics grid** — Daily Customers, Revenue ($M/mo), SKUs, Stores
@@ -104,9 +105,12 @@ The flagship feature of MotoTrack is a **massive library of 819 specialized moni
 | **Military & Infrastructure** | AirForceBase, ArmyBaseReadiness, AirTrafficControl, AircraftHangarFacility | ~30 |
 | **Education & Community** | AfterSchoolProgram, AcademicCitation, AnimalShelterRescue | ~25 |
 | **Food & Beverage** | AirportFoodCourt, AirportLoungeDining, BarPubTavern, BagelDeliShop | ~60 |
+| **Beauty & Personal Care** | HairSalonStudio, BarberShopLounge, ManicurePedicureSpa, SkinCareClinic, LashBrowBar, WaxingHairRemoval, MakeupCosmeticsStudio, SprayTanStudio | 8 |
+| **Automotive Services** | AutoMechanicShop, TireRotationShop, OilChangeExpress, CarWashDetailing, AftermarketPartsStore, BodyCollisionShop, MufflerExhaustShop, TransmissionRepairShop | 8 |
+| **Financial & Professional Services** | BankBranchNetwork, InsuranceAgencyOffice, AccountingTaxFirm, LawOfficePractice, RealEstateAgency, InvestmentAdvisoryFirm, MortgageBrokerOffice, NotaryPublicService | 8 |
 | **Other Domains** | ArenaEvent, AtmNetworkStatus, AntiquesCollectiblesStore, AquariumMarineExhibit | ~120 |
 
-> Each monitor is a standalone `*Monitor.tsx` component (~213 lines) following the exact same template, ensuring visual and behavioral consistency across all 819 panels.
+> Each monitor is a standalone `*Monitor.tsx` component (~213 lines) following the exact same template, ensuring visual and behavioral consistency across all 851 panels.
 
 ### 📦 Import & Export
 - **GPX Import** — Load GPX 1.1 tracks and waypoints onto the map
@@ -262,7 +266,7 @@ npm run dev
 
 The app runs on `http://localhost:3000`.
 
-> **Note**: The dev server uses webpack mode (not turbopack) with `--max-old-space-size=7168` to handle the large codebase (819 monitor components). The server writes logs to `dev.log`.
+> **Note**: The dev server uses webpack mode (not turbopack) with `--max-old-space-size=7168` to handle the large codebase (851 monitor components). The server writes logs to `dev.log`.
 
 ---
 
@@ -304,7 +308,7 @@ The app runs on `http://localhost:3000`.
 │   │   │   ├── MapSidebar.tsx         # Sidebar with tabs
 │   │   │   ├── SearchBar.tsx          # Geocoding search
 │   │   │   ├── MapToolbar.tsx         # Floating tool palette
-│   │   │   ├── MapToolbarButtons.tsx  # 819 monitor toolbar buttons (~596KB)
+│   │   │   ├── MapToolbarButtons.tsx  # 851 monitor toolbar buttons (~620KB)
 │   │   │   ├── StyleSwitcher.tsx      # Map style selector
 │   │   │   ├── WeatherPanel.tsx       # Weather information
 │   │   │   ├── ElevationProfile.tsx   # Terrain profile chart
@@ -312,9 +316,9 @@ The app runs on `http://localhost:3000`.
 │   │   │   ├── MapComparison.tsx      # Split-screen comparison
 │   │   │   ├── BookmarkManager.tsx    # Location bookmarks
 │   │   │   ├── OfficeSupplyChainMonitor.tsx  # Monitor pattern template
-│   │   │   ├── *Monitor.tsx           # 819 monitor components
+│   │   │   ├── *Monitor.tsx           # 851 monitor components
 │   │   │   ├── panel-groups/
-│   │   │   │   └── MonitorPanelRegistry.tsx  # Lazy-load registry (~224KB)
+│   │   │   │   └── MonitorPanelRegistry.tsx  # Lazy-load registry (~232KB)
 │   │   │   └── ...                    # 35+ map tool components
 │   │   └── ui/                    # shadcn/ui components (40+)
 │   ├── hooks/
@@ -322,7 +326,7 @@ The app runs on `http://localhost:3000`.
 │   │   ├── use-toast.ts           # Toast notification hook
 │   │   └── use-pwa-install.ts     # PWA install detection hook
 │   └── lib/
-│       ├── map-store.ts           # Zustand map state (persisted, ~500KB)
+│       ├── map-store.ts           # Zustand map state (persisted, ~520KB)
 │       ├── undo-manager.ts        # Generic undo/redo engine
 │       ├── use-undo-store.ts      # Undo/redo Zustand store
 │       ├── weather-utils.ts       # Weather data utilities
@@ -341,7 +345,7 @@ The app runs on `http://localhost:3000`.
 
 ## 📊 Monitor Panel Architecture
 
-The 819 monitor panels are the largest subsystem in MotoTrack. Here is how they are architected:
+The 851 monitor panels are the largest subsystem in MotoTrack. Here is how they are architected:
 
 ### Pattern Template
 Every monitor follows `OfficeSupplyChainMonitor.tsx` exactly (~213 lines):
@@ -389,7 +393,7 @@ Each monitor has a button in `MapToolbarButtons.tsx`:
 - The only blue allowed is the canonical `bg-blue-500` STATUS_COLORS entry for `moderate` status
 
 ### Icon Alias System
-With 819 monitors, icon aliases are heavily reused. Lucide icons like `Waves`, `Sparkles`, `Mountain` have 20+ aliases (e.g., `WavesIcon1` through `WavesIcon30`). New monitors must grep for the first free alias suffix before assignment.
+With 851 monitors, icon aliases are heavily reused. Lucide icons like `Waves`, `Sparkles`, `Mountain` have 20+ aliases (e.g., `WavesIcon1` through `WavesIcon30`). New monitors must grep for the first free alias suffix before assignment.
 
 ---
 
@@ -481,38 +485,45 @@ The app is fully responsive with three breakpoints:
 - [x] Multi-route Comparison — Compare routes side by side
 - [x] Map Analytics Dashboard — Session stats, activity charts, tool usage
 - [x] Air Quality Index — Real-time AQI with pollutant levels and forecast
-- [x] **Monitor Panel System — 819 specialized monitor panels** spanning environmental, geological, oceanic, atmospheric, supply chain, retail, sports venue, wellness retreat, and thermal/mind-body domains
+- [x] **Monitor Panel System — 851 specialized monitor panels** spanning environmental, geological, oceanic, atmospheric, supply chain, retail, sports venue, wellness retreat, beauty/personal care, automotive, and financial/professional services domains
+- [x] **Repository hardening** — Comprehensive README, CONTRIBUTING.md, SECURITY.md, MIT LICENSE, and GitHub Actions CI pipeline (lint + typecheck + build)
 
 ### Planned 🚧
 - [ ] Collaborative Maps — Share and edit maps with others in real-time
 - [ ] Offline Map Caching — Service worker for tile caching
 - [ ] Real-time Chat — Discuss locations with other users
 - [ ] Voice Navigation — Turn-by-turn voice instructions
-- [ ] Monitor panel code-splitting — Split `MapToolbarButtons.tsx` (~596KB) into batched files to reduce compilation memory pressure
-- [ ] Store slicing — Split `map-store.ts` (~500KB) into domain-specific slices
+- [ ] Monitor panel code-splitting — Split `MapToolbarButtons.tsx` (~620KB) into batched files to reduce compilation memory pressure
+- [ ] Store slicing — Split `map-store.ts` (~520KB) into domain-specific slices
+- [ ] Dependabot config — Automated dependency updates
+- [ ] Code coverage reporting — Istanbul/c8 in CI
 
 ---
 
 ## 🤝 Contributing
 
+Contributions are welcome! Please read the full **[CONTRIBUTING.md](CONTRIBUTING.md)** for detailed setup, conventions, monitor-adding guide, and the PR checklist.
+
+### Quick Start
+
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Commit your changes: `git commit -m 'Add amazing feature'`
+3. Commit your changes following [Conventional Commits](https://www.conventionalcommits.org/)
 4. Push to the branch: `git push origin feature/amazing-feature`
-5. Open a Pull Request
+5. Open a Pull Request against `main`
 
 ### Adding a New Monitor Panel
 
-To add a new monitor following the established pattern:
+To add a new monitor following the established pattern, see the **[Adding a Monitor Panel](CONTRIBUTING.md#-adding-a-monitor-panel-most-common)** section in CONTRIBUTING.md. The short version:
 
 1. **Verify no conflicts** — Check that the component file and store key do not already exist
-2. **Verify icon existence** — Use `node -e "require('lucide-react')['IconName']"` (note: this is unreliable for some icons; verify via actual dev server import)
+2. **Verify icon existence** — Grep `node_modules/lucide-react/dist/lucide-react.d.ts` for the export (NOT via `require()` — that's unreliable)
 3. **Check alias conflicts** — Grep `MapToolbarButtons.tsx` for `as IconNameN` to find a free suffix
 4. **Add store references** — Add interface field, default state, and setter in `map-store.ts` (3 refs per key)
-5. **Create the component** — Copy `OfficeSupplyChainMonitor.tsx` pattern, replace with 4 real US locations and domain data
+5. **Create the component** — Copy `OfficeSupplyChainMonitor.tsx` pattern, replace with 4 real US locations and domain data. Export name MUST end in `Monitor`.
 6. **Register LazyPanel** — Add store read and LazyPanel block in `MonitorPanelRegistry.tsx`
 7. **Add toolbar button** — Add icon import, store read, and button block in `MapToolbarButtons.tsx`
-8. **Verify** — Lint, then test via agent-browser: open page, click button, verify heading + 4 locations + metrics
+8. **Verify** — `bun run lint` (exit 0), then test via agent-browser: open page, click button, verify heading + 4 locations + metrics
 
 ### Rules
 - **NO indigo/blue** primary gradient colors
@@ -520,6 +531,27 @@ To add a new monitor following the established pattern:
 - `flagshipLines` is a comma-separated STRING, `monthlyRevenue` is a NUMBER in $M
 - **NEVER use `\'` or `\\'`** in description strings — causes parse errors
 - Use real US locations with realistic business data
+
+---
+
+## 🔒 Security
+
+For vulnerability reports and security policy, see **[SECURITY.md](SECURITY.md)**. Please **do not** open public GitHub issues for security vulnerabilities — follow the responsible disclosure process outlined in SECURITY.md.
+
+---
+
+## ⚙️ CI/CD
+
+This repository uses [GitHub Actions](.github/workflows/ci.yml) for continuous integration. Every push to `main` and every pull request triggers:
+
+| Job | Purpose | Tool |
+|-----|---------|------|
+| **lint** | Enforce code style and ESLint rules | `bun run lint` |
+| **typecheck** | Catch type errors before merge | `bunx tsc --noEmit` |
+| **build** | Verify production build succeeds | `bun run build` |
+| **ci-pass** | Single status gate for branch protection | Aggregated |
+
+The `concurrency` block cancels in-progress runs when a new commit is pushed to the same branch, keeping CI fast and cheap. To enable branch protection, require the `CI Passed` status check on `main`.
 
 ---
 
