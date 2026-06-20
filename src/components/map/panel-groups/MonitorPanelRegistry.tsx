@@ -943,6 +943,14 @@ export function MonitorPanelRegistry() {
   const pediatricClinic = useMapStore((s) => s.pediatricClinic)
   const womensHealthClinic = useMapStore((s) => s.womensHealthClinic)
   const mentalHealthCounseling = useMapStore((s) => s.mentalHealthCounseling)
+  const tutoringCenter = useMapStore((s) => s.tutoringCenter)
+  const musicLessonStudio = useMapStore((s) => s.musicLessonStudio)
+  const testPrepCenter = useMapStore((s) => s.testPrepCenter)
+  const languageSchool = useMapStore((s) => s.languageSchool)
+  const codingBootcamp = useMapStore((s) => s.codingBootcamp)
+  const artClassStudio = useMapStore((s) => s.artClassStudio)
+  const drivingSchoolAcademy = useMapStore((s) => s.drivingSchoolAcademy)
+  const collegeAdmissionsConsulting = useMapStore((s) => s.collegeAdmissionsConsulting)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -3410,6 +3418,30 @@ export function MonitorPanelRegistry() {
       )}
       {mentalHealthCounseling.open && (
         <LazyPanel importFn={() => import('@/components/map/MentalHealthCounselingMonitor')} exportName="MentalHealthCounselingMonitor" shouldLoad={mentalHealthCounseling.open} />
+      )}
+      {tutoringCenter.open && (
+        <LazyPanel importFn={() => import('@/components/map/TutoringCenterMonitor')} exportName="TutoringCenterMonitor" shouldLoad={tutoringCenter.open} />
+      )}
+      {musicLessonStudio.open && (
+        <LazyPanel importFn={() => import('@/components/map/MusicLessonStudioMonitor')} exportName="MusicLessonStudioMonitor" shouldLoad={musicLessonStudio.open} />
+      )}
+      {testPrepCenter.open && (
+        <LazyPanel importFn={() => import('@/components/map/TestPrepCenterMonitor')} exportName="TestPrepCenterMonitor" shouldLoad={testPrepCenter.open} />
+      )}
+      {languageSchool.open && (
+        <LazyPanel importFn={() => import('@/components/map/LanguageSchoolMonitor')} exportName="LanguageSchoolMonitor" shouldLoad={languageSchool.open} />
+      )}
+      {codingBootcamp.open && (
+        <LazyPanel importFn={() => import('@/components/map/CodingBootcampMonitor')} exportName="CodingBootcampMonitor" shouldLoad={codingBootcamp.open} />
+      )}
+      {artClassStudio.open && (
+        <LazyPanel importFn={() => import('@/components/map/ArtClassStudioMonitor')} exportName="ArtClassStudioMonitor" shouldLoad={artClassStudio.open} />
+      )}
+      {drivingSchoolAcademy.open && (
+        <LazyPanel importFn={() => import('@/components/map/DrivingSchoolAcademyMonitor')} exportName="DrivingSchoolAcademyMonitor" shouldLoad={drivingSchoolAcademy.open} />
+      )}
+      {collegeAdmissionsConsulting.open && (
+        <LazyPanel importFn={() => import('@/components/map/CollegeAdmissionsConsultingMonitor')} exportName="CollegeAdmissionsConsultingMonitor" shouldLoad={collegeAdmissionsConsulting.open} />
       )}
     </>
   )

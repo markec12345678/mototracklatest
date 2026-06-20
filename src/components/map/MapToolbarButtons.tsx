@@ -1046,6 +1046,14 @@ import {
   Baby as BabyIcon4,
   Syringe as SyringeIcon3,
   Brain as BrainIcon3,
+  GraduationCap as GraduationCapIcon5,
+  Music as MusicIcon7,
+  ClipboardList as ClipboardListIcon,
+  Languages as LanguagesIcon,
+  Code as CodeIcon,
+  Palette as PaletteIcon6,
+  Car as CarIcon8,
+  FileText as FileTextIcon5,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1704,6 +1712,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const pediatricClinicOpen = useMapStore((s) => s.pediatricClinic.open)
   const womensHealthClinicOpen = useMapStore((s) => s.womensHealthClinic.open)
   const mentalHealthCounselingOpen = useMapStore((s) => s.mentalHealthCounseling.open)
+  const tutoringCenterOpen = useMapStore((s) => s.tutoringCenter.open)
+  const musicLessonStudioOpen = useMapStore((s) => s.musicLessonStudio.open)
+  const testPrepCenterOpen = useMapStore((s) => s.testPrepCenter.open)
+  const languageSchoolOpen = useMapStore((s) => s.languageSchool.open)
+  const codingBootcampOpen = useMapStore((s) => s.codingBootcamp.open)
+  const artClassStudioOpen = useMapStore((s) => s.artClassStudio.open)
+  const drivingSchoolAcademyOpen = useMapStore((s) => s.drivingSchoolAcademy.open)
+  const collegeAdmissionsConsultingOpen = useMapStore((s) => s.collegeAdmissionsConsulting.open)
 
   if (typeof window === 'undefined') return null
 
@@ -10283,6 +10299,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <BrainIcon3 className="h-4 w-4" />
             {mentalHealthCounselingOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-purple-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setTutoringCenter({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${tutoringCenterOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Tutoring Center Monitor"
+          >
+            <GraduationCapIcon5 className="h-4 w-4" />
+            {tutoringCenterOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setMusicLessonStudio({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${musicLessonStudioOpen ? 'bg-violet-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Music Lesson Studio Monitor"
+          >
+            <MusicIcon7 className="h-4 w-4" />
+            {musicLessonStudioOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-violet-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setTestPrepCenter({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${testPrepCenterOpen ? 'bg-rose-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Test Prep Center Monitor"
+          >
+            <ClipboardListIcon className="h-4 w-4" />
+            {testPrepCenterOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setLanguageSchool({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${languageSchoolOpen ? 'bg-teal-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Language School Monitor"
+          >
+            <LanguagesIcon className="h-4 w-4" />
+            {languageSchoolOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-teal-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCodingBootcamp({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${codingBootcampOpen ? 'bg-emerald-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Coding Bootcamp Monitor"
+          >
+            <CodeIcon className="h-4 w-4" />
+            {codingBootcampOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setArtClassStudio({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${artClassStudioOpen ? 'bg-pink-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Art Class Studio Monitor"
+          >
+            <PaletteIcon6 className="h-4 w-4" />
+            {artClassStudioOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-pink-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setDrivingSchoolAcademy({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${drivingSchoolAcademyOpen ? 'bg-orange-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Driving School Academy Monitor"
+          >
+            <CarIcon8 className="h-4 w-4" />
+            {drivingSchoolAcademyOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setCollegeAdmissionsConsulting({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${collegeAdmissionsConsultingOpen ? 'bg-stone-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="College Admissions Consulting Monitor"
+          >
+            <FileTextIcon5 className="h-4 w-4" />
+            {collegeAdmissionsConsultingOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-stone-300" />}
           </button>
         </div>
       </div>

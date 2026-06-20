@@ -5195,6 +5195,22 @@ interface MapState {
   setWomensHealthClinic: (state: Partial<MonitorState>) => void
   mentalHealthCounseling: MonitorState
   setMentalHealthCounseling: (state: Partial<MonitorState>) => void
+  tutoringCenter: MonitorState
+  setTutoringCenter: (state: Partial<MonitorState>) => void
+  musicLessonStudio: MonitorState
+  setMusicLessonStudio: (state: Partial<MonitorState>) => void
+  testPrepCenter: MonitorState
+  setTestPrepCenter: (state: Partial<MonitorState>) => void
+  languageSchool: MonitorState
+  setLanguageSchool: (state: Partial<MonitorState>) => void
+  codingBootcamp: MonitorState
+  setCodingBootcamp: (state: Partial<MonitorState>) => void
+  artClassStudio: MonitorState
+  setArtClassStudio: (state: Partial<MonitorState>) => void
+  drivingSchoolAcademy: MonitorState
+  setDrivingSchoolAcademy: (state: Partial<MonitorState>) => void
+  collegeAdmissionsConsulting: MonitorState
+  setCollegeAdmissionsConsulting: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -9723,6 +9739,14 @@ export const useMapStore = create<MapState>()(
       pediatricClinic: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       womensHealthClinic: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       mentalHealthCounseling: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      tutoringCenter: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      musicLessonStudio: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      testPrepCenter: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      languageSchool: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      codingBootcamp: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      artClassStudio: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      drivingSchoolAcademy: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      collegeAdmissionsConsulting: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -10260,6 +10284,14 @@ export const useMapStore = create<MapState>()(
       setPediatricClinic: (updates) => set((state) => ({ pediatricClinic: { ...state.pediatricClinic, ...updates } })),
       setWomensHealthClinic: (updates) => set((state) => ({ womensHealthClinic: { ...state.womensHealthClinic, ...updates } })),
       setMentalHealthCounseling: (updates) => set((state) => ({ mentalHealthCounseling: { ...state.mentalHealthCounseling, ...updates } })),
+      setTutoringCenter: (updates) => set((state) => ({ tutoringCenter: { ...state.tutoringCenter, ...updates } })),
+      setMusicLessonStudio: (updates) => set((state) => ({ musicLessonStudio: { ...state.musicLessonStudio, ...updates } })),
+      setTestPrepCenter: (updates) => set((state) => ({ testPrepCenter: { ...state.testPrepCenter, ...updates } })),
+      setLanguageSchool: (updates) => set((state) => ({ languageSchool: { ...state.languageSchool, ...updates } })),
+      setCodingBootcamp: (updates) => set((state) => ({ codingBootcamp: { ...state.codingBootcamp, ...updates } })),
+      setArtClassStudio: (updates) => set((state) => ({ artClassStudio: { ...state.artClassStudio, ...updates } })),
+      setDrivingSchoolAcademy: (updates) => set((state) => ({ drivingSchoolAcademy: { ...state.drivingSchoolAcademy, ...updates } })),
+      setCollegeAdmissionsConsulting: (updates) => set((state) => ({ collegeAdmissionsConsulting: { ...state.collegeAdmissionsConsulting, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,
