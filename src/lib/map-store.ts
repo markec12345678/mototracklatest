@@ -5179,6 +5179,22 @@ interface MapState {
   setNotarySigningService: (state: Partial<MonitorState>) => void
   realEstateAgency: MonitorState
   setRealEstateAgency: (state: Partial<MonitorState>) => void
+  urgentCareClinic: MonitorState
+  setUrgentCareClinic: (state: Partial<MonitorState>) => void
+  dentalOfficePractice: MonitorState
+  setDentalOfficePractice: (state: Partial<MonitorState>) => void
+  physicalTherapyClinic: MonitorState
+  setPhysicalTherapyClinic: (state: Partial<MonitorState>) => void
+  chiropracticOffice: MonitorState
+  setChiropracticOffice: (state: Partial<MonitorState>) => void
+  optometryClinic: MonitorState
+  setOptometryClinic: (state: Partial<MonitorState>) => void
+  pediatricClinic: MonitorState
+  setPediatricClinic: (state: Partial<MonitorState>) => void
+  womensHealthClinic: MonitorState
+  setWomensHealthClinic: (state: Partial<MonitorState>) => void
+  mentalHealthCounseling: MonitorState
+  setMentalHealthCounseling: (state: Partial<MonitorState>) => void
 }
 
 // Coordinate Share Card types
@@ -9699,6 +9715,14 @@ export const useMapStore = create<MapState>()(
       lawFirmPractice: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       notarySigningService: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       realEstateAgency: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      urgentCareClinic: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      dentalOfficePractice: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      physicalTherapyClinic: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      chiropracticOffice: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      optometryClinic: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      pediatricClinic: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      womensHealthClinic: { open: false, data: [], statusFilter: 'all', activeItemId: null },
+      mentalHealthCounseling: { open: false, data: [], statusFilter: 'all', activeItemId: null },
       setOzoneLayerTrack119: (updates) => set((state) => ({ ozoneLayerTrack119: { ...state.ozoneLayerTrack119, ...updates } })),
       setMethaneEmissionSourceTrack: (updates) => set((state) => ({ methaneEmissionSourceTrack: { ...state.methaneEmissionSourceTrack, ...updates } })),
       setAerosolOpticalDepth: (updates) => set((state) => ({ aerosolOpticalDepth: { ...state.aerosolOpticalDepth, ...updates } })),
@@ -10228,6 +10252,14 @@ export const useMapStore = create<MapState>()(
       setLawFirmPractice: (updates) => set((state) => ({ lawFirmPractice: { ...state.lawFirmPractice, ...updates } })),
       setNotarySigningService: (updates) => set((state) => ({ notarySigningService: { ...state.notarySigningService, ...updates } })),
       setRealEstateAgency: (updates) => set((state) => ({ realEstateAgency: { ...state.realEstateAgency, ...updates } })),
+      setUrgentCareClinic: (updates) => set((state) => ({ urgentCareClinic: { ...state.urgentCareClinic, ...updates } })),
+      setDentalOfficePractice: (updates) => set((state) => ({ dentalOfficePractice: { ...state.dentalOfficePractice, ...updates } })),
+      setPhysicalTherapyClinic: (updates) => set((state) => ({ physicalTherapyClinic: { ...state.physicalTherapyClinic, ...updates } })),
+      setChiropracticOffice: (updates) => set((state) => ({ chiropracticOffice: { ...state.chiropracticOffice, ...updates } })),
+      setOptometryClinic: (updates) => set((state) => ({ optometryClinic: { ...state.optometryClinic, ...updates } })),
+      setPediatricClinic: (updates) => set((state) => ({ pediatricClinic: { ...state.pediatricClinic, ...updates } })),
+      setWomensHealthClinic: (updates) => set((state) => ({ womensHealthClinic: { ...state.womensHealthClinic, ...updates } })),
+      setMentalHealthCounseling: (updates) => set((state) => ({ mentalHealthCounseling: { ...state.mentalHealthCounseling, ...updates } })),
 
       // Dialog states (moved from local useState in page.tsx for lazy loading)
       addLocationDialogOpen: false,

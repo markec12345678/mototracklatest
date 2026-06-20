@@ -1038,6 +1038,14 @@ import {
   Scale as ScaleIcon4,
   Stamp as StampIcon,
   Briefcase as BriefcaseIcon2,
+  Stethoscope as StethoscopeIcon3,
+  Smile as SmileIcon3,
+  HeartPulse as HeartPulseIcon3,
+  Bone as BoneIcon1,
+  Eye as EyeIcon4,
+  Baby as BabyIcon4,
+  Syringe as SyringeIcon3,
+  Brain as BrainIcon3,
 } from 'lucide-react'
 
 interface MapToolbarButtonsProps {
@@ -1688,6 +1696,14 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
   const lawFirmPracticeOpen = useMapStore((s) => s.lawFirmPractice.open)
   const notarySigningServiceOpen = useMapStore((s) => s.notarySigningService.open)
   const realEstateAgencyOpen = useMapStore((s) => s.realEstateAgency.open)
+  const urgentCareClinicOpen = useMapStore((s) => s.urgentCareClinic.open)
+  const dentalOfficePracticeOpen = useMapStore((s) => s.dentalOfficePractice.open)
+  const physicalTherapyClinicOpen = useMapStore((s) => s.physicalTherapyClinic.open)
+  const chiropracticOfficeOpen = useMapStore((s) => s.chiropracticOffice.open)
+  const optometryClinicOpen = useMapStore((s) => s.optometryClinic.open)
+  const pediatricClinicOpen = useMapStore((s) => s.pediatricClinic.open)
+  const womensHealthClinicOpen = useMapStore((s) => s.womensHealthClinic.open)
+  const mentalHealthCounselingOpen = useMapStore((s) => s.mentalHealthCounseling.open)
 
   if (typeof window === 'undefined') return null
 
@@ -10203,6 +10219,70 @@ export function MapToolbarButtons(props: Partial<MapToolbarButtonsProps>) {
           >
             <BriefcaseIcon2 className="h-4 w-4" />
             {realEstateAgencyOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-orange-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setUrgentCareClinic({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${urgentCareClinicOpen ? 'bg-red-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Urgent Care Clinic Monitor"
+          >
+            <StethoscopeIcon3 className="h-4 w-4" />
+            {urgentCareClinicOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setDentalOfficePractice({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${dentalOfficePracticeOpen ? 'bg-cyan-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Dental Office Practice Monitor"
+          >
+            <SmileIcon3 className="h-4 w-4" />
+            {dentalOfficePracticeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-cyan-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setPhysicalTherapyClinic({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${physicalTherapyClinicOpen ? 'bg-emerald-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Physical Therapy Clinic Monitor"
+          >
+            <HeartPulseIcon3 className="h-4 w-4" />
+            {physicalTherapyClinicOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setChiropracticOffice({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${chiropracticOfficeOpen ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Chiropractic Office Monitor"
+          >
+            <BoneIcon1 className="h-4 w-4" />
+            {chiropracticOfficeOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-amber-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setOptometryClinic({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${optometryClinicOpen ? 'bg-violet-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Optometry Clinic Monitor"
+          >
+            <EyeIcon4 className="h-4 w-4" />
+            {optometryClinicOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-violet-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setPediatricClinic({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${pediatricClinicOpen ? 'bg-pink-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Pediatric Clinic Monitor"
+          >
+            <BabyIcon4 className="h-4 w-4" />
+            {pediatricClinicOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-pink-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setWomensHealthClinic({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${womensHealthClinicOpen ? 'bg-rose-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Womens Health Clinic Monitor"
+          >
+            <SyringeIcon3 className="h-4 w-4" />
+            {womensHealthClinicOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-300" />}
+          </button>
+          <button
+            onClick={() => useMapStore.getState().setMentalHealthCounseling({ open: true })}
+            className={`relative flex items-center justify-center h-9 w-9 rounded-md transition-all ${mentalHealthCounselingOpen ? 'bg-purple-700 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+            title="Mental Health Counseling Monitor"
+          >
+            <BrainIcon3 className="h-4 w-4" />
+            {mentalHealthCounselingOpen && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-purple-300" />}
           </button>
         </div>
       </div>

@@ -934,6 +934,15 @@ export function MonitorPanelRegistry() {
   const lawFirmPractice = useMapStore((s) => s.lawFirmPractice)
   const notarySigningService = useMapStore((s) => s.notarySigningService)
   const realEstateAgency = useMapStore((s) => s.realEstateAgency)
+  // Task 181: Healthcare & Medical Services
+  const urgentCareClinic = useMapStore((s) => s.urgentCareClinic)
+  const dentalOfficePractice = useMapStore((s) => s.dentalOfficePractice)
+  const physicalTherapyClinic = useMapStore((s) => s.physicalTherapyClinic)
+  const chiropracticOffice = useMapStore((s) => s.chiropracticOffice)
+  const optometryClinic = useMapStore((s) => s.optometryClinic)
+  const pediatricClinic = useMapStore((s) => s.pediatricClinic)
+  const womensHealthClinic = useMapStore((s) => s.womensHealthClinic)
+  const mentalHealthCounseling = useMapStore((s) => s.mentalHealthCounseling)
   // Task 118: Geological Hazards & Tectonic Activity
   const earthquakeForecastTrack = useMapStore((s) => s.earthquakeForecastTrack)
   const volcanoEruptionAlertTrack = useMapStore((s) => s.volcanoEruptionAlertTrack)
@@ -3377,6 +3386,30 @@ export function MonitorPanelRegistry() {
       )}
       {realEstateAgency.open && (
         <LazyPanel importFn={() => import('@/components/map/RealEstateAgencyMonitor')} exportName="RealEstateAgencyMonitor" shouldLoad={realEstateAgency.open} />
+      )}
+      {urgentCareClinic.open && (
+        <LazyPanel importFn={() => import('@/components/map/UrgentCareClinicMonitor')} exportName="UrgentCareClinicMonitor" shouldLoad={urgentCareClinic.open} />
+      )}
+      {dentalOfficePractice.open && (
+        <LazyPanel importFn={() => import('@/components/map/DentalOfficePracticeMonitor')} exportName="DentalOfficePracticeMonitor" shouldLoad={dentalOfficePractice.open} />
+      )}
+      {physicalTherapyClinic.open && (
+        <LazyPanel importFn={() => import('@/components/map/PhysicalTherapyClinicMonitor')} exportName="PhysicalTherapyClinicMonitor" shouldLoad={physicalTherapyClinic.open} />
+      )}
+      {chiropracticOffice.open && (
+        <LazyPanel importFn={() => import('@/components/map/ChiropracticOfficeMonitor')} exportName="ChiropracticOfficeMonitor" shouldLoad={chiropracticOffice.open} />
+      )}
+      {optometryClinic.open && (
+        <LazyPanel importFn={() => import('@/components/map/OptometryClinicMonitor')} exportName="OptometryClinicMonitor" shouldLoad={optometryClinic.open} />
+      )}
+      {pediatricClinic.open && (
+        <LazyPanel importFn={() => import('@/components/map/PediatricClinicMonitor')} exportName="PediatricClinicMonitor" shouldLoad={pediatricClinic.open} />
+      )}
+      {womensHealthClinic.open && (
+        <LazyPanel importFn={() => import('@/components/map/WomensHealthClinicMonitor')} exportName="WomensHealthClinicMonitor" shouldLoad={womensHealthClinic.open} />
+      )}
+      {mentalHealthCounseling.open && (
+        <LazyPanel importFn={() => import('@/components/map/MentalHealthCounselingMonitor')} exportName="MentalHealthCounselingMonitor" shouldLoad={mentalHealthCounseling.open} />
       )}
     </>
   )
