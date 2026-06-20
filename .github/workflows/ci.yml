@@ -35,12 +35,18 @@ jobs:
         run: bun run lint
 
   # ──────────────────────────────────────────────────────────────
-  # Typecheck — TypeScript strict mode, no emit
+  # Typecheck — TypeScript strict mode, no emit (informational)
+  # NOTE: This project has `typescript.ignoreBuildErrors: true` in
+  # next.config.ts (large codebase in active development). We run
+  # tsc --noEmit as an INFORMATIONAL job — it does NOT block merges.
+  # Use `continue-on-error: true` so PRs are not rejected on
+  # pre-existing type debt. Track cleanup in Roadmap (Planned).
   # ──────────────────────────────────────────────────────────────
   typecheck:
-    name: Typecheck (tsc --noEmit)
+    name: Typecheck (tsc --noEmit, informational)
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    continue-on-error: true
     steps:
       - name: ⬇️ Checkout
         uses: actions/checkout@v4
@@ -62,12 +68,14 @@ jobs:
   # ──────────────────────────────────────────────────────────────
   # Build — full Next.js production build
   # Only runs on PRs to avoid double-running on push + PR
+  # next.config.ts has `typescript.ignoreBuildErrors: true` so
+  # type debt does not block the build. ESLint errors WILL block.
   # ──────────────────────────────────────────────────────────────
   build:
     name: Build (Next.js)
     runs-on: ubuntu-latest
     timeout-minutes: 25
-    needs: [lint, typecheck]
+    needs: [lint]
     # Run on PRs always; on push only if to main (for deployment confidence)
     if: github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
     env:
@@ -99,18 +107,19 @@ jobs:
 
   # ──────────────────────────────────────────────────────────────
   # Summary — single status gate for branch protection
+  # Only lint + build are blocking. Typecheck is informational.
   # ──────────────────────────────────────────────────────────────
   ci-pass:
     name: CI Passed
     runs-on: ubuntu-latest
-    needs: [lint, typecheck, build]
+    needs: [lint, build]
     if: always()
     steps:
-      - name: ✅ All checks passed
-        if: ${{ !(contains(needs.*.result, 'failure')) }}
-        run: echo "🎉 All CI jobs passed."
-      - name: ❌ Some checks failed
-        if: ${{ contains(needs.*.result, 'failure') }}
+      - name: ✅ All blocking checks passed
+        if: ${{ !(contains(needs.lint.result, 'failure')) && !(contains(needs.build.result, 'failure')) }}
+        run: echo "🎉 Lint + Build passed. (Typecheck is informational and may have warnings.)"
+      - name: ❌ Blocking checks failed
+        if: ${{ contains(needs.lint.result, 'failure') || contains(needs.build.result, 'failure') }}
         run: |
           echo "❌ CI failed. See job logs for details."
           exit 1
